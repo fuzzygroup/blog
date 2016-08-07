@@ -1,6 +1,6 @@
 ---
 layout: post
-title: What Can You Do In 30 Days: A Case Study
+title: Case Study What Can You Do In 30 Days Using Ruby and Rails 5
 ---
 
 So I recently had an interesting opportunity to write a bunch of code in a fast paced environment.  I was putting in about 40 hours of week albeit around the edges of my full time gig.  I was the sole contributor during this period save for a few view files that essentially amounted to a rounding error in the size of the project.  All code was new and written in a Rails 5 stack.  There also was a separate NLP engine implemented using Rack / Grape but that was relatively small so its omitted.  
