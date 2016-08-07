@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>FuzzyBlog</title>
-  <meta name="description" content="Scott Johnson writing about the usual array of nerd stuff.  Ruby / Rails / Elixir.
-">
+  <title>MySql Mistake - Its All About Maria</title>
+  <meta name="description" content="So I was working thru this tutorial (another take on blog creation) and I started off by trying to switch my configuration from postgres to mysql.  I got thi...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/2016/03/05/mysql-mistake-its-all-about-maria.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
 </head>
 
@@ -55,81 +54,27 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">MySql Mistake - Its All About Maria</h1>
+    <p class="post-meta"><time datetime="2016-03-05T21:15:08-05:00" itemprop="datePublished">Mar 5, 2016</time> • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{"login"=>"hirem", "email"=>"fuzzygroup@gmail.com", "display_name"=>"fuzzygroup", "first_name"=>"", "last_name"=>""}</span></span></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Aug 7, 2016</span>
+  <div class="post-content" itemprop="articleBody">
+    <p>So I was working thru <a href="http://blog.tokafish.com/rails-to-phoenix-getting-started-with-ecto/">this tutorial</a> (another take on blog creation) and I started off by trying to switch my configuration from postgres to mysql.  I got this error:</p>
+<p style="margin:0;font-size:12px;font-family:'Andale Mono';color:#29f914;background-color:#000000;">(MatchError) no match of right hand side value: {:error, {:mariaex, {'no such file or directory', 'mariaex.app'}}}</p>
+<p style="margin:0;font-size:12px;font-family:'Andale Mono';color:#29f914;background-color:#000000;"> </p>
+<p style="margin:0;font-size:12px;font-family:'Andale Mono';color:#29f914;background-color:#000000;"> </p>
+<p>I had automatically used this:</p>
+<pre>defp deps do<br /> [{:mysql, "~&gt; 0.1"},<br /> {:ecto, "~&gt; 1.0"}]<br /> end</pre>
+<p>Where it was really supposed to be::</p>
+<pre>defp deps do<br /> [{:mariaex, "~&gt; 0.1"},<br /> {:ecto, "~&gt; 1.0"}]<br /> end</pre>
+<p>I happily found the answer to the error <a href="http://www.jarredtrost.com/2015/05/01/using-mysql-with-the-phoenix-framework/">here</a>.  Thanks!</p>
 
-        <h2>
-          <a class="post-link" href="/blog/jekyll/update/2016/08/07/welcome-to-jekyll.html">Welcome to Jekyll!</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 7, 2016</span>
+  </div>
 
-        <h2>
-          <a class="post-link" href="/blog/2016/08/07/what-can-you-do-in-30-days.html">Case Study What Can You Do In 30 Days Using Ruby and Rails 5</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 7, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/blog/2016/08/07/failing-at-react-native-just-by-starting.html">Failing At React Native Just By Starting</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 14, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/blog/2016/03/14/elixir-equivalent-of-object-methods-or-getting-a-module-to-list-its-methods.html">Elixir Equivalent of Object.methods or Getting a Module to List Its Methods</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 5, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/blog/2016/03/05/mysql-mistake-its-all-about-maria.html">MySql Mistake - Its All About Maria</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 5, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/blog/2016/03/05/building-a-blog-with-phoenix.html">Building a Blog with Phoenix</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 5, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/blog/2016/03/05/building-a-todo-app.html">Building a Todo App</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 5, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/blog/2016/03/05/getting-started-installation.html">Getting Started : Installation</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/blog/feed.xml">via RSS</a></p>
-
-</div>
+</article>
 
       </div>
     </div>

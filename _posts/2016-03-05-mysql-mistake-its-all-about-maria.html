@@ -1,0 +1,29 @@
+---
+layout: post
+title: MySql Mistake - Its All About Maria
+date: 2016-03-05 21:15:08.000000000 -05:00
+type: post
+published: true
+status: publish
+categories: []
+tags:
+- ecto
+- mysql
+meta:
+  _publicize_job_id: '20469140436'
+author:
+  login: hirem
+  email: fuzzygroup@gmail.com
+  display_name: fuzzygroup
+  first_name: ''
+  last_name: ''
+---
+<p>So I was working thru <a href="http://blog.tokafish.com/rails-to-phoenix-getting-started-with-ecto/">this tutorial</a> (another take on blog creation) and I started off by trying to switch my configuration from postgres to mysql.  I got this error:</p>
+<p style="margin:0;font-size:12px;font-family:'Andale Mono';color:#29f914;background-color:#000000;">(MatchError) no match of right hand side value: {:error, {:mariaex, {'no such file or directory', 'mariaex.app'}}}</p>
+<p style="margin:0;font-size:12px;font-family:'Andale Mono';color:#29f914;background-color:#000000;"> </p>
+<p style="margin:0;font-size:12px;font-family:'Andale Mono';color:#29f914;background-color:#000000;"> </p>
+<p>I had automatically used this:</p>
+<pre>defp deps do<br /> [{:mysql, "~&gt; 0.1"},<br /> {:ecto, "~&gt; 1.0"}]<br /> end</pre>
+<p>Where it was really supposed to be::</p>
+<pre>defp deps do<br /> [{:mariaex, "~&gt; 0.1"},<br /> {:ecto, "~&gt; 1.0"}]<br /> end</pre>
+<p>I happily found the answer to the error <a href="http://www.jarredtrost.com/2015/05/01/using-mysql-with-the-phoenix-framework/">here</a>.  Thanks!</p>

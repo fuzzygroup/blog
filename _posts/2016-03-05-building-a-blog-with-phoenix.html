@@ -1,0 +1,40 @@
+---
+layout: post
+title: Building a Blog with Phoenix
+date: 2016-03-05 16:05:13.000000000 -05:00
+type: post
+published: true
+status: publish
+categories: []
+tags: []
+meta:
+  _publicize_job_id: '20462215317'
+author:
+  login: hirem
+  email: fuzzygroup@gmail.com
+  display_name: fuzzygroup
+  first_name: ''
+  last_name: ''
+---
+<p>Once upon a time the quintessential learning project was hello world.  Now that’s not enough and its “Build a Blog”.  Well it was good enough to launch Ruby on Rails to its hallowed position so its likely good enough for Elixir and Phoenix.  I found the <a href="http://codetunes.com/2015/phoenix-blog/">CodeTunes tutorial</a> by google for “elixir blog” when I was actually looking for people blogging about Elixir but let’s get started.  </p>
+<h2>Issue 1: The Babelrc Debacle or es2015 alas...</h2>
+<p>So I ran thru the initial setup and generated the project skeleton.  When I looked at in a browser I noticed that the entire asset pipeline was missing and I was getting errors in the console like this:</p>
+<p style="margin:0;font-size:12px;font-family:'Andale Mono';color:#29f914;background-color:#000000;">05 Mar 09:29:34 - <span style="color:#c33720;">error</span>: Compiling of web/static/js/app.js failed. Couldn't find preset "es2015" relative to directory "/Users/sjohnson/elixir/phoenix" ; Compiling of web/static/js/socket.js failed. Couldn't find preset "es2015" relative to directory "/Users/sjohnson/elixir/phoenix"</p>
+<p>I’ve seen this before when I blew about 3 hours on my first attempt to get anything working with Elixir which ultimately resulted in my creating and closing a <a href="https://github.com/phoenixframework/phoenix/issues/1574">github issue</a> on this topic.</p>
+<p>Here’s the solution:</p>
+<ol>
+<li>touch .babelrc</li>
+<li>vi .babelrc</li>
+<li>Add this line:</li>
+<li><span style="color:#29f914;font-family:'Andale Mono';font-size:12px;background-color:#000000;">{ "presets": ["es2015"] }</span></li>
+</ol>
+<p> Overall this looks a lot like something that, at least for now, you have to do <strong>every time</strong> you create an Elixir application at least if you want the asset pipeline to work.  There’s a <a href="https://www.reddit.com/r/elixir/comments/471rc2/programming_phoenix_step_1_erlang_step_2_elixir/">long and furious rant</a> related to the use of node / brunch over in /r/elixir and while the original poster’s message was lost in his rage, the basic point that here with something new and yet cargo culting over big parts of technology.  Yes node works and yes brunch works and, no, no one wants to rewrite the asset pipeline crap from scratch but this is at least part of the result.  Something to think about.</p>
+<h2>Other Issues</h2>
+<p>In working thru this tutorial I made a number of syntactic mistakes that made me recall the days of learning Rails.  Normal stuff including the "Fix protocol Ecto.Queryable not implemented error” which was a bit mysterious but <a href="http://stackoverflow.com/questions/27671867/fix-protocol-ecto-queryable-not-implemented-error">Stack Overflow</a> cleared up.  The issue was that I had started with this:</p>
+<pre>def index(conn, _params) do<br /> posts = Repo.all(Post)<br />end</pre>
+<p>to which i added a pipeline like this:</p>
+<pre>def index(conn, _params) do<br /> posts = Repo.all(Post)<br /> |&gt; Post.count_comments<br /> |&gt; Repo.all<br /> render(conn, "index.html", posts: posts)<br /> end</pre>
+<p>but that really should have been this:</p>
+<pre>def index(conn, _params) do<br /> posts = Post<br /> |&gt; Post.count_comments<br /> |&gt; Repo.all<br /> render(conn, "index.html", posts: posts)<br />end</pre>
+<h2>Phoenix and Battery Life</h2>
+<p>One other thing I noticed is that the constant live reloading really pulls down my battery life on my Macbook Air.  Where I normally can work for several hours, I found myself down to 20% battery after only two hours.</p>

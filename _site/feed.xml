@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 07 Aug 2016 06:06:24 -0400</pubDate>
-    <lastBuildDate>Sun, 07 Aug 2016 06:06:24 -0400</lastBuildDate>
+    <pubDate>Sun, 07 Aug 2016 06:26:10 -0400</pubDate>
+    <lastBuildDate>Sun, 07 Aug 2016 06:26:10 -0400</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -102,6 +102,121 @@ One of the problems of having done development for a long, long time is you get 
         <pubDate>Sun, 07 Aug 2016 00:00:00 -0400</pubDate>
         <link>https://fuzzygroup.github.io/blog/2016/08/07/failing-at-react-native-just-by-starting.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/08/07/failing-at-react-native-just-by-starting.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Elixir Equivalent of Object.methods or Getting a Module to List Its Methods</title>
+        <description>&lt;p&gt;One of my single favorite Ruby features is: &lt;/p&gt;
+&lt;pre&gt;Object.methods&lt;/pre&gt;
+&lt;p&gt;or my personal favorite version of this:&lt;/p&gt;
+&lt;pre&gt;(obj.methods - Object.methods).sort&lt;/pre&gt;
+&lt;p&gt;So if you have a string in Ruby you can say:&lt;/p&gt;
+&lt;pre&gt;(“foo”.methods - Object.methods).sort&lt;/pre&gt;
+&lt;p&gt;Here’s the equivalent of this in elixir:&lt;/p&gt;
+&lt;pre&gt;Module.__info__(:functions)&lt;/pre&gt;
+&lt;p&gt;So if you wanted to find out what Map can do you’d use:&lt;/p&gt;
+&lt;pre&gt;Map.__info__(:functions)&lt;/pre&gt;
+&lt;p&gt;or Enum:&lt;/p&gt;
+&lt;pre&gt;Enum.__info__(:functions)&lt;/pre&gt;
+&lt;p&gt;And you’ll get back a long list of functions. Here’s the result for Enum:&lt;/p&gt;
+&lt;pre&gt;[all?: 1, all?: 2, any?: 1, any?: 2, at: 2, at: 3, chunk: 2, chunk: 3, chunk: 4,&lt;br /&gt; chunk_by: 2, concat: 1, concat: 2, count: 1, count: 2, dedup: 1, dedup_by: 2,&lt;br /&gt; drop: 2, drop_while: 2, each: 2, empty?: 1, fetch: 2, fetch!: 2, filter: 2,&lt;br /&gt; filter_map: 3, find: 2, find: 3, find_index: 2, find_value: 2, find_value: 3,&lt;br /&gt; flat_map: 2, flat_map_reduce: 3, group_by: 2, group_by: 3, intersperse: 2,&lt;br /&gt; into: 2, into: 3, join: 1, join: 2, map: 2, map_join: 2, map_join: 3,&lt;br /&gt; map_reduce: 3, max: 1, max_by: 2, member?: 2, min: 1, min_by: 2, min_max: 1,&lt;br /&gt; min_max_by: 2, partition: 2, ...]&lt;/pre&gt;
+&lt;p&gt;You can also use the .module_info construct to get more information: &lt;/p&gt;
+&lt;pre&gt;Enum.module_info&lt;br /&gt;[module: Enum,&lt;br /&gt; exports: [__info__: 1, join: 2, flat_map_reduce: 3, reduce_while: 3,&lt;br /&gt; sort_by: 3, sort_by: 2, filter: 2, uniq_by: 2, sort: 1, fetch!: 2, uniq: 2,&lt;br /&gt; join: 1, reverse_slice: 3, to_list: 1, group_by: 3, scan: 2, find: 3,&lt;br /&gt; concat: 2, sum: 1, at: 2, all?: 1, zip: 2, with_index: 2, split_while: 2,&lt;br /&gt; count: 1, sort: 2, empty?: 1, random: 1, dedup: 1, map_join: 2, find: 2,&lt;br /&gt; find_index: 2, reduce: 2, map_join: 3, count: 2, find_value: 2, min: 1,&lt;br /&gt; concat: 1, flat_map: 2, shuffle: 1, at: 3, uniq: 1, unzip: 1, min_by: 2,&lt;br /&gt; take_random: 2, take: 2, reverse: 2, find_value: 3, ...],&lt;br /&gt; attributes: [vsn: [332892874748555839594542519652485069262]],&lt;br /&gt; compile: [options: [:debug_info], version: &#39;6.0.2&#39;,&lt;br /&gt; time: {2016, 2, 21, 21, 48, 31},&lt;br /&gt; source: &#39;/private/tmp/elixir20160221-76790-1cjto8i/elixir-1.2.3/lib/elixir/lib/enum.ex&#39;],&lt;br /&gt; native: false,&lt;br /&gt; md5: &amp;lt;&amp;lt;250, 112, 213, 232, 64, 152, 188, 238, 148, 116, 149, 143, 81, 114, 121, 206&amp;gt;&amp;gt;]&lt;/pre&gt;
+&lt;p&gt; Here’s a helpful &lt;a href=&quot;http://stackoverflow.com/questions/28664119/in-elixir-is-there-any-way-to-get-a-module-to-list-its-functions&quot;&gt;Stack Overflow link on the subject&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 14 Mar 2016 23:59:38 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/03/14/elixir-equivalent-of-object-methods-or-getting-a-module-to-list-its-methods.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/03/14/elixir-equivalent-of-object-methods-or-getting-a-module-to-list-its-methods.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>MySql Mistake - Its All About Maria</title>
+        <description>&lt;p&gt;So I was working thru &lt;a href=&quot;http://blog.tokafish.com/rails-to-phoenix-getting-started-with-ecto/&quot;&gt;this tutorial&lt;/a&gt; (another take on blog creation) and I started off by trying to switch my configuration from postgres to mysql.  I got this error:&lt;/p&gt;
+&lt;p style=&quot;margin:0;font-size:12px;font-family:&#39;Andale Mono&#39;;color:#29f914;background-color:#000000;&quot;&gt;(MatchError) no match of right hand side value: {:error, {:mariaex, {&#39;no such file or directory&#39;, &#39;mariaex.app&#39;}}}&lt;/p&gt;
+&lt;p style=&quot;margin:0;font-size:12px;font-family:&#39;Andale Mono&#39;;color:#29f914;background-color:#000000;&quot;&gt; &lt;/p&gt;
+&lt;p style=&quot;margin:0;font-size:12px;font-family:&#39;Andale Mono&#39;;color:#29f914;background-color:#000000;&quot;&gt; &lt;/p&gt;
+&lt;p&gt;I had automatically used this:&lt;/p&gt;
+&lt;pre&gt;defp deps do&lt;br /&gt; [{:mysql, &quot;~&amp;gt; 0.1&quot;},&lt;br /&gt; {:ecto, &quot;~&amp;gt; 1.0&quot;}]&lt;br /&gt; end&lt;/pre&gt;
+&lt;p&gt;Where it was really supposed to be::&lt;/p&gt;
+&lt;pre&gt;defp deps do&lt;br /&gt; [{:mariaex, &quot;~&amp;gt; 0.1&quot;},&lt;br /&gt; {:ecto, &quot;~&amp;gt; 1.0&quot;}]&lt;br /&gt; end&lt;/pre&gt;
+&lt;p&gt;I happily found the answer to the error &lt;a href=&quot;http://www.jarredtrost.com/2015/05/01/using-mysql-with-the-phoenix-framework/&quot;&gt;here&lt;/a&gt;.  Thanks!&lt;/p&gt;
+</description>
+        <pubDate>Sat, 05 Mar 2016 21:15:08 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/03/05/mysql-mistake-its-all-about-maria.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/03/05/mysql-mistake-its-all-about-maria.html</guid>
+        
+        <category>ecto</category>
+        
+        <category>mysql</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Building a Blog with Phoenix</title>
+        <description>&lt;p&gt;Once upon a time the quintessential learning project was hello world.  Now that’s not enough and its “Build a Blog”.  Well it was good enough to launch Ruby on Rails to its hallowed position so its likely good enough for Elixir and Phoenix.  I found the &lt;a href=&quot;http://codetunes.com/2015/phoenix-blog/&quot;&gt;CodeTunes tutorial&lt;/a&gt; by google for “elixir blog” when I was actually looking for people blogging about Elixir but let’s get started.  &lt;/p&gt;
+&lt;h2&gt;Issue 1: The Babelrc Debacle or es2015 alas...&lt;/h2&gt;
+&lt;p&gt;So I ran thru the initial setup and generated the project skeleton.  When I looked at in a browser I noticed that the entire asset pipeline was missing and I was getting errors in the console like this:&lt;/p&gt;
+&lt;p style=&quot;margin:0;font-size:12px;font-family:&#39;Andale Mono&#39;;color:#29f914;background-color:#000000;&quot;&gt;05 Mar 09:29:34 - &lt;span style=&quot;color:#c33720;&quot;&gt;error&lt;/span&gt;: Compiling of web/static/js/app.js failed. Couldn&#39;t find preset &quot;es2015&quot; relative to directory &quot;/Users/sjohnson/elixir/phoenix&quot; ; Compiling of web/static/js/socket.js failed. Couldn&#39;t find preset &quot;es2015&quot; relative to directory &quot;/Users/sjohnson/elixir/phoenix&quot;&lt;/p&gt;
+&lt;p&gt;I’ve seen this before when I blew about 3 hours on my first attempt to get anything working with Elixir which ultimately resulted in my creating and closing a &lt;a href=&quot;https://github.com/phoenixframework/phoenix/issues/1574&quot;&gt;github issue&lt;/a&gt; on this topic.&lt;/p&gt;
+&lt;p&gt;Here’s the solution:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;touch .babelrc&lt;/li&gt;
+&lt;li&gt;vi .babelrc&lt;/li&gt;
+&lt;li&gt;Add this line:&lt;/li&gt;
+&lt;li&gt;&lt;span style=&quot;color:#29f914;font-family:&#39;Andale Mono&#39;;font-size:12px;background-color:#000000;&quot;&gt;{ &quot;presets&quot;: [&quot;es2015&quot;] }&lt;/span&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt; Overall this looks a lot like something that, at least for now, you have to do &lt;strong&gt;every time&lt;/strong&gt; you create an Elixir application at least if you want the asset pipeline to work.  There’s a &lt;a href=&quot;https://www.reddit.com/r/elixir/comments/471rc2/programming_phoenix_step_1_erlang_step_2_elixir/&quot;&gt;long and furious rant&lt;/a&gt; related to the use of node / brunch over in /r/elixir and while the original poster’s message was lost in his rage, the basic point that here with something new and yet cargo culting over big parts of technology.  Yes node works and yes brunch works and, no, no one wants to rewrite the asset pipeline crap from scratch but this is at least part of the result.  Something to think about.&lt;/p&gt;
+&lt;h2&gt;Other Issues&lt;/h2&gt;
+&lt;p&gt;In working thru this tutorial I made a number of syntactic mistakes that made me recall the days of learning Rails.  Normal stuff including the &quot;Fix protocol Ecto.Queryable not implemented error” which was a bit mysterious but &lt;a href=&quot;http://stackoverflow.com/questions/27671867/fix-protocol-ecto-queryable-not-implemented-error&quot;&gt;Stack Overflow&lt;/a&gt; cleared up.  The issue was that I had started with this:&lt;/p&gt;
+&lt;pre&gt;def index(conn, _params) do&lt;br /&gt; posts = Repo.all(Post)&lt;br /&gt;end&lt;/pre&gt;
+&lt;p&gt;to which i added a pipeline like this:&lt;/p&gt;
+&lt;pre&gt;def index(conn, _params) do&lt;br /&gt; posts = Repo.all(Post)&lt;br /&gt; |&amp;gt; Post.count_comments&lt;br /&gt; |&amp;gt; Repo.all&lt;br /&gt; render(conn, &quot;index.html&quot;, posts: posts)&lt;br /&gt; end&lt;/pre&gt;
+&lt;p&gt;but that really should have been this:&lt;/p&gt;
+&lt;pre&gt;def index(conn, _params) do&lt;br /&gt; posts = Post&lt;br /&gt; |&amp;gt; Post.count_comments&lt;br /&gt; |&amp;gt; Repo.all&lt;br /&gt; render(conn, &quot;index.html&quot;, posts: posts)&lt;br /&gt;end&lt;/pre&gt;
+&lt;h2&gt;Phoenix and Battery Life&lt;/h2&gt;
+&lt;p&gt;One other thing I noticed is that the constant live reloading really pulls down my battery life on my Macbook Air.  Where I normally can work for several hours, I found myself down to 20% battery after only two hours.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 05 Mar 2016 16:05:13 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/03/05/building-a-blog-with-phoenix.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/03/05/building-a-blog-with-phoenix.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Building a Todo App</title>
+        <description>&lt;p&gt;As a first real learning experience I took the time to work thru the &lt;a href=&quot;https://resolve.digital/blog/posts/creating-a-todo-application-using-the-phoenix-framework-and-ember-js/&quot;&gt;Resolve Digital Todo App&lt;/a&gt; and I have to admit that I was impressed.  Overall this tutorial was spot on.  The only changes I had to make to it were:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Adapt it from using postgres to mysql which, honestly, was nothing more than adding “—database mysql” to the initial create statement:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p style=&quot;margin:0;font-size:11px;font-family:Menlo;&quot;&gt;mix phoenix.new phoenix_todos_api --no-brunch  --database mysql&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;At the ember level, I had to adjust the version number of the ember-cli-shims (in the file bower.json):&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p style=&quot;margin:0;font-size:11px;font-family:Menlo;&quot;&gt;&quot;ember-cli-shims&quot;: &quot;ember-cli/ember-cli-shims#0.1.0”, &lt;/p&gt;
+&lt;p style=&quot;margin:0;font-size:11px;font-family:Menlo;&quot;&gt; &lt;/p&gt;
+</description>
+        <pubDate>Sat, 05 Mar 2016 14:21:11 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/03/05/building-a-todo-app.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/03/05/building-a-todo-app.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Getting Started : Installation</title>
+        <description>&lt;p&gt;Well I’ve made the decision to start down the rabbit hole, once again, and learn something new.  I’ve decided to go for &lt;a href=&quot;http://elixir-lang.org/&quot;&gt;Elixir&lt;/a&gt; as a language and &lt;a href=&quot;http://www.phoenixframework.org/&quot;&gt;Phoenix&lt;/a&gt; as a web framework.  These nicely parallel the Ruby / Rails ecosystem which I’ve been full time in since 2007.  I’ll use this blog to capture the learning process.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 05 Mar 2016 03:09:33 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/03/05/getting-started-installation.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/03/05/getting-started-installation.html</guid>
+        
+        <category>elixir</category>
         
         
       </item>
