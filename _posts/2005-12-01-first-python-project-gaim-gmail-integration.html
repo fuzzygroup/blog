@@ -1,0 +1,37 @@
+---
+layout: post
+title: 'First Python Project: Gaim + GMail Integration'
+date: 2005-12-01 02:16:58.000000000 -05:00
+type: post
+published: true
+status: publish
+categories:
+- python
+tags: []
+meta:
+  _oembed_e0aebf4537578f235b537e3d0c7d62d6: "{{unknown}}"
+  _oembed_a2f8fb6c3f790bebb10891157092a3f8: "{{unknown}}"
+author:
+  login: fuzzyblog
+  email: eric@appdata.com
+  display_name: fuzzyblog
+  first_name: Scott
+  last_name: Johnson
+---
+<p>I thought a lot about 1st projects to learn Python and, well, my first idea was overly ambitious.  So I thought more about computing problems I have every single day and one came to me: Gaim IM Logs, well, suck.  I mean the log format is fine but the search is deadly slow I often need access to them when I'm not at the machine where the log was created.  So why not write a Python app that:</p>
+<ol>
+<li>Runs as a service in the background.</li>
+<li>Monitors the Gaim log directory structure</li>
+<li>When it finds a new log file upload it to gmail adding whatever metadata it can find to make it better searchable</li>
+<li>Extract all embedded urls from the IM logs (hey I'm processing them anyway) to a local "IM Catalog", time sorted newest at the top -- how often do you need a url someone sent you and you can't remember exactly who or which account you had but you'd know it if you saw it.  This is a feature I had in my late, lamented only by me, Inbox Buddy product and it rocked.</li>
+</ol>
+<p>If you think about it, this project covers:</p>
+<ol>
+<li>Overall application structure</li>
+<li>Application configuration since you need to know where to look to find the user's specific IM logs, their gmail account name, mail server, etc</li>
+<li>Data parsing</li>
+<li>Network IO in the form of mail sending</li>
+<li>HTML generation</li>
+</ol>
+<p>That's a lot of the basic primitives I use every single day in PHP.  It'll be interesting to see how Python compares.</p>
+<p>Step 1 - a basic recursive directory scanner looking for log files.</p>

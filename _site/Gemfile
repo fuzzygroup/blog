@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'jekyll'
-
+gem 'tmuxinator'
 
 group :jekyll_plugins do
   gem "hpricot"
