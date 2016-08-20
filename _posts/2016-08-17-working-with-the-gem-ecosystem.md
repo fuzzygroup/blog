@@ -1,0 +1,59 @@
+---
+layout: post
+title: Working with the Gem Ecosystem
+---
+Gems are one of the more magical parts of the Ruby ecosystem.  By packaging software components as easily installable parts of Ruby / Rails, gems allow you to quickly extend your application.  In this blog post, I'm going to teach you how to make your own copy of a gem and then use it locally on your machine.  This isn't hard but it is the kind of thing that works correctly if you precisely follow the directions.  Enjoy!
+
+# Forking a Gem
+The first step in all this is to fork a gem.  Forking essentially means "clone the git repo of the gem you want to your own github account so you can do with it as you will".  Start by finding a gem on Github and then clicking the fork button.  This is prompt you for where you want to clone it to.  Generally you want this to be your personal github account unless you want it to happen on behalf of an organization where you work.
+
+If you're looking or a sample repo then I'd recommend Betty which is a very cool thing I've just become aware of: [https://github.com/pickhardt/betty](https://github.com/pickhardt/betty)
+
+# Using Forks to Find a More Recent Version of a Gem
+One interesting aspect of forking a gem is there are lots of gems out there that lie fallow and you'd think "Damn.  It would be great if someone fixed this #$*(#*$#(#)) thing."  Well, often enough, that's happened but the fix is in a fork.  Because the fork isn't from an official maintainer, you aren't even aware of it unless you follow the forks.  Here's a great example:
+
+(https://github.com/rrphotosoft/term-extract/)[https://github.com/rrphotosoft/term-extract/]
+
+!(It's Old!)[http://imgur.com/0xAGIhE]
+
+This is a very cool implementation of what's called phrase extraction which takes a corpus of text and finds the phrases that matter.  The disappointing thing with it is that its 5 to 6 years old.  Rather than walking away like I normally do, I clicked on the # next to the fork button and that showed me this:
+
+!(Not so Old)[http://imgur.com/AlZm3Wz]
+
+What I see here is that a user named rrphotosoft has a newwer version of the gem.  Now if I want to use this for my Rails application then I can just add it to Gemfile with the :git syntax:
+
+gem 'term-extract', :git => 'https://github.com/rrphotosoft/term-extract/'
+
+# Making Your Own Version of a Gem
+But what if there isn't a newer fork of a gem, what then?  Well thankfully its actually pretty easy to get around:
+
+1.  Fork the gem to your own github account.
+2.  Clone the gem to your computer.
+3.  Modify the source code as needed (global search is a huge help here)
+4.  Save the changes with the normal:
+* git add .
+* git commit -m "Some basic description"
+* git push origin master
+5.  Add the gem to your Gemfile using the :git => "" syntax above.  Please note that the url you need here is the https clone syntax not the ssh clone syntax.
+
+# Installing Your Own Version to Use Locally
+I recently forked a gem named [Orats](https://github.com/nickjj/orats) which builds a stubbed application for generating Dockerized rails apps.  I'm still on the fence regarding Docker for production work -- I love it conceptually -- but there are some learning hurdles I'm facing.  Anyway here's my [fork](https://github.com/fuzzygroup/orats) where I've been working on adding additional templates for using MySQL instead of postgres and building Rails 5 api applications.
+
+Now the weird issue here is that Orats is a gem you install onto your computer so you can use it yourself instead of packaging it into a Gemfile.  What you need to do here is the normal:
+
+* fork
+* change it as needed
+* add / commit / push
+
+Next you'll need a new bit of tooling, a gem named "specific_install":
+
+gem install specific_install
+
+This gem lets you specify what gem you're installing so it skips the "find canonical location" and takes a url instead so you can do this:
+
+gem specific_install https://github.com/fuzzygroup/orats.git
+
+And then you'll get my version of Orats -- bear in mind that mine is still a work in progress and the maintainer is doing really good, important work.  Go support [Nick](http://nickjanetakis.com/blog/dockerize-a-rails-5-postgres-redis-sidekiq-action-cable-app-with-docker-compose) please -- this is just an example.
+
+#Credits
+I couldn't have written this without the assistance of [Dv](http://dasari.me/), a long time pairing partner of mine.  Thanks man.
