@@ -51,5 +51,5 @@ gem specific_install https://github.com/fuzzygroup/orats.git
 
 And then you'll get my version of Orats -- bear in mind that mine is still a work in progress and the maintainer is doing really good, important work.  Go support [Nick](http://nickjanetakis.com/blog/dockerize-a-rails-5-postgres-redis-sidekiq-action-cable-app-with-docker-compose) please -- this is just an example.
 
-#Credits
+# Credits
 I couldn't have written this without the assistance of [Dv](http://dasari.me/), a long time pairing partner of mine.  Thanks man.
