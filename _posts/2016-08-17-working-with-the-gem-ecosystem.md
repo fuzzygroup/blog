@@ -51,6 +51,18 @@ gem specific_install https://github.com/fuzzygroup/orats.git
 
 And then you'll get my version of Orats -- bear in mind that mine is still a work in progress and the maintainer is doing really good, important work.  Go support [Nick](http://nickjanetakis.com/blog/dockerize-a-rails-5-postgres-redis-sidekiq-action-cable-app-with-docker-compose) please -- this is just an example.
 
+# Another Approach to Local Usage
+
+I just got an email from [Nick](http://nickjanetakis.com/) who wrote the Orats gem and he was kind enough to give me this tip:
+
+Btw to get around some of your local gem issues. You could just run your fork directly without "installing" it. Meaning if your forked version were sitting in a folder you could just goto that folder and run bin/orats --help. Then you can actively hack away on the gem and run it as you go. This is how I develop the gem.
+
+Then in your case, you could figure the orats on your system path (the one gem installed) is the official one where as the local one in the folder that you must run directly is your fork.
+
+Of course this only works if you're the only person using it, otherwise you would need to do what you're doing if others plan to run it.
+
+Thanks Man!
+
 # Getting Your Changes Back to the Master: The Pull Request
 
 Since I finished this last night, I've since made a change to the Betty gem I referenced above and I think this change is worthwhile enough that I want to get it up to the original author.  This requires making what's called a Pull Request.  So here's how to do that:
