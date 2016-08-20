@@ -61,5 +61,7 @@ Since I finished this last night, I've since made a change to the Betty gem I re
 
 You should understand that getting your pull request approved isn't necessarily easy - it varies by project, complexity of change, whether the code is tested or not and other factors.  Usually you'll see a back and forth discussion process after which if you meet the maintainer's needs, it is accepted.
 
+Here's a solid [tutorial on pull requests](https://yangsu.github.io/pull-request-tutorial/).
+
 # Credits
 I couldn't have written this without the assistance of [Dv](http://dasari.me/), a long time pairing partner of mine.  Thanks man.
