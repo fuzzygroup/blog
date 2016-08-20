@@ -30,19 +30,20 @@ These days I work almost exclusively in Ruby and Rails although I find [Elixir](
 
 Things I've been paid to work on that I barely even remember at this point.  Yes I'm very, very strong at parachuting into a large code base and making a difference.
 
-* TAP (Clinical trial tools)
-* StreamSend (Email Marketing Automation Tool)
-* BlueBridge (tools for automatically building tourism apps)
-* CardMunch (Ruby back end api / Mechanical Turk Tools)
+* TAP (Clinical trial tools; coding, test coverage, analysis)
+* [StreamSend](https://www.streamsend.com/) (Email Marketing Automation Tool)
+* [BlueBridge](http://gobluebridge.com/) (tools for automatically building tourism apps; Ruby app that generated PHP code for feeding into a build system)
+* CardMunch (Ruby back end api / Mechanical Turk Tools / now a part of LinkedIn)
 * Loc8te.net (Ruby db sharding)
-* How About We (test coverage for dating site written in Ruby)
+* [How About We](http://www.howaboutwe.com/) (test coverage for dating site written in Ruby)
 * Radiation Measurement Software for Planning Oncology Sessions
-* Internal Tools for Breakers Unlimited (the best place to ever buy circuit breakers online)
+* Internal Tools for [Breakers Unlimited](http://www.breakersunlimited.com/) (the best place to ever buy circuit breakers online)
 * CardCare / Posty (yeah this was only a few days)
 * LiveText ETS (test coverage on a large Ruby educational tool)
 * i3D (online commerce tools for 3d modeling site)
 * WisePatient (a medical tool)
 
 Other:
-* [Automatic player scheduling for a sixth grade lacrosse team I coached (this one was a labor of love)](https://github.com/fuzzygroup/lacrosse)
+
+* [Automatic player scheduling for a sixth grade lacrosse team I coached (this one was a labor of love for my eldest son)](https://github.com/fuzzygroup/lacrosse)
 
