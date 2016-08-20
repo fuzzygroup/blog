@@ -51,5 +51,15 @@ gem specific_install https://github.com/fuzzygroup/orats.git
 
 And then you'll get my version of Orats -- bear in mind that mine is still a work in progress and the maintainer is doing really good, important work.  Go support [Nick](http://nickjanetakis.com/blog/dockerize-a-rails-5-postgres-redis-sidekiq-action-cable-app-with-docker-compose) please -- this is just an example.
 
+# Getting Your Changes Back to the Master: The Pull Request
+
+Since I finished this last night, I've since made a change to the Betty gem I referenced above and I think this change is worthwhile enough that I want to get it up to the original author.  This requires making what's called a Pull Request.  So here's how to do that:
+
+1.  Make your changes and do the add / commit / push dance
+2.  Goto **your** github account for the for the forked repo and click New Pull Request (the common mistake here is to go to the destination repo and click this; you don't have permissions there; you're creating a pull request **FROM** your repo **TO** their repo)
+3.  Describe the changes and then submit the request.
+
+You should understand that getting your pull request approved isn't necessarily easy - it varies by project, complexity of change, whether the code is tested or not and other factors.  Usually you'll see a back and forth discussion process after which if you meet the maintainer's needs, it is accepted.
+
 # Credits
 I couldn't have written this without the assistance of [Dv](http://dasari.me/), a long time pairing partner of mine.  Thanks man.
