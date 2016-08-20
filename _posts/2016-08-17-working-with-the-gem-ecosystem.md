@@ -5,7 +5,7 @@ title: Working with the Gem Ecosystem
 Gems are one of the more magical parts of the Ruby ecosystem.  By packaging software components as easily installable parts of Ruby / Rails, gems allow you to quickly extend your application.  In this blog post, I'm going to teach you how to make your own copy of a gem and then use it locally on your machine.  This isn't hard but it is the kind of thing that works correctly if you precisely follow the directions.  Enjoy!
 
 # Forking a Gem
-The first step in all this is to fork a gem.  Forking essentially means "clone the git repo of the gem you want to your own github account so you can do with it as you will".  Start by finding a gem on Github and then clicking the fork button.  This is prompt you for where you want to clone it to.  Generally you want this to be your personal github account unless you want it to happen on behalf of an organization where you work.
+The first step in all this is to fork a gem.  Forking essentially means "clone the git repo of the gem you want to your own Github account so you can do with it as you will".  Start by finding a gem on Github and then clicking the fork button.  This is prompt you for where you want to clone it to.  Generally you want this to be your personal Github account unless you want it to happen on behalf of an organization where you work.
 
 If you're looking or a sample repo then I'd recommend Betty which is a very cool thing I've just become aware of: [https://github.com/pickhardt/betty](https://github.com/pickhardt/betty)
 
@@ -16,14 +16,14 @@ Here's a screenshot showing [its age](http://imgur.com/0xAGIhE)
 
 This is a very cool implementation of what's called phrase extraction which takes a corpus of text and finds the phrases that matter.  The disappointing thing with it is that its 5 to 6 years old.  Rather than walking away like I normally do, I clicked on the # next to the fork button and that showed me [this](http://imgur.com/AlZm3Wz).
 
-What I see here is that a user named rrphotosoft has a newwer version of the gem.  Now if I want to use this for my Rails application then I can just add it to Gemfile with the :git syntax:
+What I see here is that a user named [rrphotosoft](https://github.com/rrphotosoft/) has a newer version of the gem.  Now if I want to use this for my Rails application then I can just add it to Gemfile with the :git syntax:
 
 gem 'term-extract', :git => 'https://github.com/rrphotosoft/term-extract/'
 
 # Making Your Own Version of a Gem
 But what if there isn't a newer fork of a gem, what then?  Well thankfully its actually pretty easy to get around:
 
-1.  Fork the gem to your own github account.
+1.  Fork the gem to your own Github account.
 2.  Clone the gem to your computer.
 3.  Modify the source code as needed (global search is a huge help here)
 4.  Save the changes with the normal:
