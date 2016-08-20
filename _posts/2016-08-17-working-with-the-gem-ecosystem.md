@@ -14,13 +14,9 @@ One interesting aspect of forking a gem is there are lots of gems out there that
 
 (https://github.com/rrphotosoft/term-extract/)[https://github.com/rrphotosoft/term-extract/]
 
-It's old:
-!(It's Old!)[http://imgur.com/0xAGIhE]
+Here's a screenshot showing (its age)[http://imgur.com/0xAGIhE]
 
-This is a very cool implementation of what's called phrase extraction which takes a corpus of text and finds the phrases that matter.  The disappointing thing with it is that its 5 to 6 years old.  Rather than walking away like I normally do, I clicked on the # next to the fork button and that showed me this:
-
-Not so old:
-!(Not so Old)[http://imgur.com/AlZm3Wz]
+This is a very cool implementation of what's called phrase extraction which takes a corpus of text and finds the phrases that matter.  The disappointing thing with it is that its 5 to 6 years old.  Rather than walking away like I normally do, I clicked on the # next to the fork button and that showed me (this)[http://imgur.com/AlZm3Wz].
 
 What I see here is that a user named rrphotosoft has a newwer version of the gem.  Now if I want to use this for my Rails application then I can just add it to Gemfile with the :git syntax:
 
