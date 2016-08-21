@@ -5,12 +5,7 @@ title: Multi Threaded Debugging Hell
 As of late I've been dealing a lot with categorization issues and specifically with respect to failures in a categorization engine that I've written.  What I was confronted with on Friday night was the client saying to me "Well we missed these 400 items" and that's true but we have an input dataset of roughly 2.9 million possible categorization operations.  So according to how this nerd does math:
 
     > select 400/2900000 * 100;
-    > +-------------------+
-    > | 400/2900000 * 100 |
-    > +-------------------+
-    > |            0.0138 |
-    > +-------------------+
-
+    
 And, yes, that's how I usually do adhoc calculations.  When am I ever not logged into mysql on some box somewhere?  
 
 Anyway I see this and I think well the error rate is actually tiny so that's kind of ok.  The problem is that this is a demanding client and that's **not ok** to them.  So after noodling on this problem for a very long time, end up with a blog post like this.  
