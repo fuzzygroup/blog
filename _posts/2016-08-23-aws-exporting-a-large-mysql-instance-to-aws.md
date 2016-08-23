@@ -1,6 +1,6 @@
 ---
 layout: post
-title: AWS Tutorial :: Exporting a Large MySQL Instance to AWS
+title: AWS Tutorial 1 - Exporting a Large MySQL Instance to AWS
 ---
 I'm in the process of migrating a rather large Rails installation to [AWS](http://aws.amazon.com/).  The initial plan had been to refactor it slowly into a series of microservices and do it properly.  Some engineering issues that have just (read yesterday morning) cropped up seem to be driving a need for more boxes than our current host can support.  So it is looking like the refactor will be done incrementally and our next large scale data processing run will be done on AWS. 
 
