@@ -6,9 +6,480 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 08 Aug 2016 20:55:52 -0400</pubDate>
-    <lastBuildDate>Mon, 08 Aug 2016 20:55:52 -0400</lastBuildDate>
+    <pubDate>Tue, 23 Aug 2016 20:56:43 -0400</pubDate>
+    <lastBuildDate>Tue, 23 Aug 2016 20:56:43 -0400</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Git Howto - Add Your Git Hash to Your Deployed Rails Application</title>
+        <description>&lt;p&gt;This is one of those things that I know there are a zillion ways to accomplish this but this one is &lt;strong&gt;mine&lt;/strong&gt;. And it will likely be how my boxes tackle this issue.&lt;/p&gt;
+
+&lt;p&gt;Lately I’ve been struggling with issues of idempotency in large jobs.  Idempotent is one of those terms that just means a process, given the same inputs, should generate the same outputs.  This is a full text categorization problem where the queue that the thread pool works down is about 3 million items in size.  And it is generating different results when run on a Monday or a Friday or whatever.  Its unclear as to why and one of the issues is there are a lot of different variables - the size of the queue, the items in the queue etc.  So my first thought was that I needed to generate a db object which tracked the variables.  However one of the variables is the &lt;strong&gt;code base itself&lt;/strong&gt;.  We’re constantly making changes, fixes, etc and if that’s causing the issues, then it is vital to be able track changes back to the actual git state of the code base.  This means that as part of our db object which tracks everything we need to record the git hash of the code base when the queue was generated and the categorization was executed.&lt;/p&gt;
+
+&lt;p&gt;Now I’m virtually certain that this already exists on the production deploy environment somewhere but I just can’t find it.  And Google was just no help on this one.  It took me to this &lt;a href=&quot;https://github.com/darrinholst/git-version&quot;&gt;gem&lt;/a&gt; which was, alas, just plain useless.  It managed to generate the same git hash across multiple different deploys of the code base (yes I made commits across each). So that was not what I was looking for.  I then explored using a .git/hooks file specifically a post_commit hook but since I wanted to write a file containing the git hash before we deploy each time the commit executed it would call itself and that’s obviously not right.&lt;/p&gt;
+
+&lt;p&gt;I finally settled on generating at the deployment level via rake remote_task.  Since we’re using Vlad its already there anyway.  Here’s all the code necessary:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;remote_task :set_git_hash_environment_variable do 
+  tmp = `git log -1 HEAD`
+  parts = tmp.split(&quot; &quot;)
+  git_hash = parts[1]
+  path = &quot;/home/banks/srv/current/config/git_hash.txt&quot;
+  run &quot;echo #{git_hash} &amp;gt; #{path}&quot;
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The git log  command does all the heavy lifting.  I then split out the hash and finally drop it into a file just by running an echo statement piped to the canonical location.&lt;/p&gt;
+
+&lt;p&gt;And then in our vlad deploy block there is a call to this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;task &quot;vlad:deploy&quot; =&amp;gt; %w[
+  vlad:update
+  vlad:bundle:install
+  vlad:migrate
+  vlad:assets:precompile
+  vlad:sidekiq:restart
+  vlad:start_app
+  vlad:cleanup
+  vlad:set_git_hash_environment_variable
+]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And that’s about it.  I know its not elegant but it wasn’t needed to be elegant – just working for now.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 23 Aug 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/08/23/git-howto-add-your-git-hash-to-your-deployed-rails-application.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/08/23/git-howto-add-your-git-hash-to-your-deployed-rails-application.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Development Tooling - Github Issues, ZenHub, GitLab and More</title>
+        <description>&lt;p&gt;I don’t know a single developer who isn’t at least moderately passionate about development tooling in terms of the ticketing system they use.  Personally I’m micro rather than macro which reflects my passion for small teams (yep - I prefer a team you can feed with a pizza).  When you’re at the micro level you don’t care about the overall macro view, you care about the basics - creating tickets, milestones and finding things.  A few thoughts here:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Do not ever try and use a list making tool like WunderList for software development.  I’ve done it and it was god awful.  At points I was close to paying for a real ticketing tool with my own money for the project.  I love Chad Fowler’s work and I’m delighted as hell that Wunderlist got acquired and I really hope that Chad made out well personally.  But you should &lt;strong&gt;never, ever&lt;/strong&gt; use the same tool for software development workflow that you use for &lt;strong&gt;managing your grocery list with your spouse&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;The one thing that I did like about WunderList was that it had an app version which was my first encounter with an app that managed tasks and it was mildly enjoyable to NOT use a web form.  It made entering tickets feel a bit like 1996 again which was kinda cool.&lt;/li&gt;
+  &lt;li&gt;LightHouseApp.  I’ve used it for years and it is just ugly.  Functional but ugly.&lt;/li&gt;
+  &lt;li&gt;Asana.  I’m currently using this and it feels more like BaseCamp than software development&lt;/li&gt;
+  &lt;li&gt;Github Issues.  I never, ever think about this one.  But yesterday I had a new thing rear its head and I say “I know, I’ll use issues” and while it isn’t much, it is there and it really feels like software development.  &lt;strong&gt;Recommended&lt;/strong&gt; as long as you understand its limited.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.zenhub.com/&quot;&gt;ZenHub&lt;/a&gt;.  In a recent discussion of &lt;a href=&quot;https://news.ycombinator.com/item?id=12338096&quot;&gt;GitLab&lt;/a&gt;, I ran across ZenHub and this feels interesting to me.  With the focus in the Rails community (and everywhere else) away from monolithic apps towards microservices with their own git repos, this sounds prescient: “ZenHub’s Task Boards support multiple repositories, making organization-wide collaboration seamless. Connecting multiple repos in one Board is easy: first, navigate to any ZenHub Board. Click Repositories, then click ‘Merge another repository’.”  &lt;a href=&quot;https://www.zenhub.com/faq&quot;&gt;More…&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://about.gitlab.com/2016/08/22/gitlab-8-11-released/&quot;&gt;GitLab&lt;/a&gt;.  I don’t know a ton here but the reviews are very, very positive.  GitHub seems to be pretty beloved by the community and yet people are passionately arguing for this which really surprised me.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.pivotaltracker.com/&quot;&gt;Pivotal Tracker&lt;/a&gt;.  What mention of issue tracking from a Rails person would be complete without mentioning this.  Nope.  Not for me.  I take a firm stand against agile velocity metrics.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 23 Aug 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/08/23/development-tooling-github-issues-zenhub-gitlab.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/08/23/development-tooling-github-issues-zenhub-gitlab.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>AWS Tutorial 1 - Exporting a Large MySQL Instance to AWS</title>
+        <description>&lt;p&gt;I’m in the process of migrating a rather large Rails installation to &lt;a href=&quot;http://aws.amazon.com/&quot;&gt;AWS&lt;/a&gt;.  The initial plan had been to refactor it slowly into a series of microservices and do it properly.  Some engineering issues that have just (read yesterday morning) cropped up seem to be driving a need for more boxes than our current host can support.  So it is looking like the refactor will be done incrementally and our next large scale data processing run will be done on AWS.&lt;/p&gt;
+
+&lt;p&gt;This means that of all the items in the mythical gant chart of dependencies that need to get addressed is the mysql export.  We’re talking about what is likely a 2 plus terabyte mysql instance.  And, no, there’s not enough free disc space to compress the tables so this means:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;ignore the 3 huge but irrelevant tables in the db&lt;/li&gt;
+  &lt;li&gt;dump the data over the network&lt;/li&gt;
+  &lt;li&gt;get the data to an S3 bucket&lt;/li&gt;
+  &lt;li&gt;load it on the other site whether to our own MySQL box or an RDS box&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A bit of research points me to &lt;a href=&quot;http://serverfault.com/questions/605796/how-to-pipe-a-mysql-dump-to-s3cmd&quot;&gt;s3cmd&lt;/a&gt; as a way to take data from a pipe and drop it into an s3 bucket.  A quick apt-get install s3cmd yields, alas, a non working solution.  Pipe support came in 1.5 or later and and the default apt-get gives a near obsolete 1.1.  More talented apt-getters than myself will know the work around but for me it was:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Write the backup routine from the stack overflow article above&lt;/li&gt;
+  &lt;li&gt;Figure out how to get AWS credentials for S3&lt;/li&gt;
+  &lt;li&gt;Install the AWS client (sudo apt-get install aws)&lt;/li&gt;
+  &lt;li&gt;Configure the AWS client (aws –configure)&lt;/li&gt;
+  &lt;li&gt;Use the aws client to create a bucket: aws s3api create-bucket –bucket db&lt;/li&gt;
+  &lt;li&gt;Deal with the s3cmd issues&lt;/li&gt;
+  &lt;li&gt;sudo apt-get install s3cmd&lt;/li&gt;
+  &lt;li&gt;#$(&lt;em&gt;#$(#$&lt;/em&gt;())) it doesn’t work with a quick pipe test.  Do the &lt;a href=&quot;https://github.com/s3tools/s3cmd/issues/270&quot;&gt;google grovel&lt;/a&gt; to find out about 1.5.&lt;/li&gt;
+  &lt;li&gt;sudo apt-get remove s3cmd&lt;/li&gt;
+  &lt;li&gt;sudo pip install s3cmd from the &lt;a href=&quot;https://github.com/s3tools/s3cmd/blob/master/INSTALL&quot;&gt;Github&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Realize that this doesn’t put it in the path (at which point you give up and encode the path in your export routine)&lt;/li&gt;
+  &lt;li&gt;Create a &lt;a href=&quot;https://tmux.github.io/&quot;&gt;Tmux&lt;/a&gt; session so that a 2 day export process doesn’t die when the SSH session invariably fails&lt;/li&gt;
+  &lt;li&gt;Download and install the only AWS client worth using - &lt;a href=&quot;http://panic.com/transmit/&quot;&gt;Transmit Panic&lt;/a&gt; to monitor the export&lt;/li&gt;
+  &lt;li&gt;Deploy the code, login to the box, change the execute_dump variable from true to false, switch into the tmux session and start the process&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is a fairly classical automation problem so a quick Rake task should do it nicely.  Here you go:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;namespace :mysqldump do
+  # bundle exec rake mysqldump:to_s3 --trace
+  task :to_s3 =&amp;gt; :environment do
+    Kernel.silence_warnings do 
+      execute_dump = false
+
+      s3_executable = &quot;/usr/local/bin/s3cmd&quot;
+      mysqldump_executable = &quot;mysqldump&quot;
+      host = &quot;10.0.41.33&quot;
+      password = &quot;SOME_PASSWORD&quot;
+      username = &quot;appdata&quot;
+      db = &quot;banks_production&quot;
+      bucket = &quot;banks_production_db&quot;
+
+      excluded_tables = %w{links pages page_bodies}
+
+      all_tables = ActiveRecord::Base.connection.select_values(&quot;SHOW TABLES&quot;)
+      total = all_tables.size
+
+      all_tables.each_with_index do |table, ctr|
+        next if excluded_tables.include?(table)
+        puts &quot;Exporting: #{table} :: #{ctr} :: #{(ctr.to_f/total*100).round(4)}%&quot;
+        dump_statement = &quot;#{mysqldump_executable} -u#{username} -p#{password} -h#{host} #{db} #{table} | #{s3_executable} put - s3://#{bucket}/#{table}.sql&quot;      
+        puts &quot;#{dump_statement}&quot;
+        `#{dump_statement}` if execute_dump
+      end
+    end
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In closing there are dozens of ways to solve this particular problem but the number of different steps that I had to go thru just to get a mysql db moved to aws I thought warranted documentation.  I will forget this otherwise and there are many more databases before I sleep…&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 23 Aug 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/08/23/aws-exporting-a-large-mysql-instance-to-aws.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/08/23/aws-exporting-a-large-mysql-instance-to-aws.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Multi Threaded Debugging Hell</title>
+        <description>&lt;p&gt;As of late I’ve been dealing a lot with categorization issues and specifically with respect to failures in a categorization engine that I’ve written.  What I was confronted with on Friday night was the client saying to me “Well we missed these 400 items” and that’s true but we have an input dataset of roughly 2.9 million possible categorization operations.  So according to how this nerd does math:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; select 400/2900000 * 100;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And, yes, that’s how I usually do adhoc calculations.  When am I ever not logged into mysql on some box somewhere?&lt;/p&gt;
+
+&lt;p&gt;Anyway I see this and I think well the error rate is actually tiny so that’s kind of ok.  The problem is that this is a demanding client and that’s &lt;strong&gt;not ok&lt;/strong&gt; to them.  So after noodling on this problem for a very long time, end up with a blog post like this.&lt;/p&gt;
+
+&lt;p&gt;This is a large Ruby application with these characteristics:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;a massive input data set of categorization operations&lt;/li&gt;
+  &lt;li&gt;about 280 gigs of raw data driving it&lt;/li&gt;
+  &lt;li&gt;a full text search engine (&lt;a href=&quot;http://sphinxsearch.com/&quot;&gt;Sphinx&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;highly complex queries&lt;/li&gt;
+  &lt;li&gt;a 3 tier cascading query architecture where if we don’t have success with one method of running a query we fail over to another approach and then another&lt;/li&gt;
+  &lt;li&gt;running on 8 boxes each with 20 execution threads&lt;/li&gt;
+  &lt;li&gt;runs over about 20 to 22 hours of time&lt;/li&gt;
+  &lt;li&gt;has almost all logging turned off due to disc space constraints&lt;/li&gt;
+  &lt;li&gt;has runtime error handling like airbrake turned off due to cost constraints&lt;/li&gt;
+  &lt;li&gt;has strict exception handling so the process continues from start to finish without ever stopping&lt;/li&gt;
+  &lt;li&gt;Rails 4&lt;/li&gt;
+  &lt;li&gt;Ruby 1.9.3&lt;/li&gt;
+  &lt;li&gt;Redis for queueing&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Yep.  If you’re hard core enough you’re likely thinking something like “Hm… I wonder &lt;a href=&quot;https://weworkremotely.com/&quot;&gt;what open jobs there are&lt;/a&gt; and if I should move on.”  I hear you brother; I hear you.  But this is a technology stack that I’m heavily invested in having been the sole author for almost all of its life span.  It is an enormous beast but its my damn beast and I love the hell out of it.&lt;/p&gt;
+
+&lt;p&gt;So here’s the debugging approach that I hope to execute on early next week:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Subset the data.  Find the 400 items that fail to categorize and load a queue just of those.  Then run this on just one box to at least eliminate multiple boxes as the issue.  Note: 0 code changes for this approach.  If that works then get multiple machines working on it and see if that works.  If that works then either throw my hands up or accept that this just became an N pass system or that I need a &lt;strong&gt;blank time check&lt;/strong&gt; to debug since its likely cross machine race conditions and perhaps &lt;em&gt;gargling with broken glass&lt;/em&gt; might be more fun.&lt;/li&gt;
+  &lt;li&gt;MAKE A BRANCH!  The next changes are all highly intrusive.&lt;/li&gt;
+  &lt;li&gt;Using the same data subset strip out all exception handling at the level of the core threadpool loop and see what happens on a single box.&lt;/li&gt;
+  &lt;li&gt;Get a trial airbrake account and instrument everything for failures so that airbrake is called at every single failure.  Bear in mind that this is a large batch process that’s failing so it likely means instrumenting the code base.&lt;/li&gt;
+  &lt;li&gt;Turn log files back on but this generates so volume of data that its very very hard.  Move to debug level logging even in production.&lt;/li&gt;
+  &lt;li&gt;Color code the output.  All of my jobs like this always generate a verbose stream of output to the console.  Using the colorize gem you can apply a method call like .red to particular messages.  Then what you do is mildly un focus your eyes and you watch the output stream by and you try and find patterns.  Color helps a lot here.&lt;/li&gt;
+  &lt;li&gt;Test coverage.  It is always helpful but this feels more like an operational issue rather than test coverage.  Still…&lt;/li&gt;
+  &lt;li&gt;Lather, rinse, repeat.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;And that’s where I start.  Fixing a .01% error rate in a pool of almost 3,000,000 items is a “find this needle in this huge collection of haystacks” problem.  So that’s my monday.  How about yours?&lt;/p&gt;
+
+&lt;h1 id=&quot;sidebar&quot;&gt;Sidebar&lt;/h1&gt;
+
+&lt;p&gt;If you’re a software engineer then you know that debugging is at the very heart of what we do.  My best advice I give to younger engineers is always “make it easy to debug; you spend far more time debugging than you do coding”.  And, glory, is that true in this situation.&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 21 Aug 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/08/21/multi-threaded-debugging-hell.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/08/21/multi-threaded-debugging-hell.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Learning to Extend Betty</title>
+        <description>&lt;p&gt;So in my long, long history of using open source, I’ve never taken the time to formally give back to the community by maintaining anything.  Yes I’ve blogged.  And I’ve answered questions and I’ve damn sure argued for using open source in every job I’ve had since 1999.  And that is a form of give back but is that really the same?  Recently I saw a Hacker News post on “Projects Looking for Maintainers” and I found something that was personally interesting to me: &lt;a href=&quot;http://github.com/pickhardt/betty.git&quot;&gt;Betty&lt;/a&gt;.  Betty is an NLP interface to your command line and the current author / originator describes it as “Siri for your command line”.  That’s a really apt description.&lt;/p&gt;
+
+&lt;p&gt;So I sent an email to him and he and I have been corresponding ever since and it looks like I’m at least going to be helping out.  My first commitment was to the documentation side and I proposed documenting how to extend Betty with new functionality.  And that’s what we’re discussing here.&lt;/p&gt;
+
+&lt;h1 id=&quot;extending-betty-with-a-new-fun-command&quot;&gt;Extending Betty with a New Fun Command&lt;/h1&gt;
+
+&lt;p&gt;One of the cool things in here is the fun module which does, well, fun things.  Extending Betty with a new command is pretty much just writing a regular expression wrapper for what you want it match on and then defining its output.  Here’s two I just added:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if command.match(/^superman\s+vs\s+batman$/i)
+  responses &amp;lt;&amp;lt; {
+    say: [true,false].sample ? &quot;Batman&quot; : &quot;Superman&quot;
+  }
+end
+
+if command.match(/^what\s+if\s+batman\s+does\snot\s+have\s+a?n?y?\s*kryptonite$/i)
+  responses &amp;lt;&amp;lt; {
+    say: &quot;Batman always has kryptonite&quot;
+  }
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Astute eyes will recognize the &lt;a href=&quot;http://stackoverflow.com/questions/4252936/how-do-i-use-the-conditional-operator-in-ruby&quot;&gt;ternary logic&lt;/a&gt; there so Betty doesn’t always answer the same way.&lt;/p&gt;
+
+&lt;h1 id=&quot;extending-betty-with-a-new-module----git&quot;&gt;Extending Betty with a new Module – Git!&lt;/h1&gt;
+
+&lt;p&gt;In the lib directory create a new file named &lt;strong&gt;git.rb&lt;/strong&gt;.  Here’s what we’re going to drop in there:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;module Git
+  def self.interpret(command)
+    responses = []
+
+    if command.match(/^undo\s+git\s+add$/i)
+      responses &amp;lt;&amp;lt; {
+        :say =&amp;gt; &quot;To undo a single file use\n\ngit reset filespec\n\n\nTo undo ALL files added (i.e. you want to undo git add .) then use\n\ngit reset&quot;
+      }
+    end
+
+    responses
+  end
+  
+  def self.help
+    commands = []
+    commands &amp;lt;&amp;lt; {
+      :category =&amp;gt; &quot;Git&quot;,
+      :usage =&amp;gt; [&quot;undo git add&quot;]
+    }
+    commands
+  end
+end
+
+$executors &amp;lt;&amp;lt; Git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here’s what that actually means:
+* an overall module named Git
+* a class method named interpret which accepts a command and runs it against a regex which returns a response or responses
+* a help method which lets you know how betty can help you with git&lt;/p&gt;
+
+&lt;p&gt;And that is, as best as I understand it so far, pretty much the simplest attempt to extend Betty with an entire module.  Now while Betty can actually execute commands for you like:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;betty how many words are in this directory
+Betty: Running find . -type f -exec wc -w {} \; | awk &#39;{total += $1} END {print total}&#39;
+37386
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I don’t think that’s appropriate for Betty to be making changes to git stuff on your behalf.  So I opted for Betty to just give you feedback.&lt;/p&gt;
+
+&lt;p&gt;Adding this module gave Betty this feature:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;betty undo git add
+Betty: To undo a single file use
+
+git reset filespec
+
+
+To undo ALL files added (i.e. you want to undo git add .) then use
+
+git reset 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And this help text:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;betty help git
+Betty: I can do that if you help me. Check out the following examples
+undo git add
+Please note: I am case sensitive. Watch out for my feelings...    
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Yes I know its a simple command line tool.  But I live and breathe in the command line so having this handy sounds great.  And contributing to it sounds even better.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 21 Aug 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/08/21/learning-to-extend-betty.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/08/21/learning-to-extend-betty.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Foolishness in Open Source Marketing or On the State of Pony Take 2</title>
+        <description>&lt;p&gt;So I was just browsing Hacker News when I ran across a piece titled &lt;a href=&quot;https://pony.groups.io/g/user/message/618?p=Created,0,,20,2,0,6182872&amp;amp;offset=0&quot;&gt;On the State of Pony&lt;/a&gt; or &lt;a href=&quot;https://news.ycombinator.com/item?id=12331458&quot;&gt;discussion&lt;/a&gt; and I find myself absolutely &lt;strong&gt;baffled&lt;/strong&gt; nay &lt;strong&gt;flummoxed&lt;/strong&gt;.  The gist of the situation is that a company, Causality, that was formed to commercialize support offerings for the new Pony language has shut down.  This received a lot of attention due to a post on &lt;a href=&quot;https://www.linkedin.com/pulse/end-causality-constantine-goulimis?trk=hp-feed-article-title-publish&quot;&gt;LinkedIn&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The piece is written from one of the Pony core team members (or I think he is a core team member, &lt;a href=&quot;http://www.monkeysnatchbanana.com&quot;&gt;Sean T. Allen&lt;/a&gt;) and it amounts to &lt;em&gt;Hey everyone this is&lt;/em&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;old news&lt;/li&gt;
+  &lt;li&gt;not a big deal&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Both of these are points I actually agree with.  Here’s my issue, his piece fails to tell me:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;what the heck Pony is (it appears to be a very interesting new language with &lt;a href=&quot;https://news.ycombinator.com/item?id=12332102&quot;&gt;some bloody smart ideas&lt;/a&gt; about dealing with race conditions)&lt;/li&gt;
+  &lt;li&gt;where even the home page to Pony is&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A million years ago, in a very different world, I used to write at least some &lt;a href=&quot;https://www.drupal.org/drupal-4.0.0&quot;&gt;press releases for the Drupal project&lt;/a&gt; and I’ve seen this time and again in the open source word – marketing foolishness.  And I know that marketing is generally viewed as a dirty word within the open source world but that’s just not true.  At its core &lt;em&gt;marketing&lt;/em&gt; can be defined as:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Creating demand for a product or service&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;And that’s never bad.  If you’re going to build something then you should want people to use it.  And for all the smart people that appear to be working on Pony, if no one learns about it then it will never matter or at least it won’t matter as much as it should.  Now ideas within the open source world do get passed around freely so if your ideas don’t catch on in Pony, perhaps, they will in another context.  But that would really be a shame.&lt;/p&gt;
+
+&lt;p&gt;Overall this piece was well written.  Here are the two changes that I would have made:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Add a single sentence something like “Pony is a new functional language running on top of the XXY virtual machine with blah blah blah advantages”.&lt;/li&gt;
+  &lt;li&gt;For more information see http://www.ponylang.org  If you’re interested in contributing then see XXX, YYY, ZZZ&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I had to dig to find out what Pony was and while it wasn’t that hard, I shouldn’t have had to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;People have short attention spans&lt;/li&gt;
+  &lt;li&gt;People are used to ease of use in learning about things these days&lt;/li&gt;
+  &lt;li&gt;People so often consume information from mobile devices where you’re less likely to spawn another browser tab / do a google search / etc&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 21 Aug 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/08/21/foolishness-in-open-source-marketing-or-on-the-state-of-pony-take-2.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/08/21/foolishness-in-open-source-marketing-or-on-the-state-of-pony-take-2.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Working with the Gem Ecosystem</title>
+        <description>&lt;p&gt;Gems are one of the more magical parts of the Ruby ecosystem.  By packaging software components as easily installable parts of Ruby / Rails, gems allow you to quickly extend your application.  In this blog post, I’m going to teach you how to make your own copy of a gem and then use it locally on your machine.  This isn’t hard but it is the kind of thing that works correctly if you precisely follow the directions.  Enjoy!&lt;/p&gt;
+
+&lt;h1 id=&quot;forking-a-gem&quot;&gt;Forking a Gem&lt;/h1&gt;
+&lt;p&gt;The first step in all this is to fork a gem.  Forking essentially means “clone the git repo of the gem you want to your own Github account so you can do with it as you will”.  Start by finding a gem on Github and then clicking the fork button.  This is prompt you for where you want to clone it to.  Generally you want this to be your personal Github account unless you want it to happen on behalf of an organization where you work.&lt;/p&gt;
+
+&lt;p&gt;If you’re looking or a sample repo then I’d recommend Betty which is a very cool thing I’ve just become aware of: &lt;a href=&quot;https://github.com/pickhardt/betty&quot;&gt;https://github.com/pickhardt/betty&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;using-forks-to-find-a-more-recent-version-of-a-gem&quot;&gt;Using Forks to Find a More Recent Version of a Gem&lt;/h1&gt;
+&lt;p&gt;One interesting aspect of forking a gem is there are lots of gems out there that lie fallow and you’d think “Damn.  It would be great if someone fixed this #$&lt;em&gt;(#&lt;/em&gt;$#(#)) thing.”  Well, often enough, that’s happened but the fix is in a fork.  Because the fork isn’t from an official maintainer, you aren’t even aware of it unless you follow the forks.  Here’s a great example, &lt;a href=&quot;https://github.com/rrphotosoft/term-extract/&quot;&gt;term extract&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here’s a screenshot showing &lt;a href=&quot;http://imgur.com/0xAGIhE&quot;&gt;its age&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;This is a very cool implementation of what’s called phrase extraction which takes a corpus of text and finds the phrases that matter.  The disappointing thing with it is that its 5 to 6 years old.  Rather than walking away like I normally do, I clicked on the # next to the fork button and that showed me &lt;a href=&quot;http://imgur.com/AlZm3Wz&quot;&gt;this&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;What I see here is that a user named &lt;a href=&quot;https://github.com/rrphotosoft/&quot;&gt;rrphotosoft&lt;/a&gt; has a newer version of the gem.  Now if I want to use this for my Rails application then I can just add it to Gemfile with the :git syntax:&lt;/p&gt;
+
+&lt;p&gt;gem ‘term-extract’, :git =&amp;gt; ‘https://github.com/rrphotosoft/term-extract/’&lt;/p&gt;
+
+&lt;h1 id=&quot;making-your-own-version-of-a-gem&quot;&gt;Making Your Own Version of a Gem&lt;/h1&gt;
+&lt;p&gt;But what if there isn’t a newer fork of a gem, what then?  Well thankfully its actually pretty easy to get around:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Fork the gem to your own Github account.&lt;/li&gt;
+  &lt;li&gt;Clone the gem to your computer.&lt;/li&gt;
+  &lt;li&gt;Modify the source code as needed (global search is a huge help here)&lt;/li&gt;
+  &lt;li&gt;Save the changes with the normal:
+    &lt;ul&gt;
+      &lt;li&gt;git add .&lt;/li&gt;
+      &lt;li&gt;git commit -m “Some basic description”&lt;/li&gt;
+      &lt;li&gt;git push origin master&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Add the gem to your Gemfile using the :git =&amp;gt; “” syntax above.  Please note that the url you need here is the https clone syntax not the ssh clone syntax.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;installing-your-own-version-to-use-locally&quot;&gt;Installing Your Own Version to Use Locally&lt;/h1&gt;
+&lt;p&gt;I recently forked a gem named &lt;a href=&quot;https://github.com/nickjj/orats&quot;&gt;Orats&lt;/a&gt; which builds a stubbed application for generating Dockerized rails apps.  I’m still on the fence regarding Docker for production work – I love it conceptually – but there are some learning hurdles I’m facing.  Anyway here’s my &lt;a href=&quot;https://github.com/fuzzygroup/orats&quot;&gt;fork&lt;/a&gt; where I’ve been working on adding additional templates for using MySQL instead of postgres and building Rails 5 api applications.&lt;/p&gt;
+
+&lt;p&gt;Now the weird issue here is that Orats is a gem you install onto your computer so you can use it yourself instead of packaging it into a Gemfile.  What you need to do here is the normal:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;fork&lt;/li&gt;
+  &lt;li&gt;change it as needed&lt;/li&gt;
+  &lt;li&gt;add / commit / push&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Next you’ll need a new bit of tooling, a gem named “specific_install”:&lt;/p&gt;
+
+&lt;p&gt;gem install specific_install&lt;/p&gt;
+
+&lt;p&gt;This gem lets you specify what gem you’re installing so it skips the “find canonical location” and takes a url instead so you can do this:&lt;/p&gt;
+
+&lt;p&gt;gem specific_install https://github.com/fuzzygroup/orats.git&lt;/p&gt;
+
+&lt;p&gt;And then you’ll get my version of Orats – bear in mind that mine is still a work in progress and the maintainer is doing really good, important work.  Go support &lt;a href=&quot;http://nickjanetakis.com/blog/dockerize-a-rails-5-postgres-redis-sidekiq-action-cable-app-with-docker-compose&quot;&gt;Nick&lt;/a&gt; please – this is just an example.&lt;/p&gt;
+
+&lt;h1 id=&quot;another-approach-to-local-usage&quot;&gt;Another Approach to Local Usage&lt;/h1&gt;
+
+&lt;p&gt;I just got an email from &lt;a href=&quot;http://nickjanetakis.com/&quot;&gt;Nick&lt;/a&gt; who wrote the Orats gem and he was kind enough to give me this tip:&lt;/p&gt;
+
+&lt;p&gt;Btw to get around some of your local gem issues. You could just run your fork directly without “installing” it. Meaning if your forked version were sitting in a folder you could just goto that folder and run bin/orats –help. Then you can actively hack away on the gem and run it as you go. This is how I develop the gem.&lt;/p&gt;
+
+&lt;p&gt;Then in your case, you could figure the orats on your system path (the one gem installed) is the official one where as the local one in the folder that you must run directly is your fork.&lt;/p&gt;
+
+&lt;p&gt;Of course this only works if you’re the only person using it, otherwise you would need to do what you’re doing if others plan to run it.&lt;/p&gt;
+
+&lt;p&gt;Thanks Man!&lt;/p&gt;
+
+&lt;h1 id=&quot;getting-your-changes-back-to-the-master-the-pull-request&quot;&gt;Getting Your Changes Back to the Master: The Pull Request&lt;/h1&gt;
+
+&lt;p&gt;Since I finished this last night, I’ve since made a change to the Betty gem I referenced above and I think this change is worthwhile enough that I want to get it up to the original author.  This requires making what’s called a Pull Request.  So here’s how to do that:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Make your changes and do the add / commit / push dance&lt;/li&gt;
+  &lt;li&gt;Goto &lt;strong&gt;your&lt;/strong&gt; github account for the for the forked repo and click New Pull Request (the common mistake here is to go to the destination repo and click this; you don’t have permissions there; you’re creating a pull request &lt;strong&gt;FROM&lt;/strong&gt; your repo &lt;strong&gt;TO&lt;/strong&gt; their repo)&lt;/li&gt;
+  &lt;li&gt;Describe the changes and then submit the request.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;You should understand that getting your pull request approved isn’t necessarily easy - it varies by project, complexity of change, whether the code is tested or not and other factors.  Usually you’ll see a back and forth discussion process after which if you meet the maintainer’s needs, it is accepted.&lt;/p&gt;
+
+&lt;p&gt;Here’s a solid &lt;a href=&quot;https://yangsu.github.io/pull-request-tutorial/&quot;&gt;tutorial on pull requests&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;credits&quot;&gt;Credits&lt;/h1&gt;
+&lt;p&gt;I couldn’t have written this without the assistance of &lt;a href=&quot;http://dasari.me/&quot;&gt;Dv&lt;/a&gt;, a long time pairing partner of mine.  Thanks man.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 17 Aug 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/08/17/working-with-the-gem-ecosystem.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/08/17/working-with-the-gem-ecosystem.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Show Hidden Files On OSX</title>
+        <description>&lt;p&gt;When you’re initializing git repos and using the finder, it is very convenient to be able to see hidden files in OSX.  Here’s how:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;defaults write com.apple.finder AppleShowAllFiles TRUE;  killall Finder&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;And if you want an alias:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;alias show-hidden-files=”defaults write com.apple.finder AppleShowAllFiles TRUE;  killall Finder”  # Show hidden files
+alias hide-hidden-files=”defaults write com.apple.finder AppleShowAllFiles FALSE; killall Finder”  # hide hidden files&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;A shout out to my buddy &lt;a href=&quot;http://dasari.me/&quot;&gt;Dv&lt;/a&gt; for giving me these lines so graciously while pair programming yesterday.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 17 Aug 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/08/17/show-hidden-files-on-osx.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/08/17/show-hidden-files-on-osx.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>AuthLogic Tutorial</title>
@@ -64,202 +535,6 @@ match ‘logout’ =&amp;gt; ‘user_sessions#destroy’, :as =&amp;gt; :logout,
         <category>jekyll</category>
         
         <category>update</category>
-        
-      </item>
-    
-      <item>
-        <title>Case Study What Can You Do In 30 Days Using Ruby and Rails 5</title>
-        <description>&lt;p&gt;So I recently had an interesting opportunity to write a bunch of code in a fast paced environment.  I was putting in about 40 hours of week albeit around the edges of my full time gig.  I was the sole contributor during this period save for a few view files that essentially amounted to a rounding error in the size of the project.  All code was new and written in a Rails 5 stack.  There also was a separate NLP engine implemented using Rack / Grape but that was relatively small so its omitted.&lt;/p&gt;
-
-&lt;p&gt;Here’s what I knocked out in that time frame:&lt;/p&gt;
-
-&lt;pre&gt;
-+----------------------+--------+--------+---------+---------+-----+-------+
-| Name                 |  Lines |    LOC | Classes | Methods | M/C | LOC/M |
-+----------------------+--------+--------+---------+---------+-----+-------+
-| Controllers          |   1509 |   1122 |      24 |     125 |   5 |     6 |
-| Helpers              |    369 |    309 |       0 |      37 |   0 |     6 |
-| Jobs                 |      2 |      2 |       1 |       0 |   0 |     0 |
-| Models               |   3813 |   1839 |      28 |     165 |   5 |     9 |
-| Mailers              |      4 |      4 |       1 |       0 |   0 |     0 |
-| Channels             |     15 |     13 |       3 |       1 |   0 |    11 |
-| Javascripts          |    119 |     23 |       0 |       5 |   0 |     2 |
-| Libraries            |    251 |    175 |       0 |       1 |   0 |   173 |
-| Tasks                |    251 |    175 |       0 |       1 |   0 |   173 |
-| Controller specs     |    890 |    632 |       0 |       7 |   0 |    88 |
-| Helper specs         |    420 |    133 |       0 |       5 |   0 |    24 |
-| Model specs          |    452 |    346 |       0 |       0 |   0 |     0 |
-+----------------------+--------+--------+---------+---------+-----+-------+
-| Total                |   8095 |   4773 |      57 |     347 |   6 |    11 |
-+----------------------+--------+--------+---------+---------+-----+-------+
-&lt;/pre&gt;
-
-&lt;p&gt;Note: Output is from the rake stats command.&lt;/p&gt;
-
-&lt;p&gt;I was pretty happy with this. The first 3 weeks were pure greenfield development and it was the most glorious coding fun I’ve had in years.  No specs just an MVP product concept and go.  Not bad for nights and weekends, eh?&lt;/p&gt;
-</description>
-        <pubDate>Sun, 07 Aug 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/08/07/what-can-you-do-in-30-days.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/08/07/what-can-you-do-in-30-days.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Importing a WordPress Site into Jekyll</title>
-        <description>&lt;p&gt;Just a heads up if you’re using Jekyll, &lt;a href=&quot;https://import.jekyllrb.com/docs/wordpressdotcom/&quot;&gt;WordPress import&lt;/a&gt; does actually work but it is mildly tricky.  Install the jekyll-import gem and it will work bt ryou need to instal  a handfull of other gems for it to work.  This was first identified back in 2013 and its apparently still an &lt;a href=&quot;https://github.com/jekyll/jekyll-import/issues/58&quot;&gt;issue&lt;/a&gt;.  Once you work thru it though, I can confirm that it does work quite well.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 07 Aug 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/jekyll/2016/08/07/importing-a-wordpress-site-into-jekyll.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/jekyll/2016/08/07/importing-a-wordpress-site-into-jekyll.html</guid>
-        
-        
-        <category>jekyll</category>
-        
-      </item>
-    
-      <item>
-        <title>Failing At React Native Just By Starting</title>
-        <description>&lt;p&gt;#Failing at React Native Just By Starting
-One of the problems of having done development for a long, long time is you get use to certain idiosyncratic practices of your own.  Things that you do for every project because you know that if you don’t you’re going to have issues.  One of mine is that I always, always, always, unfailingly, always create a top level directory in a project called docs and in there I put ANYTHING and EVERYTHING related to the project.&lt;/p&gt;
-
-&lt;p&gt;If its ruby and a gem dumps some anomalous output on startup?  Bam!  It goes in docs.  If its nokogiri and I can’t install it for the 11,000th time and I finally dig up this bit of arcana:&lt;/p&gt;
-
-&lt;p&gt;gem install nokogiri – –with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2 –use-system-libraries&lt;/p&gt;
-
-&lt;p&gt;Bam!  It goes in docs.&lt;/p&gt;
-
-&lt;p&gt;And those idiosyncratic practices?  Sometimes they kill you…&lt;/p&gt;
-
-&lt;p&gt;I’ve been messing about with React Native recently and I created a new project, fired it off in the Simulator and got this little gem:&lt;/p&gt;
-
-&lt;p&gt;!(http://imgur.com/a/fPhGP)&lt;/p&gt;
-
-&lt;p&gt;And it has really left me scratching my head.  Google gave me nothing helpful.  Nor did Stack Overflow.  Nor did trying again and again.  Finally I was typing out a description to a buddy and it hit me “Schmuck!  You always do exactly the same thing – DO NOT make a docs directory”.  So I moved the directory and fired off the simulator and:&lt;/p&gt;
-
-&lt;p&gt;!(http://imgur.com/a/RnC4T)&lt;/p&gt;
-
-&lt;p&gt;Habits.  Great when they work.  Sometimes they just plain don’t.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 07 Aug 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/08/07/failing-at-react-native-just-by-starting.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/08/07/failing-at-react-native-just-by-starting.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Elixir Equivalent of Object.methods or Getting a Module to List Its Methods</title>
-        <description>&lt;p&gt;One of my single favorite Ruby features is: &lt;/p&gt;
-&lt;pre&gt;Object.methods&lt;/pre&gt;
-&lt;p&gt;or my personal favorite version of this:&lt;/p&gt;
-&lt;pre&gt;(obj.methods - Object.methods).sort&lt;/pre&gt;
-&lt;p&gt;So if you have a string in Ruby you can say:&lt;/p&gt;
-&lt;pre&gt;(“foo”.methods - Object.methods).sort&lt;/pre&gt;
-&lt;p&gt;Here’s the equivalent of this in elixir:&lt;/p&gt;
-&lt;pre&gt;Module.__info__(:functions)&lt;/pre&gt;
-&lt;p&gt;So if you wanted to find out what Map can do you’d use:&lt;/p&gt;
-&lt;pre&gt;Map.__info__(:functions)&lt;/pre&gt;
-&lt;p&gt;or Enum:&lt;/p&gt;
-&lt;pre&gt;Enum.__info__(:functions)&lt;/pre&gt;
-&lt;p&gt;And you’ll get back a long list of functions. Here’s the result for Enum:&lt;/p&gt;
-&lt;pre&gt;[all?: 1, all?: 2, any?: 1, any?: 2, at: 2, at: 3, chunk: 2, chunk: 3, chunk: 4,&lt;br /&gt; chunk_by: 2, concat: 1, concat: 2, count: 1, count: 2, dedup: 1, dedup_by: 2,&lt;br /&gt; drop: 2, drop_while: 2, each: 2, empty?: 1, fetch: 2, fetch!: 2, filter: 2,&lt;br /&gt; filter_map: 3, find: 2, find: 3, find_index: 2, find_value: 2, find_value: 3,&lt;br /&gt; flat_map: 2, flat_map_reduce: 3, group_by: 2, group_by: 3, intersperse: 2,&lt;br /&gt; into: 2, into: 3, join: 1, join: 2, map: 2, map_join: 2, map_join: 3,&lt;br /&gt; map_reduce: 3, max: 1, max_by: 2, member?: 2, min: 1, min_by: 2, min_max: 1,&lt;br /&gt; min_max_by: 2, partition: 2, ...]&lt;/pre&gt;
-&lt;p&gt;You can also use the .module_info construct to get more information: &lt;/p&gt;
-&lt;pre&gt;Enum.module_info&lt;br /&gt;[module: Enum,&lt;br /&gt; exports: [__info__: 1, join: 2, flat_map_reduce: 3, reduce_while: 3,&lt;br /&gt; sort_by: 3, sort_by: 2, filter: 2, uniq_by: 2, sort: 1, fetch!: 2, uniq: 2,&lt;br /&gt; join: 1, reverse_slice: 3, to_list: 1, group_by: 3, scan: 2, find: 3,&lt;br /&gt; concat: 2, sum: 1, at: 2, all?: 1, zip: 2, with_index: 2, split_while: 2,&lt;br /&gt; count: 1, sort: 2, empty?: 1, random: 1, dedup: 1, map_join: 2, find: 2,&lt;br /&gt; find_index: 2, reduce: 2, map_join: 3, count: 2, find_value: 2, min: 1,&lt;br /&gt; concat: 1, flat_map: 2, shuffle: 1, at: 3, uniq: 1, unzip: 1, min_by: 2,&lt;br /&gt; take_random: 2, take: 2, reverse: 2, find_value: 3, ...],&lt;br /&gt; attributes: [vsn: [332892874748555839594542519652485069262]],&lt;br /&gt; compile: [options: [:debug_info], version: &#39;6.0.2&#39;,&lt;br /&gt; time: {2016, 2, 21, 21, 48, 31},&lt;br /&gt; source: &#39;/private/tmp/elixir20160221-76790-1cjto8i/elixir-1.2.3/lib/elixir/lib/enum.ex&#39;],&lt;br /&gt; native: false,&lt;br /&gt; md5: &amp;lt;&amp;lt;250, 112, 213, 232, 64, 152, 188, 238, 148, 116, 149, 143, 81, 114, 121, 206&amp;gt;&amp;gt;]&lt;/pre&gt;
-&lt;p&gt; Here’s a helpful &lt;a href=&quot;http://stackoverflow.com/questions/28664119/in-elixir-is-there-any-way-to-get-a-module-to-list-its-functions&quot;&gt;Stack Overflow link on the subject&lt;/a&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 14 Mar 2016 23:59:38 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/03/14/elixir-equivalent-of-object-methods-or-getting-a-module-to-list-its-methods.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/03/14/elixir-equivalent-of-object-methods-or-getting-a-module-to-list-its-methods.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>MySql Mistake - Its All About Maria</title>
-        <description>&lt;p&gt;So I was working thru &lt;a href=&quot;http://blog.tokafish.com/rails-to-phoenix-getting-started-with-ecto/&quot;&gt;this tutorial&lt;/a&gt; (another take on blog creation) and I started off by trying to switch my configuration from postgres to mysql.  I got this error:&lt;/p&gt;
-&lt;p style=&quot;margin:0;font-size:12px;font-family:&#39;Andale Mono&#39;;color:#29f914;background-color:#000000;&quot;&gt;(MatchError) no match of right hand side value: {:error, {:mariaex, {&#39;no such file or directory&#39;, &#39;mariaex.app&#39;}}}&lt;/p&gt;
-&lt;p style=&quot;margin:0;font-size:12px;font-family:&#39;Andale Mono&#39;;color:#29f914;background-color:#000000;&quot;&gt; &lt;/p&gt;
-&lt;p style=&quot;margin:0;font-size:12px;font-family:&#39;Andale Mono&#39;;color:#29f914;background-color:#000000;&quot;&gt; &lt;/p&gt;
-&lt;p&gt;I had automatically used this:&lt;/p&gt;
-&lt;pre&gt;defp deps do&lt;br /&gt; [{:mysql, &quot;~&amp;gt; 0.1&quot;},&lt;br /&gt; {:ecto, &quot;~&amp;gt; 1.0&quot;}]&lt;br /&gt; end&lt;/pre&gt;
-&lt;p&gt;Where it was really supposed to be::&lt;/p&gt;
-&lt;pre&gt;defp deps do&lt;br /&gt; [{:mariaex, &quot;~&amp;gt; 0.1&quot;},&lt;br /&gt; {:ecto, &quot;~&amp;gt; 1.0&quot;}]&lt;br /&gt; end&lt;/pre&gt;
-&lt;p&gt;I happily found the answer to the error &lt;a href=&quot;http://www.jarredtrost.com/2015/05/01/using-mysql-with-the-phoenix-framework/&quot;&gt;here&lt;/a&gt;.  Thanks!&lt;/p&gt;
-</description>
-        <pubDate>Sat, 05 Mar 2016 21:15:08 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/03/05/mysql-mistake-its-all-about-maria.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/03/05/mysql-mistake-its-all-about-maria.html</guid>
-        
-        <category>ecto</category>
-        
-        <category>mysql</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Building a Blog with Phoenix</title>
-        <description>&lt;p&gt;Once upon a time the quintessential learning project was hello world.  Now that’s not enough and its “Build a Blog”.  Well it was good enough to launch Ruby on Rails to its hallowed position so its likely good enough for Elixir and Phoenix.  I found the &lt;a href=&quot;http://codetunes.com/2015/phoenix-blog/&quot;&gt;CodeTunes tutorial&lt;/a&gt; by google for “elixir blog” when I was actually looking for people blogging about Elixir but let’s get started.  &lt;/p&gt;
-&lt;h2&gt;Issue 1: The Babelrc Debacle or es2015 alas...&lt;/h2&gt;
-&lt;p&gt;So I ran thru the initial setup and generated the project skeleton.  When I looked at in a browser I noticed that the entire asset pipeline was missing and I was getting errors in the console like this:&lt;/p&gt;
-&lt;p style=&quot;margin:0;font-size:12px;font-family:&#39;Andale Mono&#39;;color:#29f914;background-color:#000000;&quot;&gt;05 Mar 09:29:34 - &lt;span style=&quot;color:#c33720;&quot;&gt;error&lt;/span&gt;: Compiling of web/static/js/app.js failed. Couldn&#39;t find preset &quot;es2015&quot; relative to directory &quot;/Users/sjohnson/elixir/phoenix&quot; ; Compiling of web/static/js/socket.js failed. Couldn&#39;t find preset &quot;es2015&quot; relative to directory &quot;/Users/sjohnson/elixir/phoenix&quot;&lt;/p&gt;
-&lt;p&gt;I’ve seen this before when I blew about 3 hours on my first attempt to get anything working with Elixir which ultimately resulted in my creating and closing a &lt;a href=&quot;https://github.com/phoenixframework/phoenix/issues/1574&quot;&gt;github issue&lt;/a&gt; on this topic.&lt;/p&gt;
-&lt;p&gt;Here’s the solution:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;touch .babelrc&lt;/li&gt;
-&lt;li&gt;vi .babelrc&lt;/li&gt;
-&lt;li&gt;Add this line:&lt;/li&gt;
-&lt;li&gt;&lt;span style=&quot;color:#29f914;font-family:&#39;Andale Mono&#39;;font-size:12px;background-color:#000000;&quot;&gt;{ &quot;presets&quot;: [&quot;es2015&quot;] }&lt;/span&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt; Overall this looks a lot like something that, at least for now, you have to do &lt;strong&gt;every time&lt;/strong&gt; you create an Elixir application at least if you want the asset pipeline to work.  There’s a &lt;a href=&quot;https://www.reddit.com/r/elixir/comments/471rc2/programming_phoenix_step_1_erlang_step_2_elixir/&quot;&gt;long and furious rant&lt;/a&gt; related to the use of node / brunch over in /r/elixir and while the original poster’s message was lost in his rage, the basic point that here with something new and yet cargo culting over big parts of technology.  Yes node works and yes brunch works and, no, no one wants to rewrite the asset pipeline crap from scratch but this is at least part of the result.  Something to think about.&lt;/p&gt;
-&lt;h2&gt;Other Issues&lt;/h2&gt;
-&lt;p&gt;In working thru this tutorial I made a number of syntactic mistakes that made me recall the days of learning Rails.  Normal stuff including the &quot;Fix protocol Ecto.Queryable not implemented error” which was a bit mysterious but &lt;a href=&quot;http://stackoverflow.com/questions/27671867/fix-protocol-ecto-queryable-not-implemented-error&quot;&gt;Stack Overflow&lt;/a&gt; cleared up.  The issue was that I had started with this:&lt;/p&gt;
-&lt;pre&gt;def index(conn, _params) do&lt;br /&gt; posts = Repo.all(Post)&lt;br /&gt;end&lt;/pre&gt;
-&lt;p&gt;to which i added a pipeline like this:&lt;/p&gt;
-&lt;pre&gt;def index(conn, _params) do&lt;br /&gt; posts = Repo.all(Post)&lt;br /&gt; |&amp;gt; Post.count_comments&lt;br /&gt; |&amp;gt; Repo.all&lt;br /&gt; render(conn, &quot;index.html&quot;, posts: posts)&lt;br /&gt; end&lt;/pre&gt;
-&lt;p&gt;but that really should have been this:&lt;/p&gt;
-&lt;pre&gt;def index(conn, _params) do&lt;br /&gt; posts = Post&lt;br /&gt; |&amp;gt; Post.count_comments&lt;br /&gt; |&amp;gt; Repo.all&lt;br /&gt; render(conn, &quot;index.html&quot;, posts: posts)&lt;br /&gt;end&lt;/pre&gt;
-&lt;h2&gt;Phoenix and Battery Life&lt;/h2&gt;
-&lt;p&gt;One other thing I noticed is that the constant live reloading really pulls down my battery life on my Macbook Air.  Where I normally can work for several hours, I found myself down to 20% battery after only two hours.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 05 Mar 2016 16:05:13 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/03/05/building-a-blog-with-phoenix.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/03/05/building-a-blog-with-phoenix.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Building a Todo App</title>
-        <description>&lt;p&gt;As a first real learning experience I took the time to work thru the &lt;a href=&quot;https://resolve.digital/blog/posts/creating-a-todo-application-using-the-phoenix-framework-and-ember-js/&quot;&gt;Resolve Digital Todo App&lt;/a&gt; and I have to admit that I was impressed.  Overall this tutorial was spot on.  The only changes I had to make to it were:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Adapt it from using postgres to mysql which, honestly, was nothing more than adding “—database mysql” to the initial create statement:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p style=&quot;margin:0;font-size:11px;font-family:Menlo;&quot;&gt;mix phoenix.new phoenix_todos_api --no-brunch  --database mysql&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;At the ember level, I had to adjust the version number of the ember-cli-shims (in the file bower.json):&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p style=&quot;margin:0;font-size:11px;font-family:Menlo;&quot;&gt;&quot;ember-cli-shims&quot;: &quot;ember-cli/ember-cli-shims#0.1.0”, &lt;/p&gt;
-&lt;p style=&quot;margin:0;font-size:11px;font-family:Menlo;&quot;&gt; &lt;/p&gt;
-</description>
-        <pubDate>Sat, 05 Mar 2016 14:21:11 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/03/05/building-a-todo-app.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/03/05/building-a-todo-app.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Getting Started : Installation</title>
-        <description>&lt;p&gt;Well I’ve made the decision to start down the rabbit hole, once again, and learn something new.  I’ve decided to go for &lt;a href=&quot;http://elixir-lang.org/&quot;&gt;Elixir&lt;/a&gt; as a language and &lt;a href=&quot;http://www.phoenixframework.org/&quot;&gt;Phoenix&lt;/a&gt; as a web framework.  These nicely parallel the Ruby / Rails ecosystem which I’ve been full time in since 2007.  I’ll use this blog to capture the learning process.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 05 Mar 2016 03:09:33 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/03/05/getting-started-installation.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/03/05/getting-started-installation.html</guid>
-        
-        <category>elixir</category>
-        
         
       </item>
     
