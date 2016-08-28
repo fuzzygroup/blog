@@ -34,3 +34,5 @@ And this has worked very, very well for me but it hasn't been without its level 
 Note 1: I know that was a ton of steps and in 2016 it doesn't feel like this should be necessary.  It shouldn't but I find it vastly preferable to monkeying with MySQL replication.  I'm sure there either are or could be tools that make this better but I found that understanding the low level aspects of what's going on here was pretty important to my own sanity so I did it the hard way.  If this data migration fails then I'm the one who has to clean it up so I wanted to be absolutely certain that I understood it in full.
 
 Note 2: This has been extensively tested with Amazon RDS and Aurora in specific.  No issues there; RDS rocks and Aurora is amazing.
+
+Note 3: If you're going to use the split / cat approach make 100% certain that number of files on the source machine is equal to the number of files on the target machine (ls -l | wc -l).  If the sync operation gets stalled out you might find a file or 3 missing and the error messages are not helpful.
