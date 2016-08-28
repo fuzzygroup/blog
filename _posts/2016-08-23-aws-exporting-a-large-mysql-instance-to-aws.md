@@ -2,6 +2,8 @@
 layout: post
 title: AWS Tutorial 1 - Exporting a Large MySQL Instance to S3
 ---
+NOTE: Please Read [Tutorial 4](https://fuzzygroup.github.io/blog/2016/08/28/aws-tutorial-4-rds-data-loading-into-aurora-run-in-circles-scream-and-shout-the-oh-shite-moment.html) Before Continuing with This One.
+
 I'm in the process of migrating a rather large Rails installation to [AWS](http://aws.amazon.com/).  The initial plan had been to refactor it slowly into a series of microservices and do it properly.  Some engineering issues that have just (read yesterday morning) cropped up seem to be driving a need for more boxes than our current host can support.  So it is looking like the refactor will be done incrementally and our next large scale data processing run will be done on AWS. 
 
 This means that of all the items in the mythical gant chart of dependencies that need to get addressed is the mysql export.  We're talking about what is likely a 2 plus terabyte mysql instance.  And, no, there's not enough free disc space to compress the tables so this means:
