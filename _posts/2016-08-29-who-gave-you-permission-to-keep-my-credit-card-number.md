@@ -11,3 +11,5 @@ I grew up working retail and any return was always a matter of:
 * Process card to get the customer their money
 
 Personally I'd vastly prefer giving my card to the cashier to get a return to this nebulous crap where the store is hanging onto my credit card in an undisclosed, undocumented fashion.  And I'd like to think that they would store this professionally and manage it correctly but [Home Depot's card breach 2 years ago](http://www.wsj.com/articles/home-depot-breach-bigger-than-targets-1411073571) argues against that.
+
+According to my wife who shops far more than I, this is now standard at most big retail locations. Sigh.  
