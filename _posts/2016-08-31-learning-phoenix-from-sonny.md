@@ -142,11 +142,6 @@ Getting Stuff Built from Scratch
    
    maps are easier to pattern match on so used more
    
-   Map uses %{}    Key can be any data type in the system
-   
-   %{%{k: "vsalue"} => :value}
-   
-   map[%{k: "value"}]
    
    **COFFEE BREAK**
    
