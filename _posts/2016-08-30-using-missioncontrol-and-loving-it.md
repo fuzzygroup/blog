@@ -8,7 +8,7 @@ Once upon a time, in 2000, when I was out of work I spent a lot of time using Re
 * Mission Control
 * [Total Spaces From Binary Age](http://totalspaces.binaryage.com/elcapitan)
 
-Out of the box, Mission Control is one of those bits of infuriatingly good Apple products that make you want to rend your clothing and weep salty tears.  The default user interface for Mission Control is simple -- you can have all the virtual desktops you want but you can't actually give them names.  Yes there are workarounds like "create an image and assign it as a background with the name of the desktop on the image and use a different color for each".  That works ok but when you have a lot of windows then you can't see the name so you're looking at edges of the screen and trying to guess the color.  Overall the lack of a human readable name strikes me as one of the more user vicious ideas from Apple in a long time.
+Out of the box, Mission Control is one of those bits of infuriatingly good Apple products that make you want to rend your clothing and weep salty tears.  The default user interface for Mission Control is simple -- you can have all the virtual desktops you want but you can't actually give them names.  Yes there are workarounds like "[create an image and assign it as a background with the name of the desktop on the image and use a different color for each](http://apple.stackexchange.com/questions/211954/how-can-i-name-desktops-spaces-in-el-capitan)".  That works ok but when you have a lot of windows then you can't see the name so you're looking at edges of the screen and trying to guess the color.  Overall the lack of a human readable name strikes me as one of the more user vicious ideas from Apple in a long time.
 
 What Total Spaces does is require you to turn off System Integrity Protection so it can inject code into OSX itself to enable features like these:
 
@@ -26,7 +26,8 @@ Using Mission Control takes some getting used to.  Here's the process:
 3.  If you have a pile o' windows like I tend to then you're in for an annoying task - moving all of them, generally one by one, to a the correct virtual desktop.  Do this as follows: 
   * click with the mouse in the Window's title bar
   * press the control key and hold it down
-  * press an arrow key (right or left) to *slide* the window into the right virtual desktop.  Yes its screwy but it really does work.  Supposedly you can "Drag the window to the edge of the screen. After a moment, the window moves to the next space" but that, [documented technique](https://support.apple.com/kb/PH21872?locale=en_US), has never once worked for me.  But I also installed Total Spaces and removed SIP so who knows why.  It could well be me.
+  * press an arrow key (right or left) to *slide* the window into the right virtual desktop.  Yes its screwy but it really does work.  Supposedly you can "Drag the window to the edge of the screen. After a moment, the window moves to the next space" but that, [documented technique](https://support.apple.com/kb/PH21872?locale=en_US), has never once worked for me.  But I also installed Total Spaces and removed SIP so who knows why.  It could well be me.  You can also use the Mission Control UI and drag and drop to another desktop but oddly while I don't like the mouse + control + arrow keys, it feels better to me.
+  
   
 ## But What About Communications?
 
