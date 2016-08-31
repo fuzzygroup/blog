@@ -1,0 +1,21 @@
+---
+layout: post
+title: Dated Nerd Humor - Klingon Open Source
+---
+I dug up an archive of an old server and found some stuff I wrote back in 2000 (pre 9/11 actually).  Mildly amusing at least if you're old enough.  I should likely rewrite it.
+
+* When: CVS Client Lacks Commit Privileges Then: "This CVS Client Has No  Honor.  I will rule this project!"
+* On reaction to the Red Hat 7 C compiler issues: "Debian I say!  In  the name of the great god Stallman, DEBIAN!!!!"
+* On reactions to KDE Office User Interface Issues: "Puny User, we will  never fix that bug"
+* When trying to read MS Word files into Star Office: "Redmond!  Redmond!  Prepare to die!"
+* When asked about Ximian's launch of the proprietary Exchange server: "GAH!  Perhaps they have no honor!  Still, latinum is good!"
+* On the Emacs versus VI controversy: "This led to system wide wars over  200 years ago.  Unbeliever!  Draw your batleft, I should kill you  where you stand!"
+* "Perhaps it **IS** a good day to Die!  I say we ship!"
+* When looking at public Freshmeat projects without any source: "The  movement has failed.  We need to go to war!"
+* On when the 2.2.4 kernel will ship: "By nagging me with the launch date,  you have questioned my family honor. Prepare to die!"
+* On why Linux GUI software NEVER has keyboard shortcuts: "Puny User, We will never fix that!   Get a compiler and CVS so we can deny your commits!"
+* As to why Linux developers get hostile on mailing lists: "Answering your email is for the weak and timid!"
+* When asked about a strange 5403 line switch statement deep inside code: "You question the worthiness of my engineers.   Prepare to die!" 
+* When asked about Apple's move to BSD instead of Linux: "*Apple* is without honor!"
+* When asked about Microsoft's Community Source license: "The jihad is  brewing.  We will win.  They will die.  Tricks will not  work."
+* On the release process: "Perhaps it **IS** a good day to Die!  I say we ship"
