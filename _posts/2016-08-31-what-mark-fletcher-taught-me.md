@@ -3,6 +3,7 @@ layout: post
 title: Startup Learnings - What Mark Fletcher Taught Me
 ---
 When I started Feedster back in 2003, I ended up taking a very, very traditional startup route: 
+
 * [Found a technical co-founder](https://fschiettecatte.wordpress.com)
 * [Found a CEO - Rafer](http://www.venturevoice.com/2005/08/vv_show_11_scott_rafer_of_feed.html)
 * [Raised Money](http://redeye.firstround.com/2006/03/le_magic.html)
