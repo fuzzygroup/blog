@@ -142,7 +142,7 @@ Getting Stuff Built from Scratch
    
    maps are easier to pattern match on so used more
    
-   
+   (A few examples omitted here due to escaping issues; there's irony in that due to Tom Preston Warner's ruby orientation)
    **COFFEE BREAK**
    
    
