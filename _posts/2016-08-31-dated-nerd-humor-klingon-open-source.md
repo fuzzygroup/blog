@@ -18,4 +18,4 @@ I dug up an archive of an old server and found some stuff I wrote back in 2000 (
 * When asked about a strange 5403 line switch statement deep inside code: "You question the worthiness of my engineers.   Prepare to die!" 
 * When asked about Apple's move to BSD instead of Linux: "*Apple* is without honor!"
 * When asked about Microsoft's Community Source license: "The jihad is  brewing.  We will win.  They will die.  Tricks will not  work."
-* On the release process: "Perhaps it **IS** a good day to Die!  I say we ship"
+* On the release process: "Perhaps it **IS** a good day to Die!  I say we ship "
