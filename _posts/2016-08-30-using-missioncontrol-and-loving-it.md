@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Using Mission Control and Loving It
+category: OSX
+tags: [osx, mission_control, total_spaces, virtual_desktops]
+
 ---
 Once upon a time, in 2000, when I was out of work I spent a lot of time using Red Hat linux on a old ThinkPad running XFCE where I was lucky enough to make virtual desktops work.  Partitioning what I was working on physically away from everything else just made sense.  I haven't had that since but I do today and I'm loving it.  Here's what I'm using:
 
