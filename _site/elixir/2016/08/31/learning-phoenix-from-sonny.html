@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Learning Phoenix from Sonny</title>
+  <meta name="description" content="OverviewBelow are my roughly stream of consciousness notes from Sonny Scrogson’s Taking off With Phoenix class.  Sonny did a fantastic job on this class and ...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/elixir/2016/08/31/learning-phoenix-from-sonny.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Learning Phoenix from Sonny</h1>
+    <p class="post-meta"><time datetime="2016-08-31T00:00:00-04:00" itemprop="datePublished">Aug 31, 2016</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h1 id="overview">Overview</h1>
+<p>Below are my roughly stream of consciousness notes from <a href="https://github.com/scrogson/taking-off-with-phoenix/">Sonny Scrogson’s Taking off With Phoenix</a> class.  Sonny did a fantastic job on this class and he is to be absolutely commended for it.  Any errors below, and I know they exist, are mine not his.  He earned every bit of the applause he got.  Thanks to <a href="https://co.linkedin.com/in/esbanarango/en">Esteban</a> for pushing me to post this publicly.  Some notes were omitted due to markdown conflicts; I’ll get them up when I can.</p>
+
+<h1 id="update">Update</h1>
+
+<p>My version of the class repo is here: <a href="https://github.com/fuzzygroup/taking-off-with-phoenix">https://github.com/fuzzygroup/taking-off-with-phoenix</a>  I put JSJ in the code where there was something I thought important enough to remember.  Bear in mind that I’m still new to Elixir.</p>
+
+<p>I added screenshots at the bottom for all of the screen shots showing errors / surprising things.  When you see big blanks that means that nothing was output.</p>
+
+<h1 id="quick-links">Quick Links:</h1>
+<ul>
+  <li><a href="http://www.phoenixframework.org">Phoenix</a></li>
+  <li><a href="http://elixir-lang.org">Elixir</a></li>
+  <li><a href="https://pragprog.com/book/phoenix/programming-phoenix">Phoenix Book</a></li>
+</ul>
+
+<h1 id="examples-of-mix-commands">Examples of Mix Commands</h1>
+
+<p>Mix is the equvalent of bundler, the rails executable and rake:</p>
+
+<ul>
+  <li>mix help | grep phoenix.gen</li>
+  <li>mix phoenix.gen.html User users name email inserted_at –no-model</li>
+  <li>mix phoenix.gen.html Post posts title body:text user_id:references:users</li>
+  <li>mix ecto.migrate</li>
+  <li>mix phoenix.gen.json Post posts title body:text user_id:references:users</li>
+  <li>iex -S mix</li>
+  <li>mix help | grep ecto</li>
+  <li>mix ecto                 # Prints Ecto help information</li>
+  <li>mix ecto.create          # Creates the repository storage</li>
+  <li>mix ecto.drop            # Drops the repository storage</li>
+  <li>mix ecto.dump            # Dumps the repository database structure</li>
+  <li>mix ecto.gen.migration   # Generates a new migration for the repo</li>
+  <li>mix ecto.gen.repo        # Generates a new repository</li>
+  <li>mix ecto.load            # Loads previously dumped database structure</li>
+  <li>mix ecto.migrate         # Runs the repository migrations</li>
+  <li>mix ecto.migrations      # Displays the repository migration status</li>
+  <li>mix ecto.rollback        # Rolls back the repository migrations</li>
+  <li>mix ecto.gen.migration create_users</li>
+  <li>iex -S mix Phoenix.server &lt;== runs your application in console which gives you access to the running application</li>
+</ul>
+
+<h1 id="things-i-learned">Things I Learned</h1>
+
+<ul>
+  <li>where do migrations live: priv/repo</li>
+</ul>
+
+<h2 id="equivalencies-to-the-rails--ruby-world">Equivalencies to the Rails / Ruby World</h2>
+
+<ul>
+  <li>plug = rack (ruby) = ring (clojure) = adapter for web servers ; currently supported is Cowboy</li>
+  <li>iex -S Mix &lt;=== Rails Console</li>
+  <li>Mix.env &lt;== Rails.env</li>
+  <li>config/config.exs = master config file</li>
+  <li>dev.exs &lt;== environment files like in config/deploy</li>
+  <li>prod.exs &lt;== environment files like in config/deploy</li>
+  <li>deps - where your components; think vendor/gems</li>
+</ul>
+
+<h2 id="layers">Layers:</h2>
+
+<ul>
+  <li>your code</li>
+  <li>erlang / elixir</li>
+  <li>OTP</li>
+  <li>Kernel &amp; STDLIB</li>
+  <li>ERTS</li>
+  <li>Operating System</li>
+</ul>
+
+<h2 id="surprising">Surprising</h2>
+
+<p>There are other flavors of languages on top of erlang:</p>
+
+<ul>
+  <li>lua</li>
+  <li>lisp</li>
+  <li>prolog</li>
+</ul>
+
+<h2 id="erlang-vm">Erlang VM</h2>
+
+<ul>
+  <li>scheduler #1 - run queue</li>
+  <li>scheduler #2 - run queue</li>
+  <li>scheduler #3 - run queue</li>
+</ul>
+
+<p>1 thread is run for every core on the machine (each scheduler above has a thread assigned to it)</p>
+
+<h2 id="processes">Processes</h2>
+
+<ul>
+  <li>lightweight units of concurrency</li>
+  <li>maintain state via recursion</li>
+  <li>communication via message passing</li>
+</ul>
+
+<h2 id="process">Process</h2>
+
+<ul>
+  <li>Stack   Heap</li>
+  <li>Mailbox</li>
+  <li>Links &amp; Monitors (when you link to a process of the process dies then you die too) (and alert me when a process dies)</li>
+  <li>Garbage Collector</li>
+</ul>
+
+<h2 id="isolated--concurrent">Isolated &amp; Concurrent</h2>
+
+<ul>
+  <li>Crashes are isolated</li>
+  <li>Data is isolated (GC per process)</li>
+  <li>Load balances on IO and CPU (efficient on multicore)</li>
+</ul>
+
+<h2 id="otp">OTP</h2>
+
+<ul>
+  <li>framework that makes it easy to deal with faults, concurrency and distribution</li>
+  <li>Where I want to build crawlers likely</li>
+</ul>
+
+<h2 id="genservers-supervisors-processes-oh-my">GenServers, Supervisors, Processes, Oh My!</h2>
+
+<ul>
+  <li>GenServers are generic servers</li>
+  <li>supervisor - a process like any other that runs code specific to watching other processes</li>
+</ul>
+
+<h2 id="phoenix">Phoenix</h2>
+
+<p>Phoenix is a framework for building modern web apps, API backends and distributed systems.  Written in Elixir, you get beautiful syntax, productive tooling and a fast and efficient runtime (thanks to the BEAM)</p>
+
+<p>Phoenix is an OTP application that provides functionality to your OTP application</p>
+
+<ul>
+  <li>mvc framework</li>
+  <li>familiar to those with experience in other web frames - rails, django</li>
+  <li>channels for implementing soft real time features</li>
+  <li>easy to test</li>
+  <li>not a lot of mocks in elixir</li>
+  <li>not objects with data; just data structures you feed into functions</li>
+  <li>no compromise - high productivity and high performance</li>
+  <li>Don’t just port ruby to Elixir; Think Different</li>
+  <li>Performance - at times 17x faster than rails</li>
+  <li>no stop the world garbage collection</li>
+</ul>
+
+<h1 id="getting-stuff-built-from-scratch">Getting Stuff Built from Scratch</h1>
+
+<ul>
+  <li>Install the archive https://github.com/phoenixframework/archives : goto bottom and click on it and get the url from the raw (actually get the url from the download button )</li>
+  <li>mix archive.install https://github.com/phoenixframework/archives/blob/master/phoenix_new.ez?raw=true</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>mix help</td>
+          <td>grep phoenix</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>github.com/phoenixframework/phoenix/installer</li>
+  <li>mix help phoenix.new</li>
+  <li>mix phoenix.server</li>
+</ul>
+
+<h2 id="misc">Misc</h2>
+
+<p>Processing by Workshop.PageController.index/2</p>
+
+<p>/2 is the “ARITY OF THE FUNCTION” arity = number of arguments that the function accepts</p>
+
+<p>2 top level directories - lib, web  The web directory is likely to go to lib down the road</p>
+
+<p>This is a list of two tuples:</p>
+
+<p>[“ecto.setup”: [“ecto.create”, “ecto.migrate”, “run priv/repo/seeds.exs”],
+   “ecto.reset”: [“ecto.drop”, “ecto.setup”],
+   “test”: [“ecto.create –quiet”, “ecto.migrate”, “test”]]</p>
+
+<p>toople  &lt;== correct pronunciation is toople (according to Sonny at least)</p>
+
+<p>tuple</p>
+
+<p>elem {:key, “value”}, 0
+   :key</p>
+
+<p>elem {:key, “value”}, 1
+   “value”</p>
+
+<p>[{:key, “value”}] &lt;== keyword list</p>
+
+<p>[{:key, “value”}]</p>
+
+<p>[“key”:, “value”]  &lt;== the : makes it an atom.  THE : MUST GO AT THE END</p>
+
+<p>[“key.value”:, “value”] &lt;== the . would change things to a method send so you have to</p>
+
+<p>keyword lists are preferred over maps because you can omit the braces for the last argument</p>
+
+<p>keyword lists can have the same key multiple times ; maps you cannot</p>
+
+<p>maps are easier to pattern match on so used more</p>
+
+<p>(A few examples omitted here due to escaping issues; there’s irony in that due to Tom Preston Warner’s ruby orientation)
+   <strong>COFFEE BREAK</strong></p>
+
+<h1 id="building-blocks">Building blocks</h1>
+
+<p>(get from photo)</p>
+
+<h2 id="plug">Plug</h2>
+
+<p>https://github.com/elixir-lang/plug</p>
+
+<p>At the core of phoenix</p>
+
+<p>a specification for constructing composable modules to build web applications.  Plugs are reusable modules or functions built to this specification</p>
+
+<p>Plugs can be written to handle almost anything form authentication to paramenter preprocessing and rendering</p>
+
+<p>Provides adapters to http servers which will ultimately deliver content to users</p>
+
+<h2 id="plug-specification">Plug Specification</h2>
+
+<ul>
+  <li>function plugs  - just a function</li>
+  <li>modules plugs</li>
+</ul>
+
+<h3 id="function-plugs">Function Plugs</h3>
+
+<ul>
+  <li>A function plug is any function that recieves a connection and a set of options and returns a connection.  Its type signatiure must be:</li>
+  <li>(Plug.Conn.t, Plug.opts) :: Plug.conn.t</li>
+  <li>Gets an empty list by default if no options]</li>
+</ul>
+
+<h3 id="function-plug-example">Function Plug Example</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>def json_header_plug(conn, opts) do
+  conn 
+  |&gt; put_resp_content_type("application/json")
+end
+
+Most of the applications I build now are like this - functions which transform state bit by bit
+</code></pre>
+</div>
+
+<h3 id="module-plugs">Module Plugs</h3>
+
+<p>A module plug is an extension of the function plug.  It is a module that must export:</p>
+
+<ul>
+  <li>init/1 - takes a set of options and initializes it</li>
+  <li>call/2 - takes the connection and options, returns the connections</li>
+</ul>
+
+<p>The result report by init/1 is passed as a second argument to call/2</p>
+
+<h4 id="module-plug-example">Module Plug Example</h4>
+
+<p>defmodule JSONHeaderPlug do 
+    import Plug.Conn</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>def init(opts), do: opts
+  
+def call(conn, _opts) do
+  conn
+  |&gt; put_resp_content_type("application/json")
+end   end
+</code></pre>
+</div>
+
+<h4 id="plugconn-is-huge-look-it-up">plug.conn is huge (look it up)</h4>
+
+<ul>
+  <li>missed it</li>
+</ul>
+
+<h4 id="request-fields">Request Fields</h4>
+
+<ul>
+  <li>missed it</li>
+</ul>
+
+<h4 id="fetchable-fields">Fetchable Fields</h4>
+
+<ul>
+  <li>missed it</li>
+</ul>
+
+<h4 id="response-fields">Response Fields</h4>
+
+<ul>
+  <li>missed it</li>
+</ul>
+
+<h4 id="connection-fields">Connection Fields</h4>
+
+<ul>
+  <li>missed it</li>
+</ul>
+
+<h3 id="plugs-in-phoenix">Plugs in Phoenix</h3>
+
+<ul>
+  <li>Endpoint</li>
+  <li>Router</li>
+  <li>Controllers</li>
+</ul>
+
+<h4 id="endpoint">Endpoint</h4>
+
+<p>Endpoint is boundary of the app.  Where all requests flow (slide transition too fast)</p>
+
+<h4 id="endpoint-1">Endpoint</h4>
+
+<p>plug Plug.Parsers, 
+  parsers: [:urlencoded, :multipart, :json],
+  pass: [“<em>/</em>”],
+  json_decoder: Poison</p>
+
+<p>…</p>
+
+<h4 id="router">Router</h4>
+
+<p>Provides a bunch of macors for generating routes that dispatch to specific controllers and actions.  Those macros are named after HTTP verbs.</p>
+
+<p>defmodule Myapp.Router do 
+  use Myapp.Web, :router</p>
+
+<p>scope “/”, Myapp do
+    get “/”, PageController, :index
+    resources “/rooms”, RoomController do
+    resources “/users”, UserController
+    end
+  end
+end</p>
+
+<p>####Router</p>
+
+<p>this</p>
+
+<p>get “/”, PageController, :index</p>
+
+<p>compiles to this (showing full function definition)</p>
+
+<p>defp match(conn, “GET”, [], _) do
+  conn
+  |&gt; Plug.conn.put_private(:phoenix_pipelines, [:browser])
+  |&gt; Plug.conn
+  …(omitted)</p>
+
+<p>end</p>
+
+<h4 id="router-1">Router</h4>
+
+<p>mix task</p>
+
+<p>mix phoenix.routes</p>
+
+<p>page_path get /</p>
+
+<h3 id="pipelines">Pipelines</h3>
+
+<p>connection
+|&gt; endpoint
+|&gt; router
+|&gt; controller
+|&gt; send_resp</p>
+
+<p>Router Pipelines</p>
+
+<p>pipeline :browser do
+  plug :accepts, [“html”]
+  plug :fetch_session
+  plug :fetch_flash
+  plg
+end</p>
+
+<p>Now into the workshop!</p>
+
+<h1 id="ecto">Ecto</h1>
+
+<table>
+  <tbody>
+    <tr>
+      <td>mix help</td>
+      <td>grep ecto</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>mix ecto                 # Prints Ecto help information</li>
+  <li>mix ecto.create          # Creates the repository storage</li>
+  <li>mix ecto.drop            # Drops the repository storage</li>
+  <li>mix ecto.dump            # Dumps the repository database structure</li>
+  <li>mix ecto.gen.migration   # Generates a new migration for the repo</li>
+  <li>mix ecto.gen.repo        # Generates a new repository</li>
+  <li>mix ecto.load            # Loads previously dumped database structure</li>
+  <li>mix ecto.migrate         # Runs the repository migrations</li>
+  <li>mix ecto.migrations      # Displays the repository migration status</li>
+  <li>mix ecto.rollback        # Rolls back the repository migrations</li>
+</ul>
+
+<p>mix ecto.gen.migration create_users</p>
+
+<p>priv is an ERLANG thing and represents “files private to the application”</p>
+
+<p>mix ecto.migrate</p>
+
+<p>Repo is the ecto repository</p>
+
+<p>Repo is in charge of sending the queries to the db</p>
+
+<p>There could be a 1 week course on using ecto</p>
+
+<p>Web is where all our phoenix specific stuff goes</p>
+
+<p>model right now are business logic and WILL BE MOVING but for now are in web</p>
+
+<p>In the future will be more small apps that are composed up to bigger apps</p>
+
+<p>“dunder” means “__” (its short for double underscore)</p>
+
+<p>in mix.exs you define the name Workshop (initial name to the directory structure)</p>
+
+<p>Ecto does not have call backs</p>
+
+<h1 id="immutable-immutable-immutable-">Immutable Immutable Immutable !!!</h1>
+
+<p>Remember everything is immutable</p>
+
+<p>%Ecto.Changeset{}
+    #Ecto.Changeset&lt;action: nil, changes: %{}, errors: [], data: nil, valid?: false&gt;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Workshop.User.changeset(%Workshop.User{})
+#Ecto.Changeset&lt;action: nil, changes: %{},
+ errors: [name: {"can't be blank", []}, email: {"can't be blank", []},
+  password: {"can't be blank", []},
+  password_confirmation: {"can't be blank", []}], data: #Workshop.User&lt;&gt;,
+ valid?: false&gt;
+ 
+  Workshop.User.changeset(%Workshop.User{email: "foo@bar.com"})
+ #Ecto.Changeset&lt;action: nil, changes: %{},
+  errors: [name: {"can't be blank", []}, password: {"can't be blank", []},
+   password_confirmation: {"can't be blank", []}], data: #Workshop.User&lt;&gt;,
+  valid?: false&gt;
+  
+  h v (help on v)
+  
+  c = v(2)  (get the 2nd previous thing out of the history)
+  
+  
+  if true, do: 1, else: 2
+  
+  if true do 
+    1
+  else
+    2
+  end
+  
+  quote do: 1 + 1
+  {:+, [context: Elixir, import: Kernel], [1, 1]}   &lt;== this is the AST internal to elixir (3 element tuple)
+  
+  quote do: if true, do: 1, else: 2
+  
+  {:if, [context: Elixir, import: Kernel], [true, [do: 1, else: 2]]}
+</code></pre>
+</div>
+
+<p>https://hexdocs.pm/ecto/Ecto.html</p>
+
+<p>Goal is that your web interface is separate from your domain logic</p>
+
+<h2 id="storage--database">Storage != Database</h2>
+
+<p>ETS = Erlang Table System</p>
+
+<p>http://erlang.org/doc/man/ets.html</p>
+
+<p>You can use ecto to handle data validations that ARE NOT a db</p>
+
+<p>Wrap the form in an ecto changeset to allow signup for an ejabberd system</p>
+
+<h2 id="view">View</h2>
+
+<p>view is a module that renders the template</p>
+
+<p>~E is equivalent to .html_safe but it goes before not after</p>
+
+<p>IT IS ALL ABOUT DATA STRUCTURES NOT GETTERS / SETTERS !!!!</p>
+
+<h2 id="changeset">Changeset</h2>
+
+<p>Workshop.User.changeset</p>
+
+<p>Workshop.Repo.get_by([email: “fuzzygroup@gmail.com”])</p>
+
+<h1 id="screenshots">Screenshots</h1>
+
+<p>This was the progress of error messages we all saw as we went thru the training.</p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_01.png" alt="taking_on_phoenix_screen_01.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_02.png" alt="taking_on_phoenix_screen_02.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_03.png" alt="taking_on_phoenix_screen_03.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_04.png" alt="taking_on_phoenix_screen_04.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_05.png" alt="taking_on_phoenix_screen_05.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_06.png" alt="taking_on_phoenix_screen_06.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_07.png" alt="taking_on_phoenix_screen_07.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_08.png" alt="taking_on_phoenix_screen_08.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_09.png" alt="taking_on_phoenix_screen_09.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_10.png" alt="taking_on_phoenix_screen_10.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_11.png" alt="taking_on_phoenix_screen_11.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_12.png" alt="taking_on_phoenix_screen_12.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_13.png" alt="taking_on_phoenix_screen_13.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_14.png" alt="taking_on_phoenix_screen_14.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_15.png" alt="taking_on_phoenix_screen_15.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_16.png" alt="taking_on_phoenix_screen_16.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_17.png" alt="taking_on_phoenix_screen_17.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_18.png" alt="taking_on_phoenix_screen_18.png" /></p>
+
+<p class="center"><img src="/blog/assets/taking_on_phoenix_screen_19.png" alt="taking_on_phoenix_screen_19.png" /></p>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff.  Ruby / Rails / Elixir.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
