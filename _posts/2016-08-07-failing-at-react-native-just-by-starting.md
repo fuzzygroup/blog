@@ -1,3 +1,8 @@
+layout: post
+title: Hailing at React Native Just By Starting
+category: react native
+tags: ["react native"]
+---
 #Failing at React Native Just By Starting
 One of the problems of having done development for a long, long time is you get use to certain idiosyncratic practices of your own.  Things that you do for every project because you know that if you don't you're going to have issues.  One of mine is that I always, always, always, unfailingly, always create a top level directory in a project called docs and in there I put ANYTHING and EVERYTHING related to the project.
 

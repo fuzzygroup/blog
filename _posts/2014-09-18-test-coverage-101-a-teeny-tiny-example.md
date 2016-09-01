@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Test Coverage 101 - A Teeny Tiny Example
+category: test coverage
+tags: ["ruby", "tdd", "testing", "test coverage"]
+
 ---
 I spoke with a potential client recently and one of the topics at hand was "Does the code base you own have test coverage?"  "No; we know that we need it but its not there presently".  I suspect that we may do some level of mentoring along with development services so there's no time like the present for an example.  I just completed a teeny, tiny routine which is designed to test a url for whether or not is absolute.  Here's a code snippet: 
 

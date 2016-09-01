@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Show Hidden Files On OSX
+category: osx
+tags: ["osx"]
+
 ---
 When you're initializing git repos and using the finder, it is very convenient to be able to see hidden files in OSX.  Here's how:
 

@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Running out of iNodes, Coo Coo Cachoo
+category: sysadmin
+tags: ["sysadmin", "unix", "inode"]
+
 ---
 When you run out of inodes, here's what to do:
 
