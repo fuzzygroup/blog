@@ -7,8 +7,13 @@ When I started Feedster back in 2003, I ended up taking a very, very traditional
 * [Found a technical co-founder](https://fschiettecatte.wordpress.com)
 * [Found a CEO - Rafer](http://www.venturevoice.com/2005/08/vv_show_11_scott_rafer_of_feed.html)
 * [Raised Money](http://redeye.firstround.com/2006/03/le_magic.html)
-* Met Great People
-* Learned from those people
+
+Along the way I also was lucky enough to:
+
+* Meet Great People
+* Learn from those people
+
+I haven't talked about Feedster and any of those learnings, well, ever.  They have been rattling around my brain over the past ten years while I focused on my technical skills but now, perhaps, some of them are starting to come out.
 
 Among those people were the circa 2003 to 2006 web 2.0 people like Dave, Matt, Brad and others.  Today I want to talk about [Mark Fletcher](http://www.wingedpig.com).  Mark was the founder of BlogLines and what he did was **smart**.  He didn't raise money at all.  He self funded and kept control.  That let him, when the time was right, take whatever acquisition deal was right for himself and see close to 100% of it accrue to his personal bottom line.  Me?  I was on a constant fund raising cycle.  And that **sucked**.  Now Rafer took care of most of it but it was a constant distraction. 
 
@@ -18,4 +23,4 @@ Me?  I ended up walking away from Feedster as the only person who actually made 
 
 Mark?  He's back at it again with the very, very cool email service [Groups.io](https://groups.io).  He also has some wonderfully true observations about [Slack](https://wingedpig.com/2016/02/05/slack-is-wonderful-and-awesome-and-horrible-and-bad-a-rant/).
 
-My take away from Mark: Fund it yourself; keep control.
+My take away from Mark: Fund it yourself; keep control.  There's a balance here obviously.  Not everything can be self funded but given the changes in the industry -  [AWS](http://aws.amazon.com) - far more can be done by yourself than was even dreamt of 10 years ago.  
