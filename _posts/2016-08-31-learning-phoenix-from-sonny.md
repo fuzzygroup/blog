@@ -8,6 +8,10 @@ tags: ["elixir", "elixirconf"]
 # Overview
 Below are my roughly stream of consciousness notes from [Sonny Scrogson's Taking off With Phoenix](https://github.com/scrogson/taking-off-with-phoenix/) class.  Sonny did a fantastic job on this class and he is to be absolutely commended for it.  Any errors below, and I know they exist, are mine not his.  He earned every bit of the applause he got.  Thanks to [Esteban](https://co.linkedin.com/in/esbanarango/en) for pushing me to post this publicly.  Some notes were omitted due to markdown conflicts; I'll get them up when I can.
 
+# Update
+
+My version of the class repo is here: [https://github.com/fuzzygroup/taking-off-with-phoenix](https://github.com/fuzzygroup/taking-off-with-phoenix)  I put JSJ in the code where there was something I thought important enough to remember.  Bear in mind that I'm still new to Elixir.
+
 
 # Quick Links:
 * [Phoenix](http://www.phoenixframework.org)
