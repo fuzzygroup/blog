@@ -1,6 +1,9 @@
 ---
 layout: post
 title: AWS Tutorial 3 - Notes on S3 Sync
+category: aws
+tags: ["aws", "mariadb", "mysql", "s3"]
+
 ---
 NOTE: Please Read [Tutorial 4](https://fuzzygroup.github.io/blog/2016/08/28/aws-tutorial-4-rds-data-loading-into-aurora-run-in-circles-scream-and-shout-the-oh-shite-moment.html) Before Continuing with This One.
 

@@ -1,0 +1,20 @@
+<p>Gems offer prebuilt software components for the Ruby / Rails space.  What they don’t offer, when used as a gem, is the ability to modify their source code.  Unlike a traditional Rails plugin which was installed into your application tree, gems tend to exist in a magical, hidden bundle location.  When you can do, however, is “vendor gem” them so that you can easily modify / update them.  Ideally we’d all make our changes as pull requests against the canonical git repo but sometimes there isn’t time.  So here are the steps:</p>
+
+<ol>
+  <li>Install a gem into your Gemfile.</li>
+  <li>run bundler:
+bundle install</li>
+  <li>Unpack it.  Here’s an example:
+gem unpack anemone<br /></li>
+  <li>This will put it into the root dir of your Rails application so now move it to vendor/gems:
+mv anemone-0.7.2 vendor/gems<br /></li>
+  <li>Go into your gem file and modify the line:<br />
+gem ‘anemone’<br />
+to look something like this:<br />
+gem ‘anemone’, ‘0.7.2’, :path =&gt; “vendor/gems/anemone-0.7.2”<br /></li>
+  <li>run bundler again:<br />
+ bundle install<br /></li>
+  <li>Git add / commit / push</li>
+</ol>
+
+<p>Thanks to Jared for helping me (once again) with this.  Hopefully now that I took the time to document it, it won’t be as hard next time…</p>

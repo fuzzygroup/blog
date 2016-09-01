@@ -1,6 +1,9 @@
 ---
 layout: post
 title: How to Be a Professional Freelancer
+category: freelance
+tags: ["freelance", "business"]
+
 ---
 From the end of 2009 to 2015 I've supported myself and my family as a professional freelancer -- I've been a work for hire software engineer.  And in that time I've never in my life made more money or done such varied and interesting work.  A friend asked me recently how I did it and while that's a bit hard to answer, I was able to write down a bunch of rules that worked for me.
 

@@ -1,0 +1,84 @@
+<p>Gems are one of the more magical parts of the Ruby ecosystem.  By packaging software components as easily installable parts of Ruby / Rails, gems allow you to quickly extend your application.  In this blog post, I’m going to teach you how to make your own copy of a gem and then use it locally on your machine.  This isn’t hard but it is the kind of thing that works correctly if you precisely follow the directions.  Enjoy!</p>
+
+<h1 id="forking-a-gem">Forking a Gem</h1>
+<p>The first step in all this is to fork a gem.  Forking essentially means “clone the git repo of the gem you want to your own Github account so you can do with it as you will”.  Start by finding a gem on Github and then clicking the fork button.  This is prompt you for where you want to clone it to.  Generally you want this to be your personal Github account unless you want it to happen on behalf of an organization where you work.</p>
+
+<p>If you’re looking or a sample repo then I’d recommend Betty which is a very cool thing I’ve just become aware of: <a href="https://github.com/pickhardt/betty">https://github.com/pickhardt/betty</a></p>
+
+<h1 id="using-forks-to-find-a-more-recent-version-of-a-gem">Using Forks to Find a More Recent Version of a Gem</h1>
+<p>One interesting aspect of forking a gem is there are lots of gems out there that lie fallow and you’d think “Damn.  It would be great if someone fixed this #$<em>(#</em>$#(#)) thing.”  Well, often enough, that’s happened but the fix is in a fork.  Because the fork isn’t from an official maintainer, you aren’t even aware of it unless you follow the forks.  Here’s a great example, <a href="https://github.com/rrphotosoft/term-extract/">term extract</a>.</p>
+
+<p>Here’s a screenshot showing <a href="http://imgur.com/0xAGIhE">its age</a></p>
+
+<p>This is a very cool implementation of what’s called phrase extraction which takes a corpus of text and finds the phrases that matter.  The disappointing thing with it is that its 5 to 6 years old.  Rather than walking away like I normally do, I clicked on the # next to the fork button and that showed me <a href="http://imgur.com/AlZm3Wz">this</a>.</p>
+
+<p>What I see here is that a user named <a href="https://github.com/rrphotosoft/">rrphotosoft</a> has a newer version of the gem.  Now if I want to use this for my Rails application then I can just add it to Gemfile with the :git syntax:</p>
+
+<p>gem ‘term-extract’, :git =&gt; ‘https://github.com/rrphotosoft/term-extract/’</p>
+
+<h1 id="making-your-own-version-of-a-gem">Making Your Own Version of a Gem</h1>
+<p>But what if there isn’t a newer fork of a gem, what then?  Well thankfully its actually pretty easy to get around:</p>
+
+<ol>
+  <li>Fork the gem to your own Github account.</li>
+  <li>Clone the gem to your computer.</li>
+  <li>Modify the source code as needed (global search is a huge help here)</li>
+  <li>Save the changes with the normal:
+    <ul>
+      <li>git add .</li>
+      <li>git commit -m “Some basic description”</li>
+      <li>git push origin master</li>
+    </ul>
+  </li>
+  <li>Add the gem to your Gemfile using the :git =&gt; “” syntax above.  Please note that the url you need here is the https clone syntax not the ssh clone syntax.</li>
+</ol>
+
+<h1 id="installing-your-own-version-to-use-locally">Installing Your Own Version to Use Locally</h1>
+<p>I recently forked a gem named <a href="https://github.com/nickjj/orats">Orats</a> which builds a stubbed application for generating Dockerized rails apps.  I’m still on the fence regarding Docker for production work – I love it conceptually – but there are some learning hurdles I’m facing.  Anyway here’s my <a href="https://github.com/fuzzygroup/orats">fork</a> where I’ve been working on adding additional templates for using MySQL instead of postgres and building Rails 5 api applications.</p>
+
+<p>Now the weird issue here is that Orats is a gem you install onto your computer so you can use it yourself instead of packaging it into a Gemfile.  What you need to do here is the normal:</p>
+
+<ul>
+  <li>fork</li>
+  <li>change it as needed</li>
+  <li>add / commit / push</li>
+</ul>
+
+<p>Next you’ll need a new bit of tooling, a gem named “specific_install”:</p>
+
+<p>gem install specific_install</p>
+
+<p>This gem lets you specify what gem you’re installing so it skips the “find canonical location” and takes a url instead so you can do this:</p>
+
+<p>gem specific_install https://github.com/fuzzygroup/orats.git</p>
+
+<p>And then you’ll get my version of Orats – bear in mind that mine is still a work in progress and the maintainer is doing really good, important work.  Go support <a href="http://nickjanetakis.com/blog/dockerize-a-rails-5-postgres-redis-sidekiq-action-cable-app-with-docker-compose">Nick</a> please – this is just an example.</p>
+
+<h1 id="another-approach-to-local-usage">Another Approach to Local Usage</h1>
+
+<p>I just got an email from <a href="http://nickjanetakis.com/">Nick</a> who wrote the Orats gem and he was kind enough to give me this tip:</p>
+
+<p>Btw to get around some of your local gem issues. You could just run your fork directly without “installing” it. Meaning if your forked version were sitting in a folder you could just goto that folder and run bin/orats –help. Then you can actively hack away on the gem and run it as you go. This is how I develop the gem.</p>
+
+<p>Then in your case, you could figure the orats on your system path (the one gem installed) is the official one where as the local one in the folder that you must run directly is your fork.</p>
+
+<p>Of course this only works if you’re the only person using it, otherwise you would need to do what you’re doing if others plan to run it.</p>
+
+<p>Thanks Man!</p>
+
+<h1 id="getting-your-changes-back-to-the-master-the-pull-request">Getting Your Changes Back to the Master: The Pull Request</h1>
+
+<p>Since I finished this last night, I’ve since made a change to the Betty gem I referenced above and I think this change is worthwhile enough that I want to get it up to the original author.  This requires making what’s called a Pull Request.  So here’s how to do that:</p>
+
+<ol>
+  <li>Make your changes and do the add / commit / push dance</li>
+  <li>Goto <strong>your</strong> github account for the for the forked repo and click New Pull Request (the common mistake here is to go to the destination repo and click this; you don’t have permissions there; you’re creating a pull request <strong>FROM</strong> your repo <strong>TO</strong> their repo)</li>
+  <li>Describe the changes and then submit the request.</li>
+</ol>
+
+<p>You should understand that getting your pull request approved isn’t necessarily easy - it varies by project, complexity of change, whether the code is tested or not and other factors.  Usually you’ll see a back and forth discussion process after which if you meet the maintainer’s needs, it is accepted.</p>
+
+<p>Here’s a solid <a href="https://yangsu.github.io/pull-request-tutorial/">tutorial on pull requests</a>.</p>
+
+<h1 id="credits">Credits</h1>
+<p>I couldn’t have written this without the assistance of <a href="http://dasari.me/">Dv</a>, a long time pairing partner of mine.  Thanks man.</p>

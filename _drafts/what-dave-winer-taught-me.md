@@ -1,0 +1,7 @@
+---
+layout: post
+title: What Dave Winer Taught Me
+category: startup
+tags: ["startup", "learnings", "entrepreneurship"]
+---
+The power of outreach.  I've never been so surprised in all my life as when the phone rang, on a sunday morning, as I sat in my kitchen in Nahant, CT and I heard "Hi, this is Dave Winer"

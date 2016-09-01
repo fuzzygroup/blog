@@ -1,6 +1,9 @@
 ---
 layout: post
 title: An Introduction to HyperTerm
+category: hyperterm
+tags: ["betty", "hyperterm", "node"]
+
 ---
 
 [Pickhardt / Betty](https://github.com/pickhardt/betty) introduced me to the concept of [HyperTerm](https://hyperterm.org/) and I have to admit that I was initially dismissive.  HyperTerm is a terminal built on top of Node and features web standards at the level of the terminal itself.  It has some interesting features:

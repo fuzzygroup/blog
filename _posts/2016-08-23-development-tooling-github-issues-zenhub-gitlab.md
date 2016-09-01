@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Development Tooling - Github Issues, ZenHub, GitLab and More
+category: git
+tags: ["git", "issues", "zenhub", "gitlab"]
+
 ---
 
 I don't know a single developer who isn't at least moderately passionate about development tooling in terms of the ticketing system they use.  Personally I'm micro rather than macro which reflects my passion for small teams (yep - I prefer a team you can feed with a pizza).  When you're at the micro level you don't care about the overall macro view, you care about the basics - creating tickets, milestones and finding things.  A few thoughts here:

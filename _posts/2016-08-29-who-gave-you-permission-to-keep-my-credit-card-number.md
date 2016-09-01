@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Who Gave You Permission To Keep My Credit Card Number?
+category: rant
+tags: ["rant", "business", "security"]
+
 ---
 I've noticed a disturbing trend lately whenever I make a return at a big box store - [Lowes](http://www.lowes.com/), [Menards](http://www.menards.com/) and others.  What I've noticed is that I make a return, hand over the receipt and then I'm happily told "Ok.  You're done!"  And I never, ever have to give them my credit card.  Hm...  Sure this is convenient but exactly when did I **consent** that Lowes has the right to hang onto my credit card details forever?  
 

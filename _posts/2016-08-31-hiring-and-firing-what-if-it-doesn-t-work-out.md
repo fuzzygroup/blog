@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Hiring and Firing - What If It Doesn't Work Out?
-category: Management
-tags: [firing, hiring, hr]
+category: management
+tags: ["firing", "hiring", "hr"]
 ---
 So, as I've written recently, we're about to add a 4th employee at my day job, "new guy".  We have three current employees - 2 founders and myself.  For a variety of reasons you might consider me a lifer i.e. I'm not going anywhere as I have a huge vested interest in the company's technology stack.
 

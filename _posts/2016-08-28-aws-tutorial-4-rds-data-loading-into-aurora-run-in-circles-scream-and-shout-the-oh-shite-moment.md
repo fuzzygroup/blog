@@ -1,6 +1,9 @@
 ---
 layout: post
 title: AWS Tutorial 4 - RDS Data Loading into Aurora Run In Circles Scream and Shout - The Oh Shite Moment
+category: aws
+tags: ["aws", "rds", "mysql", "aurora"]
+
 ---
 If you've read tutorial [1](https://fuzzygroup.github.io/blog/2016/08/23/aws-exporting-a-large-mysql-instance-to-aws.html), [2](https://fuzzygroup.github.io/blog/2016/08/24/aws-tutorial-2-importing-a-large-mysql-instance-from-s3.html) or [3](https://fuzzygroup.github.io/blog/2016/08/28/aws-tutorial-3-notes-on-s3-sync.html) then you absolutely need to read this one.  
 

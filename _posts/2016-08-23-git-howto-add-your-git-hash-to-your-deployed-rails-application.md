@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Git Howto - Add Your Git Hash to Your Deployed Rails Application
+category: rails
+tags: ["git", "rails", "ruby"]
+
 ---
 This is one of those things that I know there are a zillion ways to accomplish this but this one is **mine**. And it will likely be how my boxes tackle this issue.  
 

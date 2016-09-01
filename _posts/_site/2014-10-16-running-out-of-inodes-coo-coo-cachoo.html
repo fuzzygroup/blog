@@ -1,0 +1,29 @@
+<p>When you run out of inodes, here’s what to do:</p>
+
+<ul>
+  <li>Read
+    <ul>
+      <li>http://stackoverflow.com/questions/653096/howto-free-inode-usage</li>
+    </ul>
+  </li>
+  <li>Do
+    <ul>
+      <li>df -ih</li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>sudo find . -xdev -type f</td>
+              <td>cut -d “/” -f 2</td>
+              <td>sort</td>
+              <td>uniq -c</td>
+              <td>sort -n</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>Sigh….</p>

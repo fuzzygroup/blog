@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Multi Threaded Debugging Hell
+category: debugging
+tags: ["ruby", "rails", "threading", "hell"]
+
 ---
 As of late I've been dealing a lot with categorization issues and specifically with respect to failures in a categorization engine that I've written.  What I was confronted with on Friday night was the client saying to me "Well we missed these 400 items" and that's true but we have an input dataset of roughly 2.9 million possible categorization operations.  So according to how this nerd does math:
 

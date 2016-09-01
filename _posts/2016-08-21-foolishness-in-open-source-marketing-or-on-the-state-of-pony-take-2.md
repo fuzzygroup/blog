@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Foolishness in Open Source Marketing or On the State of Pony Take 2
+category: marketing
+tags: ["open source", "pony", "marketing"]
+
 ---
 
 So I was just browsing Hacker News when I ran across a piece titled [On the State of Pony](https://pony.groups.io/g/user/message/618?p=Created,0,,20,2,0,6182872&offset=0) or [discussion](https://news.ycombinator.com/item?id=12331458) and I find myself absolutely **baffled** nay **flummoxed**.  The gist of the situation is that a company, Causality, that was formed to commercialize support offerings for the new Pony language has shut down.  This received a lot of attention due to a post on [LinkedIn](https://www.linkedin.com/pulse/end-causality-constantine-goulimis?trk=hp-feed-article-title-publish).

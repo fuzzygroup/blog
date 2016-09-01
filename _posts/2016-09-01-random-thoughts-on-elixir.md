@@ -22,6 +22,7 @@ If I misquoted anyone I apologize; errors are mine not theirs.
 * /lib/my_app/
 * MyApp.Web.PageController <== new web namespace
 * Generators are changing greatly  - creating a module and functions
+* Umbrella generator for microservices within a phoenix "umbrella"
 
 #Things I came up with:
 

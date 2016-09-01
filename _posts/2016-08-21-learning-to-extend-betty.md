@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Learning to Extend Betty
+category: betty
+tags: ["betty", "ruby"]
+
 ---
 So in my long, long history of using open source, I've never taken the time to formally give back to the community by maintaining anything.  Yes I've blogged.  And I've answered questions and I've damn sure argued for using open source in every job I've had since 1999.  And that is a form of give back but is that really the same?  Recently I saw a Hacker News post on "Projects Looking for Maintainers" and I found something that was personally interesting to me: [Betty](http://github.com/pickhardt/betty.git).  Betty is an NLP interface to your command line and the current author / originator describes it as "Siri for your command line".  That's a really apt description.
 

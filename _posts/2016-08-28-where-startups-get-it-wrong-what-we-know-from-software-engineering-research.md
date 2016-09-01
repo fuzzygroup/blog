@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Where Startups Get It Wrong - What We Know from Software Engineering Research
+category: startup
+tags: ["software engineering", "startup"]
+
 ---
 I never fail to be amazed by the very basic aspects of software engineering that startups get **wrong**.  And we're not talking a little bit wrong here - I'm talking just plain ***staggeringly wrong***.  People always ask me things like "How do you know that?" or "Why are you so certain?".  Well, it really isn't hard: I read and I read everything I can get.  I'm an absolute book-a-holic and here's what my wife says about it: "If I ever die, well, it will be in a bookalanche; crushed by all your books".  Or as I describe it, I'm seeking a 12 step program "I'm Scott and I have a problem (picture a chorus of similar book nerds answering 'Hi Scott')".  I read everything I can find on software engineering, startups, histories of high tech companies and the like.  
 

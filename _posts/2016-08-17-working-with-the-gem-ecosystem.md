@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Working with the Gem Ecosystem
+category: ruby
+tags: ["ruby", "gem"]
+
 ---
 Gems are one of the more magical parts of the Ruby ecosystem.  By packaging software components as easily installable parts of Ruby / Rails, gems allow you to quickly extend your application.  In this blog post, I'm going to teach you how to make your own copy of a gem and then use it locally on your machine.  This isn't hard but it is the kind of thing that works correctly if you precisely follow the directions.  Enjoy!
 

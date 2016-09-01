@@ -1,6 +1,9 @@
 ---
 layout: post
 title: In the World of Containers HoneyBadger Will Reign Supreme - Bye Bye AirBrake
+category: containers
+tags: ["aws", "containers", "docker", "logs", "error messages", "honey badger"]
+
 ---
 
 I spent all day yesterday immersed in [AwsLand](http://aws.amazon.com) and I have to say that its an intriguing, fascinating place.  I've resisted AWS like the black plague for years and now I find myself more intrigued by back end computing that I have been for a long time -- and I really am only a back end guy.  

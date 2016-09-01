@@ -1,0 +1,31 @@
+<p>This is an article in a series that I'll be writing.  The next one may be "Why Engineers Don't Always Do What They're Told".</p>
+<p>Understanding BitRot</p>
+<p>Among software engineers there's a term BitRot.  We don't talk about it all that much and its not well understood but its this: <strong>Bits really do rot</strong>. You write some code. It pulls in some libraries. 3 months later you use it again and despite never having touched that code, it magically doesn't work. Either one of the libraries changed or a Unix permission somewhere went from Foo to Bar or whatever. Even though bits are digitally perfect, they actually decay. Its an entropy thing. So I'm working on the new version of Feedster that will come out *censored* and I keep finding that what I'm doing is <em>familiar</em>. So I grep through the code base and, sure enough, I've done this before. And you what happened? The damn bits rotted on me. So when you manage engineers keep in mind that just because your people wrote code once upon a time, if that code isn't in active use, it may well have rotted away.</p>
+<p>Why Engineers Hate Building Tools</p>
+<p>Now a very, very common case of BitRot is in the area of internally developed tools. You know what I mean -- you have a site that does Bar so you need a little web form or executable that makes Foo easy. So you, generally some non geek, asks a developer to do it for you. Heck <a href="http://www.jamesgross.com/">James</a> did this to me last night. It happens all the time. Now the problem with tools and BitRot is that those tools are never industrial strength. They're always, always last minute efforts that never get thought out well. They tend to break at the drop of a hat or with the slightest breeze. And what happens is the developers themselves never use them so we don't see it when they break. We go and modify some core library which is called by it, change the library calls in the production version of the code and not in the tools.</p>
+<p>So BitRot is one common problem with tools. Another one is that building great tools is actually really, really ***hard***. Now traditionally at Feedster I've done site level administration right at the raw SQL level. I mean its easy right to write this: "UPDATE foo SET BAR=1 WHERE qoo=BAH";. Actually its not easy. But its trivial and I'm used to it. I spend 99% of my every day in Putty logged into up to 35 to 50 different sessions. Yes it is "King of Tabs" meets ssh for "Window Hell". Since I always have access to the server canonically known as "dbwrite" it really hasn't bothered me. But Feedster's not just me anymore (technically it hasn't been for a long time but as our traffic volume rises the # of support incidents rise correspondingly). And since I end up with a bunch of issues forwarded to me, my work load has been rising. So lately I've been on a "Tools Tear" to enable people like <a href="http://jamesgross.com/">James</a> (who is a sales guy and has no relationship to either support or QA but is just helpful as all get out) and Sheldon.</p>
+<p>So you start implementing tools... And the complexity just ***grows***. An example is making minor edits to your site's home page like adding the Feed of the Year contest button to the home page. So you figure:</p>
+<ul>
+<li>sole text field w/a  unique key</li>
+<li>db save and load routines</li>
+</ul>
+<p>That of course then leads to the need for custom styling or presentation attributes that you simply can't predict so you to:</p>
+<ul>
+<li>text field of unlimited size</li>
+<li>contains html</li>
+</ul>
+<p>Then you find out that you need to support edits to pages other than the home page so you write an html UI page which lets someone other than the programmer choose what page to edit. And you load it with the names of the unique keys that represent the pages to edit.</p>
+<p>Then you find out that you have to support a staged environment. This requires a preview ui. It also requires a presentation attribute for "Hot Diggity Damn! This is Ready to Be Served".</p>
+<p>Then don't even get me started on versioning... And yes I do know that changing text on the home page is both mission critical and non trivial but even the smallest tools have real world requirements. I've seen it recently.</p>
+<p>And that's not even taking account issues of login, permissions (not everyone should be able to edit the home page), security holes, etc.</p>
+<p>Tools are complex. Engineers hate to write them, at least in a non resourced way, because we know whether by having thought through them in full or simply knowing intuitively "oh crap here I go again".</p>
+<p><strong>Recommendation: </strong>Its not all lost.  You can do tools right and here's how:</p>
+<ol>
+<li>If you're going to build tools then recognize up front that there are real costs to them.  BitRot is real.</li>
+<li>Assign resources to tools and make building and maintenance of tools the way that <strong>new engineering hires</strong> are trained.  If you're a new hire then you gotta put your time in like anyone else.</li>
+<li>Make the engineers use their own tools! I've now stopped doing "UPDATE foo SET BAR=1 WHERE qoo=BAH" and been using my own tools and its made a huge difference.</li>
+<li>Have one landing page for your tools. If you're a web company -- and who isn't -- then integrate even crappy little tools into your Intranet's main home page or they'll never get used anyway.</li>
+<li>Metrics. And for the special GeekFu bonus round what you want to do is tie metrics into your tools. Why? Well its a lot easier to REFUSE requests for tools if you can say to people "Why Svringar you never used the tools I made last time".</li>
+</ol>
+<p>About Me</p>
+<p>Although these days I'm known mostly as an engineer and I do operate as a CTO / Senior Engineer / Sole Contributor, in a previous existence called Dataware (Chief Technology Strategist; whatever that is) or Mascot Network (VP Eng), I ran large scale project teams.</p>

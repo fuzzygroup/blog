@@ -1,0 +1,19 @@
+<p>Disclaimer: Before you follow this, if you’re using Rails 5, then make damn sure that AuthLogic supports Rails 5.  As of a few weeks ago (mid july 2016) they didn’t and trying to get it to work was an absolute sh*t show (and I say that with regret because I bloody well love authlogic).</p>
+
+<p>This blog post is a quick tutorial on how to do authentication with <a href="https://github.com/binarylogic/authlogic">AuthLogic</a>.  Here’s what you need to do:</p>
+
+<ol>
+  <li>Add authlogic into the gem file.</li>
+  <li>Run bundle install</li>
+  <li>Create a user model. Without this you’ll find that AuthLogic dies with Uninitialized Constant User errors on @user_session = UserSession.new.  There is a low level assumption that a model named user exists.  Fill in the right code here.</li>
+  <li>Create a UserSessions controller.  Add it to routes.  Fill in the right code here.</li>
+  <li>Create a user_session model.  Remember it has to inherit from UserSession &lt; Authlogic::Session::Base not ActiveRecord::Base.  Fill in the right code here.</li>
+  <li>Create a new view in /app/views/user_sessions to capture the username / email and password.</li>
+  <li>Add the routes for /login and /logout i.e. <br />
+match ‘login’ =&gt; ‘user_sessions#new’, :as =&gt; :login, via: [:get, :post]<br />
+match ‘logout’ =&gt; ‘user_sessions#destroy’, :as =&gt; :logout, via: [:get, :post]<br /></li>
+  <li>Add def current_user and def current_user_session to ApplicationController.</li>
+  <li>Add helper_method :current_user_session, :current_user to ApplicationController to allow these to be called from views.</li>
+</ol>
+
+<p>And Bob’s your uncle.  Unlike Devise which is very, very encapsulated, AuthLogic is discrete — you have to have all these steps and without them it flat out will not work.  With them, however, AuthLogic is outstanding and the ability to get under the hood and do whatever you need with authentication simply cannot be beat.</p>

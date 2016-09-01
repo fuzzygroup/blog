@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'jekyll'
 gem 'tmuxinator'
+gem 'jekyll-docs'
 
 group :jekyll_plugins do
   gem "hpricot"
