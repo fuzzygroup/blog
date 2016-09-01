@@ -1,6 +1,9 @@
 ---
 layout: post
 title: MySQL Tip - How do you shut down mysql when you don't use upstart or init.d
+category: mysql
+tags: ["mysql", "sysadmin"]
+
 ---
 When you find yourself uttering statements like:
 

@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Surviving a Detour through MacHell or What to Do When Your Mac Won't Boot
+category: osx
+tags: ["osx"]
+
 ---
 Sigh.  Its been one of those days where every box I touch has blown up spectacularly and going through this taught me some interesting things that I didn’t know (or know specifically how to do) so here are some tips when your Mac won’t boot:
 

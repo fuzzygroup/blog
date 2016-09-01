@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Anatomy of a Business Trip Gone Horribly Wrong
+category: humor
+tags: ["humor", "road warrior"]
+
 ---
 It is damn near a truism that when you have to do something at the very last minute that its not a question of what will go wrong but how many things will go wrong.  I totaled up a list from the trip, to pick up hard drives as part of a datacenter migration, I'm currently on:
 

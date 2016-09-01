@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Curse Your Curly Quotes or Crazy Chef Error Messages
+category: chef
+tags: ["ruby", "curly quotes"]
+
 ---
 One of the reasons that I started blogging and continue to blog* is personal knowledge capture.  My own blog represents the knowledge that I gather during the course of my day to day work.  And that brings us to this crazy error message:
 

@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Archiving HTML Pages to the Database with Compression Using Rails
+category: mysql
+tags: ["ruby", "mysql", "serialize", "compression"]
+
 ---
 I've done this now like 15 times and every single time there is one or more serious gotchas that hold up my implementation so I thought I'd write it all out once and for all.  The problem at hand is:
 

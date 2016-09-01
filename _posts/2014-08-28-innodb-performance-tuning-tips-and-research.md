@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Innodb Performance Tuning Tips and Research
+category: mysql
+tags: ["mysql", "innodb", "performance"]
+
 ---
 MySQL is an astonishing piece of software but its worth noting that it is complex and requires work to really take advantage of.  No where is this more true than in performance tuning.
 

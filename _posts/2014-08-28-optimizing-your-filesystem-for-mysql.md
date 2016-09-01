@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Optimizing Your Filesystem for MySQL
+category: mysql
+tags: ["mysql", "filesystem", "performance"]
+
 ---
 At the lower level of the computer, before most of us think about things, lies the filesystem.  When you grow up originally on a DOS / Windows environment, the filesystem really is "C:\" and you tend not to think about it.  That's a damn restrictive view of the world.  When you're in a Linux environment, as most server side things are these days, the filesystem could be:
 

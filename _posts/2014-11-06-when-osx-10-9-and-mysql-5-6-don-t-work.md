@@ -1,6 +1,9 @@
 ---
 layout: post
 title: When OSX 10.9 + and MySQL 5.6 Don't Work
+category: mysql
+tags: ["mysql", "osx"]
+
 ---
 I recently was traveling and off my trusty home machine and on a new laptop running Mavericks. And I found that when I worked on one of my applications (Hi Jim!), I was getting this error constantly:
 

@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Again the Things I Wish I was Actually Reading instead of Posting
+category: reading
+tags: ["reading", "links"]
+
 ---
 
 Is it legal to mine asteroids?

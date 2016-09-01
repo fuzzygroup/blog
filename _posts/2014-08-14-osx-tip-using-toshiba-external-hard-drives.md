@@ -1,6 +1,9 @@
 ---
 layout: post
 title: OSX Tip - Using Toshiba External Hard Drives
+category: osx
+tags: ["ntfs", "osx"]
+
 ---
 I found myself having to get on a plane today and travel 1,000 odd miles to get about a terabyte of data.  Given the importance of the task, I opted for brand new drives so I dashed to the store and picked up two 3 terabyte Toshiba hard drives and I wanted to verify that they worked prior to travel.  I plugged them in, turned them on and then found that I could NOT write to them.  Digging further into this showed me that they were NTFS and on OSX, NTFS is a read only partition type.  So I tucked into Disk Utility only to find that it could not destroy the NTFS partition.  Sigh.  Happily there's always the command line and with Jared's assistance, I came up with this:
 

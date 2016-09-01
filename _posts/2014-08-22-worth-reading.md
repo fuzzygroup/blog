@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Worth Reading
+category: reading
+tags: ["reading", "links"]
+
 ---
 A handful of interesting links:
 

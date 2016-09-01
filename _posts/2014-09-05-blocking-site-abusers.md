@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Blocking Site Abusers
+category: sysadmin
+tags: ["sysadmin", "ufw", "linux"]
+
 ---
 
 When you run a production web site, and we run many of them then someone is going to run a bot against you and decide to treat your infrastructure poorly.  Normally I have features at the app level (i.e. inside our own codebase) which deals with that but that incurs the cost of:

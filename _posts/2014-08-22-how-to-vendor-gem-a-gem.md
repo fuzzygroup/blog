@@ -1,6 +1,9 @@
 ---
 layout: post
 title: How to Vendor Gem a Gem
+category: ruby
+tags: ["ruby", "gem", "vendor gem"]
+
 ---
 Gems offer prebuilt software components for the Ruby / Rails space.  What they don't offer, when used as a gem, is the ability to modify their source code.  Unlike a traditional Rails plugin which was installed into your application tree, gems tend to exist in a magical, hidden bundle location.  When you can do, however, is "vendor gem" them so that you can easily modify / update them.  Ideally we'd all make our changes as pull requests against the canonical git repo but sometimes there isn't time.  So here are the steps:
 

@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Road Warrior Tips - Use Your iPad as GPS When Traveling and More
+category: road warrior
+tags: ["ipad", "road warrior", "gps"]
+
 ---
 I've been a work from home consultant now since 2010 (since eduFire failed to raise its series A round).  And, as such, I haven't done much travel / "Road Warrior" activities.  Now, in the span of two weeks, I find myself on the road again and here are the first things I've learned:
 

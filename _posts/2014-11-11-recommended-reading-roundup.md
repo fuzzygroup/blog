@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Recommended Reading Roundup
+category: reading
+tags: ["reading", "links"]
+
 ---
 
 Its that time again where I close every bloody tab across my FireFox windows so here goes:

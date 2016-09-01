@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Things I'm Not Reading But I Wish I Was
+category: reading
+tags: ["reading", "links"]
+
 ---
 Let's be honest here -- it is time to close out browser tabs open longer than a week:
 

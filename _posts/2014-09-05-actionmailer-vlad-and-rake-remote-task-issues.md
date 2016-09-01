@@ -1,6 +1,9 @@
 ---
 layout: post
 title: ActionMailer, Vlad and Rake Remote Task Issues
+category: actionmailer
+tags: ["actionmailer", "ruby", "vlad"]
+
 ---
 
 We recently had a situation where adding a UserMailer to a new Rails 4 app (really a tiny one) led to conflicts with "domain" and Rake Remote Task in Production.   The issue turned out to be a problem tied to Vlad.  Seattle RB argued for "Turn off autoload for vlad" and that it was really a bundler issue.  Unfortunately, as is all to common, they did not say how to do that.  Happily there is an easy work around -- run Vlad only on development boxes -- put it in a development group in gem file so you have:

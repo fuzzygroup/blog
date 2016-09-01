@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Wednesday's Worth Reading
+category: reading
+tags: ["reading", "links"]
+
 ---
 
 Here are some interesting things I'm currently digesting:

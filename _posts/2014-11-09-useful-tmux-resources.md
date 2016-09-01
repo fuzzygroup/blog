@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Useful Tmux Resources
+category: tmux
+tags: ["tmux"]
+
 ---
 Thanks to ongoing help from Dv, I continue to expand my usage of Tmux / Tmuxinator.  Here are some useful resources:
 

@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Things I'm Not Reading But I Wish I Was
+category: reading
+tags: ["reading", "links"]
+
 ---
 Sigh:
 

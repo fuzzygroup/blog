@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Things I'm Again Not Reading
+category: reading
+tags: ["reading", "links"]
+
 ---
 Another wednesday, another set of things I wish I was reading:
 

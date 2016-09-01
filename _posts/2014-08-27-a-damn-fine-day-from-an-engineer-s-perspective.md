@@ -1,6 +1,9 @@
 ---
 layout: post
 title: A Damn Fine Day from an Engineer's Perspective
+category: optimization
+tags: ["ruby", "optimization", "performance"]
+
 ---
 Before
 <pre>

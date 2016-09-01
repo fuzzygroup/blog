@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Fixing Tmux So it Loads Window Names from tmuxinator config files
+category: tmux
+tags: ["tmux", "tmuxinator"]
+
 ---
 Dv hooked me on using Tmuxinator with iTerm 2 as a way of getting my rampant terminal usage under control and while it still makes me swear like a sailor from time to time, I found that if you add this to your ~/.tmux.conf file:
 
