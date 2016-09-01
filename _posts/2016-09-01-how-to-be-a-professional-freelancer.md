@@ -22,6 +22,6 @@ The biggest question everyone has is "how do you get gigs?"  This is the freelan
 
 And that's just 2 examples.  There are dozens of examples if not hundreds.  Finally you want to network **fiercely**.  That doesn't just mean LinkedIn and Twitter.  Go out and talk to people.  Do meetups if you have to but its always best to talk to non digital folk.  Just as an example, I recently found out that my next door neighbor is a Vice President at Sales Force.  I know it sounds a bit scummy but I have to think that knowing him, in addition to being a good neighbor, is worthwhile.  Heck my kids play with his kids; if I didn't get to know him I'd be an ass.  
 
-{.center}
+{:.center}
 Gigs are all around you!
 
