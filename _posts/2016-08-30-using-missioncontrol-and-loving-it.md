@@ -40,6 +40,14 @@ Where this always falls down is generally communications - mail or instant messa
 
 Yes.  No disagreement - setting this up is a pain.  As [people who know me well](http://dasari.me), I don't reboot my machines often or easily.  My normal uptime on a laptop is usually north of 70 or 80 days.  I felt that this was important enough that I rebooted today to install Total Spaces without any reservation.  High praise for me.  For the first time in a long time it doesn't feel like context switching between projects, something I do constantly, is a burden.  Overall **Recommended**.
 
+## Resources
+Here are some useful links:
+
+* [https://support.apple.com/kb/PH21872?locale=en_US](https://support.apple.com/kb/PH21872?locale=en_US)
+* [http://superuser.com/questions/986669/osx-el-capitan-spaces-bar-show-expanded-window-thumbnails-previews-by-defaul](http://superuser.com/questions/986669/osx-el-capitan-spaces-bar-show-expanded-window-thumbnails-previews-by-defaul)
+* [http://apple.stackexchange.com/questions/211954/how-can-i-name-desktops-spaces-in-el-capitan](http://apple.stackexchange.com/questions/211954/how-can-i-name-desktops-spaces-in-el-capitan)
+* [http://osxdaily.com/2011/10/26/use-different-desktop-background-pictures-for-spaces-in-mac-os-x-lion/](http://osxdaily.com/2011/10/26/use-different-desktop-background-pictures-for-spaces-in-mac-os-x-lion/)
+* 
 ## Shout out 
 
 Thanks to my buddy [Dv](http://dasari.me/) who helped with Markdown and CSS issues.  Appreciated.
