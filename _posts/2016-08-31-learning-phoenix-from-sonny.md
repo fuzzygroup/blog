@@ -12,6 +12,8 @@ Below are my roughly stream of consciousness notes from [Sonny Scrogson's Taking
 
 My version of the class repo is here: [https://github.com/fuzzygroup/taking-off-with-phoenix](https://github.com/fuzzygroup/taking-off-with-phoenix)  I put JSJ in the code where there was something I thought important enough to remember.  Bear in mind that I'm still new to Elixir.
 
+I added screenshots at the bottom for all of the screen shots showing errors / surprising things.  When you see big blanks that means that nothing was output.
+
 
 # Quick Links:
 * [Phoenix](http://www.phoenixframework.org)
@@ -461,3 +463,64 @@ Workshop.User.changeset
 
 
 Workshop.Repo.get_by([email: "fuzzygroup@gmail.com"])
+
+# Screenshots
+
+This was the progress of error messages we all saw as we went thru the training.
+
+{:.center}
+![taking_on_phoenix_screen_01.png](/blog/assets/taking_on_phoenix_screen_01.png)
+
+{:.center}
+![taking_on_phoenix_screen_02.png](/blog/assets/taking_on_phoenix_screen_02.png)
+
+{:.center}
+![taking_on_phoenix_screen_03.png](/blog/assets/taking_on_phoenix_screen_03.png)
+
+{:.center}
+![taking_on_phoenix_screen_04.png](/blog/assets/taking_on_phoenix_screen_04.png)
+
+{:.center}
+![taking_on_phoenix_screen_05.png](/blog/assets/taking_on_phoenix_screen_05.png)
+
+{:.center}
+![taking_on_phoenix_screen_06.png](/blog/assets/taking_on_phoenix_screen_06.png)
+
+{:.center}
+![taking_on_phoenix_screen_07.png](/blog/assets/taking_on_phoenix_screen_07.png)
+
+{:.center}
+![taking_on_phoenix_screen_08.png](/blog/assets/taking_on_phoenix_screen_08.png)
+
+{:.center}
+![taking_on_phoenix_screen_09.png](/blog/assets/taking_on_phoenix_screen_09.png)
+
+{:.center}
+![taking_on_phoenix_screen_10.png](/blog/assets/taking_on_phoenix_screen_10.png)
+
+{:.center}
+![taking_on_phoenix_screen_11.png](/blog/assets/taking_on_phoenix_screen_11.png)
+
+{:.center}
+![taking_on_phoenix_screen_12.png](/blog/assets/taking_on_phoenix_screen_12.png)
+
+{:.center}
+![taking_on_phoenix_screen_13.png](/blog/assets/taking_on_phoenix_screen_13.png)
+
+{:.center}
+![taking_on_phoenix_screen_14.png](/blog/assets/taking_on_phoenix_screen_14.png)
+
+{:.center}
+![taking_on_phoenix_screen_15.png](/blog/assets/taking_on_phoenix_screen_15.png)
+
+{:.center}
+![taking_on_phoenix_screen_16.png](/blog/assets/taking_on_phoenix_screen_16.png)
+
+{:.center}
+![taking_on_phoenix_screen_17.png](/blog/assets/taking_on_phoenix_screen_17.png)
+
+{:.center}
+![taking_on_phoenix_screen_18.png](/blog/assets/taking_on_phoenix_screen_18.png)
+
+{:.center}
+![taking_on_phoenix_screen_19.png](/blog/assets/taking_on_phoenix_screen_19.png)
