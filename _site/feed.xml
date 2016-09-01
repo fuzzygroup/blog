@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 01 Sep 2016 11:48:13 -0400</pubDate>
-    <lastBuildDate>Thu, 01 Sep 2016 11:48:13 -0400</lastBuildDate>
+    <pubDate>Thu, 01 Sep 2016 15:56:39 -0400</pubDate>
+    <lastBuildDate>Thu, 01 Sep 2016 15:56:39 -0400</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -49,7 +49,7 @@
     
       <item>
         <title>Random Thoughts on Elixir</title>
-        <description>&lt;p&gt;#Things overheard in conversations:&lt;/p&gt;
+        <description>&lt;h1 id=&quot;things-overheard-in-conversations&quot;&gt;Things overheard in conversations:&lt;/h1&gt;
 
 &lt;ul&gt;
   &lt;li&gt;datetime support is still a mess; the erlang libs are just as bad; Just rely on a unix timestamp on the box and manipulate it yourself (Pete)&lt;/li&gt;
@@ -60,7 +60,7 @@
 
 &lt;p&gt;If I misquoted anyone I apologize; errors are mine not theirs.&lt;/p&gt;
 
-&lt;p&gt;#Official Things - Phoenix 1.3 Changes:&lt;/p&gt;
+&lt;h1 id=&quot;official-things---phoenix-13-changes&quot;&gt;Official Things - Phoenix 1.3 Changes:&lt;/h1&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Directory structure changes:
@@ -75,7 +75,7 @@
   &lt;li&gt;Umbrella generator for microservices within a phoenix “umbrella”&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;#Things I came up with:&lt;/p&gt;
+&lt;h1 id=&quot;things-i-came-up-with&quot;&gt;Things I came up with:&lt;/h1&gt;
 
 &lt;ul&gt;
   &lt;li&gt;One thing that concerns me is the ability to parachute into an Elixir project and work on it.  Say what you want about Rails but its standard nature has made it very easy for a consultant to drop in on a project and fix it.  I’m less sure about that with Elixir.&lt;/li&gt;
@@ -110,6 +110,46 @@
         
         
         <category>elixir</category>
+        
+      </item>
+    
+      <item>
+        <title>How to Turn Off Rails 5 Default Foreign Key Migrations</title>
+        <description>&lt;p&gt;I could swear that I’ve written this down before but I can’t find it now and, as usual, I blog as much for myself as I do for anyone else.  When Rails 5 came out it made foreign key migrations standard and that, as any major change, bites lots of existing users.  It certainly has me.  Here’s how to turn it off:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Turn off your server.&lt;/li&gt;
+  &lt;li&gt;Create an initializer in config/initializers named active_record_belongs_to_required_by_default.rb  You could also name it “you_suck_rails.rb” (yeah I’m at ElixirCon so hitting this, today, is beyond bitter).&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Add this content:&lt;/p&gt;
+
+    &lt;p&gt;#Be sure to restart your server when you modify this file.&lt;/p&gt;
+
+    &lt;p&gt;#Require &lt;code class=&quot;highlighter-rouge&quot;&gt;belongs_to&lt;/code&gt; associations by default. This is a new Rails 5.0&lt;/p&gt;
+
+    &lt;p&gt;#default, so it is introduced as a configuration option to ensure that apps&lt;/p&gt;
+
+    &lt;p&gt;#made on earlier versions of Rails are not affected when upgrading.&lt;/p&gt;
+
+    &lt;p&gt;Rails.application.config.active_record.belongs_to_required_by_default = false&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+        <pubDate>Thu, 01 Sep 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/rails/2016/09/01/how-to-turn-off-rails-5-default-foreign-key-migrations.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails/2016/09/01/how-to-turn-off-rails-5-default-foreign-key-migrations.html</guid>
+        
+        <category>rails</category>
+        
+        <category>mysql</category>
+        
+        <category>migration</category>
+        
+        <category>foreign key</category>
+        
+        
+        <category>rails</category>
         
       </item>
     
@@ -883,79 +923,6 @@ end&lt;/p&gt;
         
         
         <category>humor</category>
-        
-      </item>
-    
-      <item>
-        <title>Using Mission Control and Loving It</title>
-        <description>&lt;p&gt;Once upon a time, in 2000, when I was out of work I spent a lot of time using Red Hat linux on a old ThinkPad running XFCE where I was lucky enough to make virtual desktops work.  Partitioning what I was working on physically away from everything else just made sense.  I haven’t had that since but I do today and I’m loving it.  Here’s what I’m using:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;OSX Capitan&lt;/li&gt;
-  &lt;li&gt;Mission Control&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://totalspaces.binaryage.com/elcapitan&quot;&gt;Total Spaces From Binary Age&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Out of the box, Mission Control is one of those bits of infuriatingly good Apple products that make you want to rend your clothing and weep salty tears.  The default user interface for Mission Control is simple – you can have all the virtual desktops you want but you can’t actually give them names.  Yes there are workarounds like “&lt;a href=&quot;http://apple.stackexchange.com/questions/211954/how-can-i-name-desktops-spaces-in-el-capitan&quot;&gt;create an image and assign it as a background with the name of the desktop on the image and use a different color for each&lt;/a&gt;”.  That works ok but when you have a lot of windows then you can’t see the name so you’re looking at edges of the screen and trying to guess the color.  Overall the lack of a human readable name strikes me as one of the more user vicious ideas from Apple in a long time.&lt;/p&gt;
-
-&lt;p&gt;What Total Spaces does is require you to turn off System Integrity Protection so it can inject code into OSX itself to enable features like these:&lt;/p&gt;
-
-&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;http://imgur.com/mSbCNPb.png&quot; alt=&quot;Menu for Selecting Between Desktops&quot; /&gt;&lt;/p&gt;
-
-&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;http://i.imgur.com/gIlXZ2I.png&quot; alt=&quot;Admin Tool&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Using Mission Control takes some getting used to.  Here’s the process:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Install Total Spaces.  Its ok.  Even I did what it asked without any issues.  I also installed &lt;a href=&quot;http://w0lfschild.github.io/app_cDock.html&quot;&gt;CDock&lt;/a&gt; at the same time.&lt;/li&gt;
-  &lt;li&gt;Turn on Misson Control.&lt;/li&gt;
-  &lt;li&gt;Create virtual desktops that reflect your logical contexts.  For example I use iTerminal window #3 for all my writing and blogging so I made that #3 in Mission Control.&lt;/li&gt;
-  &lt;li&gt;If you have a pile o’ windows like I tend to then you’re in for an annoying task - moving all of them, generally one by one, to a the correct virtual desktop.  Do this as follows:
-    &lt;ul&gt;
-      &lt;li&gt;click with the mouse in the Window’s title bar&lt;/li&gt;
-      &lt;li&gt;press the control key and hold it down&lt;/li&gt;
-      &lt;li&gt;press an arrow key (right or left) to &lt;em&gt;slide&lt;/em&gt; the window into the right virtual desktop.  Yes its screwy but it really does work.  Supposedly you can “Drag the window to the edge of the screen. After a moment, the window moves to the next space” but that, &lt;a href=&quot;https://support.apple.com/kb/PH21872?locale=en_US&quot;&gt;documented technique&lt;/a&gt;, has never once worked for me.  But I also installed Total Spaces and removed SIP so who knows why.  It could well be me.  You can also use the Mission Control UI and drag and drop to another desktop but oddly while I don’t like the mouse + control + arrow keys, it feels better to me.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;but-what-about-communications&quot;&gt;But What About Communications?&lt;/h2&gt;
-
-&lt;p&gt;Where this always falls down is generally communications - mail or instant message or slack.  These are apps, that when they chime, you don’t want to them be hidden or you, like me, will go “&amp;amp;&lt;em&gt;()#$&lt;/em&gt;#($#) where is it!!!”  CTRL+CLICK on the app’s Dock icon and then you can bind the app to either all desktops or this desktop.  Very helpful. You can even go so far as to pick a single Safari window and bind it to all desktops. Great for mail or if, like me, you use a &lt;a href=&quot;http://gist.github.com/&quot;&gt;gist&lt;/a&gt; as a simple way to transfer text snippets across machines.&lt;/p&gt;
-
-&lt;h2 id=&quot;this-is-a-pain-but-recommended&quot;&gt;This is a Pain But Recommended&lt;/h2&gt;
-
-&lt;p&gt;Yes.  No disagreement - setting this up is a pain.  As &lt;a href=&quot;http://dasari.me&quot;&gt;people who know me well&lt;/a&gt;, I don’t reboot my machines often or easily.  My normal uptime on a laptop is usually north of 70 or 80 days.  I felt that this was important enough that I rebooted today to install Total Spaces without any reservation.  High praise for me.  For the first time in a long time it doesn’t feel like context switching between projects, something I do constantly, is a burden.  Overall &lt;strong&gt;Recommended&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;resources&quot;&gt;Resources&lt;/h2&gt;
-&lt;p&gt;Here are some useful links:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://support.apple.com/kb/PH21872?locale=en_US&quot;&gt;https://support.apple.com/kb/PH21872?locale=en_US&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://superuser.com/questions/986669/osx-el-capitan-spaces-bar-show-expanded-window-thumbnails-previews-by-defaul&quot;&gt;http://superuser.com/questions/986669/osx-el-capitan-spaces-bar-show-expanded-window-thumbnails-previews-by-defaul&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://apple.stackexchange.com/questions/211954/how-can-i-name-desktops-spaces-in-el-capitan&quot;&gt;http://apple.stackexchange.com/questions/211954/how-can-i-name-desktops-spaces-in-el-capitan&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://osxdaily.com/2011/10/26/use-different-desktop-background-pictures-for-spaces-in-mac-os-x-lion/&quot;&gt;http://osxdaily.com/2011/10/26/use-different-desktop-background-pictures-for-spaces-in-mac-os-x-lion/&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;
-    &lt;h2 id=&quot;shout-out&quot;&gt;Shout out&lt;/h2&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Thanks to my buddy &lt;a href=&quot;http://dasari.me/&quot;&gt;Dv&lt;/a&gt; who helped with Markdown and CSS issues.  Appreciated.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 30 Aug 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/osx/2016/08/30/using-missioncontrol-and-loving-it.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/osx/2016/08/30/using-missioncontrol-and-loving-it.html</guid>
-        
-        <category>osx</category>
-        
-        <category>mission_control</category>
-        
-        <category>total_spaces</category>
-        
-        <category>virtual_desktops</category>
-        
-        
-        <category>osx</category>
         
       </item>
     

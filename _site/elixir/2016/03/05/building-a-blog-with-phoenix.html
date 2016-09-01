@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Random Thoughts on Elixir</title>
-  <meta name="description" content="Things overheard in conversations:">
+  <title>Building a Blog with Phoenix</title>
+  <meta name="description" content="Once upon a time the quintessential learning project was hello world.  Now that’s not enough and its “Build a Blog”.  Well it was good enough to launch Ruby ...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/elixir/2016/09/01/random-thoughts-on-elixir.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/elixir/2016/03/05/building-a-blog-with-phoenix.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
 </head>
 
@@ -69,61 +69,33 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Random Thoughts on Elixir</h1>
-    <p class="post-meta"><time datetime="2016-09-01T00:00:00-04:00" itemprop="datePublished">Sep 1, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">Building a Blog with Phoenix</h1>
+    <p class="post-meta"><time datetime="2016-03-05T16:05:13-05:00" itemprop="datePublished">Mar 5, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h1 id="things-overheard-in-conversations">Things overheard in conversations:</h1>
-
-<ul>
-  <li>datetime support is still a mess; the erlang libs are just as bad; Just rely on a unix timestamp on the box and manipulate it yourself (Pete)</li>
-  <li>deal with deployment at the container level; don’t do native deployment (Ben)</li>
-  <li>whenever possible pick a stable Erlang library over an immature hex project (Ian)  <a href="https://github.com/gamache?tab=repositories">Pete’s libraries</a> are an exception; he’s using them in production.</li>
-  <li>tests run so fast (and concurrently) that you’ve lost your “Go get a coffee” excuse while the test runs break.  Damn.  (Ian)</li>
-</ul>
-
-<p>If I misquoted anyone I apologize; errors are mine not theirs.</p>
-
-<h1 id="official-things---phoenix-13-changes">Official Things - Phoenix 1.3 Changes:</h1>
-
-<ul>
-  <li>Directory structure changes:
-    <ul>
-      <li>/web</li>
-      <li>/model</li>
-    </ul>
-  </li>
-  <li>/lib/my_app/</li>
-  <li>MyApp.Web.PageController &lt;== new web namespace</li>
-  <li>Generators are changing greatly  - creating a module and functions</li>
-  <li>Umbrella generator for microservices within a phoenix “umbrella”</li>
-</ul>
-
-<h1 id="things-i-came-up-with">Things I came up with:</h1>
-
-<ul>
-  <li>One thing that concerns me is the ability to parachute into an Elixir project and work on it.  Say what you want about Rails but its standard nature has made it very easy for a consultant to drop in on a project and fix it.  I’m less sure about that with Elixir.</li>
-  <li>When you don’t fully understand the syntax yet (and you won’t if you’re like most of us) then you can ctrl+c ctrl+c in and out of console to test that your code is right (<strong>iex -S mix)</strong>.  Since Elixir is compiled, just bringing up the repl means it works</li>
-  <li>Elixir is all over the place.  I’ve met more people from, well, <strong>insert generic middle of the country location</strong> than I have from San Francisco.  That’s damn odd for a cutting edge technology.  I don’t know what it says about San Francisco.</li>
-  <li>
-    <p>Because the elixir language is implemented as macros instead of as language constructs, there are some syntactical oddities that mess you up.  Here’s an example:</p>
-
-    <p>&lt;%= if @current_user do %&gt;
-    # do something
-  &lt;% else %&gt;
-    # do something ese
-  &lt;% end %&gt;</p>
-  </li>
-  <li>Coming from a rails perspective you’d expect that to be &lt;% if %&gt;    not &lt;%= %&gt;</li>
-  <li>Immutable, Immutable, Immutable (just to remind myself)</li>
-  <li>Pattern matching over conditionals.  Ok this one was from Sonny as part of the Phoenix class.  Yesterday in that class we build a login system with only 1 if / else block.  Astonishing.</li>
-  <li>The lack of a prebuilt login system is astonishing.  Yes we built one ourselves and did it pretty easily but that’s not the same as “we should have done it”.  There are so many edge cases in authentication that I tend to shy away from it.  Wolfram Arnold taught me this on my very first Rails gig and it remains as good advice now as it was then.</li>
-  <li>The generators in Phoenix are astonishingly good.  Wow.</li>
-</ul>
-
-<p>I’ll update this as the conference runs.</p>
-
+    <p>Once upon a time the quintessential learning project was hello world.  Now that’s not enough and its “Build a Blog”.  Well it was good enough to launch Ruby on Rails to its hallowed position so its likely good enough for Elixir and Phoenix.  I found the <a href="http://codetunes.com/2015/phoenix-blog/">CodeTunes tutorial</a> by google for “elixir blog” when I was actually looking for people blogging about Elixir but let’s get started.  </p>
+<h2>Issue 1: The Babelrc Debacle or es2015 alas...</h2>
+<p>So I ran thru the initial setup and generated the project skeleton.  When I looked at in a browser I noticed that the entire asset pipeline was missing and I was getting errors in the console like this:</p>
+<p style="margin:0;font-size:12px;font-family:'Andale Mono';color:#29f914;background-color:#000000;">05 Mar 09:29:34 - <span style="color:#c33720;">error</span>: Compiling of web/static/js/app.js failed. Couldn't find preset "es2015" relative to directory "/Users/sjohnson/elixir/phoenix" ; Compiling of web/static/js/socket.js failed. Couldn't find preset "es2015" relative to directory "/Users/sjohnson/elixir/phoenix"</p>
+<p>I’ve seen this before when I blew about 3 hours on my first attempt to get anything working with Elixir which ultimately resulted in my creating and closing a <a href="https://github.com/phoenixframework/phoenix/issues/1574">github issue</a> on this topic.</p>
+<p>Here’s the solution:</p>
+<ol>
+<li>touch .babelrc</li>
+<li>vi .babelrc</li>
+<li>Add this line:</li>
+<li><span style="color:#29f914;font-family:'Andale Mono';font-size:12px;background-color:#000000;">{ "presets": ["es2015"] }</span></li>
+</ol>
+<p> Overall this looks a lot like something that, at least for now, you have to do <strong>every time</strong> you create an Elixir application at least if you want the asset pipeline to work.  There’s a <a href="https://www.reddit.com/r/elixir/comments/471rc2/programming_phoenix_step_1_erlang_step_2_elixir/">long and furious rant</a> related to the use of node / brunch over in /r/elixir and while the original poster’s message was lost in his rage, the basic point that here with something new and yet cargo culting over big parts of technology.  Yes node works and yes brunch works and, no, no one wants to rewrite the asset pipeline crap from scratch but this is at least part of the result.  Something to think about.</p>
+<h2>Other Issues</h2>
+<p>In working thru this tutorial I made a number of syntactic mistakes that made me recall the days of learning Rails.  Normal stuff including the "Fix protocol Ecto.Queryable not implemented error” which was a bit mysterious but <a href="http://stackoverflow.com/questions/27671867/fix-protocol-ecto-queryable-not-implemented-error">Stack Overflow</a> cleared up.  The issue was that I had started with this:</p>
+<pre>def index(conn, _params) do<br /> posts = Repo.all(Post)<br />end</pre>
+<p>to which i added a pipeline like this:</p>
+<pre>def index(conn, _params) do<br /> posts = Repo.all(Post)<br /> |&gt; Post.count_comments<br /> |&gt; Repo.all<br /> render(conn, "index.html", posts: posts)<br /> end</pre>
+<p>but that really should have been this:</p>
+<pre>def index(conn, _params) do<br /> posts = Post<br /> |&gt; Post.count_comments<br /> |&gt; Repo.all<br /> render(conn, "index.html", posts: posts)<br />end</pre>
+<h2>Phoenix and Battery Life</h2>
+<p>One other thing I noticed is that the constant live reloading really pulls down my battery life on my Macbook Air.  Where I normally can work for several hours, I found myself down to 20% battery after only two hours.</p>
 
   </div>
 

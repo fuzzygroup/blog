@@ -5,7 +5,7 @@ category: elixir
 tags: ["elixir", "elixirconf"]
 ---
 
-#Things overheard in conversations:
+# Things overheard in conversations:
 
 * datetime support is still a mess; the erlang libs are just as bad; Just rely on a unix timestamp on the box and manipulate it yourself (Pete)
 * deal with deployment at the container level; don't do native deployment (Ben)
@@ -14,7 +14,7 @@ tags: ["elixir", "elixirconf"]
 
 If I misquoted anyone I apologize; errors are mine not theirs.
 
-#Official Things - Phoenix 1.3 Changes:
+# Official Things - Phoenix 1.3 Changes:
 
 * Directory structure changes:
   * /web
@@ -24,7 +24,7 @@ If I misquoted anyone I apologize; errors are mine not theirs.
 * Generators are changing greatly  - creating a module and functions
 * Umbrella generator for microservices within a phoenix "umbrella"
 
-#Things I came up with:
+# Things I came up with:
 
 * One thing that concerns me is the ability to parachute into an Elixir project and work on it.  Say what you want about Rails but its standard nature has made it very easy for a consultant to drop in on a project and fix it.  I'm less sure about that with Elixir.
 * When you don't fully understand the syntax yet (and you won't if you're like most of us) then you can ctrl+c ctrl+c in and out of console to test that your code is right (**iex -S mix)**.  Since Elixir is compiled, just bringing up the repl means it works
