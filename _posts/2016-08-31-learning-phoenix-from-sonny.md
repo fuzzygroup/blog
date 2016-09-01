@@ -18,13 +18,13 @@ Below are my roughly stream of consciousness notes from [Sonny Scrogson's Taking
 
 Mix is the equvalent of bundler, the rails executable and rake:
 
-* mix help | grep phoenix.gen
+* mix help \| grep phoenix.gen
 * mix phoenix.gen.html User users name email inserted_at --no-model
 * mix phoenix.gen.html Post posts title body:text user_id:references:users
 * mix ecto.migrate
 * mix phoenix.gen.json Post posts title body:text user_id:references:users
 * iex -S mix
-* mix help | grep ecto
+* mix help \| grep ecto
 * mix ecto                 # Prints Ecto help information
 * mix ecto.create          # Creates the repository storage
 * mix ecto.drop            # Drops the repository storage
