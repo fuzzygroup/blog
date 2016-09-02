@@ -1,6 +1,6 @@
 ---
 layout: post
-title: What Matt Mullenweg Taught Me
+title: Startup Learnings - What Matt Mullenweg Taught Me
 category: ["startup"]
 tags: ["startup", "learnings", "entrepreneurship"]
 ---
