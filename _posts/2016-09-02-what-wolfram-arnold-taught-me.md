@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Software Engineering Learnings - What Wolfram Arnold Taught Me
-category: software Engineering
+category: software engineering
 tags: ["startup", "learnings", "entrepreneurship", "feedster", "software engineering"]
 
 ---
