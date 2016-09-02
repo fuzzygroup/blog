@@ -49,7 +49,7 @@ Here we generate all the categories.
   {% if post.category contains ct %}
   <li>
     <h3>
-      <a href="{{ post.url }}">
+      <a href="{{ site.baseurl }}{{ post.url }}">
         <strong>{{ post.title }}</strong>
         -- <small>{{ post.date | date_to_string }}</small> -- 
       </a>
@@ -69,12 +69,13 @@ Here we generate all the categories.
   {% unless post.category %}
   <li>
     <h3>
-      <a href="{{ post.url }}">
+      <a href="/blog/{{ post.url }}">
         <strong>{{ post.title }}</strong>
         -- <small>{{ post.date | date_to_string }}</small> -- 
       </a>
       {% for tag in post.tags %}
-      <strong><a class="codinfox-tag-mark" href="/blog/tag/#{{ tag | slugify }}">{{ tag }}</a></strong>
+      
+      <strong><a class="codinfox-tag-mark" href="{{ site.baseurl }}/tag/#{{ tag | slugify }}">{{ tag }}</a></strong>
       {% endfor %}
     </h3>
   </li>

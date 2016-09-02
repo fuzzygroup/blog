@@ -18,5 +18,5 @@ I could swear that I've written this down before but I can't find it now and, as
 
     #made on earlier versions of Rails are not affected when upgrading.
 
-    Rails.application.config.active_record.belongs_to_required_by_default = false
+        Rails.application.config.active_record.belongs_to_required_by_default = false
 
