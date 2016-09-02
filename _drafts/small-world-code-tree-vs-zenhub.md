@@ -19,3 +19,4 @@ Here are some thoughts:
 * **marketing materials**.  CodeTree's site looks awful on an iPhone.  That impacts nothing on the tool itself but when you're considering tooling and looking the site on an iPhone, well, appearance counts.
 * **browser support**.  ZenHub is tied heavily to Chrome as a browser.  That concerns me a lot because I use a bunch of different machines, iPad and such.  CodeTree doesn't seem to have such limitations.
 * **pricing**.
+* **failings**. Honestly both of these products have what I feel is the same failing -- an inability to create an issue at project view.  Both 

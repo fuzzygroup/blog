@@ -21,6 +21,8 @@ I've got a new hire coming for the first time in a long while so I thought it wa
 Each is discussed more below.
 
 ## Learn Your Boss' Technical Weaknesses
+Even the very smartest of us have places where we're weak.  I once knew one Windows API programmer would could do anything **except** string manipulation.  Ask him to do a substring operation and he'd reach out to his "string buddy" who just did it for him.  Personally I tend to be weak on data validation.  And 
+
 And if you can't figure them out then why not ask?
 ## There's a Reason for Everything
 Don't assume people are stupid; t
