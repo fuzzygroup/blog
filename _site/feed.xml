@@ -6,9 +6,46 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 01 Sep 2016 15:56:39 -0400</pubDate>
-    <lastBuildDate>Thu, 01 Sep 2016 15:56:39 -0400</lastBuildDate>
+    <pubDate>Thu, 01 Sep 2016 23:42:08 -0400</pubDate>
+    <lastBuildDate>Thu, 01 Sep 2016 23:42:08 -0400</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Startup Learnings - What Matt Mullenweg Taught Me</title>
+        <description>&lt;p&gt;WordPress, today, is an unquestioned king of the Internet.  I just checked the stats and WP 4.6 has been downloaded over &lt;a href=&quot;https://wordpress.org/download/counter/&quot;&gt;7 million times&lt;/a&gt; (and you can watch the number increase).  I remember, however, a time when its dominance wasn’t so clear – I remember being at the launch party for either &lt;a href=&quot;https://codex.wordpress.org/WordPress_Versions&quot;&gt;.72 or 1.0&lt;/a&gt; when things weren’t so clear.  But I suspect that I’m rambling now – long day.  Anyway, even when WP’s ascendancy wasn’t so clear, I always thought that &lt;a href=&quot;https://ma.tt/&quot;&gt;Matt Mullenweg&lt;/a&gt; himself was the real deal. He clearly knew what he was doing and &lt;a href=&quot;https://en.wikipedia.org/wiki/Matt_Mullenweg&quot;&gt;his history since 2004&lt;/a&gt; certainly bears that out.&lt;/p&gt;
+
+&lt;p&gt;In the very early days of WordPress.com I remember talking to Matt about how they were handling the database implementation and he told me that WordPress.com was just architected just like WordPress itself – a single database per user.  I looked at that decision, to myself, a bit aghast.  After all, I was a &lt;em&gt;software developer&lt;/em&gt;, so I knew that you had only a single database per application.  Boy was I wrong.  At the time I had a traditional software guy’s perspective on the database – big, expensive, resource intensive – so you limited the database’s use.  However, I suspect, Matt looked at the database from the perspective of shared hosting.  Hosting companies routinely run thousands, if not tens of thousands of databases, on boxes to support customers on cheap hosting.  And, if they could do it, why couldn’t he?  And what a damn brilliant decision that was:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;By logically isolating each customer’s data from the other, he utterly avoided a whole class of scaling problem – data gets too big – move the whole account to a better server.&lt;/li&gt;
+  &lt;li&gt;Ever notice that while there are security holes in WordPress itself, they never seem to be a big deal for WordPress.com?  Well this is why.  Breaches are contained.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I’d argue that this single design decision dramatically affected WordPress’s success.  People don’t often thing about software architecture decisions making the difference between commercial success and failure but I was there and I’m pretty damn certain of this.  Now Matt would have been fine no matter what but this one decision, I’ve always thought, helped ensure the success of the overall WordPress enterprise.&lt;/p&gt;
+
+&lt;p&gt;Now Matt certainly isn’t the only one who has done this.  Down the road I’d see the same issue at &lt;a href=&quot;https://en.wikipedia.org/wiki/Brad_Fitzpatrick&quot;&gt;Brad Fitzpatrick’s&lt;/a&gt; LiveJournal.  And it wouldn’t surprise me if Brad actually did it first since Brad usually has done everything first.  I’d also consult on a similar architecture when I worked at StreamSend where I saw the harder side of managing such an architecture – rolling deploys and database migrations.&lt;/p&gt;
+
+&lt;p&gt;Notes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Please note that I have no idea if WordPress.com still uses this same structure today.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Thu, 01 Sep 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/startup/2016/09/01/what-matt-mullenweg-taught-me.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/startup/2016/09/01/what-matt-mullenweg-taught-me.html</guid>
+        
+        <category>startup</category>
+        
+        <category>learnings</category>
+        
+        <category>entrepreneurship</category>
+        
+        
+        <category>startup</category>
+        
+      </item>
     
       <item>
         <title>Tools for Elixir Development</title>
@@ -886,43 +923,6 @@ end&lt;/p&gt;
         
         
         <category>management</category>
-        
-      </item>
-    
-      <item>
-        <title>Dated Nerd Humor - Klingon Open Source</title>
-        <description>&lt;p&gt;I dug up an archive of an old server and found some stuff I wrote back in 2000 (pre 9/11 actually).  Mildly amusing at least if you’re old enough.  I should likely rewrite it.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;When: CVS Client Lacks Commit Privileges Then: “This CVS Client Has No  Honor.  I will rule this project!”&lt;/li&gt;
-  &lt;li&gt;On reaction to the Red Hat 7 C compiler issues: “Debian I say!  In  the name of the great god Stallman, DEBIAN!!!!”&lt;/li&gt;
-  &lt;li&gt;On reactions to KDE Office User Interface Issues: “Puny User, we will  never fix that bug”&lt;/li&gt;
-  &lt;li&gt;When trying to read MS Word files into Star Office: “Redmond!  Redmond!  Prepare to die!”&lt;/li&gt;
-  &lt;li&gt;When asked about Ximian’s launch of the proprietary Exchange server: “GAH!  Perhaps they have no honor!  Still, latinum is good!”&lt;/li&gt;
-  &lt;li&gt;On the Emacs versus VI controversy: “This led to system wide wars over  200 years ago.  Unbeliever!  Draw your batleft, I should kill you  where you stand!”&lt;/li&gt;
-  &lt;li&gt;“Perhaps it &lt;strong&gt;IS&lt;/strong&gt; a good day to Die!  I say we ship!”&lt;/li&gt;
-  &lt;li&gt;When looking at public Freshmeat projects without any source: “The  movement has failed.  We need to go to war!”&lt;/li&gt;
-  &lt;li&gt;On when the 2.2.4 kernel will ship: “By nagging me with the launch date,  you have questioned my family honor. Prepare to die!”&lt;/li&gt;
-  &lt;li&gt;On why Linux GUI software NEVER has keyboard shortcuts: “Puny User, We will never fix that!   Get a compiler and CVS so we can deny your commits!”&lt;/li&gt;
-  &lt;li&gt;As to why Linux developers get hostile on mailing lists: “Answering your email is for the weak and timid!”&lt;/li&gt;
-  &lt;li&gt;When asked about a strange 5403 line switch statement deep inside code: “You question the worthiness of my engineers.   Prepare to die!”&lt;/li&gt;
-  &lt;li&gt;When asked about Apple’s move to BSD instead of Linux: “&lt;em&gt;Apple&lt;/em&gt; is without honor!”&lt;/li&gt;
-  &lt;li&gt;When asked about Microsoft’s Community Source license: “The jihad is  brewing.  We will win.  They will die.  Tricks will not  work.”&lt;/li&gt;
-  &lt;li&gt;On the release process: “Perhaps it &lt;strong&gt;IS&lt;/strong&gt; a good day to Die!  I say we ship “&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Wed, 31 Aug 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/humor/2016/08/31/dated-nerd-humor-klingon-open-source.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/humor/2016/08/31/dated-nerd-humor-klingon-open-source.html</guid>
-        
-        <category>humor</category>
-        
-        <category>klingon</category>
-        
-        <category>open source</category>
-        
-        
-        <category>humor</category>
         
       </item>
     
