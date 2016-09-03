@@ -68,10 +68,18 @@ As I look down upon the world from afar (remember I'm still on a plane), I wonde
 One possible strategy would be: 
 
 * people without an installed code base - **startups** - the same type of people who leveraged Rails to success over the past ten years
-* **performance** / **reliability**.  I've listened to a lot of Chris' and Jose's presentations by now and they always say how it isn't all about performance.  And I get it -- its a rich, elegant language that can do so, so much -- but you can't be everything to everybody.  
+* **performance** / **reliability**.  I've listened to a lot of Chris' and Jose's presentations by now and they always say how it isn't all about performance.  And I get it -- its a rich, elegant language that can do so, so much -- but you can't be everything to everybody.  And a reliable, microsecond response time?  That's unheard of.  Good heavens, how can you not take advantage of that?  
 
 So if you went with startups and performance / reliability then what's the intersection?  **API backend for apps**.  
 
-I think about all the companies that have tried to reliably scale Ruby as a back end api strategy and kept having to either add more servers or more cache layers and it just makes you want to weep then die.  A microsecond response time solves a ton of issues.  And I agree that Elixir can do just about anything but it needs its equivalent of CRUD apps to get past the adoption hurdle.  And just as we now do lots and lots of different things now with Ruby, it all started from one thing.  Similarly Elixir needs that one thing.
+I think about all the companies that have tried to reliably scale Ruby as a back end api strategy and kept having to either add more servers or more cache layers and it just makes you want to weep then die.  A microsecond response time solves a ton of issues.  And I agree that Elixir can do just about anything but it needs its equivalent of CRUD apps to get past the adoption hurdle.  And just as we now do lots and lots of different things now with Ruby, it all started from one thing.  Similarly Elixir needs that one thing.  
+
+I don't think it would be all that hard for Platformatec to document / promote building APIs in the the same way that CRUD stuff was promoted on Rails in the early days.  I can even see the marketing materials in my head -- case studies, application engineers, training classes, sample apps, git repos, etc.  You could even coin a slogan like "Elixir Inside - powering the app economy".
+
+Personally I think Platformatec has a tiger by the tail with Elixir.  I haven't been this excited about a new language since Ruby and I've looked at everything ever since Ruby started failing me in the past two years and Elixir is the only thing that feels right.  I do think they need a killer app for it and this is my .02 on the topic.
 
 Thoughts?
+
+# Postscript - But Nerves Needs Performance and Reliability Too
+
+Given the absolute coolness of the nerves project and the intersection of Phoenix Presence with Nerves you could easily shout out "But Scott what about IOT and Nerves?"  The problem here is that the people who do hardware in volume don't care about the elegance that Elixir embodies.  Honestly when I think of IOT hardware that's sold (as opposed to stuff that Chris McCord builds), the image that comes to my mind is Mos Eisley -- a wretched hub of scum and villany.  It isn't people building elegant software in a reliable, thoughtful way.  Its ship boxes as quickly as possible and do the software as cheaply and easily as they can.  We've all read the articles on Hacker News about IOT disasters and I don't think that's Elixir or Nerves.
