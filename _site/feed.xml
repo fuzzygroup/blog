@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 02 Sep 2016 17:15:19 -0400</pubDate>
-    <lastBuildDate>Fri, 02 Sep 2016 17:15:19 -0400</lastBuildDate>
+    <pubDate>Fri, 02 Sep 2016 21:59:58 -0400</pubDate>
+    <lastBuildDate>Fri, 02 Sep 2016 21:59:58 -0400</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -101,6 +101,74 @@
         
         
         <category>startup</category>
+        
+      </item>
+    
+      <item>
+        <title>What Keeps You From Using Using Elixir</title>
+        <description>&lt;p&gt;So I’m at roughly 35,000 feet coming back from ElixirCon, and I saw a tweet that sparked my interest: &lt;a href=&quot;https://twitter.com/georgeguimaraes/status/771722738994180096&quot;&gt;What Keeps You from Using Elixir?&lt;/a&gt;.  Wow.  That’s a fantastic question.  I’d like to break that down to three issues:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The Elixir Language&lt;/li&gt;
+  &lt;li&gt;The Phoenix Framework&lt;/li&gt;
+  &lt;li&gt;Deployment&lt;/li&gt;
+  &lt;li&gt;Ecosystem&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is exactly the right question to ask and I believe that the author works for Platformatec so this is effectively market research for them and I’m delighted to answer at least for myself.&lt;/p&gt;
+
+&lt;p&gt;Personally I’m a hard core rubyist.  I’ve been using Ruby since 2006 and Rails since 2007.  I’m responsible for a pure ruby codebase doing hardcore data processing at a very large scale (6,000,000 data points per day) for one application / 1/4 terabyte of crawled data per month for another application. Our aggregate code base is approaching 500,000 lines of code in total and the design pattern is, well, the all too familiar &lt;strong&gt;Ruby Monolith&lt;/strong&gt;.  I came to ElixirCon because the tooling I’ve devoted over a decade to simply can’t cut it anymore.  Its is the fragility that all of us know all too well:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;brittle gem stack (but better than Node)&lt;/li&gt;
+  &lt;li&gt;test coverage that runs slowing, inconsistently if at all&lt;/li&gt;
+  &lt;li&gt;performance issues that range from annoying to dreadful&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now don’t get me wrong – I actually do love ruby but I no longer feel like I can build stable, reliable distributed systems with it.  And, honestly, the less reliable my systems are the less time I can get with my wife and kids.  After over a decade of ruby, the failures just aren’t fun anymore.  I go into work and it feels, too often, like I’m an architect building something on a foundation of wet sound.&lt;/p&gt;
+
+&lt;p&gt;Personally I’ve been experimenting with Elixir now since &lt;a href=&quot;http://localhost:4000/blog/elixir/2016/03/05/getting-started-installation.html&quot;&gt;March 5, 2016&lt;/a&gt; and I still don’t have anything save toys so, now with the context in place, let’s talk about the issues.&lt;/p&gt;
+
+&lt;p&gt;I’d draw a firm distinction between the Elixir language and the phoenix framework.&lt;/p&gt;
+
+&lt;h1 id=&quot;elixir&quot;&gt;Elixir&lt;/h1&gt;
+
+&lt;p&gt;Getting going with a new language in production is &lt;strong&gt;hard&lt;/strong&gt;.  And its particularly hard when the language breaks with existing paradigms and then leverages other technology (Erlang).  You end up having to master a language and then master the other technology.  And even if you don’t have to master Erlang to use Elixir you do have to be able to get it running and feel comfortable with it in a production context.&lt;/p&gt;
+
+&lt;p&gt;However, for most of us, I think the issue comes down to finding that perfect penetration point.  The killer app which the language is really good for.  Its taken me six months to figure that out for my organization and I finally have it.&lt;/p&gt;
+
+&lt;p&gt;Maybe Platformatec needs to work on a twitter campaign like #MyElixirKillerApp and get people talking about what they want to use Elixir for.  We all just saw #MyElixirStatus do quite well over the past few days.&lt;/p&gt;
+
+&lt;h1 id=&quot;phoenix&quot;&gt;Phoenix&lt;/h1&gt;
+
+&lt;p&gt;Phoenix is interesting as heck to me although Chris McCord’s presentation yesterday on changes to the layout does make me a bit apprehensive.  Knowing that major changes are coming to the layout makes me mildly concerned about starting work on it today – although I did start on an application before I boarded this plane.  Honestly the single biggest thing that concerns me about Phoenix is having to write the authentication layer myself.  I’m hard pressed to think of anything I’ve built in the last 5 if not 10 years that didn’t have login as part of it.  So the concept that I have to roll my own authentication for Phoenix when I know that Devise comes from the parents of Elixir really bothers me.&lt;/p&gt;
+
+&lt;p&gt;And don’t get me wrong, I know that I can build a simple password form and use Comeonin for hashing.  And it doesn’t even have to be Devise but I’m very reluctant to implement security in what is to me a brand new language and brand new framework.  I’m too damn likely to screw something up and leave a hole.  I don’t have to have all the features of Devise but I really feel like this out to be a provided facility and not something that we all implement poorly.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Sidebar:&lt;/strong&gt; I don’t even like Devise; I struggle with it regularly but I trust their understanding of security better than my own.  The guy who &lt;a href=&quot;https://fuzzygroup.github.io/blog/software%20engineering/2016/09/02/what-wolfram-arnold-taught-me.html&quot;&gt;taught me rails&lt;/a&gt; drilled this into me when I started and its as good advice now as it was then.  People who exploit security holes are scary good.&lt;/p&gt;
+
+&lt;h1 id=&quot;deployment&quot;&gt;Deployment&lt;/h1&gt;
+
+&lt;p&gt;I should admit that I couldn’t make the deployment presentation at ElixirConf so perhaps the answer as at the conference and I missed it.  The state of deployment for an Elixir / Phoenix “thing” bothers me.  I know that I can develop in it but I don’t fully understand how I regularly get this into my daily code / fix / release workflow.  I do know that the state of Ruby deployment in the early days was poor and that makes me think that things aren’t all that different.  And perhaps the answer is that classical deployment is irrelevant and all this needs to be done at the container level. If so then that’s another issue since not all of us are fully conversant with containers yet.&lt;/p&gt;
+
+&lt;h1 id=&quot;ecosystem&quot;&gt;Ecosystem&lt;/h1&gt;
+
+&lt;p&gt;For all the bashing of&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;I really, really want to use Elixir / Phoenix.  Ever since the first day, picking up my rails apps has&lt;/p&gt;
+</description>
+        <pubDate>Fri, 02 Sep 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/elixir/2016/09/02/what-keeps-you-from-using-using-elixir.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/elixir/2016/09/02/what-keeps-you-from-using-using-elixir.html</guid>
+        
+        <category>elixir</category>
+        
+        <category>phoenix</category>
+        
+        
+        <category>elixir</category>
         
       </item>
     
@@ -1208,48 +1276,6 @@
         
         
         <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>How to Be a Professional Freelancer</title>
-        <description>&lt;p&gt;From the end of 2009 to 2015 I’ve supported myself and my family as a professional freelancer – I’ve been a work for hire software engineer.  And in that time I’ve never in my life made more money or done such varied and interesting work.  A friend asked me recently how I did it and while that’s a bit hard to answer, I was able to write down a bunch of rules that worked for me.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;Insurance.&lt;/strong&gt;  Accept that health care is a disaster and you’re going to get hosed.  ‘Nuff said.  ObamaCare did not make this better.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Taxes.&lt;/strong&gt;  Put away 1/3 for taxes every month.  That money goes in a separate bank account and is never touched.  Or pay in advance every quarter which is what the IRS really wants.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Two Gigs.&lt;/strong&gt;  Always, always, always have 2 gigs at the same time.  I’ve always striven for a full time (40 hour) and a half time (20 hour).  That way when one goes south – and it will – you have a fall back.  Accept that you’re going to work at least 60 hours per week.  Sometimes the amount will be more and sometimes less but, at least for me, that was the average.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Rates.&lt;/strong&gt;  Keep raising your hourly rate.  I’ve been guilty of not raising it often enough but if your skills keep increasing (and they will) then the marketplace needs to reflect that.  To some extent your rate, if its not unreasonable, is a reflection of your skills.  You want to be a mercedes not a yugo.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Time Logging.&lt;/strong&gt;  Bill for everything.  If you call an attorney about an issue, well, the clock starts ticking right away.  If you’re doing hard core software development then I’d argue that you’re not different in skill levels.  Keep track of your time and understand your minimum billing increment.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Technical Excellence.&lt;/strong&gt;  As a freelancer all you are selling is yourself.  Mediocrity isn’t an option – that’s for people with comfortable jobs.  You need to be hungry.  Hell I even have a full time job now and I’m at ElixirCon on my &lt;strong&gt;own dime&lt;/strong&gt; because I’m committed to improving my skills.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Personal Integrity.&lt;/strong&gt;  Never be afraid to walk away from a gig if you find it unethical or it puts you in legal jeopardy.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;“How High?”&lt;/strong&gt;  If the client says jump then your only answer is “How High?”.  I remember once getting a skype message at 10:30 at night before I was about to leave for a conference and the request was “Can I get a report of xyz”.  And, you guessed it, 3 am rolled around and the report was written, run and checked into subversion.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Take Everything.&lt;/strong&gt;  I once took on some WordPress sysadmin work - 10 hours per month.  That directly led to over $500,000 plus of on going Ruby / Rails work that continues to this day.  Never, ever walk away from work.  If someone is will to pay then you do the work.  You say yes even if you don’t know how you’ll get it done – farm it out to another if you have to.  Hell call me if you have to. ;-)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Give Back.&lt;/strong&gt;  That WordPress work came out of a presentation I gave at ApacheCon in 2006.  That’s right I’m still making $$$ from a silly presentation that I gave once.  Now I’ll freely admit that I was lucky on this one.  That was (and is) an absolute goldmine.  Make presentations, write blog posts, tweet, write open source.  Giving back always pays back.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;The biggest question everyone has is “how do you get gigs?”  This is the freelancer equivalent of asking a writer “where they get their story ideas”.  And the answer is pretty much the same.  Just as ideas are all around writers, gigs are all around you.  Technology is ubiquitous these days and that means that there is interesting technical work literally everywhere:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;You know Sherwin Williams Paint?  They’re doing iPhone apps with computer vision to match paint samples.  That means iOS development, android development, backends, etc.&lt;/li&gt;
-  &lt;li&gt;In Noblesville, Indiana there is an ecommerce company doing tens of millions of dollars of industrial sales.  You can’t move that many units of anything without technology.  How do I know?  I gave some money to a &lt;a href=&quot;http://www.outreachindiana.org&quot;&gt;fantastic charity&lt;/a&gt; and their founder introduced me to the president of that company and three weeks later I was helping writing code for them.  Gigs are literally everywhere.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;And that’s just 2 examples.  There are dozens of examples if not hundreds.  Finally you want to network &lt;strong&gt;fiercely&lt;/strong&gt;.  That doesn’t just mean LinkedIn and Twitter.  Go out and talk to people.  Do meetups if you have to but its always best to talk to non digital folk.  Just as an example, I recently found out that my next door neighbor is a Vice President at Sales Force.  I know it sounds a bit scummy but I have to think that knowing him, in addition to being a good neighbor, is worthwhile.  Heck my kids play with his kids; if I didn’t get to know him I’d be an ass.&lt;/p&gt;
-
-&lt;p class=&quot;center&quot;&gt;Gigs are all around you!&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 01 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/freelance/2016/09/01/how-to-be-a-professional-freelancer.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/freelance/2016/09/01/how-to-be-a-professional-freelancer.html</guid>
-        
-        <category>freelance</category>
-        
-        <category>business</category>
-        
-        
-        <category>freelance</category>
         
       </item>
     
