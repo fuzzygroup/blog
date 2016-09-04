@@ -12,7 +12,7 @@ So I'm at roughly 35,000 feet coming back from ElixirCon, and I saw a tweet that
 * Ecosystem
 * "It Has to be Standard Platform"
 
-This is exactly the right question to ask and I believe that the author works for Platformatec so this is effectively market research for them and I'm delighted to answer at least for myself.
+This is exactly the right question to ask and I believe that the [author](http://twitter.com/georgeguimaraes/) works for Platformatec so this is effectively market research for them and I'm delighted to answer at least for myself.
 
 Personally I'm a hard core rubyist.  I've been using Ruby since 2006 and Rails since 2007.  I'm responsible for a pure ruby codebase doing hardcore data processing at a very large scale (6,000,000 data points per day) for one application / 1/4 terabyte of crawled data per month for another application. Our aggregate code base is approaching 500,000 lines of code in total and the design pattern is, well, the all too familiar **Ruby Monolith**.  I came to ElixirCon because the tooling I've devoted over a decade to simply can't cut it anymore.  Its is the fragility that all of us know all too well:
 
