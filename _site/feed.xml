@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 05 Sep 2016 05:12:58 -0400</pubDate>
-    <lastBuildDate>Mon, 05 Sep 2016 05:12:58 -0400</lastBuildDate>
+    <pubDate>Mon, 05 Sep 2016 05:35:57 -0400</pubDate>
+    <lastBuildDate>Mon, 05 Sep 2016 05:35:57 -0400</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -47,6 +47,47 @@
         
         
         <category>startup</category>
+        
+      </item>
+    
+      <item>
+        <title>MySQL - How Do You Know Your MySQL Data Load Worked?</title>
+        <description>&lt;p&gt;This post outlines my strategy of how to verify a multi terabyte data load across hundreds of different tables from database 1 (source) to database 2 (target).&lt;/p&gt;
+
+&lt;p&gt;There are three metrics that we can track:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;dump file size&lt;/li&gt;
+  &lt;li&gt;row count&lt;/li&gt;
+  &lt;li&gt;sampled row data&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Each of these is discussed below.&lt;/p&gt;
+
+&lt;h1 id=&quot;dump-file-size&quot;&gt;Dump File Size&lt;/h1&gt;
+
+&lt;p&gt;Given that all of our databases are simply too large to transfer as a single entity, we’re going to have to go with a table by table dump strategy.  This gives us one basic metric on the load process – the dump file on source needs to be the same size as the dump file on target.&lt;/p&gt;
+
+&lt;h1 id=&quot;row-count&quot;&gt;Row Count&lt;/h1&gt;
+
+&lt;p&gt;After the data is loaded from source to target the row count should be identical and that’s simple to verify with a SELECT COUNT(*) FROM table query.&lt;/p&gt;
+
+&lt;h1 id=&quot;sampled-row-data&quot;&gt;Sampled Row Data&lt;/h1&gt;
+
+&lt;p&gt;If we’ve verified the dump file size and the row count, it would be easy to assume that everything loaded correctly but do we really know?  One way to address this is thru sampling.  What we can do is apply a hash function on the contents of an entire row.  If we’re using the same hash function on both source and target and on the same rows (i.e. row 1315789 on source and row 1315789 on target) then we should get the same result.  And if we did this consistently – say first row, last row and then say 1,000 randomly chosen rows for every table, we should have a fairly high degree of certainty that source and target are in sync.&lt;/p&gt;
+
+&lt;h1 id=&quot;high-degree-of-certainty&quot;&gt;High Degree of Certainty&lt;/h1&gt;
+
+&lt;p&gt;I used that term very deliberately and I recognize that its a mealy mouthed way of saying “well I’m not entirely sure that source and target on the same” and that’s true.  Once you move to a certain scale, it is essentially impossible to know anything completely.  What you need to do is look at overall metrics and then random samples and figure out how many samples make you feel safe.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 05 Sep 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/mysql/2016/09/05/mysql-how-do-you-know-your-data-load-worked.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/mysql/2016/09/05/mysql-how-do-you-know-your-data-load-worked.html</guid>
+        
+        <category>mysql</category>
+        
+        
+        <category>mysql</category>
         
       </item>
     
@@ -1238,43 +1279,6 @@
         
         
         <category>startup</category>
-        
-      </item>
-    
-      <item>
-        <title>Tools for Elixir Development</title>
-        <description>&lt;p&gt;One of the first things you do as a developer when tackling a new platform is suss out tools.  Here’s what I’ve found so far for Elixir:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://atom.io&quot;&gt;Atom&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://atom.io/packages/autocomplete-elixir&quot;&gt;Autocomplete for Elixir&lt;/a&gt;  I’m still sticking to my beloved TextMate for Elixir development but this is tempting.  Better autocomplete may be the killer app for Elixir development.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://kapeli.com/dash&quot;&gt;Dash for Documentation&lt;/a&gt; (obligatory shout out to &lt;a href=&quot;https://github.com/scrogson/&quot;&gt;Sonny Scrogson&lt;/a&gt; for teaching a great course and showing me Dash)&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.getpostman.com&quot;&gt;Postman&lt;/a&gt; (for testing JSON apis you build with Elixir)  Courtesy of &lt;a href=&quot;http://dasari.me&quot;&gt;Dv&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.erlang-solutions.com/products/wombat-oam.html&quot;&gt;Wombat&lt;/a&gt; for Elixir / Erlang Monitoring&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.honeybadger.io/for/elixir/&quot;&gt;HoneyBadger&lt;/a&gt; for managing Elixir errors&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Other great Elixir resources include:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.phoenixframework.org&quot;&gt;Phoenix Framework&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://pragprog.com/book/phoenix/programming-phoenix&quot;&gt;The Phoenix Book&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://pragprog.com/book/elixir13/programming-elixir-1-3&quot;&gt;The Elixir Book&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Thu, 01 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/elixir/2016/09/01/tools-for-elixir-development.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/elixir/2016/09/01/tools-for-elixir-development.html</guid>
-        
-        <category>elixir</category>
-        
-        <category>elixirconf</category>
-        
-        <category>tools</category>
-        
-        
-        <category>elixir</category>
         
       </item>
     
