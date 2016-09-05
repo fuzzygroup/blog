@@ -1,6 +1,6 @@
 ---
 layout: post
-title: MySQL - How Do You Know Your Data Load Worked?
+title: MySQL - How Do You Know Your MySQL Data Load Worked?
 category: mysql
 tags: ["mysql"]
 ---
@@ -29,4 +29,4 @@ If we've verified the dump file size and the row count, it would be easy to assu
 
 # High Degree of Certainty
 
-I used that term very deliberately and I recognize that its a mealy mouthed way of saying "well I'm not entirely sure that source and target on the same" and that's true.  Once you move to a certain scale 
+I used that term very deliberately and I recognize that its a mealy mouthed way of saying "well I'm not entirely sure that source and target on the same" and that's true.  Once you move to a certain scale, it is essentially impossible to know anything completely.  What you need to do is look at overall metrics and then random samples and figure out how many samples make you feel safe.
