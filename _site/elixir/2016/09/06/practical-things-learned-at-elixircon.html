@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Rails2Elixir - Object.methods or Getting a Module to List Its Methods</title>
-  <meta name="description" content="One of my single favorite Ruby features is: Object.methodsor my personal favorite version of this:(obj.methods - Object.methods).sortSo if you have a string ...">
+  <title>Practical Things Learned at ElixirConf</title>
+  <meta name="description" content="Its been a few days since ElixirConf and I was reflecting on the practical stuff I learned.  Yes I saw the grand vision driving things but I’m always more co...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/rails2elixir/2016/03/14/elixir-equivalent-of-object-methods-or-getting-a-module-to-list-its-methods.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/elixir/2016/09/06/practical-things-learned-at-elixircon.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
 </head>
 
@@ -69,28 +69,23 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Rails2Elixir - Object.methods or Getting a Module to List Its Methods</h1>
-    <p class="post-meta"><time datetime="2016-03-14T00:00:00-04:00" itemprop="datePublished">Mar 14, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">Practical Things Learned at ElixirConf</h1>
+    <p class="post-meta"><time datetime="2016-09-06T00:00:00-04:00" itemprop="datePublished">Sep 6, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>One of my single favorite Ruby features is: </p>
-<pre>Object.methods</pre>
-<p>or my personal favorite version of this:</p>
-<pre>(obj.methods - Object.methods).sort</pre>
-<p>So if you have a string in Ruby you can say:</p>
-<pre>(“foo”.methods - Object.methods).sort</pre>
-<p>Here’s the equivalent of this in elixir:</p>
-<pre>Module.__info__(:functions)</pre>
-<p>So if you wanted to find out what Map can do you’d use:</p>
-<pre>Map.__info__(:functions)</pre>
-<p>or Enum:</p>
-<pre>Enum.__info__(:functions)</pre>
-<p>And you’ll get back a long list of functions. Here’s the result for Enum:</p>
-<pre>[all?: 1, all?: 2, any?: 1, any?: 2, at: 2, at: 3, chunk: 2, chunk: 3, chunk: 4,<br /> chunk_by: 2, concat: 1, concat: 2, count: 1, count: 2, dedup: 1, dedup_by: 2,<br /> drop: 2, drop_while: 2, each: 2, empty?: 1, fetch: 2, fetch!: 2, filter: 2,<br /> filter_map: 3, find: 2, find: 3, find_index: 2, find_value: 2, find_value: 3,<br /> flat_map: 2, flat_map_reduce: 3, group_by: 2, group_by: 3, intersperse: 2,<br /> into: 2, into: 3, join: 1, join: 2, map: 2, map_join: 2, map_join: 3,<br /> map_reduce: 3, max: 1, max_by: 2, member?: 2, min: 1, min_by: 2, min_max: 1,<br /> min_max_by: 2, partition: 2, ...]</pre>
-<p>You can also use the .module_info construct to get more information: </p>
-<pre>Enum.module_info<br />[module: Enum,<br /> exports: [__info__: 1, join: 2, flat_map_reduce: 3, reduce_while: 3,<br /> sort_by: 3, sort_by: 2, filter: 2, uniq_by: 2, sort: 1, fetch!: 2, uniq: 2,<br /> join: 1, reverse_slice: 3, to_list: 1, group_by: 3, scan: 2, find: 3,<br /> concat: 2, sum: 1, at: 2, all?: 1, zip: 2, with_index: 2, split_while: 2,<br /> count: 1, sort: 2, empty?: 1, random: 1, dedup: 1, map_join: 2, find: 2,<br /> find_index: 2, reduce: 2, map_join: 3, count: 2, find_value: 2, min: 1,<br /> concat: 1, flat_map: 2, shuffle: 1, at: 3, uniq: 1, unzip: 1, min_by: 2,<br /> take_random: 2, take: 2, reverse: 2, find_value: 3, ...],<br /> attributes: [vsn: [332892874748555839594542519652485069262]],<br /> compile: [options: [:debug_info], version: '6.0.2',<br /> time: {2016, 2, 21, 21, 48, 31},<br /> source: '/private/tmp/elixir20160221-76790-1cjto8i/elixir-1.2.3/lib/elixir/lib/enum.ex'],<br /> native: false,<br /> md5: &lt;&lt;250, 112, 213, 232, 64, 152, 188, 238, 148, 116, 149, 143, 81, 114, 121, 206&gt;&gt;]</pre>
-<p> Here’s a helpful <a href="http://stackoverflow.com/questions/28664119/in-elixir-is-there-any-way-to-get-a-module-to-list-its-functions">Stack Overflow link on the subject</a>.</p>
+    <p>Its been a few days since ElixirConf and I was reflecting on the practical stuff I learned.  Yes I saw the grand vision driving things but I’m always more concerned about the little stuff because everything you build is entirely dependent on the little stuff.  Attribution given by name only since I don’t want to call anyone out.</p>
+
+<ul>
+  <li><strong>It’s real</strong>.  People are really using this in production which means that I can too.  Just knowing that is huge.  Thanks Ben!</li>
+  <li>Deploy is still kind of a mess.  At least one company I met is handling deploy via building it into containers and then deploying the containers.  Again thanks to Ben!</li>
+  <li><a href="https://hex.pm/packages/timex">Timex</a> is the rough equivalent to the Rails ActiveSupport Time.now style stuff.  That’s huge since I rely on that constantly.</li>
+  <li>Despite the above comment on Timex, I was advised that datetime stuff is kind of a mess and “just get the unix epoch from the server and do with it what you will”.  I don’t know how to reconcile this yet but I’m sure I will.  Thanks Pete!</li>
+  <li>As with Rails development local development using containers “just doesn’t feel right”.  Not terribly surprising given how many times I’ve tried to get a full rails stack running for local development using Docker and how many times I’ve failed.</li>
+  <li>Ecto is surprisingly robust and I’m looking forward to using</li>
+  <li>There are starting to be lots of good development tools including an <a href="https://github.com/KronicDeth/intellij-elixir">IntelliJ plugin for Elixir</a>.  This is the first time I’ve ever even considered a JetBrains product so that’s surprising.  Hat tip to <a href="https://github.com/KronicDeth">KronicDeath</a> who I’m pretty sure I had dinner with; its all a bit blurry now in retrospect.</li>
+  <li>I purely can’t wait to start using <a href="https://github.com/gamache/fuzzyurl.ex">FuzzyUrl</a>  I’ve written a lot of this kind of code over the years.  Curious to see how it compares (hint - this will be better)</li>
+</ul>
 
   </div>
 

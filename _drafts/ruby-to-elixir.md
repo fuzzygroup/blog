@@ -14,3 +14,8 @@ create migration | bundle exec rails g model User | mix ecto.gen.migration creat
 run migrations | bundle exec rake db:migrate | mix ecto.migrate | 
 Rails.root in Phoenix | YourAppName.Endpoint.config(:root) | [Go](http://ugisozols.com/rails-root-equivalent-in-phoenix/) | |
 Where migrations live | /db/migrate | 
+
+
+sqs 
+
+ec2 
