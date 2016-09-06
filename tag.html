@@ -3,6 +3,10 @@ layout: default
 title: Tag
 ---
 
+
+
+
+
 {% comment %}
 =======================
 The following part extracts all the tags from your posts and sort tags, so that you do not need to manually collect your tags to a place.
@@ -35,15 +39,25 @@ The following part removes dulpicated tags and invalid tags like blank tag.
 
 
 <div class="tags-expo">
+  <!-- tag cloud itself -->
   <div class="tags-expo-list">
-    {% for tag in site.tags %}
-    <a href="/blog/#{{ tag[0] | slugify }}" class="post-tag">{{ tag[0] }}</a>
+    {% assign tags = site.tags | sort %}
+    {% for tag in tags %}
+     <span class="site-tag">
+        <a href="/tag/{{ tag | first | slugify }}/"
+            style="font-size: {{ tag | last | size  |  times: 4 | plus: 80  }}%">
+                {{ tag[0] | replace:'-', ' ' }} ({{ tag | last | size }})
+        </a>
+    </span>
     {% endfor %}
+    
   </div>
+  <p>&nbsp;</p>
   <hr/>
+  <p>&nbsp;</p>
   <div class="tags-expo-section">
     {% for tag in site.tags %}
-    <h2 id="{{ tag[0] | slugify }}">{{ tag[0] }}</h2>
+    <h1 id="{{ tag[0] | slugify }}">{{ tag[0] }}</h1>
     <ul class="tags-expo-posts">
       {% for post in tag[1] %}
         <a class="post-title" href="{{ site.baseurl }}{{ post.url }}">

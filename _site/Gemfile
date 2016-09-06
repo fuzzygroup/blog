@@ -4,6 +4,10 @@ gem 'jekyll'
 gem 'tmuxinator'
 gem 'jekyll-docs'
 
+gem 'reverse-markdown'
+gem 'mechanize'
+
+
 group :jekyll_plugins do
   gem "hpricot"
   gem "open_uri_redirections"
