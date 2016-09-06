@@ -4,8 +4,9 @@ gem 'jekyll'
 gem 'tmuxinator'
 gem 'jekyll-docs'
 
-gem 'reverse-markdown'
-gem 'mechanize'
+#gem 'reverse_markdown'
+#gem 'html2markdown'
+#gem 'mechanize'
 
 
 group :jekyll_plugins do

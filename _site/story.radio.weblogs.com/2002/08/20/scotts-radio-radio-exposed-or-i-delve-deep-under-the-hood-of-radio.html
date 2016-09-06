@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Scotts Radio -- Radio Exposed or I Delve Deep Under the Hood of Radio</title>
+  <meta name="description" content="        Scotts Radio :: Radio Exposed or I Delve Deep Under the Hood of Radio        ">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/story.radio.weblogs.com/2002/08/20/scotts-radio-radio-exposed-or-i-delve-deep-under-the-hood-of-radio.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Scotts Radio -- Radio Exposed or I Delve Deep Under the Hood of Radio</h1>
+    <p class="post-meta"><time datetime="2002-08-20T00:00:00-05:00" itemprop="datePublished">Aug 20, 2002</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Expires" content="Mon, 01 Jan 1990 01:00:00 GMT" />
+    <title>Scotts Radio :: Radio Exposed or I Delve Deep Under the Hood of Radio</title>
+    <style type="text/css">
+      body {
+        margin-top: 0px;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-bottom: 0px;
+        }
+
+      body, td, p {
+        font-family: verdana, sans-serif;
+        font-size: 90%;
+        }
+
+      h2 { 
+        font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 24px; font-weight: bold
+        }
+      .header {
+        font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 40px; font-weight: bold
+        }
+      .realsmall {
+        font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 9px;
+        }
+      .small {
+        font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px;
+        }
+      </style>
+    </head>
+
+<table>
+  <tbody>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td><img src="http://radio.weblogs.com/0103807/images/trans60x60.gif" alt="" /></td>
+    </tr>
+    <tr>
+      <td>Last updated: 8/20/2002; 9:21:20 AM</td>
+    </tr>
+    <tr>
+      <td><img src="http://radio.weblogs.com/0103807/images/trans60x60.gif" alt="" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td><img src="http://radio.weblogs.com/0103807/images/trans60x1.gif" alt="" /></td>
+    </tr>
+    <tr>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<font size="+3"><b><a href="http://radio.weblogs.com/0103807/" style="color:black; text-decoration:none">The FuzzyBlog!</a></b></font>
+<p><em>Marketing 101. Consulting 101. PHP Consulting. Random geeky stuff. I Blog Therefore I Am.</em></p>
+
+<font size="+1"><b>Scotts Radio :: Radio Exposed or I Delve Deep Under the Hood of Radio</b></font>
+
+<h1 id="radio-userland-exposed">Radio UserLand Exposed</h1>
+
+<h1 id="font-size3when-things-break-youre-still-probably-okbrversion-09font"><font size="3">When Things Break, You're Still Probably Ok<br />Version 0.9</font></h1>
+
+<p>J. Scott Johnson edited by Guy K. Haas</p>
+
+<hr />
+
+<p><img src="http://fuzzygroup.net/writing/radiou1.jpg" alt="" /></p>
+
+<table>
+  <tbody>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+
+<font size="2"><b>Cliveden House, England</b></font>
+
+<table>
+  <tbody>
+    <tr>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p> </p>
+
+<center>
+<table id="AutoNumber1" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" cellspacing="0" cellpadding="3" width="552" border="1">
+<tbody>
+<tr>
+<td width="542" bgcolor="#c0c0c0">
+<p align="center">PREFACE</p>
+</td>
+</tr>
+<tr>
+<td width="542">
+<font size="2">This document was written after my Radio weblog up and ate itself one fine Sunday morning.  I recovered everything after some interesting excursions into Radio and at least one prayer session while facing towards Silicon Valley.</font> 
+<p align="center"><font size="2">Please send suggestions, comments and flames to <a href="mailto:sjohnson@fuzzygroup.com"></a><a href="mailto:sjohnson@fuzzygroup.com">sjohnson@fuzzygroup.com</a>.</font></p>
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+<p>###  </p>
+
+<p>It should be noted that I’m not writing this because these materials don’t exist elsewhere.  I don’t know if they exist elsewhere but I don’t think that there is this comprehensive a treatment of <a href="http://radio.weblogs.com/0103807/2002/04/15.html#a55">Radio Exposed</a> and I hope it’s useful to someone other than myself.</p>
+
+<p><a href="http://www.fuzzygroup.com/radioworks/">Scott</a></p>
+
+<h3 id="table-of-contents">Table of Contents</h3>
+
+<p>The following topics are covered in this document: </p>
+
+<ul>
+  <li><strong>DISCLAIMER:</strong> If you are a Mac user, read this.</li>
+  <li>When Your Data Goes Away or “Don’t Worry Be Happy”</li>
+  <li>Understanding How Radio Works
+    <ul>
+      <li>Looking Back at My “When” Error</li>
+      <li>What is a .root File?</li>
+    </ul>
+  </li>
+  <li>How Radio Produces HTML</li>
+  <li>What Directories Does Radio Store Content In?</li>
+  <li>How I Fixed the “When” Problem and Rescued my Weblog</li>
+  <li>Tools that Made this Possible</li>
+  <li>The Original Version of This</li>
+  <li>Thanks</li>
+  <li>Distribution of this Document</li>
+</ul>
+
+<h3 id="when-your-data-goes-away-or-dont-worry-be-happy">When Your Data Goes Away or Don’t Worry Be Happy</h3>
+
+<p>This document was written after two to three hours of hacking away at Radio after one Sunday morning, when, GULP, my weblog disappeared.  And, I don’t mean just locally, I mean on radio.weblogs.com.  I add “Don’t Worry Be Happy” because there is a happy ending – I got everything back.</p>
+
+<p>Anyway, here’s what happened.</p>
+
+<ul>
+  <li>I posted my last entry Saturday night before going to bed.</li>
+  <li>I went to post an entry Sunday morning and I had the interesting experience of clicking the post and publish button only to have “Poof” – it just went away.  I’ve seen this before as documented here so I wasn’t too worried.</li>
+  <li>I pasted the entry back in and tried again (note – I always, always, always do a CTRL+A, CTRL+C i.e. Select All, Copy before posting and so should you, cheap insurance).</li>
+  <li>Same thing.  Nothing.  Sigh.  “What now?” I wondered.  I restarted Radio and everything seemed ok.  So I got my posting in. </li>
+  <li>I went away, did some other stuff, went back to my weblog and saw this:</li>
+</ul>
+
+<p>[Macro error: Can’t evaluate the expression because the name “when” hasn’t been defined.]<br />
+  
+- Uh Oh.  “That can’t be good” went through my somewhat sluggish brain.  I also noticed that all of the posts on my desktop website home page were gone.  I’ve seen references to this kind of thing periodically in the support forums so I figured (silly, stupid me) that doing a Publish Entire Website would fix this.  
+- I went into the full Radio client software (this is the non-browser version of Radio as <a href="http://fuzzygroup.net/writing/radiouserland_part01.htm">described here</a>) and did a Publish Entire Website.  At this point I had just done the equivalent of jumping off a bridge but I just hadn’t hit the bottom yet and I wasn’t even aware of it. 
+- I checked the desktop website home page.  Same thing.  Sigh. 
+- I copied everything in program filesradio userland to program filesradio userland backup and re-installed Radio figuring that this was some kind of system level glitch. 
+- Same thing.  Sigh.  What now I wondered? 
+- I inadvertently clicked on the Home link to my public site on radio.weblogs.com and saw that, <strong>horrors</strong> , my weblog was gone!  Or, as I like to describe it, _ <strong>Radio Ate My Weblog.  Tasty.  Burp.</strong> _</p>
+
+<p>At this point I realized that I had a real problem and started to think (or panic). </p>
+
+<h3 id="understanding-how-radio-works">Understanding How Radio Works</h3>
+
+<p>The first thing that I did was search my backup directory for some keywords I knew that I had used in my weblog entries.  This confirmed that, yes, I did still have a local copy of my data.  Knowing that I had a copy of my data let me breathe easier.  Even if I had to reformat it or change it somehow, I figured that I’d at least still have the raw text.  Still, I didn’t want to do that (lazy).  I figured that there had to be a way to restore my Radio installation.</p>
+
+<h4 id="looking-back-at-my-when-error">Looking Back at My “when” Error</h4>
+
+<p>The first thing that I did was think about the very first error I saw or:</p>
+
+<blockquote>
+  <p>[Macro error: Can’t evaluate the expression because the name “when” hasn’t been defined.]<br />
+ </p>
+</blockquote>
+
+<p>Knowing that a weblog is chronological in nature, I came to the initial conclusion:</p>
+
+<blockquote>
+  <p>“when” must be some kind of meta level object that is used to define a date (hey, it’s _when_) and then when I published the entire website, because it couldn’t decide what date was going on, it didn’t insert ANY DATA into each day’s page template, thus overwriting each weblog entry.</p>
+</blockquote>
+
+<p>From this I decided that there must be some <a href="http://radio.weblogs.com/0103807/stories/2002/05/24/tableOfContents.html">Table of Contents</a> somewhere that defines “when”.  My guess was that “when” must have gotten broken somehow and if I could only fix it, I would be back in business.  This brought me to the mysterious and unusual .root files.</p>
+
+<h4 id="what-is-a-root-file">What is a .root File?</h4>
+
+<p>When Radio is installed, several files with the extension of .root are installed.  These are:</p>
+
+<ul>
+  <li>program filesradio userlandradio.root</li>
+  <li>program filesradio userlanddata fileshotlistData.root</li>
+  <li>program filesradio userlanddata filesmanilaBloggerBridgeData.root</li>
+  <li>program filesradio userlanddata filesweblogData.root</li>
+  <li>program filesradio userlanddata filesaggregatorData.root</li>
+  <li>program filesradio userlanddata filesweblogsComData.root</li>
+  <li>program filesradio userlandtoolsmanilaBloggerBridge.root</li>
+  <li>program filesradio userlandtoolsmyPictures.root</li>
+  <li>program filesradio userlandtoolsstaticSites.root</li>
+  <li>program filesradio userlandtoolswhoIs.root</li>
+</ul>
+
+<p>A .root file is really a small database, specifically an object database.  These .root files can contain virtually anything that Radio deals with including scripts, macros and, tada, the text of every post you make.  Here is what each Radio.root file does:</p>
+
+<ul>
+  <li>radio.root – The master .root file.  This file actually defines Radio itself.  Be very careful with it.</li>
+  <li>data fileshotlistData.root - This is information about the 100 most subscribed to weblogs.  It’s automatically updated.</li>
+  <li>data filesmanilaBloggerBridgeData.root - Data from when Manila integrates with Blogger.</li>
+  <li><strong>data filesweblogData.root - This is the magic file.  It contains every single post you ever make!</strong></li>
+  <li>data filesaggregatorData.root - Your news aggregator.</li>
+  <li>data filesweblogsComData.root - Data from weblogs.com.</li>
+  <li>toolsmanilaBloggerBridge.root - The actual manila-to-Blogger bridge.</li>
+  <li>toolsmyPictures.root - The Radio myPictures tool.</li>
+  <li>toolsstaticSites.root - The staticSites tool.</li>
+  <li>toolswhoIs.root - The whoIs Tool.</li>
+</ul>
+
+<p>I figured out that weblogData.root was the right file by a couple of things, specifically:</p>
+
+<ul>
+  <li>It was updated today so it was logical to be the culprit</li>
+  <li>The filename seemed right.</li>
+  <li>I found some hints in different discussion forums that it was right.  Here is the <a href="http://radio.userland.com/discuss/msgReader$11359?mode=topic&amp;y=2002&amp;m=3&amp;d=5">cross reference</a>.</li>
+</ul>
+
+<p>Before I go into how I fixed this, it’s worth talking about how Radio produces HTML, and about its directory structure.</p>
+
+<h3 id="how-radio-produces-html">How Radio Produces HTML</h3>
+
+<p>If you have ever looked inside the wwwyearmonthday directory, you have probably seen files named “01.txt”, “02.txt” and so on.  These files represent your weblog posts.  Here is what one of these contains:</p>
+
+<blockquote>
+  <p>#flHomePage true<br />
+#flArchivePage true<br />
+#archiveDate “2002/04/13”<br />
+&lt;%radio.macros.viewWeblog ()%&gt;<br />
+ </p>
+</blockquote>
+
+<p>This is basically telling Radio to view the weblog for 04/13/2002.  Remember, I said “represent”, not that it was the post.  In essence Radio reads this file and then fills in the content when it <a href="http://fuzzygroup.net/writing/radiouserland_faq.htm#glossary::upstreaming">upstreams</a> your weblog posting to the server.  Looking at this file is one of the things that convinced me that my data must exist somewhere else.  The question was where.</p>
+
+<h3 id="what-directories-does-radio-store-content-in">What Directories Does Radio Store Content In?</h3>
+
+<p>At this point, you will probably be relieved to know that Radio automatically makes an archive of your content in the directory:</p>
+
+<p>program filesRadio UserLandbackupsweblogArchive</p>
+
+<p>This contains an XML-tagged archive of all of your weblog entries.  This includes all posts.  </p>
+
+<p>In the directory: </p>
+
+<p>program filesRadio UserLandbackupsrendering</p>
+
+<p>there is a backup of all posts, stories and categories in HTML format.  Note that even though this exists when you use the Publish Entire Website command from within Radio, it can get overwritten when Radio regenerates your HTML.  Here’s a tip: Periodically Zip the whole directory tree.  Disk space is cheap and your weblog is valuable.  If you want to go a step further, download SecondCopy from <a href="http://www.secondcopy.com/">www.secondcopy.com</a> which can automatically Zip directories for you. </p>
+
+<p>Here is a UserLand article on <a href="http://radio.userland.com/stories/storyReader$7039">Radio’s directory structure</a>.</p>
+
+<h3 id="how-i-fixed-the-when-problem-and-rescued-my-weblog">How I Fixed the “When” Problem and Rescued my Weblog</h3>
+<center>
+<table id="AutoNumber5" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" cellspacing="0" cellpadding="3" width="552" border="1">
+<tbody>
+<tr>
+<td width="542" bgcolor="#ff0000">
+<p align="center"><b>WARNING</b></p>
+</td>
+</tr>
+<tr>
+<td width="542">Make a backup copy of webLogData.root before doing this.  It can get mucked up when you start fiddling with it and you need to be bloody well careful!  You've been warned.  </td>
+</tr>
+</tbody>
+</table>
+</center>
+
+<p>This is what you have all been waiting for.  I went into the <a href="http://fuzzygroup.net/writing/radiouserland_part01.htm">full version</a> of Radio and selected from the Window command to go to webLogData.root.  This looks like this: </p>
+
+<p><img src="http://fuzzygroup.net/writing/images/exposedradiou4.jpg" alt="" /></p>
+
+<center></center>
+
+<p>Here’s what you see at first.  If you don’t see this then go to the Outline menu and select CollapseEverything.</p>
+
+<p><img src="http://fuzzygroup.net/writing/images/exposedradiou12.jpg" alt="" /></p>
+
+<p>Double click the triangle and you should get this: </p>
+
+<p><img src="http://fuzzygroup.net/writing/images/exposedradiou13.jpg" alt="" /></p>
+
+<p>Do it again but this time on Posts to get: </p>
+
+<p><img src="http://fuzzygroup.net/writing/images/exposedradiou14.jpg" alt="" /></p>
+
+<p>Now do it on an individual post.  You should get something like this: </p>
+
+<p><img src="http://fuzzygroup.net/writing/images/exposedradiou15.jpg" alt="" /></p>
+
+<p>Notice the <strong>“when”</strong> field in the picture above.  This indicates when the post was published.  Somehow, and I don’t really understand how, the <strong>“when”</strong> value for three last posts had gotten set to “” (i.e. nothing).  All I need to do to get my weblog back was this: </p>
+
+<ol>
+  <li></li>
+</ol>
+
+<p>Right click on each post with no value in the <strong>“when”</strong> field and click Cut.</p>
+
+<ol>
+  <li></li>
+</ol>
+
+<p>Save the webLogData.root file with the Save command on the File menu.</p>
+
+<ol>
+  <li></li>
+</ol>
+
+<p>Use Radio &gt; Publish &gt; Entire Website as shown below:     </p>
+
+<p><img src="http://fuzzygroup.net/writing/images/exposedradiou16.jpg" alt="" /></p>
+
+<p>I checked my <a href="http://radio.weblogs.com/0103807/">weblog</a> and, voila, like magic, all my posts were restored.  There now, that wasn’t so hard, was it?</p>
+
+<h3 id="what-archives-can-i-recover-from-if-i-cant-solve-this-problem">What Archives Can I Recover From if I Can’t Solve this Problem?</h3>
+
+<p>In the event that you have this or another problem and cannot recover your webLogData.root file, Radio helpfully archives every single weblog posting that you make to <a href="http://fuzzygroup.net/writing/radiouserland_faq.htm#xml">.XML</a> files on your local hard drive.  These files have an appearance like that shown below:</p>
+
+<p><strong><font face="Courier New" color="#ff0000"> </font></strong> <font color="#0000ff"><span class="m">&lt;?</span><span class="pi">xml version="1.0" </span><span class="m">?&gt;</span></font></p>
+
+<p><a href="http://fuzzygroup.net/writing/radiouserland_radioexposed.htm#"><strong><font face="Courier New" color="#ff0000">-</font></strong></a> <font color="#0000ff">&lt;</font><font color="#990000">table name</font><font color="#0000ff">="</font> <strong>00000005</strong> <font color="#0000ff">"&gt;</font></p>
+
+<p><strong><font face="Courier New" color="#ff0000"> </font></strong> <font color="#0000ff">&lt;</font><font color="#990000">boolean</font> <font color="#990000">name</font><font color="#0000ff">="</font> <strong>flNotOnHomePage</strong> <font color="#0000ff">"</font><font color="#990000"> value</font><font color="#0000ff">="</font> <strong>false</strong> <font color="#0000ff">" /&gt;</font></p>
+
+<p><strong><font face="Courier New" color="#ff0000"> </font></strong> <font color="#0000ff">&lt;</font><font color="#990000">string</font> <font color="#990000">name</font><font color="#0000ff">="</font> <strong>text</strong> <font color="#0000ff">"</font><font color="#990000"> value</font><font color="#0000ff">="</font> <strong>&lt;H3&gt;&lt;FONT face=Verdana,Geneva,Arial,Helvetica,Sans-Serif&gt;A Fleeting Glimpse of Fame&lt;/FONT&gt;&lt;/H3&gt; &lt;P&gt;Interesting.  &lt;A href=”http://www.scripting.com/”&gt;Dave Winer&lt;/A&gt; just linked to me.  Hmmm…  I guess I have to write some more about Radio.  It really is a fascinating product and I am starting to understand it more.  &lt;/P&gt; &lt;P&gt; &lt;/P&gt;</strong> <font color="#0000ff">" /&gt;</font></p>
+
+<p><strong><font face="Courier New" color="#ff0000"> </font></strong> <font color="#0000ff">&lt;</font><font color="#990000">string</font> <font color="#990000">name</font><font color="#0000ff">="</font> <strong>title</strong> <font color="#0000ff">"</font><font color="#990000"> value</font><font color="#0000ff">="</font> <strong>A Fleeting Glimpse of Fame</strong> <font color="#0000ff">" /&gt;</font></p>
+
+<p><strong><font face="Courier New" color="#ff0000"> </font></strong> <font color="#0000ff">&lt;</font><font color="#990000">date</font> <font color="#990000">name</font><font color="#0000ff">="</font> <strong>when</strong> <font color="#0000ff">"</font><font color="#990000"> value</font><font color="#0000ff">="</font> <strong>Sun, 31 Mar 2002 20:27:13 GMT</strong> <font color="#0000ff">" /&gt;</font></p>
+
+<p><strong><font face="Courier New" color="#ff0000"> </font></strong> <font color="#0000ff">&lt;/</font><font color="#990000">table</font><font color="#0000ff">&gt;</font></p>
+
+<p>These archives are stored in the directory: Program FilesRadio UserLandbackupsweblogArchive in the “posts” and “categories” subdirectories.</p>
+
+<p>Here is the Radio <a href="http://radio.userland.com/discuss/msgReader$6997?mode=day">documentation</a> on its archiving.  Here is some more <a href="http://frontier.userland.com/stories/storyReader$8130">information</a>.  There is also more information on this <a href="http://fuzzygroup.net/writing/radiouserland_radioexposed.htm#whatdirectoriesdoesradiostorecontentin">earlier in this article</a>.</p>
+
+<h3 id="tools-that-made-this-possible">Tools that Made this Possible</h3>
+
+<p>Learning all this about Radio would not have been possible without the following resources:</p>
+
+<ul>
+  <li></li>
+</ul>
+
+<p>The Radio Discussion forums at <a href="http://radio.userland.com/discuss/">http://radio.userland.com/discuss/</a></p>
+
+<ul>
+  <li></li>
+</ul>
+
+<p>My own Google-based Radio UserLand search tool at <a href="http://www.fuzzygroup.com/radiosearch/">http://www.fuzzygroup.com/radiosearch/</a></p>
+
+<h3 id="the-original-version-of-this">The Original Version of This</h3>
+
+<p>This discovery and analysis process can be seen from the beginning at:</p>
+
+<blockquote>
+  <p><a href="http://radio.userland.com/discuss/msgReader$13330#13341">http://radio.userland.com/discuss/msgReader$13330#13341</a></p>
+</blockquote>
+
+<p>These are a series of discussion group postings that I made looking for help.  </p>
+
+<h3 id="thanks">Thanks</h3>
+
+<p>My sincere thanks are extended to Lawrence Lee of UserLand who gave me exactly the right answer which I got after I had fixed the problem only because of the East Coast - West Coast time difference.  If I’d been on the West Coast, Lawrence would have had me up and running in no time.</p>
+
+<center>
+<h3 align="left">
+<a name="distribution"></a>Distribution of this Document</h3>
+<h4 align="left">
+<a name="distribution::overview"></a>See Below.</h4>
+<h3>If You're a Mac User</h3>
+</center>
+
+<p><strong>DISCLAIMER:</strong> This document, while not Macintosh hostile, is written from the perspective of a Windows user and the examples reflect this.  Please direct the obligatory violent, hostile platform flames to <a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#106;&#111;&#104;&#110;&#115;&#111;&#110;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;">&#115;&#106;&#111;&#104;&#110;&#115;&#111;&#110;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;</a>.  </p>
+
+<p><strong>Note:</strong> I also have an iMac.</p>
+
+<h4 id="copyright">Copyright</h4>
+
+<font size="2">Copyright (c) 2002, J. Scott Johnson. Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.1 or any later version published by the Free Software Foundation; with no Invariant Sections being, with no Front-Cover Texts, and with no Back-Cover Texts. A copy of the license is included in the section entitled "</font>
+<font size="2">Appendix 1 - Terms of Use</font>
+<font size="2">". </font>
+
+<font size="2"><strong>Note:</strong> I'm new to writing a Free Documentation statement and the above might not be perfect. </font>
+
+<script src="http://radiocomments.userland.com/comments?u=103807&amp;c=counts" type="text/javascript"></script>
+<p><a href="http://radiocomments.userland.com/comments?u=103807&amp;p=stories%2F2002%2F08%2F20%2FscottsRadioRadioExposedOrIDelveDeepUnderTheHoodOfRadio&amp;link=http%3A%2F%2Fradio.weblogs.com%2F0103807%2Fstories%2F2002%2F08%2F20%2FscottsRadioRadioExposedOrIDelveDeepUnderTheHoodOfRadio.html" title="Click here to comment on this page.">comment [<script type="text/javascript" language="JavaScript">commentCounter ("stories/2002/08/20/scottsRadioRadioExposedOrIDelveDeepUnderTheHoodOfRadio")</script>]</a></p>
+
+<script language="JavaScript" type="text/javascript"><!--
+	var imageUrl = "http://radio.xmlstoragesystem.com/weblogStats/count.gif";
+	var imageTag = "<img src=\"" + imageUrl + "?group=radio1&usernum=103807&referer=" + escape (document.referrer) + "\" height=\"1\" width=\"1\">";
+	document.write (imageTag);
+	//--></script>
+
+<table>
+  <tbody>
+    <tr>
+      <td><img src="http://radio.weblogs.com/0103807/images/trans60x1.gif" alt="" /></td>
+    </tr>
+    <tr>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><img src="http://radio.weblogs.com/0103807/images/trans60x60.gif" alt="" /></td>
+    </tr>
+    <tr>
+      <td>Copyright 2002 © The FuzzyStuff</td>
+    </tr>
+    <tr>
+      <td><img src="http://radio.weblogs.com/0103807/images/trans60x60.gif" alt="" /></td>
+    </tr>
+    <tr>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff.  Ruby / Rails / Elixir.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

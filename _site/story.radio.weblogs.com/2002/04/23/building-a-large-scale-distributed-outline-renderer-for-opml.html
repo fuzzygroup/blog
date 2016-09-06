@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Building a Large Scale Distributed Outline Renderer for OPML</title>
+  <meta name="description" content="        Building a Large Scale Distributed Outline Renderer for OPML        ">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/story.radio.weblogs.com/2002/04/23/building-a-large-scale-distributed-outline-renderer-for-opml.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Building a Large Scale Distributed Outline Renderer for OPML</h1>
+    <p class="post-meta"><time datetime="2002-04-23T00:00:00-05:00" itemprop="datePublished">Apr 23, 2002</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Expires" content="Mon, 01 Jan 1990 01:00:00 GMT" />
+    <title>Building a Large Scale Distributed Outline Renderer for OPML</title>
+    <style type="text/css">
+      body {
+        margin-top: 0px;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-bottom: 0px;
+        }
+
+      body, td, p {
+        font-family: verdana, sans-serif;
+        font-size: 90%;
+        }
+
+      h2 { 
+        font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 24px; font-weight: bold
+        }
+      .header {
+        font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 40px; font-weight: bold
+        }
+      .realsmall {
+        font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 9px;
+        }
+      .small {
+        font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px;
+        }
+      </style>
+    </head>
+
+<table>
+  <tbody>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td><img src="http://radio.weblogs.com/0103807/images/trans60x60.gif" alt="" /></td>
+    </tr>
+    <tr>
+      <td>Last updated: 6/5/2002; 8:34:17 AM</td>
+    </tr>
+    <tr>
+      <td><img src="http://radio.weblogs.com/0103807/images/trans60x60.gif" alt="" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td><img src="http://radio.weblogs.com/0103807/images/trans60x1.gif" alt="" /></td>
+    </tr>
+    <tr>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<font size="+3"><b><a href="http://radio.weblogs.com/0103807/" style="color:black; text-decoration:none">The FuzzyBlog!</a></b></font>
+<p><em>Marketing 101. Consulting 101. PHP Consulting. Random geeky stuff. I Blog Therefore I Am.</em></p>
+
+<font size="+1"><b>Building a Large Scale Distributed Outline Renderer for OPML</b></font>
+
+<h3 id="font-faceverdanagenevaarialhelveticasans-serifbuilding-a-large-scale-distributed-outline-renderer-for-opmlfont"><font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">Building a Large Scale Distributed Outline Renderer for OPML</font></h3>
+
+<font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">OPML is a wicked cool way to display lightweight hierarchies of information.  Its an easy to implement (I did it in less than an hour for a FAQ application), xml based, simple specification.  It works and the author should be gosh dang proud of it.  Here's the rub: OPML is displayed as XML tags in the browser.  Here's what you see in IE: </font>
+
+<font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif"><img border="0" height="498" src="http://www.fuzzygroup.com/images/opml.gif" width="449" /></font>
+
+<p><a href="http://www.fuzzygroup.com/php/faq/faqview.php?action=opmlview"><font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">Here's the URL</font></a></p>
+
+<font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">To me, the view in IE is unacceptable.  This makes outlining a geek curiousity rather than a mainstream thing.  Yes, in a true outliner, the results will be better but we need a way for people to view this in HTML.  I'd really like people to see my outlines now but with only Radio users able to get to them, it's a chicken and egg situation.</font>
+
+<font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">Here's my recommendation.  And it isn't all that hard. </font>
+
+<h3 id="font-faceverdanagenevaarialhelveticasans-serifthis-is-a-distributed-rendering-problem-font"><font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">This is a Distributed Rendering Problem </font></h3>
+
+<font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">Here are the issues as I see it: </font>
+
+<ol>
+  <li>
+    <font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">Take an OPML url and generate HTML from it for display.  XSLT, DHTML, etc. Who cares?  Let's get it done so that "Mom" or "GrandPa" can view it.  (No disrespect to highly technical Moms and GrandPas out there, this is a metaphor).  Edit or view, who cares?  Have to start somewhere and View is easier.</font>
+  </li>
+  <li>
+    <font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">Give a link to the actual OPML url so that if people have a mime compliant OPML editor, it can be edited.  OPTIONAL: Let people have a preferences facility to bookmark them and share them.  </font>
+  </li>
+  <li>
+    <font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif"><strong>Do it without breaking the bank on hardware.</strong></font>
+  </li>
+</ol>
+
+<font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">That last point is the hard one.  Here's my solution: </font>
+
+<ol>
+  <li>
+    <font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">Write this in a commonly available web language currently installed on over 3,000,000 hosts world wide that also happens to be network ready, xml capable and really, really easy to get stuff done in.  Sure, we'd all love to use Zope or Python or ExoticLangOfTheDayHere.  Guess what: PHP's what I recommend.  It meets these criteria and more.</font>
+    <p>  It’s wicked portable, fast enough and has none of the install problems with Perl scripts (flames to <a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#106;&#111;&#104;&#110;&#115;&#111;&#110;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;">&#115;&#106;&#111;&#104;&#110;&#115;&#111;&#110;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;</a>).</p>
+  </li>
+  <li>
+    <font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">Write a renderer in PHP.  Make it smart enough to update its rendering params from a server periodically.  Make it accept one parameter, the OPML file to render.</font>
+  </li>
+  <li>
+    <font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">Write this code so it's drop dead simple to install on a server.  Make it "ioview.php", no includes.  Copy it into a website and go.  </font>
+  </li>
+  <li>
+    <font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">Let people who download it and install it sign up with UserLand as an "OPML Partner".  Award "Karma Points" if they do it.</font>
+  </li>
+  <li>
+    <font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">Let UserLand operate a redirector service which forks IO rendering requests out at random to different servers all over the globe.  This could probably be done with one or two Linux boxes.  Sure we could make it fancy but let brute force solve it for now.  Heck, all UserLand really has to do is own the DNS entries and a little tiny bit of hardware to jumpstart it.</font>
+  </li>
+  <li>
+    <font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">Ask the Radio community to help out.  I have right now 3 boxes I could register.  I don't mind giving up a little cpu and bandwidth.</font>
+  </li>
+  <li>
+    <font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">Do something with the "Karma Points".  Have a pot luck supper or something.  Who cares.  We'll do it because we're a community and we believe.  The karma is just an idea.</font>
+  </li>
+</ol>
+
+<font face="Verdana,Geneva,Arial,Helvetica,Sans-Serif">I'm willing to help.  Anyone else?  I can devote both IQ, coding and cpu to it.  There have to be a lot of boxes out there with light loads.</font>
+
+<script language="JavaScript" type="text/javascript"><!--
+	var imageUrl = "http://subhonker6.userland.com/weblogStats/count.gif";
+	var imageTag = "<img src=\"" + imageUrl + "?group=radio1&usernum=103807&referer=" + escape (document.referrer) + "\" height=\"1\" width=\"1\">";
+	document.write (imageTag);
+	//--></script>
+
+<table>
+  <tbody>
+    <tr>
+      <td><img src="http://radio.weblogs.com/0103807/images/trans60x1.gif" alt="" /></td>
+    </tr>
+    <tr>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><img src="http://radio.weblogs.com/0103807/images/trans60x60.gif" alt="" /></td>
+    </tr>
+    <tr>
+      <td>Copyright 2002 © The FuzzyStuff</td>
+    </tr>
+    <tr>
+      <td><img src="http://radio.weblogs.com/0103807/images/trans60x60.gif" alt="" /></td>
+    </tr>
+    <tr>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff.  Ruby / Rails / Elixir.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
