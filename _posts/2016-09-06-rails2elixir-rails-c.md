@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Rails2Elixir - rails c
-category: elixir
+category: rails2elixir
 tags: ["rails2elixir", "elixir"]
 ---
 rails c, the Rails Console, is one of those canonical things in the rails world - it launches the rails console with all your objects loaded.
