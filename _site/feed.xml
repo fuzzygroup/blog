@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 07 Sep 2016 07:21:48 -0400</pubDate>
-    <lastBuildDate>Wed, 07 Sep 2016 07:21:48 -0400</lastBuildDate>
+    <pubDate>Wed, 07 Sep 2016 09:13:47 -0400</pubDate>
+    <lastBuildDate>Wed, 07 Sep 2016 09:13:47 -0400</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -115,6 +115,104 @@
         
         
         <category>iphone</category>
+        
+      </item>
+    
+      <item>
+        <title>AWS Tutorial - Getting Your Instance ID and Why It Matters</title>
+        <description>&lt;p&gt;In the world of AWS, your server is referred to as an EC2 instance and it is uniquely identified by a “instance-id”, a unique alpha numeric identifier that you can use to reference your server.  Your instance id can be used in all kinds of ways including:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;log files&lt;/li&gt;
+  &lt;li&gt;database records&lt;/li&gt;
+  &lt;li&gt;security analysis&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In my case I’m using AWS to crawl different websites and one of the things I’m encountering is that it is very, very hard to know what AWS instance ty;e is the best value.  Specifically do I optimize for more memory, more CPU, more disk and so on.  One thing you can do is push your instance id right down to the unit of work.  In my case that’s a database transaction so I can do things like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;select instance_id, count(*) from page2016_q3s where instance_id is not null group by instance_id;
++---------------------+----------+
+| instance_id         | count(*) |
++---------------------+----------+
+| i-03ce34f1b92a3c72b |     1514 |
+| i-045b17850658399ae |     1698 |
+| i-0715d32f41c06b98f |     1731 |
++---------------------+----------+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So if these 3 different instance types, and they were all started at the same time, I can see that, well, they’re all doing roughly the same amount of work so maybe the instance type doesn’t matter all that much and I should just buy the cheapest.&lt;/p&gt;
+
+&lt;p&gt;Here’s how you fetch the instance id – and its brilliantly simple – you can just use wget or curl.  Here’s an example:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl http://169.254.169.254/latest/meta-data/instance-id
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And that will return back a chunk of information which is just the instance id.  Want your region instead then just use:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl http://169.254.169.254/latest/meta-data/placement/availability-zone
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And if you’re looking to understand what’s available then just call:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl http://169.254.169.254/latest/meta-data/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And  you can walk down each of the options one by one looking at what’s available.&lt;/p&gt;
+
+&lt;p&gt;Here’s a ruby implementation of how to get this info and cache it for faster retrieval.  This is in our common module which is a generic set of class methods we use all over the place.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def self.instance_id
+  #
+  # abend unless we&#39;re in production mode
+  #
+  return &quot;&quot; unless Rails.env.production?
+
+  #
+  # pull from cache
+  #
+  cache_key = &quot;#{Common.ip_address}|instance_id&quot;
+  cache = Common.get_mem_cache
+  instance_id = cache.read(cache_key)
+  return instance_id unless instance_id.nil?
+  
+  #
+  # fetch from metadata service, cache and return
+  #
+  begin
+    agent = Mechanize.new
+    url = &quot;http://169.254.169.254/latest/meta-data/instance-id&quot;
+    page = agent.get(url)
+    instance_id = page.body
+
+    #
+    # Now cache it
+    #
+    cache.write(cache_key, instance_id)
+
+    return instance_id
+  rescue StandardError =&amp;gt; e
+    puts &quot;Hit error: #{e}&quot;
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The Common.ip_address technique can be found on &lt;a href=&quot;https://stackoverflow.com/questions/14112955/how-to-get-my-machines-ip-address-from-ruby-without-leveraging-from-other-ip-ad/39367219#39367219&quot;&gt;stack overflow&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 07 Sep 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/09/07/aws-tutorial-getting-your-instance-id.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/09/07/aws-tutorial-getting-your-instance-id.html</guid>
+        
+        <category>aws</category>
+        
+        <category>instance-id</category>
+        
+        
+        <category>aws</category>
         
       </item>
     
@@ -305,34 +403,6 @@ end
         
         
         <category>rails2elixir</category>
-        
-      </item>
-    
-      <item>
-        <title>Practical Things Learned at ElixirConf</title>
-        <description>&lt;p&gt;Its been a few days since ElixirConf and I was reflecting on the practical stuff I learned.  Yes I saw the grand vision driving things but I’m always more concerned about the little stuff because everything you build is entirely dependent on the little stuff.  Attribution given by name only since I don’t want to call anyone out.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;It’s real&lt;/strong&gt;.  People are really using this in production which means that I can too.  Just knowing that is huge.  Thanks Ben!&lt;/li&gt;
-  &lt;li&gt;Deploy is still kind of a mess.  At least one company I met is handling deploy via building it into containers and then deploying the containers.  Again thanks to Ben!&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://hex.pm/packages/timex&quot;&gt;Timex&lt;/a&gt; is the rough equivalent to the Rails ActiveSupport Time.now style stuff.  That’s huge since I rely on that constantly.&lt;/li&gt;
-  &lt;li&gt;Despite the above comment on Timex, I was advised that datetime stuff is kind of a mess and “just get the unix epoch from the server and do with it what you will”.  I don’t know how to reconcile this yet but I’m sure I will.  Thanks Pete!&lt;/li&gt;
-  &lt;li&gt;As with Rails development local development using containers “just doesn’t feel right”.  Not terribly surprising given how many times I’ve tried to get a full rails stack running for local development using Docker and how many times I’ve failed.&lt;/li&gt;
-  &lt;li&gt;Ecto is surprisingly robust and I’m looking forward to using&lt;/li&gt;
-  &lt;li&gt;There are starting to be lots of good development tools including an &lt;a href=&quot;https://github.com/KronicDeth/intellij-elixir&quot;&gt;IntelliJ plugin for Elixir&lt;/a&gt;.  This is the first time I’ve ever even considered a JetBrains product so that’s surprising.  Hat tip to &lt;a href=&quot;https://github.com/KronicDeth&quot;&gt;KronicDeath&lt;/a&gt; who I’m pretty sure I had dinner with; its all a bit blurry now in retrospect.&lt;/li&gt;
-  &lt;li&gt;I purely can’t wait to start using &lt;a href=&quot;https://github.com/gamache/fuzzyurl.ex&quot;&gt;FuzzyUrl&lt;/a&gt;  I’ve written a lot of this kind of code over the years.  Curious to see how it compares (hint - this will be better)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Tue, 06 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/elixir/2016/09/06/practical-things-learned-at-elixircon.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/elixir/2016/09/06/practical-things-learned-at-elixircon.html</guid>
-        
-        <category>elixir</category>
-        
-        <category>elixirconf</category>
-        
-        
-        <category>elixir</category>
         
       </item>
     
