@@ -17,6 +17,7 @@ So here's what Dave McClure taught me:
 
 {:.center}
 **Not everything works out.  And that's ok.**
+
 {:.center}
 **Relationships matter.  Keep relationships strong no matter what.**
 
