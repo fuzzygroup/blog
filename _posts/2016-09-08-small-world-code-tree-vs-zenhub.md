@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Small World - Code Tree vs ZenHub for Github
+title: Small World - CodeTree vs ZenHub for GitHub
 category: software_engineering
-tags: ["software engineering"]
+tags: ["software_engineering", "git", "ticketing", "project_management"]
 ---
 Note: I started this on the trip down to ElixirCon but failed to finish it then so its about a week out of date but still relevant.
 
