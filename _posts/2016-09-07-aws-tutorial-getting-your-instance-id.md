@@ -1,6 +1,6 @@
 ---
 layout: post
-title: AWS Tutorial - Getting Your Instance ID and Why It Matters
+title: AWS Tutorial 06 - Getting Your Instance ID and Why It Matters
 category: aws
 tag: ["aws", "instance-id"]
 ---
