@@ -19,3 +19,8 @@ Hello.  Thank you for being interested in what I'm writing about AWS.  To start,
 * all open source source technologies
 
 As you can imagine this is **hard**.  At the scale I'm working there aren't easy answers and there are all kinds of challenges.  And while I do have some AWS experience, I've never worked at this level before.  So everything is being documented step by step as it gets done.  It is unclear if the final product is a book, just a series of blogs posts, a ton of conference talks or something else but feel free to follow along and enjoy!
+
+In closing, I'm as excited about AWS as I ever have been with a server side technology.  Overall AWS is a [massive watershed event](https://fuzzygroup.github.io/blog/aws/2016/09/06/aws-i-was-wrong-dead-wrong.html) for the whole technology industry.  
+
+{.:center}
+[All My AWS Writing](https://fuzzygroup.github.io/blog/category.html#aws)
