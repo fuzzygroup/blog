@@ -83,6 +83,13 @@ The reason for not giving it to them on the first few days is that you want them
 
 # Line Management or Motion is Happiness
 
+In today's DisneyWorld, 2016, it isn't uncommon to see a 65 plus minute wait for a top tier ride like Seven Dwarves Mine Train. And here's what I've found about dealing with lines in DisneyWorld:
+
+{:.center}
+Motion is Happiness
+
+No one, not the most devoted Disney fan, is actually happy when waiting on line.  
+
 # Carrying Less is Happiness
 
 I always see people carrying big bags, backpacks, etc and I wonder just what they have in them.  Personally I never carry anything more than an almost empty backpack and even that is sometimes too much.  Right now to get into DisneyWorld you have to go thru:
@@ -99,9 +106,22 @@ Here's what I did this trip to get my kids to carry at least some of my stuff:
 
 # Hydrate, Hydrate, Hydrate
 
+# Good Shoes
 # A Misting Fan is Your Ally
 
 # Eat Lightly or Mastering the Disney 10
 
 My wife and I jokingly refer to the *Disney 10* or the ten pounds that it seems you put on after a week at Disney.  We generally, for convenience, use the dining plan and there is a ton of food provided.  However, lately we've taken to treating the dining plan much like tapas - a few bites or this, a few bites of that; we just don't finish our plates anymore.  It isn't an economic way to do things but you don't end up so full and feeling so fat afterwards.  If you're looking for good information about the economics of the dining plan then the ever superb EasyWDW always has [something good to read](http://www.easywdw.com/easy/blog/figuring-out-if-one-of-the-disney-dining-plans-make-sense-for-your-group/).
+
+# Bring a Jacket
+
+Given how much I've written about the pervasive heat and humidity in Orlando you might be surprised to find me closing this essay with "Bring a Jacket" but it is unfortunately true.  The air conditioning indoors in Orlando is as pervasive as the heat is outdoors and I find my normal indoor state is either chilly, cold or too cold.  You might be different but I've never traveled here without a fleece and I've never regretted it.
+
+# Sidebar: Packing List
+
+Here's my packing list for a disney trip:
+
+* misting fan
+* jacket / fleece
+* good shoes with arch suports
 
