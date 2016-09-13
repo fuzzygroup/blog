@@ -2,7 +2,7 @@
 layout: post
 title: A Father's Guide to Surviving Disney World
 ---
-I'm writing this from Orlando, Florida where we're on our fourth trip to [DisneyWorld](http://www.disneyworld.com/).  Now I realize that t the true *Disney faithful*, four trips ins't a lot, it feels like enough for me to write this with some degree of authority.  My wife is one of the true Disney faithful and all of this really comes from her one way or another.So here you go - how to survive DisneyWorld. 
+I'm writing this from Orlando, Florida where we're on our fourth trip to [DisneyWorld](http://www.disneyworld.com/).  Now I realize that to the true *Disney faithful*, four trips ins't a lot, it feels like enough for me to write this with some degree of authority.  My wife is one of the true Disney faithful and all of this really comes from her one way or another.So here you go -- **how to survive DisneyWorld**. 
 
 # Abandon All Cost Concerns
 
@@ -36,7 +36,7 @@ Every trip we've made to DisneyWorld, except for this one, has featured multiple
 
 Please bear in mind that every Disney park has some ride that's the equivalent of Small World in this regard.  Here are some examples:
 
-* Magic Kingdom - Small World, Hall of Presidents
+* Magic Kingdom - Small World, Hall of Presidents, Carousel of Progress
 * Epcot - Spaceship Earth, Three Caballeros
 * Hollywood Studios - Muppet*Vision 3D
 * Animal Kingdom - Primeval Whirl
@@ -47,13 +47,18 @@ One of the biggest mistakes I see other parents make is bringing small children 
 
 # Trip Planning is Key
 
-  * time of year
-  * Disney is an ecosystem and the amount of info is huge 
+If you have ever thought "I know we'll goto DisneyWorld and it will be easy!" then I have to disagree with you.  I've watched my wife plan multiple trips and it is anything but easy.  There are hundreds if not thousands of options and even things like "[Do we get the meal plan are widely debated](https://www.google.com/search?q=disneyworld+should+I+get+the+dining+plan&oq=disneyworld+should+I+get+the+dining+plan&aqs=chrome..69i57j0l2.10451j0j7&sourceid=chrome&ie=UTF-8) (6.6 million hits on that Google search)".  
 
+Here are a few things to consider:
+
+* The amount of information about planning a Disney vacation is staggering.  There are literally dozens of hard core disney fanatic web sites which are an awesome resource.
+* The time of year is key.  Crowds at DisneyWorld are huge and picking the right time of year can make a big difference.  Happily there are resources like [this](http://wdwprepschool.com/disney-world-crowd-calendar-for-the-2016-2017-school-year/).  And there are [others](https://www.undercovertourist.com/orlando/crowd-calendar/) of course.
+* If you can find a Disney fan, someone who really, really cares about Disney, then they can help you have an amazing trip
+* DisneyWorld is now an ecosystem of sorts - massive amounts of information, apps that analyze things, etc.  And there's a whole language of things that make no sense outside of Disney - FastPass anyone?
 
 # App Up!
 
-One of the things that has really surprised me is the quantity of apps that can really make your trip better.  Here are the apps that my wife and I use every single time.  All apps below are listed for iOS but most have equivalents for Google Play
+One of the things that has really surprised me is the quantity and quality of apps that can really make your trip better.  Here are the apps that my wife and I use every single time.  All apps below are listed for iOS but most have equivalents for Google Play
 
 * [My Disney Experience](https://itunes.apple.com/us/app/my-disney-experience-walt/id547436543?mt=8)
 * [WDW Lines](https://itunes.apple.com/us/app/disney-world-lines-from-touringplans.com/id411091283?mt=8) (pricey; read below)
@@ -88,7 +93,20 @@ In today's DisneyWorld, 2016, it isn't uncommon to see a 65 plus minute wait for
 {:.center}
 Motion is Happiness
 
-No one, not the most devoted Disney fan, is actually happy when waiting on line.  
+No one, not the most devoted Disney fan, is actually happy when waiting on line. No matter how magical Disney is, a 65 minute wait is just simply just a sucky experience.  What you'll find is that wait times vary dramatically and go up and down.  So if you have an app which tracks wait times, you can notice "oh wow People Mover is now only 10 minutes" and just rush over to it.
+
+You'll find that your kids will often fixate on particular rides and want to ride things at a given time.  **No**.  I repeat **no**.  Motion really is happiness at DisneyWorld so take rides when they are available.  Don't pass up a ride when the line is small.  We did this yesterday when we actually did want to ride People Mover and 15 minutes later it was a 25 minute wait.
+
+# The Right Shoes
+
+Walking around DisneyWorld basically amounts to traversing a concrete jungle -- honestly there is a just a ton of walking.  My wife's fitbit normally hits 20,000 steps by late afternoon.  And, having brought more comfortable shoes to my wife, yesterday, when I met her at the park, I'm more convinced than ever about the need for excellent shoes.  And since that is highly variable from person to person all I can really say here is picture whatever shoe your feet can be in for hours upon hours and then wear that shoe.  I'd recommend something with arch support personally but that's just me.
+
+# Do Evening Events with Care if At All
+
+There are a ton of amazing things to do at DisneyWorld during the evenings.  The problem is that if you have kids, by the time the night time events roll around all the kids want to do is lie around and watch TV or play video games and you, the parent, is like *But we paid for this cool thing; get off your butt and come along!!!*  We've now tried to do evening events on almost every trip and they always end up with one parent at the event and the other parent at the hotel with whatever kid is exhausted and that's no fun for Mom and Dad.  So here are two thoughts:
+
+* Ease into evening events with only 1 per trip.
+* If you are going to try to do evening events, you should do them at the beginning of your trip when you're not just plain exhausted as you will be by the end of the trip
 
 # Carrying Less is Happiness
 
@@ -102,12 +120,23 @@ If you can eliminate one of those by not having a bag at all then its one less s
 
 # Getting Your Kids to Carry The Stuff
 
-Here's what I did this trip to get my kids to carry at least some of my stuff:
+I'm a firm believer that requiring more of your kids is ultimately good for them.  So I think that if you have a bag or a misting fan or whatever, you should divide responsibility among your kids.  Usually this will cause no end of whining or kid1 shoving it over to kid2 and so on.  Here's what I did this trip to get my kids to deal better with this:
+
+* Set iPhone timer to 15 minutes with a distinctive ring tone
+* Give it to Kid1
+* When timer goes off give it to Kid 2
+* Take a turn after Kid2
+* Repeat until back in hotel
+
+Your mileage may vary but it worked for me.
 
 # Hydrate, Hydrate, Hydrate
 
-# Good Shoes
+Once again we return to the theme of Orlando is **hot**.  So drink up!
+
 # A Misting Fan is Your Ally
+
+You'll find these blue plastic fan / water bottles sold through out the parks for about $10 to $12.  And you'd think "too much money" but they really do work well.  Cheap bastard that I am, I kept it from my very first trip and we're still using it.  If you really want to level up your usage of this then put in the fridge overnight or load it with ice cubes (or both).
 
 # Eat Lightly or Mastering the Disney 10
 
@@ -121,7 +150,13 @@ Given how much I've written about the pervasive heat and humidity in Orlando you
 
 Here's my packing list for a disney trip:
 
-* misting fan
+Things You Bring:
+
 * jacket / fleece
+
+Things You Bring to the Park:
+
+* misting fan
 * good shoes with arch suports
+* advil / tylenol / both
 
