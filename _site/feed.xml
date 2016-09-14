@@ -6,12 +6,45 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 14 Sep 2016 06:44:05 -0400</pubDate>
-    <lastBuildDate>Wed, 14 Sep 2016 06:44:05 -0400</lastBuildDate>
+    <pubDate>Wed, 14 Sep 2016 07:01:57 -0400</pubDate>
+    <lastBuildDate>Wed, 14 Sep 2016 07:01:57 -0400</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
-        <title>iPad for Productivity</title>
+        <title>Starting Learnings - What Kevin Burton Taught Me</title>
+        <description>&lt;p&gt;I got to know &lt;a href=&quot;https://github.com/burtonator&quot;&gt;Kevin Burton&lt;/a&gt; of &lt;a href=&quot;http://www.spinn3r.com/&quot;&gt;Spinn3r&lt;/a&gt; fame back in my Feedster days and while I don’t know him tremendously well, I absolutely learned from him.  Interestingly, unlike a lot of my Silicon Valley contacts where I learned from them at the time, the learnings from Kevin came later, much later.&lt;/p&gt;
+
+&lt;p&gt;The classic valley business model is what I’d describe as “up or out” i.e. you either get big fast become wildly successful or your flame out.  Either way you either go up or you go out.  But what if you are actually passionate about what you do?  What if you don’t want to go out or even to get tremendously big?  What if you want to do the kind of work you love and that you are great at?  Well, while in Silicon Valley, this would generally be viewed with derision as a “lifestyle business”, there isn’t anything wrong with it.  Hell, running a business successfully for years at a time, is a hell of an accomplishment.&lt;/p&gt;
+
+&lt;p&gt;Kevin is a search engine guy and he’s smart.  He’s at the level of understanding that can be described as “Let’s write the search engine from scratch”.  That’s smart.  And when I first got to know him back in 2005 / 2006, he was just getting started with Spinn3r and he’s still at it.  He’s building a great product that solves a real problem.  And he’s even become a part of academia in being cited in over &lt;a href=&quot;https://scholar.google.com/scholar?q=spinn3r&quot;&gt;350 papers&lt;/a&gt; that are studying the rise of the social web.&lt;/p&gt;
+
+&lt;p&gt;So here’s what I learned from Kevin Burton:&lt;/p&gt;
+
+&lt;p class=&quot;center&quot;&gt;&lt;strong&gt;Persistence.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;and:&lt;/p&gt;
+
+&lt;p class=&quot;center&quot;&gt;&lt;strong&gt;Do what you love.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;We all love the myth of the overnight success but real life isn’t like that.  Succeeding at anything takes copious amounts of time and persistence.  Doing what you love makes persistence easier and Kevin has taught that to me in spades.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 14 Sep 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/startup/2016/09/14/starting-learnings-what-kevin-burton-taught-me.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/startup/2016/09/14/starting-learnings-what-kevin-burton-taught-me.html</guid>
+        
+        <category>startup</category>
+        
+        <category>learnings</category>
+        
+        <category>entrepreneurship</category>
+        
+        
+        <category>startup</category>
+        
+      </item>
+    
+      <item>
+        <title>iPad for Productivity Take Two</title>
         <description>&lt;p&gt;&lt;a href=&quot;https://fuzzygroup.github.io/blog/ipad/2016/09/13/is-an-ipad-a-serious-productivity-tool.html&quot;&gt;Yesterday&lt;/a&gt; I posited that an iPad could be a serious productivity tool and I later realized “well that’s interesting and all but have you really ever created anything on one?”  So to quell my inner self doubt, I set out to try and even though I had my laptop right next to me, I opted to use my iPad and, in about an hour, I had produced 1091 words of &lt;a href=&quot;https://fuzzygroup.github.io/blog/parenting/2016/09/14/childhood-memories.html&quot;&gt;this&lt;/a&gt;.  No real need to read it – it is a personal piece on parenting and childhood.  Not my average bit of word flow but something that just raced off my finger tips in an inspiring flow.&lt;/p&gt;
 
 &lt;table&gt;
@@ -359,71 +392,6 @@
         
         
         <category>osx</category>
-        
-      </item>
-    
-      <item>
-        <title>AWS Tutorial 07 - Understanding Elastic IPs</title>
-        <description>&lt;p&gt;Any ec2 instance, let’s call it a node for simplicity’s sake, in AWS has a number of network settings that define how you access it.  Here’s an example:&lt;/p&gt;
-
-&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/blog/assets/aws/aws_tutorial_07.png&quot; alt=&quot;aws_tutorial_07.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;So this box has both a public IP and a public DNS address.  And these are how you access the node - until its restarted.  At which point the node will be assigned a fresh IP address and a matching DNS address.  And, at this point, your SSH settings / browser settings for accessing that box need to be reset.  And if you’re using an SSH config file to make accessing the box easy, well, you have to change it.  And that &lt;strong&gt;sucks&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;The key here is to assign an Elastic IP Address to the box so a consistent ip address and matching domain name is persistently attached to the node so even if you restart it / resize it / etc, you can always access it in the same way.&lt;/p&gt;
-
-&lt;p&gt;Here’s how to do that:&lt;/p&gt;
-
-&lt;ul class=&quot;center&quot;&gt;
-  &lt;li&gt;In your AWS console goto &lt;a href=&quot;https://console.aws.amazon.com/ec2/v2/home#Instances:sort=instanceState&quot;&gt;EC2 instances&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Look along the left hand table of contents bar until you find Network and Security and click &lt;a href=&quot;https://console.aws.amazon.com/ec2/v2/home?#Addresses:sort=publicIp&quot;&gt;Elastic IPs&lt;/a&gt; and you should see something like this:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p class=&quot;left&quot;&gt;&lt;img src=&quot;/blog/assets/aws/aws_tutorial_07_elastic_ip.png&quot; alt=&quot;aws_tutorial_07.png&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Click Allocate New Address.&lt;/li&gt;
-  &lt;li&gt;Answer Yes and you’ll get this:&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p class=&quot;center left&quot;&gt;&lt;img src=&quot;/blog/assets/aws/aws_tutorial_07_elastic_ip_allocate_succeeded.png&quot; alt=&quot;aws_tutorial_07.png&quot; /&gt;&lt;/p&gt;
-
-&lt;ul class=&quot;center&quot;&gt;
-  &lt;li&gt;Go up to the actions menu and click Associate Address:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p class=&quot;left&quot;&gt;&lt;img src=&quot;/blog/assets/aws/aws_tutorial_07_elastic_ip_associate.png&quot; alt=&quot;aws_tutorial_07.png&quot; /&gt;&lt;/p&gt;
-
-&lt;ul class=&quot;center&quot;&gt;
-  &lt;li&gt;Start to type in the name tag of the node or another way to identify it:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/blog/assets/aws/aws_tutorial_07_elastic_ip_05.png&quot; alt=&quot;aws_tutorial_07.png&quot; /&gt;&lt;/p&gt;
-&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/blog/assets/aws/aws_tutorial_07_elastic_ip_06.png&quot; alt=&quot;aws_tutorial_07.png&quot; /&gt;&lt;/p&gt;
-&lt;p class=&quot;left&quot;&gt;&lt;img src=&quot;/blog/assets/aws/aws_tutorial_07_elastic_ip_07.png&quot; alt=&quot;aws_tutorial_07.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;And, wham!  Your box now has a permanent IP address associated with it.  You can now use that for SSH / DNS / SSH config files, etc.&lt;/p&gt;
-
-&lt;h2 id=&quot;notes&quot;&gt;Notes&lt;/h2&gt;
-
-&lt;p&gt;There are some issues with Elastic IPs that you need to understand:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Setting an elastic IP releases your current public IP so if you’re used to that you need to take note&lt;/li&gt;
-  &lt;li&gt;You get allocated only 5 free elastic IPs with you account.  After that you pay for them so use wisely&lt;/li&gt;
-  &lt;li&gt;You might be able to get around the limit of 5 by taking a &lt;a href=&quot;https://www.google.com/search?q=dynamic+dns+for+AWS&amp;amp;oq=dynamic+dns+for+AWS&amp;amp;aqs=chrome..69i57.3735j0j7&amp;amp;sourceid=chrome&amp;amp;ie=UTF-8&quot;&gt;dynamic DNS approach&lt;/a&gt; but I haven’t explored that myself&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Sun, 11 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/09/11/aws-tutorial-07-understanding-elastic-ips.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/09/11/aws-tutorial-07-understanding-elastic-ips.html</guid>
-        
-        <category>aws</category>
-        
-        <category>elastic_ip</category>
-        
-        <category>networking</category>
-        
-        
-        <category>aws</category>
         
       </item>
     
