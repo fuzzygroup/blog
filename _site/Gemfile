@@ -7,6 +7,7 @@ gem 'jekyll-docs'
 #gem 'reverse_markdown'
 #gem 'html2markdown'
 #gem 'mechanize'
+gem 'jekyll-gallery-generator'
 
 
 group :jekyll_plugins do

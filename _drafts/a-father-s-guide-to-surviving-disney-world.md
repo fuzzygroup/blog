@@ -19,6 +19,8 @@ My wife is a huge fan of *rope drop* or getting into the park literally the mome
 
 Overall an early morning start just makes your Disney experience better.  If you only take one thing away from this article, take that.
 
+# Always Walk in the Shade
+
 # Take the Mid Afternoon Break
 
 Your approach to theme parks may vary but, at least for my family, we find a mid afternoon break to be essential.  When the clock hits one or two, its time to go back to the hotel for air conditioning, the pool or just plain down time.  We go back out around three or four and everyone is refreshed, happy and far less cranky.  Please note that this reduced crankiness includes the author.
