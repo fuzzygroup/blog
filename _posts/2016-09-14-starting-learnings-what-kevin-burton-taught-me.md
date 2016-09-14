@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Starting Learnings - What Kevin Burton Taught Me
+title: Startup Learnings - What Kevin Burton Taught Me
 category: startup
 tags: ["startup", "learnings", "entrepreneurship"]
 ---
