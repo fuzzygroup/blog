@@ -17,3 +17,5 @@ As discussed previously, mix is the integrated version of rails, rake and bundle
 Now that will work but if you really want something reliable -- and if you don't, why would you bother with Elixir at all -- then you really want to add a supervision tree which makes this an OTP application.  OTP is the core Erlang libraries that related to building distributed, reliable code.  Here's how to do this:
 
     mix new page_fetcher --sup
+    
+Here's the official reference to [mix new](http://elixir-lang.org/docs/stable/mix/Mix.Tasks.New.html) in this context.    
