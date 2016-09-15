@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 15 Sep 2016 02:58:47 -0400</pubDate>
-    <lastBuildDate>Thu, 15 Sep 2016 02:58:47 -0400</lastBuildDate>
+    <pubDate>Thu, 15 Sep 2016 03:18:36 -0400</pubDate>
+    <lastBuildDate>Thu, 15 Sep 2016 03:18:36 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -46,6 +46,41 @@ ago and we had nothing but problems.&lt;/p&gt;
         
         
         <category>software_worth_purchasing</category>
+        
+      </item>
+    
+      <item>
+        <title>Rails2Elixir - Generating a New Elixir Project</title>
+        <description>&lt;p&gt;This is one of those things where there isn’t a direct equivalent in the Rails world.  To generate a new Rails project you, of course, use:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rails new
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;But that brings in, well, Rails.  And all of the plethora of stuff that entails.  What if you just wanted to generate a standalone application say a page fetcher that talked to Redis and got back a url to fetch so you could store it away.  In that case you wouldn’t want all of the whole Rails stack.  You might want say just redis or just rake but not everything.&lt;/p&gt;
+
+&lt;p&gt;As discussed previously, mix is the integrated version of rails, rake and bundler and that’s what we’re going to use:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mix new page_fetcher
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now that will work but if you really want something reliable – and if you don’t, why would you bother with Elixir at all – then you really want to add a supervision tree which makes this an OTP application.  OTP is the core Erlang libraries that related to building distributed, reliable code.  Here’s how to do this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mix new page_fetcher --sup
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Thu, 15 Sep 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/rails2elixir/2016/09/15/generating-a-new-elixir-project.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails2elixir/2016/09/15/generating-a-new-elixir-project.html</guid>
+        
+        <category>rails2elixir</category>
+        
+        <category>elixir</category>
+        
+        
+        <category>rails2elixir</category>
         
       </item>
     
@@ -387,17 +422,6 @@ ago and we had nothing but problems.&lt;/p&gt;
         
         
         <category>ibooks</category>
-        
-      </item>
-    
-      <item>
-        <title>AWS Tutorial 0x - Using SSH Config to Make Access Easier</title>
-        <description>
-</description>
-        <pubDate>Mon, 12 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/09/12/aws-tutorial-0x-using-ssh-config-to-make-access-easier.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/09/12/aws-tutorial-0x-using-ssh-config-to-make-access-easier.html</guid>
-        
         
       </item>
     
