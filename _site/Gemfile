@@ -7,7 +7,10 @@ gem 'jekyll-docs'
 #gem 'reverse_markdown'
 #gem 'html2markdown'
 #gem 'mechanize'
-gem 'jekyll-gallery-generator'
+#gem 'jekyll-gallery-generator'
+gem 'jekyll-galleries'
+gem 'rmagick'
+gem 'exifr'
 
 
 group :jekyll_plugins do
@@ -19,4 +22,7 @@ group :jekyll_plugins do
   gem 'jekyll-lunr-js-search'
   gem 'jekyll-tagging'
   gem 'jekyll-import'
+  gem 'jekyll-galleries'
+  gem 'rmagick'
+  gem 'exifr'
 end
