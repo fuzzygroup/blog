@@ -4,7 +4,7 @@ title: Elixir Tutorial 03 - Deploying to Ubuntu
 category: elixir
 tags: ["elixir"]
 ---
-As discussed in my last Elixir Tutorial post we are trying to build a redis driven page fetcher that will:
+As discussed in [my last Elixir Tutorial post](https://fuzzygroup.github.io/blog/elixir/2016/09/15/elixir-tutorial-02-adding-redis-support-to-our-page-fetcher.html) we are trying to build a redis driven page fetcher that will:
 
 * connect to redis
 * pop a tuple of information that identifies what to fetch including a url
