@@ -34,3 +34,5 @@ So if cartridge razors are **too expensive** then what is the solution and why i
 On November 24, 2014, I ordered from Amazon a blade razor for $29.47 and 100 blades for $47.94.  I'm still using the same damn box of blades.  That price gives me a per blade cost of $0.48 and a single blade lasts me at least 3 weeks.  So that blade is only about 6% of the overall cost of a cartridge blade.  And that changes my lifetime shaving economics to 6% of $8,601 or $516.  And that feels reasonable.  I'd always known that cartridge razors were ridiculously expensive but I never thought this expensive.
 
 Oh and the reason for the bloody face?  When I change the blade every three weeks, the first two or three shaves the blade is so sharp that I might nick myself a bit.  But a touch of a styptic pencil and its fine.  
+
+If you care about shaving then I highly recommend the [Wicked Edge subreddit](https://www.reddit.com/r/wicked_edge).
