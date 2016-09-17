@@ -11,7 +11,7 @@ tags: ["wifi", "tripmate"]
 * having to have an iPad with lots of pricey storage
 * having to have them all in the precise mp4 format that Apple has blessed - MKV?  AVI?  MOV?  No problem!
 
-It is a $40 product you can get from [Amazon](http://www.amazon.com/dp/B00RVIGY1I/?tag=fuzzygroup) and it is **brilliant**.  Best little hardware gadget I've bought in 2016 by far.
+It is a $40 product you can get from [Amazon](http://www.amazon.com/dp/B00RVIGY1I/?tag=codihorr-20) and it is **brilliant**.  Best little hardware gadget I've bought in 2016 by far.
 
 So I've bought one, compiled a USB stick of the kid's favorite shows and taken it away from home on vacation.  The only real issue that I've had is that using it takes a few discrete steps that last night, when I was exhausted, I bungled thus delaying watching by my boys.  Now Jeff's post, linked above, covers all of this in exhaustive detail.  What's listed below is the cliff notes version:
 
