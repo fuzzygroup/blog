@@ -237,11 +237,11 @@ Given how much I've written about the pervasive heat and humidity in Orlando you
 
 Heaven forbid you get sick at DisneyWorld but it has happened twice to my youngest -- strep throat once and food poisoing a the second time.  Luckily one of the maids turned us onto Resort Physicians -- an old fashioned, honest to goodness, house call.  A fantastic doctor came to our room, took care of us and managed to save what was left of the vacation.  And, ever since, I've kept his business card close since I knew we'd be going back again. Here are the details if you need a great doctor at DisneyWorld in Orlando:
 
-  Resort Physicians
-  Thomas Blehl
-  407-465-0000 (office)
-  407-399-9190 (mobile)
-  tblehl@resortphysicians.com
+    Resort Physicians
+    Thomas Blehl
+    407-465-0000 (office)
+    407-399-9190 (mobile)
+    tblehl@resortphysicians.com
 
 # Postscript 2: Packing List
 
