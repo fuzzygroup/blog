@@ -179,6 +179,10 @@ The Orlando heat and humidity can be relentless.  Normally we go in the fall whe
 
 The single best thing you can do is simple -- walk in the shade.  Depending on the time of day you will find that there is always shade.  Now you might have to walk contrary to the flow of traffic but people do do it and its ok.  Shade is really, really important at DisneyWorld.
 
+{:.center}
+![2016-09-11 11.05.50.jpg](/blog/assets/surviving-disney-world/2016-09-11 11.05.50.jpg)
+
+
 ## Wear White not Black
 
 I know my audience for this is another dad and I suspect a technically minded individual.  And I know that you understand that black is the absolute worst color to wear in the heat.  But even if you do understand this, your children may not.  Both my kids, this last trip, managed to pack almost all black wardrobes.  Oy.  Wear white people!  It reflects the sun not absorbs it!
