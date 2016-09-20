@@ -6,9 +6,184 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Sep 2016 01:46:07 -0400</pubDate>
-    <lastBuildDate>Mon, 19 Sep 2016 01:46:07 -0400</lastBuildDate>
+    <pubDate>Tue, 20 Sep 2016 09:48:28 -0400</pubDate>
+    <lastBuildDate>Tue, 20 Sep 2016 09:48:28 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Gem Review Fuzzyurl Or How Do You Know if a Gem is Ready for Production Use?</title>
+        <description>&lt;p&gt;&lt;strong&gt;Disclaimer 1&lt;/strong&gt;: Recently at ElixirConf I met Pete Gamache, the CTO of an Internet company and he showed me his Fuzzyurl Gem which is implemented in Ruby, JavaScript and Elixir.  Given my propensity for implementing crawlers / scrapers / content processors, I was immediately intrigued and it is a &lt;strong&gt;quality&lt;/strong&gt; bit of software.  Unfortunately in assessing it for our production use, I found a bug.  I have reported it as an issue and I’m sure it will get addressed, and there is an easy work around, but finding this bug raises the question of “How do you know if a gem is ready for production use?”  So I wanted to write this NOT to slam Pete’s work – which, again, is excellent – but to teach the point that you don’t blindly assume that code on the Internet always works.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Disclaimer 2&lt;/strong&gt;: Before I even could finish this post, Pete responded to the &lt;a href=&quot;https://github.com/gamache/fuzzyurl.rb/issues/2&quot;&gt;Github Issue&lt;/a&gt; I raised and it looks like he’s going to fix it.  Thanks man!&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Disclaimer 3&lt;/strong&gt;: Having added a new engineer recently this post is written for him so he understands that before you grab a new gem and rely on it willy, nilly, you put some consideration into it.  I actually think he knows this already but the engineer we hire after him?  Well that’s unknown so …&lt;/p&gt;
+
+&lt;p&gt;So I recently found the ruby Gem &lt;a href=&quot;https://github.com/gamache/fuzzyurl.rb/&quot;&gt;Fuzzyurl&lt;/a&gt; by Pete Gamache and I am intrigued.  As part of my current work I am the mildly unhappy maintainer of massive class - roughly 5K lines dealing with nothing but url parsing and handling.  What you find, the moment you say “I’ll write a crawler”, is that most of the Internet is non RFC compliant and you’re dealing with a witches brew of nastiness.  Standard tools like URI.parse, &lt;em&gt;snort&lt;/em&gt;, well I might have some choice words for the author.  So when I found Pete’s work, the fact that it was implemented in Ruby, JavaScript and Elixir was intriguing to say the least.  Perhaps I might not have to port my url code to Elixir – that would be a huge win.  And since I’m pretty sure that Pete actually &lt;em&gt;designed&lt;/em&gt; this as opposed to the organic “here a problem; there a routine” approach I used to write my library, I’m pretty close to certain that it has to be better than mine.  Mine might handle a ton of weird edge cases but it was never designed – just implemented in a “&lt;a href=&quot;https://en.wikipedia.org/wiki/Root_hog,_or_die&quot;&gt;root, hog or die&lt;/a&gt;” fashion.&lt;/p&gt;
+
+&lt;p&gt;So let’s return to the title of this blog post – How Do You Know if a Gem is Ready for Production Use?  There are a bunch of ways:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;read the code&lt;/li&gt;
+  &lt;li&gt;read the tests&lt;/li&gt;
+  &lt;li&gt;try and use it&lt;/li&gt;
+  &lt;li&gt;try and use it exhaustively&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The first thing to understand here is that this is a case where you absolutely need to &lt;em&gt;time bound&lt;/em&gt; things.  Time bounding is the practice where you decide, before you start, how much time you should allocate to something.  We all know that tasks involving computers tend to expand to fill the time available.  In my case I decided that this task, assessing if we could use Fuzzyurl in production, was worth an hour.  And I do know that’s light but it was what felt right.&lt;/p&gt;
+
+&lt;p&gt;In an hour I can’t possibly read and understand parsing code.  I’ve written too much of it and I know how detailed it can get.  Reading the tests is another option and a better one.  Generally speaking if a gem is well tested, that bodes well for it being quality.  But I know how bad my input set of urls is.  I can guarantee that the random ass crap I have to encounter isn’t covered by tests.  So I’m left with either try and use it or try and use it exhaustively.&lt;/p&gt;
+
+&lt;h2 id=&quot;try-and-use-it&quot;&gt;Try and Use It&lt;/h2&gt;
+
+&lt;p&gt;A quick addition to the end of Gemfile and then the bundle install dance lets me restart console and try it:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fu = Fuzzyurl.from_string(&quot;http://www.foo.com/&quot;)
+{
+    :protocol =&amp;gt; &quot;http&quot;,
+    :username =&amp;gt; nil,
+    :password =&amp;gt; nil,
+    :hostname =&amp;gt; &quot;www.foo.com&quot;,
+        :port =&amp;gt; nil,
+        :path =&amp;gt; &quot;/&quot;,
+       :query =&amp;gt; nil,
+    :fragment =&amp;gt; nil
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And that’s perfect.  Here’s a 1:1 comparison with URI.parse:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2.3.1 :009 &amp;gt; fu = URI.parse(&quot;http://www.foo.com/&quot;)
+#&amp;lt;URI::HTTP http://www.foo.com/&amp;gt;
+2.3.1 :010 &amp;gt; fu.protocol
+NoMethodError: undefined method `protocol' for #&amp;lt;URI::HTTP http://www.foo.com/&amp;gt;
+	from (irb):10
+	from /Users/sjohnson/.rvm/gems/ruby-2.3.1@banks/gems/railties-4.2.7/lib/rails/commands/console.rb:110:in `start'
+	from /Users/sjohnson/.rvm/gems/ruby-2.3.1@banks/gems/railties-4.2.7/lib/rails/commands/console.rb:9:in `start'
+	from /Users/sjohnson/.rvm/gems/ruby-2.3.1@banks/gems/railties-4.2.7/lib/rails/commands/commands_tasks.rb:68:in `console'
+	from /Users/sjohnson/.rvm/gems/ruby-2.3.1@banks/gems/railties-4.2.7/lib/rails/commands/commands_tasks.rb:39:in `run_command!'
+	from /Users/sjohnson/.rvm/gems/ruby-2.3.1@banks/gems/railties-4.2.7/lib/rails/commands.rb:17:in `&amp;lt;top (required)&amp;gt;'
+	from bin/rails:4:in `require'
+	from bin/rails:4:in `&amp;lt;main&amp;gt;'
+2.3.1 :011 &amp;gt; fu.host
+&quot;www.foo.com&quot;
+2.3.1 :012 &amp;gt; fu.port
+80
+2.3.1 :013 &amp;gt; fu.scheme
+&quot;http&quot;
+2.3.1 :014 &amp;gt; fu.path
+&quot;/&quot;
+2.3.1 :017 &amp;gt; fu.query
+nil
+2.3.1 :018 &amp;gt; fu.fragment
+nil
+2.3.1 :019 &amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The only change that I would make here is that I would add an alias method on &lt;em&gt;protocol&lt;/em&gt; to &lt;em&gt;scheme&lt;/em&gt; which is what URI.parse calls protocol (personally I think Pete is actually right here – protocol is a better word – but if you added scheme as an alias – then you’re closer to being a drop in replacement for URI.parse).  Maybe I’ll submit a pull request perhaps.&lt;/p&gt;
+
+&lt;p&gt;So now I know that Fuzzyurl works but anyone can type out a url - what about a real test case.&lt;/p&gt;
+
+&lt;h2 id=&quot;try-and-use-it-exhaustively&quot;&gt;Try and Use it Exhaustively&lt;/h2&gt;
+
+&lt;p&gt;One of the best and worst things about my job is that I’m never lacking for data.  We’re currently crawling about 1/4 terabyte of data monthly so at any given point I have access to N million urls.  So why not just try to feed say 250,000 urls thru Fuzzyurl and see what happens.  This gives this simple rake task:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;task :verify_fuzzy_url =&amp;gt; :environment do
+  pages = Page.order(&quot;id asc&quot;).select(&quot;id, url, long_url_id&quot;).limit(250000)
+  pages.each_with_index do |page, ctr|
+    puts &quot;#{ctr} :: #{page.id} :: #{page.url}&quot;
+    fu = Fuzzyurl.from_string(page.url.strip)
+    puts &quot;    #{fu.hostname}&quot;
+    raise &quot;error: #{fu}&quot; if fu.hostname.nil?
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Since all of these urls are supposed to be absolute urls we should always have a hostname and we’ll stop if we don’t.  Now we’ll need to examine the stop and make sure that the input wasn’t bad.  When we run this thru we hit a failure like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fu = Fuzzyurl.from_string(p.url)
+ArgumentError: Couldn't parse url string: http://www.theintelligencer.net
+from /var/www/apps/banks/shared/bundle/ruby/2.3.0/gems/fuzzyurl-0.9.0/lib/fuzzyurl/strings.rb:32:in from_string' from /var/www/apps/banks/shared/bundle/ruby/2.3.0/gems/fuzzyurl-0.9.0/lib/fuzzyurl.rb:169:infrom_string'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;p in this case was a page which a url which looked like “http://www.theintelligencer.net “.  That trailing space there is the reason for the failure.  I submitted a github issue and the author has agreed to address it when he has the time.  That’s a great response - even tho this isn’t technically a bug - since space characters are allowed as part of urls but since it does cause a failure, I appreciated him being willing to fix it.&lt;/p&gt;
+
+&lt;p&gt;Now that I’ve used this a fair bit, a few of the errors I’ve seen with url processing comes back to my memory.  Here are a few common things you see in the wild that break URI.parse cold:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;trailing spaces&lt;/li&gt;
+  &lt;li&gt;embedded spaces&lt;/li&gt;
+  &lt;li&gt;missing ? before the &amp;amp; fragment&lt;/li&gt;
+  &lt;li&gt;Using a &amp;amp; instead of a ?  (#s 3 and 4 may actually be one and then same)&lt;/li&gt;
+  &lt;li&gt;Bad encoding&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Let’s try a few of these:&lt;/p&gt;
+
+&lt;h3 id=&quot;embedded-space&quot;&gt;Embedded Space&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;url = &quot;http://fuzzygroup.github.io/blog/scott was here&quot;
+&quot;http://fuzzygroup.github.io/blog/scott was here&quot;
+2.3.1 :021 &amp;gt; fu = Fuzzyurl.from_string(url)
+{
+    :protocol =&amp;gt; &quot;http&quot;,
+    :username =&amp;gt; nil,
+    :password =&amp;gt; nil,
+    :hostname =&amp;gt; &quot;fuzzygroup.github.io&quot;,
+        :port =&amp;gt; nil,
+        :path =&amp;gt; &quot;/blog/scott was here&quot;,
+       :query =&amp;gt; nil,
+    :fragment =&amp;gt; nil
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;instead-of--before-the-fragment&quot;&gt;&amp;amp; Instead of ? Before the Fragment&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;url = &quot;http://fuzzygroup.github.io/blog/scott was here&amp;amp;foo=bar&quot;
+&quot;http://fuzzygroup.github.io/blog/scott was here&amp;amp;foo=bar&quot;
+2.3.1 :023 &amp;gt; fu = Fuzzyurl.from_string(url)
+{
+    :protocol =&amp;gt; &quot;http&quot;,
+    :username =&amp;gt; nil,
+    :password =&amp;gt; nil,
+    :hostname =&amp;gt; &quot;fuzzygroup.github.io&quot;,
+        :port =&amp;gt; nil,
+        :path =&amp;gt; &quot;/blog/scott was here&amp;amp;foo=bar&quot;,
+       :query =&amp;gt; nil,
+    :fragment =&amp;gt; nil
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;conclusions&quot;&gt;Conclusions&lt;/h2&gt;
+
+&lt;p&gt;Overall Fuzzyurl is just plain a fantastic bit of code.  It handles most of the common cases that break URI.parse.  Here are a few suggestions:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Add an alias method called parse for from_string  That lets Fuzzyurl be used as a drop in replacement for URI.parse&lt;/li&gt;
+  &lt;li&gt;Add support for a call back function so you could register your own pre-processor to clean up a url before it gets parsed.  When implementing this type of library I understand the desire to follow the standards and only modify them slightly for common edge cases.  But there are so many ways to craft a crappy url in this Internet of ours that if you simply allow for a pre-processor routine then you can always say “there’s an api for extending this, use it.”&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 20 Sep 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/software_engineering/2016/09/20/how-do-you-know-if-a-gem-is-ready-for-production-use.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/software_engineering/2016/09/20/how-do-you-know-if-a-gem-is-ready-for-production-use.html</guid>
+        
+        <category>ruby</category>
+        
+        <category>gem</category>
+        
+        <category>software_engineering</category>
+        
+        <category>gem_review</category>
+        
+        
+        <category>software_engineering</category>
+        
+      </item>
     
       <item>
         <title>A Father's Guide to Surviving Disney World</title>
@@ -569,107 +744,6 @@ Randomized with seed 243121
       </item>
     
       <item>
-        <title>My Software Architecture For the Next Ten Years</title>
-        <description>&lt;p&gt;I’ve been writing code using Ruby since 2006 and using Rails since 2007.  I’ve generated a lot of different apps and the biggest really looks like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;+----------------------+-------+-------+---------+---------+-----+-------+
-| Name                 | Lines |   LOC | Classes | Methods | M/C | LOC/M |
-+----------------------+-------+-------+---------+---------+-----+-------+
-| Controllers          | 36374 | 23903 |     147 |    1290 |   8 |    16 |
-| Helpers              |  6596 |  5116 |       1 |     386 | 386 |    11 |
-| Models               | 153021 | 81609 |    1444 |    9722 |   6 |     6 |
-| Libraries            | 59985 | 36510 |     195 |    1573 |   8 |    21 |
-| Controller specs     | 18835 | 11213 |       0 |       0 |   0 |     0 |
-| Feature specs        |  4238 |   531 |       0 |       0 |   0 |     0 |
-| Helper specs         |  2366 |  1388 |       0 |       0 |   0 |     0 |
-| Lib specs            |  4124 |  2940 |       0 |       0 |   0 |     0 |
-| Model specs          | 53934 | 37612 |       0 |       3 |   0 | 12535 |
-| View specs           |   533 |   311 |       0 |       0 |   0 |     0 |
-+----------------------+-------+-------+---------+---------+-----+-------+
-| Total                | 340006 | 201133 |    1787 |   12974 |   7 |    13 |
-+----------------------+-------+-------+---------+---------+-----+-------+
-  Code LOC: 147138     Test LOC: 53995     Code to Test Ratio: 1:0.4
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I’m in the process of a massive refactoring and its time to figure out what actually matters to me.  And from doing this I hope to derive the attributes of my software architecture for the next ten years.&lt;/p&gt;
-
-&lt;h1 id=&quot;reliability&quot;&gt;Reliability&lt;/h1&gt;
-
-&lt;p&gt;First and foremost I’m looking for reliability.  I’m so damn tired of crap that doesn’t work.  It seems like every single week if not every day I’m dealing with some kind of Ruby issue.  Now some of this is cruft accretion due to age – as you can see above I work on some big crap but, still, I’m tired of it.  I want things that work and stay working.&lt;/p&gt;
-
-&lt;h1 id=&quot;documentation-over-test-coverage&quot;&gt;Documentation over Test Coverage&lt;/h1&gt;
-
-&lt;p&gt;I’m not opposed to test coverage by any means.  I’m a fan of testing particularly testing as a design tool when you’re figuring out how things need to work.  Now, that said, I’m unconvinced that comprehensive testing, particularly in the upcoming world of functional programming, is the path forward.  I’ve probably written over a hundred thousand lines of test code in the past ten years across test unit, rspec and minitest and TDD is not the panacea that we all thought it was.  Large test suites, as useful as they are, become their own set of issues.&lt;/p&gt;
-
-&lt;p&gt;So while test coverage isn’t going away for me, the idea of 100% test coverage is.&lt;/p&gt;
-
-&lt;p&gt;Note: While the application above doesn’t have 100% test coverage, I have written rails code bases which were at the 93 to 95 % level of test coverage.  Very useful but keeping the coverage running was hard.  And running the full test suite was about a 20 minute wait.&lt;/p&gt;
-
-&lt;h1 id=&quot;no-monoliths&quot;&gt;No Monoliths&lt;/h1&gt;
-
-&lt;p&gt;I might restate that a little more forcefully as &lt;strong&gt;&lt;em&gt;No More Mother Fucking Monoliths&lt;/em&gt;&lt;/strong&gt;; apologies to Samuel L. Jackson and my children who may someday read this but I do feel that strongly on this point.  The codebase metrics shown above come from what I think of in my own head as &lt;strong&gt;my basecamp&lt;/strong&gt;.  That reference will likely make sense to you if you’re in the Rails community and not at all otherwise (so ignore it).   And, yes, it is a monolith.  And, you know what, &lt;strong&gt;&lt;em&gt;monoliths suck green monkey chunks&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;I no longer care what &lt;a href=&quot;https://twitter.com/dhh/status/695272044024487936&quot;&gt;DHH&lt;/a&gt; says - the monolith design pattern is an abomination at best.  I’m running a far smaller team than 37 Signals and the monolith pattern is one of the reasons we’re stuck.  Among the many benefits of NOT using a monolith are:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;separation of concerns&lt;/li&gt;
-  &lt;li&gt;ability to scale the components of your application that are performance challenged&lt;/li&gt;
-  &lt;li&gt;speed of the overall tool chain; that big app above?  It takes over a minute to load the rails console every single time since there are almost 1,500 models that have to be parsed and loaded into memory&lt;/li&gt;
-  &lt;li&gt;ability to farm a component out to 3rd party contractor and have them able to understand it instead of “oh crap where do I start”&lt;/li&gt;
-  &lt;li&gt;faster learning curve for new hires&lt;/li&gt;
-  &lt;li&gt;ability to selectively address performance by rewriting components in a new language&lt;/li&gt;
-  &lt;li&gt;you might end up with a gem stack that isn’t a disaster waiting to happen&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;fast-efficient-compiled&quot;&gt;Fast, Efficient, Compiled&lt;/h1&gt;
-
-&lt;p&gt;I shudder to think of the amount of money I’ve spent unnecessarily paying for compute cycles due to the slowness that is Rails.  And while Chris McCord and others on the Phoenix team take the perspective that performance isn’t all that Phoenix is about, honestly, it is enough for me.  At this point, while I admire the intellectual purity of functional languages, if functional is what it takes to get performance, I’m there.&lt;/p&gt;
-
-&lt;h1 id=&quot;aws&quot;&gt;AWS&lt;/h1&gt;
-
-&lt;p&gt;Anything I build moving forward will be built using AWS as the data center platform.  Intellectually I agree with Jeff in terms of raw performance and I admire the &lt;a href=&quot;https://blog.codinghorror.com/the-scooter-computer/&quot;&gt;Scooter Computer&lt;/a&gt; greatly but what AWS brings to the table isn’t raw performance – it is &lt;strong&gt;everything&lt;/strong&gt;.  The experience of moving from a production system to a full blown staging environment in about 15 minutes absolutely blew my mind.  And, from that point forward, I’ve never consider another environment.  AWS now offers just about any server side technology that you can imagine and that’s too powerful to ignore.&lt;/p&gt;
-
-&lt;h1 id=&quot;conclusions&quot;&gt;Conclusions&lt;/h1&gt;
-
-&lt;p&gt;So here’s what I’m looking toward as a platform:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Ruby / Rails as a prototyping tool&lt;/li&gt;
-  &lt;li&gt;Elixir as the overall reliability engine and the ultimate goal as things can be rewritten&lt;/li&gt;
-  &lt;li&gt;Write rails apps differently by separating them into as small things as possible&lt;/li&gt;
-  &lt;li&gt;Deploy the rails bits to individual AWS resources so they can be scaled well&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Thu, 15 Sep 2016 06:22:18 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/software_engineering/2016/09/15/my-software-architecture-for-the-next-ten-years.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/software_engineering/2016/09/15/my-software-architecture-for-the-next-ten-years.html</guid>
-        
-        <category>software_engineering</category>
-        
-        <category>elixir</category>
-        
-        <category>ruby</category>
-        
-        <category>rails</category>
-        
-        
-        <category>software_engineering</category>
-        
-      </item>
-    
-      <item>
-        <title>Planning the De-glutenification of the House</title>
-        <description>
-</description>
-        <pubDate>Thu, 15 Sep 2016 03:26:36 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/09/15/planning-the-de-glutenification-of-the-house.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/09/15/planning-the-de-glutenification-of-the-house.html</guid>
-        
-        
-      </item>
-    
-      <item>
         <title>Software Worth Purchasing 02 - Enpass</title>
         <description>&lt;p&gt;Password Managers are one of those categories of tools that provoke fierce debate among us nerd folk.  Personally now that I’ve figured out how to remember a different password for every web site I log into, I’ve needed one less than I used to but the recent move to a monthly billing plan for 1 Password just plain made me furious.  Not only is that ridiculous but 1 Password, at least in my experience, doesn’t work worth a damn.  I spent the time and money to buy it for my wife and myself about a year 
 ago and we had nothing but problems.&lt;/p&gt;
@@ -742,6 +816,143 @@ ago and we had nothing but problems.&lt;/p&gt;
         
         
         <category>rails2elixir</category>
+        
+      </item>
+    
+      <item>
+        <title>Elixir Tutorial 02 - Adding Redis Support to our Page Fetcher</title>
+        <description>&lt;p&gt;In my &lt;a href=&quot;https://fuzzygroup.github.io/blog/rails2elixir/2016/09/15/generating-a-new-elixir-project.html&quot;&gt;last elixir post&lt;/a&gt; I documented how to generate a standalone Elixir project for a page fetcher.  Technically that would have been Elixir Tutorial 01 but I’m too tired right now to go back and rename it since this is my middle of the night, can’t sleep coding time while on vacation.&lt;/p&gt;
+
+&lt;p&gt;Let’s start with a description of what we’re planning to build.  What is a page fetcher?&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A page fetcher is a bit of software that pulls content (pages) from the Internet and stores them some where for processing by something else.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;So what do we actually need:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;A bit of software that runs reliably&lt;/li&gt;
+  &lt;li&gt;And doesn’t require writing low level libraries as we’re just not there yet with our Elixir skills&lt;/li&gt;
+  &lt;li&gt;And pulls content from Redis that describes what to fetch&lt;/li&gt;
+  &lt;li&gt;And fetches a page off from a url&lt;/li&gt;
+  &lt;li&gt;And stores it away for processing.  Likely in a database or some such place&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;That doesn’t sound so hard, does it?  Here’s the &lt;a href=&quot;https://github.com/artemeff/exredis&quot;&gt;redis library&lt;/a&gt; we’re going to use.  Let’s start by adding redis support to what we generated last time.&lt;/p&gt;
+
+&lt;p&gt;Change into your working directory.  For me that is:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~/me/fuzzygroup/elixir/page_fetcher
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now run mix test to make sure everything is still working:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mix test    
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Open the file mix.exs in your editor and add the following:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:exredis,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;&amp;gt;= 0.2.4&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This needs to go between the [] in the defp deps routine.  Think of it this way – you are updating Gemfile.  That’s all this is.  Only its a more reliable Gemfile without the cruft and crap of bundler.  I love you Ruby but good lord the packaging infrastructure lately blows monkey chunks.  Not a day goes by that I don’t hit some Gemfile / bundler crap.&lt;/p&gt;
+
+&lt;p&gt;Now run mix test again:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mix test
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And you’re going to see a failure like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sjohnson@ScottJohnsonMacbookAir:~/me/fuzzygroup/elixir/page_fetcher$ mix test
+Unchecked dependencies for environment test:
+* exredis (Hex package)
+  the dependency is not available, run &quot;mix deps.get&quot;
+** (Mix) Can't continue due to errors on dependencies
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So you’re going to do what I think of as the &lt;em&gt;deps dance&lt;/em&gt; and type:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mix deps.get
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And you’ll see something like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A new Hex version is available (0.13.0), please update with `mix local.hex`
+Running dependency resolution
+Dependency resolution completed
+  eredis: 1.0.8
+  exredis: 0.2.5
+* Getting exredis (Hex package)
+  Checking package (https://repo.hex.pm/tarballs/exredis-0.2.5.tar)
+  Fetched package
+* Getting eredis (Hex package)
+  Checking package (https://repo.hex.pm/tarballs/eredis-1.0.8.tar)
+  Fetched package    
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Your mileage may vary with respect to the “please update …” stuff.  Please bear in mind that Hex isn’t perfect at present.  I’ve see issues but they are few and far between at least in my experience.&lt;/p&gt;
+
+&lt;p&gt;The next step up is to modify your project to talk to your Redis server.  Do that by modifying config/config.exs with your server params.  Here are mine:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;config :exredis,
+  host: &quot;127.0.0.1&quot;,
+  port: 6379,
+  password: &quot;&quot;,
+  db: 0,
+  reconnect: :no_reconnect,
+  max_queue: :infinity
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Since we’re connecting on 127.0.0.1 you need to run this on the same machine where your redis server lives or adjust the ip address.&lt;/p&gt;
+
+&lt;p&gt;As always when you change anything run your test suite which will compile your code and show you any errors.  Here’s what mine looks like:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mix test
+==&amp;gt; eredis (compile)
+Compiled src/eredis_sub.erl
+Compiled src/eredis_parser.erl
+Compiled src/eredis_sub_client.erl
+Compiled src/basho_bench_driver_erldis.erl
+Compiled src/eredis.erl
+Compiled src/basho_bench_driver_eredis.erl
+Compiled src/eredis_client.erl
+==&amp;gt; exredis
+Compiling 5 files (.ex)
+Generated exredis app
+==&amp;gt; page_fetcher
+Compiling 1 file (.ex)
+Generated page_fetcher app
+.
+
+Finished in 0.05 seconds
+1 test, 0 failures
+
+Randomized with seed 697093    
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So at this point we have an elixir application with a supervision tree for reliability and a redis client.  Given that I’m a strong believer in “deploy early; deploy often”, I’ll handle getting all this deployed onto an Ubuntu server.  After that I’ll tackle getting this to run continuously popping things from the redis queue.&lt;/p&gt;
+
+&lt;p&gt;All code can be found here: &lt;a href=&quot;https://github.com/fuzzygroup/elixir_page_fetcher&quot;&gt;https://github.com/fuzzygroup/elixir_page_fetcher&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 15 Sep 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/elixir/2016/09/15/elixir-tutorial-02-adding-redis-support-to-our-page-fetcher.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/elixir/2016/09/15/elixir-tutorial-02-adding-redis-support-to-our-page-fetcher.html</guid>
+        
+        <category>elixir</category>
+        
+        
+        <category>elixir</category>
         
       </item>
     
