@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 20 Sep 2016 09:48:28 -0400</pubDate>
-    <lastBuildDate>Tue, 20 Sep 2016 09:48:28 -0400</lastBuildDate>
+    <pubDate>Tue, 20 Sep 2016 17:23:03 -0400</pubDate>
+    <lastBuildDate>Tue, 20 Sep 2016 17:23:03 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -182,6 +182,100 @@ from /var/www/apps/banks/shared/bundle/ruby/2.3.0/gems/fuzzyurl-0.9.0/lib/fuzzyu
         
         
         <category>software_engineering</category>
+        
+      </item>
+    
+      <item>
+        <title>AWS Tutorial 08 - Using SSH's Config File with Your AWS Boxes</title>
+        <description>&lt;p&gt;Disclaimer: If you’re a hard core Unix head then this can easily be skipped. However if your knowledge of SSH extends to “config file – what?” then it likely is worth a read.&lt;/p&gt;
+
+&lt;p&gt;SSH is one of those core bits of the modern computing world that we all rely on and don’t even think about.  And, like all such technologies, there is a lot to SSH under the hood.  The aspect I’m going to focus on here is the SSH config file and how it can make your AWS development life easier.&lt;/p&gt;
+
+&lt;p&gt;Let’s start with how I first logged into one of my production AWS boxes:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh -i ~/.ssh/my_pem_file.pem ubuntu@ec2-52-39-100-178.us-west-2.compute.amazonaws.com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;That certainly works but it is &lt;strong&gt;long&lt;/strong&gt;.  And where you have length then you may the chance for error.  And then when you need to transfer a file from server to client (or vice versa) then you need to rewrite it like so:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scp -i ~/.ssh/my_pem_file.pem ubuntu@ec2-52-39-100-178.us-west-2.compute.amazonaws.com:/tmp/foo.txt ~/Downloads
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;the-ssh-config-file&quot;&gt;The SSH Config file&lt;/h1&gt;
+
+&lt;p&gt;In your ~/.ssh directory there is a file named, simply enough, &lt;strong&gt;config&lt;/strong&gt;.  The config file stores a series of entries related to the the host you want to log into.  Here’s an example of what logging in using a config file is like:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh mariadb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And here is an example of scp’ing a file down to your local box:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scp mariadb:/tmp/foo.txt ~/Downloads
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So that is a clear advantage but how do we get there?&lt;/p&gt;
+
+&lt;p&gt;You need to edit the file ~/.ssh/config.  Do that now with nano or another editor:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nano -w ~/.ssh/config
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You need to create an entry that looks like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Host THE_NAME_YOU_IDENTIFY_THIS_ENTRY_BY
+  Hostname YOUR_REALLY_LONG_EC2_HOST_NAME
+  user SOME_USERNAME
+  IdentityFile PATH_TO_A_PEM_FILE
+  Port 22 (this is almost always 22)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here’s an actual example for one of my EC2 boxes:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Host mariadb
+  Hostname ec2-52-39-100-178.us-west-2.compute.amazonaws.com
+  user ubuntu
+  IdentityFile /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
+  Port 22
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;What this is telling ssh is pretty simple:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;identify everything by mariadb&lt;/li&gt;
+  &lt;li&gt;when called log into the hostname ec2-52-39-100-178.us-west-2.compute.amazonaws.com&lt;/li&gt;
+  &lt;li&gt;when called use the username ubuntu&lt;/li&gt;
+  &lt;li&gt;when called use the /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem to establish the user’s identity&lt;/li&gt;
+  &lt;li&gt;when called use port 22&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And, as illustrated above, this will work whether for SSH or SCP.&lt;/p&gt;
+
+&lt;p&gt;SSH is one of those rich deep tools where there is always something more to learn.  Here are some resources:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://nerderati.com/2011/03/17/simplify-your-life-with-an-ssh-config-file/&quot;&gt;http://nerderati.com/2011/03/17/simplify-your-life-with-an-ssh-config-file/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-configure-custom-connection-options-for-your-ssh-client&quot;&gt;https://www.digitalocean.com/community/tutorials/how-to-configure-custom-connection-options-for-your-ssh-client&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://michaelheap.com/ssh-config-files/&quot;&gt;http://michaelheap.com/ssh-config-files/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Tue, 20 Sep 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/09/20/aws-tutorial-08-using-ssh-s-config-file-with-your-aws-boxes.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/09/20/aws-tutorial-08-using-ssh-s-config-file-with-your-aws-boxes.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ssh</category>
+        
+        
+        <category>aws</category>
         
       </item>
     
@@ -816,143 +910,6 @@ ago and we had nothing but problems.&lt;/p&gt;
         
         
         <category>rails2elixir</category>
-        
-      </item>
-    
-      <item>
-        <title>Elixir Tutorial 02 - Adding Redis Support to our Page Fetcher</title>
-        <description>&lt;p&gt;In my &lt;a href=&quot;https://fuzzygroup.github.io/blog/rails2elixir/2016/09/15/generating-a-new-elixir-project.html&quot;&gt;last elixir post&lt;/a&gt; I documented how to generate a standalone Elixir project for a page fetcher.  Technically that would have been Elixir Tutorial 01 but I’m too tired right now to go back and rename it since this is my middle of the night, can’t sleep coding time while on vacation.&lt;/p&gt;
-
-&lt;p&gt;Let’s start with a description of what we’re planning to build.  What is a page fetcher?&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;A page fetcher is a bit of software that pulls content (pages) from the Internet and stores them some where for processing by something else.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;So what do we actually need:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;A bit of software that runs reliably&lt;/li&gt;
-  &lt;li&gt;And doesn’t require writing low level libraries as we’re just not there yet with our Elixir skills&lt;/li&gt;
-  &lt;li&gt;And pulls content from Redis that describes what to fetch&lt;/li&gt;
-  &lt;li&gt;And fetches a page off from a url&lt;/li&gt;
-  &lt;li&gt;And stores it away for processing.  Likely in a database or some such place&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;That doesn’t sound so hard, does it?  Here’s the &lt;a href=&quot;https://github.com/artemeff/exredis&quot;&gt;redis library&lt;/a&gt; we’re going to use.  Let’s start by adding redis support to what we generated last time.&lt;/p&gt;
-
-&lt;p&gt;Change into your working directory.  For me that is:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~/me/fuzzygroup/elixir/page_fetcher
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Now run mix test to make sure everything is still working:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mix test    
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Open the file mix.exs in your editor and add the following:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:exredis,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;&amp;gt;= 0.2.4&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;This needs to go between the [] in the defp deps routine.  Think of it this way – you are updating Gemfile.  That’s all this is.  Only its a more reliable Gemfile without the cruft and crap of bundler.  I love you Ruby but good lord the packaging infrastructure lately blows monkey chunks.  Not a day goes by that I don’t hit some Gemfile / bundler crap.&lt;/p&gt;
-
-&lt;p&gt;Now run mix test again:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mix test
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And you’re going to see a failure like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sjohnson@ScottJohnsonMacbookAir:~/me/fuzzygroup/elixir/page_fetcher$ mix test
-Unchecked dependencies for environment test:
-* exredis (Hex package)
-  the dependency is not available, run &quot;mix deps.get&quot;
-** (Mix) Can't continue due to errors on dependencies
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;So you’re going to do what I think of as the &lt;em&gt;deps dance&lt;/em&gt; and type:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mix deps.get
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And you’ll see something like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A new Hex version is available (0.13.0), please update with `mix local.hex`
-Running dependency resolution
-Dependency resolution completed
-  eredis: 1.0.8
-  exredis: 0.2.5
-* Getting exredis (Hex package)
-  Checking package (https://repo.hex.pm/tarballs/exredis-0.2.5.tar)
-  Fetched package
-* Getting eredis (Hex package)
-  Checking package (https://repo.hex.pm/tarballs/eredis-1.0.8.tar)
-  Fetched package    
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Your mileage may vary with respect to the “please update …” stuff.  Please bear in mind that Hex isn’t perfect at present.  I’ve see issues but they are few and far between at least in my experience.&lt;/p&gt;
-
-&lt;p&gt;The next step up is to modify your project to talk to your Redis server.  Do that by modifying config/config.exs with your server params.  Here are mine:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;config :exredis,
-  host: &quot;127.0.0.1&quot;,
-  port: 6379,
-  password: &quot;&quot;,
-  db: 0,
-  reconnect: :no_reconnect,
-  max_queue: :infinity
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Since we’re connecting on 127.0.0.1 you need to run this on the same machine where your redis server lives or adjust the ip address.&lt;/p&gt;
-
-&lt;p&gt;As always when you change anything run your test suite which will compile your code and show you any errors.  Here’s what mine looks like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mix test
-==&amp;gt; eredis (compile)
-Compiled src/eredis_sub.erl
-Compiled src/eredis_parser.erl
-Compiled src/eredis_sub_client.erl
-Compiled src/basho_bench_driver_erldis.erl
-Compiled src/eredis.erl
-Compiled src/basho_bench_driver_eredis.erl
-Compiled src/eredis_client.erl
-==&amp;gt; exredis
-Compiling 5 files (.ex)
-Generated exredis app
-==&amp;gt; page_fetcher
-Compiling 1 file (.ex)
-Generated page_fetcher app
-.
-
-Finished in 0.05 seconds
-1 test, 0 failures
-
-Randomized with seed 697093    
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;So at this point we have an elixir application with a supervision tree for reliability and a redis client.  Given that I’m a strong believer in “deploy early; deploy often”, I’ll handle getting all this deployed onto an Ubuntu server.  After that I’ll tackle getting this to run continuously popping things from the redis queue.&lt;/p&gt;
-
-&lt;p&gt;All code can be found here: &lt;a href=&quot;https://github.com/fuzzygroup/elixir_page_fetcher&quot;&gt;https://github.com/fuzzygroup/elixir_page_fetcher&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Thu, 15 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/elixir/2016/09/15/elixir-tutorial-02-adding-redis-support-to-our-page-fetcher.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/elixir/2016/09/15/elixir-tutorial-02-adding-redis-support-to-our-page-fetcher.html</guid>
-        
-        <category>elixir</category>
-        
-        
-        <category>elixir</category>
         
       </item>
     
