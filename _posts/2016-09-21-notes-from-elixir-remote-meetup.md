@@ -9,6 +9,7 @@ A few notes that came out of the Elixir Remote Meetup:
 * Chrome has audio issues; I was pointed to [Vivaldi](https://vivaldi.com/?lang=en_US) by a very helpful soul and that Chromium based browser fixed it.  Thanks!
 * Great talk on Supervisors
 * [Great talk on Parallel Execution](https://github.com/saaji/ex_par_execute)
+* There's a slack room on [elixir-lang.slack.com](http://elixir-lang.slack.com) if you want to join
 * [There's a recording you can watch!](https://www.bigmarker.com/remote-meetup/Elixir-Remote-Meetup-3)
 
 Thanks to Josh Adams of Elixir Sips and the Daily Drip for hosting this.
