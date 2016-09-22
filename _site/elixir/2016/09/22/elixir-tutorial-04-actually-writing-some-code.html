@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Elixir Tutorial 04 Actually Writing Some Code For Our Page Fetcher</title>
+  <meta name="description" content="Note: I’m very much figuring this out on the fly and you’re going to see stuff in here where you go “He’s wrong!  He’s flat out wrong!” and you might be righ...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/elixir/2016/09/22/elixir-tutorial-04-actually-writing-some-code.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Elixir Tutorial 04 Actually Writing Some Code For Our Page Fetcher</h1>
+    <p class="post-meta"><time datetime="2016-09-22T00:00:00-04:00" itemprop="datePublished">Sep 22, 2016</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>Note:</strong> I’m very much figuring this out on the fly and you’re going to see stuff in here where you go “He’s wrong!  He’s flat out wrong!” and you might be right.  Heck you likely are right but keep reading because you’ll see corrections coming later in the piece.  I started to rewrite it but I thought that actually seeing the process might be useful since so many of us are at the “want to use elixir but don’t know how to get there” stage.</p>
+
+<p>So we’re now at the point of actually writing some crude, primitive code for our page fetcher.  Here’s what this needs to do:</p>
+
+<ul>
+  <li>connect to redis</li>
+  <li>run in an infinite loop</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>pop entries off a redis queue - entries will be a</td>
+          <td>separated chunk of data consisting of an id, a type and url</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>fetch the data from the internet</li>
+  <li>write it to a table based on the type (possibly; still thinking this thru as I write this out)</li>
+</ul>
+
+<h1 id="an-infinite-loop-construct-in-elixir">An Infinite Loop Construct in Elixir</h1>
+
+<p>Connecting to redis should be pretty simple so this brings us to the next step - running in an infinite loop.  Classically I’d do that as a while(true) type control structure but this is Elixir and its functional.  A bit of digging brings me to this <a href="http://stackoverflow.com/questions/35364511/proper-elixir-otp-way-to-structure-an-infinite-loop-task">Stack Overflow post</a> where it makes a pretty good argument for this type of thing:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>def fetch_pages() do
+  # get redis 
+  # pop off redis
+  # tokenize the bits from redis into variables
+  # fetch the page
+  # save the page
+  fetch_pages()
+end
+</code></pre>
+</div>
+
+<p>And that would work nicely.  Since we’re dealing with tail recursion we don’t have to worry about blowing up the stack.</p>
+
+<p>As I look at this again I see clearly that connecting to redis should be taking out of the loop and the redis connection passed in since otherwise we’re connecting repeatedly and that would be wasteful or just plain dumb.  But before we get there let’s start with a simple question – where does our code actually go?  Right now we have a very simple structure and we want to work within lib/page_fetcher.ex.</p>
+
+<p>If you open this file you’ll find a basic module structure and a def start.  Let’s add a def fetch_pages do / end block above the start routine and let’s just add this one line within it:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>IO.puts "Calling fetch_pages"
+</code></pre>
+</div>
+
+<p>Now that’s not really good enough since it would be good to know that something is changing so why don’t we display the current date and time?  Another quick trip out to the Internet gives us this <a href="http://stackoverflow.com/questions/28594646/getting-the-current-date-and-or-time-in-elixir">page</a> and teaches us we can get the current date and time in Unix milliseconds with :os.system_time(:milli_seconds).  Now that’s an Erlang primitive but Elixir runs on top of Erlang so it can call any and all of it easily.  So our new routine becomes this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>def fetch_pages() do
+  IO.puts("The fetch_pages/0 routine has just been called at #{:os.system_time(:milli_seconds)}")
+  fetch_pages()
+end
+</code></pre>
+</div>
+
+<p>You’ll notice that string interpolation is actually the same as Ruby - #{} within a string.  That should make adapting to Elixir a bit easier.</p>
+
+<p>Now we want to see this actually run and the next step for that is to load the console and run it interactively.  So do the normal dance:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>iex -S mix
+</code></pre>
+</div>
+
+<p>And then enter:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PageFetcher.fetch_pages
+</code></pre>
+</div>
+
+<p>And you’ll see a swath of lines like these:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>The fetch_pages/0 routine has just been called at 1474506164424
+The fetch_pages/0 routine has just been called at 1474506164424
+The fetch_pages/0 routine has just been called at 1474506164425
+The fetch_pages/0 routine has just been called at 1474506164425
+The fetch_pages/0 routine has just been called at 1474506164425
+The fetch_pages/0 routine has just been called at 1474506164425
+The fetch_pages/0 routine has just been called at 1474506164425
+</code></pre>
+</div>
+
+<h1 id="getting-our-redis-crap-together">Getting Our Redis Crap Together</h1>
+
+<p>Now that I’m at this stage I realize that I’m so used to using Redis using the Ruby primitives I’ve relied on for years that I’m a bit at a loss.  And this means what it always does a trip to the <a href="https://github.com/artemeff/exredis">documentation</a>!  Here’s our canonical test case for redis:</p>
+
+<ul>
+  <li>connect</li>
+  <li>push data in</li>
+  <li>fetch it back</li>
+</ul>
+
+<p>If we can do that then its really all we need.  Here’s the code:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="err">:ok,</span><span class="w"> </span><span class="err">client</span><span class="p">}</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">Exredis.start_link</span><span class="w">
+</span><span class="err">push_result</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">client</span><span class="w"> </span><span class="err">|&gt;</span><span class="w"> </span><span class="err">Exredis.Api.rpush(</span><span class="s2">"queue"</span><span class="err">,</span><span class="w"> </span><span class="s2">"1|table|http://"</span><span class="err">)</span><span class="w">
+</span><span class="err">pop_result</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">client</span><span class="w"> </span><span class="err">|&gt;</span><span class="w"> </span><span class="err">Exredis.Api.rpop(</span><span class="s2">"queue"</span><span class="err">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>What we’re seeing here, to analogize it back to Ruby again, is that Exredis is the main “object” and then Api is a set of methods chained on top of it.  Yes I know that’s not what is going on under the hood but this was an analogy.</p>
+
+<p>Technically since we’re only popping from a queue we didn’t have to know how to push stuff in but its the best way to test a queue based system and it is what I’ve been doing since the days of memcached to test any type of queue / key value store.</p>
+
+<p>If we want to write a function to connect to Redis then this is going to bring up the issue of <a href="http://stackoverflow.com/questions/37445838/returning-values-in-elixir">returning something</a>, our redis client, from a method.  Since there is no explicit return statement, we simply need the client to be the last thing in our method so this should do it:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>def redis() do
+  {:ok, client} = Exredis.start_link
+  client
+end
+</code></pre>
+</div>
+
+<p>Ideally there should be code to make sure we actually got back a valid client, failure handling, etc but we’re just not there yet.</p>
+
+<h1 id="a-quick-foray-into-string-parsing">A Quick Foray into String Parsing</h1>
+
+<p>We can finally get away from StackOverflow with a dive into the Elixir Lang docs to look up how to split out a string using <a href="http://elixir-lang.org/docs/stable/elixir/String.html#split/3">Split/3</a>.  This gives us:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>pop_result = client |&gt; Exredis.Api.rpop("queue")
+"1|table|http://"
+iex(9)&gt; parts = String.split(pop_result, "|")
+["1", "table", "http://"]
+</code></pre>
+</div>
+
+<table>
+  <tbody>
+    <tr>
+      <td>So we can just use a String.split call with a</td>
+      <td>as the delimiter and that gives us back the result.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="summary">Summary</h1>
+
+<p>This is the point where I need to get back to my day job but we’ve actually made some progress:</p>
+
+<ul>
+  <li>We know where to put our code</li>
+  <li>We know how to test our code in the console</li>
+  <li>We know how to talk to Redis</li>
+  <li>We know how to call Erlang functions from Elixir</li>
+  <li>We know how to parse our fetched chunk of data into a data structure</li>
+</ul>
+
+<p>Here’s the plan:</p>
+
+<ul>
+  <li>Next time we’ll try and put this all together and actually fetch the page</li>
+  <li>Next time + 1 we’ll try and store the page to the database; that’ll take us into Ecto</li>
+  <li>Next time + 2 we’ll try and get this running under OTP properly</li>
+</ul>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff.  Ruby / Rails / Elixir.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
