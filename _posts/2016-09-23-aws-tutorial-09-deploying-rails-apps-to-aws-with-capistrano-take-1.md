@@ -2,7 +2,7 @@
 layout: post
 title: AWS Tutorial 09 - Deploying Rails Apps With Capistrano Take 1
 category: aws
-tags ["ruby", "rails", "aws", "capistrano", "deploy"]
+tags: ["ruby", "rails", "aws", "capistrano", "deploy"]
 ---
 In this tutorial we're going to use the latest version of Capistrano to deploy your Rails app onto one or more EC2 instances.  I'm dividing this tutorial into two parts:
 
