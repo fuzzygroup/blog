@@ -6,12 +6,70 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 23 Sep 2016 07:43:14 -0400</pubDate>
-    <lastBuildDate>Fri, 23 Sep 2016 07:43:14 -0400</lastBuildDate>
+    <pubDate>Sat, 24 Sep 2016 16:02:01 -0400</pubDate>
+    <lastBuildDate>Sat, 24 Sep 2016 16:02:01 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
-        <title></title>
+        <title>Why Old Engineers Are Cranky Engineers</title>
+        <description>&lt;p&gt;I recently had an interaction with a younger software engineer and I’m pretty sure that his impression of me after that boiled down to &lt;em&gt;cranky old bastard&lt;/em&gt; and that would be the nice version.  The less nice version could easily have incorporated the words difficult, jerk and a few other bits of invective.&lt;/p&gt;
+
+&lt;p&gt;The topic at hand was getting a commercial, for pay CI server up and running on a single Rails code base of moderate size (about 40 K lines; about 110 tables).  This is a well known, leading product and I was very, very difficult about my expectations:&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;I expected it to just plain work out of the box&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;He was stuck getting the configuration to work and I made it clear to him that I didn’t want him spending much more time on it.  He saw no problem with investing the time in it – and that was the conflict.  My logic goes as follows:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We do not have a hard environment - Rails 4.2.x app, basic table structure&lt;/li&gt;
+  &lt;li&gt;RSpec works pretty much right out of the box when I set up a new developer work station&lt;/li&gt;
+  &lt;li&gt;They charge us money for this – doesn’t that mean that configuration is their damn job?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Finally I had to say to him something akin to this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You cost us roughly $3,000 per week so 1 day of your effort is $3,000 / 5&lt;/li&gt;
+  &lt;li&gt;You have until the end of the day at that point we’re done with this vendor&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;crankiness-explained&quot;&gt;Crankiness Explained&lt;/h1&gt;
+
+&lt;p&gt;The crankiness on my part comes from a combination of this particular vendor, partly from the unique snowflake attitude common to CI vendors, and partly from being older.  Here’s the details:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;This Vendor&lt;/em&gt;. The last time this vendor decided to change its architecture, it did so at the expense of its customers. They moved from static instances where your CI server was always the same box so configuration could be done at the box level to dynamically creating instances forcing configuration into your config file.  They kept their pricing the same but this move effectively made them more profitable since their AWS costs would now go down.  At one of my consulting gigs, I saw one of our engineers blow 2 man days on getting this back to a working state.&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Snowflake&lt;/em&gt;. For some reason CI software never seems to work out of the box.  I’ve seen this for years in the Rails world dating back to CI Joe.  All the vendors have this attitude that they are some unique snowflake and lots of setup work is needed.  That might have been true once upon a time when TDD was new but it is 2016 now and TDD is not new.  CI is not a new concept.&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;I’m older&lt;/em&gt;.  One of the things that happens as you become an older engineer is you realize just how many things that you – and your staff – miss out on thru obsessive attention to technology issues.  It isn’t that I’m incapable of configuring this piece of crap but that if I’m doing that I’m not doing the 10 other things that absolutely, positively have to get done today.  Ultimate the CI software needs to support my job and I don’t need to support it.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;happy-conclusion&quot;&gt;Happy Conclusion&lt;/h1&gt;
+
+&lt;p&gt;My asshole style demand – get it done by the end of the day – actually worked.  I absolutely hate to manage that way but forced time bounding can be a great technique at times.  We now have a CI server that is setup and that is excellent.  He really did do a good job.  We’re not 100% there yet because it is only checking pull requests and not master but hopefully that is a matter of only minor additional configuration.&lt;/p&gt;
+
+&lt;h1 id=&quot;recommendation-to-vendors-and-an-example-of-doing-it-right&quot;&gt;Recommendation to Vendors And an Example of Doing it Right&lt;/h1&gt;
+
+&lt;p&gt;Rightly or wrongly I don’t think I’m all that different from what a lot of people when it comes to evaluating software.  Getting a great out of the box experience is essential if you want someone to pay you.  If this was an open source CI server that I had to run myself I’d expect configuration but RSpec and Rails 4.x is a known thing.  This should have just worked.&lt;/p&gt;
+
+&lt;p&gt;As an example of getting setup right, I’d like to point people to &lt;a href=&quot;http://www.codetree.com/&quot;&gt;CodeTree&lt;/a&gt;.  You can point CodeTree at your git account and boom!  It makes github issues better.  Can you configure it?  I think so but the point is that I haven’t needed to.  &lt;em&gt;Recommended.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Disclaimer: CodeTree is run by a former boss of mine and I do view him as a friend.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 24 Sep 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/software_engineering/2016/09/24/why-old-engineers-are-cranky-engineers.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/software_engineering/2016/09/24/why-old-engineers-are-cranky-engineers.html</guid>
+        
+        <category>ci</category>
+        
+        <category>software_engineering</category>
+        
+        
+        <category>software_engineering</category>
+        
+      </item>
+    
+      <item>
+        <title>AWS Tutorial 09 - Deploying Rails Apps With Capistrano Take 1</title>
         <description>&lt;p&gt;In this tutorial we’re going to use the latest version of Capistrano to deploy your Rails app onto one or more EC2 instances.  I’m dividing this tutorial into two parts:&lt;/p&gt;
 
 &lt;ul&gt;
@@ -149,10 +207,22 @@ set :deploy_to, '/var/www/apps/banks'
   &lt;li&gt;&lt;a href=&quot;https://semaphoreci.com/community/tutorials/how-to-deploy-node-js-applications-with-capistrano&quot;&gt;https://semaphoreci.com/community/tutorials/how-to-deploy-node-js-applications-with-capistrano&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Fri, 23 Sep 2016 07:43:14 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/09/23/2016-09-23-aws-tutorial-09-deploying-rails-apps-to-aws-with-capistrano-take-1.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/09/23/2016-09-23-aws-tutorial-09-deploying-rails-apps-to-aws-with-capistrano-take-1.html</guid>
+        <pubDate>Fri, 23 Sep 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/09/23/aws-tutorial-09-deploying-rails-apps-to-aws-with-capistrano-take-1.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/09/23/aws-tutorial-09-deploying-rails-apps-to-aws-with-capistrano-take-1.html</guid>
         
+        <category>ruby</category>
+        
+        <category>rails</category>
+        
+        <category>aws</category>
+        
+        <category>capistrano</category>
+        
+        <category>deploy</category>
+        
+        
+        <category>aws</category>
         
       </item>
     
@@ -1070,33 +1140,6 @@ tblehl@resortphysicians.com
         
         
         <category>wifi</category>
-        
-      </item>
-    
-      <item>
-        <title>Interesting Kubernetes Stuff</title>
-        <description>&lt;p&gt;I found some interesting Kubernetes stuff yesterday:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://danielmartins.ninja/posts/five-months-of-kubernetes.html&quot;&gt;Five Months of Kubernetes&lt;/a&gt; (excellent)&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/coreos/coreos-kubernetes/tree/master/multi-node/aws&quot;&gt;kube-aws&lt;/a&gt; looks like the way to go if you use AWS&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://railsadventures.wordpress.com/2015/12/06/why-we-chose-kubernetes-over-ecs/&quot;&gt;Why Kubernetes over ECS&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;k8s is apparently the abbreviation for Kubernetes&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Fri, 16 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/kubernetes/2016/09/16/interesting-kubernetes-stuff.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/kubernetes/2016/09/16/interesting-kubernetes-stuff.html</guid>
-        
-        <category>kubernetes</category>
-        
-        <category>aws</category>
-        
-        <category>docker</category>
-        
-        
-        <category>kubernetes</category>
         
       </item>
     
