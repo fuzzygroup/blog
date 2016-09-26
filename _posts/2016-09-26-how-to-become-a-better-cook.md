@@ -16,7 +16,7 @@ As with everything else I do, I read voraciously.  And I highly recommend it as 
 
 # Understand the Cookbook Authors You Read
 
-One of the things to understand is that cook book authors are people and they have limitations.  Some of the most lauded authors, people fantastic at explaining things, don't actually produce great recipes so there are people you learn from and people you imitate.  For example I made a clam chowder the other day from someone who intellectually I respect at a deep level but, honestly, it was no better than the clam chowder I've made a dozen times from various and sundry google results.  Now, that said, this person's technique was spot on and I did learn a valuable trick from him or her.
+One of the things to understand is that cook book authors are people and they have limitations.  Some of the most lauded authors, people fantastic at explaining things, don't actually produce great recipes so there are people you learn from and people you imitate.  For example I made a clam chowder the other day from someone who intellectually I respect at a deep level but, honestly, it was no better than the clam chowder I've made a dozen times from various and sundry google results.  Now, that said, this person's technique was spot on and I did learn a valuable trick from him or her.  What I have found generally is the better the explainer the worse the recipe.  One happy exception to this is [Ruhlman and his Ratio book](https://www.amazon.com/Ratio-Simple-Behind-Everyday-Cooking/dp/1416571728/ref=sr_1_1?ie=UTF8&qid=1474883244&sr=8-1&keywords=ruhlman+ratio) is just outstanding.
 
 # Its All Just Cooking
 
@@ -44,6 +44,20 @@ One of the most valuable skills I've picked up is the ability to read a recipe a
 * tools; if you don't have the tools then, well, it may be irrelevant
 
 Learning to read a recipe and know whether or not its going to work for your context is a valuable skill and something to very much strive for.
+
+# Question Your Assumptions
+
+As cooks we all develop habits and assumptions.  One of mine was, until recently, "there shall be no other oils than corn, vegetable and olive."  For years now I followed that with near religious devotion.  However I just discovered grapeseed oil and it was like a revelation -- a light oil.  What??? How can this be?  And now I use it with abandon.  Keep in mind that questioning your assumptions is really, really important.
+
+# Salt and Butter Amp Up Flavor
+
+Yep.  Add salt to everything.  And butter.  We've all heard about the dangers of salt and butter for so many years that I suspect most of us are way too conservative on this one.  I know I am.  Adding more salt really does help food.  And you can always add some butter when you're cooking  almost anything to improve the flavor.
+
+# You Must Taste
+
+If you've ever watched a professional chef, one thing you'll notice is that they taste things constantly.  Some home cooks do this and some don't but I'd argue that the ones that do will produce better food so you may want to do this more if you don't.  I know that until recently I didn't.  
+
+**Note:** The one exception to this is gluten free baking.  Gluten free flours, until cooked, taste horrible so do not taste gluten free batters.  
 
 # You Must Cook
 
