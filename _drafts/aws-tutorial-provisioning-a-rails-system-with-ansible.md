@@ -30,7 +30,7 @@ Here is the software that we want to provision:
 * Ruby 
 * MariaDB (just think of it as MySQL if you're not familiar with it)
 * Redis
-* MemcacheD
+* Memcached
 * VI 
 * Nano 
 * Erlang
@@ -63,6 +63,8 @@ Like a lot of configuration management software, Ansible relies on a handful of 
 # Testing Ansible Scripts
 
 One of the most interesting things about Ansible in my opinion is that you can test machine configuration using Vagrant.  Since you can specify your hosts using an external inventory file, by substituting a separate inventory file that points to a series of local vagrant resources, you can speed up testing of your Ansible playbook in a very dramatic fashion.  Dv talks about this in his [Ansible post](http://dasari.me/2016/08/26/ansible-for-aws-provisioning-configuration-management.html).
+
+From an ansible perspective vagrant is your staging environment. This is very different from normal Ruby thinking so I wanted to make sure it was explicitly identified.
 
 # Supporting Ansible in Your Rails Source Code Control Repo
 
@@ -99,6 +101,20 @@ does not feel right.  One obvious contender would be lib where a lot of things t
     
 # Reversing the Order of Things: EC2 Last
 
-Historically I've built AWS projects by starting with servers i.e. the EC2 instances that I want.  However, the more that I work with AWS, the more I'm convinced that this is the 
+Historically I've built AWS projects by starting with servers i.e. the EC2 instances that I want.  However, the more that I work with AWS, the more I'm convinced that this is the actually entirely the wrong approach.  There are three reasons for this:
 
-# Getting Started
+1.  When building AWS projects you need to think of the overall project first -- where as machine resources will come and go, the overall project will still exist.
+2.  You want a single VPC or "virtual private cloud".  Think of this as a subnet which lets all your machines talk to each other.  By creating the VPC first it can be assigned to each resource as it is provisioned rather than after the fact.
+3.  Each EC2 resource you create inherently comes with its own security group that defines networking / firewall structure.  Unless you're a real network wizard -- and if you are, why are you reading this; you should be writing this -- then I tend to argue for a single security group for simplicity's sake.
+
+# AWS Resources - The VPC and Security Group
+
+Here is the [official AWS documentation on creating a VPC](http://docs.aws.amazon.com/cli/latest/reference/ec2/create-vpc.html) with the command line.  Open a command line and enter:
+
+    aws ec2 create-vpc --cidr-block 10.0.0.0/16 --instance-tenancy shared
+    
+Here is the [official AWS documentation on creating a security group](http://docs.aws.amazon.com/cli/latest/reference/ec2/create-security-group.html) with the command line.  Open a command line and enter:
+
+# AWS Resources - The EC2 Instances 
+
+    
