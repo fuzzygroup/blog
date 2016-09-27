@@ -1,4 +1,4 @@
 ---
 layout: post
-title: Software Worth Purchasing 04: Scrivener
+title: Software Worth Purchasing 04 - Scrivener
 ---
