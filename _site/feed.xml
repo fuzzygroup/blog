@@ -6,20 +6,56 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 30 Sep 2016 05:00:09 -0400</pubDate>
-    <lastBuildDate>Fri, 30 Sep 2016 05:00:09 -0400</lastBuildDate>
+    <pubDate>Fri, 30 Sep 2016 05:42:29 -0400</pubDate>
+    <lastBuildDate>Fri, 30 Sep 2016 05:42:29 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
         <title>Using Ansible to Drive Down Hosting Costs</title>
-        <description>&lt;p&gt;Ever since the Fall of 2014 I have been trapped in an dysfunctional relationship that I have been unable to leave.  No I’m not talking about a spouse, a boyfriend or a girlfriend.  I’m talking about my hosting company where all my Rails applications live.  Now while I’m talking about Rails, it doesn’t have to be Rails.  It could be PHP, Python, Go, Elixir or anything.  Here is what I refer to the economic paradox of hosting:&lt;/p&gt;
+        <description>&lt;p&gt;Ever since the Fall of 2014 I have been trapped in an &lt;strong&gt;dysfunctional relationship&lt;/strong&gt; that I have been unable to leave.  No I’m not talking about a spouse, a boyfriend or a girlfriend.  I’m talking about my hosting company where all my Rails applications live.  And, while I’m talking about Rails, it doesn’t have to be Rails.  It could be PHP, Python, Go, Elixir or anything.&lt;/p&gt;
+
+&lt;p&gt;Here is what I refer to the &lt;strong&gt;&lt;em&gt;economic paradox of hosting&lt;/em&gt;&lt;/strong&gt;:&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;On the day you arrange to use hardware from a hosting company you should be paying the MOST ever for your hardware.&lt;/li&gt;
   &lt;li&gt;Your bills almost always go UP not DOWN.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;The issue at hand here is that your hosting company knows that the longer you have a box with them, the more valuable that box becomes to you.  And the paradox is that the value of hardware falls over time.  That 24 gig of RAM box that you contracted for in 2014?  Well it should likely be a 36 gig of RAM box in 2015.  And it would be if you bought it again.  But you didn’t buy it again – you&lt;/p&gt;
+&lt;p&gt;The issue at hand here is that your hosting company knows that the longer you have a box with them, the more valuable that box becomes to you.  And the paradox is that the value of hardware falls over time.  That 24 gig of RAM box that you contracted for in 2014?  Well it should likely be a 36 gig of RAM box in 2015.  And it would be if you bought it again.  But you didn’t buy it again – you stayed with the machine you had – and your hosting company knows this.  So even tho the machine you’re renting today is worth less than it was when you started with it, your price per month hasn’t gone done.&lt;/p&gt;
+
+&lt;h1 id=&quot;servers-should-never-be-unique-snowflakes&quot;&gt;Servers Should Never Be Unique Snowflakes&lt;/h1&gt;
+
+&lt;p&gt;One of the single best concepts that I’ve learned from cloud computing and all the time I’ve spent doing AWS is that servers should never be unique snowflakes. Servers should be identical resources that you just have.  They should be something that you &lt;strong&gt;generate&lt;/strong&gt; and build dynamically as needed.  Need a web server – just generate one.  Need a worker box?  Just generate another one.  And, you know what, even if you have your own infrastructure, its &lt;strong&gt;still true&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;ansible-versus-chef&quot;&gt;Ansible Versus Chef&lt;/h1&gt;
+
+&lt;p&gt;I’ve spent the past week deeply immersed in devops using Ansible.  Ansible is a declarative approach to machine configuration and it is far, far beyond procedural approaches to machine configuration like puppet or chef – the tools I had used previously.  In 2014 I and one other engineer used Chef to provision a data center for 3 applications and over a 45 day period we never actually finished.  We took Chef as far as we were able to and then we had to finish the process manually and every time we needed to make a change to a box, after things were “setup”, we had to do it manually.  Here’s a comment from the other engineer:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;with chef, I had no idea after all that time, where I should put what file
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And here was my comment:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Chef was a f***ing disaster.  Make that my bad decision of 2014.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In about 4 days of on and off work I have not only duplicated every single bit of the chef provisioning work that I had done previously but:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Its testable using vagrant&lt;/li&gt;
+  &lt;li&gt;Its repeatable&lt;/li&gt;
+  &lt;li&gt;All the tools I rely on are there&lt;/li&gt;
+  &lt;li&gt;I can add new boxes just by modifying a single inventory file&lt;/li&gt;
+  &lt;li&gt;Even things I used to have to do manually I can now automate&lt;/li&gt;
+  &lt;li&gt;I’ve improved security my adopting elements of the &lt;a href=&quot;https://12factor.net&quot;&gt;12 factor approach&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;It works&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;how-does-this-bring-down-our-costs&quot;&gt;How Does this Bring Down Our Costs?&lt;/h1&gt;
+
+&lt;p&gt;Well if machines aren’t unique snowflakes, if they are things you can regenerate then you have the ability to better negotiate your rates.  When you’re prepared to go elsewhere, you’ll have the confidence to actually explore your alternatives.  I’ve never even considered moving from the hosting company I went to in 2014 purely because of the amount of effort it would entail.  Now that I can programmatically build the infrastructure I need?  You can bet that I’ll either be asking for lower rates or moving on.&lt;/p&gt;
 </description>
         <pubDate>Fri, 30 Sep 2016 00:00:00 -0400</pubDate>
         <link>https://fuzzygroup.github.io/blog/ansible/2016/09/30/using-ansible-to-drive-down-hosting-costs.html</link>
