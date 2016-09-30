@@ -6,9 +6,185 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 27 Sep 2016 10:33:06 -0400</pubDate>
-    <lastBuildDate>Tue, 27 Sep 2016 10:33:06 -0400</lastBuildDate>
+    <pubDate>Fri, 30 Sep 2016 05:00:09 -0400</pubDate>
+    <lastBuildDate>Fri, 30 Sep 2016 05:00:09 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Using Ansible to Drive Down Hosting Costs</title>
+        <description>&lt;p&gt;Ever since the Fall of 2014 I have been trapped in an dysfunctional relationship that I have been unable to leave.  No I’m not talking about a spouse, a boyfriend or a girlfriend.  I’m talking about my hosting company where all my Rails applications live.  Now while I’m talking about Rails, it doesn’t have to be Rails.  It could be PHP, Python, Go, Elixir or anything.  Here is what I refer to the economic paradox of hosting:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;On the day you arrange to use hardware from a hosting company you should be paying the MOST ever for your hardware.&lt;/li&gt;
+  &lt;li&gt;Your bills almost always go UP not DOWN.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The issue at hand here is that your hosting company knows that the longer you have a box with them, the more valuable that box becomes to you.  And the paradox is that the value of hardware falls over time.  That 24 gig of RAM box that you contracted for in 2014?  Well it should likely be a 36 gig of RAM box in 2015.  And it would be if you bought it again.  But you didn’t buy it again – you&lt;/p&gt;
+</description>
+        <pubDate>Fri, 30 Sep 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/ansible/2016/09/30/using-ansible-to-drive-down-hosting-costs.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ansible/2016/09/30/using-ansible-to-drive-down-hosting-costs.html</guid>
+        
+        <category>ansible</category>
+        
+        <category>hosting</category>
+        
+        
+        <category>ansible</category>
+        
+      </item>
+    
+      <item>
+        <title>Ansible Tutorial 01 - Examples of Ansible Ad Hoc Commands</title>
+        <description>&lt;p&gt;My writing progress has slowed as of late while I have gone 100% heads down on learning Ansible.  Ansible is a provisioning tool which lets you describe a machine or machines as well as how you want them configured.  Ansible also offers an ad hoc mode where you can operate on a group of machines and execute a command or commands.  These examples are based on an Ansible inventory file located in the directory inventories/ as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;file: inventories/production_actual
+
+[web]
+# format - english machinename   ssh host   ssh private key
+web1  ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com  ansible_ssh_private_key_file=/Users/sjohnson/.ssh/fi_nav_sitecrawl.pe
+
+[db]
+
+[log]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Note - in my actual inventory file there are machines in each group section.&lt;/p&gt;
+
+&lt;p&gt;Here are some examples:&lt;/p&gt;
+
+&lt;p&gt;Execute uptime against all machines in the inventories file with the user ubuntu:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;**ansible all -i inventories/production_actual -u ubuntu -a &quot;uptime&quot;**
+ec2-52-39-100-178.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
+ 17:09:56 up 36 days,  4:05,  4 users,  load average: 0.99, 1.00, 0.97
+
+ec2-52-89-105-4.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
+ 17:10:06 up 23 days,  4:17,  2 users,  load average: 0.69, 0.53, 0.54
+
+ec2-54-68-16-169.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
+ 17:11:43 up 22 days,  9:11,  2 users,  load average: 0.93, 0.93, 0.89
+
+ec2-52-42-166-105.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
+ 17:11:23 up 31 days,  7:26,  2 users,  load average: 0.00, 0.02, 0.05
+
+52.40.224.171 | success | rc=0 &amp;gt;&amp;gt;
+ 17:10:54 up 20 days, 23:42,  1 user,  load average: 0.08, 0.04, 0.05
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Execute uptime against all machines in the db group in the inventories file with the user ubuntu:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;**ansible db -i inventories/production_actual -u ubuntu -a &quot;uptime&quot;**
+ec2-52-39-100-178.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
+ 17:11:13 up 36 days,  4:06,  4 users,  load average: 0.90, 0.97, 0.96
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You can also use this to do things like check the amount of free disc space on every box.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;**ansible all -i inventories/production_actual -u ubuntu -a &quot;df -h&quot;**
+ec2-54-68-16-169.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
+Filesystem      Size  Used Avail Use% Mounted on
+udev            7.5G   12K  7.5G   1% /dev
+tmpfs           1.5G  376K  1.5G   1% /run
+/dev/xvda1      7.8G  3.9G  3.5G  53% /
+none            4.0K     0  4.0K   0% /sys/fs/cgroup
+none            5.0M     0  5.0M   0% /run/lock
+none            7.5G     0  7.5G   0% /run/shm
+none            100M     0  100M   0% /run/user
+
+ec2-52-42-166-105.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
+Filesystem      Size  Used Avail Use% Mounted on
+udev            492M   12K  492M   1% /dev
+tmpfs           100M  368K   99M   1% /run
+/dev/xvda1      7.8G  3.7G  3.7G  51% /
+none            4.0K     0  4.0K   0% /sys/fs/cgroup
+none            5.0M     0  5.0M   0% /run/lock
+none            497M     0  497M   0% /run/shm
+none            100M     0  100M   0% /run/user
+
+ec2-52-89-105-4.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
+Filesystem      Size  Used Avail Use% Mounted on
+udev            7.5G   12K  7.5G   1% /dev
+tmpfs           1.5G  376K  1.5G   1% /run
+/dev/xvda1       16G  3.9G   11G  27% /
+none            4.0K     0  4.0K   0% /sys/fs/cgroup
+none            5.0M     0  5.0M   0% /run/lock
+none            7.5G     0  7.5G   0% /run/shm
+none            100M     0  100M   0% /run/user
+
+ec2-52-39-100-178.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
+Filesystem      Size  Used Avail Use% Mounted on
+udev             32G   12K   32G   1% /dev
+tmpfs           6.3G  400K  6.3G   1% /run
+/dev/xvda1      2.0T  1.4T  557G  71% /
+none            4.0K     0  4.0K   0% /sys/fs/cgroup
+none            5.0M     0  5.0M   0% /run/lock
+none             32G     0   32G   0% /run/shm
+none            100M     0  100M   0% /run/user
+
+52.40.224.171 | success | rc=0 &amp;gt;&amp;gt;
+Filesystem      Size  Used Avail Use% Mounted on
+udev            3.9G   12K  3.9G   1% /dev
+tmpfs           799M  484K  798M   1% /run
+/dev/xvda1      7.8G  5.6G  1.9G  76% /
+none            4.0K     0  4.0K   0% /sys/fs/cgroup
+none            5.0M     0  5.0M   0% /run/lock
+none            3.9G     0  3.9G   0% /run/shm
+none            100M     0  100M   0% /run/user
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Ensure that a package is installed; don’t update it if it isn’t&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;**ansible all -i inventories/production_actual -u ubuntu -m apt -a &quot;name=tree state=present&quot;**
+ec2-52-39-100-178.us-west-2.compute.amazonaws.com | success &amp;gt;&amp;gt; {
+    &quot;changed&quot;: false
+}
+
+ec2-52-89-105-4.us-west-2.compute.amazonaws.com | success &amp;gt;&amp;gt; {
+    &quot;changed&quot;: false
+}
+
+ec2-54-68-16-169.us-west-2.compute.amazonaws.com | success &amp;gt;&amp;gt; {
+    &quot;changed&quot;: false
+}
+
+ec2-52-42-166-105.us-west-2.compute.amazonaws.com | success &amp;gt;&amp;gt; {
+    &quot;changed&quot;: false
+}
+
+52.40.224.171 | success &amp;gt;&amp;gt; {
+    &quot;changed&quot;: false
+}
+
+**ansible all -i inventories/production_actual -u ubuntu --become -m apt -a &quot;name=htop state=present&quot;**
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;References:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://edunham.net/2015/06/08/playing_with_ansible.html&quot;&gt;http://edunham.net/2015/06/08/playing_with_ansible.html&lt;/a&gt;   This is a very good read.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://docs.ansible.com/ansible/intro_adhoc.html&quot;&gt;http://docs.ansible.com/ansible/intro_adhoc.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As always thanks to &lt;a href=&quot;http://dasari.me&quot;&gt;Dv&lt;/a&gt; who pushed me off the proverbial Ansible cliff and has supported me all the way down the learning curve.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 29 Sep 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/ansible/2016/09/29/examples-of-ansible-ad-hoc-commands.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ansible/2016/09/29/examples-of-ansible-ad-hoc-commands.html</guid>
+        
+        <category>ansible</category>
+        
+        <category>ad_hoc</category>
+        
+        
+        <category>ansible</category>
+        
+      </item>
     
       <item>
         <title>Software Engineering - How Do You Fill The Time Between Times?</title>
@@ -18,7 +194,7 @@
 
 &lt;p&gt;Test coverage in 2016 is probably today’s equivalent of cleaning in the 1950s U.S. navy.  Just as &lt;strong&gt;nothing can ever be too clean&lt;/strong&gt;, &lt;strong&gt;&lt;em&gt;nothing can ever be too well tested&lt;/em&gt;&lt;/strong&gt;.  If you don’t know what to test then install RCov into your project and run a full rake spec.  This will show you what needs to be tested.&lt;/p&gt;
 
-&lt;p&gt;Note: A quick shout out to Elixir Fountain and the absolutely excellent interview with&lt;/p&gt;
+&lt;p&gt;Note: A quick shout out to &lt;a href=&quot;http://www.elixirfountain.com/&quot;&gt;Elixir Fountain&lt;/a&gt; and the &lt;a href=&quot;https://soundcloud.com/elixirfountain/elixir-fountain-john-hughes-2016-09-23&quot;&gt;absolutely excellent interview with John Hughes&lt;/a&gt; who invented QuickCheck.&lt;/p&gt;
 </description>
         <pubDate>Tue, 27 Sep 2016 00:00:00 -0400</pubDate>
         <link>https://fuzzygroup.github.io/blog/software_engineering/2016/09/27/software-engineering-how-do-you-fill-the-time-between-times.html</link>
@@ -790,275 +966,6 @@ iex(9)&amp;gt; parts = String.split(pop_result, &quot;|&quot;)
         
         
         <category>elixir</category>
-        
-      </item>
-    
-      <item>
-        <title>Gem Review Fuzzyurl Or How Do You Know if a Gem is Ready for Production Use?</title>
-        <description>&lt;p&gt;&lt;strong&gt;Disclaimer 1&lt;/strong&gt;: Recently at ElixirConf I met Pete Gamache, the CTO of an Internet company and he showed me his Fuzzyurl Gem which is implemented in Ruby, JavaScript and Elixir.  Given my propensity for implementing crawlers / scrapers / content processors, I was immediately intrigued and it is a &lt;strong&gt;quality&lt;/strong&gt; bit of software.  Unfortunately in assessing it for our production use, I found a bug.  I have reported it as an issue and I’m sure it will get addressed, and there is an easy work around, but finding this bug raises the question of “How do you know if a gem is ready for production use?”  So I wanted to write this NOT to slam Pete’s work – which, again, is excellent – but to teach the point that you don’t blindly assume that code on the Internet always works.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Disclaimer 2&lt;/strong&gt;: Before I even could finish this post, Pete responded to the &lt;a href=&quot;https://github.com/gamache/fuzzyurl.rb/issues/2&quot;&gt;Github Issue&lt;/a&gt; I raised and it looks like he’s going to fix it.  Thanks man!&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Disclaimer 3&lt;/strong&gt;: Having added a new engineer recently this post is written for him so he understands that before you grab a new gem and rely on it willy, nilly, you put some consideration into it.  I actually think he knows this already but the engineer we hire after him?  Well that’s unknown so …&lt;/p&gt;
-
-&lt;p&gt;So I recently found the ruby Gem &lt;a href=&quot;https://github.com/gamache/fuzzyurl.rb/&quot;&gt;Fuzzyurl&lt;/a&gt; by Pete Gamache and I am intrigued.  As part of my current work I am the mildly unhappy maintainer of massive class - roughly 5K lines dealing with nothing but url parsing and handling.  What you find, the moment you say “I’ll write a crawler”, is that most of the Internet is non RFC compliant and you’re dealing with a witches brew of nastiness.  Standard tools like URI.parse, &lt;em&gt;snort&lt;/em&gt;, well I might have some choice words for the author.  So when I found Pete’s work, the fact that it was implemented in Ruby, JavaScript and Elixir was intriguing to say the least.  Perhaps I might not have to port my url code to Elixir – that would be a huge win.  And since I’m pretty sure that Pete actually &lt;em&gt;designed&lt;/em&gt; this as opposed to the organic “here a problem; there a routine” approach I used to write my library, I’m pretty close to certain that it has to be better than mine.  Mine might handle a ton of weird edge cases but it was never designed – just implemented in a “&lt;a href=&quot;https://en.wikipedia.org/wiki/Root_hog,_or_die&quot;&gt;root, hog or die&lt;/a&gt;” fashion.&lt;/p&gt;
-
-&lt;p&gt;So let’s return to the title of this blog post – How Do You Know if a Gem is Ready for Production Use?  There are a bunch of ways:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;read the code&lt;/li&gt;
-  &lt;li&gt;read the tests&lt;/li&gt;
-  &lt;li&gt;try and use it&lt;/li&gt;
-  &lt;li&gt;try and use it exhaustively&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The first thing to understand here is that this is a case where you absolutely need to &lt;em&gt;time bound&lt;/em&gt; things.  Time bounding is the practice where you decide, before you start, how much time you should allocate to something.  We all know that tasks involving computers tend to expand to fill the time available.  In my case I decided that this task, assessing if we could use Fuzzyurl in production, was worth an hour.  And I do know that’s light but it was what felt right.&lt;/p&gt;
-
-&lt;p&gt;In an hour I can’t possibly read and understand parsing code.  I’ve written too much of it and I know how detailed it can get.  Reading the tests is another option and a better one.  Generally speaking if a gem is well tested, that bodes well for it being quality.  But I know how bad my input set of urls is.  I can guarantee that the random ass crap I have to encounter isn’t covered by tests.  So I’m left with either try and use it or try and use it exhaustively.&lt;/p&gt;
-
-&lt;h2 id=&quot;try-and-use-it&quot;&gt;Try and Use It&lt;/h2&gt;
-
-&lt;p&gt;A quick addition to the end of Gemfile and then the bundle install dance lets me restart console and try it:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fu = Fuzzyurl.from_string(&quot;http://www.foo.com/&quot;)
-{
-    :protocol =&amp;gt; &quot;http&quot;,
-    :username =&amp;gt; nil,
-    :password =&amp;gt; nil,
-    :hostname =&amp;gt; &quot;www.foo.com&quot;,
-        :port =&amp;gt; nil,
-        :path =&amp;gt; &quot;/&quot;,
-       :query =&amp;gt; nil,
-    :fragment =&amp;gt; nil
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And that’s perfect.  Here’s a 1:1 comparison with URI.parse:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2.3.1 :009 &amp;gt; fu = URI.parse(&quot;http://www.foo.com/&quot;)
-#&amp;lt;URI::HTTP http://www.foo.com/&amp;gt;
-2.3.1 :010 &amp;gt; fu.protocol
-NoMethodError: undefined method `protocol' for #&amp;lt;URI::HTTP http://www.foo.com/&amp;gt;
-	from (irb):10
-	from /Users/sjohnson/.rvm/gems/ruby-2.3.1@banks/gems/railties-4.2.7/lib/rails/commands/console.rb:110:in `start'
-	from /Users/sjohnson/.rvm/gems/ruby-2.3.1@banks/gems/railties-4.2.7/lib/rails/commands/console.rb:9:in `start'
-	from /Users/sjohnson/.rvm/gems/ruby-2.3.1@banks/gems/railties-4.2.7/lib/rails/commands/commands_tasks.rb:68:in `console'
-	from /Users/sjohnson/.rvm/gems/ruby-2.3.1@banks/gems/railties-4.2.7/lib/rails/commands/commands_tasks.rb:39:in `run_command!'
-	from /Users/sjohnson/.rvm/gems/ruby-2.3.1@banks/gems/railties-4.2.7/lib/rails/commands.rb:17:in `&amp;lt;top (required)&amp;gt;'
-	from bin/rails:4:in `require'
-	from bin/rails:4:in `&amp;lt;main&amp;gt;'
-2.3.1 :011 &amp;gt; fu.host
-&quot;www.foo.com&quot;
-2.3.1 :012 &amp;gt; fu.port
-80
-2.3.1 :013 &amp;gt; fu.scheme
-&quot;http&quot;
-2.3.1 :014 &amp;gt; fu.path
-&quot;/&quot;
-2.3.1 :017 &amp;gt; fu.query
-nil
-2.3.1 :018 &amp;gt; fu.fragment
-nil
-2.3.1 :019 &amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The only change that I would make here is that I would add an alias method on &lt;em&gt;protocol&lt;/em&gt; to &lt;em&gt;scheme&lt;/em&gt; which is what URI.parse calls protocol (personally I think Pete is actually right here – protocol is a better word – but if you added scheme as an alias – then you’re closer to being a drop in replacement for URI.parse).  Maybe I’ll submit a pull request perhaps.&lt;/p&gt;
-
-&lt;p&gt;So now I know that Fuzzyurl works but anyone can type out a url - what about a real test case.&lt;/p&gt;
-
-&lt;h2 id=&quot;try-and-use-it-exhaustively&quot;&gt;Try and Use it Exhaustively&lt;/h2&gt;
-
-&lt;p&gt;One of the best and worst things about my job is that I’m never lacking for data.  We’re currently crawling about 1/4 terabyte of data monthly so at any given point I have access to N million urls.  So why not just try to feed say 250,000 urls thru Fuzzyurl and see what happens.  This gives this simple rake task:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;task :verify_fuzzy_url =&amp;gt; :environment do
-  pages = Page.order(&quot;id asc&quot;).select(&quot;id, url, long_url_id&quot;).limit(250000)
-  pages.each_with_index do |page, ctr|
-    puts &quot;#{ctr} :: #{page.id} :: #{page.url}&quot;
-    fu = Fuzzyurl.from_string(page.url.strip)
-    puts &quot;    #{fu.hostname}&quot;
-    raise &quot;error: #{fu}&quot; if fu.hostname.nil?
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Since all of these urls are supposed to be absolute urls we should always have a hostname and we’ll stop if we don’t.  Now we’ll need to examine the stop and make sure that the input wasn’t bad.  When we run this thru we hit a failure like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fu = Fuzzyurl.from_string(p.url)
-ArgumentError: Couldn't parse url string: http://www.theintelligencer.net
-from /var/www/apps/banks/shared/bundle/ruby/2.3.0/gems/fuzzyurl-0.9.0/lib/fuzzyurl/strings.rb:32:in from_string' from /var/www/apps/banks/shared/bundle/ruby/2.3.0/gems/fuzzyurl-0.9.0/lib/fuzzyurl.rb:169:infrom_string'
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;p in this case was a page which a url which looked like “http://www.theintelligencer.net “.  That trailing space there is the reason for the failure.  I submitted a github issue and the author has agreed to address it when he has the time.  That’s a great response - even tho this isn’t technically a bug - since space characters are allowed as part of urls but since it does cause a failure, I appreciated him being willing to fix it.&lt;/p&gt;
-
-&lt;p&gt;Now that I’ve used this a fair bit, a few of the errors I’ve seen with url processing comes back to my memory.  Here are a few common things you see in the wild that break URI.parse cold:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;trailing spaces&lt;/li&gt;
-  &lt;li&gt;embedded spaces&lt;/li&gt;
-  &lt;li&gt;missing ? before the &amp;amp; fragment&lt;/li&gt;
-  &lt;li&gt;Using a &amp;amp; instead of a ?  (#s 3 and 4 may actually be one and then same)&lt;/li&gt;
-  &lt;li&gt;Bad encoding&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Let’s try a few of these:&lt;/p&gt;
-
-&lt;h3 id=&quot;embedded-space&quot;&gt;Embedded Space&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;url = &quot;http://fuzzygroup.github.io/blog/scott was here&quot;
-&quot;http://fuzzygroup.github.io/blog/scott was here&quot;
-2.3.1 :021 &amp;gt; fu = Fuzzyurl.from_string(url)
-{
-    :protocol =&amp;gt; &quot;http&quot;,
-    :username =&amp;gt; nil,
-    :password =&amp;gt; nil,
-    :hostname =&amp;gt; &quot;fuzzygroup.github.io&quot;,
-        :port =&amp;gt; nil,
-        :path =&amp;gt; &quot;/blog/scott was here&quot;,
-       :query =&amp;gt; nil,
-    :fragment =&amp;gt; nil
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;instead-of--before-the-fragment&quot;&gt;&amp;amp; Instead of ? Before the Fragment&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;url = &quot;http://fuzzygroup.github.io/blog/scott was here&amp;amp;foo=bar&quot;
-&quot;http://fuzzygroup.github.io/blog/scott was here&amp;amp;foo=bar&quot;
-2.3.1 :023 &amp;gt; fu = Fuzzyurl.from_string(url)
-{
-    :protocol =&amp;gt; &quot;http&quot;,
-    :username =&amp;gt; nil,
-    :password =&amp;gt; nil,
-    :hostname =&amp;gt; &quot;fuzzygroup.github.io&quot;,
-        :port =&amp;gt; nil,
-        :path =&amp;gt; &quot;/blog/scott was here&amp;amp;foo=bar&quot;,
-       :query =&amp;gt; nil,
-    :fragment =&amp;gt; nil
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;conclusions&quot;&gt;Conclusions&lt;/h2&gt;
-
-&lt;p&gt;Overall Fuzzyurl is just plain a fantastic bit of code.  It handles most of the common cases that break URI.parse.  Here are a few suggestions:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Add an alias method called parse for from_string  That lets Fuzzyurl be used as a drop in replacement for URI.parse&lt;/li&gt;
-  &lt;li&gt;Add support for a call back function so you could register your own pre-processor to clean up a url before it gets parsed.  When implementing this type of library I understand the desire to follow the standards and only modify them slightly for common edge cases.  But there are so many ways to craft a crappy url in this Internet of ours that if you simply allow for a pre-processor routine then you can always say “there’s an api for extending this, use it.”&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Tue, 20 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/software_engineering/2016/09/20/how-do-you-know-if-a-gem-is-ready-for-production-use.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/software_engineering/2016/09/20/how-do-you-know-if-a-gem-is-ready-for-production-use.html</guid>
-        
-        <category>ruby</category>
-        
-        <category>gem</category>
-        
-        <category>software_engineering</category>
-        
-        <category>gem_review</category>
-        
-        
-        <category>software_engineering</category>
-        
-      </item>
-    
-      <item>
-        <title>AWS Tutorial 08 - Using SSH's Config File with Your AWS Boxes</title>
-        <description>&lt;p&gt;Disclaimer: If you’re a hard core Unix head then this can easily be skipped. However if your knowledge of SSH extends to “config file – what?” then it likely is worth a read.&lt;/p&gt;
-
-&lt;p&gt;SSH is one of those core bits of the modern computing world that we all rely on and don’t even think about.  And, like all such technologies, there is a lot to SSH under the hood.  The aspect I’m going to focus on here is the SSH config file and how it can make your AWS development life easier.&lt;/p&gt;
-
-&lt;p&gt;Let’s start with how I first logged into one of my production AWS boxes:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh -i ~/.ssh/my_pem_file.pem ubuntu@ec2-52-39-100-178.us-west-2.compute.amazonaws.com
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;That certainly works but it is &lt;strong&gt;long&lt;/strong&gt;.  And where you have length then you may the chance for error.  And then when you need to transfer a file from server to client (or vice versa) then you need to rewrite it like so:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scp -i ~/.ssh/my_pem_file.pem ubuntu@ec2-52-39-100-178.us-west-2.compute.amazonaws.com:/tmp/foo.txt ~/Downloads
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;the-ssh-config-file&quot;&gt;The SSH Config file&lt;/h1&gt;
-
-&lt;p&gt;In your ~/.ssh directory there is a file named, simply enough, &lt;strong&gt;config&lt;/strong&gt;.  The config file stores a series of entries related to the the host you want to log into.  Here’s an example of what logging in using a config file is like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh mariadb
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And here is an example of scp’ing a file down to your local box:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scp mariadb:/tmp/foo.txt ~/Downloads
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;So that is a clear advantage but how do we get there?&lt;/p&gt;
-
-&lt;p&gt;You need to edit the file ~/.ssh/config.  Do that now with nano or another editor:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nano -w ~/.ssh/config
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;You need to create an entry that looks like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Host THE_NAME_YOU_IDENTIFY_THIS_ENTRY_BY
-  Hostname YOUR_REALLY_LONG_EC2_HOST_NAME
-  user SOME_USERNAME
-  IdentityFile PATH_TO_A_PEM_FILE
-  Port 22 (this is almost always 22)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Here’s an actual example for one of my EC2 boxes:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Host mariadb
-  Hostname ec2-52-39-100-178.us-west-2.compute.amazonaws.com
-  user ubuntu
-  IdentityFile /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
-  Port 22
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;What this is telling ssh is pretty simple:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;identify everything by mariadb&lt;/li&gt;
-  &lt;li&gt;when called log into the hostname ec2-52-39-100-178.us-west-2.compute.amazonaws.com&lt;/li&gt;
-  &lt;li&gt;when called use the username ubuntu&lt;/li&gt;
-  &lt;li&gt;when called use the /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem to establish the user’s identity&lt;/li&gt;
-  &lt;li&gt;when called use port 22&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;And, as illustrated above, this will work whether for SSH or SCP.&lt;/p&gt;
-
-&lt;p&gt;SSH is one of those rich deep tools where there is always something more to learn.  Here are some resources:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://nerderati.com/2011/03/17/simplify-your-life-with-an-ssh-config-file/&quot;&gt;http://nerderati.com/2011/03/17/simplify-your-life-with-an-ssh-config-file/&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-configure-custom-connection-options-for-your-ssh-client&quot;&gt;https://www.digitalocean.com/community/tutorials/how-to-configure-custom-connection-options-for-your-ssh-client&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://michaelheap.com/ssh-config-files/&quot;&gt;http://michaelheap.com/ssh-config-files/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Tue, 20 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/09/20/aws-tutorial-08-using-ssh-s-config-file-with-your-aws-boxes.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/09/20/aws-tutorial-08-using-ssh-s-config-file-with-your-aws-boxes.html</guid>
-        
-        <category>aws</category>
-        
-        <category>ssh</category>
-        
-        
-        <category>aws</category>
         
       </item>
     
