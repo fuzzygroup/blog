@@ -223,6 +223,15 @@ fiworker2    ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com  
 
 <p>More on the Ansible Vault is available on the <a href="http://docs.ansible.com/ansible/playbooks_vault.html">docs.ansible.com site</a>.</p>
 
+<p>The vars file needs to look something like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ec2_access_key: "foo"
+ec2_secret_key: "bar"
+</code></pre>
+</div>
+
+<p>Obviously these would be replaced with real values.  By storing this file in rolename/vars/main.yml location and format, Ansible knows to load this file automatically when the role is executed.</p>
+
 <h1 id="the-ansiblecfg-file">The ansible.cfg file</h1>
 
 <p>You may, or may not, need a ansible.cfg file.  This is an ASCII file that defines how to handle ssh connectivity.  Here’s mine:</p>

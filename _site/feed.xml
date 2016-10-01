@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 01 Oct 2016 10:36:09 -0400</pubDate>
-    <lastBuildDate>Sat, 01 Oct 2016 10:36:09 -0400</lastBuildDate>
+    <pubDate>Sat, 01 Oct 2016 10:47:17 -0400</pubDate>
+    <lastBuildDate>Sat, 01 Oct 2016 10:47:17 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -138,6 +138,15 @@ fiworker2    ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com  
 &lt;/ol&gt;
 
 &lt;p&gt;More on the Ansible Vault is available on the &lt;a href=&quot;http://docs.ansible.com/ansible/playbooks_vault.html&quot;&gt;docs.ansible.com site&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The vars file needs to look something like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ec2_access_key: &quot;foo&quot;
+ec2_secret_key: &quot;bar&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Obviously these would be replaced with real values.  By storing this file in rolename/vars/main.yml location and format, Ansible knows to load this file automatically when the role is executed.&lt;/p&gt;
 
 &lt;h1 id=&quot;the-ansiblecfg-file&quot;&gt;The ansible.cfg file&lt;/h1&gt;
 
