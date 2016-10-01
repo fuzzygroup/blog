@@ -6,9 +6,74 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 30 Sep 2016 05:42:29 -0400</pubDate>
-    <lastBuildDate>Fri, 30 Sep 2016 05:42:29 -0400</lastBuildDate>
+    <pubDate>Sat, 01 Oct 2016 02:36:23 -0400</pubDate>
+    <lastBuildDate>Sat, 01 Oct 2016 02:36:23 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>AWS Tutorial 10 - Diagnosing SSH Failures or When Ping Works But SSH Fails</title>
+        <description>&lt;p&gt;I just had the issue where a Capistrano deploy onto our AWS cluster of boxes failed.  This let me into the following process of debugging:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Can I ping each box?  Yes!&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Can I ssh into each box?  No!  The box we name ficrawler2 was unable to be ssh’d into and gave this error:&lt;/p&gt;
+
+    &lt;p&gt;ssh ficrawler2
+ssh_exchange_identification: read: Operation timed out&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;My next action was to look at the instance in the web console and discover that it was actually reachable from the perspective of:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;System reachability check passed&lt;/li&gt;
+  &lt;li&gt;Instance reachability check passed&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p class=&quot;center left&quot;&gt;&lt;img src=&quot;/blog/assets/aws/aws_tutorial_10_01.png&quot; alt=&quot;aws_tutorial_10_01.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This makes me think that SSH itself went down but external network metrics like ping remained up.  Next step up is to reboot the box.  And I did that and the problem persisted.  This led me to thinking that there’s a lower level problem here, possibly network layer?&lt;/p&gt;
+
+&lt;p&gt;Now from my ssh config tutorial you might know that my ssh config file defined ficrawler2.  Here are the particulars:&lt;/p&gt;
+
+&lt;p&gt;Host ficrawler2
+    Hostname ec2-54-68-16-169.us-west-2.compute.amazonaws.com
+    User ubuntu
+    IdentityFile /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
+    Port 22&lt;/p&gt;
+
+&lt;p&gt;So this lets us construct a debuggable ssh connect line:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh -i &quot;/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem&quot; ubuntu@54.68.16.169 -vv
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The result of the ssh -i line above will be a very long string of ssh commands showing what happened.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately by the time I did the research to figure this out and setup this blog post, ssh returned and I’m left scratching my head more than a bit.&lt;/p&gt;
+
+&lt;p&gt;Here’s what we now know:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A box can be ping’able but not ssh’able&lt;/li&gt;
+  &lt;li&gt;A reboot doesn’t necessarily clear it up so the underlying box might actually have been fine&lt;/li&gt;
+  &lt;li&gt;I need to write the ssh test line faster next time&lt;/li&gt;
+  &lt;li&gt;It is very unclear how AWS cloud watch can be used to test for a box that is unable to be ssh’d into; that may not be viable (monitoring it could actually be construed as an attack)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 01 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-10-diagnosing-ssh-failures-or-when-ping-works-but-ssh-fails.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-10-diagnosing-ssh-failures-or-when-ping-works-but-ssh-fails.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ssh</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
     
       <item>
         <title>Using Ansible to Drive Down Hosting Costs</title>
@@ -965,40 +1030,6 @@ iex(9)&amp;gt; parts = String.split(pop_result, &quot;|&quot;)
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/elixir/2016/09/22/elixir-tutorial-04-actually-writing-some-code.html</guid>
         
         <category>elixir</category>
-        
-        
-        <category>elixir</category>
-        
-      </item>
-    
-      <item>
-        <title>Notes from Elixir Remote Meetup</title>
-        <description>&lt;p&gt;A few notes that came out of the Elixir Remote Meetup:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Chrome has audio issues; I was pointed to &lt;a href=&quot;https://vivaldi.com/?lang=en_US&quot;&gt;Vivaldi&lt;/a&gt; by a very helpful soul and that Chromium based browser fixed it.  Thanks!&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://elixir-lang.slack.com/files/seancribbs/F2DTLM9PC/supervisors_links_monitors_-_sean_cribbs.pdf&quot;&gt;Great talk on Supervisors&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/saaji/ex_par_execute&quot;&gt;Great talk on Parallel Execution&lt;/a&gt; &lt;a href=&quot;https://elixir-lang.slack.com/files/seancribbs/F2DTLM9PC/supervisors_links_monitors_-_sean_cribbs.pdf&quot;&gt;PDF&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;There’s a slack room on &lt;a href=&quot;http://elixir-lang.slack.com&quot;&gt;elixir-lang.slack.com&lt;/a&gt; if you want to join&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.bigmarker.com/remote-meetup/Elixir-Remote-Meetup-3&quot;&gt;There’s a recording you can watch!&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Thanks to Josh Adams of Elixir Sips and the Daily Drip for hosting this.&lt;/p&gt;
-
-&lt;p&gt;Suggestion to Josh Adams - Get a tshirt with your branding on it.  Wear it every time (the hat clearly bothered you but branding needs to be consistent to be effective).&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 21 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/elixir/2016/09/21/notes-from-elixir-remote-meetup.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/elixir/2016/09/21/notes-from-elixir-remote-meetup.html</guid>
-        
-        <category>elixir</category>
-        
-        <category>meetup</category>
-        
-        <category>remote</category>
-        
-        <category>josh_adams</category>
         
         
         <category>elixir</category>
