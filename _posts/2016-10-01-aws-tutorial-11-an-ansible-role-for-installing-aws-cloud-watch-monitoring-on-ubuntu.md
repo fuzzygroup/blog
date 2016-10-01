@@ -116,6 +116,13 @@ Within the roles directory there is a vars directory and a file main.yml within 
   
 More on the Ansible Vault is available on the [docs.ansible.com site](http://docs.ansible.com/ansible/playbooks_vault.html).
 
+The vars file needs to look something like this:
+
+    ec2_access_key: "foo"
+    ec2_secret_key: "bar"
+    
+Obviously these would be replaced with real values.  By storing this file in rolename/vars/main.yml location and format, Ansible knows to load this file automatically when the role is executed.
+
 # The ansible.cfg file 
 
 You may, or may not, need a ansible.cfg file.  This is an ASCII file that defines how to handle ssh connectivity.  Here's mine:
