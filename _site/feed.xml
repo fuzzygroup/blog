@@ -6,9 +6,195 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 01 Oct 2016 02:37:05 -0400</pubDate>
-    <lastBuildDate>Sat, 01 Oct 2016 02:37:05 -0400</lastBuildDate>
+    <pubDate>Sat, 01 Oct 2016 10:36:09 -0400</pubDate>
+    <lastBuildDate>Sat, 01 Oct 2016 10:36:09 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>AWS Tutorial 11 - An Ansible Role for Installing AWS Cloud Watch Monitoring On Ubuntu</title>
+        <description>&lt;p&gt;As I’ve written here earlier, Ansible is a provisioning and management tool that you can use to enable better automated provisioning of your AWS machines.  While I am &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/09/06/aws-i-was-wrong-dead-wrong.html&quot;&gt;absolutely in love with AWS&lt;/a&gt;, one thing that I do think that CloudWatch got wrong is that there is no memory graphs when you use CloudWatch to monitor your machines.  Given that I write threaded applications all the time, knowing how my memory utilization looks is a vital diagnostic tool.  And while there is a way to do this, it requires a fair bit of systems administration to accomplish it since it requires code to be installed on every server to be monitored.&lt;/p&gt;
+
+&lt;p&gt;Since we need to make a change to every box we have and to all new boxes we will create, who are we going to call?  Ansible!!!  That’s right – in this tutorial we’re going to use Ansible to write a playbook and role for:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;downloading required modules&lt;/li&gt;
+  &lt;li&gt;downloading the code&lt;/li&gt;
+  &lt;li&gt;installing the code&lt;/li&gt;
+  &lt;li&gt;inserting our AWS keys&lt;/li&gt;
+  &lt;li&gt;creating a cron job&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;creating-our-structure&quot;&gt;Creating our Structure&lt;/h1&gt;
+
+&lt;p&gt;While Ansible is flexible in how things can be structured, I use a standard approach.  All of the code here is available on my github (link at the end) but I find that writing it all out helps my understanding at least.  Here’s how to create the structure that I use for Ansible.  All of this assumes you are already in a project directory where you want to store this.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir inventories
+touch inventories/production
+mkdir -p roles/aws_cloudwatch_memory/tasks
+mkdir -p roles/aws_cloudwatch_memory/vars
+touch roles/aws_cloudwatch_memory/tasks/main.yml
+touch roles/roles/aws_cloudwatch_memory/vars/main.yml
+# note - if you want to encrypt your aws keys that don't do the next step and do it below under Ansible Vault
+touch ansible.cfg
+touch playbook.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;core-ansible-concepts-inventory-playbook-role-var&quot;&gt;Core Ansible Concepts: Inventory, Playbook, Role, Var&lt;/h1&gt;
+
+&lt;p&gt;Like many automation products, Ansible is built around some core concepts:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Inventory - a list of the machine resources to create, update or destroy&lt;/li&gt;
+  &lt;li&gt;Playbook - a list of the roles to apply to each machine resource&lt;/li&gt;
+  &lt;li&gt;Role - what to do with a machine.  This can be very complex including tasks, variables, files to copy to and from, services to restart and so on.&lt;/li&gt;
+  &lt;li&gt;Var - a list of variables to use in your role.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;the-inventory&quot;&gt;The Inventory&lt;/h1&gt;
+
+&lt;p&gt;In the inventory file you want a format very similar to an old fashioned .ini file.  Here’s what mine looks like:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[web]
+fiworker2    ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com        ansible_ssh_private_key_file=/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The syntax I’m using is human_readable_name  ansible_ssh_host=  ansible_ssh_private_key_file=&lt;/p&gt;
+
+&lt;p&gt;While you can generate the inventory file automatically with code, I don’t have a ton of AWS instances yet so I’ve just listed them manually.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-playbook&quot;&gt;The Playbook&lt;/h1&gt;
+
+&lt;p&gt;Here’s the playbook:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- hosts: all
+  become: yes
+  remote_user: ubuntu
+  roles:
+    - { role: aws_cloudwatch_memory, tags: aws_cloudwatch_memory}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The way to read this is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;run the playbook on all hosts&lt;/li&gt;
+  &lt;li&gt;run the playbook as sudo&lt;/li&gt;
+  &lt;li&gt;run the playbook with the remote user ubuntu&lt;/li&gt;
+  &lt;li&gt;run the role aws_cloudwatch_memory&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;the-role&quot;&gt;The Role&lt;/h1&gt;
+
+&lt;p&gt;Here’s the role:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
+  
+- name: Install CloudWatch libraries
+  apt: pkg=
+       state=installed
+  with_items:
+    - unzip
+    - libwww-perl
+    - libdatetime-perl
+
+- name: download scripts
+  get_url: url=http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip dest=/tmp/CloudWatchMonitoringScripts.zip
+
+- name: chown the file and make it writeable
+  file: path=/tmp/CloudWatchMonitoringScripts.zip mode=0755  #owner=ubuntu group=ubuntu 
+
+- name: unzip the scripts
+  # note - unarchive should work but it fails; maybe an ansible issue?  shell: to the rescue!
+  #unarchive: src=/tmp/CloudWatchMonitoringScripts.zip dest=/tmp/
+  shell: &quot;cd /tmp &amp;amp;&amp;amp; unzip /tmp/CloudWatchMonitoringScripts.zip&quot;
+
+- name: delete archive
+  file: path=/tmp/CloudWatchMonitoringScripts.zip state=absent
+
+- name: set Access key in credentials file
+  replace: dest=/tmp/aws-scripts-mon/awscreds.template regexp='AWSAccessKeyId=' replace='AWSAccessKeyId=' backup=yes
+
+- name: set Secret key in credentials file
+  replace: dest=/tmp/aws-scripts-mon/awscreds.template regexp='AWSSecretKey=' replace='AWSSecretKey=' backup=yes
+
+- name: move directory out of /tmp
+  command: mv /tmp/aws-scripts-mon/ /root/ creates=/root/aws-scripts-mon/
+
+- name: add command to cron
+  lineinfile: dest=/etc/crontab insertafter=EOF line=&quot;* * * * * root /root/aws-scripts-mon/mon-put-instance-data.pl --mem-util --mem-used --mem-avail --aws-credential-file=/root/aws-scripts-mon/awscreds.template&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;using-ansible-vault-for-the-vars-file&quot;&gt;Using Ansible Vault for the vars file&lt;/h1&gt;
+
+&lt;p&gt;Within the roles directory there is a vars directory and a file main.yml within it.  This file will contain our variables that define our AWS access key and AWS secret.  Given that this file will likely be checked into version control, there’s value in encrypting those variables.  The tool Ansible Vault is used for that.  Here’s how:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Use the command:  ansible-vault create roles/aws_cloudwatch_memory/vars/main.yml&lt;/li&gt;
+  &lt;li&gt;This will ask your for a password.  Enter one and confirm it and then you’ll be launched into an editor where you can put in your keys.&lt;/li&gt;
+  &lt;li&gt;Exit the editor and it will save your now encrypted data.  You can then edit it later with: ansible-vault edit roles/aws_cloudwatch_memory/vars/main.yml&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;More on the Ansible Vault is available on the &lt;a href=&quot;http://docs.ansible.com/ansible/playbooks_vault.html&quot;&gt;docs.ansible.com site&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-ansiblecfg-file&quot;&gt;The ansible.cfg file&lt;/h1&gt;
+
+&lt;p&gt;You may, or may not, need a ansible.cfg file.  This is an ASCII file that defines how to handle ssh connectivity.  Here’s mine:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[ssh_connection]
+ssh_user = vagrant
+scp_if_ssh = True
+control_path = %(directory)s/%%h-%%r
+ansible_ssh_private_key_file = /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I’m not, at the time of this writing, a true Ansible expert so I suspect there’s redundancy in my cfg file but when I run without it, I’m unable to connect to AWS and I think it’s due to the control_path setting being required due to the length of the EC2 host names.&lt;/p&gt;
+
+&lt;h1 id=&quot;running-this&quot;&gt;Running This&lt;/h1&gt;
+
+&lt;p&gt;Here’s all you need to do to run this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/production playbook.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If you encrypted your keys then you’ll be prompted for the password.  If you want to store the password in a local file on your machine then you can always do it this way:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/production playbook.yml --vault-password-file ~/.vault_pass.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;code-on-git&quot;&gt;Code on Git&lt;/h1&gt;
+
+&lt;p&gt;All of this is published on my &lt;a href=&quot;https://github.com/fuzzygroup/ansible_cloud_watch_memory_monitoring&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+
+&lt;p&gt;Here are some great references&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://gist.github.com/weirdbricks/3e0d0e3428f3d683ccfa&quot;&gt;https://gist.github.com/weirdbricks/3e0d0e3428f3d683ccfa&lt;/a&gt;  This is the gist I started from; it was for Redhat / CentOS and used Yum&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/mon-scripts.html&quot;&gt;http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/mon-scripts.html&lt;/a&gt;  This is the canonical documentation&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://blog.krishnachaitanya.ch/2016/03/monitor-ec2-memory-usage-using-aws.html&quot;&gt;http://blog.krishnachaitanya.ch/2016/03/monitor-ec2-memory-usage-using-aws.html&lt;/a&gt; Good tutorial&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 01 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-11-an-ansible-role-for-installing-aws-cloud-watch-monitoring-on-ubuntu.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-11-an-ansible-role-for-installing-aws-cloud-watch-monitoring-on-ubuntu.html</guid>
+        
+        <category>ansible</category>
+        
+        <category>aws</category>
+        
+        <category>cloudwatch</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
     
       <item>
         <title>AWS Tutorial 10 - Diagnosing SSH Failures or When Ping Works But SSH Fails</title>
@@ -869,173 +1055,6 @@ set :deploy_to, '/var/www/apps/banks'
         
         
         <category>software_engineering</category>
-        
-      </item>
-    
-      <item>
-        <title>Elixir Tutorial 04 Actually Writing Some Code For Our Page Fetcher</title>
-        <description>&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; I’m very much figuring this out on the fly and you’re going to see stuff in here where you go “He’s wrong!  He’s flat out wrong!” and you might be right.  Heck you likely are right but keep reading because you’ll see corrections coming later in the piece.  I started to rewrite it but I thought that actually seeing the process might be useful since so many of us are at the “want to use elixir but don’t know how to get there” stage.&lt;/p&gt;
-
-&lt;p&gt;So we’re now at the point of actually writing some crude, primitive code for our page fetcher.  Here’s what this needs to do:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;connect to redis&lt;/li&gt;
-  &lt;li&gt;run in an infinite loop&lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;pop entries off a redis queue - entries will be a&lt;/td&gt;
-          &lt;td&gt;separated chunk of data consisting of an id, a type and url&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;fetch the data from the internet&lt;/li&gt;
-  &lt;li&gt;write it to a table based on the type (possibly; still thinking this thru as I write this out)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;an-infinite-loop-construct-in-elixir&quot;&gt;An Infinite Loop Construct in Elixir&lt;/h1&gt;
-
-&lt;p&gt;Connecting to redis should be pretty simple so this brings us to the next step - running in an infinite loop.  Classically I’d do that as a while(true) type control structure but this is Elixir and its functional.  A bit of digging brings me to this &lt;a href=&quot;http://stackoverflow.com/questions/35364511/proper-elixir-otp-way-to-structure-an-infinite-loop-task&quot;&gt;Stack Overflow post&lt;/a&gt; where it makes a pretty good argument for this type of thing:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def fetch_pages() do
-  # get redis 
-  # pop off redis
-  # tokenize the bits from redis into variables
-  # fetch the page
-  # save the page
-  fetch_pages()
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And that would work nicely.  Since we’re dealing with tail recursion we don’t have to worry about blowing up the stack.&lt;/p&gt;
-
-&lt;p&gt;As I look at this again I see clearly that connecting to redis should be taking out of the loop and the redis connection passed in since otherwise we’re connecting repeatedly and that would be wasteful or just plain dumb.  But before we get there let’s start with a simple question – where does our code actually go?  Right now we have a very simple structure and we want to work within lib/page_fetcher.ex.&lt;/p&gt;
-
-&lt;p&gt;If you open this file you’ll find a basic module structure and a def start.  Let’s add a def fetch_pages do / end block above the start routine and let’s just add this one line within it:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;IO.puts &quot;Calling fetch_pages&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Now that’s not really good enough since it would be good to know that something is changing so why don’t we display the current date and time?  Another quick trip out to the Internet gives us this &lt;a href=&quot;http://stackoverflow.com/questions/28594646/getting-the-current-date-and-or-time-in-elixir&quot;&gt;page&lt;/a&gt; and teaches us we can get the current date and time in Unix milliseconds with :os.system_time(:milli_seconds).  Now that’s an Erlang primitive but Elixir runs on top of Erlang so it can call any and all of it easily.  So our new routine becomes this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def fetch_pages() do
-  IO.puts(&quot;The fetch_pages/0 routine has just been called at #{:os.system_time(:milli_seconds)}&quot;)
-  fetch_pages()
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;You’ll notice that string interpolation is actually the same as Ruby - #{} within a string.  That should make adapting to Elixir a bit easier.&lt;/p&gt;
-
-&lt;p&gt;Now we want to see this actually run and the next step for that is to load the console and run it interactively.  So do the normal dance:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iex -S mix
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And then enter:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PageFetcher.fetch_pages
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And you’ll see a swath of lines like these:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;The fetch_pages/0 routine has just been called at 1474506164424
-The fetch_pages/0 routine has just been called at 1474506164424
-The fetch_pages/0 routine has just been called at 1474506164425
-The fetch_pages/0 routine has just been called at 1474506164425
-The fetch_pages/0 routine has just been called at 1474506164425
-The fetch_pages/0 routine has just been called at 1474506164425
-The fetch_pages/0 routine has just been called at 1474506164425
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;getting-our-redis-crap-together&quot;&gt;Getting Our Redis Crap Together&lt;/h1&gt;
-
-&lt;p&gt;Now that I’m at this stage I realize that I’m so used to using Redis using the Ruby primitives I’ve relied on for years that I’m a bit at a loss.  And this means what it always does a trip to the &lt;a href=&quot;https://github.com/artemeff/exredis&quot;&gt;documentation&lt;/a&gt;!  Here’s our canonical test case for redis:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;connect&lt;/li&gt;
-  &lt;li&gt;push data in&lt;/li&gt;
-  &lt;li&gt;fetch it back&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;If we can do that then its really all we need.  Here’s the code:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:ok,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;Exredis.start_link&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;push_result&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;|&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;Exredis.Api.rpush(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;queue&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1|table|http://&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;pop_result&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;|&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;Exredis.Api.rpop(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;queue&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;What we’re seeing here, to analogize it back to Ruby again, is that Exredis is the main “object” and then Api is a set of methods chained on top of it.  Yes I know that’s not what is going on under the hood but this was an analogy.&lt;/p&gt;
-
-&lt;p&gt;Technically since we’re only popping from a queue we didn’t have to know how to push stuff in but its the best way to test a queue based system and it is what I’ve been doing since the days of memcached to test any type of queue / key value store.&lt;/p&gt;
-
-&lt;p&gt;If we want to write a function to connect to Redis then this is going to bring up the issue of &lt;a href=&quot;http://stackoverflow.com/questions/37445838/returning-values-in-elixir&quot;&gt;returning something&lt;/a&gt;, our redis client, from a method.  Since there is no explicit return statement, we simply need the client to be the last thing in our method so this should do it:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def redis() do
-  {:ok, client} = Exredis.start_link
-  client
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Ideally there should be code to make sure we actually got back a valid client, failure handling, etc but we’re just not there yet.&lt;/p&gt;
-
-&lt;h1 id=&quot;a-quick-foray-into-string-parsing&quot;&gt;A Quick Foray into String Parsing&lt;/h1&gt;
-
-&lt;p&gt;We can finally get away from StackOverflow with a dive into the Elixir Lang docs to look up how to split out a string using &lt;a href=&quot;http://elixir-lang.org/docs/stable/elixir/String.html#split/3&quot;&gt;Split/3&lt;/a&gt;.  This gives us:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pop_result = client |&amp;gt; Exredis.Api.rpop(&quot;queue&quot;)
-&quot;1|table|http://&quot;
-iex(9)&amp;gt; parts = String.split(pop_result, &quot;|&quot;)
-[&quot;1&quot;, &quot;table&quot;, &quot;http://&quot;]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;So we can just use a String.split call with a&lt;/td&gt;
-      &lt;td&gt;as the delimiter and that gives us back the result.&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h1 id=&quot;summary&quot;&gt;Summary&lt;/h1&gt;
-
-&lt;p&gt;This is the point where I need to get back to my day job but we’ve actually made some progress:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;We know where to put our code&lt;/li&gt;
-  &lt;li&gt;We know how to test our code in the console&lt;/li&gt;
-  &lt;li&gt;We know how to talk to Redis&lt;/li&gt;
-  &lt;li&gt;We know how to call Erlang functions from Elixir&lt;/li&gt;
-  &lt;li&gt;We know how to parse our fetched chunk of data into a data structure&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Here’s the plan:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Next time we’ll try and put this all together and actually fetch the page&lt;/li&gt;
-  &lt;li&gt;Next time + 1 we’ll try and store the page to the database; that’ll take us into Ecto&lt;/li&gt;
-  &lt;li&gt;Next time + 2 we’ll try and get this running under OTP properly&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Thu, 22 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/elixir/2016/09/22/elixir-tutorial-04-actually-writing-some-code.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/elixir/2016/09/22/elixir-tutorial-04-actually-writing-some-code.html</guid>
-        
-        <category>elixir</category>
-        
-        
-        <category>elixir</category>
         
       </item>
     

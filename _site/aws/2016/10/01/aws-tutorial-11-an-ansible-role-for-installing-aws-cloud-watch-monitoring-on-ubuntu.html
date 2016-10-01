@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>AWS Tutorial 11 - An Ansible Role for Installing AWS Cloud Watch Monitoring On Ubuntu</title>
+  <meta name="description" content="As I’ve written here earlier, Ansible is a provisioning and management tool that you can use to enable better automated provisioning of your AWS machines.  W...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-11-an-ansible-role-for-installing-aws-cloud-watch-monitoring-on-ubuntu.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">AWS Tutorial 11 - An Ansible Role for Installing AWS Cloud Watch Monitoring On Ubuntu</h1>
+    <p class="post-meta"><time datetime="2016-10-01T00:00:00-04:00" itemprop="datePublished">Oct 1, 2016</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>As I’ve written here earlier, Ansible is a provisioning and management tool that you can use to enable better automated provisioning of your AWS machines.  While I am <a href="https://fuzzygroup.github.io/blog/aws/2016/09/06/aws-i-was-wrong-dead-wrong.html">absolutely in love with AWS</a>, one thing that I do think that CloudWatch got wrong is that there is no memory graphs when you use CloudWatch to monitor your machines.  Given that I write threaded applications all the time, knowing how my memory utilization looks is a vital diagnostic tool.  And while there is a way to do this, it requires a fair bit of systems administration to accomplish it since it requires code to be installed on every server to be monitored.</p>
+
+<p>Since we need to make a change to every box we have and to all new boxes we will create, who are we going to call?  Ansible!!!  That’s right – in this tutorial we’re going to use Ansible to write a playbook and role for:</p>
+
+<ul>
+  <li>downloading required modules</li>
+  <li>downloading the code</li>
+  <li>installing the code</li>
+  <li>inserting our AWS keys</li>
+  <li>creating a cron job</li>
+</ul>
+
+<h1 id="creating-our-structure">Creating our Structure</h1>
+
+<p>While Ansible is flexible in how things can be structured, I use a standard approach.  All of the code here is available on my github (link at the end) but I find that writing it all out helps my understanding at least.  Here’s how to create the structure that I use for Ansible.  All of this assumes you are already in a project directory where you want to store this.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>mkdir inventories
+touch inventories/production
+mkdir -p roles/aws_cloudwatch_memory/tasks
+mkdir -p roles/aws_cloudwatch_memory/vars
+touch roles/aws_cloudwatch_memory/tasks/main.yml
+touch roles/roles/aws_cloudwatch_memory/vars/main.yml
+# note - if you want to encrypt your aws keys that don't do the next step and do it below under Ansible Vault
+touch ansible.cfg
+touch playbook.yml
+</code></pre>
+</div>
+
+<h1 id="core-ansible-concepts-inventory-playbook-role-var">Core Ansible Concepts: Inventory, Playbook, Role, Var</h1>
+
+<p>Like many automation products, Ansible is built around some core concepts:</p>
+
+<ul>
+  <li>Inventory - a list of the machine resources to create, update or destroy</li>
+  <li>Playbook - a list of the roles to apply to each machine resource</li>
+  <li>Role - what to do with a machine.  This can be very complex including tasks, variables, files to copy to and from, services to restart and so on.</li>
+  <li>Var - a list of variables to use in your role.</li>
+</ul>
+
+<h1 id="the-inventory">The Inventory</h1>
+
+<p>In the inventory file you want a format very similar to an old fashioned .ini file.  Here’s what mine looks like:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[web]
+fiworker2    ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com        ansible_ssh_private_key_file=/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
+</code></pre>
+</div>
+
+<p>The syntax I’m using is human_readable_name  ansible_ssh_host=  ansible_ssh_private_key_file=</p>
+
+<p>While you can generate the inventory file automatically with code, I don’t have a ton of AWS instances yet so I’ve just listed them manually.</p>
+
+<h1 id="the-playbook">The Playbook</h1>
+
+<p>Here’s the playbook:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>- hosts: all
+  become: yes
+  remote_user: ubuntu
+  roles:
+    - { role: aws_cloudwatch_memory, tags: aws_cloudwatch_memory}
+</code></pre>
+</div>
+
+<p>The way to read this is:</p>
+
+<ul>
+  <li>run the playbook on all hosts</li>
+  <li>run the playbook as sudo</li>
+  <li>run the playbook with the remote user ubuntu</li>
+  <li>run the role aws_cloudwatch_memory</li>
+</ul>
+
+<h1 id="the-role">The Role</h1>
+
+<p>Here’s the role:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>---
+  
+- name: Install CloudWatch libraries
+  apt: pkg=
+       state=installed
+  with_items:
+    - unzip
+    - libwww-perl
+    - libdatetime-perl
+
+- name: download scripts
+  get_url: url=http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip dest=/tmp/CloudWatchMonitoringScripts.zip
+
+- name: chown the file and make it writeable
+  file: path=/tmp/CloudWatchMonitoringScripts.zip mode=0755  #owner=ubuntu group=ubuntu 
+
+- name: unzip the scripts
+  # note - unarchive should work but it fails; maybe an ansible issue?  shell: to the rescue!
+  #unarchive: src=/tmp/CloudWatchMonitoringScripts.zip dest=/tmp/
+  shell: "cd /tmp &amp;&amp; unzip /tmp/CloudWatchMonitoringScripts.zip"
+
+- name: delete archive
+  file: path=/tmp/CloudWatchMonitoringScripts.zip state=absent
+
+- name: set Access key in credentials file
+  replace: dest=/tmp/aws-scripts-mon/awscreds.template regexp='AWSAccessKeyId=' replace='AWSAccessKeyId=' backup=yes
+
+- name: set Secret key in credentials file
+  replace: dest=/tmp/aws-scripts-mon/awscreds.template regexp='AWSSecretKey=' replace='AWSSecretKey=' backup=yes
+
+- name: move directory out of /tmp
+  command: mv /tmp/aws-scripts-mon/ /root/ creates=/root/aws-scripts-mon/
+
+- name: add command to cron
+  lineinfile: dest=/etc/crontab insertafter=EOF line="* * * * * root /root/aws-scripts-mon/mon-put-instance-data.pl --mem-util --mem-used --mem-avail --aws-credential-file=/root/aws-scripts-mon/awscreds.template"
+</code></pre>
+</div>
+
+<h1 id="using-ansible-vault-for-the-vars-file">Using Ansible Vault for the vars file</h1>
+
+<p>Within the roles directory there is a vars directory and a file main.yml within it.  This file will contain our variables that define our AWS access key and AWS secret.  Given that this file will likely be checked into version control, there’s value in encrypting those variables.  The tool Ansible Vault is used for that.  Here’s how:</p>
+
+<ol>
+  <li>Use the command:  ansible-vault create roles/aws_cloudwatch_memory/vars/main.yml</li>
+  <li>This will ask your for a password.  Enter one and confirm it and then you’ll be launched into an editor where you can put in your keys.</li>
+  <li>Exit the editor and it will save your now encrypted data.  You can then edit it later with: ansible-vault edit roles/aws_cloudwatch_memory/vars/main.yml</li>
+</ol>
+
+<p>More on the Ansible Vault is available on the <a href="http://docs.ansible.com/ansible/playbooks_vault.html">docs.ansible.com site</a>.</p>
+
+<h1 id="the-ansiblecfg-file">The ansible.cfg file</h1>
+
+<p>You may, or may not, need a ansible.cfg file.  This is an ASCII file that defines how to handle ssh connectivity.  Here’s mine:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[ssh_connection]
+ssh_user = vagrant
+scp_if_ssh = True
+control_path = %(directory)s/%%h-%%r
+ansible_ssh_private_key_file = /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
+</code></pre>
+</div>
+
+<p>I’m not, at the time of this writing, a true Ansible expert so I suspect there’s redundancy in my cfg file but when I run without it, I’m unable to connect to AWS and I think it’s due to the control_path setting being required due to the length of the EC2 host names.</p>
+
+<h1 id="running-this">Running This</h1>
+
+<p>Here’s all you need to do to run this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/production playbook.yml
+</code></pre>
+</div>
+
+<p>If you encrypted your keys then you’ll be prompted for the password.  If you want to store the password in a local file on your machine then you can always do it this way:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/production playbook.yml --vault-password-file ~/.vault_pass.txt
+</code></pre>
+</div>
+
+<h1 id="code-on-git">Code on Git</h1>
+
+<p>All of this is published on my <a href="https://github.com/fuzzygroup/ansible_cloud_watch_memory_monitoring">github</a>.</p>
+
+<h1 id="references">References</h1>
+
+<p>Here are some great references</p>
+
+<ul>
+  <li><a href="https://gist.github.com/weirdbricks/3e0d0e3428f3d683ccfa">https://gist.github.com/weirdbricks/3e0d0e3428f3d683ccfa</a>  This is the gist I started from; it was for Redhat / CentOS and used Yum</li>
+  <li><a href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/mon-scripts.html">http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/mon-scripts.html</a>  This is the canonical documentation</li>
+  <li><a href="http://blog.krishnachaitanya.ch/2016/03/monitor-ec2-memory-usage-using-aws.html">http://blog.krishnachaitanya.ch/2016/03/monitor-ec2-memory-usage-using-aws.html</a> Good tutorial</li>
+</ul>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff.  Ruby / Rails / Elixir.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
