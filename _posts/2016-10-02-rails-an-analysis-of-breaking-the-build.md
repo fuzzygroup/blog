@@ -4,6 +4,9 @@ title: Rails Post Mortem - An Analysis of Breaking the Build
 category: software_engineering
 tags: ["rails", "software_engineering"]
 ---
+
+**Note:** Making this blog post public as opposed to an internal document might ruffle some feathers.  I'd like to point out here that no has been called out by name and at least part of the responsibility trail here is **mine** and I have no issues with accepting that.  The only way to learn from our mistakes is honesty  and this post was written in that spirit.  It is how all of us get better at our jobs.
+
 I often tell my kids that when something goes wrong I care less about what went wrong and more about responsibility, specifically, whether or not you accept responsibility for it.  When something goes wrong accepting the responsibility for it, if it was actually your fault, to **me**, is a big deal.  If you don't accept responsibility for your mistakes then you cannot learn from them.
 
 I recently had the situation where a new hire broke the build.  And he broke it after 5 pm on a friday when mission critical work had to be done over the weekend. Sigh.  And, of course, he was offline when I found out so it fell on me to untangle it.
@@ -63,3 +66,5 @@ To me this is fairly incontrovertible -- you broke the build.  Now this isn't a 
 * We lost about an hour and a half of crawling time
 * I resolved the issues in less than 30 minutes and had us up and running again before dinner 
 * It took longer to write this post mortem than it did to fix the issues
+
+In closing I also should state that the alphabetized Gemfile is better organized and will be better for maintenance long term.  He also did a great job of preserving the cruft that was there previously which illustrated history and intent and I do appreciate that.  I simply should have been more diligent before I accepted these changes.  We lack a staging server for this project and I will ticket for myself the task of getting one built so we have a place to tackle sweeping changes like these.
