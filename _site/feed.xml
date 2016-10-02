@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 02 Oct 2016 07:03:32 -0400</pubDate>
-    <lastBuildDate>Sun, 02 Oct 2016 07:03:32 -0400</lastBuildDate>
+    <pubDate>Sun, 02 Oct 2016 12:08:35 -0400</pubDate>
+    <lastBuildDate>Sun, 02 Oct 2016 12:08:35 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -92,6 +92,104 @@
         
         
         <category>software_engineering</category>
+        
+      </item>
+    
+      <item>
+        <title>AWS Tutorial 12 - Using Ansible to Quickly Fix Your Server's TCP Connections</title>
+        <description>&lt;p&gt;The bulk of my coding is actually back end coding and I spent a lot of time dealing with network programming issues.  We’ve been running for years in a data center that I put together and every box was finely tuned.  Unfortunately due to the massive issues surrounding Chef, we were never able to maintain boxes automatically so every server became a unique snowflake – well set up and such but I have no idea now what changes we made to tune each server over the years.&lt;/p&gt;
+
+&lt;p&gt;And while we still have that data center active, we’re now crawling on our AWS boxes and much happier but we’re still working the kinks out.  This morning I started seeing this appear:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Cannot assign requested address.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;It was appearing in the context of our Redis connections.  And, sure enough, we had a routine which was creating a handle to redis every, single, time it was handling a url.  That’s bad.  So the easy fix was to pass the connection in from a higher level.  But even after that it was still an issue.  Some quick research brought me to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/10980850/solveredis-localhost6379-cannot-assign-requested-address&quot;&gt;https://stackoverflow.com/questions/10980850/solveredis-localhost6379-cannot-assign-requested-address&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://redis4you.com/articles.php?id=012&amp;amp;name=redis&quot;&gt;http://redis4you.com/articles.php?id=012&amp;amp;name=redis&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Apparently the recommended solution is to fix a running box with:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;echo 1 &amp;gt; /proc/sys/net/ipv4/tcp_tw_reuse
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;and put the same fix into:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; /etc/rc.local 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;how-to-ansible-ize-this&quot;&gt;How to Ansible-ize This&lt;/h1&gt;
+
+&lt;p&gt;Given that we have a bunch of AWS nodes setup, I don’t really want to make this change manually so let’s script it with Ansible and run it as a role.  Here’s what to do for the directory where your Ansible stuff resides:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;mkdir -p roles/machine_setup_tcp_tw_reuse/tasks&lt;/li&gt;
+  &lt;li&gt;touch roles/machine_setup_tcp_tw_reuse/tasks/main.yml&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In your main.yml file you want this code:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# this sets it for the machine permanently after the machine restarts
+- name: update /etc/rc.local for tcp_tw_reuse (faster tcp recycling) on machines which are servers 
+  lineinfile: dest=/etc/rc.local regexp=&quot;^echo 1 &amp;gt; &quot;  line=&quot;echo 1 &amp;gt; /proc/sys/net/ipv4/tcp_tw_reuse&quot;
+  
+# this fixes the current machine state
+- name: execute the fix on the currently running machine instance
+  shell: &quot;echo 1 &amp;gt; /proc/sys/net/ipv4/tcp_tw_reuse&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In your main playbook.yml you want to call this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- hosts: all
+  become: yes
+  remote_user: ubuntu
+  roles:
+- { role: machine_setup_tcp_tw_reuse, tags: machine_setup_tcp_tw_reuse}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;how-to-run-this&quot;&gt;How to Run this&lt;/h1&gt;
+
+&lt;p&gt;You can run this using the following syntax:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/production_actual playbook.yml --tags &quot;machine_setup_tcp_tw_reuse&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;how-to-verify-the-fix&quot;&gt;How to Verify the Fix&lt;/h1&gt;
+
+&lt;p&gt;To verify this, you can do what I did:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;ssh into a box&lt;/li&gt;
+  &lt;li&gt;cat /proc/sys/net/ipv4/tcp_tw_reuse&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you see a 1 there then the fix actually worked.&lt;/p&gt;
+
+&lt;h1 id=&quot;notes&quot;&gt;Notes&lt;/h1&gt;
+
+&lt;p&gt;The reason for the small level of granularity on this role is that I’m now using Ansible to fix issues on production running hosts.  And I wanted to be able to run &lt;strong&gt;just&lt;/strong&gt; this role.  Ansible has tagging which I do believe would let me have this embedded within my overall machine_setup task but this felt safer since I’m still a noob at Ansible.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 02 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/10/02/aws-tutorial-12-using-ansible-to-quickly-fix-your-server-s-tcp-connections.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/02/aws-tutorial-12-using-ansible-to-quickly-fix-your-server-s-tcp-connections.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ansible</category>
+        
+        <category>redis</category>
+        
+        
+        <category>aws</category>
         
       </item>
     
@@ -893,164 +991,6 @@ SELECT r0.`raceId`, r0.`year`, r0.`round`, r0.`circuitId`, r0.`name`, r0.`date`,
         
         
         <category>software_engineering</category>
-        
-      </item>
-    
-      <item>
-        <title>AWS Tutorial 09 - Deploying Rails Apps With Capistrano Take 1</title>
-        <description>&lt;p&gt;In this tutorial we’re going to use the latest version of Capistrano to deploy your Rails app onto one or more EC2 instances.  I’m dividing this tutorial into two parts:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Take 1 where a static set of boxes is encoded into your deploy/production.rb file&lt;/li&gt;
-  &lt;li&gt;Take 2 where we call AWS apis to figure out what boxes to deploy to&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The reason for separating them is that take 2 will bring us much deeper into AWS API programming and concepts like tagging / IAM roles I wanted that to be highly separate from the guts of Capistrano.&lt;/p&gt;
-
-&lt;h1 id=&quot;tools&quot;&gt;Tools&lt;/h1&gt;
-
-&lt;p&gt;In this tutorial I’m going to be specific to:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Capistrano&lt;/li&gt;
-  &lt;li&gt;Passenger&lt;/li&gt;
-  &lt;li&gt;Bundler&lt;/li&gt;
-  &lt;li&gt;RVM&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;That’s my standard Rails stack and while other configurations will work, NGINX is a favorite of people, that’s the only stack I personally understand end to end.&lt;/p&gt;
-
-&lt;h1 id=&quot;getting-started---add-capistrano-to-your-gemfile&quot;&gt;Getting Started - Add Capistrano to Your Gemfile&lt;/h1&gt;
-
-&lt;p&gt;You’re going to want to use Capistrano 3.6 or later.  Earlier versions of Capistrano should work but, in my experience, Capistrano 3.6 is a much better release - it took me away from Vlad finally and for that I was glad.&lt;/p&gt;
-
-&lt;p&gt;If your Gemfile you want something like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;group :development do
-  # Use Capistrano for deployment
-  gem 'capistrano', &quot;3.6.1&quot;
-  gem 'capistrano3-puma'
-  gem 'capistrano-rails', require: false
-  gem 'capistrano-bundler', require: false
-  gem 'capistrano-rvm'
-  gem 'capistrano-passenger'
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;After that you want to run bundle install:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle install
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;As long as this runs correctly you should be fine to move onto the next step.&lt;/p&gt;
-
-&lt;h1 id=&quot;run-the-cap-install-command&quot;&gt;Run the Cap install Command&lt;/h1&gt;
-
-&lt;p&gt;Capistrano requires a one time setup step.  Do this now:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Cap install
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;This generates a file in the root of your Rails app called Capfile.  Open that file and uncomment these lines:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;require 'capistrano/rvm'
-require 'capistrano/bundler'
-require 'capistrano/rails/assets'    
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;modify-configdeployrb&quot;&gt;Modify config/deploy.rb&lt;/h1&gt;
-
-&lt;p&gt;The file config/deploy.rb covers the application level configuration for deployment. In this file you need to add lines like the ones below but specific to your code base / toolset:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;set :application, 'banks'
-set :repo_url, 'git@github.com:appdatallc/banks.git'
-
-set :ssh_options, {
-  forward_agent: true,
-  auth_methods: [&quot;publickey&quot;],
-  keys: [&quot;#{Dir.home}/.ssh/fi_nav_sitecrawl.pem&quot;]
-}
-
-set :deploy_to, '/var/www/apps/banks'
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;modifying-configdeployproductionrb&quot;&gt;Modifying config/deploy/production.rb&lt;/h1&gt;
-
-&lt;p&gt;The file config/deploy/production.rb covers the servers you are deploying to in the production environment. If you’re setting up a staging server then there is a similar file in config/deploy/staging.rb.&lt;/p&gt;
-
-&lt;p&gt;Before you start does this section I strongly, strong, strongly advice you to read my &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/09/20/aws-tutorial-08-using-ssh-s-config-file-with-your-aws-boxes.html&quot;&gt;AWS Tutorial on the SSH Config file&lt;/a&gt;.  You can use the approach in that file to identify your boxes.  If you do then this line:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server 'ec2-52-41-237-52.us-west-2.compute.amazonaws.com', user: 'ubuntu', roles: %w{web app}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;would be replaced by this line:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;server 'ficrawler1', roles: %w{web app}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Not only is this simpler to understand but it centralizes all your EC2 machine addresses in one place.  That’s a huge win.&lt;/p&gt;
-
-&lt;p&gt;Regardless of the approach you decide to take, you need one line in this file for each EC2 instance along with the roles the instance provides.&lt;/p&gt;
-
-&lt;h1 id=&quot;doing-a-deploy&quot;&gt;Doing a Deploy&lt;/h1&gt;
-
-&lt;p&gt;Once all of this configured then you should be able to do a:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cap production deploy
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;to get your current code base onto all your boxes.  Please keep in mind that Capistrano executes everything via SSH and it generates a long stream of commands.  If you see errors then there are two things to understand:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Not every error may be significant and need to be addressed&lt;/li&gt;
-  &lt;li&gt;If you are trying to track down an error then I would strongly recommend reducing the boxes you deploy to to just one and then redeploying.  This is much easier to troubleshoot exactly what is happening&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
-
-&lt;p&gt;Here are some of the research sources I used in writing this:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.sitepoint.com/deploy-your-rails-app-to-aws/&quot;&gt;https://www.sitepoint.com/deploy-your-rails-app-to-aws/&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-deploy-a-rails-app-with-puma-and-nginx-on-ubuntu-14-04&quot;&gt;https://www.digitalocean.com/community/tutorials/how-to-deploy-a-rails-app-with-puma-and-nginx-on-ubuntu-14-04&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/capistrano/bundler&quot;&gt;https://github.com/capistrano/bundler&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.digitalocean.com/community/tutorials/deploying-a-rails-app-on-ubuntu-14-04-with-capistrano-nginx-and-puma&quot;&gt;https://www.digitalocean.com/community/tutorials/deploying-a-rails-app-on-ubuntu-14-04-with-capistrano-nginx-and-puma&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/21259826/ruby-on-rails-capistrano-3-deployment-error&quot;&gt;http://stackoverflow.com/questions/21259826/ruby-on-rails-capistrano-3-deployment-error&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://jyaasa.com/blog/deploying-rails-web-application-using-capistrano-bundler-and-rvm&quot;&gt;http://jyaasa.com/blog/deploying-rails-web-application-using-capistrano-bundler-and-rvm&lt;/a&gt; &amp;lt;== This is the best source&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server&quot;&gt;https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://railsapps.github.io/installing-rails.html&quot;&gt;http://railsapps.github.io/installing-rails.html&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/12967918/deploy-with-capistrano-using-a-pem-file&quot;&gt;http://stackoverflow.com/questions/12967918/deploy-with-capistrano-using-a-pem-file&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/9217868/deploying-ruby-on-rails-app-using-capistrano-cap-deploysetup-failing&quot;&gt;http://stackoverflow.com/questions/9217868/deploying-ruby-on-rails-app-using-capistrano-cap-deploysetup-failing&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/9277731/cap-generates-cannot-load-such-file-bundler-capistrano-loaderror&quot;&gt;http://stackoverflow.com/questions/9277731/cap-generates-cannot-load-such-file-bundler-capistrano-loaderror&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/15282532/capistrano-deploy-using-passenger-not-changing-release&quot;&gt;http://stackoverflow.com/questions/15282532/capistrano-deploy-using-passenger-not-changing-release&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/29241053/incomplete-response-received-from-application-from-nginx-passenger&quot;&gt;http://stackoverflow.com/questions/29241053/incomplete-response-received-from-application-from-nginx-passenger&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://semaphoreci.com/community/tutorials/how-to-deploy-node-js-applications-with-capistrano&quot;&gt;https://semaphoreci.com/community/tutorials/how-to-deploy-node-js-applications-with-capistrano&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Fri, 23 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/09/23/aws-tutorial-09-deploying-rails-apps-to-aws-with-capistrano-take-1.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/09/23/aws-tutorial-09-deploying-rails-apps-to-aws-with-capistrano-take-1.html</guid>
-        
-        <category>ruby</category>
-        
-        <category>rails</category>
-        
-        <category>aws</category>
-        
-        <category>capistrano</category>
-        
-        <category>deploy</category>
-        
-        
-        <category>aws</category>
         
       </item>
     
