@@ -6,9 +6,93 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 02 Oct 2016 12:08:35 -0400</pubDate>
-    <lastBuildDate>Sun, 02 Oct 2016 12:08:35 -0400</lastBuildDate>
+    <pubDate>Mon, 03 Oct 2016 04:54:32 -0400</pubDate>
+    <lastBuildDate>Mon, 03 Oct 2016 04:54:32 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Recommended Tool - httpstat</title>
+        <description>&lt;p&gt;I ran across Dave Cheney’s httpstat tool recently and tried to get it working but I’m not a Go person so that failed.  I re-discovered it closing out a metric crap ton of browser tabs and thought “hm… I wonder if it is in brew yet”.  So a quick:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install httpstat
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;gave it to me perfectly.  I can now do things like:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;httpstat http://dave.cheney.net/
+
+HTTP/1.1 200 OK
+Server: nginx/1.2.1
+Date: Mon, 03 Oct 2016 08:46:43 GMT
+Content-Type: text/html; charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+X-Powered-By: PHP/5.4.45-0+deb7u2
+Link: &amp;lt;http://dave.cheney.net/wp-json/&amp;gt;; rel=&quot;https://api.w.org/&quot;
+
+Body stored in: /var/folders/rf/3tfhwgrj1sl85y6rcs4x_s5c0000gn/T/tmpsGnFLB
+
+  DNS Lookup   TCP Connection   Server Processing   Content Transfer
+[    16ms    |      265ms     |       932ms       |       947ms      ]
+             |                |                   |                  |
+    namelookup:16ms           |                   |                  |
+                        connect:281ms             |                  |
+                                      starttransfer:1213ms           |
+                                                                 total:2160ms
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here’s an example from one of my current sites (url omitted deliberately):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sjohnson@ScottJohnsonMacbookAir:~/me/fuzzygroup/gocode$ httpstat http://banks.OMITTED.com/
+
+HTTP/1.1 302 Found
+Cache-Control: no-cache
+Content-Type: text/html; charset=utf-8
+Date: Mon, 03 Oct 2016 08:48:06 GMT
+Location: http://banks.OMITTED.com/auth/login
+Server: Apache/2.4.7 (Ubuntu)
+Set-Cookie: _banks_session=MkhuMmJDWEM5bGp5YUFqNUxNNzRFMlNLUENwam1MODd6YU9HUEZ6MzRvdHQ5RVZFTTF2WC9OcHo3UVNEbm5uRlJlWDJRa1JvL1dFOXN2TEdHWlREL1NrVG9weGlCMXl5OUtyU29lR2VvMm5NQ0hBQU9xZlBKTUEva0RDVFBNdjBHOTI3eXY1dS9nYXVOTUJSd1F2R1d2MVpmdnhXUGt4VUkyOFhVR0hjTUtkTkZNTVlYb1kzTVVKOWIwWXhvNEIzVGRFYmhCWktoVnlOWStPeFU5dXg3TE5ma09VeC9qL0tWK1pQekVYb1ZBaz0tLXVFMHJEMDlEb3ROdGMxanRTQkxEeEE9PQ%3D%3D--51a7cd19b7d987a98bb6071c37c41be2f81cfb22; path=/; HttpOnly
+Set-Cookie: _passenger_route=1007719246; Path=/
+Status: 302 Found
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Powered-By: Phusion Passenger 5.0.30
+X-Request-Id: ae887d90-9484-484a-be35-e13bf3454c3d
+X-Runtime: 0.002985
+X-XSS-Protection: 1; mode=block
+transfer-encoding: chunked
+Connection: keep-alive
+
+Body stored in: /var/folders/rf/3tfhwgrj1sl85y6rcs4x_s5c0000gn/T/tmp3wlc7H
+
+  DNS Lookup   TCP Connection   Server Processing   Content Transfer
+[    527ms   |      66ms      |       73ms        |        1ms       ]
+             |                |                   |                  |
+    namelookup:527ms          |                   |                  |
+                        connect:593ms             |                  |
+                                      starttransfer:666ms            |
+                                                                 total:667ms
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Looking at this very clearly shows me that the single biggest slow down here is actually dns.  Go figure.  If I was optimizing for performance, I would never have thought to investigate a half second of DNS delay.&lt;/p&gt;
+
+&lt;p&gt;Thank you &lt;a href=&quot;http://dave.cheney.net/&quot;&gt;Dave Cheney&lt;/a&gt;!&lt;/p&gt;
+</description>
+        <pubDate>Mon, 03 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/tools/2016/10/03/recommend-tool-httpstat.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/tools/2016/10/03/recommend-tool-httpstat.html</guid>
+        
+        <category>httpstat</category>
+        
+        <category>tools</category>
+        
+        
+        <category>tools</category>
+        
+      </item>
     
       <item>
         <title>Rails Post Mortem - An Analysis of Breaking the Build</title>
@@ -92,6 +176,28 @@
         
         
         <category>software_engineering</category>
+        
+      </item>
+    
+      <item>
+        <title>AWS Tutorial 13 - Adding Idempotency to Our CloudWatch Monitoring Playbook</title>
+        <description>&lt;p&gt;In Tutorial 11 we used an Ansible playbook to set up CloudWatch memory monitoring on a series of Ubuntu EC2 instances.  This worked perfectly – &lt;strong&gt;once&lt;/strong&gt;.  I noticed, after I published the blog post, that if I tried to re-run the Ansible script playbook that it fail on a second run.  Initially I chalked this up to plain old randomness but then I actually &lt;strong&gt;thought&lt;/strong&gt; about it and it all came into focus.&lt;/p&gt;
+
+&lt;h1 id=&quot;ansible-is-all-about-idempotency-and-this-was-not&quot;&gt;Ansible is All About Idempotency and This Was Not&lt;/h1&gt;
+
+</description>
+        <pubDate>Sun, 02 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/10/02/aws-tutorial-13-adding-idempotency-to-our-cloudwatch-monitoring-playbook.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/02/aws-tutorial-13-adding-idempotency-to-our-cloudwatch-monitoring-playbook.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ansible</category>
+        
+        <category>cloudwatch</category>
+        
+        
+        <category>aws</category>
         
       </item>
     
@@ -771,226 +877,6 @@ ec2-52-42-166-105.us-west-2.compute.amazonaws.com | success &amp;gt;&amp;gt; {
         
         
         <category>cooking</category>
-        
-      </item>
-    
-      <item>
-        <title>Elixir Example Using Ecto for An Existing MySQL Database</title>
-        <description>&lt;p&gt;My Elixir progress has slowed a bit as of late and the cause has mostly been Ecto.  I’ve been having a hard time wrapping my head around Ecto and I suspect the issue is over a decade of constant ActiveRecord usage.  So this morning I decided to read other blog posts and try and execute on them.  I settled on this one:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://geoffreylessel.com/2016/using-ecto-with-an-existing-mysql-database/&quot;&gt;http://geoffreylessel.com/2016/using-ecto-with-an-existing-mysql-database/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;since it seemed to be exactly what I needed - wrap an Ecto interface around an existing database.  Unfortunately the author hadn’t published everything and some of the details he glossed over were exactly what tripped me up.  Happily he was very responsive to email and while you should absolutely read his piece, here are the bare minimum steps to build this.  This application uses a Formula 1 racing database as a source of data to query.&lt;/p&gt;
-
-&lt;p&gt;Obviously adjust all the path statements and passwords and username to match your system.&lt;/p&gt;
-
-&lt;h1 id=&quot;download-the-data&quot;&gt;Download the Data&lt;/h1&gt;
-
-&lt;p&gt;The source data can be downloaded from &lt;a href=&quot;http://ergast.com/mrd/db/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;create-a-database&quot;&gt;Create a Database&lt;/h1&gt;
-
-&lt;p&gt;Use this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql -uroot -p -A
-create database f1_history
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Load the data using:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql -uroot -p f1_history &amp;lt; ~/Downloads/f1db.sql
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;build-the-app&quot;&gt;Build the App&lt;/h1&gt;
-
-&lt;p&gt;You want to build a basic app with a supervisor tree as follows:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mix new f1_history --sup
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;edit-mixexs&quot;&gt;Edit mix.exs&lt;/h1&gt;
-
-&lt;p&gt;Here are the dependencies you need for deps.get:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;defp deps do
-  [
-    {:ecto, &quot;~&amp;gt; 2.0&quot;},
-    {:mariaex, &quot;~&amp;gt; 0.7&quot;}
-  ]
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;edit-configexs&quot;&gt;Edit config.exs&lt;/h1&gt;
-
-&lt;p&gt;The config.exs file defines how you connect to the repo and should look as follows:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;config :f1_history, F1History.Repo,
-  adapter: Ecto.Adapters.MySQL,
-  database: &quot;f1&quot;,
-  username: &quot;root&quot;,
-  password: &quot;&quot;,
-  hostname: &quot;localhost&quot;
-  
-config :f1_history, ecto_repos: [F1History.Repo]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;edit-f1historyexs&quot;&gt;Edit f1_history.exs&lt;/h1&gt;
-
-&lt;p&gt;Here is what f1_history.exs should look like.  This was the root of my issues:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;defmodule F1History do
-  use Application
-  
-  def start(_type, _args) do
-      import Supervisor.Spec, warn: false
-
-      children = [
-        supervisor(F1History.Repo, [])
-      ]
-
-      opts = [strategy: :one_for_one, name: F1History.Supervisor]
-      Supervisor.start_link(children, opts)
-  end
-  
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Note that F1History.Repo needs to be one of the supervisor’s children. This is critically important.&lt;/p&gt;
-
-&lt;h1 id=&quot;edit-raceex&quot;&gt;Edit race.ex&lt;/h1&gt;
-
-&lt;p&gt;The file race.ex defines a race “object” that we will be querying. Here’s what that file looks like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;defmodule F1History.Race do
-  use Ecto.Schema
-
-  @primary_key {:raceId, :id, autogenerate: true}
-  
-  schema &quot;races&quot; do
-    field :year, :integer
-    field :round, :integer
-    field :circuitId, :integer
-    field :name, :string
-    field :date, Ecto.Date
-    field :time, Ecto.Time
-    field :url, :string
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;edit-repoex&quot;&gt;Edit repo.ex&lt;/h1&gt;
-
-&lt;p&gt;The file repo.ex needs to live in lib and looks like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;defmodule F1History.Repo do
-  use Ecto.Repo,
-  otp_app: :f1_history
-end    
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;ecto-actually-working&quot;&gt;Ecto Actually Working&lt;/h1&gt;
-
-&lt;p&gt;Go into console with iex -S mix and enter a query like the following:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iex(1)&amp;gt; import Ecto.Query
-Ecto.Query
-iex(2)&amp;gt; F1History.Repo.one from race in F1History.Race, limit: 1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;You should see something like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;12:53:09.469 [debug] QUERY OK source=&quot;races&quot; db=39.4ms decode=0.1ms queue=0.1ms
-SELECT r0.`raceId`, r0.`year`, r0.`round`, r0.`circuitId`, r0.`name`, r0.`date`, r0.`time`, r0.`url` FROM `races` AS r0 LIMIT 1 []
-%F1History.Race{__meta__: #Ecto.Schema.Metadata&amp;lt;:loaded, &quot;races&quot;&amp;gt;, circuitId: 1,
- date: #Ecto.Date&amp;lt;2009-03-29&amp;gt;, name: &quot;Australian Grand Prix&quot;, raceId: 1,
- round: 1, time: #Ecto.Time&amp;lt;06:00:00&amp;gt;,
- url: &quot;http://en.wikipedia.org/wiki/2009_Australian_Grand_Prix&quot;, year: 2009}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;get-the-whole-thing&quot;&gt;Get The Whole Thing&lt;/h1&gt;
-
-&lt;p&gt;A full git repo of everthing is &lt;a href=&quot;https://github.com/fuzzygroup/f1_history&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 26 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/elixir/2016/09/26/elixir-example-using-ecto-for-an-existing-mysql-database.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/elixir/2016/09/26/elixir-example-using-ecto-for-an-existing-mysql-database.html</guid>
-        
-        <category>elixir</category>
-        
-        <category>ecto</category>
-        
-        <category>mysql</category>
-        
-        
-        <category>elixir</category>
-        
-      </item>
-    
-      <item>
-        <title>Why Old Engineers Are Cranky Engineers</title>
-        <description>&lt;p&gt;I recently had an interaction with a younger software engineer and I’m pretty sure that his impression of me after that boiled down to &lt;em&gt;cranky old bastard&lt;/em&gt; and that would be the nice version.  The less nice version could easily have incorporated the words difficult, jerk and a few other bits of invective.&lt;/p&gt;
-
-&lt;p&gt;The topic at hand was getting a commercial, for pay CI server up and running on a single Rails code base of moderate size (about 40 K lines; about 110 tables).  This is a well known, leading product and I was very, very difficult about my expectations:&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;I expected it to just plain work out of the box&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;He was stuck getting the configuration to work and I made it clear to him that I didn’t want him spending much more time on it.  He saw no problem with investing the time in it – and that was the conflict.  My logic goes as follows:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;We do not have a hard environment - Rails 4.2.x app, basic table structure&lt;/li&gt;
-  &lt;li&gt;RSpec works pretty much right out of the box when I set up a new developer work station&lt;/li&gt;
-  &lt;li&gt;They charge us money for this – doesn’t that mean that configuration is their damn job?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Finally I had to say to him something akin to this:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;You cost us roughly $3,000 per week so 1 day of your effort is $3,000 / 5&lt;/li&gt;
-  &lt;li&gt;You have until the end of the day at that point we’re done with this vendor&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;crankiness-explained&quot;&gt;Crankiness Explained&lt;/h1&gt;
-
-&lt;p&gt;The crankiness on my part comes from a combination of this particular vendor, partly from the unique snowflake attitude common to CI vendors, and partly from being older.  Here’s the details:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;em&gt;This Vendor&lt;/em&gt;. The last time this vendor decided to change its architecture, it did so at the expense of its customers. They moved from static instances where your CI server was always the same box so configuration could be done at the box level to dynamically creating instances forcing configuration into your config file.  They kept their pricing the same but this move effectively made them more profitable since their AWS costs would now go down.  At one of my consulting gigs, I saw one of our engineers blow 2 man days on getting this back to a working state.&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Snowflake&lt;/em&gt;. For some reason CI software never seems to work out of the box.  I’ve seen this for years in the Rails world dating back to CI Joe.  All the vendors have this attitude that they are some unique snowflake and lots of setup work is needed.  That might have been true once upon a time when TDD was new but it is 2016 now and TDD is not new.  CI is not a new concept.&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;I’m older&lt;/em&gt;.  One of the things that happens as you become an older engineer is you realize just how many things that you – and your staff – miss out on thru obsessive attention to technology issues.  It isn’t that I’m incapable of configuring this piece of crap but that if I’m doing that I’m not doing the 10 other things that absolutely, positively have to get done today.  Ultimate the CI software needs to support my job and I don’t need to support it.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;happy-conclusion&quot;&gt;Happy Conclusion&lt;/h1&gt;
-
-&lt;p&gt;My asshole style demand – get it done by the end of the day – actually worked.  I absolutely hate to manage that way but forced time bounding can be a great technique at times.  We now have a CI server that is setup and that is excellent.  He really did do a good job.  We’re not 100% there yet because it is only checking pull requests and not master but hopefully that is a matter of only minor additional configuration.&lt;/p&gt;
-
-&lt;h1 id=&quot;recommendation-to-vendors-and-an-example-of-doing-it-right&quot;&gt;Recommendation to Vendors And an Example of Doing it Right&lt;/h1&gt;
-
-&lt;p&gt;Rightly or wrongly I don’t think I’m all that different from what a lot of people when it comes to evaluating software.  Getting a great out of the box experience is essential if you want someone to pay you.  If this was an open source CI server that I had to run myself I’d expect configuration but RSpec and Rails 4.x is a known thing.  This should have just worked.&lt;/p&gt;
-
-&lt;p&gt;As an example of getting setup right, I’d like to point people to &lt;a href=&quot;http://www.codetree.com/&quot;&gt;CodeTree&lt;/a&gt;.  You can point CodeTree at your git account and boom!  It makes github issues better.  Can you configure it?  I think so but the point is that I haven’t needed to.  &lt;em&gt;Recommended.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Disclaimer: CodeTree is run by a former boss of mine and I do view him as a friend.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 24 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/software_engineering/2016/09/24/why-old-engineers-are-cranky-engineers.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/software_engineering/2016/09/24/why-old-engineers-are-cranky-engineers.html</guid>
-        
-        <category>ci</category>
-        
-        <category>software_engineering</category>
-        
-        
-        <category>software_engineering</category>
         
       </item>
     
