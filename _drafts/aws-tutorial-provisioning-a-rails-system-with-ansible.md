@@ -393,5 +393,29 @@ One of the hardest things about mastering any new technology is figuring out a d
     
 3.  After each change you make, do a vagrant provision.  Yes this is slower than doing stuff all at once but it is vastly less likely to break.  If you only take one thing away form this development process, I hope that it is this -- doing a vagrant provision every time you change anything.  Ansible is idempotent which means that most changes only take the time for them to run rather than the full end to end process.
 
+# Additional Reading
+
+* [http://docs.ansible.com/ansible/playbooks_roles.html#dynamic-versus-static-includes](http://docs.ansible.com/ansible/playbooks_roles.html#dynamic-versus-static-includes)  **Absolutely Recommended!**
+* [http://edunham.net/2015/06/08/playing_with_ansible.html](http://edunham.net/2015/06/08/playing_with_ansible.html)
+* [http://docs.ansible.com/ansible/intro_adhoc.html](http://docs.ansible.com/ansible/intro_adhoc.html)
+* [http://stackoverflow.com/questions/30119973/how-to-run-a-task-when-variable-is-undefined-in-ansible](http://stackoverflow.com/questions/30119973/how-to-run-a-task-when-variable-is-undefined-in-ansible)
+* [http://docs.ansible.com/ansible/gem_module.html](http://docs.ansible.com/ansible/gem_module.html)
+* [https://github.com/rvm/rvm1-ansible/issues/35](https://github.com/rvm/rvm1-ansible/issues/35)
+* [https://github.com/rvm/rvm1-ansible/issues/56](https://github.com/rvm/rvm1-ansible/issues/56)
+* [https://github.com/mtpereira/ansible-passenger](https://github.com/mtpereira/ansible-passenger)
+* [https://github.com/jlund/mazer-rackham](https://github.com/jlund/mazer-rackham)
+* [https://github.com/ansible/ansible-modules-extras](https://github.com/ansible/ansible-modules-extras)
+* [http://docs.ansible.com/ansible/file_module.html](http://docs.ansible.com/ansible/file_module.html)
+* [https://github.com/yankurniawan/ansible-for-aws](https://github.com/yankurniawan/ansible-for-aws)
+* [http://docs.ansible.com/ansible/playbooks_vault.html](http://docs.ansible.com/ansible/playbooks_vault.html)
+* [http://stackoverflow.com/questions/31343753/ansible-variable-defined-in-group-vars-all-not-found](http://stackoverflow.com/questions/31343753/ansible-variable-defined-in-group-vars-all-not-found)
+* [https://github.com/rvm/rvm1-ansible/issues/26](https://github.com/rvm/rvm1-ansible/issues/26)
+* [http://docs.ansible.com/ansible/apt_module.html](http://docs.ansible.com/ansible/apt_module.html)
+* [http://docs.ansible.com/ansible/apt_key_module.html](http://docs.ansible.com/ansible/apt_key_module.html)
+* [http://docs.ansible.com/ansible/shell_module.html](http://docs.ansible.com/ansible/shell_module.html)
+* 
+* 
+* 
+
 
     

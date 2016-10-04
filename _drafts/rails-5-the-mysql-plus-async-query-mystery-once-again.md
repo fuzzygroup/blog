@@ -55,3 +55,52 @@ This was done with the following process:
 Benchmarking could be done on a development system or the production boxes but by benchmarking on a development system we can eliminate the impact of the OS change, the server types, etc and limit it to, generally, just the ruby level differences.
 
 The key difference is the lack of the mysqlplus gem and the alias method on query being mapped to async_query.  
+
+https://github.com/phusion/passenger/issues/1314
+
+
+
+
+=======
+
+
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+    current directory: /Users/sjohnson/.rvm/gems/ruby-2.3.1@banks/gems/mysqlplus-0.1.2/ext
+/Users/sjohnson/.rvm/rubies/ruby-2.3.1/bin/ruby -r ./siteconf20160928-56313-10a73fn.rb extconf.rb
+checking for mysql_ssl_set()... yes
+checking for rb_str_set_len()... yes
+checking for mysql.h... yes
+checking for rb_thread_blocking_region()... no
+*** extconf.rb failed ***
+Could not create Makefile due to some reason, probably lack of necessary
+libraries and/or headers.  Check the mkmf.log file for more details.  You may
+need configuration options.
+
+Provided configuration options:
+	--with-opt-dir
+	--with-opt-include
+	--without-opt-include=${opt-dir}/include
+	--with-opt-lib
+	--without-opt-lib=${opt-dir}/lib
+	--with-make-prog
+	--without-make-prog
+	--srcdir=.
+	--curdir
+	--ruby=/Users/sjohnson/.rvm/rubies/ruby-2.3.1/bin/$(RUBY_BASE_NAME)
+	--with-mysql-config
+	--without-mysql-config
+extconf.rb:59:in `<main>': uninitialized constant Config (NameError)
+Did you mean?  RbConfig
+               CONFIG
+
+To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+  /Users/sjohnson/.rvm/gems/ruby-2.3.1@banks/extensions/x86_64-darwin-15/2.3.0/mysqlplus-0.1.2/mkmf.log
+
+extconf failed, exit code 1
+
+Gem files will remain installed in /Users/sjohnson/.rvm/gems/ruby-2.3.1@banks/gems/mysqlplus-0.1.2 for inspection.
+Results logged to /Users/sjohnson/.rvm/gems/ruby-2.3.1@banks/extensions/x86_64-darwin-15/2.3.0/mysqlplus-0.1.2/gem_make.out
+An error occurred while installing mysqlplus (0.1.2), and Bundler cannot continue.
+Make sure that `gem install mysqlplus -v '0.1.2'` succeeds before bundling.

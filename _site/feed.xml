@@ -6,9 +6,26 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 03 Oct 2016 04:54:32 -0400</pubDate>
-    <lastBuildDate>Mon, 03 Oct 2016 04:54:32 -0400</lastBuildDate>
+    <pubDate>Tue, 04 Oct 2016 18:12:03 -0400</pubDate>
+    <lastBuildDate>Tue, 04 Oct 2016 18:12:03 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Ansible Basics Presentation at Indy Elixir Meetup</title>
+        <description>&lt;p&gt;Here are the slides from my Indy Elixir Meet up on &lt;a href=&quot;/blog/assets/ansible_basics.pdf&quot;&gt;Ansible Basics / Using Ansible to Install Elixir and Erlang&lt;/a&gt;.  This is essentially an Introduction to Ansible overview that culminates in a playbook to install Elixir / Erlang.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 04 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/ansible/2016/10/04/ansible-basics-presentation-at-indy-elixir-meetup.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ansible/2016/10/04/ansible-basics-presentation-at-indy-elixir-meetup.html</guid>
+        
+        <category>ansible</category>
+        
+        <category>elixir</category>
+        
+        
+        <category>ansible</category>
+        
+      </item>
     
       <item>
         <title>Recommended Tool - httpstat</title>
@@ -91,6 +108,86 @@ Body stored in: /var/folders/rf/3tfhwgrj1sl85y6rcs4x_s5c0000gn/T/tmp3wlc7H
         
         
         <category>tools</category>
+        
+      </item>
+    
+      <item>
+        <title>Ansible Tutorial 02 - Understanding How Failures Are Handled</title>
+        <description>&lt;p&gt;I just used Ansible to provision 8 new boxes and at the end I saw this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PLAY RECAP *********************************************************************
+ficrawler10                : ok=53   changed=18   unreachable=0    failed=0
+ficrawler3                 : ok=53   changed=18   unreachable=0    failed=0
+ficrawler4                 : ok=53   changed=27   unreachable=0    failed=0
+ficrawler5                 : ok=15   changed=1    unreachable=0    failed=1
+ficrawler6                 : ok=53   changed=18   unreachable=0    failed=0
+ficrawler7                 : ok=53   changed=18   unreachable=0    failed=0
+ficrawler8                 : ok=53   changed=18   unreachable=0    failed=0
+ficrawler9                 : ok=53   changed=18   unreachable=0    failed=0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If you notice the box ficrawler5 has a state of failed=1 and this made me wonder:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;What happened?&lt;/li&gt;
+  &lt;li&gt;What happend after that failure?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;RUNNING HANDLER [mtpereira.passenger : apache restart] &lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;*
+changed: [ficrawler5]&lt;/p&gt;
+
+&lt;p&gt;PLAY RECAP &lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;***
+ficrawler10                : ok=48   changed=6    unreachable=0    failed=0
+ficrawler3                 : ok=48   changed=6    unreachable=0    failed=0
+ficrawler4                 : ok=48   changed=6    unreachable=0    failed=0
+ficrawler5                 : ok=53   changed=18   unreachable=0    failed=0
+ficrawler6                 : ok=48   changed=6    unreachable=0    failed=0
+ficrawler7                 : ok=48   changed=6    unreachable=0    failed=0
+ficrawler8                 : ok=48   changed=6    unreachable=0    failed=0
+ficrawler9                 : ok=48   changed=6    unreachable=0    failed=0&lt;/p&gt;
+
+&lt;p&gt;d&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;TASK [aws_cloudwatch_memory : add command to cron] *****************************
+skipping: [ficrawler3]
+skipping: [ficrawler4]
+skipping: [ficrawler5]
+skipping: [ficrawler6]
+skipping: [ficrawler7]
+skipping: [ficrawler8]
+skipping: [ficrawler9]
+skipping: [ficrawler10]
+
+TASK [dockersj : command] ******************************************************
+changed: [ficrawler3]
+ [WARNING]: Consider using 'become', 'become_method', and 'become_user' rather than running sudo
+
+changed: [ficrawler7]
+changed: [ficrawler6]
+changed: [ficrawler4]
+changed: [ficrawler8]
+changed: [ficrawler9]
+changed: [ficrawler10]
+fatal: [ficrawler5]: FAILED! =&amp;gt; {&quot;changed&quot;: true, &quot;cmd&quot;: &quot;sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D&quot;, &quot;delta&quot;: &quot;0:02:00.060733&quot;, &quot;end&quot;: &quot;2016-10-03 17:05:26.068764&quot;, &quot;failed&quot;: true, &quot;rc&quot;: 2, &quot;start&quot;: &quot;2016-10-03 17:03:26.008031&quot;, &quot;stderr&quot;: &quot;gpg: requesting key 2C52609D from hkp server p80.pool.sks-keyservers.net\ngpg: keyserver timed out\ngpg: keyserver receive failed: keyserver error&quot;, &quot;stdout&quot;: &quot;Executing: gpg --ignore-time-conflict --no-options --no-default-keyring --homedir /tmp/tmp.Tz2C7bntoi --no-auto-check-trustdb --trust-model always --keyring /etc/apt/trusted.gpg --primary-keyring /etc/apt/trusted.gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D&quot;, &quot;stdout_lines&quot;: [&quot;Executing: gpg --ignore-time-conflict --no-options --no-default-keyring --homedir /tmp/tmp.Tz2C7bntoi --no-auto-check-trustdb --trust-model always --keyring /etc/apt/trusted.gpg --primary-keyring /etc/apt/trusted.gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D&quot;], &quot;warnings&quot;: [&quot;Consider using 'become', 'become_method', and 'become_user' rather than running sudo&quot;]}
+
+TASK [dockersj : Install docker] ***********************************************
+ok: [ficrawler3] =&amp;gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
+ok: [ficrawler4] =&amp;gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
+ok: [ficrawler6] =&amp;gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
+ok: [ficrawler8] =&amp;gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
+ok: [ficrawler7] =&amp;gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
+ok: [ficrawler10] =&amp;gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
+ok: [ficrawler9] =&amp;gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;git@github.com:appdatallc/honeybadger.git&lt;/p&gt;
+</description>
+        <pubDate>Mon, 03 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/10/03/ansible-tutorial-understanding-how-failures-are-handled.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/03/ansible-tutorial-understanding-how-failures-are-handled.html</guid>
+        
         
       </item>
     
@@ -184,6 +281,11 @@ Body stored in: /var/folders/rf/3tfhwgrj1sl85y6rcs4x_s5c0000gn/T/tmp3wlc7H
         <description>&lt;p&gt;In Tutorial 11 we used an Ansible playbook to set up CloudWatch memory monitoring on a series of Ubuntu EC2 instances.  This worked perfectly – &lt;strong&gt;once&lt;/strong&gt;.  I noticed, after I published the blog post, that if I tried to re-run the Ansible script playbook that it fail on a second run.  Initially I chalked this up to plain old randomness but then I actually &lt;strong&gt;thought&lt;/strong&gt; about it and it all came into focus.&lt;/p&gt;
 
 &lt;h1 id=&quot;ansible-is-all-about-idempotency-and-this-was-not&quot;&gt;Ansible is All About Idempotency and This Was Not&lt;/h1&gt;
+
+&lt;p&gt;http://docs.ansible.com/ansible/stat_module.html
+https://raymii.org/s/tutorials/Ansible_-_Only_if_a_file_exists_or_does_not_exist.html&lt;/p&gt;
+
+&lt;p&gt;http://www.caphrim.net/ansible/2015/05/25/be-careful-with-unarchive.html&lt;/p&gt;
 
 </description>
         <pubDate>Sun, 02 Oct 2016 00:00:00 -0400</pubDate>
@@ -548,6 +650,65 @@ ssh_exchange_identification: read: Operation timed out&lt;/p&gt;
   &lt;li&gt;I need to write the ssh test line faster next time&lt;/li&gt;
   &lt;li&gt;It is very unclear how AWS cloud watch can be used to test for a box that is unable to be ssh’d into; that may not be viable (monitoring it could actually be construed as an attack)&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;h1 id=&quot;update-1&quot;&gt;Update 1&lt;/h1&gt;
+
+&lt;p&gt;This has continued to happen and I was able to capture the diagnostic output:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh -i &quot;/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem&quot; ubuntu@52.89.105.4 -vv
+OpenSSH_6.9p1, LibreSSL 2.1.8
+debug1: Reading configuration data /Users/sjohnson/.ssh/config
+debug1: Reading configuration data /etc/ssh/ssh_config
+debug1: /etc/ssh/ssh_config line 20: Applying options for *
+debug1: /etc/ssh/ssh_config line 102: Applying options for *
+debug2: ssh_connect: needpriv 0
+debug1: Connecting to 52.89.105.4 [52.89.105.4] port 22.
+debug1: Connection established.
+debug1: key_load_public: No such file or directory
+debug1: identity file /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem type -1
+debug1: key_load_public: No such file or directory
+debug1: identity file /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem-cert type -1
+debug1: Enabling compatibility mode for protocol 2.0
+debug1: Local version string SSH-2.0-OpenSSH_6.9
+ssh_exchange_identification: read: Connection reset by peer
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;update-2---the-response-from-aws-tech-support&quot;&gt;Update 2 - The Response from AWS Tech Support&lt;/h1&gt;
+
+&lt;p&gt;Good Day,&lt;/p&gt;
+
+&lt;p&gt;I understand that you are unable to access some of your instances via ssh at random times. Please correct me if I miss understood.&lt;/p&gt;
+
+&lt;p&gt;Are you still experiencing the issue, or was the problem resolved after the reboot? I’ve noticed that all the instances with the name “crawler” was started around the same time (2016-10-03 14:25:38 UTC ). Did you have the same issue on all of these instances?&lt;/p&gt;
+
+&lt;p&gt;Normally when an instance is inaccessible via ssh, it could indicate a network error or high CPU utilization on the instance. I had a look at the instance metrics for CPU and networking, and all seems to be within acceptable ranges. I can confirm that there are no failures or events on the underlying hardware.&lt;/p&gt;
+
+&lt;p&gt;I understand that you want to investigate the cause of the issue and prevent it from happening again.&lt;/p&gt;
+
+&lt;p&gt;The best place to start with troubleshooting is to have a look at the OS log files. For Ubuntu; you can have a look in the /var/log/syslog file, or the output of the dmesg command. Please have a look for any warnings or error messages around the time that you’ve experienced the issues.&lt;/p&gt;
+
+&lt;p&gt;What error message did you get when you tried to ssh to the instances?&lt;/p&gt;
+
+&lt;p&gt;Were you able to consume any other service that was running on these instances? For example could you still access the web page or MySQL?&lt;/p&gt;
+
+&lt;p&gt;Did you try to access the instances from the internet or from another instance on the same network range?&lt;/p&gt;
+
+&lt;p&gt;Can you perform a traceroute to the instances now, and again when you are seeing the issue? This can help identify network issues.&lt;/p&gt;
+
+&lt;p&gt;I also see that your security group, sg-DFDDFD, allows ssh access from the world (0.0.0.0/0). Leaving port 22 open to the world is a security risk as it leaves your instances vulnerable for attack. I would recommend that you remove this inbound rule and only allow ssh access from trusted IP addresses.&lt;/p&gt;
+
+&lt;p&gt;If you want to eliminate manual intervention when an instance fails, you can have a look at Auto Scaling. This will automatically start new instances or stop faulty ones when health checks fails. You can reference the below links for more information about Auto Scaling if you’re interested.&lt;/p&gt;
+
+&lt;p&gt;https://aws.amazon.com/autoscaling/
+http://docs.aws.amazon.com/autoscaling/latest/userguide/GettingStartedTutorial.html&lt;/p&gt;
+
+&lt;p&gt;Best regards,&lt;/p&gt;
+
+&lt;p&gt;Stefan F.
+Amazon Web Services
+We value your feedback. Please rate my response using the link below.&lt;/p&gt;
+
 </description>
         <pubDate>Sat, 01 Oct 2016 00:00:00 -0400</pubDate>
         <link>https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-10-diagnosing-ssh-failures-or-when-ping-works-but-ssh-fails.html</link>
@@ -771,112 +932,6 @@ ec2-52-42-166-105.us-west-2.compute.amazonaws.com | success &amp;gt;&amp;gt; {
         
         
         <category>ansible</category>
-        
-      </item>
-    
-      <item>
-        <title>Software Engineering - How Do You Fill The Time Between Times?</title>
-        <description>&lt;p&gt;My wife and I refer to the time between sun set and true dark as the &lt;em&gt;time between times&lt;/em&gt;.  And in any software development project, you’ll always hit that point where either you’ve just wrapped a project or you are just plain churning your wheels on a task and you need something to do.  Happily, in any software development job, there are ALWAYS things to do.  Let’s say that you have finished all your tickets, all your code is committed and your boss just gave you a great review.  Its 1 in the afternoon on a monday and the product manager isn’t available.&lt;/p&gt;
-
-&lt;p&gt;What are you supposed to do?  Well obviously there’s always reddit and hacker news but that’s not what you’re supposed to do – that’s how you fill in a quick break.  There’s still a full half day of work left so what do you do?  Well, you &lt;strong&gt;test&lt;/strong&gt;.  There’s no software on the planet that can’t benefit from test coverage.  Even if you’re using the infinitely appealing &lt;a href=&quot;https://en.wikipedia.org/wiki/QuickCheck&quot;&gt;QuickCheck&lt;/a&gt;, there is still a role for well written test coverage.  So you find some corner of the software that isn’t well tested or that you don’t understand well and you poke it with a stick and write some tests.  And when they run, you write some more tests.&lt;/p&gt;
-
-&lt;p&gt;Test coverage in 2016 is probably today’s equivalent of cleaning in the 1950s U.S. navy.  Just as &lt;strong&gt;nothing can ever be too clean&lt;/strong&gt;, &lt;strong&gt;&lt;em&gt;nothing can ever be too well tested&lt;/em&gt;&lt;/strong&gt;.  If you don’t know what to test then install RCov into your project and run a full rake spec.  This will show you what needs to be tested.&lt;/p&gt;
-
-&lt;p&gt;Note: A quick shout out to &lt;a href=&quot;http://www.elixirfountain.com/&quot;&gt;Elixir Fountain&lt;/a&gt; and the &lt;a href=&quot;https://soundcloud.com/elixirfountain/elixir-fountain-john-hughes-2016-09-23&quot;&gt;absolutely excellent interview with John Hughes&lt;/a&gt; who invented QuickCheck.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 27 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/software_engineering/2016/09/27/software-engineering-how-do-you-fill-the-time-between-times.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/software_engineering/2016/09/27/software-engineering-how-do-you-fill-the-time-between-times.html</guid>
-        
-        <category>software_engineering</category>
-        
-        <category>ruby</category>
-        
-        
-        <category>software_engineering</category>
-        
-      </item>
-    
-      <item>
-        <title>How to Become a Better Cook</title>
-        <description>&lt;p&gt;I’m going to step out of my normal nerd comfort zone and move onto something more decidedly analog than digital – cooking.  Over on my &lt;a href=&quot;https://fuzzygroup.github.io/recipes&quot;&gt;recipe blog&lt;/a&gt;, I write down the recipe for everything I’ve ever cooked.  I’m a few hundred behind but all the current stuff I cook every single week is there.  What isn’t there however is the meta layer like how to do X or in this case how to &lt;strong&gt;become a better cook&lt;/strong&gt;.  And while I think I’m an ok cook, I do get rave reviews from the people who matter most to me – my wife, kids and friends.  So here’s how I got there:&lt;/p&gt;
-
-&lt;h1 id=&quot;you-must-cook&quot;&gt;You Must Cook&lt;/h1&gt;
-
-&lt;p&gt;This one is adapted from Heinlein’s famous advice to writers: &lt;a href=&quot;http://www.sfwriter.com/ow05.htm&quot;&gt;You Must Write&lt;/a&gt;.  Cooking is one of those things which you must do to improve.  This means that you get better in proportion to how much you do it.  What to be a better cook?  Well then my comment to you is &lt;strong&gt;cook more&lt;/strong&gt;.  Don’t have people around to eat what you make?  Take it to a neighbor or a sick friend.  Make cookies for the office.  Whatever.  You must cook.  Its about that simple.  When my wife was diagnosed with celiac disease about 6 years ago we effectively lost the ability to eat out.  That pushed the volume of my cooking up.  You can always stop dining out if nothing else.&lt;/p&gt;
-
-&lt;h1 id=&quot;read-voraciously&quot;&gt;Read Voraciously&lt;/h1&gt;
-
-&lt;p&gt;As with everything else I do, I read voraciously.  And I highly recommend it as a learning tool to improve your cooking.  I have a simple rule for cookbooks and I call it the Rule of 1.  All a cookbook needs to be worthwhile for me is one good recipe.  And that’s my expectation.  Most cookbooks I find can supply one good recipe.  Sadly many can only only supply one.  And sadly sometimes what you get isn’t even a “recipe”.  I make a delicious asian rice bowl which I got from an author who just had a passing description of how rice is served on trains in china.  There weren’t ingredients, steps or anything other than three sentences but that justified that whole book.  Now you don’t have to read print – there’s an infinite supply of cooking information online.  There’s twitter, reddit, food network, etc.  If you do read print then I’d highly recommend you check out your local library.  Most libraries turn over inventory regularly and you can get cookbooks at the $1 to $2 per generally.  &lt;a href=&quot;https://www.indyplfoundation.org/book-sale&quot;&gt;Here are the details for mine&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;understand-the-cookbook-authors-you-read&quot;&gt;Understand the Cookbook Authors You Read&lt;/h1&gt;
-
-&lt;p&gt;One of the things to understand is that cook book authors are people and they have limitations.  Some of the most lauded authors, people fantastic at explaining things, don’t actually produce great recipes so there are people you learn from and people you imitate.  For example I made a clam chowder the other day from someone who intellectually I respect at a deep level but, honestly, it was no better than the clam chowder I’ve made a dozen times from various and sundry google results.  Now, that said, this person’s technique was spot on and I did learn a valuable trick from him or her.  What I have found generally is the better the explainer the worse the recipe.  One happy exception to this is &lt;a href=&quot;https://www.amazon.com/Ratio-Simple-Behind-Everyday-Cooking/dp/1416571728/ref=sr_1_1?ie=UTF8&amp;amp;qid=1474883244&amp;amp;sr=8-1&amp;amp;keywords=ruhlman+ratio&quot;&gt;Ruhlman and his Ratio book&lt;/a&gt; is just outstanding.&lt;/p&gt;
-
-&lt;h1 id=&quot;its-all-just-cooking&quot;&gt;Its All Just Cooking&lt;/h1&gt;
-
-&lt;p&gt;I hear things from other people I speak with like “I can grill but I can’t bake” or “I can do vegetables but not meats”.  This is particularly common with restaurant cooks where people often specialize.  Honestly that’s just plain crap.  Its all just cooking and if you’re going to be any good then you need to cook across the spectrum whether its protein on a grill to cookies to pavlova to creme brûlée to eggs to salads to rolling your own sushi.  And, yes, I can say that with confidence because I can do all of that.  Yes we all have things we prefer to make and we can all have specialities but are you really going to tell your child you can’t make them cookies because you can’t bake?  Really?&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; There’s only one thing that I’ve never mastered and it is making my own cheese (largely a product of UHT milk can’t make cheese and that’s all they sell in Indiana)&lt;/p&gt;
-
-&lt;h1 id=&quot;you-must-experiment&quot;&gt;You Must Experiment&lt;/h1&gt;
-
-&lt;p&gt;One of the worst things you can do if you cook seriously is to get stale.  You have to experiment.  Getting bored with making dinner for the family?  And the easiest way to do this is to dive into other cultures:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Learn how to make &lt;a href=&quot;http://picapica.com/blog/2013/09/how-to-make-arepas-pica-pica-arepa-kitchen/&quot;&gt;Arepas&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Learn how to make Sushi (too many results to pick one)&lt;/li&gt;
-  &lt;li&gt;Learn how to make &lt;a href=&quot;http://www.food.com/recipe/norwegian-school-bread-428043&quot;&gt;Norwegian School Bread&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Learn how to make &lt;a href=&quot;http://www.foodandwine.com/recipes/corn-tortillas&quot;&gt;Tortillas&lt;/a&gt; (They’re mostly right but add salt to the batter and use parchment paper not plastic between the tortilla press)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;While cookbooks aren’t free, google is free and every culture in the world has recipes.  Interested in Peru?  Google “Peruvian Recipes” and you’ll end up perhaps &lt;a href=&quot;http://www.quericavida.com/recipes/collections/by-country/10-traditional-peruvian-recipes&quot;&gt;here&lt;/a&gt;.  Then make something, anything.&lt;/p&gt;
-
-&lt;h1 id=&quot;learn-what-makes-a-recipe-good-for-you-and-your-context&quot;&gt;Learn What Makes a Recipe Good for You and Your Context&lt;/h1&gt;
-
-&lt;p&gt;One of the most valuable skills I’ve picked up is the ability to read a recipe and, unerringly, know if its right for my context – generally me, my wife and my kids.  There are signs like:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;effort; A &lt;a href=&quot;http://www.foodnetwork.com/recipes/croquembouche-recipe.html&quot;&gt;croquembouche&lt;/a&gt; almost never works when you have small children in the house because it takes too long&lt;/li&gt;
-  &lt;li&gt;flavors; my wife has certain flavors that she just hates so anything with an organ meat for example is out before it starts&lt;/li&gt;
-  &lt;li&gt;tools; if you don’t have the tools then, well, it may be irrelevant&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Learning to read a recipe and know whether or not its going to work for your context is a valuable skill and something to very much strive for.&lt;/p&gt;
-
-&lt;h1 id=&quot;question-your-assumptions&quot;&gt;Question Your Assumptions&lt;/h1&gt;
-
-&lt;p&gt;As cooks we all develop habits and assumptions.  One of mine was, until recently, “there shall be no other oils than corn, vegetable and olive.”  For years now I followed that with near religious devotion.  However I just discovered grapeseed oil and it was like a revelation – a light oil.  What??? How can this be?  And now I use it with abandon.  Keep in mind that questioning your assumptions is really, really important.&lt;/p&gt;
-
-&lt;h1 id=&quot;salt-and-butter-amp-up-flavor&quot;&gt;Salt and Butter Amp Up Flavor&lt;/h1&gt;
-
-&lt;p&gt;Yep.  Add salt to everything.  And butter.  We’ve all heard about the dangers of salt and butter for so many years that I suspect most of us are way too conservative on this one.  I know I am.  Adding more salt really does help food.  And you can always add some butter when you’re cooking  almost anything to improve the flavor.&lt;/p&gt;
-
-&lt;h1 id=&quot;you-must-taste&quot;&gt;You Must Taste&lt;/h1&gt;
-
-&lt;p&gt;If you’ve ever watched a professional chef, one thing you’ll notice is that they taste things constantly.  Some home cooks do this and some don’t but I’d argue that the ones that do will produce better food so you may want to do this more if you don’t.  I know that until recently I didn’t.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; The one exception to this is gluten free baking.  Gluten free flours, until cooked, taste horrible so do not taste gluten free batters.&lt;/p&gt;
-
-&lt;h1 id=&quot;you-must-cook-1&quot;&gt;You Must Cook&lt;/h1&gt;
-
-&lt;p&gt;I’m going to close as I opened because its really the single most important things so I’m going to re-phrase it:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;You get better in proportion to how much you cook.&lt;/li&gt;
-  &lt;li&gt;If you want to be a better cook then cook more.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Really that’s the best thing here.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 26 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/cooking/2016/09/26/how-to-become-a-better-cook.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/cooking/2016/09/26/how-to-become-a-better-cook.html</guid>
-        
-        <category>cooking</category>
-        
-        
-        <category>cooking</category>
         
       </item>
     

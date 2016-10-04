@@ -149,6 +149,65 @@ ssh_exchange_identification: read: Operation timed out</p>
   <li>It is very unclear how AWS cloud watch can be used to test for a box that is unable to be ssh’d into; that may not be viable (monitoring it could actually be construed as an attack)</li>
 </ul>
 
+<h1 id="update-1">Update 1</h1>
+
+<p>This has continued to happen and I was able to capture the diagnostic output:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ssh -i "/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem" ubuntu@52.89.105.4 -vv
+OpenSSH_6.9p1, LibreSSL 2.1.8
+debug1: Reading configuration data /Users/sjohnson/.ssh/config
+debug1: Reading configuration data /etc/ssh/ssh_config
+debug1: /etc/ssh/ssh_config line 20: Applying options for *
+debug1: /etc/ssh/ssh_config line 102: Applying options for *
+debug2: ssh_connect: needpriv 0
+debug1: Connecting to 52.89.105.4 [52.89.105.4] port 22.
+debug1: Connection established.
+debug1: key_load_public: No such file or directory
+debug1: identity file /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem type -1
+debug1: key_load_public: No such file or directory
+debug1: identity file /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem-cert type -1
+debug1: Enabling compatibility mode for protocol 2.0
+debug1: Local version string SSH-2.0-OpenSSH_6.9
+ssh_exchange_identification: read: Connection reset by peer
+</code></pre>
+</div>
+
+<h1 id="update-2---the-response-from-aws-tech-support">Update 2 - The Response from AWS Tech Support</h1>
+
+<p>Good Day,</p>
+
+<p>I understand that you are unable to access some of your instances via ssh at random times. Please correct me if I miss understood.</p>
+
+<p>Are you still experiencing the issue, or was the problem resolved after the reboot? I’ve noticed that all the instances with the name “crawler” was started around the same time (2016-10-03 14:25:38 UTC ). Did you have the same issue on all of these instances?</p>
+
+<p>Normally when an instance is inaccessible via ssh, it could indicate a network error or high CPU utilization on the instance. I had a look at the instance metrics for CPU and networking, and all seems to be within acceptable ranges. I can confirm that there are no failures or events on the underlying hardware.</p>
+
+<p>I understand that you want to investigate the cause of the issue and prevent it from happening again.</p>
+
+<p>The best place to start with troubleshooting is to have a look at the OS log files. For Ubuntu; you can have a look in the /var/log/syslog file, or the output of the dmesg command. Please have a look for any warnings or error messages around the time that you’ve experienced the issues.</p>
+
+<p>What error message did you get when you tried to ssh to the instances?</p>
+
+<p>Were you able to consume any other service that was running on these instances? For example could you still access the web page or MySQL?</p>
+
+<p>Did you try to access the instances from the internet or from another instance on the same network range?</p>
+
+<p>Can you perform a traceroute to the instances now, and again when you are seeing the issue? This can help identify network issues.</p>
+
+<p>I also see that your security group, sg-DFDDFD, allows ssh access from the world (0.0.0.0/0). Leaving port 22 open to the world is a security risk as it leaves your instances vulnerable for attack. I would recommend that you remove this inbound rule and only allow ssh access from trusted IP addresses.</p>
+
+<p>If you want to eliminate manual intervention when an instance fails, you can have a look at Auto Scaling. This will automatically start new instances or stop faulty ones when health checks fails. You can reference the below links for more information about Auto Scaling if you’re interested.</p>
+
+<p>https://aws.amazon.com/autoscaling/
+http://docs.aws.amazon.com/autoscaling/latest/userguide/GettingStartedTutorial.html</p>
+
+<p>Best regards,</p>
+
+<p>Stefan F.
+Amazon Web Services
+We value your feedback. Please rate my response using the link below.</p>
+
+
   </div>
 
 </article>
