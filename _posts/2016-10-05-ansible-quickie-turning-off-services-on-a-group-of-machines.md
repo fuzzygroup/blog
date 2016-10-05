@@ -10,6 +10,8 @@ In my continuing investigation of [SSH failures on my cluster of AWS boxes](http
     
     Oct  5 08:10:01 ip-172-31-32-56 sm-mta[25939]: u958A1I6025939: from=<root@ip-172-31-32-56.us-west-2.compute.internal>, size=888, class=0, nrcpts=1, msgid=<201610050810.u958A1eD025938@ip-172-31-32-56.us-west-2.compute.internal>, proto=ESMTP, daemon=MTA-v4, relay=localhost [127.0.0.1]
     
+# Stopping Services with Ansible    
+    
 I don't have a port open for sendmail in my security group so this confuses me but it should be easy enough to add an ansible role to my playbook to address it.  Here are the steps:
 
     cd ~/wherever_your_ansible_root_is
@@ -38,3 +40,17 @@ You should note that I'm calling that role as the very last role since it does n
   * restarted
   * reloaded
     
+# Proof
+
+Here's an example of a ps test on this before and after:
+
+**Before:**
+
+    ps auwwx | grep sendmail
+    root      1447  0.0  0.0 100704  2628 ?        Ss   08:26   0:00 sendmail: MTA: accepting connections
+    ubuntu    2958  0.0  0.0  10460   940 pts/0    S+   08:31   0:00 grep --color=auto sendmail
+    
+**After:**    
+
+    ps auwwx | grep sendmail
+    ubuntu    8485  0.0  0.0  10460   940 pts/0    S+   08:37   0:00 grep --color=auto sendmail
