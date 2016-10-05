@@ -6,9 +6,71 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 04 Oct 2016 18:12:03 -0400</pubDate>
-    <lastBuildDate>Tue, 04 Oct 2016 18:12:03 -0400</lastBuildDate>
+    <pubDate>Wed, 05 Oct 2016 04:48:21 -0400</pubDate>
+    <lastBuildDate>Wed, 05 Oct 2016 04:48:21 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Ansible Quickie - Turning Off Services On A Group of Machines</title>
+        <description>&lt;p&gt;In my continuing investigation of &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-10-diagnosing-ssh-failures-or-when-ping-works-but-ssh-fails.html&quot;&gt;SSH failures on my cluster of AWS boxes&lt;/a&gt;, I’ve noticed that sendmail is running on my boxes and NOT refusing connections.  I’m not an ops guy but I can’t think that this is good.  Here’s what I’m seeing:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;tail -f /var/log/syslog
+
+Oct  5 08:10:01 ip-172-31-32-56 sm-mta[25939]: u958A1I6025939: from=&amp;lt;root@ip-172-31-32-56.us-west-2.compute.internal&amp;gt;, size=888, class=0, nrcpts=1, msgid=&amp;lt;201610050810.u958A1eD025938@ip-172-31-32-56.us-west-2.compute.internal&amp;gt;, proto=ESMTP, daemon=MTA-v4, relay=localhost [127.0.0.1]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I don’t have a port open for sendmail in my security group so this confuses me but it should be easy enough to add an ansible role to my playbook to address it.  Here are the steps:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~/wherever_your_ansible_root_is
+mkdir -p roles/services/tasks
+touch roles/services/tasks/main.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In main.yml add:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- name: stop_sendmail
+  service: name=sendmail state=stopped
+  
+- name: stop_apache2
+  service: name=apache2 state=stopped
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I added the routines to stop my apache2 instances because I’m not actually using them yet and any part of an attack surface that I can reduce might increase the chance of these boxes staying running longer.  Ideally they should be on a private internal network that isn’t exposed to the world at all.  And that’s coming but that’s a level of work I can’t do this very minute.&lt;/p&gt;
+
+&lt;p&gt;In my main playbook simply call this role:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: services, tags: services }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You should note that I’m calling that role as the very last role since it does no good to stop a service before its created.  According to the &lt;a href=&quot;http://docs.ansible.com/ansible/service_module.html&quot;&gt;ansible service module docs&lt;/a&gt;, the options for state are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;running&lt;/li&gt;
+  &lt;li&gt;started&lt;/li&gt;
+  &lt;li&gt;stopped&lt;/li&gt;
+  &lt;li&gt;restarted&lt;/li&gt;
+  &lt;li&gt;reloaded&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Wed, 05 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/ansible/2016/10/05/ansible-quickie-turning-off-services-on-a-group-of-machines.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ansible/2016/10/05/ansible-quickie-turning-off-services-on-a-group-of-machines.html</guid>
+        
+        <category>ansible</category>
+        
+        <category>devops</category>
+        
+        <category>services</category>
+        
+        
+        <category>ansible</category>
+        
+      </item>
     
       <item>
         <title>Ansible Basics Presentation at Indy Elixir Meetup</title>
@@ -777,158 +839,6 @@ We value your feedback. Please rate my response using the link below.&lt;/p&gt;
         <category>ansible</category>
         
         <category>hosting</category>
-        
-        
-        <category>ansible</category>
-        
-      </item>
-    
-      <item>
-        <title>Ansible Tutorial 01 - Examples of Ansible Ad Hoc Commands</title>
-        <description>&lt;p&gt;My writing progress has slowed as of late while I have gone 100% heads down on learning Ansible.  Ansible is a provisioning tool which lets you describe a machine or machines as well as how you want them configured.  Ansible also offers an ad hoc mode where you can operate on a group of machines and execute a command or commands.  These examples are based on an Ansible inventory file located in the directory inventories/ as follows:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;file: inventories/production_actual
-
-[web]
-# format - english machinename   ssh host   ssh private key
-web1  ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com  ansible_ssh_private_key_file=/Users/sjohnson/.ssh/fi_nav_sitecrawl.pe
-
-[db]
-
-[log]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Note - in my actual inventory file there are machines in each group section.&lt;/p&gt;
-
-&lt;p&gt;Here are some examples:&lt;/p&gt;
-
-&lt;p&gt;Execute uptime against all machines in the inventories file with the user ubuntu:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;**ansible all -i inventories/production_actual -u ubuntu -a &quot;uptime&quot;**
-ec2-52-39-100-178.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
- 17:09:56 up 36 days,  4:05,  4 users,  load average: 0.99, 1.00, 0.97
-
-ec2-52-89-105-4.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
- 17:10:06 up 23 days,  4:17,  2 users,  load average: 0.69, 0.53, 0.54
-
-ec2-54-68-16-169.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
- 17:11:43 up 22 days,  9:11,  2 users,  load average: 0.93, 0.93, 0.89
-
-ec2-52-42-166-105.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
- 17:11:23 up 31 days,  7:26,  2 users,  load average: 0.00, 0.02, 0.05
-
-52.40.224.171 | success | rc=0 &amp;gt;&amp;gt;
- 17:10:54 up 20 days, 23:42,  1 user,  load average: 0.08, 0.04, 0.05
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Execute uptime against all machines in the db group in the inventories file with the user ubuntu:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;**ansible db -i inventories/production_actual -u ubuntu -a &quot;uptime&quot;**
-ec2-52-39-100-178.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
- 17:11:13 up 36 days,  4:06,  4 users,  load average: 0.90, 0.97, 0.96
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;You can also use this to do things like check the amount of free disc space on every box.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;**ansible all -i inventories/production_actual -u ubuntu -a &quot;df -h&quot;**
-ec2-54-68-16-169.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
-Filesystem      Size  Used Avail Use% Mounted on
-udev            7.5G   12K  7.5G   1% /dev
-tmpfs           1.5G  376K  1.5G   1% /run
-/dev/xvda1      7.8G  3.9G  3.5G  53% /
-none            4.0K     0  4.0K   0% /sys/fs/cgroup
-none            5.0M     0  5.0M   0% /run/lock
-none            7.5G     0  7.5G   0% /run/shm
-none            100M     0  100M   0% /run/user
-
-ec2-52-42-166-105.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
-Filesystem      Size  Used Avail Use% Mounted on
-udev            492M   12K  492M   1% /dev
-tmpfs           100M  368K   99M   1% /run
-/dev/xvda1      7.8G  3.7G  3.7G  51% /
-none            4.0K     0  4.0K   0% /sys/fs/cgroup
-none            5.0M     0  5.0M   0% /run/lock
-none            497M     0  497M   0% /run/shm
-none            100M     0  100M   0% /run/user
-
-ec2-52-89-105-4.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
-Filesystem      Size  Used Avail Use% Mounted on
-udev            7.5G   12K  7.5G   1% /dev
-tmpfs           1.5G  376K  1.5G   1% /run
-/dev/xvda1       16G  3.9G   11G  27% /
-none            4.0K     0  4.0K   0% /sys/fs/cgroup
-none            5.0M     0  5.0M   0% /run/lock
-none            7.5G     0  7.5G   0% /run/shm
-none            100M     0  100M   0% /run/user
-
-ec2-52-39-100-178.us-west-2.compute.amazonaws.com | success | rc=0 &amp;gt;&amp;gt;
-Filesystem      Size  Used Avail Use% Mounted on
-udev             32G   12K   32G   1% /dev
-tmpfs           6.3G  400K  6.3G   1% /run
-/dev/xvda1      2.0T  1.4T  557G  71% /
-none            4.0K     0  4.0K   0% /sys/fs/cgroup
-none            5.0M     0  5.0M   0% /run/lock
-none             32G     0   32G   0% /run/shm
-none            100M     0  100M   0% /run/user
-
-52.40.224.171 | success | rc=0 &amp;gt;&amp;gt;
-Filesystem      Size  Used Avail Use% Mounted on
-udev            3.9G   12K  3.9G   1% /dev
-tmpfs           799M  484K  798M   1% /run
-/dev/xvda1      7.8G  5.6G  1.9G  76% /
-none            4.0K     0  4.0K   0% /sys/fs/cgroup
-none            5.0M     0  5.0M   0% /run/lock
-none            3.9G     0  3.9G   0% /run/shm
-none            100M     0  100M   0% /run/user
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Ensure that a package is installed; don’t update it if it isn’t&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;**ansible all -i inventories/production_actual -u ubuntu -m apt -a &quot;name=tree state=present&quot;**
-ec2-52-39-100-178.us-west-2.compute.amazonaws.com | success &amp;gt;&amp;gt; {
-    &quot;changed&quot;: false
-}
-
-ec2-52-89-105-4.us-west-2.compute.amazonaws.com | success &amp;gt;&amp;gt; {
-    &quot;changed&quot;: false
-}
-
-ec2-54-68-16-169.us-west-2.compute.amazonaws.com | success &amp;gt;&amp;gt; {
-    &quot;changed&quot;: false
-}
-
-ec2-52-42-166-105.us-west-2.compute.amazonaws.com | success &amp;gt;&amp;gt; {
-    &quot;changed&quot;: false
-}
-
-52.40.224.171 | success &amp;gt;&amp;gt; {
-    &quot;changed&quot;: false
-}
-
-**ansible all -i inventories/production_actual -u ubuntu --become -m apt -a &quot;name=htop state=present&quot;**
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;References:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://edunham.net/2015/06/08/playing_with_ansible.html&quot;&gt;http://edunham.net/2015/06/08/playing_with_ansible.html&lt;/a&gt;   This is a very good read.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.ansible.com/ansible/intro_adhoc.html&quot;&gt;http://docs.ansible.com/ansible/intro_adhoc.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;As always thanks to &lt;a href=&quot;http://dasari.me&quot;&gt;Dv&lt;/a&gt; who pushed me off the proverbial Ansible cliff and has supported me all the way down the learning curve.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 29 Sep 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/ansible/2016/09/29/examples-of-ansible-ad-hoc-commands.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ansible/2016/09/29/examples-of-ansible-ad-hoc-commands.html</guid>
-        
-        <category>ansible</category>
-        
-        <category>ad_hoc</category>
         
         
         <category>ansible</category>
