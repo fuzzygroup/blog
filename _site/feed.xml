@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 05 Oct 2016 20:12:18 -0400</pubDate>
-    <lastBuildDate>Wed, 05 Oct 2016 20:12:18 -0400</lastBuildDate>
+    <pubDate>Wed, 05 Oct 2016 20:34:23 -0400</pubDate>
+    <lastBuildDate>Wed, 05 Oct 2016 20:34:23 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -449,11 +449,84 @@ ok: [ficrawler9] =&amp;gt; (item=[u'apt-transport-https', u'ca-certificates', u'
 
 &lt;h1 id=&quot;ansible-is-all-about-idempotency-and-this-was-not&quot;&gt;Ansible is All About Idempotency and This Was Not&lt;/h1&gt;
 
-&lt;p&gt;http://docs.ansible.com/ansible/stat_module.html
-https://raymii.org/s/tutorials/Ansible_-_Only_if_a_file_exists_or_does_not_exist.html&lt;/p&gt;
+&lt;p&gt;So in Ansible the core idea is that you only want to make changes one time.  If a box has redis installed then it doesn’t need it again.  That’s the idea of idempotency – do the same thing over and over and always get the same result.  In this case we used shell actions for all of installing CloudWatch Memory Management and, well, that’s not idempotent.  The second time you run it, it’s trying to do it all over again.&lt;/p&gt;
 
-&lt;p&gt;http://www.caphrim.net/ansible/2015/05/25/be-careful-with-unarchive.html&lt;/p&gt;
+&lt;p&gt;The trick to making this idempotent is to register an ansible variable based on something we did and then check that variable at every stage.  Here’s how I revised my previous playbook:&lt;/p&gt;
 
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- name: Install CloudWatch libraries
+  apt: pkg=
+       state=installed
+  with_items:
+    - unzip
+    - libwww-perl
+    - libdatetime-perl
+
+- name: prevent this from running if it has already been done
+  stat: path=/root/aws-scripts-mon/
+  register: aws_cloudwatch_installed
+
+- name: download scripts
+  get_url: url=http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip dest=/tmp/CloudWatchMonitoringScripts.zip
+  when: aws_cloudwatch_installed.stat.exists == False
+
+- name: chown the file and make it writeable
+  file: path=/tmp/CloudWatchMonitoringScripts.zip mode=0755  #owner=ubuntu group=ubuntu 
+  when: aws_cloudwatch_installed.stat.exists == False
+
+- name: unzip the scripts
+  #unarchive: src=/tmp/CloudWatchMonitoringScripts.zip dest=/tmp/
+  shell: &quot;cd /tmp &amp;amp;&amp;amp; unzip /tmp/CloudWatchMonitoringScripts.zip&quot;
+  when: aws_cloudwatch_installed.stat.exists == False
+
+- name: delete archive
+  file: path=/tmp/CloudWatchMonitoringScripts.zip state=absent
+  when: aws_cloudwatch_installed.stat.exists == False
+
+- name: set Access key in credentials file
+  replace: dest=/tmp/aws-scripts-mon/awscreds.template regexp='AWSAccessKeyId=' replace='AWSAccessKeyId=' backup=yes
+  when: aws_cloudwatch_installed.stat.exists == False
+
+- name: set Secret key in credentials file
+  replace: dest=/tmp/aws-scripts-mon/awscreds.template regexp='AWSSecretKey=' replace='AWSSecretKey=' backup=yes
+  when: aws_cloudwatch_installed.stat.exists == False
+
+- name: move directory out of /tmp
+  command: mv /tmp/aws-scripts-mon/ /root/ creates=/root/aws-scripts-mon/
+  when: aws_cloudwatch_installed.stat.exists == False
+
+- name: add command to cron
+  lineinfile: dest=/etc/crontab insertafter=EOF line=&quot;* * * * * root /root/aws-scripts-mon/mon-put-instance-data.pl --mem-util --mem-used --mem-avail --aws-credential-file=/root/aws-scripts-mon/awscreds.template&quot;
+  when: aws_cloudwatch_installed.stat.exists == False
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The magic is in the second step:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- name: prevent this from running if it has already been done
+  stat: path=/root/aws-scripts-mon/
+  register: aws_cloudwatch_installed
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;What this does is use the stat module to check if a given path, where we’re put the scripts, already exists.  If this exists then we know that we’ve already done it.  We then check it at every subsequent change:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- name: download scripts
+  get_url: url=http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip dest=/tmp/CloudWatchMonitoringScripts.zip
+  when: aws_cloudwatch_installed.stat.exists == False
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And that’s all it takes to make this something that you can run over and over every time a box is updated.&lt;/p&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+
+&lt;p&gt;Here are some good references:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://docs.ansible.com/ansible/stat_module.html&quot;&gt;http://docs.ansible.com/ansible/stat_module.html&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://raymii.org/s/tutorials/Ansible_-_Only_if_a_file_exists_or_does_not_exist.html&quot;&gt;https://raymii.org/s/tutorials/Ansible_-_Only_if_a_file_exists_or_does_not_exist.html&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.caphrim.net/ansible/2015/05/25/be-careful-with-unarchive.html&quot;&gt;http://www.caphrim.net/ansible/2015/05/25/be-careful-with-unarchive.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
         <pubDate>Sun, 02 Oct 2016 00:00:00 -0400</pubDate>
         <link>https://fuzzygroup.github.io/blog/aws/2016/10/02/aws-tutorial-13-adding-idempotency-to-our-cloudwatch-monitoring-playbook.html</link>

@@ -4,7 +4,7 @@ title: AWS Tutorial 13 - Adding Idempotency to Our CloudWatch Monitoring Playboo
 category: aws
 tags: ["aws", "ansible", "cloudwatch"]
 ---
-In Tutorial 11 we used an Ansible playbook to set up CloudWatch memory monitoring on a series of Ubuntu EC2 instances.  This worked perfectly -- **once**.  I noticed, after I published the blog post, that if I tried to re-run the Ansible script playbook that it fail on a second run.  Initially I chalked this up to plain old randomness but then I actually **thought** about it and it all came into focus.
+In [AWS Tutorial 11](https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-11-an-ansible-role-for-installing-aws-cloud-watch-monitoring-on-ubuntu.html) we used an Ansible playbook to set up CloudWatch memory monitoring on a series of Ubuntu EC2 instances.  This worked perfectly -- **once**.  I noticed, after I published the blog post, that if I tried to re-run the Ansible script playbook that it fail on a second run.  Initially I chalked this up to plain old randomness but then I actually **thought** about it and it all came into focus.
 
 # Ansible is All About Idempotency and This Was Not
 
