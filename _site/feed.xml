@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 05 Oct 2016 04:48:21 -0400</pubDate>
-    <lastBuildDate>Wed, 05 Oct 2016 04:48:21 -0400</lastBuildDate>
+    <pubDate>Wed, 05 Oct 2016 20:09:36 -0400</pubDate>
+    <lastBuildDate>Wed, 05 Oct 2016 20:09:36 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -19,6 +19,8 @@
 Oct  5 08:10:01 ip-172-31-32-56 sm-mta[25939]: u958A1I6025939: from=&amp;lt;root@ip-172-31-32-56.us-west-2.compute.internal&amp;gt;, size=888, class=0, nrcpts=1, msgid=&amp;lt;201610050810.u958A1eD025938@ip-172-31-32-56.us-west-2.compute.internal&amp;gt;, proto=ESMTP, daemon=MTA-v4, relay=localhost [127.0.0.1]
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
+
+&lt;h1 id=&quot;stopping-services-with-ansible&quot;&gt;Stopping Services with Ansible&lt;/h1&gt;
 
 &lt;p&gt;I don’t have a port open for sendmail in my security group so this confuses me but it should be easy enough to add an ansible role to my playbook to address it.  Here are the steps:&lt;/p&gt;
 
@@ -56,6 +58,24 @@ touch roles/services/tasks/main.yml
   &lt;li&gt;reloaded&lt;/li&gt;
 &lt;/ul&gt;
 
+&lt;h1 id=&quot;proof&quot;&gt;Proof&lt;/h1&gt;
+
+&lt;p&gt;Here’s an example of a ps test on this before and after:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Before:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ps auwwx | grep sendmail
+root      1447  0.0  0.0 100704  2628 ?        Ss   08:26   0:00 sendmail: MTA: accepting connections
+ubuntu    2958  0.0  0.0  10460   940 pts/0    S+   08:31   0:00 grep --color=auto sendmail
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;After:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ps auwwx | grep sendmail
+ubuntu    8485  0.0  0.0  10460   940 pts/0    S+   08:37   0:00 grep --color=auto sendmail
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 </description>
         <pubDate>Wed, 05 Oct 2016 00:00:00 -0400</pubDate>
         <link>https://fuzzygroup.github.io/blog/ansible/2016/10/05/ansible-quickie-turning-off-services-on-a-group-of-machines.html</link>

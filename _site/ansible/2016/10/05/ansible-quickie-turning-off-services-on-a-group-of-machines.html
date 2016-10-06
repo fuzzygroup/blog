@@ -104,6 +104,8 @@ Oct  5 08:10:01 ip-172-31-32-56 sm-mta[25939]: u958A1I6025939: from=&lt;root@ip-
 </code></pre>
 </div>
 
+<h1 id="stopping-services-with-ansible">Stopping Services with Ansible</h1>
+
 <p>I don’t have a port open for sendmail in my security group so this confuses me but it should be easy enough to add an ansible role to my playbook to address it.  Here are the steps:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>cd ~/wherever_your_ansible_root_is
@@ -140,6 +142,24 @@ touch roles/services/tasks/main.yml
   <li>reloaded</li>
 </ul>
 
+<h1 id="proof">Proof</h1>
+
+<p>Here’s an example of a ps test on this before and after:</p>
+
+<p><strong>Before:</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ps auwwx | grep sendmail
+root      1447  0.0  0.0 100704  2628 ?        Ss   08:26   0:00 sendmail: MTA: accepting connections
+ubuntu    2958  0.0  0.0  10460   940 pts/0    S+   08:31   0:00 grep --color=auto sendmail
+</code></pre>
+</div>
+
+<p><strong>After:</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ps auwwx | grep sendmail
+ubuntu    8485  0.0  0.0  10460   940 pts/0    S+   08:37   0:00 grep --color=auto sendmail
+</code></pre>
+</div>
 
   </div>
 
