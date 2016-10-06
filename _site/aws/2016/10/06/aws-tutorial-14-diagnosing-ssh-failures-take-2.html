@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>AWS Tutorial 14 - Diagnosing SSH Failures Take 2</title>
+  <meta name="description" content="As I wrote about in AWS Tutorial 10, we had an issue with AWS instances losing the their ability to SSH into them.  That was written on October 1st and since...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/aws/2016/10/06/aws-tutorial-14-diagnosing-ssh-failures-take-2.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">AWS Tutorial 14 - Diagnosing SSH Failures Take 2</h1>
+    <p class="post-meta"><time datetime="2016-10-06T00:00:00-04:00" itemprop="datePublished">Oct 6, 2016</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>As I wrote about in <a href="https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-10-diagnosing-ssh-failures-or-when-ping-works-but-ssh-fails.html">AWS Tutorial 10</a>, we had an issue with AWS instances losing the their ability to SSH into them.  That was written on October 1st and since then we’ve seen it happen over and over again.  Getting this kind of problem addressed requires really good diagnostic skills and there is always a lot to learn from the troubleshooting process.  I dragged a consultant in for an hour of screen sharing figuring that even one good idea would just the cost of the hour.  And here was the result of his talks with me:</p>
+
+<h1 id="disk-space">Disk Space?</h1>
+
+<p>Rule number 1 is always start with disk space.  The consultant brought this up first thing and I agree whole heartedly.  Happily I’m now an ansible user so I was able to show off this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ansible all -i inventories/production2 -u ubuntu -a "df -h"
+
+fiweb1 | SUCCESS | rc=0 &gt;&gt;
+Filesystem      Size  Used Avail Use% Mounted on
+udev             32G   12K   32G   1% /dev
+tmpfs           6.3G  384K  6.3G   1% /run
+/dev/xvda1      7.8G  3.7G  3.7G  50% /
+none            4.0K     0  4.0K   0% /sys/fs/cgroup
+none            5.0M     0  5.0M   0% /run/lock
+none             32G     0   32G   0% /run/shm
+none            100M     0  100M   0% /run/user
+
+ficrawlerbig | SUCCESS | rc=0 &gt;&gt;
+Filesystem      Size  Used Avail Use% Mounted on
+udev             32G   12K   32G   1% /dev
+tmpfs           6.3G  384K  6.3G   1% /run
+/dev/xvda1      7.8G  3.7G  3.7G  50% /
+none            4.0K     0  4.0K   0% /sys/fs/cgroup
+none            5.0M     0  5.0M   0% /run/lock
+none             32G     0   32G   0% /run/shm
+none            100M     0  100M   0% /run/user
+</code></pre>
+</div>
+
+<h1 id="what-do-these-boxes-do">What Do These Boxes Do?</h1>
+
+<p>The next step for the consultant was understanding so he asked me “what’s going on here?”  So I explained that all of these boxes are running a custom built, multi threaded crawler that we call the ucrawler.  It is a thread pool style architecture that pops items off a redis queue, processes them and then moves onto the next one.  This code was first written in 2011 and has been in daily use ever since.  Based on the tens of millions of records of data that this code has processed since 2011, I’ve been reluctant to point the finger at it.  Oh and yeah, I was the author.  Sigh.  And yet I know all too well that whenever threads are involved, you look at the threads.</p>
+
+<h1 id="lock-everything-down">Lock Everything Down</h1>
+
+<p>Given that AWS is a target rich environment for intrusion, its wise to lock things down so I did the following:</p>
+
+<ol>
+  <li>restricted ssh logins to a small list of IP addresses</li>
+  <li>installed fail2ban on all boxes</li>
+  <li>turned off all services on crawler boxes other than the crawler itself</li>
+</ol>
+
+<p>Here’s the ansible tasks for 2 and 3:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>- name: Install fail2ban
+  apt: name=fail2ban state=present
+
+- name: stop_sendmail
+  service: name=sendmail state=stopped
+  
+- name: stop_apache2
+  service: name=apache2 state=stopped
+
+- name: stop_redis
+  service: name=redis state=stopped
+  
+- name: stop_memcached
+  service: name=memcached state=stopped
+</code></pre>
+</div>
+
+<p>To run this against our fleet of boxes I can just do this for fail2ban (its part of the overall machine_setup role):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/production2  playbook_crawler.yml  --tags="machine_setup"
+</code></pre>
+</div>
+
+<p>And a similar statement will shut down the services:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/production2  playbook_crawler.yml  --tags="services"
+</code></pre>
+</div>
+
+<p>Originally I had been planning to have these boxes crawl and provide front end web services.  However that thinking is not only bad but also predated my mastering ansible.  Now that I can provision boxes to do exactly what I want, well, they will do only one thing – single purpose.</p>
+
+<p>Note: This I did before the consultant.</p>
+
+<h1 id="shared-tenancy">Shared Tenancy</h1>
+
+<p>We used to run on dedicated hardware.  Now we are running on “shared tenancy” which means that someone else is using the same box and everything is virtualized.  Technically we could be affected by what’s referred to as “Nearest Neighbor” problems where a heavy user close to you is a problem.  Given that this is happening on 8 out of 8 aws instances, I think that’s an unlikely possibility.</p>
+
+<p>Note: This I did before the consultant.</p>
+
+<h1 id="whats-changed">What’s Changed?</h1>
+
+<p>The consultant’s next question was the obvious one – given that this code used to work fine, well, the logical question is “what changed?”.  <em>Chuckle</em>  Well everything:</p>
+
+<ul>
+  <li>data center - from our own on dedicated hardware to AWS on shared tenancy</li>
+  <li>ruby version - 1.9.3 to 2.3.1</li>
+  <li>rails - 4.1.4 to 4.2.7</li>
+  <li>rvm - per user RVM install to system level RVM install</li>
+  <li>gemfile and gemfile order</li>
+</ul>
+
+<p>That’s a lot of changes.  I’ll return to this topic.</p>
+
+<h1 id="the-diagnostic-process">The Diagnostic Process</h1>
+
+<p>The consultant wanted to see everything this actually happen so here’s how I went about that.</p>
+
+<h2 id="step-1-reboot-the-world">Step 1: Reboot the World</h2>
+
+<p>In order to determine which boxes were actually down, the easiest thing was to run an ansible command like the df -h above and then correlate that to instance ids.  Then the EC2 console could be used to reboot machines selectively.  Out of 8 crawler boxes we had 7 which needed a reboot.  That one box that now has a 15 hour uptime?  Its interesting and we’ll look at that again.</p>
+
+<h2 id="step-2-ssh-into-everything-and-tmux-to-the-rescue">Step 2: SSH Into Everything and Tmux to the Rescue</h2>
+
+<p>The next step is to get into every box via SSH.  Happily I’ve set up a Tmuxinator yaml file which I can use to arrow up / arrow down between boxes.  And since I run a local tmux installation on a different hot key from the server side one I can effectively tunnel from my local box into the remote boxes and still have tmux available to me.</p>
+
+<p>Note: <a href="https://tmux.github.io/">Tmux</a> is a terminal multiplexer that lets you maintain multiple connections to different boxes and even built a user interface like an IDE out of classical bash terminals.  It is one of those technologies that you don’t even know is important until you need it and then you don’t know how you ever lived without it.  <a href="https://github.com/tmuxinator/tmuxinator">Tmuxinator</a> is a Ruby gem which helps with configuration for it since native tmux is kind of sucky.</p>
+
+<p>Once we got into the boxes we executed a tmn crawl_q3 command which created a tmux session for our crawl.</p>
+
+<p><img src="/blog/assets/aws/ssh_debugging_tmux.png" alt="ssh_debugging_tmux.png.png" /></p>
+
+<h2 id="step-3-make-it-fail-fast">Step 3: Make It Fail Fast</h2>
+
+<p>The next step was to get everything running.  Once we had ssh’d into the boxes and setup the tmux session, it was just a matter of executing this supervise statement:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cd /var/www/apps/banks/current &amp;&amp; supervise /var/www/apps/banks/current/supervise/banks_crawl_25
+</code></pre>
+</div>
+
+<p>Supervise is from DJ Bernstein’s <a href="https://cr.yp.to/daemontools.html">daemon tools</a> and is my all time favorite way to keep an unreliable process running.  Because this is ruby and there are threads involved, we’ll see segfaults from time to time and supervise keeps everything running.  And, yes, I know that segfaults are another issue but I’ve lived with crappy ruby performance and reliability for so long now that it just doesn’t phase me anymore.  I had hoped that they would go away with Ruby 2.3.1 but, well, sigh.</p>
+
+<h2 id="step-4-htop-and-watch">Step 4: Htop and Watch</h2>
+
+<p>Since I’m now running ansible I can easily provision a robust set of dev tools on every box.  One of those is <a href="http://hisham.hm/htop/">htop</a> which is just a better version of top – but top itself is wonderful and htop even more wonderful.  By running htop across all boxes and then using tmux to easily navigate between them we could watch memory rise dramatically over the course of the crawler’s execution.</p>
+
+<p><img src="/blog/assets/aws/ssh_debugging_htop.png" alt="ssh_debugging_htop.png" /></p>
+
+<h2 id="step-5-the-one-box-that-didnt-die-yet">Step 5: The One Box that Didn’t Die Yet</h2>
+
+<p>Toggling between htop and the tmux session running the crawler itself let us watch the execution speed.  One thing that was interesting was comparing performance (as measured by watching the onscreen logging scroll past) between the box that was still up and the new boxes we had just started.  We observed roughly a 5x difference in performance.  This is generally an indication of some kind of memory issue whether garbage collection issues or something else.  The simple fact that the crawler gets dramatically slower over time is an indication of an overall problem whether memory or threading.</p>
+
+<p>Note: Just watching how things work and then looking across different boxes for similarities or differences is a powerful and often overlooked technique.  It is just as important to look with your <strong>brain</strong> as it is with your <strong>eyes</strong> – if you don’t try and actually understand the meaning of the characteristics you witness, well, it isn’t worth much.</p>
+
+<h2 id="step-6-wait-for-it">Step 6: Wait for It</h2>
+
+<p>With all due apologies to <a href="http://how-i-met-your-mother.wikia.com/wiki/Wait_for_it_(catchphrase)">Barney</a>, the next step was to just wait for it to happen – ssh to shut down.  By running ansible’s df -h test from my local box and keeping htop running, what we saw was that when memory usage approached the size of the box itself, well, WHAM!  Inbound ssh traffic would shut down.  We were able to reliably repeat this across most of the 7 boxes we were using to test things.</p>
+
+<h2 id="conclusion-great-ghu-it-is-an-oom-problem">Conclusion: Great Ghu It Is An OOM Problem!</h2>
+
+<p>When a linux box runs out of memory, there is a software component called the <a href="https://lwn.net/Articles/317814/">OOM Killer</a> which is supposed to kill the offending process.  And, for some bizarre reason, it isn’t working.  Or, perhaps, it is working and the process getting killed is actually OpenSSH itself.  Or maybe it just isn’t working.  Here’s an example from /var/log/syslog and this indicates to me that its not actually working:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>grep -i kill /var/log/syslog
+Sep 29 13:53:11 ip-172-31-35-106 kernel: [   15.917391] init: failsafe main process (827) killed by TERM signal
+Sep 29 13:53:13 ip-172-31-35-106 kernel: [   18.105812] init: plymouth-upstart-bridge main process (231) killed by TERM signal
+Oct  3 14:26:12 ip-172-31-32-53 kernel: [   14.846657] init: failsafe main process (747) killed by TERM signal
+Oct  3 22:19:59 ip-172-31-32-53 kernel: [28441.944201] ucrawler.rb:213 invoked oom-killer: gfp_mask=0x201da, order=0, oom_score_adj=0
+Oct  3 22:19:59 ip-172-31-32-53 kernel: [28441.944237]  [&lt;ffffffff81155ba1&gt;] oom_kill_process+0x201/0x360
+Oct  3 22:19:59 ip-172-31-32-53 kernel: [28441.944401] Out of memory: Kill process 25910 (ruby) score 979 or sacrifice child
+Oct  3 22:19:59 ip-172-31-32-53 kernel: [28441.948805] Killed process 25910 (ruby) total-vm:16287724kB, anon-rss:15310180kB, file-rss:0kB
+Oct  4 08:13:15 ip-172-31-32-53 kernel: [   88.033317] init: failsafe main process (835) killed by TERM signal
+Oct  5 08:27:27 ip-172-31-32-53 kernel: [   76.630167] init: failsafe main process (834) killed by TERM signal
+Oct  5 15:38:54 ip-172-31-32-53 kernel: [   84.972034] init: failsafe main process (836) killed by TERM signal
+Oct  5 18:30:05 ip-172-31-32-53 kernel: [   21.974995] init: failsafe main process (836) killed by TERM signal
+</code></pre>
+</div>
+
+<p>This box had ssh go down on it repeatedly from the 3rd to 5th but there’s no reference to OOM being invoked after the 3rd.  Bizarre.  So we’ve got a hypothesis:</p>
+
+<ul>
+  <li>Something has changed from ruby 1.9.3 to ruby 2.3.1 - maybe it is threading; maybe it is an api that a gem relies on</li>
+  <li>The ruby process is bloating up to 15 gigs of ram</li>
+  <li>The Linux OOM killer isn’t killing the bloated process</li>
+  <li>OpenSSH just doesn’t have head room to run at all</li>
+</ul>
+
+<p>Now that we have a hypothesis, well, it is time to figure out the solution.</p>
+
+<h1 id="solving-it---the-options">Solving It - The Options</h1>
+
+<p>Now that the problem is apparent the question becomes how to solve it in a time sensitive fashion.  Right now this is a show stopper for us.  We can’t generate the data that we need to generate because our crawlers are effectively castrated (a crawler that runs for 30 minutes and then starts to die, well, that’s castration for you).</p>
+
+<h2 id="go-back-to-193--old-data-center">Go Back to 1.9.3 / Old Data Center</h2>
+
+<p>I spent literally years of my life fighting the issues in 1.9.3 (2011 to 2016) or as I refer to it “being locked in a 1.9.3 ghetto”.  I just can’t bear to go back and I’d rather <em>gargle glass</em> then go back to my old data center.  Fail.  An interesting option would be to use htop in the old data center to watch things and see if similar memory patterns emerge but its entirely possible that the old data center had some level of kernel tuning that made it better at OOMM conditions.</p>
+
+<h2 id="autoscaling-group">AutoScaling Group</h2>
+
+<p>Unfortunately the easiest “solution” actually isn’t.  Remember that none of these boxes are actually “down” as they all pass the AWS monitoring metrics – instance availability and instance reachability.  Sigh.</p>
+
+<h2 id="read-the-change-logs">Read the Change Logs</h2>
+
+<p>The technically best suggestion of the day was actually the hardest to follow through on – read the change logs.  Obviously something changed in Ruby itself and that broke our threading.  Unfortunately I actually don’t think that reading the change logs will help all that much – this might not be a threading issue but it could also be a change to an API that some gem we rely on uses that is then causing the failure.  My great fear here is that N pages of change logs later I’m going “Hm….”</p>
+
+<h2 id="alternative-threading-library">Alternative Threading Library</h2>
+
+<p>An obvious idea is to move away from my own thread pool stuff to one of the more modern options like concurrent-ruby.  I did some experimentation with it but:</p>
+
+<ul>
+  <li>the documentation is fairly awful; <a href="http://stackoverflow.com/questions/27974017/how-ought-i-limit-thread-creation-using-concurrent-ruby">I’m not the only one who thinks so</a></li>
+  <li>I can’t find a great way to represent what we did based on their examples</li>
+</ul>
+
+<p>Intellectually I like this idea best but given how much threaded code I’ve written the fact that I can’t see a mapping from what I need to how it works bothers me.  It is very possible, however, that it is me.  I’m an old dog and sometimes new tricks can be difficult.</p>
+
+<h2 id="sidekiq">Sidekiq</h2>
+
+<p>The best option is, somewhat to my dismay, <a href="https://github.com/mperham/sidekiq">Sidekiq</a>.  Sidekiq is an asynchronous job processor and while I have immense respect for Mike Perham, the author, I had a bad experience with a different asynchronous job processor in another life and I’ve been gun shy ever since.  However this is a show stopper and, well, damn the torpedos, full speed ahead.  On to Sidekiq!  Here’s all that was needed to be done:</p>
+
+<ul>
+  <li>add it to Gemfile</li>
+  <li>bundle install</li>
+  <li>create app/workers/crawler_worker.rb  (its a class)</li>
+  <li>modify perform to load a site instance and call the crawl method</li>
+  <li>modify our queue generation tools to call CrawlWorker.perform_async(‘’, id) (where id is a variable representing the site we want to crawl; it is just an ActiveRecord id so an integer)</li>
+  <li>run bundle exec sidekiq on all previously running our own crawler</li>
+</ul>
+
+<p>Note: We actually had sidekiq in our Gemfile already but I wanted the description of steps to be complete.  A big part of the reason that I’m writing furiously as of late is to leave an intellectual trail for people who work with me.</p>
+
+<h3 id="the-advantages-of-sidekiq">The Advantages of Sidekiq</h3>
+
+<p>Sidekiq, for us, actually has some real advantages:</p>
+
+<ul>
+  <li>HoneyBadger is supported and, well, you know how much I think the <a href="https://fuzzygroup.github.io/blog/containers/2016/08/26/in-the-world-of-containers-honeybadger-will-reign-supreme-bye-bye-airbrake.html">HoneyBadger guys just plain rock</a>.</li>
+  <li>Our own crawler has its own load structure and dynamically called classes like HoneyBadger don’t come in correctly so this means we’ll get better error tracking</li>
+  <li>It’s by <a href="http://www.mikeperham.com/">Mike Perham</a>.  I always try and know who wrote the tools I rely on because knowing how well they do (or don’t do) their jobs tells me how much I can trust their work.  And I’ve been reading Mike’s work on threading for about 5 years now.  He is my goto source for when I don’t understand the hard stuff.</li>
+  <li>As I watch 8 boxes running our software but under sidekiq, I’m seeing the same memory growth but what I’m not seeing is the machines dying the way they have been.  Out of 9 boxes that have been running for 9 hours and 5 minutes continuously (and working hard) only 1 is down.  I don’t know what tomorrow will bring and I could wake up and they could all be dead again but, right now, this is a massive improvement.  Update from 8 hours later – that one dead box is still dead but all the other boxes are still running and doing great!</li>
+  <li>Doing a partially valid comparison of crawling volume in our old data center versus AWS for about 1/3 of one day is showing a 33 % increase in throughput.</li>
+</ul>
+
+<h1 id="closing-thoughts-this-was-fun">Closing Thoughts: This Was Fun!</h1>
+
+<p>This was a terrible 72 hours of not really leaving the chair very much but it was also a metric crap ton of fun.  Debugging remains the essence of software engineering and this was a very enjoyable deep dive.</p>
+
+<h1 id="good-unix-command-line-tools">Good Unix Command Line Tools</h1>
+
+<p>Debugging like this brings a lot of old school unix stuff you don’t use every day.  Here are some of the things I used figuring this all out:</p>
+
+<ul>
+  <li>list open files for a process id via procfs: ls -l /proc/7857/fd   <a href="http://www.cyberciti.biz/faq/howto-linux-get-list-of-open-files/">Ref</a></li>
+  <li>list open files for a process id via lsof: lsof -p 351 [Ref])(http://www.cyberciti.biz/faq/howto-linux-get-list-of-open-files/)</li>
+  <li>list open files by process name via lsof: lsof -c ssh -c init <a href="http://www.thegeekstuff.com/2012/08/lsof-command-examples/">Ref</a></li>
+  <li>get all current limits: ulimit -a <a href="http://askubuntu.com/questions/181215/too-many-open-files-how-to-find-the-culprit">Ref</a></li>
+  <li>get all process ids by name: pgrep sshd <a href="https://linux.die.net/man/1/pkill">Ref</a></li>
+  <li>kill a process by name: pkill bash <a href="https://linux.die.net/man/1/pkill">Ref</a></li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>memory used by a process name: pidof sidekiq</td>
+          <td>xargs ps -o rss,sz,vsz <a href="http://unix.stackexchange.com/questions/151510/find-out-the-memory-allocated-for-a-particular-process-in-ubuntu">Ref</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>memory map of a process: pmap -p pid <a href="http://unix.stackexchange.com/questions/151510/find-out-the-memory-allocated-for-a-particular-process-in-ubuntu">Ref</a></li>
+</ul>
+
+<h1 id="other-references">Other References</h1>
+<p>Here are a few other things:</p>
+
+<ul>
+  <li>A great overview of <a href="https://fredrb.github.io/2016/10/01/Understanding-proc/">procfs</a> that oddly came out just as I needed it.</li>
+  <li>Curious about how much memory your gems are using?  I was and I found <a href="http://blog.honeybadger.io/profile-your-gem-memory-usage-with-derailed/">derailed</a>!</li>
+</ul>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff.  Ruby / Rails / Elixir.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

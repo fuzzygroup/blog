@@ -6,9 +6,302 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 05 Oct 2016 20:36:44 -0400</pubDate>
-    <lastBuildDate>Wed, 05 Oct 2016 20:36:44 -0400</lastBuildDate>
+    <pubDate>Thu, 06 Oct 2016 04:52:50 -0400</pubDate>
+    <lastBuildDate>Thu, 06 Oct 2016 04:52:50 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>AWS Tutorial 14 - Diagnosing SSH Failures Take 2</title>
+        <description>&lt;p&gt;As I wrote about in &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-10-diagnosing-ssh-failures-or-when-ping-works-but-ssh-fails.html&quot;&gt;AWS Tutorial 10&lt;/a&gt;, we had an issue with AWS instances losing the their ability to SSH into them.  That was written on October 1st and since then we’ve seen it happen over and over again.  Getting this kind of problem addressed requires really good diagnostic skills and there is always a lot to learn from the troubleshooting process.  I dragged a consultant in for an hour of screen sharing figuring that even one good idea would just the cost of the hour.  And here was the result of his talks with me:&lt;/p&gt;
+
+&lt;h1 id=&quot;disk-space&quot;&gt;Disk Space?&lt;/h1&gt;
+
+&lt;p&gt;Rule number 1 is always start with disk space.  The consultant brought this up first thing and I agree whole heartedly.  Happily I’m now an ansible user so I was able to show off this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible all -i inventories/production2 -u ubuntu -a &quot;df -h&quot;
+
+fiweb1 | SUCCESS | rc=0 &amp;gt;&amp;gt;
+Filesystem      Size  Used Avail Use% Mounted on
+udev             32G   12K   32G   1% /dev
+tmpfs           6.3G  384K  6.3G   1% /run
+/dev/xvda1      7.8G  3.7G  3.7G  50% /
+none            4.0K     0  4.0K   0% /sys/fs/cgroup
+none            5.0M     0  5.0M   0% /run/lock
+none             32G     0   32G   0% /run/shm
+none            100M     0  100M   0% /run/user
+
+ficrawlerbig | SUCCESS | rc=0 &amp;gt;&amp;gt;
+Filesystem      Size  Used Avail Use% Mounted on
+udev             32G   12K   32G   1% /dev
+tmpfs           6.3G  384K  6.3G   1% /run
+/dev/xvda1      7.8G  3.7G  3.7G  50% /
+none            4.0K     0  4.0K   0% /sys/fs/cgroup
+none            5.0M     0  5.0M   0% /run/lock
+none             32G     0   32G   0% /run/shm
+none            100M     0  100M   0% /run/user
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;what-do-these-boxes-do&quot;&gt;What Do These Boxes Do?&lt;/h1&gt;
+
+&lt;p&gt;The next step for the consultant was understanding so he asked me “what’s going on here?”  So I explained that all of these boxes are running a custom built, multi threaded crawler that we call the ucrawler.  It is a thread pool style architecture that pops items off a redis queue, processes them and then moves onto the next one.  This code was first written in 2011 and has been in daily use ever since.  Based on the tens of millions of records of data that this code has processed since 2011, I’ve been reluctant to point the finger at it.  Oh and yeah, I was the author.  Sigh.  And yet I know all too well that whenever threads are involved, you look at the threads.&lt;/p&gt;
+
+&lt;h1 id=&quot;lock-everything-down&quot;&gt;Lock Everything Down&lt;/h1&gt;
+
+&lt;p&gt;Given that AWS is a target rich environment for intrusion, its wise to lock things down so I did the following:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;restricted ssh logins to a small list of IP addresses&lt;/li&gt;
+  &lt;li&gt;installed fail2ban on all boxes&lt;/li&gt;
+  &lt;li&gt;turned off all services on crawler boxes other than the crawler itself&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Here’s the ansible tasks for 2 and 3:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- name: Install fail2ban
+  apt: name=fail2ban state=present
+
+- name: stop_sendmail
+  service: name=sendmail state=stopped
+  
+- name: stop_apache2
+  service: name=apache2 state=stopped
+
+- name: stop_redis
+  service: name=redis state=stopped
+  
+- name: stop_memcached
+  service: name=memcached state=stopped
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To run this against our fleet of boxes I can just do this for fail2ban (its part of the overall machine_setup role):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/production2  playbook_crawler.yml  --tags=&quot;machine_setup&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And a similar statement will shut down the services:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/production2  playbook_crawler.yml  --tags=&quot;services&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Originally I had been planning to have these boxes crawl and provide front end web services.  However that thinking is not only bad but also predated my mastering ansible.  Now that I can provision boxes to do exactly what I want, well, they will do only one thing – single purpose.&lt;/p&gt;
+
+&lt;p&gt;Note: This I did before the consultant.&lt;/p&gt;
+
+&lt;h1 id=&quot;shared-tenancy&quot;&gt;Shared Tenancy&lt;/h1&gt;
+
+&lt;p&gt;We used to run on dedicated hardware.  Now we are running on “shared tenancy” which means that someone else is using the same box and everything is virtualized.  Technically we could be affected by what’s referred to as “Nearest Neighbor” problems where a heavy user close to you is a problem.  Given that this is happening on 8 out of 8 aws instances, I think that’s an unlikely possibility.&lt;/p&gt;
+
+&lt;p&gt;Note: This I did before the consultant.&lt;/p&gt;
+
+&lt;h1 id=&quot;whats-changed&quot;&gt;What’s Changed?&lt;/h1&gt;
+
+&lt;p&gt;The consultant’s next question was the obvious one – given that this code used to work fine, well, the logical question is “what changed?”.  &lt;em&gt;Chuckle&lt;/em&gt;  Well everything:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;data center - from our own on dedicated hardware to AWS on shared tenancy&lt;/li&gt;
+  &lt;li&gt;ruby version - 1.9.3 to 2.3.1&lt;/li&gt;
+  &lt;li&gt;rails - 4.1.4 to 4.2.7&lt;/li&gt;
+  &lt;li&gt;rvm - per user RVM install to system level RVM install&lt;/li&gt;
+  &lt;li&gt;gemfile and gemfile order&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;That’s a lot of changes.  I’ll return to this topic.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-diagnostic-process&quot;&gt;The Diagnostic Process&lt;/h1&gt;
+
+&lt;p&gt;The consultant wanted to see everything this actually happen so here’s how I went about that.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-1-reboot-the-world&quot;&gt;Step 1: Reboot the World&lt;/h2&gt;
+
+&lt;p&gt;In order to determine which boxes were actually down, the easiest thing was to run an ansible command like the df -h above and then correlate that to instance ids.  Then the EC2 console could be used to reboot machines selectively.  Out of 8 crawler boxes we had 7 which needed a reboot.  That one box that now has a 15 hour uptime?  Its interesting and we’ll look at that again.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-2-ssh-into-everything-and-tmux-to-the-rescue&quot;&gt;Step 2: SSH Into Everything and Tmux to the Rescue&lt;/h2&gt;
+
+&lt;p&gt;The next step is to get into every box via SSH.  Happily I’ve set up a Tmuxinator yaml file which I can use to arrow up / arrow down between boxes.  And since I run a local tmux installation on a different hot key from the server side one I can effectively tunnel from my local box into the remote boxes and still have tmux available to me.&lt;/p&gt;
+
+&lt;p&gt;Note: &lt;a href=&quot;https://tmux.github.io/&quot;&gt;Tmux&lt;/a&gt; is a terminal multiplexer that lets you maintain multiple connections to different boxes and even built a user interface like an IDE out of classical bash terminals.  It is one of those technologies that you don’t even know is important until you need it and then you don’t know how you ever lived without it.  &lt;a href=&quot;https://github.com/tmuxinator/tmuxinator&quot;&gt;Tmuxinator&lt;/a&gt; is a Ruby gem which helps with configuration for it since native tmux is kind of sucky.&lt;/p&gt;
+
+&lt;p&gt;Once we got into the boxes we executed a tmn crawl_q3 command which created a tmux session for our crawl.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/aws/ssh_debugging_tmux.png&quot; alt=&quot;ssh_debugging_tmux.png.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;step-3-make-it-fail-fast&quot;&gt;Step 3: Make It Fail Fast&lt;/h2&gt;
+
+&lt;p&gt;The next step was to get everything running.  Once we had ssh’d into the boxes and setup the tmux session, it was just a matter of executing this supervise statement:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd /var/www/apps/banks/current &amp;amp;&amp;amp; supervise /var/www/apps/banks/current/supervise/banks_crawl_25
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Supervise is from DJ Bernstein’s &lt;a href=&quot;https://cr.yp.to/daemontools.html&quot;&gt;daemon tools&lt;/a&gt; and is my all time favorite way to keep an unreliable process running.  Because this is ruby and there are threads involved, we’ll see segfaults from time to time and supervise keeps everything running.  And, yes, I know that segfaults are another issue but I’ve lived with crappy ruby performance and reliability for so long now that it just doesn’t phase me anymore.  I had hoped that they would go away with Ruby 2.3.1 but, well, sigh.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-4-htop-and-watch&quot;&gt;Step 4: Htop and Watch&lt;/h2&gt;
+
+&lt;p&gt;Since I’m now running ansible I can easily provision a robust set of dev tools on every box.  One of those is &lt;a href=&quot;http://hisham.hm/htop/&quot;&gt;htop&lt;/a&gt; which is just a better version of top – but top itself is wonderful and htop even more wonderful.  By running htop across all boxes and then using tmux to easily navigate between them we could watch memory rise dramatically over the course of the crawler’s execution.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/aws/ssh_debugging_htop.png&quot; alt=&quot;ssh_debugging_htop.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;step-5-the-one-box-that-didnt-die-yet&quot;&gt;Step 5: The One Box that Didn’t Die Yet&lt;/h2&gt;
+
+&lt;p&gt;Toggling between htop and the tmux session running the crawler itself let us watch the execution speed.  One thing that was interesting was comparing performance (as measured by watching the onscreen logging scroll past) between the box that was still up and the new boxes we had just started.  We observed roughly a 5x difference in performance.  This is generally an indication of some kind of memory issue whether garbage collection issues or something else.  The simple fact that the crawler gets dramatically slower over time is an indication of an overall problem whether memory or threading.&lt;/p&gt;
+
+&lt;p&gt;Note: Just watching how things work and then looking across different boxes for similarities or differences is a powerful and often overlooked technique.  It is just as important to look with your &lt;strong&gt;brain&lt;/strong&gt; as it is with your &lt;strong&gt;eyes&lt;/strong&gt; – if you don’t try and actually understand the meaning of the characteristics you witness, well, it isn’t worth much.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-6-wait-for-it&quot;&gt;Step 6: Wait for It&lt;/h2&gt;
+
+&lt;p&gt;With all due apologies to &lt;a href=&quot;http://how-i-met-your-mother.wikia.com/wiki/Wait_for_it_(catchphrase)&quot;&gt;Barney&lt;/a&gt;, the next step was to just wait for it to happen – ssh to shut down.  By running ansible’s df -h test from my local box and keeping htop running, what we saw was that when memory usage approached the size of the box itself, well, WHAM!  Inbound ssh traffic would shut down.  We were able to reliably repeat this across most of the 7 boxes we were using to test things.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion-great-ghu-it-is-an-oom-problem&quot;&gt;Conclusion: Great Ghu It Is An OOM Problem!&lt;/h2&gt;
+
+&lt;p&gt;When a linux box runs out of memory, there is a software component called the &lt;a href=&quot;https://lwn.net/Articles/317814/&quot;&gt;OOM Killer&lt;/a&gt; which is supposed to kill the offending process.  And, for some bizarre reason, it isn’t working.  Or, perhaps, it is working and the process getting killed is actually OpenSSH itself.  Or maybe it just isn’t working.  Here’s an example from /var/log/syslog and this indicates to me that its not actually working:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;grep -i kill /var/log/syslog
+Sep 29 13:53:11 ip-172-31-35-106 kernel: [   15.917391] init: failsafe main process (827) killed by TERM signal
+Sep 29 13:53:13 ip-172-31-35-106 kernel: [   18.105812] init: plymouth-upstart-bridge main process (231) killed by TERM signal
+Oct  3 14:26:12 ip-172-31-32-53 kernel: [   14.846657] init: failsafe main process (747) killed by TERM signal
+Oct  3 22:19:59 ip-172-31-32-53 kernel: [28441.944201] ucrawler.rb:213 invoked oom-killer: gfp_mask=0x201da, order=0, oom_score_adj=0
+Oct  3 22:19:59 ip-172-31-32-53 kernel: [28441.944237]  [&amp;lt;ffffffff81155ba1&amp;gt;] oom_kill_process+0x201/0x360
+Oct  3 22:19:59 ip-172-31-32-53 kernel: [28441.944401] Out of memory: Kill process 25910 (ruby) score 979 or sacrifice child
+Oct  3 22:19:59 ip-172-31-32-53 kernel: [28441.948805] Killed process 25910 (ruby) total-vm:16287724kB, anon-rss:15310180kB, file-rss:0kB
+Oct  4 08:13:15 ip-172-31-32-53 kernel: [   88.033317] init: failsafe main process (835) killed by TERM signal
+Oct  5 08:27:27 ip-172-31-32-53 kernel: [   76.630167] init: failsafe main process (834) killed by TERM signal
+Oct  5 15:38:54 ip-172-31-32-53 kernel: [   84.972034] init: failsafe main process (836) killed by TERM signal
+Oct  5 18:30:05 ip-172-31-32-53 kernel: [   21.974995] init: failsafe main process (836) killed by TERM signal
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This box had ssh go down on it repeatedly from the 3rd to 5th but there’s no reference to OOM being invoked after the 3rd.  Bizarre.  So we’ve got a hypothesis:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Something has changed from ruby 1.9.3 to ruby 2.3.1 - maybe it is threading; maybe it is an api that a gem relies on&lt;/li&gt;
+  &lt;li&gt;The ruby process is bloating up to 15 gigs of ram&lt;/li&gt;
+  &lt;li&gt;The Linux OOM killer isn’t killing the bloated process&lt;/li&gt;
+  &lt;li&gt;OpenSSH just doesn’t have head room to run at all&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now that we have a hypothesis, well, it is time to figure out the solution.&lt;/p&gt;
+
+&lt;h1 id=&quot;solving-it---the-options&quot;&gt;Solving It - The Options&lt;/h1&gt;
+
+&lt;p&gt;Now that the problem is apparent the question becomes how to solve it in a time sensitive fashion.  Right now this is a show stopper for us.  We can’t generate the data that we need to generate because our crawlers are effectively castrated (a crawler that runs for 30 minutes and then starts to die, well, that’s castration for you).&lt;/p&gt;
+
+&lt;h2 id=&quot;go-back-to-193--old-data-center&quot;&gt;Go Back to 1.9.3 / Old Data Center&lt;/h2&gt;
+
+&lt;p&gt;I spent literally years of my life fighting the issues in 1.9.3 (2011 to 2016) or as I refer to it “being locked in a 1.9.3 ghetto”.  I just can’t bear to go back and I’d rather &lt;em&gt;gargle glass&lt;/em&gt; then go back to my old data center.  Fail.  An interesting option would be to use htop in the old data center to watch things and see if similar memory patterns emerge but its entirely possible that the old data center had some level of kernel tuning that made it better at OOMM conditions.&lt;/p&gt;
+
+&lt;h2 id=&quot;autoscaling-group&quot;&gt;AutoScaling Group&lt;/h2&gt;
+
+&lt;p&gt;Unfortunately the easiest “solution” actually isn’t.  Remember that none of these boxes are actually “down” as they all pass the AWS monitoring metrics – instance availability and instance reachability.  Sigh.&lt;/p&gt;
+
+&lt;h2 id=&quot;read-the-change-logs&quot;&gt;Read the Change Logs&lt;/h2&gt;
+
+&lt;p&gt;The technically best suggestion of the day was actually the hardest to follow through on – read the change logs.  Obviously something changed in Ruby itself and that broke our threading.  Unfortunately I actually don’t think that reading the change logs will help all that much – this might not be a threading issue but it could also be a change to an API that some gem we rely on uses that is then causing the failure.  My great fear here is that N pages of change logs later I’m going “Hm….”&lt;/p&gt;
+
+&lt;h2 id=&quot;alternative-threading-library&quot;&gt;Alternative Threading Library&lt;/h2&gt;
+
+&lt;p&gt;An obvious idea is to move away from my own thread pool stuff to one of the more modern options like concurrent-ruby.  I did some experimentation with it but:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;the documentation is fairly awful; &lt;a href=&quot;http://stackoverflow.com/questions/27974017/how-ought-i-limit-thread-creation-using-concurrent-ruby&quot;&gt;I’m not the only one who thinks so&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;I can’t find a great way to represent what we did based on their examples&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Intellectually I like this idea best but given how much threaded code I’ve written the fact that I can’t see a mapping from what I need to how it works bothers me.  It is very possible, however, that it is me.  I’m an old dog and sometimes new tricks can be difficult.&lt;/p&gt;
+
+&lt;h2 id=&quot;sidekiq&quot;&gt;Sidekiq&lt;/h2&gt;
+
+&lt;p&gt;The best option is, somewhat to my dismay, &lt;a href=&quot;https://github.com/mperham/sidekiq&quot;&gt;Sidekiq&lt;/a&gt;.  Sidekiq is an asynchronous job processor and while I have immense respect for Mike Perham, the author, I had a bad experience with a different asynchronous job processor in another life and I’ve been gun shy ever since.  However this is a show stopper and, well, damn the torpedos, full speed ahead.  On to Sidekiq!  Here’s all that was needed to be done:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;add it to Gemfile&lt;/li&gt;
+  &lt;li&gt;bundle install&lt;/li&gt;
+  &lt;li&gt;create app/workers/crawler_worker.rb  (its a class)&lt;/li&gt;
+  &lt;li&gt;modify perform to load a site instance and call the crawl method&lt;/li&gt;
+  &lt;li&gt;modify our queue generation tools to call CrawlWorker.perform_async(‘’, id) (where id is a variable representing the site we want to crawl; it is just an ActiveRecord id so an integer)&lt;/li&gt;
+  &lt;li&gt;run bundle exec sidekiq on all previously running our own crawler&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Note: We actually had sidekiq in our Gemfile already but I wanted the description of steps to be complete.  A big part of the reason that I’m writing furiously as of late is to leave an intellectual trail for people who work with me.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-advantages-of-sidekiq&quot;&gt;The Advantages of Sidekiq&lt;/h3&gt;
+
+&lt;p&gt;Sidekiq, for us, actually has some real advantages:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;HoneyBadger is supported and, well, you know how much I think the &lt;a href=&quot;https://fuzzygroup.github.io/blog/containers/2016/08/26/in-the-world-of-containers-honeybadger-will-reign-supreme-bye-bye-airbrake.html&quot;&gt;HoneyBadger guys just plain rock&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Our own crawler has its own load structure and dynamically called classes like HoneyBadger don’t come in correctly so this means we’ll get better error tracking&lt;/li&gt;
+  &lt;li&gt;It’s by &lt;a href=&quot;http://www.mikeperham.com/&quot;&gt;Mike Perham&lt;/a&gt;.  I always try and know who wrote the tools I rely on because knowing how well they do (or don’t do) their jobs tells me how much I can trust their work.  And I’ve been reading Mike’s work on threading for about 5 years now.  He is my goto source for when I don’t understand the hard stuff.&lt;/li&gt;
+  &lt;li&gt;As I watch 8 boxes running our software but under sidekiq, I’m seeing the same memory growth but what I’m not seeing is the machines dying the way they have been.  Out of 9 boxes that have been running for 9 hours and 5 minutes continuously (and working hard) only 1 is down.  I don’t know what tomorrow will bring and I could wake up and they could all be dead again but, right now, this is a massive improvement.  Update from 8 hours later – that one dead box is still dead but all the other boxes are still running and doing great!&lt;/li&gt;
+  &lt;li&gt;Doing a partially valid comparison of crawling volume in our old data center versus AWS for about 1/3 of one day is showing a 33 % increase in throughput.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;closing-thoughts-this-was-fun&quot;&gt;Closing Thoughts: This Was Fun!&lt;/h1&gt;
+
+&lt;p&gt;This was a terrible 72 hours of not really leaving the chair very much but it was also a metric crap ton of fun.  Debugging remains the essence of software engineering and this was a very enjoyable deep dive.&lt;/p&gt;
+
+&lt;h1 id=&quot;good-unix-command-line-tools&quot;&gt;Good Unix Command Line Tools&lt;/h1&gt;
+
+&lt;p&gt;Debugging like this brings a lot of old school unix stuff you don’t use every day.  Here are some of the things I used figuring this all out:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;list open files for a process id via procfs: ls -l /proc/7857/fd   &lt;a href=&quot;http://www.cyberciti.biz/faq/howto-linux-get-list-of-open-files/&quot;&gt;Ref&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;list open files for a process id via lsof: lsof -p 351 [Ref])(http://www.cyberciti.biz/faq/howto-linux-get-list-of-open-files/)&lt;/li&gt;
+  &lt;li&gt;list open files by process name via lsof: lsof -c ssh -c init &lt;a href=&quot;http://www.thegeekstuff.com/2012/08/lsof-command-examples/&quot;&gt;Ref&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;get all current limits: ulimit -a &lt;a href=&quot;http://askubuntu.com/questions/181215/too-many-open-files-how-to-find-the-culprit&quot;&gt;Ref&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;get all process ids by name: pgrep sshd &lt;a href=&quot;https://linux.die.net/man/1/pkill&quot;&gt;Ref&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;kill a process by name: pkill bash &lt;a href=&quot;https://linux.die.net/man/1/pkill&quot;&gt;Ref&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;memory used by a process name: pidof sidekiq&lt;/td&gt;
+          &lt;td&gt;xargs ps -o rss,sz,vsz &lt;a href=&quot;http://unix.stackexchange.com/questions/151510/find-out-the-memory-allocated-for-a-particular-process-in-ubuntu&quot;&gt;Ref&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;memory map of a process: pmap -p pid &lt;a href=&quot;http://unix.stackexchange.com/questions/151510/find-out-the-memory-allocated-for-a-particular-process-in-ubuntu&quot;&gt;Ref&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;other-references&quot;&gt;Other References&lt;/h1&gt;
+&lt;p&gt;Here are a few other things:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A great overview of &lt;a href=&quot;https://fredrb.github.io/2016/10/01/Understanding-proc/&quot;&gt;procfs&lt;/a&gt; that oddly came out just as I needed it.&lt;/li&gt;
+  &lt;li&gt;Curious about how much memory your gems are using?  I was and I found &lt;a href=&quot;http://blog.honeybadger.io/profile-your-gem-memory-usage-with-derailed/&quot;&gt;derailed&lt;/a&gt;!&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Thu, 06 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/10/06/aws-tutorial-14-diagnosing-ssh-failures-take-2.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/06/aws-tutorial-14-diagnosing-ssh-failures-take-2.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ssh</category>
+        
+        <category>linux</category>
+        
+        <category>ansible</category>
+        
+        <category>tmux</category>
+        
+        <category>tmuxinator</category>
+        
+        <category>debugging</category>
+        
+        <category>software_engineering</category>
+        
+        <category>ruby</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
     
       <item>
         <title>You Do All This On A MacBook Air???</title>
@@ -830,133 +1123,6 @@ ansible_ssh_private_key_file = /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
         <category>aws</category>
         
         <category>cloudwatch</category>
-        
-        
-        <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>AWS Tutorial 10 - Diagnosing SSH Failures or When Ping Works But SSH Fails</title>
-        <description>&lt;p&gt;I just had the issue where a Capistrano deploy onto our AWS cluster of boxes failed.  This let me into the following process of debugging:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Can I ping each box?  Yes!&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Can I ssh into each box?  No!  The box we name ficrawler2 was unable to be ssh’d into and gave this error:&lt;/p&gt;
-
-    &lt;p&gt;ssh ficrawler2
-ssh_exchange_identification: read: Operation timed out&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;My next action was to look at the instance in the web console and discover that it was actually reachable from the perspective of:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;System reachability check passed&lt;/li&gt;
-  &lt;li&gt;Instance reachability check passed&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p class=&quot;center left&quot;&gt;&lt;img src=&quot;/blog/assets/aws/aws_tutorial_10_01.png&quot; alt=&quot;aws_tutorial_10_01.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This makes me think that SSH itself went down but external network metrics like ping remained up.  Next step up is to reboot the box.  And I did that and the problem persisted.  This led me to thinking that there’s a lower level problem here, possibly network layer?&lt;/p&gt;
-
-&lt;p&gt;Now from my ssh config tutorial you might know that my ssh config file defined ficrawler2.  Here are the particulars:&lt;/p&gt;
-
-&lt;p&gt;Host ficrawler2
-    Hostname ec2-54-68-16-169.us-west-2.compute.amazonaws.com
-    User ubuntu
-    IdentityFile /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
-    Port 22&lt;/p&gt;
-
-&lt;p&gt;So this lets us construct a debuggable ssh connect line:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh -i &quot;/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem&quot; ubuntu@54.68.16.169 -vv
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The result of the ssh -i line above will be a very long string of ssh commands showing what happened.&lt;/p&gt;
-
-&lt;p&gt;Unfortunately by the time I did the research to figure this out and setup this blog post, ssh returned and I’m left scratching my head more than a bit.&lt;/p&gt;
-
-&lt;h1 id=&quot;lessons-learned&quot;&gt;Lessons Learned&lt;/h1&gt;
-
-&lt;p&gt;Here’s what we now know:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;A box can be ping’able but not ssh’able&lt;/li&gt;
-  &lt;li&gt;Next time I may want to not reboot so quickly&lt;/li&gt;
-  &lt;li&gt;A reboot doesn’t necessarily clear it up so the underlying box might actually have been fine&lt;/li&gt;
-  &lt;li&gt;I need to write the ssh test line faster next time&lt;/li&gt;
-  &lt;li&gt;It is very unclear how AWS cloud watch can be used to test for a box that is unable to be ssh’d into; that may not be viable (monitoring it could actually be construed as an attack)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;update-1&quot;&gt;Update 1&lt;/h1&gt;
-
-&lt;p&gt;This has continued to happen and I was able to capture the diagnostic output:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh -i &quot;/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem&quot; ubuntu@52.89.105.4 -vv
-OpenSSH_6.9p1, LibreSSL 2.1.8
-debug1: Reading configuration data /Users/sjohnson/.ssh/config
-debug1: Reading configuration data /etc/ssh/ssh_config
-debug1: /etc/ssh/ssh_config line 20: Applying options for *
-debug1: /etc/ssh/ssh_config line 102: Applying options for *
-debug2: ssh_connect: needpriv 0
-debug1: Connecting to 52.89.105.4 [52.89.105.4] port 22.
-debug1: Connection established.
-debug1: key_load_public: No such file or directory
-debug1: identity file /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem type -1
-debug1: key_load_public: No such file or directory
-debug1: identity file /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem-cert type -1
-debug1: Enabling compatibility mode for protocol 2.0
-debug1: Local version string SSH-2.0-OpenSSH_6.9
-ssh_exchange_identification: read: Connection reset by peer
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;update-2---the-response-from-aws-tech-support&quot;&gt;Update 2 - The Response from AWS Tech Support&lt;/h1&gt;
-
-&lt;p&gt;Good Day,&lt;/p&gt;
-
-&lt;p&gt;I understand that you are unable to access some of your instances via ssh at random times. Please correct me if I miss understood.&lt;/p&gt;
-
-&lt;p&gt;Are you still experiencing the issue, or was the problem resolved after the reboot? I’ve noticed that all the instances with the name “crawler” was started around the same time (2016-10-03 14:25:38 UTC ). Did you have the same issue on all of these instances?&lt;/p&gt;
-
-&lt;p&gt;Normally when an instance is inaccessible via ssh, it could indicate a network error or high CPU utilization on the instance. I had a look at the instance metrics for CPU and networking, and all seems to be within acceptable ranges. I can confirm that there are no failures or events on the underlying hardware.&lt;/p&gt;
-
-&lt;p&gt;I understand that you want to investigate the cause of the issue and prevent it from happening again.&lt;/p&gt;
-
-&lt;p&gt;The best place to start with troubleshooting is to have a look at the OS log files. For Ubuntu; you can have a look in the /var/log/syslog file, or the output of the dmesg command. Please have a look for any warnings or error messages around the time that you’ve experienced the issues.&lt;/p&gt;
-
-&lt;p&gt;What error message did you get when you tried to ssh to the instances?&lt;/p&gt;
-
-&lt;p&gt;Were you able to consume any other service that was running on these instances? For example could you still access the web page or MySQL?&lt;/p&gt;
-
-&lt;p&gt;Did you try to access the instances from the internet or from another instance on the same network range?&lt;/p&gt;
-
-&lt;p&gt;Can you perform a traceroute to the instances now, and again when you are seeing the issue? This can help identify network issues.&lt;/p&gt;
-
-&lt;p&gt;I also see that your security group, sg-DFDDFD, allows ssh access from the world (0.0.0.0/0). Leaving port 22 open to the world is a security risk as it leaves your instances vulnerable for attack. I would recommend that you remove this inbound rule and only allow ssh access from trusted IP addresses.&lt;/p&gt;
-
-&lt;p&gt;If you want to eliminate manual intervention when an instance fails, you can have a look at Auto Scaling. This will automatically start new instances or stop faulty ones when health checks fails. You can reference the below links for more information about Auto Scaling if you’re interested.&lt;/p&gt;
-
-&lt;p&gt;https://aws.amazon.com/autoscaling/
-http://docs.aws.amazon.com/autoscaling/latest/userguide/GettingStartedTutorial.html&lt;/p&gt;
-
-&lt;p&gt;Best regards,&lt;/p&gt;
-
-&lt;p&gt;Stefan F.
-Amazon Web Services
-We value your feedback. Please rate my response using the link below.&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 01 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-10-diagnosing-ssh-failures-or-when-ping-works-but-ssh-fails.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-10-diagnosing-ssh-failures-or-when-ping-works-but-ssh-fails.html</guid>
-        
-        <category>aws</category>
-        
-        <category>ssh</category>
         
         
         <category>aws</category>
