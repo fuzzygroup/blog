@@ -6,1126 +6,344 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 06 Oct 2016 05:03:01 -0400</pubDate>
-    <lastBuildDate>Thu, 06 Oct 2016 05:03:01 -0400</lastBuildDate>
+    <pubDate>Mon, 10 Oct 2016 13:24:32 -0400</pubDate>
+    <lastBuildDate>Mon, 10 Oct 2016 13:24:32 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
-        <title>AWS Tutorial 14 - Diagnosing SSH Failures Take 2</title>
-        <description>&lt;p&gt;As I wrote about in &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-10-diagnosing-ssh-failures-or-when-ping-works-but-ssh-fails.html&quot;&gt;AWS Tutorial 10&lt;/a&gt;, we had an issue with AWS instances losing the their ability to SSH into them.  That was written on October 1st and since then we’ve seen it happen over and over again.  Getting this kind of problem addressed requires really good diagnostic skills and there is always a lot to learn from the troubleshooting process.  I dragged a consultant in for an hour of screen sharing figuring that even one good idea would just the cost of the hour.  And here was the result of his talks with me:&lt;/p&gt;
+        <title>Rates</title>
+        <description>&lt;p&gt;Picture of me on the side&lt;/p&gt;
 
-&lt;h1 id=&quot;disk-space&quot;&gt;Disk Space?&lt;/h1&gt;
+&lt;p&gt;Resume link&lt;/p&gt;
 
-&lt;p&gt;Rule number 1 is always start with disk space.  The consultant brought this up first thing and I agree whole heartedly.  Happily I’m now an ansible user so I was able to show off this:&lt;/p&gt;
+&lt;p&gt;On a short term basis my rate is $200 per hour.  If you’d like to negotiate an ongoing arrangement that can be done and that can pretty dramatically affect the rate.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible all -i inventories/production2 -u ubuntu -a &quot;df -h&quot;
+&lt;p&gt;Here’s what I bring to the table&lt;/p&gt;
 
-fiweb1 | SUCCESS | rc=0 &amp;gt;&amp;gt;
-Filesystem      Size  Used Avail Use% Mounted on
-udev             32G   12K   32G   1% /dev
-tmpfs           6.3G  384K  6.3G   1% /run
-/dev/xvda1      7.8G  3.7G  3.7G  50% /
-none            4.0K     0  4.0K   0% /sys/fs/cgroup
-none            5.0M     0  5.0M   0% /run/lock
-none             32G     0   32G   0% /run/shm
-none            100M     0  100M   0% /run/user
+&lt;p&gt;What can I do for you?&lt;/p&gt;
 
-ficrawlerbig | SUCCESS | rc=0 &amp;gt;&amp;gt;
-Filesystem      Size  Used Avail Use% Mounted on
-udev             32G   12K   32G   1% /dev
-tmpfs           6.3G  384K  6.3G   1% /run
-/dev/xvda1      7.8G  3.7G  3.7G  50% /
-none            4.0K     0  4.0K   0% /sys/fs/cgroup
-none            5.0M     0  5.0M   0% /run/lock
-none             32G     0   32G   0% /run/shm
-none            100M     0  100M   0% /run/user
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;p&gt;Who the Heck Are You?&lt;/p&gt;
 
-&lt;h1 id=&quot;what-do-these-boxes-do&quot;&gt;What Do These Boxes Do?&lt;/h1&gt;
+&lt;p&gt;At heart I’m a software engineer.  Nothing makes me happier than solving complex problems with code.  But I can also qualify as senior technical staff for an organization.&lt;/p&gt;
 
-&lt;p&gt;The next step for the consultant was understanding so he asked me “what’s going on here?”  So I explained that all of these boxes are running a custom built, multi threaded crawler that we call the ucrawler.  It is a thread pool style architecture that pops items off a redis queue, processes them and then moves onto the next one.  This code was first written in 2011 and has been in daily use ever since.  Based on the tens of millions of records of data that this code has processed since 2011, I’ve been reluctant to point the finger at it.  Oh and yeah, I was the author.  Sigh.  And yet I know all too well that whenever threads are involved, you look at the threads.&lt;/p&gt;
+&lt;p&gt;What Have You Built&lt;/p&gt;
 
-&lt;h1 id=&quot;lock-everything-down&quot;&gt;Lock Everything Down&lt;/h1&gt;
-
-&lt;p&gt;Given that AWS is a target rich environment for intrusion, its wise to lock things down so I did the following:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;restricted ssh logins to a small list of IP addresses&lt;/li&gt;
-  &lt;li&gt;installed fail2ban on all boxes&lt;/li&gt;
-  &lt;li&gt;turned off all services on crawler boxes other than the crawler itself&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Here’s the ansible tasks for 2 and 3:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- name: Install fail2ban
-  apt: name=fail2ban state=present
-
-- name: stop_sendmail
-  service: name=sendmail state=stopped
-  
-- name: stop_apache2
-  service: name=apache2 state=stopped
-
-- name: stop_redis
-  service: name=redis state=stopped
-  
-- name: stop_memcached
-  service: name=memcached state=stopped
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;To run this against our fleet of boxes I can just do this for fail2ban (its part of the overall machine_setup role):&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/production2  playbook_crawler.yml  --tags=&quot;machine_setup&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And a similar statement will shut down the services:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/production2  playbook_crawler.yml  --tags=&quot;services&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Originally I had been planning to have these boxes crawl and provide front end web services.  However that thinking is not only bad but also predated my mastering ansible.  Now that I can provision boxes to do exactly what I want, well, they will do only one thing – single purpose.&lt;/p&gt;
-
-&lt;p&gt;Note: This I did before the consultant.&lt;/p&gt;
-
-&lt;h1 id=&quot;shared-tenancy&quot;&gt;Shared Tenancy&lt;/h1&gt;
-
-&lt;p&gt;We used to run on dedicated hardware.  Now we are running on “shared tenancy” which means that someone else is using the same box and everything is virtualized.  Technically we could be affected by what’s referred to as “Nearest Neighbor” problems where a heavy user close to you is a problem.  Given that this is happening on 8 out of 8 aws instances, I think that’s an unlikely possibility.&lt;/p&gt;
-
-&lt;p&gt;Note: This I did before the consultant.&lt;/p&gt;
-
-&lt;h1 id=&quot;whats-changed&quot;&gt;What’s Changed?&lt;/h1&gt;
-
-&lt;p&gt;The consultant’s next question was the obvious one – given that this code used to work fine, well, the logical question is “what changed?”.  &lt;em&gt;Chuckle&lt;/em&gt;  Well everything:&lt;/p&gt;
+&lt;p&gt;Over the years I’ve built a lot of shipping products including:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;data center - from our own on dedicated hardware to AWS on shared tenancy&lt;/li&gt;
-  &lt;li&gt;ruby version - 1.9.3 to 2.3.1&lt;/li&gt;
-  &lt;li&gt;rails - 4.1.4 to 4.2.7&lt;/li&gt;
-  &lt;li&gt;rvm - per user RVM install to system level RVM install&lt;/li&gt;
-  &lt;li&gt;gemfile and gemfile order&lt;/li&gt;
+  &lt;li&gt;The HyperWriter family of authoring tools - HyperWriter, HyperWriter for Training, HyperWriter Professional, HyperAwk&lt;/li&gt;
+  &lt;li&gt;The Doctor Dobbs Journal on CD-ROM&lt;/li&gt;
+  &lt;li&gt;eduFire - An online marketplace for freelance educators and students to discover each other and run for pay video learning sessions using the Adobe Connect platform (Rails)&lt;/li&gt;
+  &lt;li&gt;The Feedster blog search platform&lt;/li&gt;
+  &lt;li&gt;AppData -&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;That’s a lot of changes.  I’ll return to this topic.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-diagnostic-process&quot;&gt;The Diagnostic Process&lt;/h1&gt;
-
-&lt;p&gt;The consultant wanted to see everything this actually happen so here’s how I went about that.&lt;/p&gt;
-
-&lt;h2 id=&quot;step-1-reboot-the-world&quot;&gt;Step 1: Reboot the World&lt;/h2&gt;
-
-&lt;p&gt;In order to determine which boxes were actually down, the easiest thing was to run an ansible command like the df -h above and then correlate that to instance ids.  Then the EC2 console could be used to reboot machines selectively.  Out of 8 crawler boxes we had 7 which needed a reboot.  That one box that now has a 15 hour uptime?  Its interesting and we’ll look at that again.&lt;/p&gt;
-
-&lt;h2 id=&quot;step-2-ssh-into-everything-and-tmux-to-the-rescue&quot;&gt;Step 2: SSH Into Everything and Tmux to the Rescue&lt;/h2&gt;
-
-&lt;p&gt;The next step is to get into every box via SSH.  Happily I’ve set up a Tmuxinator yaml file which I can use to arrow up / arrow down between boxes.  And since I run a local tmux installation on a different hot key from the server side one I can effectively tunnel from my local box into the remote boxes and still have tmux available to me.&lt;/p&gt;
-
-&lt;p&gt;Note: &lt;a href=&quot;https://tmux.github.io/&quot;&gt;Tmux&lt;/a&gt; is a terminal multiplexer that lets you maintain multiple connections to different boxes and even built a user interface like an IDE out of classical bash terminals.  It is one of those technologies that you don’t even know is important until you need it and then you don’t know how you ever lived without it.  &lt;a href=&quot;https://github.com/tmuxinator/tmuxinator&quot;&gt;Tmuxinator&lt;/a&gt; is a Ruby gem which helps with configuration for it since native tmux is kind of sucky.&lt;/p&gt;
-
-&lt;p&gt;Once we got into the boxes we executed a tmn crawl_q3 command which created a tmux session for our crawl.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/aws/ssh_debugging_tmux.png&quot; alt=&quot;ssh_debugging_tmux.png.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;step-3-make-it-fail-fast&quot;&gt;Step 3: Make It Fail Fast&lt;/h2&gt;
-
-&lt;p&gt;The next step was to get everything running.  Once we had ssh’d into the boxes and setup the tmux session, it was just a matter of executing this supervise statement:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd /var/www/apps/banks/current &amp;amp;&amp;amp; supervise /var/www/apps/banks/current/supervise/banks_crawl_25
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Supervise is from DJ Bernstein’s &lt;a href=&quot;https://cr.yp.to/daemontools.html&quot;&gt;daemon tools&lt;/a&gt; and is my all time favorite way to keep an unreliable process running.  Because this is ruby and there are threads involved, we’ll see segfaults from time to time and supervise keeps everything running.  And, yes, I know that segfaults are another issue but I’ve lived with crappy ruby performance and reliability for so long now that it just doesn’t phase me anymore.  I had hoped that they would go away with Ruby 2.3.1 but, well, sigh.&lt;/p&gt;
-
-&lt;h2 id=&quot;step-4-htop-and-watch&quot;&gt;Step 4: Htop and Watch&lt;/h2&gt;
-
-&lt;p&gt;Since I’m now running ansible I can easily provision a robust set of dev tools on every box.  One of those is &lt;a href=&quot;http://hisham.hm/htop/&quot;&gt;htop&lt;/a&gt; which is just a better version of top – but top itself is wonderful and htop even more wonderful.  By running htop across all boxes and then using tmux to easily navigate between them we could watch memory rise dramatically over the course of the crawler’s execution.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/aws/ssh_debugging_htop.png&quot; alt=&quot;ssh_debugging_htop.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;step-5-the-one-box-that-didnt-die-yet&quot;&gt;Step 5: The One Box that Didn’t Die Yet&lt;/h2&gt;
-
-&lt;p&gt;Toggling between htop and the tmux session running the crawler itself let us watch the execution speed.  One thing that was interesting was comparing performance (as measured by watching the onscreen logging scroll past) between the box that was still up and the new boxes we had just started.  We observed roughly a 5x difference in performance.  This is generally an indication of some kind of memory issue whether garbage collection issues or something else.  The simple fact that the crawler gets dramatically slower over time is an indication of an overall problem whether memory or threading.&lt;/p&gt;
-
-&lt;p&gt;Note: Just watching how things work and then looking across different boxes for similarities or differences is a powerful and often overlooked technique.  It is just as important to look with your &lt;strong&gt;brain&lt;/strong&gt; as it is with your &lt;strong&gt;eyes&lt;/strong&gt; – if you don’t try and actually understand the meaning of the characteristics you witness, well, it isn’t worth much.&lt;/p&gt;
-
-&lt;h2 id=&quot;step-6-wait-for-it&quot;&gt;Step 6: Wait for It&lt;/h2&gt;
-
-&lt;p&gt;With all due apologies to &lt;a href=&quot;http://how-i-met-your-mother.wikia.com/wiki/Wait_for_it_(catchphrase)&quot;&gt;Barney&lt;/a&gt;, the next step was to just wait for it to happen – ssh to shut down.  By running ansible’s df -h test from my local box and keeping htop running, what we saw was that when memory usage approached the size of the box itself, well, WHAM!  Inbound ssh traffic would shut down.  We were able to reliably repeat this across most of the 7 boxes we were using to test things.&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion-great-ghu-it-is-an-oom-problem&quot;&gt;Conclusion: Great Ghu It Is An OOM Problem!&lt;/h2&gt;
-
-&lt;p&gt;When a linux box runs out of memory, there is a software component called the &lt;a href=&quot;https://lwn.net/Articles/317814/&quot;&gt;OOM Killer&lt;/a&gt; which is supposed to kill the offending process.  And, for some bizarre reason, it isn’t working.  Or, perhaps, it is working and the process getting killed is actually OpenSSH itself.  Or maybe it just isn’t working.  Here’s an example from /var/log/syslog and this indicates to me that its not actually working:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;grep -i kill /var/log/syslog
-Sep 29 13:53:11 ip-172-31-35-106 kernel: [   15.917391] init: failsafe main process (827) killed by TERM signal
-Sep 29 13:53:13 ip-172-31-35-106 kernel: [   18.105812] init: plymouth-upstart-bridge main process (231) killed by TERM signal
-Oct  3 14:26:12 ip-172-31-32-53 kernel: [   14.846657] init: failsafe main process (747) killed by TERM signal
-Oct  3 22:19:59 ip-172-31-32-53 kernel: [28441.944201] ucrawler.rb:213 invoked oom-killer: gfp_mask=0x201da, order=0, oom_score_adj=0
-Oct  3 22:19:59 ip-172-31-32-53 kernel: [28441.944237]  [&amp;lt;ffffffff81155ba1&amp;gt;] oom_kill_process+0x201/0x360
-Oct  3 22:19:59 ip-172-31-32-53 kernel: [28441.944401] Out of memory: Kill process 25910 (ruby) score 979 or sacrifice child
-Oct  3 22:19:59 ip-172-31-32-53 kernel: [28441.948805] Killed process 25910 (ruby) total-vm:16287724kB, anon-rss:15310180kB, file-rss:0kB
-Oct  4 08:13:15 ip-172-31-32-53 kernel: [   88.033317] init: failsafe main process (835) killed by TERM signal
-Oct  5 08:27:27 ip-172-31-32-53 kernel: [   76.630167] init: failsafe main process (834) killed by TERM signal
-Oct  5 15:38:54 ip-172-31-32-53 kernel: [   84.972034] init: failsafe main process (836) killed by TERM signal
-Oct  5 18:30:05 ip-172-31-32-53 kernel: [   21.974995] init: failsafe main process (836) killed by TERM signal
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;This box had ssh go down on it repeatedly from the 3rd to 5th but there’s no reference to OOM being invoked after the 3rd.  Bizarre.  So we’ve got a hypothesis:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Something has changed from ruby 1.9.3 to ruby 2.3.1 - maybe it is threading; maybe it is an api that a gem relies on&lt;/li&gt;
-  &lt;li&gt;The ruby process is bloating up to 15 gigs of ram&lt;/li&gt;
-  &lt;li&gt;The Linux OOM killer isn’t killing the bloated process&lt;/li&gt;
-  &lt;li&gt;OpenSSH just doesn’t have head room to run at all&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Now that we have a hypothesis, well, it is time to figure out the solution.&lt;/p&gt;
-
-&lt;h1 id=&quot;solving-it---the-options&quot;&gt;Solving It - The Options&lt;/h1&gt;
-
-&lt;p&gt;Now that the problem is apparent the question becomes how to solve it in a time sensitive fashion.  Right now this is a show stopper for us.  We can’t generate the data that we need to generate because our crawlers are effectively castrated (a crawler that runs for 30 minutes and then starts to die, well, that’s castration for you).&lt;/p&gt;
-
-&lt;h2 id=&quot;go-back-to-193--old-data-center&quot;&gt;Go Back to 1.9.3 / Old Data Center&lt;/h2&gt;
-
-&lt;p&gt;I spent literally years of my life fighting the issues in 1.9.3 (2011 to 2016) or as I refer to it “being locked in a 1.9.3 ghetto”.  I just can’t bear to go back and I’d rather &lt;em&gt;gargle glass&lt;/em&gt; then go back to my old data center.  Fail.  An interesting option would be to use htop in the old data center to watch things and see if similar memory patterns emerge but its entirely possible that the old data center had some level of kernel tuning that made it better at OOMM conditions.&lt;/p&gt;
-
-&lt;h2 id=&quot;autoscaling-group&quot;&gt;AutoScaling Group&lt;/h2&gt;
-
-&lt;p&gt;Unfortunately the easiest “solution” actually isn’t.  Remember that none of these boxes are actually “down” as they all pass the AWS monitoring metrics – instance availability and instance reachability.  Sigh.&lt;/p&gt;
-
-&lt;h2 id=&quot;read-the-change-logs&quot;&gt;Read the Change Logs&lt;/h2&gt;
-
-&lt;p&gt;The technically best suggestion of the day was actually the hardest to follow through on – read the change logs.  Obviously something changed in Ruby itself and that broke our threading.  Unfortunately I actually don’t think that reading the change logs will help all that much – this might not be a threading issue but it could also be a change to an API that some gem we rely on uses that is then causing the failure.  My great fear here is that N pages of change logs later I’m going “Hm….”&lt;/p&gt;
-
-&lt;h2 id=&quot;alternative-threading-library&quot;&gt;Alternative Threading Library&lt;/h2&gt;
-
-&lt;p&gt;An obvious idea is to move away from my own thread pool stuff to one of the more modern options like concurrent-ruby.  I did some experimentation with it but:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;the documentation is fairly awful; &lt;a href=&quot;http://stackoverflow.com/questions/27974017/how-ought-i-limit-thread-creation-using-concurrent-ruby&quot;&gt;I’m not the only one who thinks so&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;I can’t find a great way to represent what we did based on their examples&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Intellectually I like this idea best but given how much threaded code I’ve written the fact that I can’t see a mapping from what I need to how it works bothers me.  It is very possible, however, that it is me.  I’m an old dog and sometimes new tricks can be difficult.&lt;/p&gt;
-
-&lt;h2 id=&quot;sidekiq&quot;&gt;Sidekiq&lt;/h2&gt;
-
-&lt;p&gt;The best option is, somewhat to my dismay, &lt;a href=&quot;https://github.com/mperham/sidekiq&quot;&gt;Sidekiq&lt;/a&gt;.  Sidekiq is an asynchronous job processor and while I have immense respect for Mike Perham, the author, I had a bad experience with a different asynchronous job processor in another life and I’ve been gun shy ever since.  However this is a show stopper and, well, damn the torpedos, full speed ahead.  On to Sidekiq!  Here’s all that was needed to be done:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;add it to Gemfile&lt;/li&gt;
-  &lt;li&gt;bundle install&lt;/li&gt;
-  &lt;li&gt;create app/workers/crawler_worker.rb  (its a class)&lt;/li&gt;
-  &lt;li&gt;modify perform to load a site instance and call the crawl method&lt;/li&gt;
-  &lt;li&gt;modify our queue generation tools to call CrawlWorker.perform_async(‘’, id) (where id is a variable representing the site we want to crawl; it is just an ActiveRecord id so an integer)&lt;/li&gt;
-  &lt;li&gt;run bundle exec sidekiq on all previously running our own crawler&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Note: We actually had sidekiq in our Gemfile already but I wanted the description of steps to be complete.  A big part of the reason that I’m writing furiously as of late is to leave an intellectual trail for people who work with me.&lt;/p&gt;
-
-&lt;h3 id=&quot;the-advantages-of-sidekiq&quot;&gt;The Advantages of Sidekiq&lt;/h3&gt;
-
-&lt;p&gt;Sidekiq, for us, actually has some real advantages:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;HoneyBadger is supported and, well, you know how much I think the &lt;a href=&quot;https://fuzzygroup.github.io/blog/containers/2016/08/26/in-the-world-of-containers-honeybadger-will-reign-supreme-bye-bye-airbrake.html&quot;&gt;HoneyBadger guys just plain rock&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;Our own crawler has its own load structure and dynamically called classes like HoneyBadger don’t come in correctly so this means we’ll get better error tracking&lt;/li&gt;
-  &lt;li&gt;It’s by &lt;a href=&quot;http://www.mikeperham.com/&quot;&gt;Mike Perham&lt;/a&gt;.  I always try and know who wrote the tools I rely on because knowing how well they do (or don’t do) their jobs tells me how much I can trust their work.  And I’ve been reading Mike’s work on threading for about 5 years now.  He is my goto source for when I don’t understand the hard stuff.&lt;/li&gt;
-  &lt;li&gt;As I watch 8 boxes running our software but under sidekiq, I’m seeing the same memory growth but what I’m not seeing is the machines dying the way they have been.  Out of 9 boxes that have been running for 9 hours and 5 minutes continuously (and working hard) only 1 is down.  I don’t know what tomorrow will bring and I could wake up and they could all be dead again but, right now, this is a massive improvement.  Update from 8 hours later – that one dead box is still dead but all the other boxes are still running and doing great!&lt;/li&gt;
-  &lt;li&gt;Doing a partially valid comparison of crawling volume in our old data center versus AWS for about 1/3 of one day is showing a 33 % increase in throughput.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;closing-thoughts-this-was-fun&quot;&gt;Closing Thoughts: This Was Fun!&lt;/h1&gt;
-
-&lt;p&gt;This was a terrible 72 hours of not really leaving the chair very much but it was also a metric crap ton of fun.  Debugging remains the essence of software engineering and this was a very enjoyable deep dive.&lt;/p&gt;
-
-&lt;h1 id=&quot;good-unix-command-line-tools&quot;&gt;Good Unix Command Line Tools&lt;/h1&gt;
-
-&lt;p&gt;Debugging like this brings a lot of old school unix stuff you don’t use every day.  Here are some of the things I used figuring this all out:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;list open files for a process id via procfs: ls -l /proc/7857/fd   &lt;a href=&quot;http://www.cyberciti.biz/faq/howto-linux-get-list-of-open-files/&quot;&gt;Ref&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;list open files for a process id via lsof: lsof -p 351 [Ref])(http://www.cyberciti.biz/faq/howto-linux-get-list-of-open-files/)&lt;/li&gt;
-  &lt;li&gt;list open files by process name via lsof: lsof -c ssh -c init &lt;a href=&quot;http://www.thegeekstuff.com/2012/08/lsof-command-examples/&quot;&gt;Ref&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;get all current limits: ulimit -a &lt;a href=&quot;http://askubuntu.com/questions/181215/too-many-open-files-how-to-find-the-culprit&quot;&gt;Ref&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;get all process ids by name: pgrep sshd &lt;a href=&quot;https://linux.die.net/man/1/pkill&quot;&gt;Ref&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;kill a process by name: pkill bash &lt;a href=&quot;https://linux.die.net/man/1/pkill&quot;&gt;Ref&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;memory used by a process name: pidof sidekiq&lt;/td&gt;
-          &lt;td&gt;xargs ps -o rss,sz,vsz &lt;a href=&quot;http://unix.stackexchange.com/questions/151510/find-out-the-memory-allocated-for-a-particular-process-in-ubuntu&quot;&gt;Ref&lt;/a&gt;&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;memory map of a process: pmap -p pid &lt;a href=&quot;http://unix.stackexchange.com/questions/151510/find-out-the-memory-allocated-for-a-particular-process-in-ubuntu&quot;&gt;Ref&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;other-references&quot;&gt;Other References&lt;/h1&gt;
-&lt;p&gt;Here are a few other things:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;A great overview of &lt;a href=&quot;https://fredrb.github.io/2016/10/01/Understanding-proc/&quot;&gt;procfs&lt;/a&gt; that oddly came out just as I needed it.&lt;/li&gt;
-  &lt;li&gt;Curious about how much memory your gems are using?  I was and I found &lt;a href=&quot;http://blog.honeybadger.io/profile-your-gem-memory-usage-with-derailed/&quot;&gt;derailed&lt;/a&gt;!&lt;/li&gt;
-&lt;/ul&gt;
-
+&lt;p&gt;And that doesn’t count the different products I’ve consulted on from time to time.  That’s just the full stack systems I’ve been primarily responsible for developing.&lt;/p&gt;
 </description>
-        <pubDate>Thu, 06 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/10/06/aws-tutorial-14-diagnosing-ssh-failures-take-2.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/06/aws-tutorial-14-diagnosing-ssh-failures-take-2.html</guid>
+        <pubDate>Mon, 10 Oct 2016 06:30:52 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/10/10/rates.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/10/rates.html</guid>
         
-        <category>aws</category>
         
-        <category>ssh</category>
+      </item>
+    
+      <item>
+        <title>What Nick Taught Me About Udemy, eBooks and More</title>
+        <description>
+</description>
+        <pubDate>Mon, 10 Oct 2016 05:56:22 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/udemy/2016/10/10/what-nick-taught-me-about-udemy-ebooks-and-more.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/udemy/2016/10/10/what-nick-taught-me-about-udemy-ebooks-and-more.html</guid>
         
-        <category>linux</category>
+        <category>udemy</category>
         
-        <category>ansible</category>
+        <category>ebooks</category>
         
-        <category>tmux</category>
         
-        <category>tmuxinator</category>
+        <category>udemy</category>
         
-        <category>debugging</category>
-        
-        <category>software_engineering</category>
+      </item>
+    
+      <item>
+        <title>A Conversation with Mike Perham</title>
+        <description>&lt;p&gt;One of the most gratifying aspects of working in the Open Source world is the ability to get to know the people who build the tools you rely on.  I’ve been in the Open Source world since ‘99 and I’ve been to a lot of conferences.  Not to humble brag but here are some of the people who’ve I’ve gotten to know:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Greg Stein / Apache&lt;/li&gt;
+  &lt;li&gt;Monte / MySQL&lt;/li&gt;
+  &lt;li&gt;George and Theo Schlossnagle / PHP&lt;/li&gt;
+  &lt;li&gt;Matt Mullenweg / WordPress and so much more&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This isn’t a humble brag because probably only one of these people &lt;em&gt;might&lt;/em&gt; recognize me on the street – maybe.  I’m a user of their stuff and I promote it as much as I can.  I’ve been using Apache and promoting it, honestly, because it is what I know.  But also because I know Greg and once upon a time he was chair of the Apache foundation.  And also because Apache has been good to me; it just works.  And I use MySQL / MariaDB not only because its fast and stable but also because I’ve seen my wife go shot for shot with Monty (picture a tiny red head drinking shots with a Finn; priceless).  I bailed out of the PHP world years and years ago but I still love the &lt;a href=&quot;https://www.sparkpost.com&quot;&gt;work&lt;/a&gt; that the Schlossnagle brothers do; I learned more solid computer science from &lt;a href=&quot;https://www.amazon.com/Advanced-PHP-Programming-George-Schlossnagle/dp/0672325616&quot;&gt;George’s book&lt;/a&gt; than I ever learned in college and I still read it from time to time when there’s a problem I know he would have a perspective on.  And I’m a fan of &lt;a href=&quot;https://fuzzygroup.github.io/blog/startup/2016/09/01/what-matt-mullenweg-taught-me.html&quot;&gt;Matt&lt;/a&gt; even though I moved to the dark side and use Jekyll.&lt;/p&gt;
+
+&lt;p&gt;Today I got the chance to know &lt;a href=&quot;http://www.mikeperham.com/&quot;&gt;Mike Perham&lt;/a&gt;, the author of &lt;a href=&quot;http://www.sidekiq.org&quot;&gt;Sidekiq&lt;/a&gt;, just a little bit.  I sat in on his weekly &lt;a href=&quot;http://sidekiq.org/support&quot;&gt;Happy Hour&lt;/a&gt;.  This is where he offers a video chat about Sidekiq and answers questions / gives suggestions.  Mike Perham is someone who’s intellectual work product is very familiar to me.  And I’ve long lauded his work as “the best guy in Ruby threading in known space”.  When people ask me about Ruby threading, I tend to just point them toward’s &lt;a href=&quot;http://www.mikeperham.com/&quot;&gt;Mike’s blog&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now, despite my positive opinions about Mike, I’ve actually used Sidekiq only sporadically.  I had a bad experience with asynchronous job processors years ago and ever since I’ve been gun shy.  I’ve always taken the perspective that when you’re doing big back end systems, your data processing is core to your application and you should own the IP.  So I wrote my own threaded code, years ago, and I’ve been using it ever since.  But when my code gave up the ghost with an MTBF of 30 minutes, Sidekiq leapt to my rescue and has given me a 38x improvement.  Machine’s still crash but I can now go to bed and sleep thru the night.  Given my recent trials and travails with SSH problems and machines crashing due to out of memory issues, I thought that talking to the literal source might at least give insight.  &lt;strong&gt;And it did&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here’s what I learned:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Mike is a very professional, very nice guy&lt;/li&gt;
+  &lt;li&gt;Shared tenancy on AWS really is an issue; nearest neighbors can actually hurt your performance pretty dramatically&lt;/li&gt;
+  &lt;li&gt;Redis really wants high performance box; not necessarily a ton of cores&lt;/li&gt;
+  &lt;li&gt;Memory leaks are always an issue; sometimes its your code; sometimes its a gem that you use or an update to a gem that you use (so it can be fixed and then a gem update causes it to happen again)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;THE ANSWER TO MY PROBLEM&lt;/strong&gt;: The best approach is belt and suspenders.  Memory leaks are as much a state of being in a dynamic, garbage collected language.  Even if it gets fixed, a gem update could break everything once again.  The best approach is to use process monitoring and simply kill the process and restart it if the memory use is too great.  Either use &lt;a href=&quot;https://mmonit.com/monit/&quot;&gt;Monit&lt;/a&gt; or &lt;a href=&quot;http://contribsys.com/inspeqtor/&quot;&gt;Inspeqtor&lt;/a&gt;.  Mike has a &lt;a href=&quot;http://contribsys.com/inspeqtor/&quot;&gt;great video&lt;/a&gt; on this page and I’d recommend watching it; having setup monit in the past, Inspeqtor looks awesome.&lt;/li&gt;
+  &lt;li&gt;Tracking down memory leaks in Ruby is hard and just may not be worth it.&lt;/li&gt;
+  &lt;li&gt;Process monitoring would also fix my ruby segfault issues&lt;/li&gt;
+  &lt;li&gt;I need to look into the commercial offerings for Sidekiq and Inspeqtor.  We’re already a commercial support customer for Sphinx; we might be able to be a commercial customer for Sidekiq.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Thank you very, very much Mike.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 10 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html</guid>
         
         <category>ruby</category>
         
-        
-        <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>You Do All This On A MacBook Air???</title>
-        <description>&lt;p&gt;I had an interesting pair programming session with &lt;a href=&quot;http://nickjanetakis.com/blog/&quot;&gt;someone&lt;/a&gt; today.  The situation was a complex debugging problem and I needed a second, experienced brain to walk the decision tree of issues with me.  He made an interesting comment when he first saw my screen:  &lt;strong&gt;&lt;em&gt;You do all this on a MacBook Air?&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Yep.  My primary compute resources for local work are:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;MacBook Air (13-inch, Early 2014), 1.7 GHz Intel Core i7, 8 GB 1600 MHz DDR3, 500 gigs flash storage&lt;/li&gt;
-  &lt;li&gt;MacBook Pro (Retina, Mid 2012), 2.6 GHz Intel Core i7, 16 GB 1600 MHz DDR3, 750 gigs flash storage&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Of the two I tend to use the MacBook Air more these days and here’s what I do with it constantly (as in all this stuff is usually running at the same time):&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Browser (I usually run 2 or 3 different browsers constantly)&lt;/li&gt;
-  &lt;li&gt;TextMate 2&lt;/li&gt;
-  &lt;li&gt;TextMate 1&lt;/li&gt;
-  &lt;li&gt;Numbers&lt;/li&gt;
-  &lt;li&gt;Keynote from time to time&lt;/li&gt;
-  &lt;li&gt;TweetBot&lt;/li&gt;
-  &lt;li&gt;Full stack development on multiple code bases&lt;/li&gt;
-  &lt;li&gt;MySQL driving the full stack development&lt;/li&gt;
-  &lt;li&gt;Redis driving the full stack development&lt;/li&gt;
-  &lt;li&gt;Virtual Box / Vagrant&lt;/li&gt;
-  &lt;li&gt;DropBox&lt;/li&gt;
-  &lt;li&gt;Skype&lt;/li&gt;
-  &lt;li&gt;Slack&lt;/li&gt;
-  &lt;li&gt;Mail&lt;/li&gt;
-  &lt;li&gt;Alfred&lt;/li&gt;
-  &lt;li&gt;Virtual Desktop Support&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;iTerm - an embarrassingly large number of terminal sessions at any given time:&lt;/p&gt;
-
-    &lt;p&gt;ps auwwx | grep bash | wc -l
-  71&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;And I pull all this off with a lowly little 8 gb MacBook Air that is so ancient it doesn’t even have native HDMI out – I have to use a dongle to get HDMI – terribly embarrassing when you present at a &lt;a href=&quot;https://fuzzygroup.github.io/blog/ansible/2016/10/04/ansible-basics-presentation-at-indy-elixir-meetup.html&quot;&gt;Meetup like last night&lt;/a&gt;. &lt;em&gt;Chuckle&lt;/em&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;why-not-a-more-recent-machine&quot;&gt;Why Not A More Recent Machine?&lt;/h1&gt;
-
-&lt;p&gt;The saddest thing to me in modern computing is that Apple no longer sells any kind of box that I actually want.  Moving to a new box for a developer is, let’s be honest, a huge pain in the ass.  I’ll easily spend 2 weeks being out of sync on libraries, dev tools, etc.  So for me to move to a new box is a big deal and I don’t do it lightly.  Now, when I look at the laptops that Apple is selling, nothing is all that much better than what I bought in 2012.  Sure the CPU is a bit better and the graphics card, maybe, but I’m a developer – I don’t care about the graphics card.  What I care about is the RAM and the storage.  And going from 16 gigs of RAM to 16 gigs of RAM – that’s not actually an improvement; it is the same.  And, yes, I can go from 750 gigs of SSD to 1 tb of SSD but so what?  Again that’s not a significant improvement for &lt;strong&gt;4 YEARS OF CHANGE&lt;/strong&gt;!&lt;/p&gt;
-
-&lt;p&gt;The second saddest part of this is that component prices of all kinds continue to fall.  Want to guess what 64 gigs of RAM costs outside of the Mac Ecosystem – about $200.  I bought it a month ago.  Apple charges $1,300 to upgrade a Mac Pro from its 12 gb base to 64 gigs.  I know that there’s an Apple tax and I’ve been happily paying it for years but that’s just plain too much.&lt;/p&gt;
-
-&lt;p&gt;If you’re heavily entrenched in the Mac world and you’re curious about what life outside looks like, I’d recommend you read the tale of the &lt;a href=&quot;https://blog.codinghorror.com/the-scooter-computer/&quot;&gt;Scooter Computer&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; I don’t fully agree with Jeff in his opinions on AWS and the cost of computing versus what he can spend on the Scooter box.  And I think he misses the &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/09/06/aws-i-was-wrong-dead-wrong.html&quot;&gt;fundamental industry shift that AWS&lt;/a&gt; enables but his expertise in hardware is something I’ve been following now for literally years.  Honestly you’re not buying into AWS for the hardware they give you, you’re buying into it for their wonderfully powerful APIs.  The hardware is just a delivery vehicle for the APIs.&lt;/p&gt;
-
-&lt;h1 id=&quot;tips-and-tricks-for-pulling-off-this-kind-of-load-on-a-tiny-box&quot;&gt;Tips and Tricks for Pulling Off This Kind of Load on a Tiny Box&lt;/h1&gt;
-
-&lt;p&gt;So if Apple doesn’t sell anything I want anymore and hasn’t for years, what’s a nerd to do?&lt;/p&gt;
-
-&lt;h2 id=&quot;hackintosh&quot;&gt;Hackintosh&lt;/h2&gt;
-
-&lt;p&gt;My long term plan is to build a &lt;a href=&quot;https://medium.com/swlh/building-my-1-200-hackintosh-49a1a186241e#.w6qefd78d&quot;&gt;Hackintosh&lt;/a&gt; but I’ve been so busy that its been a pile of parts for over a month now.  Sigh.  I know all the issues but I just need a fast as crap box with a ton of memory and I could buy everything for less than Apple would charge me for memory.  How could I not try it.&lt;/p&gt;
-
-&lt;h2 id=&quot;activity-monitor&quot;&gt;Activity Monitor&lt;/h2&gt;
-
-&lt;p&gt;I run Activity Monitor all day long and I always have either the CPU tab or Memory tab open.  If something goes south (and it is usually Safari) then I kill it aggressively.  That keeps things healthy.  Safari, Slack and Skype are probably the three things I have to kill regularly to free up resources so the machine can breath.  Since Slack and Skype are also mirrored on my phone, iPad and other laptop, well, its not a big deal.&lt;/p&gt;
-
-&lt;h2 id=&quot;ascii-is-my-native-format&quot;&gt;ASCII Is My Native Format&lt;/h2&gt;
-
-&lt;p&gt;I’m a software engineer so mostly what I work with is nothing more than ASCII.  ASCII files by today’s standards are teeny, tiny and don’t generally get corrupted.  That’s a huge win.  And ever since I moved to Jekyll for blogging, all of my writing output is stored in markdown files on the file system.  That’s awesome.  I have every essay I’ve written since 2002 in one easy place for grepping over.&lt;/p&gt;
-
-&lt;h2 id=&quot;dropbox&quot;&gt;Dropbox&lt;/h2&gt;
-
-&lt;p&gt;The hidden magic here is Dropbox.  Ever since &lt;a href=&quot;http://dasari.me&quot;&gt;Dv&lt;/a&gt; talked me into using DropBox to replicate my working data set between my machines and showed me how wonderful an experience that is, I’m just plain happy.  Something goes wrong with box1?  Well I’ve got box2 right next to me.  The only issue is if you try and modify the same code base on two machines at roughly the same time and that’s unlikely since I use my Machines for mostly separate purposes.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 05 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/macbook/2016/10/05/you-do-all-this-on-a-macbook-air.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/macbook/2016/10/05/you-do-all-this-on-a-macbook-air.html</guid>
-        
-        <category>macbook</category>
-        
-        <category>osx</category>
-        
-        <category>aws</category>
-        
-        
-        <category>macbook</category>
-        
-      </item>
-    
-      <item>
-        <title>Ansible Quickie - Turning Off Services On A Group of Machines</title>
-        <description>&lt;p&gt;In my continuing investigation of &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-10-diagnosing-ssh-failures-or-when-ping-works-but-ssh-fails.html&quot;&gt;SSH failures on my cluster of AWS boxes&lt;/a&gt;, I’ve noticed that sendmail is running on my boxes and NOT refusing connections.  I’m not an ops guy but I can’t think that this is good.  Here’s what I’m seeing:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;tail -f /var/log/syslog
-
-Oct  5 08:10:01 ip-172-31-32-56 sm-mta[25939]: u958A1I6025939: from=&amp;lt;root@ip-172-31-32-56.us-west-2.compute.internal&amp;gt;, size=888, class=0, nrcpts=1, msgid=&amp;lt;201610050810.u958A1eD025938@ip-172-31-32-56.us-west-2.compute.internal&amp;gt;, proto=ESMTP, daemon=MTA-v4, relay=localhost [127.0.0.1]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;stopping-services-with-ansible&quot;&gt;Stopping Services with Ansible&lt;/h1&gt;
-
-&lt;p&gt;I don’t have a port open for sendmail in my security group so this confuses me but it should be easy enough to add an ansible role to my playbook to address it.  Here are the steps:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~/wherever_your_ansible_root_is
-mkdir -p roles/services/tasks
-touch roles/services/tasks/main.yml
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;In main.yml add:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- name: stop_sendmail
-  service: name=sendmail state=stopped
-  
-- name: stop_apache2
-  service: name=apache2 state=stopped
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I added the routines to stop my apache2 instances because I’m not actually using them yet and any part of an attack surface that I can reduce might increase the chance of these boxes staying running longer.  Ideally they should be on a private internal network that isn’t exposed to the world at all.  And that’s coming but that’s a level of work I can’t do this very minute.&lt;/p&gt;
-
-&lt;p&gt;In my main playbook simply call this role:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: services, tags: services }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;You should note that I’m calling that role as the very last role since it does no good to stop a service before its created.  According to the &lt;a href=&quot;http://docs.ansible.com/ansible/service_module.html&quot;&gt;ansible service module docs&lt;/a&gt;, the options for state are:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;running&lt;/li&gt;
-  &lt;li&gt;started&lt;/li&gt;
-  &lt;li&gt;stopped&lt;/li&gt;
-  &lt;li&gt;restarted&lt;/li&gt;
-  &lt;li&gt;reloaded&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;proof&quot;&gt;Proof&lt;/h1&gt;
-
-&lt;p&gt;Here’s an example of a ps test on this before and after:&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Before:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ps auwwx | grep sendmail
-root      1447  0.0  0.0 100704  2628 ?        Ss   08:26   0:00 sendmail: MTA: accepting connections
-ubuntu    2958  0.0  0.0  10460   940 pts/0    S+   08:31   0:00 grep --color=auto sendmail
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;After:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ps auwwx | grep sendmail
-ubuntu    8485  0.0  0.0  10460   940 pts/0    S+   08:37   0:00 grep --color=auto sendmail
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Wed, 05 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/ansible/2016/10/05/ansible-quickie-turning-off-services-on-a-group-of-machines.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ansible/2016/10/05/ansible-quickie-turning-off-services-on-a-group-of-machines.html</guid>
-        
-        <category>ansible</category>
-        
-        <category>devops</category>
-        
-        <category>services</category>
-        
-        
-        <category>ansible</category>
-        
-      </item>
-    
-      <item>
-        <title>Ansible Basics Presentation at Indy Elixir Meetup</title>
-        <description>&lt;p&gt;Here are the slides from my Indy Elixir Meet up on &lt;a href=&quot;/blog/assets/ansible_basics.pdf&quot;&gt;Ansible Basics / Using Ansible to Install Elixir and Erlang&lt;/a&gt;.  This is essentially an Introduction to Ansible overview that culminates in a playbook to install Elixir / Erlang.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 04 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/ansible/2016/10/04/ansible-basics-presentation-at-indy-elixir-meetup.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ansible/2016/10/04/ansible-basics-presentation-at-indy-elixir-meetup.html</guid>
-        
-        <category>ansible</category>
-        
-        <category>elixir</category>
-        
-        
-        <category>ansible</category>
-        
-      </item>
-    
-      <item>
-        <title>Recommended Tool - httpstat</title>
-        <description>&lt;p&gt;I ran across Dave Cheney’s httpstat tool recently and tried to get it working but I’m not a Go person so that failed.  I re-discovered it closing out a metric crap ton of browser tabs and thought “hm… I wonder if it is in brew yet”.  So a quick:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install httpstat
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;gave it to me perfectly.  I can now do things like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;httpstat http://dave.cheney.net/
-
-HTTP/1.1 200 OK
-Server: nginx/1.2.1
-Date: Mon, 03 Oct 2016 08:46:43 GMT
-Content-Type: text/html; charset=UTF-8
-Transfer-Encoding: chunked
-Connection: keep-alive
-X-Powered-By: PHP/5.4.45-0+deb7u2
-Link: &amp;lt;http://dave.cheney.net/wp-json/&amp;gt;; rel=&quot;https://api.w.org/&quot;
-
-Body stored in: /var/folders/rf/3tfhwgrj1sl85y6rcs4x_s5c0000gn/T/tmpsGnFLB
-
-  DNS Lookup   TCP Connection   Server Processing   Content Transfer
-[    16ms    |      265ms     |       932ms       |       947ms      ]
-             |                |                   |                  |
-    namelookup:16ms           |                   |                  |
-                        connect:281ms             |                  |
-                                      starttransfer:1213ms           |
-                                                                 total:2160ms
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Here’s an example from one of my current sites (url omitted deliberately):&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sjohnson@ScottJohnsonMacbookAir:~/me/fuzzygroup/gocode$ httpstat http://banks.OMITTED.com/
-
-HTTP/1.1 302 Found
-Cache-Control: no-cache
-Content-Type: text/html; charset=utf-8
-Date: Mon, 03 Oct 2016 08:48:06 GMT
-Location: http://banks.OMITTED.com/auth/login
-Server: Apache/2.4.7 (Ubuntu)
-Set-Cookie: _banks_session=MkhuMmJDWEM5bGp5YUFqNUxNNzRFMlNLUENwam1MODd6YU9HUEZ6MzRvdHQ5RVZFTTF2WC9OcHo3UVNEbm5uRlJlWDJRa1JvL1dFOXN2TEdHWlREL1NrVG9weGlCMXl5OUtyU29lR2VvMm5NQ0hBQU9xZlBKTUEva0RDVFBNdjBHOTI3eXY1dS9nYXVOTUJSd1F2R1d2MVpmdnhXUGt4VUkyOFhVR0hjTUtkTkZNTVlYb1kzTVVKOWIwWXhvNEIzVGRFYmhCWktoVnlOWStPeFU5dXg3TE5ma09VeC9qL0tWK1pQekVYb1ZBaz0tLXVFMHJEMDlEb3ROdGMxanRTQkxEeEE9PQ%3D%3D--51a7cd19b7d987a98bb6071c37c41be2f81cfb22; path=/; HttpOnly
-Set-Cookie: _passenger_route=1007719246; Path=/
-Status: 302 Found
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Powered-By: Phusion Passenger 5.0.30
-X-Request-Id: ae887d90-9484-484a-be35-e13bf3454c3d
-X-Runtime: 0.002985
-X-XSS-Protection: 1; mode=block
-transfer-encoding: chunked
-Connection: keep-alive
-
-Body stored in: /var/folders/rf/3tfhwgrj1sl85y6rcs4x_s5c0000gn/T/tmp3wlc7H
-
-  DNS Lookup   TCP Connection   Server Processing   Content Transfer
-[    527ms   |      66ms      |       73ms        |        1ms       ]
-             |                |                   |                  |
-    namelookup:527ms          |                   |                  |
-                        connect:593ms             |                  |
-                                      starttransfer:666ms            |
-                                                                 total:667ms
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Looking at this very clearly shows me that the single biggest slow down here is actually dns.  Go figure.  If I was optimizing for performance, I would never have thought to investigate a half second of DNS delay.&lt;/p&gt;
-
-&lt;p&gt;Thank you &lt;a href=&quot;http://dave.cheney.net/&quot;&gt;Dave Cheney&lt;/a&gt;!&lt;/p&gt;
-</description>
-        <pubDate>Mon, 03 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/tools/2016/10/03/recommend-tool-httpstat.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/tools/2016/10/03/recommend-tool-httpstat.html</guid>
-        
-        <category>httpstat</category>
-        
-        <category>tools</category>
-        
-        
-        <category>tools</category>
-        
-      </item>
-    
-      <item>
-        <title>Ansible Tutorial 02 - Understanding How Failures Are Handled</title>
-        <description>&lt;p&gt;I just used Ansible to provision 8 new boxes and at the end I saw this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PLAY RECAP *********************************************************************
-ficrawler10                : ok=53   changed=18   unreachable=0    failed=0
-ficrawler3                 : ok=53   changed=18   unreachable=0    failed=0
-ficrawler4                 : ok=53   changed=27   unreachable=0    failed=0
-ficrawler5                 : ok=15   changed=1    unreachable=0    failed=1
-ficrawler6                 : ok=53   changed=18   unreachable=0    failed=0
-ficrawler7                 : ok=53   changed=18   unreachable=0    failed=0
-ficrawler8                 : ok=53   changed=18   unreachable=0    failed=0
-ficrawler9                 : ok=53   changed=18   unreachable=0    failed=0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;If you notice the box ficrawler5 has a state of failed=1 and this made me wonder:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;What happened?&lt;/li&gt;
-  &lt;li&gt;What happend after that failure?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;RUNNING HANDLER [mtpereira.passenger : apache restart] &lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;*
-changed: [ficrawler5]&lt;/p&gt;
-
-&lt;p&gt;PLAY RECAP &lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;***
-ficrawler10                : ok=48   changed=6    unreachable=0    failed=0
-ficrawler3                 : ok=48   changed=6    unreachable=0    failed=0
-ficrawler4                 : ok=48   changed=6    unreachable=0    failed=0
-ficrawler5                 : ok=53   changed=18   unreachable=0    failed=0
-ficrawler6                 : ok=48   changed=6    unreachable=0    failed=0
-ficrawler7                 : ok=48   changed=6    unreachable=0    failed=0
-ficrawler8                 : ok=48   changed=6    unreachable=0    failed=0
-ficrawler9                 : ok=48   changed=6    unreachable=0    failed=0&lt;/p&gt;
-
-&lt;p&gt;d&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;TASK [aws_cloudwatch_memory : add command to cron] *****************************
-skipping: [ficrawler3]
-skipping: [ficrawler4]
-skipping: [ficrawler5]
-skipping: [ficrawler6]
-skipping: [ficrawler7]
-skipping: [ficrawler8]
-skipping: [ficrawler9]
-skipping: [ficrawler10]
-
-TASK [dockersj : command] ******************************************************
-changed: [ficrawler3]
- [WARNING]: Consider using 'become', 'become_method', and 'become_user' rather than running sudo
-
-changed: [ficrawler7]
-changed: [ficrawler6]
-changed: [ficrawler4]
-changed: [ficrawler8]
-changed: [ficrawler9]
-changed: [ficrawler10]
-fatal: [ficrawler5]: FAILED! =&amp;gt; {&quot;changed&quot;: true, &quot;cmd&quot;: &quot;sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D&quot;, &quot;delta&quot;: &quot;0:02:00.060733&quot;, &quot;end&quot;: &quot;2016-10-03 17:05:26.068764&quot;, &quot;failed&quot;: true, &quot;rc&quot;: 2, &quot;start&quot;: &quot;2016-10-03 17:03:26.008031&quot;, &quot;stderr&quot;: &quot;gpg: requesting key 2C52609D from hkp server p80.pool.sks-keyservers.net\ngpg: keyserver timed out\ngpg: keyserver receive failed: keyserver error&quot;, &quot;stdout&quot;: &quot;Executing: gpg --ignore-time-conflict --no-options --no-default-keyring --homedir /tmp/tmp.Tz2C7bntoi --no-auto-check-trustdb --trust-model always --keyring /etc/apt/trusted.gpg --primary-keyring /etc/apt/trusted.gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D&quot;, &quot;stdout_lines&quot;: [&quot;Executing: gpg --ignore-time-conflict --no-options --no-default-keyring --homedir /tmp/tmp.Tz2C7bntoi --no-auto-check-trustdb --trust-model always --keyring /etc/apt/trusted.gpg --primary-keyring /etc/apt/trusted.gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D&quot;], &quot;warnings&quot;: [&quot;Consider using 'become', 'become_method', and 'become_user' rather than running sudo&quot;]}
-
-TASK [dockersj : Install docker] ***********************************************
-ok: [ficrawler3] =&amp;gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
-ok: [ficrawler4] =&amp;gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
-ok: [ficrawler6] =&amp;gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
-ok: [ficrawler8] =&amp;gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
-ok: [ficrawler7] =&amp;gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
-ok: [ficrawler10] =&amp;gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
-ok: [ficrawler9] =&amp;gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;git@github.com:appdatallc/honeybadger.git&lt;/p&gt;
-</description>
-        <pubDate>Mon, 03 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/10/03/ansible-tutorial-understanding-how-failures-are-handled.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/03/ansible-tutorial-understanding-how-failures-are-handled.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Rails Post Mortem - An Analysis of Breaking the Build</title>
-        <description>&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Making this blog post public as opposed to an internal document might ruffle some feathers.  I’d like to point out here that no has been called out by name and at least part of the responsibility trail here is &lt;strong&gt;mine&lt;/strong&gt; and I have no issues with accepting that.  The only way to learn from our mistakes is honesty  and this post was written in that spirit.  It is how all of us get better at our jobs.&lt;/p&gt;
-
-&lt;p&gt;I often tell my kids that when something goes wrong I care less about what went wrong and more about responsibility, specifically, whether or not you accept responsibility for it.  When something goes wrong accepting the responsibility for it, if it was actually your fault, to &lt;strong&gt;me&lt;/strong&gt;, is a big deal.  If you don’t accept responsibility for your mistakes then you cannot learn from them.&lt;/p&gt;
-
-&lt;p&gt;I recently had the situation where a new hire broke the build.  And he broke it after 5 pm on a friday when mission critical work had to be done over the weekend. Sigh.  And, of course, he was offline when I found out so it fell on me to untangle it.&lt;/p&gt;
-
-&lt;h1 id=&quot;mistake-01-mine---accepting-the-change-on-a-friday&quot;&gt;Mistake 01: Mine - Accepting the Change on a Friday&lt;/h1&gt;
-
-&lt;p&gt;It was the end of the week and I’d been busy and heads down all week on devops stuff.  I wanted to get his changes merged so I did take the change without my normal level of “it’s a friday; deny, deny, deny and then deny some more” commentary.  I should never, &lt;strong&gt;never&lt;/strong&gt; have taken changes from anyone other than myself on a Friday afternoon.  Why?  Because, ultimately I’m in charge.  And when a crawl blows up partway through it is on me to fix it.  No one here carries pagers or is expected, other than myself, to be up in the middle of the night dealing with crap.&lt;/p&gt;
-
-&lt;h1 id=&quot;mistake-02-his---over-scoping-the-work&quot;&gt;Mistake 02: His - Over Scoping the Work&lt;/h1&gt;
-
-&lt;p&gt;The individual in question had a ticket in his queue that read “Figure out what gems in gemfile we should throw out”.  This is a classic learning exercise that I often give to new hires.  Gemfile is often a bit like Mos Eisley in a Rails project - a wretched hive of scum and villany.  Gems accrete there – you need a tool for a one off hack and a gem gets added.  And then its not used and the one off hack goes away.  But the gem never goes away.&lt;/p&gt;
-
-&lt;p&gt;He did the analysis but then he decided to re-organize the Gemfile and alphabetize it.  And this was at the core of the problem.  I asked for analysis.  I didn’t ask for change specifically because I wanted to make that change gently, carefully and on my own.  Now I could absolutely have pushed back and said “Nope!  Don’t want it; didn’t ask for it; redo.”  But that would kind of be a jerk move. He clearly put thought and effort into this so as a person who manages people its better for their growth and development to follow the process end to end even when you think it might be a damn disaster waiting to happen.&lt;/p&gt;
-
-&lt;p&gt;Now, as old engineers are wont do, we tell tales and we bitch about parts of software that we find odious.  Personally I’m not a fan of Gemfile and the whole gem stack in general in Rails.  Of all the things that give me issues in Rails, I find the overall fragility of the Gem stack and bundler to be the absolute worst part.  I know for a fact that he’s heard this rant.  However, whether or not he listened is unclear…&lt;/p&gt;
-
-&lt;h1 id=&quot;mistake-03-his---moving-things-from-main-to-development-test-groups&quot;&gt;Mistake 03: His - Moving Things From Main to Development, Test Groups&lt;/h1&gt;
-
-&lt;p&gt;The first mistake that was made was his decision to move things from the main context in Gemfile to solely development and test.  The gem in question was pry and, for some reason, it not being present broke the running system.  His defense was “I’ve never seen an installation where pry needed to be in production”.  That’s fine but the reality with big complex software systems is that understanding side effects of changes is hard.  And when your boss has specifically called out the area in which you &lt;strong&gt;chose&lt;/strong&gt; to make complex changes, you need to approach it with caution.&lt;/p&gt;
-
-&lt;h1 id=&quot;mistake-04-his---introducing-things-not-present-prior-in-gemfile&quot;&gt;Mistake 04: His - Introducing Things Not Present Prior in Gemfile&lt;/h1&gt;
-
-&lt;p&gt;When I saw pry in the Gemfile, I initially thought that he had introduced it and I pushed back on it.  Nope.  He was right – pry was part of the system.  It was an innocuous “gem ‘pry’” on or about line #65 and I was the one who had to add it once upon a time.  I’ve never been a pry fan despite its relative hotness within the community.  Now when he saw pry and moved it into the development and test groups, he also added pry&lt;/p&gt;
-
-&lt;p&gt;The person making the change introduced two additional, pry-rails and pry-byebug.  I don’t know what these do and the system is now breaking so I commented them out immediately.  And was that conservative of me?  Yes.  And was that reactionary of me?  Sure.  Maybe these are great gems that will rock my world but when a) the system is breaking and b) the goal was find out what’s not used, adding new gems shouldn’t happen.&lt;/p&gt;
-
-&lt;h1 id=&quot;mistake-05-his---mysqlplus&quot;&gt;Mistake 05: His - Mysqlplus&lt;/h1&gt;
-
-&lt;p&gt;One of the best bits of work that this person has done for us so far is he got the mysqlplus gem working again.  Why we need this crufty old bit of code is irrelevant (or the subject of another blog post) but we absolutely do need it.  And where I couldn’t make it work in Ruby 2.3.1 and Dv couldn’t make it work, he pulled it off and that was absolutely, &lt;strong&gt;stellar&lt;/strong&gt;, &lt;strong&gt;amazing&lt;/strong&gt;, &lt;strong&gt;wonderful&lt;/strong&gt; work.  I simply cannot say enough good things about this.  Unfortunately when he refactored Gemfile it was &lt;em&gt;commented out&lt;/em&gt; and it not being there promptly broke all of our crawlers.  This was essentially a copy and paste refactor issue.  When he started the Gemfile project he hadn’t yet done the mysqlplus work so the gem, which at that point in time was broken, was commented out.  And, unfortunately, despite the good work he had done, stayed commented out.&lt;/p&gt;
-
-&lt;p&gt;The reason that it broke our crawlers is is that our crawlers are based on Rails but have their own dependency load structure so how they interact with Gemfile is complex.  And they also rely on this bit of trickery:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Mysql; alias :query :async_query; end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;That takes the async_query method in mysqlplus and dynamically replaces query with it.  This eliminates blocking at the query level and improves our threaded performance by roughly 50%.  And because this is dynamically injected, when something isn’t present in Gemfile, there’s no way to know except for actually executing the code.&lt;/p&gt;
-
-&lt;p&gt;Now this is the point about complex software systems – when you don’t fully understand them – you need to approach &lt;strong&gt;dangerous changes with care&lt;/strong&gt;.  He may not have perceived Gemfile as dangerous but I made damn sure that the rant was given because I do know the danger of messing with Gemfile.  The bottom line here is that you don’t change global things without a hell of a lot of care.  And you certainly don’t change it on a Friday afternoon.  And, remember, I accepted the changes and that was my error.&lt;/p&gt;
-
-&lt;h1 id=&quot;mistake-06-mine-no-monitoring-on-parts-of-our-infrastructure&quot;&gt;Mistake 06: Mine No Monitoring on Parts of our Infrastructure&lt;/h1&gt;
-
-&lt;p&gt;Another mistake that I made was when our new AWS bits were setup, I didn’t immediately set up monitoring on a few production urls.  Since this is mainly an internal system which produces data that is ingested by Tableau, monitoring has never been a priority.  Again that’s on me.  If I had had monitoring setup I would have found at 3 on a Friday instead of at 5.  And since he would still have been online all of this would have been easier.&lt;/p&gt;
-
-&lt;h1 id=&quot;mistakes-other&quot;&gt;Mistakes Other&lt;/h1&gt;
-
-&lt;p&gt;There was at least one other issue related to the Curses gem but I don’t think its particularly relevant here.  I had been in the middle of doing ansible work on devops and I saw our Ansible work failing and went sideways debugging it thinking the issue was me when it was really the lack of the curses gem.&lt;/p&gt;
-
-&lt;h1 id=&quot;some-things-are-debatable-other-things-are-not&quot;&gt;Some Things are Debatable; Other Things Are Not&lt;/h1&gt;
-
-&lt;p&gt;When this topic came up on a slack chat between this individual and myself, he gave me a lot of push back like the “I’ve never seen pry in production”.  And I’ll definitely admit that some technical topics are debatable.  Perhaps there is something critically wrong with our code that pry is needed in production.  Or maybe it was something else and adding pry causes another dependency to come in which fixed it.  I’m not 100% certain because I had production systems that needed to get running again and simply reversing a few of his changes was the most expedient way to do that.  So while we can debate aspects of his changes, what isn’t debatable, is this:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;He chose to make changes above and beyond the requested scope of work – which was analysis&lt;/li&gt;
-  &lt;li&gt;The production, running system entirely broke – website, backend, etc&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;To me this is fairly incontrovertible – you broke the build.  Now this isn’t a huge deal to me:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;New hires break things and no data was lost.&lt;/li&gt;
-  &lt;li&gt;We lost about an hour and a half of crawling time&lt;/li&gt;
-  &lt;li&gt;I resolved the issues in less than 30 minutes and had us up and running again before dinner&lt;/li&gt;
-  &lt;li&gt;It took longer to write this post mortem than it did to fix the issues&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In closing I also should state that the alphabetized Gemfile is better organized and will be better for maintenance long term.  He also did a great job of preserving the cruft that was there previously which illustrated history and intent and I do appreciate that.  I simply should have been more diligent before I accepted these changes.  We lack a staging server for this project and I will ticket for myself the task of getting one built so we have a place to tackle sweeping changes like these.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 02 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/software_engineering/2016/10/02/rails-an-analysis-of-breaking-the-build.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/software_engineering/2016/10/02/rails-an-analysis-of-breaking-the-build.html</guid>
-        
         <category>rails</category>
         
-        <category>software_engineering</category>
+        <category>sidekiq</category>
+        
+        <category>open_source</category>
         
         
-        <category>software_engineering</category>
+        <category>ruby</category>
         
       </item>
     
       <item>
-        <title>AWS Tutorial 13 - Adding Idempotency to Our CloudWatch Monitoring Playbook</title>
-        <description>&lt;p&gt;In &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-11-an-ansible-role-for-installing-aws-cloud-watch-monitoring-on-ubuntu.html&quot;&gt;AWS Tutorial 11&lt;/a&gt; we used an Ansible playbook to set up CloudWatch memory monitoring on a series of Ubuntu EC2 instances.  This worked perfectly – &lt;strong&gt;once&lt;/strong&gt;.  I noticed, after I published the blog post, that if I tried to re-run the Ansible script playbook that it fail on a second run.  Initially I chalked this up to plain old randomness but then I actually &lt;strong&gt;thought&lt;/strong&gt; about it and it all came into focus.&lt;/p&gt;
+        <title>Managing a Large Scale Sidekiq Installation</title>
+        <description>&lt;p&gt;http://stackoverflow.com/questions/12143350/gracefully-shutting-down-sidekiq-processes&lt;/p&gt;
 
-&lt;h1 id=&quot;ansible-is-all-about-idempotency-and-this-was-not&quot;&gt;Ansible is All About Idempotency and This Was Not&lt;/h1&gt;
+&lt;p&gt;fiweb1 | SUCCESS | rc=0 »
+Total Memory: 65966140 (62 gb) / Used Memory: 14217064 (13 gb) / Free Memory: 51749076 (49 gb)&lt;/p&gt;
 
-&lt;p&gt;So in Ansible the core idea is that you only want to make changes one time.  If a box has redis installed then it doesn’t need it again.  That’s the idea of idempotency – do the same thing over and over and always get the same result.  In this case we used shell actions for all of installing CloudWatch Memory Management and, well, that’s not idempotent.  The second time you run it, it’s trying to do it all over again.&lt;/p&gt;
+&lt;p&gt;ficrawlerbig | SUCCESS | rc=0 »
+Total Memory: 15666140 (14 gb) / Used Memory: 12453420 (11 gb) / Free Memory: 3212720 (3 gb)&lt;/p&gt;
 
-&lt;p&gt;The trick to making this idempotent is to register an ansible variable based on something we did and then check that variable at every stage.  Here’s how I revised my previous playbook:&lt;/p&gt;
+&lt;p&gt;ficrawler3 | SUCCESS | rc=0 »
+Total Memory: 15666140 (14 gb) / Used Memory: 7130500 (6 gb) / Free Memory: 8535640 (8 gb)&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- name: Install CloudWatch libraries
-  apt: pkg=
-       state=installed
-  with_items:
-    - unzip
-    - libwww-perl
-    - libdatetime-perl
+&lt;p&gt;ficrawler4 | SUCCESS | rc=0 »
+Total Memory: 15666140 (14 gb) / Used Memory: 545296 (0 gb) / Free Memory: 15120844 (14 gb)&lt;/p&gt;
 
-- name: prevent this from running if it has already been done
-  stat: path=/root/aws-scripts-mon/
-  register: aws_cloudwatch_installed
+&lt;p&gt;ficrawler5 | SUCCESS | rc=0 »
+Total Memory: 15666140 (14 gb) / Used Memory: 8835068 (8 gb) / Free Memory: 6831072 (6 gb)&lt;/p&gt;
 
-- name: download scripts
-  get_url: url=http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip dest=/tmp/CloudWatchMonitoringScripts.zip
-  when: aws_cloudwatch_installed.stat.exists == False
+&lt;p&gt;ficrawler6 | SUCCESS | rc=0 »
+Total Memory: 15666140 (14 gb) / Used Memory: 14846820 (14 gb) / Free Memory: 819320 (0 gb)&lt;/p&gt;
 
-- name: chown the file and make it writeable
-  file: path=/tmp/CloudWatchMonitoringScripts.zip mode=0755  #owner=ubuntu group=ubuntu 
-  when: aws_cloudwatch_installed.stat.exists == False
+&lt;p&gt;ficrawler7 | SUCCESS | rc=0 »
+Total Memory: 15666140 (14 gb) / Used Memory: 11149072 (10 gb) / Free Memory: 4517068 (4 gb)&lt;/p&gt;
 
-- name: unzip the scripts
-  #unarchive: src=/tmp/CloudWatchMonitoringScripts.zip dest=/tmp/
-  shell: &quot;cd /tmp &amp;amp;&amp;amp; unzip /tmp/CloudWatchMonitoringScripts.zip&quot;
-  when: aws_cloudwatch_installed.stat.exists == False
+&lt;p&gt;ficrawler8 | SUCCESS | rc=0 »
+Total Memory: 15666140 (14 gb) / Used Memory: 3378360 (3 gb) / Free Memory: 12287780 (11 gb)&lt;/p&gt;
 
-- name: delete archive
-  file: path=/tmp/CloudWatchMonitoringScripts.zip state=absent
-  when: aws_cloudwatch_installed.stat.exists == False
+&lt;p&gt;ficrawler9 | SUCCESS | rc=0 »
+Total Memory: 15666140 (14 gb) / Used Memory: 2316296 (2 gb) / Free Memory: 13349844 (12 gb)&lt;/p&gt;
 
-- name: set Access key in credentials file
-  replace: dest=/tmp/aws-scripts-mon/awscreds.template regexp='AWSAccessKeyId=' replace='AWSAccessKeyId=' backup=yes
-  when: aws_cloudwatch_installed.stat.exists == False
-
-- name: set Secret key in credentials file
-  replace: dest=/tmp/aws-scripts-mon/awscreds.template regexp='AWSSecretKey=' replace='AWSSecretKey=' backup=yes
-  when: aws_cloudwatch_installed.stat.exists == False
-
-- name: move directory out of /tmp
-  command: mv /tmp/aws-scripts-mon/ /root/ creates=/root/aws-scripts-mon/
-  when: aws_cloudwatch_installed.stat.exists == False
-
-- name: add command to cron
-  lineinfile: dest=/etc/crontab insertafter=EOF line=&quot;* * * * * root /root/aws-scripts-mon/mon-put-instance-data.pl --mem-util --mem-used --mem-avail --aws-credential-file=/root/aws-scripts-mon/awscreds.template&quot;
-  when: aws_cloudwatch_installed.stat.exists == False
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The magic is in the second step:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- name: prevent this from running if it has already been done
-  stat: path=/root/aws-scripts-mon/
-  register: aws_cloudwatch_installed
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;What this does is use the stat module to check if a given path, where we’re put the scripts, already exists.  If this exists then we know that we’ve already done it.  We then check it at every subsequent change:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- name: download scripts
-  get_url: url=http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip dest=/tmp/CloudWatchMonitoringScripts.zip
-  when: aws_cloudwatch_installed.stat.exists == False
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And that’s all it takes to make this something that you can run over and over every time a box is updated.&lt;/p&gt;
-
-&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
-
-&lt;p&gt;Here are some good references:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.ansible.com/ansible/stat_module.html&quot;&gt;http://docs.ansible.com/ansible/stat_module.html&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://raymii.org/s/tutorials/Ansible_-_Only_if_a_file_exists_or_does_not_exist.html&quot;&gt;https://raymii.org/s/tutorials/Ansible_-_Only_if_a_file_exists_or_does_not_exist.html&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.caphrim.net/ansible/2015/05/25/be-careful-with-unarchive.html&quot;&gt;http://www.caphrim.net/ansible/2015/05/25/be-careful-with-unarchive.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;ficrawler10 | SUCCESS | rc=0 »
+Total Memory: 15666140 (14 gb) / Used Memory: 12465468 (11 gb) / Free Memory: 3200672 (3 gb)&lt;/p&gt;
 </description>
-        <pubDate>Sun, 02 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/10/02/aws-tutorial-13-adding-idempotency-to-our-cloudwatch-monitoring-playbook.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/02/aws-tutorial-13-adding-idempotency-to-our-cloudwatch-monitoring-playbook.html</guid>
+        <pubDate>Sun, 09 Oct 2016 12:21:09 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/10/09/managing-a-large-scale-sidekiq-installation.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/09/managing-a-large-scale-sidekiq-installation.html</guid>
         
-        <category>aws</category>
-        
-        <category>ansible</category>
-        
-        <category>cloudwatch</category>
-        
-        
-        <category>aws</category>
         
       </item>
     
       <item>
-        <title>AWS Tutorial 12 - Using Ansible to Quickly Fix Your Server's TCP Connections</title>
-        <description>&lt;p&gt;The bulk of my coding is actually back end coding and I spent a lot of time dealing with network programming issues.  We’ve been running for years in a data center that I put together and every box was finely tuned.  Unfortunately due to the massive issues surrounding Chef, we were never able to maintain boxes automatically so every server became a unique snowflake – well set up and such but I have no idea now what changes we made to tune each server over the years.&lt;/p&gt;
-
-&lt;p&gt;And while we still have that data center active, we’re now crawling on our AWS boxes and much happier but we’re still working the kinks out.  This morning I started seeing this appear:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Cannot assign requested address.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;It was appearing in the context of our Redis connections.  And, sure enough, we had a routine which was creating a handle to redis every, single, time it was handling a url.  That’s bad.  So the easy fix was to pass the connection in from a higher level.  But even after that it was still an issue.  Some quick research brought me to:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/10980850/solveredis-localhost6379-cannot-assign-requested-address&quot;&gt;https://stackoverflow.com/questions/10980850/solveredis-localhost6379-cannot-assign-requested-address&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://redis4you.com/articles.php?id=012&amp;amp;name=redis&quot;&gt;http://redis4you.com/articles.php?id=012&amp;amp;name=redis&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Apparently the recommended solution is to fix a running box with:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;echo 1 &amp;gt; /proc/sys/net/ipv4/tcp_tw_reuse
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;and put the same fix into:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; /etc/rc.local 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;how-to-ansible-ize-this&quot;&gt;How to Ansible-ize This&lt;/h1&gt;
-
-&lt;p&gt;Given that we have a bunch of AWS nodes setup, I don’t really want to make this change manually so let’s script it with Ansible and run it as a role.  Here’s what to do for the directory where your Ansible stuff resides:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;mkdir -p roles/machine_setup_tcp_tw_reuse/tasks&lt;/li&gt;
-  &lt;li&gt;touch roles/machine_setup_tcp_tw_reuse/tasks/main.yml&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In your main.yml file you want this code:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# this sets it for the machine permanently after the machine restarts
-- name: update /etc/rc.local for tcp_tw_reuse (faster tcp recycling) on machines which are servers 
-  lineinfile: dest=/etc/rc.local regexp=&quot;^echo 1 &amp;gt; &quot;  line=&quot;echo 1 &amp;gt; /proc/sys/net/ipv4/tcp_tw_reuse&quot;
-  
-# this fixes the current machine state
-- name: execute the fix on the currently running machine instance
-  shell: &quot;echo 1 &amp;gt; /proc/sys/net/ipv4/tcp_tw_reuse&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;In your main playbook.yml you want to call this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- hosts: all
-  become: yes
-  remote_user: ubuntu
-  roles:
-- { role: machine_setup_tcp_tw_reuse, tags: machine_setup_tcp_tw_reuse}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;how-to-run-this&quot;&gt;How to Run this&lt;/h1&gt;
-
-&lt;p&gt;You can run this using the following syntax:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/production_actual playbook.yml --tags &quot;machine_setup_tcp_tw_reuse&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;how-to-verify-the-fix&quot;&gt;How to Verify the Fix&lt;/h1&gt;
-
-&lt;p&gt;To verify this, you can do what I did:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;ssh into a box&lt;/li&gt;
-  &lt;li&gt;cat /proc/sys/net/ipv4/tcp_tw_reuse&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;If you see a 1 there then the fix actually worked.&lt;/p&gt;
-
-&lt;h1 id=&quot;notes&quot;&gt;Notes&lt;/h1&gt;
-
-&lt;p&gt;The reason for the small level of granularity on this role is that I’m now using Ansible to fix issues on production running hosts.  And I wanted to be able to run &lt;strong&gt;just&lt;/strong&gt; this role.  Ansible has tagging which I do believe would let me have this embedded within my overall machine_setup task but this felt safer since I’m still a noob at Ansible.&lt;/p&gt;
+        <title>Startup Learnings - What Mike Perham Taught Me</title>
+        <description>
 </description>
-        <pubDate>Sun, 02 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/10/02/aws-tutorial-12-using-ansible-to-quickly-fix-your-server-s-tcp-connections.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/02/aws-tutorial-12-using-ansible-to-quickly-fix-your-server-s-tcp-connections.html</guid>
+        <pubDate>Sun, 09 Oct 2016 10:45:15 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/10/09/startup-learnings-what-mike-perham-taught-me.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/09/startup-learnings-what-mike-perham-taught-me.html</guid>
         
-        <category>aws</category>
-        
-        <category>ansible</category>
-        
-        <category>redis</category>
-        
-        
-        <category>aws</category>
         
       </item>
     
       <item>
-        <title>AWS Tutorial 11 - An Ansible Role for Installing AWS Cloud Watch Monitoring On Ubuntu</title>
-        <description>&lt;p&gt;As I’ve written here earlier, Ansible is a provisioning and management tool that you can use to enable better automated provisioning of your AWS machines.  While I am &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/09/06/aws-i-was-wrong-dead-wrong.html&quot;&gt;absolutely in love with AWS&lt;/a&gt;, one thing that I do think that CloudWatch got wrong is that there is no memory graphs when you use CloudWatch to monitor your machines.  Given that I write threaded applications all the time, knowing how my memory utilization looks is a vital diagnostic tool.  And while there is a way to do this, it requires a fair bit of systems administration to accomplish it since it requires code to be installed on every server to be monitored.&lt;/p&gt;
+        <title>Living The Tmux Life</title>
+        <description>
+</description>
+        <pubDate>Sun, 09 Oct 2016 10:42:35 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/10/09/living-the-tmux-life.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/09/living-the-tmux-life.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>If I Was a College Freshman and Wanted to Make Spending Money</title>
+        <description>&lt;p&gt;Hackintosh&lt;/p&gt;
 
-&lt;p&gt;Since we need to make a change to every box we have and to all new boxes we will create, who are we going to call?  Ansible!!!  That’s right – in this tutorial we’re going to use Ansible to write a playbook and role for:&lt;/p&gt;
+&lt;p&gt;Never sell the unit; charge an assembly fee&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;downloading required modules&lt;/li&gt;
-  &lt;li&gt;downloading the code&lt;/li&gt;
-  &lt;li&gt;installing the code&lt;/li&gt;
-  &lt;li&gt;inserting our AWS keys&lt;/li&gt;
-  &lt;li&gt;creating a cron job&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;Put up fliers; don’t put up a web site&lt;/p&gt;
 
-&lt;h1 id=&quot;creating-our-structure&quot;&gt;Creating our Structure&lt;/h1&gt;
+&lt;p&gt;University commmunties are word of mouth recommendations&lt;/p&gt;
 
-&lt;p&gt;While Ansible is flexible in how things can be structured, I use a standard approach.  All of the code here is available on my github (link at the end) but I find that writing it all out helps my understanding at least.  Here’s how to create the structure that I use for Ansible.  All of this assumes you are already in a project directory where you want to store this.&lt;/p&gt;
+&lt;p&gt;Money in support&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir inventories
-touch inventories/production
-mkdir -p roles/aws_cloudwatch_memory/tasks
-mkdir -p roles/aws_cloudwatch_memory/vars
-touch roles/aws_cloudwatch_memory/tasks/main.yml
-touch roles/roles/aws_cloudwatch_memory/vars/main.yml
-# note - if you want to encrypt your aws keys that don't do the next step and do it below under Ansible Vault
-touch ansible.cfg
-touch playbook.yml
+&lt;p&gt;Hey Elon Musk made money in college assembling PCs for people.  If it was good enough for the founder of Tesla, SpaceX and SolarCity, well, what are you waiting for?&lt;/p&gt;
+</description>
+        <pubDate>Sun, 09 Oct 2016 09:57:22 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/10/09/if-i-was-a-college-freshman-and-wanted-to-make-spending-money.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/09/if-i-was-a-college-freshman-and-wanted-to-make-spending-money.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Chapstick, Consumer Marketing and Me</title>
+        <description>&lt;p&gt;I am a 48 year old male.  Today, for the first time, I used a lip balm other than Chapstick.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 09 Oct 2016 09:53:38 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/10/09/chapstick-consumer-marketing-and-me.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/09/chapstick-consumer-marketing-and-me.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Ansible Quickie Fixing a Poorly Designed Galaxy Role</title>
+        <description>&lt;p&gt;Earlier today I used an Ansible Galaxy role to set &lt;a href=&quot;https://github.com/crushlovely/ansible-sidekiq-upstart/&quot;&gt;Sidekiq as a background process started with an Ubuntu Upstart service&lt;/a&gt;.  Unfortunately when I went to run the service, I found that it would not start at all.  While I like the concept of Ansible Galaxy, I have described it as:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Galaxy is DockerHub without the stars for ratings
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h1 id=&quot;core-ansible-concepts-inventory-playbook-role-var&quot;&gt;Core Ansible Concepts: Inventory, Playbook, Role, Var&lt;/h1&gt;
+&lt;p&gt;I was on the phone with &lt;a href=&quot;http://nickjanetakis.com/&quot;&gt;Nick Janetakis&lt;/a&gt; yesterday, shooting the breeze as it were and he agreed but offered a slightly different perspective:&lt;/p&gt;
 
-&lt;p&gt;Like many automation products, Ansible is built around some core concepts:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Inventory - a list of the machine resources to create, update or destroy&lt;/li&gt;
-  &lt;li&gt;Playbook - a list of the roles to apply to each machine resource&lt;/li&gt;
-  &lt;li&gt;Role - what to do with a machine.  This can be very complex including tasks, variables, files to copy to and from, services to restart and so on.&lt;/li&gt;
-  &lt;li&gt;Var - a list of variables to use in your role.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;the-inventory&quot;&gt;The Inventory&lt;/h1&gt;
-
-&lt;p&gt;In the inventory file you want a format very similar to an old fashioned .ini file.  Here’s what mine looks like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[web]
-fiworker2    ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com        ansible_ssh_private_key_file=/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Galaxy is DockerHub without the approved packages
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;The syntax I’m using is human_readable_name  ansible_ssh_host=  ansible_ssh_private_key_file=&lt;/p&gt;
+&lt;p&gt;Either one is true.  There are lots of great options on Galaxy but it is a bit of a crap shoot.  Let’s diagnose the problem and see how it can be fixed.  Here’s what the install looked like:&lt;/p&gt;
 
-&lt;p&gt;While you can generate the inventory file automatically with code, I don’t have a ton of AWS instances yet so I’ve just listed them manually.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-playbook&quot;&gt;The Playbook&lt;/h1&gt;
-
-&lt;p&gt;Here’s the playbook:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- hosts: all
-  become: yes
-  remote_user: ubuntu
-  roles:
-    - { role: aws_cloudwatch_memory, tags: aws_cloudwatch_memory}
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-galaxy install crushlovely.sidekiq-upstart,v1.0.0
+- downloading role 'sidekiq-upstart', owned by crushlovely
+- downloading role from https://github.com/crushlovely/sidekiq-upstart/archive/master.tar.gz
+- extracting crushlovely.sidekiq-upstart to /usr/local/etc/ansible/roles/crushlovely.sidekiq-upstart
+- crushlovely.sidekiq-upstart was installed successfully
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;The way to read this is:&lt;/p&gt;
+&lt;p&gt;Here’s how to use this in your playbook:&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;run the playbook on all hosts&lt;/li&gt;
-  &lt;li&gt;run the playbook as sudo&lt;/li&gt;
-  &lt;li&gt;run the playbook with the remote user ubuntu&lt;/li&gt;
-  &lt;li&gt;run the role aws_cloudwatch_memory&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;the-role&quot;&gt;The Role&lt;/h1&gt;
-
-&lt;p&gt;Here’s the role:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
-  
-- name: Install CloudWatch libraries
-  apt: pkg=
-       state=installed
-  with_items:
-    - unzip
-    - libwww-perl
-    - libdatetime-perl
-
-- name: download scripts
-  get_url: url=http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip dest=/tmp/CloudWatchMonitoringScripts.zip
-
-- name: chown the file and make it writeable
-  file: path=/tmp/CloudWatchMonitoringScripts.zip mode=0755  #owner=ubuntu group=ubuntu 
-
-- name: unzip the scripts
-  # note - unarchive should work but it fails; maybe an ansible issue?  shell: to the rescue!
-  #unarchive: src=/tmp/CloudWatchMonitoringScripts.zip dest=/tmp/
-  shell: &quot;cd /tmp &amp;amp;&amp;amp; unzip /tmp/CloudWatchMonitoringScripts.zip&quot;
-
-- name: delete archive
-  file: path=/tmp/CloudWatchMonitoringScripts.zip state=absent
-
-- name: set Access key in credentials file
-  replace: dest=/tmp/aws-scripts-mon/awscreds.template regexp='AWSAccessKeyId=' replace='AWSAccessKeyId=' backup=yes
-
-- name: set Secret key in credentials file
-  replace: dest=/tmp/aws-scripts-mon/awscreds.template regexp='AWSSecretKey=' replace='AWSSecretKey=' backup=yes
-
-- name: move directory out of /tmp
-  command: mv /tmp/aws-scripts-mon/ /root/ creates=/root/aws-scripts-mon/
-
-- name: add command to cron
-  lineinfile: dest=/etc/crontab insertafter=EOF line=&quot;* * * * * root /root/aws-scripts-mon/mon-put-instance-data.pl --mem-util --mem-used --mem-avail --aws-credential-file=/root/aws-scripts-mon/awscreds.template&quot;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: crushlovely.sidekiq-upstart, app_path: &quot;/var/www/apps/banks&quot;, server_env: &quot;production&quot;, tags: sidekiq}
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h1 id=&quot;using-ansible-vault-for-the-vars-file&quot;&gt;Using Ansible Vault for the vars file&lt;/h1&gt;
+&lt;p&gt;That can go anywhere in your playbook after Sidekiq is installed.&lt;/p&gt;
 
-&lt;p&gt;Within the roles directory there is a vars directory and a file main.yml within it.  This file will contain our variables that define our AWS access key and AWS secret.  Given that this file will likely be checked into version control, there’s value in encrypting those variables.  The tool Ansible Vault is used for that.  Here’s how:&lt;/p&gt;
+&lt;p&gt;There are two problems with this role.&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;Use the command:  ansible-vault create roles/aws_cloudwatch_memory/vars/main.yml&lt;/li&gt;
-  &lt;li&gt;This will ask your for a password.  Enter one and confirm it and then you’ll be launched into an editor where you can put in your keys.&lt;/li&gt;
-  &lt;li&gt;Exit the editor and it will save your now encrypted data.  You can then edit it later with: ansible-vault edit roles/aws_cloudwatch_memory/vars/main.yml&lt;/li&gt;
+  &lt;li&gt;The first is a syntactic bug identified &lt;a href=&quot;https://github.com/crushlovely/ansible-sidekiq-upstart/issues/7&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;The second is that while there are several variables for this, there isn’t a variable for the username the rails process runs as.  This causes the upstart job to die before it starts because there is a hard coded deploy username.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;More on the Ansible Vault is available on the &lt;a href=&quot;http://docs.ansible.com/ansible/playbooks_vault.html&quot;&gt;docs.ansible.com site&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Here are the workarounds:&lt;/p&gt;
 
-&lt;p&gt;The vars file needs to look something like this:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;In the meta directory below were the role was installed, modify the file main.yml and comment out the version.&lt;/li&gt;
+  &lt;li&gt;In your group_vars directory, modify the file all to include a user_name variable set to whoever you want the rails process to run as.&lt;/li&gt;
+  &lt;li&gt;In the install directory for the role, find the sidekiq_init.j2 template (in the templates directory) and modify &lt;strong&gt;setuid deploy&lt;/strong&gt; to be **setuid **.  After that do the same thing for the setgid bit.&lt;/li&gt;
+&lt;/ol&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ec2_access_key: &quot;foo&quot;
-ec2_secret_key: &quot;bar&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Obviously these would be replaced with real values.  By storing this file in rolename/vars/main.yml location and format, Ansible knows to load this file automatically when the role is executed.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-ansiblecfg-file&quot;&gt;The ansible.cfg file&lt;/h1&gt;
-
-&lt;p&gt;You may, or may not, need a ansible.cfg file.  This is an ASCII file that defines how to handle ssh connectivity.  Here’s mine:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[ssh_connection]
-ssh_user = vagrant
-scp_if_ssh = True
-control_path = %(directory)s/%%h-%%r
-ansible_ssh_private_key_file = /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I’m not, at the time of this writing, a true Ansible expert so I suspect there’s redundancy in my cfg file but when I run without it, I’m unable to connect to AWS and I think it’s due to the control_path setting being required due to the length of the EC2 host names.&lt;/p&gt;
-
-&lt;h1 id=&quot;running-this&quot;&gt;Running This&lt;/h1&gt;
-
-&lt;p&gt;Here’s all you need to do to run this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/production playbook.yml
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;If you encrypted your keys then you’ll be prompted for the password.  If you want to store the password in a local file on your machine then you can always do it this way:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/production playbook.yml --vault-password-file ~/.vault_pass.txt
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;code-on-git&quot;&gt;Code on Git&lt;/h1&gt;
-
-&lt;p&gt;All of this is published on my &lt;a href=&quot;https://github.com/fuzzygroup/ansible_cloud_watch_memory_monitoring&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
-
-&lt;p&gt;Here are some great references&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://gist.github.com/weirdbricks/3e0d0e3428f3d683ccfa&quot;&gt;https://gist.github.com/weirdbricks/3e0d0e3428f3d683ccfa&lt;/a&gt;  This is the gist I started from; it was for Redhat / CentOS and used Yum&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/mon-scripts.html&quot;&gt;http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/mon-scripts.html&lt;/a&gt;  This is the canonical documentation&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://blog.krishnachaitanya.ch/2016/03/monitor-ec2-memory-usage-using-aws.html&quot;&gt;http://blog.krishnachaitanya.ch/2016/03/monitor-ec2-memory-usage-using-aws.html&lt;/a&gt; Good tutorial&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;That was sufficient to get this running for me.  Perhaps next time we’ll fork this role into our github and fix the bug properly with Ansible variables.&lt;/p&gt;
 </description>
-        <pubDate>Sat, 01 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-11-an-ansible-role-for-installing-aws-cloud-watch-monitoring-on-ubuntu.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-11-an-ansible-role-for-installing-aws-cloud-watch-monitoring-on-ubuntu.html</guid>
+        <pubDate>Sun, 09 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/ansible/2016/10/09/ansible-quickie-fixing-a-poorly-designed-galaxy-role.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ansible/2016/10/09/ansible-quickie-fixing-a-poorly-designed-galaxy-role.html</guid>
+        
+        <category>ansible</category>
+        
+        <category>galaxy</category>
+        
+        <category>sidekiq</category>
+        
+        
+        <category>ansible</category>
+        
+      </item>
+    
+      <item>
+        <title>Ansible Quickie - Checking the Memory Status on All Machines</title>
+        <description>&lt;p&gt;As I’ve related in depth, I’ve been dealing with a problem of reliability and it is looking like its a memory issue.  Now there are lots and lots of ways to monitor memory usage on a cluster of machines.  I don’t think I could even enumerate them if I tried.  However I’m a software engineer and I’m specifically &lt;strong&gt;not&lt;/strong&gt; the kind of guy who has a dashboard and systems monitoring tools like HP OpenView, etc.  I’ve also been using Unix since 1986 and I fundamentally believe in the core Unix model of tiny tools so here’s how I did it.&lt;/p&gt;
+
+&lt;h1 id=&quot;what-i-wanted&quot;&gt;What I Wanted&lt;/h1&gt;
+
+&lt;p&gt;Getting control of a bad ops situation with servers is often about representing data in a way that &lt;strong&gt;you can understand&lt;/strong&gt; and process it.  All I wanted was a command in a terminal that I could run periodically which would show me free memory on all machines.  Here’s an example of what I put together:&lt;/p&gt;
+
+&lt;p&gt;ficrawlerbig | SUCCESS | rc=0 »
+5103412&lt;/p&gt;
+
+&lt;p&gt;fiweb1 | SUCCESS | rc=0 »
+55826760&lt;/p&gt;
+
+&lt;p&gt;ficrawler3 | SUCCESS | rc=0 »
+9196424&lt;/p&gt;
+
+&lt;p&gt;ficrawler4 | SUCCESS | rc=0 »
+7576948&lt;/p&gt;
+
+&lt;p&gt;ficrawler5 | SUCCESS | rc=0 »
+8054688&lt;/p&gt;
+
+&lt;p&gt;ficrawler6 | SUCCESS | rc=0 »
+10718960&lt;/p&gt;
+
+&lt;p&gt;ficrawler7 | SUCCESS | rc=0 »
+8730928&lt;/p&gt;
+
+&lt;p&gt;ficrawler8 | SUCCESS | rc=0 »
+13203552&lt;/p&gt;
+
+&lt;p&gt;ficrawler9 | SUCCESS | rc=0 »
+7196620&lt;/p&gt;
+
+&lt;p&gt;ficrawler10 | SUCCESS | rc=0 »
+5102220&lt;/p&gt;
+
+&lt;p&gt;That’s all I want and I wasn’t going to setup some kind of elaborate tool to get that.  I was going to use Ansible to execute a command on a batch of machines.  All I needed was that command.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-command&quot;&gt;The Command&lt;/h1&gt;
+
+&lt;p&gt;There are all kinds of ways to get memory stats on unix and I wasn’t about to make this hard.  And you have to remember that at my core I’m a Ruby guy.  And while I mastered awk in 1990 or so, I haven’t written a line of awk since about 1996 when my own implementation of awk, HyperAwk (see below), disappeared from this world.  I’m also not a shell guy; I struggle with bash / zsh.  So I wanted a ruby solution.  And I came up with this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/local/rvm/rubies/ruby-2.3.1/bin/ruby&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;%x(free)&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot; &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Which I’m pretty sure I shamelessly stole from a Stack Overflow post somewhere.  I think I closed the tab in a browser crash.  Sorry.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-ansible-side-of-things---an-ad-hoc-routine&quot;&gt;The Ansible Side of things - An Ad Hoc Routine:&lt;/h1&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible all -i inventories/production2 -u ubuntu -a &quot;/var/www/apps/banks/current/script/free_memory.rb&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;sidebar-hyperawk&quot;&gt;Sidebar: HyperAwk&lt;/h1&gt;
+
+&lt;p&gt;Ever wonder would would happen if you took an Awk implementation&lt;/p&gt;
+</description>
+        <pubDate>Sat, 08 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/ansible/2016/10/08/ansible-quickie-checking-the-memory-status-on-all-machines.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ansible/2016/10/08/ansible-quickie-checking-the-memory-status-on-all-machines.html</guid>
         
         <category>ansible</category>
         
         <category>aws</category>
         
-        <category>cloudwatch</category>
         
-        
-        <category>aws</category>
+        <category>ansible</category>
         
       </item>
     
