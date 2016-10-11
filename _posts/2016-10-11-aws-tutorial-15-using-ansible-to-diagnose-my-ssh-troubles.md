@@ -1,6 +1,8 @@
 ---
 layout: post
-title: AWS Tutorial 15 - Using Ansible To Diagnose my SSH Troubles
+title: AWS Tutorial 15 - SSH Take 3 - Using Ansible To Diagnose my SSH Troubles 
+category: aws
+tags: ["aws", "ansible", "ssh", "ruby"]
 ---
 Everyone wants to think that that complex computing problems are solved with a single flash of blinding insight.  And sometimes you do have that one epiphany that brings everything home.  But, more often than not, computing problems are solved by dogged persistence, by being more stubborn than the problem itself and by careful, diligent incremental progress where you observe the problem in question, altering one variable at a time until you understand what's happening.  
 
