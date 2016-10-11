@@ -6,9 +6,253 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 11 Oct 2016 02:06:20 -0400</pubDate>
-    <lastBuildDate>Tue, 11 Oct 2016 02:06:20 -0400</lastBuildDate>
+    <pubDate>Tue, 11 Oct 2016 16:15:25 -0400</pubDate>
+    <lastBuildDate>Tue, 11 Oct 2016 16:15:25 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Hacking Bundler For Fun, Profit and Less Anger at the World</title>
+        <description>&lt;p&gt;I recently wrote a blog post about my rage at Bundler and the fact that I have to manually remember than when the command:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install json -v1.8.1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;blows up, I have to remember to instead use:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install json -v1.8.3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;As someone who has consulted on a LOT of different ruby code bases, I see this constantly.  At times it feels that every time I start a project I have to face some kind of gem / bundler issue.  Now my friend Nick would argue that this is really something best solved by Docker and he does have a point.&lt;/p&gt;
+
+&lt;p&gt;But me?  I’m stubborn.  I want this fixed and I’m finally willing to stop bitching and write some code to do so.  I mean that’s what open source is about.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-solution&quot;&gt;The Solution&lt;/h1&gt;
+
+&lt;p&gt;People are universally bad at remembering complex things.  And when complex things have negative contexts, they are even worse at remembering them.  I &lt;strong&gt;hate&lt;/strong&gt; gem failures.  And I don’t mean I hate them a little - gem install failures send me into a rage.  And every time I fix it, I promptly forget about it.  What I want to do is tell bundler about the solution I found to the problem.  I want bundler to &lt;strong&gt;learn&lt;/strong&gt;.  Here’s my proposed syntax:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle learn bad=&quot;&quot; good=&quot;&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And here’s an actual example:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle learn bad=&quot;gem install json -v1.8.1&quot; good=&quot;gem install json -v1.8.3&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So what do we need to make a learn option work?  Here’s my initial thoughts:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;We need to add learn as an option with two parameters, good and bad.&lt;/li&gt;
+  &lt;li&gt;We need a method which takes the two parameters and saves them to disc&lt;/li&gt;
+  &lt;li&gt;We need test coverage&lt;/li&gt;
+  &lt;li&gt;We need to hook into the overall failure mode and display any things that we learned that have a close match to the actual failure.&lt;/li&gt;
+  &lt;li&gt;Long term: Allow these learnings to be shared over the Internet so that other people can benefit from the issues that you solved.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;the-context---in-the-minivan&quot;&gt;The Context - In the Minivan&lt;/h1&gt;
+
+&lt;p&gt;When I thought of this I was out and about with my wife and teenage son on &lt;em&gt;The Great Home Schooling Lobster Misadventure&lt;/em&gt;.  While they were shopping before we picked up the lobster that we needed, I thought of this sitting in a minivan in the parking lot.  I don’t have a lot of time and I don’t have much in the way of connectivity so here’s what I did:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Found the &lt;a href=&quot;https://github.com/bundler/bundler&quot;&gt;bundler source&lt;/a&gt; on github.&lt;/li&gt;
+  &lt;li&gt;Forked it to my &lt;a href=&quot;https://github.com/fuzzygroup/bundler&quot;&gt;github account&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Cloned it to my local box.&lt;/li&gt;
+  &lt;li&gt;Changed to the right directory.&lt;/li&gt;
+  &lt;li&gt;Set the ruby version with RVM.&lt;/li&gt;
+  &lt;li&gt;Opened the directory in TextMate with mate .&lt;/li&gt;
+  &lt;li&gt;Read DEVELOPMENT.md and do step 1&lt;/li&gt;
+  &lt;li&gt;Try and figure out where this might go.  And fail &lt;strong&gt;miserably&lt;/strong&gt; – bundler is big!&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If you think about the code that I want to write, I actually don’t need to understand very much about bundler.  All I need to do, at least to start, is add a command line option that writes some data to a file.  Making this get looked up by a bundler failure obviously will be harder.&lt;/p&gt;
+
+&lt;h1 id=&quot;search-to-the-rescue&quot;&gt;Search to the Rescue!&lt;/h1&gt;
+
+&lt;p&gt;Whenever I’m faced with a complex code base and the need to find an integration point, I always, always do the same thing – I &lt;strong&gt;search&lt;/strong&gt;.  My rationale was this:&lt;/p&gt;
+
+&lt;p&gt;There must be a relatively unused command line option in bundler.  If its relatively unused there won’t be a lot of calls to it so finding it should be simple.&lt;/p&gt;
+
+&lt;p&gt;Running bundle –help and paging thru the results showed me the viz option which I had never heard of.  Here’s a screen shot:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/bundler_viz.png&quot; alt=&quot;bundler_viz.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;hacking-cli&quot;&gt;Hacking cli/&lt;/h1&gt;
+
+&lt;h1 id=&quot;so-now-we-need-a-method&quot;&gt;So Now We Need a Method&lt;/h1&gt;
+
+&lt;h1 id=&quot;so-how-do-you-profit-from-this&quot;&gt;So How Do You Profit from this?&lt;/h1&gt;
+</description>
+        <pubDate>Tue, 11 Oct 2016 11:32:04 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/bundler/2016/10/11/hacking-bundler-for-fun-profit-and-less-anger-at-the-world.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/bundler/2016/10/11/hacking-bundler-for-fun-profit-and-less-anger-at-the-world.html</guid>
+        
+        <category>bundler</category>
+        
+        <category>ruby</category>
+        
+        <category>open_source</category>
+        
+        <category>github</category>
+        
+        
+        <category>bundler</category>
+        
+      </item>
+    
+      <item>
+        <title>AWS Tutorial 17 - When You've Lost You Web Server, How to Find an AWS Resource</title>
+        <description>&lt;p&gt;I find myself, at the time of this writing, in the middle of an embarrassing situtation for a web professional.  You see, the situation is this:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I wrote a new feature&lt;/li&gt;
+  &lt;li&gt;I deployed my new feature&lt;/li&gt;
+  &lt;li&gt;I refreshed my page&lt;/li&gt;
+  &lt;li&gt;My feature isn’t there&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Great Googly Moogly!  I’ve lost my web server!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Let me explain one of the things about cloud hosting that’s disconcerting.  When you first move to the cloud, your impulse is to organize your computing resources the way you used to.  So if you used to have say 3 clusters of powerful machines, that’s what you do.  Then you realize just how mind blowingly powerful a platform like AWS actually is and you start to think about &lt;strong&gt;Single Purpose Servers&lt;/strong&gt;.  A single purpose server is just what it sounds like – it does one thing.  And that’s fantastic because it makes trouble shooting so much easier.  When a server does only one thing, well, its easy to know if its broken.  And that’s great but do you know what the side effect of that is?  You don’t have a handful of servers anymore, you have a lot.  Me?  I’ve got over &lt;strong&gt;20&lt;/strong&gt; right now.  And somewhere in there is my web server.  But I can’t find it.  In this tutorial we’re going to quickly and easily figure this out.&lt;/p&gt;
+
+&lt;h1 id=&quot;start-with-a-hypothesis&quot;&gt;Start with a Hypothesis&lt;/h1&gt;
+
+&lt;p&gt;As normal we’re going to start with a theory - that is one of these three boxes:  fimariadb, ficrawler1, ficrawler2.  So our diagnostic dance, crude tho it may be, is:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;ssh into one of the boxes&lt;/li&gt;
+  &lt;li&gt;sudo su -&lt;/li&gt;
+  &lt;li&gt;apache2ctl stop&lt;/li&gt;
+  &lt;li&gt;reload the page&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If the page comes up, well, we know it wasn’t that one box.  So you then lather, rinse, repeat for each of the other 2 boxes.  And, at the end, we’re going to find out that it was none of these.&lt;/p&gt;
+
+&lt;p&gt;You might be saying “Hey wait a minute – why would a web front end be on a box that does crawling?”  Well I’m still feeling all this out and I initially went for the old model where every box could do everything.  And that was a bad decision but I still have to live it for at least a little while longer.&lt;/p&gt;
+
+&lt;h1 id=&quot;formulate-a-new-hypothesis---lets-use-ping&quot;&gt;Formulate a New Hypothesis - Let’s Use Ping!&lt;/h1&gt;
+
+&lt;p&gt;Since our first plan failed, we need a new plan.  The program ping is a basic IP networking tool which lets us send a packet to a destination and if it answers, well, that means its alive.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ping banks.finavd.com
+PING web-1166333941.us-west-2.elb.amazonaws.com (52.41.182.115): 56 data bytes
+64 bytes from 52.41.182.115: icmp_seq=0 ttl=47 time=67.589 ms
+64 bytes from 52.41.182.115: icmp_seq=1 ttl=47 time=67.301 ms
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Ah ha!  We have an ip address of 52.41.182.115.  I know! I know!  I know!  I’ll just search for that ip address on EC2 dashboard.  And it will fail.  Now the smart kids in the back are already chuckling to themselves and they know the answer.&lt;/p&gt;
+
+&lt;h1 id=&quot;hypothesis-3-elb-is-being-used&quot;&gt;Hypothesis 3: ELB Is Being Used&lt;/h1&gt;
+
+&lt;p&gt;If you look at the url that responded, NOT the ip address, the answer is revealed:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;web-1166333941.us-west-2.elb.amazonaws.com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You see the text string “.elb.”?  That means that a piece of software called an Elastic Load Balancer is sitting in front of the http request and distributing the load out to one or more EC2 instances.  If you’ve ever used HAProxy, well, ELB is that only far, far better.  Let’s goto the AWS Console and select the Load Balancers option from the choices on the left:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/aws/aws_elb_01_overview.png&quot; alt=&quot;aws_elb_01_overview.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here we’ll see an overview of all of our load balancers and their basic settings.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/aws/aws_elb_02_instances.png&quot; alt=&quot;aws_elb_02_instances.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Clicking the instances tab shows us where the HTTP request is being sent.  We can now goto the ec2 console and figure out what we need.  If you put the machine names into your &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/09/20/aws-tutorial-08-using-ssh-s-config-file-with-your-aws-boxes.html&quot;&gt;SSH Config as I recommended&lt;/a&gt; then you might not even need to goto the console.  In my case I just needed to know the names worker2 and worker2a and I know that they’re in my ssh config file and I can just add those boxes to my Capistrano deploy process.  And the “bug” is fixed!&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion-and-suggestion&quot;&gt;Conclusion and Suggestion&lt;/h1&gt;
+
+&lt;p&gt;I know that it must seem like I’m a bit of a buffoon – how can you lost a web server after all?  Well, things do happen when you move fast.  You start with one plan and then it doesn’t work and before you know it you have something working but its not where you originally planned.  And you mean to fix it but you get busy and then the next &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-10-diagnosing-ssh-failures-or-when-ping-works-but-ssh-fails.html&quot;&gt;crisis&lt;/a&gt; happens and you’re not even in the same head space any more.  And by the time you return to it over 10 days have passed.&lt;/p&gt;
+
+&lt;p&gt;Here are some suggestions for setting up your AWS architecture to avoid this kind of silliness:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Name things well.&lt;/li&gt;
+  &lt;li&gt;Name things logically.&lt;/li&gt;
+  &lt;li&gt;Use the key value options when you set up your EC2 servers.  For example, having keys for both name and role might have helped.&lt;/li&gt;
+  &lt;li&gt;Remember that there are often abstractions around everything.&lt;/li&gt;
+  &lt;li&gt;Try and use single purpose servers from the start.  Yes the number of discrete servers increases complexity but their very single purpose nature makes debugging vastly easier.  And keep in mind that Amazon offers free servers.  Even a t2.micro free instance has 1 gig of ram and 8 gigs of storage.  I know that sounds funny but travel back in your head 5 years and that’s a beefy server and its &lt;strong&gt;FREE&lt;/strong&gt;.  If you’re just running something small, say Redis, Memcached, sendmail, etc that might be enough for a lot of applications.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 11 Oct 2016 11:26:16 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/10/11/aws-tutorial-17-when-you-ve-lost-you-web-server-how-to-find-an-aws-resource.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/11/aws-tutorial-17-when-you-ve-lost-you-web-server-how-to-find-an-aws-resource.html</guid>
+        
+        <category>aws</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
+    
+      <item>
+        <title>What to Do When Bundle Install Fails with JSON 1.8.1</title>
+        <description>&lt;p&gt;I cannot express my abject frustration at times with the Ruby ecosystem in general and bundler in particular.  When you hit this bug:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+    current directory: /usr/local/rvm/gems/ruby-2.3.1/gems/json-1.8.1/ext/json/ext/generator
+/usr/local/rvm/rubies/ruby-2.3.1/bin/ruby -r ./siteconf20161011-22175-140avvd.rb extconf.rb
+creating Makefile
+
+current directory: /usr/local/rvm/gems/ruby-2.3.1/gems/json-1.8.1/ext/json/ext/generator
+make &quot;DESTDIR=&quot; clean
+
+current directory: /usr/local/rvm/gems/ruby-2.3.1/gems/json-1.8.1/ext/json/ext/generator
+make &quot;DESTDIR=&quot;
+compiling generator.c
+In file included from generator.c:1:0:
+../fbuffer/fbuffer.h: In function ‘fbuffer_to_s’:
+../fbuffer/fbuffer.h:175:47: error: macro &quot;rb_str_new&quot; requires 2 arguments, but only 1 given
+     VALUE result = rb_str_new(FBUFFER_PAIR(fb));
+                                               ^
+../fbuffer/fbuffer.h:175:20: warning: initialization makes integer from pointer without a cast [enabled by default]
+     VALUE result = rb_str_new(FBUFFER_PAIR(fb));
+                    ^
+make: *** [generator.o] Error 1
+
+make failed, exit code 2
+
+Gem files will remain installed in /usr/local/rvm/gems/ruby-2.3.1/gems/json-1.8.1 for inspection.
+Results logged to /usr/local/rvm/gems/ruby-2.3.1/extensions/x86_64-linux/2.3.0/json-1.8.1/gem_make.out
+
+An error occurred while installing json (1.8.1), and Bundler cannot continue.
+Make sure that `gem install json -v '1.8.1'` succeeds before bundling.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I’ve hit this error, I suspect, a few hundred times and I always forget the solution.  And I’m not the only one.  &lt;a href=&quot;http://dasari.me&quot;&gt;Dv&lt;/a&gt; and I hit this together today and we shot about 20 minutes today to need this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install json -v1.8.3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Thank you &lt;a href=&quot;http://stackoverflow.com/questions/21095098/why-wont-bundler-install-json-gem&quot;&gt;Stack Overflow&lt;/a&gt; for this answer.  Even if it was buried so deep in the thread that I almost missed it.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 11 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/ruby/2016/10/11/what-to-do-when-bundle-install-fails-with-json-1-8-1.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ruby/2016/10/11/what-to-do-when-bundle-install-fails-with-json-1-8-1.html</guid>
+        
+        <category>ruby</category>
+        
+        <category>rails</category>
+        
+        <category>json</category>
+        
+        <category>gem</category>
+        
+        <category>bundle</category>
+        
+        <category>things_that_make_me_postal</category>
+        
+        
+        <category>ruby</category>
+        
+      </item>
     
       <item>
         <title>AWS Tutorial 15 - SSH Take 3 - Using Ansible To Diagnose my SSH Troubles</title>
@@ -339,102 +583,6 @@ Total Memory: 15666140 (14 gb) / Used Memory: 12465468 (11 gb) / Free Memory: 32
         <link>https://fuzzygroup.github.io/blog/2016/10/09/living-the-tmux-life.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/09/living-the-tmux-life.html</guid>
         
-        
-      </item>
-    
-      <item>
-        <title>If I Was a College Freshman and Wanted to Make Spending Money</title>
-        <description>&lt;p&gt;Hackintosh&lt;/p&gt;
-
-&lt;p&gt;Never sell the unit; charge an assembly fee&lt;/p&gt;
-
-&lt;p&gt;Put up fliers; don’t put up a web site&lt;/p&gt;
-
-&lt;p&gt;University commmunties are word of mouth recommendations&lt;/p&gt;
-
-&lt;p&gt;Money in support&lt;/p&gt;
-
-&lt;p&gt;Hey Elon Musk made money in college assembling PCs for people.  If it was good enough for the founder of Tesla, SpaceX and SolarCity, well, what are you waiting for?&lt;/p&gt;
-</description>
-        <pubDate>Sun, 09 Oct 2016 09:57:22 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/10/09/if-i-was-a-college-freshman-and-wanted-to-make-spending-money.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/09/if-i-was-a-college-freshman-and-wanted-to-make-spending-money.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Chapstick, Consumer Marketing and Me</title>
-        <description>&lt;p&gt;I am a 48 year old male.  Today, for the first time, I used a lip balm other than Chapstick.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 09 Oct 2016 09:53:38 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/10/09/chapstick-consumer-marketing-and-me.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/09/chapstick-consumer-marketing-and-me.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Ansible Quickie Fixing a Poorly Designed Galaxy Role</title>
-        <description>&lt;p&gt;Earlier today I used an Ansible Galaxy role to set &lt;a href=&quot;https://github.com/crushlovely/ansible-sidekiq-upstart/&quot;&gt;Sidekiq as a background process started with an Ubuntu Upstart service&lt;/a&gt;.  Unfortunately when I went to run the service, I found that it would not start at all.  While I like the concept of Ansible Galaxy, I have described it as:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Galaxy is DockerHub without the stars for ratings
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I was on the phone with &lt;a href=&quot;http://nickjanetakis.com/&quot;&gt;Nick Janetakis&lt;/a&gt; yesterday, shooting the breeze as it were and he agreed but offered a slightly different perspective:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Galaxy is DockerHub without the approved packages
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Either one is true.  There are lots of great options on Galaxy but it is a bit of a crap shoot.  Let’s diagnose the problem and see how it can be fixed.  Here’s what the install looked like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-galaxy install crushlovely.sidekiq-upstart,v1.0.0
-- downloading role 'sidekiq-upstart', owned by crushlovely
-- downloading role from https://github.com/crushlovely/sidekiq-upstart/archive/master.tar.gz
-- extracting crushlovely.sidekiq-upstart to /usr/local/etc/ansible/roles/crushlovely.sidekiq-upstart
-- crushlovely.sidekiq-upstart was installed successfully
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Here’s how to use this in your playbook:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: crushlovely.sidekiq-upstart, app_path: &quot;/var/www/apps/banks&quot;, server_env: &quot;production&quot;, tags: sidekiq}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;That can go anywhere in your playbook after Sidekiq is installed.&lt;/p&gt;
-
-&lt;p&gt;There are two problems with this role.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;The first is a syntactic bug identified &lt;a href=&quot;https://github.com/crushlovely/ansible-sidekiq-upstart/issues/7&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;The second is that while there are several variables for this, there isn’t a variable for the username the rails process runs as.  This causes the upstart job to die before it starts because there is a hard coded deploy username.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Here are the workarounds:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;In the meta directory below were the role was installed, modify the file main.yml and comment out the version.&lt;/li&gt;
-  &lt;li&gt;In your group_vars directory, modify the file all to include a user_name variable set to whoever you want the rails process to run as.&lt;/li&gt;
-  &lt;li&gt;In the install directory for the role, find the sidekiq_init.j2 template (in the templates directory) and modify &lt;strong&gt;setuid deploy&lt;/strong&gt; to be **setuid **.  After that do the same thing for the setgid bit.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;That was sufficient to get this running for me.  Perhaps next time we’ll fork this role into our github and fix the bug properly with Ansible variables.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 09 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/ansible/2016/10/09/ansible-quickie-fixing-a-poorly-designed-galaxy-role.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ansible/2016/10/09/ansible-quickie-fixing-a-poorly-designed-galaxy-role.html</guid>
-        
-        <category>ansible</category>
-        
-        <category>galaxy</category>
-        
-        <category>sidekiq</category>
-        
-        
-        <category>ansible</category>
         
       </item>
     
