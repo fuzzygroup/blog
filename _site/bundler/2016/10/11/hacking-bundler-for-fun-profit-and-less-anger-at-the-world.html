@@ -92,7 +92,7 @@
 
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">Hacking Bundler For Fun, Profit and Less Anger at the World</h1>
-    <p class="post-meta"><time datetime="2016-10-11T11:32:04-04:00" itemprop="datePublished">Oct 11, 2016</time></p>
+    <p class="post-meta"><time datetime="2016-10-11T16:55:30-04:00" itemprop="datePublished">Oct 11, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
@@ -147,7 +147,7 @@
   <li>Changed to the right directory.</li>
   <li>Set the ruby version with RVM.</li>
   <li>Opened the directory in TextMate with mate .</li>
-  <li>Read DEVELOPMENT.md and do step 1</li>
+  <li>Read DEVELOPMENT.md and do steps 1 (groff), 2 (dependencies) 3 (run tests) and 4 (shell alias).</li>
   <li>Try and figure out where this might go.  And fail <strong>miserably</strong> – bundler is big!</li>
 </ol>
 
@@ -163,9 +163,136 @@
 
 <p><img src="/blog/assets/bundler_viz.png" alt="bundler_viz.png" /></p>
 
-<h1 id="hacking-cli">Hacking cli/</h1>
+<h1 id="hacking-clirb">Hacking cli.rb</h1>
 
-<h1 id="so-now-we-need-a-method">So Now We Need a Method</h1>
+<p>What I found was cli.rb where there was a method that seemed to indicate that you could patch in.  Here’s what it looks like:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>desc "viz [OPTIONS]", "Generates a visual dependency graph"
+long_desc &lt;&lt;-D
+  Viz generates a PNG file of the current Gemfile as a dependency graph.
+  Viz requires the ruby-graphviz gem (and its dependencies).
+  The associated gems must also be installed via 'bundle install'.
+D
+method_option :file, :type =&gt; :string, :default =&gt; "gem_graph", :aliases =&gt; "-f", :desc =&gt; "The name to use for the generated file. see format option"
+method_option :format, :type =&gt; :string, :default =&gt; "png", :aliases =&gt; "-F", :desc =&gt; "This is output format option. Supported format is png, jpg, svg, dot ..."
+method_option :requirements, :type =&gt; :boolean, :default =&gt; false, :aliases =&gt; "-R", :desc =&gt; "Set to show the version of each required dependency."
+method_option :version, :type =&gt; :boolean, :default =&gt; false, :aliases =&gt; "-v", :desc =&gt; "Set to show each gem version."
+method_option :without, :type =&gt; :array, :default =&gt; [], :aliases =&gt; "-W", :banner =&gt; "GROUP[ GROUP...]", :desc =&gt; "Exclude gems that are part of the specified named group."
+def viz
+  require "bundler/cli/viz"
+  Viz.new(options.dup).run
+end
+</code></pre>
+</div>
+
+<p>So what I need is a similar routine that gets called when the learn option is entered on the command line.  My first several attempts were fairly miserable failures but here’s what I ended up with:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>desc "learn [OPTIONS]", "Allows bundler to learn that what to do when a command is broken"
+
+long_desc &lt;&lt;-D
+  learn stores your personal approach to getting around gem breakages.
+  Example: bundle learn bad="gem install json -v1.8.1" good="gem install json -v1.8.3".
+  will prompt you with the correct command when the failure occurs
+D
+method_option "bad", :type =&gt; :string, :default =&gt; "", :aliases =&gt; "-b", :desc =&gt; "The bad gem command"
+method_option "good", :type =&gt; :string, :default =&gt; "", :aliases =&gt; "-g", :desc =&gt; "The good gem command"
+
+def learn
+  require "bundler/cli/learn"
+  raise "Hit learn!!!"
+  Learn.new(options.dup).run
+end
+</code></pre>
+</div>
+
+<p>That require statement means that I needed to create bundler/cli/learn.rb immediately or I’d get a nasty missing file error.  No big deal though.</p>
+
+<p>This can be called with:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> dbundle learn --bad="gem install json -v '1.8.1'" --good="update your ruby"
+</code></pre>
+</div>
+
+<p>or</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> dbundle learn --bad="gem install json -v '1.8.1'" --good="gem install json -v1.8.3"
+</code></pre>
+</div>
+
+<p>Note: Its called dbundle in this example since I have a local shell alias so my modified bundler will be run instead of bundler itself.</p>
+
+<p>Here’s an example of the output:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>dbundle learn --bad="gem install json --version='1.7.3'" --good="update your ruby"
+--- ERROR REPORT TEMPLATE -------------------------------------------------------
+- What did you do?
+
+  I ran the command `/Users/sjohnson/me/fuzzygroup/rails/bundler/exe/bundle learn --bad=gem install json --version='1.7.3' --good=update your ruby`
+
+- What did you expect to happen?
+
+  I expected Bundler to...
+
+- What happened instead?
+
+  Instead, what happened was...
+
+
+Error details
+
+    RuntimeError: Hit learn!!!
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/cli.rb:426:in `learn'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/vendor/thor/lib/thor/command.rb:27:in `run'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/vendor/thor/lib/thor/invocation.rb:126:in `invoke_command'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/vendor/thor/lib/thor.rb:359:in `dispatch'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/cli.rb:20:in `dispatch'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/vendor/thor/lib/thor/base.rb:440:in `start'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/cli.rb:11:in `start'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/exe/bundle:32:in `block in &lt;main&gt;'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/friendly_errors.rb:105:in `with_friendly_errors'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/exe/bundle:24:in `&lt;main&gt;'
+
+Environment
+
+  Bundler   1.13.3
+  Rubygems  2.6.6
+  Ruby      2.3.1p112 (2016-04-26 revision 54768) [x86_64-darwin15]
+  GEM_HOME  /Users/sjohnson/.rvm/gems/ruby-2.3.1
+  GEM_PATH  /Users/sjohnson/.rvm/gems/ruby-2.3.1:/Users/sjohnson/.rvm/gems/ruby-2.3.1@global
+  RVM       1.26.1 (latest)
+  Git       2.2.1
+  Platform  x86_64-darwin-15
+  OpenSSL   OpenSSL 1.0.2h  3 May 2016
+  rubygems-bundler (1.4.4)
+
+      Bundler settings
+
+  build.nokogiri
+    Set for the current user (/Users/sjohnson/.bundle/config): "--use-system-libraries"
+  disable_postit
+    Set via BUNDLE_DISABLE_POSTIT: "1"
+--- TEMPLATE END ----------------------------------------------------------------
+
+Unfortunately, an unexpected error occurred, and Bundler cannot continue.
+
+First, try this link to see if there are any existing issue reports for this error:
+https://github.com/bundler/bundler/search?q=Hit+learn%21%21%21&amp;type=Issues
+
+If there aren't any reports for this error yet, please create copy and paste the report template above into a new issue. Don't forget to anonymize any private data! The new issue form is located at:
+https://github.com/bundler/bundler/issues/new
+</code></pre>
+</div>
+
+<h1 id="so-now-we-need-a-method-so-bundler-can-learn">So Now We Need a Method So Bundler Can Learn</h1>
+
+<p>If you think about what this needs to do, it looks something like this:</p>
+
+<ol>
+  <li>Figure out if what you’re telling it to learn is a duplicate or not.</li>
+  <li>Write a file to some kind of local storage which files away the bad, good and machine details.</li>
+</ol>
+
+<p>Now that’s actually fairly simple.  The hard part is figuring out where that data can live.  I honestly have no idea where that might go given the</p>
 
 <h1 id="so-how-do-you-profit-from-this">So How Do You Profit from this?</h1>
 

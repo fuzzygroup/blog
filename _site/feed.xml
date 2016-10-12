@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 11 Oct 2016 16:15:25 -0400</pubDate>
-    <lastBuildDate>Tue, 11 Oct 2016 16:15:25 -0400</lastBuildDate>
+    <pubDate>Tue, 11 Oct 2016 16:55:30 -0400</pubDate>
+    <lastBuildDate>Tue, 11 Oct 2016 16:55:30 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -63,7 +63,7 @@
   &lt;li&gt;Changed to the right directory.&lt;/li&gt;
   &lt;li&gt;Set the ruby version with RVM.&lt;/li&gt;
   &lt;li&gt;Opened the directory in TextMate with mate .&lt;/li&gt;
-  &lt;li&gt;Read DEVELOPMENT.md and do step 1&lt;/li&gt;
+  &lt;li&gt;Read DEVELOPMENT.md and do steps 1 (groff), 2 (dependencies) 3 (run tests) and 4 (shell alias).&lt;/li&gt;
   &lt;li&gt;Try and figure out where this might go.  And fail &lt;strong&gt;miserably&lt;/strong&gt; – bundler is big!&lt;/li&gt;
 &lt;/ol&gt;
 
@@ -79,13 +79,140 @@
 
 &lt;p&gt;&lt;img src=&quot;/blog/assets/bundler_viz.png&quot; alt=&quot;bundler_viz.png&quot; /&gt;&lt;/p&gt;
 
-&lt;h1 id=&quot;hacking-cli&quot;&gt;Hacking cli/&lt;/h1&gt;
+&lt;h1 id=&quot;hacking-clirb&quot;&gt;Hacking cli.rb&lt;/h1&gt;
 
-&lt;h1 id=&quot;so-now-we-need-a-method&quot;&gt;So Now We Need a Method&lt;/h1&gt;
+&lt;p&gt;What I found was cli.rb where there was a method that seemed to indicate that you could patch in.  Here’s what it looks like:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;desc &quot;viz [OPTIONS]&quot;, &quot;Generates a visual dependency graph&quot;
+long_desc &amp;lt;&amp;lt;-D
+  Viz generates a PNG file of the current Gemfile as a dependency graph.
+  Viz requires the ruby-graphviz gem (and its dependencies).
+  The associated gems must also be installed via 'bundle install'.
+D
+method_option :file, :type =&amp;gt; :string, :default =&amp;gt; &quot;gem_graph&quot;, :aliases =&amp;gt; &quot;-f&quot;, :desc =&amp;gt; &quot;The name to use for the generated file. see format option&quot;
+method_option :format, :type =&amp;gt; :string, :default =&amp;gt; &quot;png&quot;, :aliases =&amp;gt; &quot;-F&quot;, :desc =&amp;gt; &quot;This is output format option. Supported format is png, jpg, svg, dot ...&quot;
+method_option :requirements, :type =&amp;gt; :boolean, :default =&amp;gt; false, :aliases =&amp;gt; &quot;-R&quot;, :desc =&amp;gt; &quot;Set to show the version of each required dependency.&quot;
+method_option :version, :type =&amp;gt; :boolean, :default =&amp;gt; false, :aliases =&amp;gt; &quot;-v&quot;, :desc =&amp;gt; &quot;Set to show each gem version.&quot;
+method_option :without, :type =&amp;gt; :array, :default =&amp;gt; [], :aliases =&amp;gt; &quot;-W&quot;, :banner =&amp;gt; &quot;GROUP[ GROUP...]&quot;, :desc =&amp;gt; &quot;Exclude gems that are part of the specified named group.&quot;
+def viz
+  require &quot;bundler/cli/viz&quot;
+  Viz.new(options.dup).run
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So what I need is a similar routine that gets called when the learn option is entered on the command line.  My first several attempts were fairly miserable failures but here’s what I ended up with:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;desc &quot;learn [OPTIONS]&quot;, &quot;Allows bundler to learn that what to do when a command is broken&quot;
+
+long_desc &amp;lt;&amp;lt;-D
+  learn stores your personal approach to getting around gem breakages.
+  Example: bundle learn bad=&quot;gem install json -v1.8.1&quot; good=&quot;gem install json -v1.8.3&quot;.
+  will prompt you with the correct command when the failure occurs
+D
+method_option &quot;bad&quot;, :type =&amp;gt; :string, :default =&amp;gt; &quot;&quot;, :aliases =&amp;gt; &quot;-b&quot;, :desc =&amp;gt; &quot;The bad gem command&quot;
+method_option &quot;good&quot;, :type =&amp;gt; :string, :default =&amp;gt; &quot;&quot;, :aliases =&amp;gt; &quot;-g&quot;, :desc =&amp;gt; &quot;The good gem command&quot;
+
+def learn
+  require &quot;bundler/cli/learn&quot;
+  raise &quot;Hit learn!!!&quot;
+  Learn.new(options.dup).run
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;That require statement means that I needed to create bundler/cli/learn.rb immediately or I’d get a nasty missing file error.  No big deal though.&lt;/p&gt;
+
+&lt;p&gt;This can be called with:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; dbundle learn --bad=&quot;gem install json -v '1.8.1'&quot; --good=&quot;update your ruby&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;or&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; dbundle learn --bad=&quot;gem install json -v '1.8.1'&quot; --good=&quot;gem install json -v1.8.3&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Note: Its called dbundle in this example since I have a local shell alias so my modified bundler will be run instead of bundler itself.&lt;/p&gt;
+
+&lt;p&gt;Here’s an example of the output:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dbundle learn --bad=&quot;gem install json --version='1.7.3'&quot; --good=&quot;update your ruby&quot;
+--- ERROR REPORT TEMPLATE -------------------------------------------------------
+- What did you do?
+
+  I ran the command `/Users/sjohnson/me/fuzzygroup/rails/bundler/exe/bundle learn --bad=gem install json --version='1.7.3' --good=update your ruby`
+
+- What did you expect to happen?
+
+  I expected Bundler to...
+
+- What happened instead?
+
+  Instead, what happened was...
+
+
+Error details
+
+    RuntimeError: Hit learn!!!
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/cli.rb:426:in `learn'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/vendor/thor/lib/thor/command.rb:27:in `run'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/vendor/thor/lib/thor/invocation.rb:126:in `invoke_command'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/vendor/thor/lib/thor.rb:359:in `dispatch'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/cli.rb:20:in `dispatch'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/vendor/thor/lib/thor/base.rb:440:in `start'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/cli.rb:11:in `start'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/exe/bundle:32:in `block in &amp;lt;main&amp;gt;'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/friendly_errors.rb:105:in `with_friendly_errors'
+      /Users/sjohnson/me/fuzzygroup/rails/bundler/exe/bundle:24:in `&amp;lt;main&amp;gt;'
+
+Environment
+
+  Bundler   1.13.3
+  Rubygems  2.6.6
+  Ruby      2.3.1p112 (2016-04-26 revision 54768) [x86_64-darwin15]
+  GEM_HOME  /Users/sjohnson/.rvm/gems/ruby-2.3.1
+  GEM_PATH  /Users/sjohnson/.rvm/gems/ruby-2.3.1:/Users/sjohnson/.rvm/gems/ruby-2.3.1@global
+  RVM       1.26.1 (latest)
+  Git       2.2.1
+  Platform  x86_64-darwin-15
+  OpenSSL   OpenSSL 1.0.2h  3 May 2016
+  rubygems-bundler (1.4.4)
+
+      Bundler settings
+
+  build.nokogiri
+    Set for the current user (/Users/sjohnson/.bundle/config): &quot;--use-system-libraries&quot;
+  disable_postit
+    Set via BUNDLE_DISABLE_POSTIT: &quot;1&quot;
+--- TEMPLATE END ----------------------------------------------------------------
+
+Unfortunately, an unexpected error occurred, and Bundler cannot continue.
+
+First, try this link to see if there are any existing issue reports for this error:
+https://github.com/bundler/bundler/search?q=Hit+learn%21%21%21&amp;amp;type=Issues
+
+If there aren't any reports for this error yet, please create copy and paste the report template above into a new issue. Don't forget to anonymize any private data! The new issue form is located at:
+https://github.com/bundler/bundler/issues/new
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;so-now-we-need-a-method-so-bundler-can-learn&quot;&gt;So Now We Need a Method So Bundler Can Learn&lt;/h1&gt;
+
+&lt;p&gt;If you think about what this needs to do, it looks something like this:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Figure out if what you’re telling it to learn is a duplicate or not.&lt;/li&gt;
+  &lt;li&gt;Write a file to some kind of local storage which files away the bad, good and machine details.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Now that’s actually fairly simple.  The hard part is figuring out where that data can live.  I honestly have no idea where that might go given the&lt;/p&gt;
 
 &lt;h1 id=&quot;so-how-do-you-profit-from-this&quot;&gt;So How Do You Profit from this?&lt;/h1&gt;
 </description>
-        <pubDate>Tue, 11 Oct 2016 11:32:04 -0400</pubDate>
+        <pubDate>Tue, 11 Oct 2016 16:55:30 -0400</pubDate>
         <link>https://fuzzygroup.github.io/blog/bundler/2016/10/11/hacking-bundler-for-fun-profit-and-less-anger-at-the-world.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/bundler/2016/10/11/hacking-bundler-for-fun-profit-and-less-anger-at-the-world.html</guid>
         
