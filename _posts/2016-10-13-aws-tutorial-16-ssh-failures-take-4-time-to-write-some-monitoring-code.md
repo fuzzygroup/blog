@@ -1,13 +1,13 @@
 ---
 layout: post
-title: AWS Tutorial 15 - SSH Failures Take 3 - Time to Write Some Monitoring Code
+title: AWS Tutorial 15 - SSH Failures Take 4 - Time to Write Some Monitoring Code
 category: aws
 tags: ["aws", "ssh", "ruby", "monitoring"]
 ---
 
 ![ood_not_oom.jpg](/blog/assets/ood_not_oom.jpg)
 
-My apologies to the [Good Doctor](https://en.wikipedia.org/wiki/Tenth_Doctor) but when [OOM](https://linux-mm.org/OOM_Killer) is failing you, you have to make an [OOD](https://en.wikipedia.org/wiki/Ood) joke.  We're nerdy over hear.  Every one of us.
+My apologies to the [Good Doctor](https://en.wikipedia.org/wiki/Tenth_Doctor) but when [OOM](https://linux-mm.org/OOM_Killer) is failing you, you have to make an [OOD](https://en.wikipedia.org/wiki/Ood) joke.  We're nerdy over here.  Every one of us.
 
 Well crap.  I just ran my ansible df -h test which checks to make sure my boxes are up and running and I got complete failure:
 
@@ -176,6 +176,14 @@ This morning I added a running timer to track how long the boxes were up.  This 
     Success!  The box ficrawler8 is still alive and has been for: 9300 seconds!!!
     Success!  The box ficrawler9 is still alive and has been for: 9300 seconds!!!
     Success!  The box ficrawler10 is still alive and has been for: 9300 seconds!!!
+    
+## Postscript 2
+
+I had wanted to make this work with Twilio for alerting but I just ran out of time.  If anyone needs help with that reach out to me and I'll get it in.  Its not hard and Twilio is an awesome, awesome company to work with.
+
+## Postscript 3
+
+I just realized that I think the Twilio credentials are in the git repo.  Sigh.  I turned on 2 factor authentication so that should prevent them from getting used by someone other than me.  
     
 ## License
 

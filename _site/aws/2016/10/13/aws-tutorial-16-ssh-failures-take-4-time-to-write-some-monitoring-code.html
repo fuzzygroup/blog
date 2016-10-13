@@ -218,7 +218,7 @@ ficrawler10 | UNREACHABLE! =&gt; {
 
 <h1 id="the-code">The Code</h1>
 
-<p>Listed below is a rake task which encapsulates the bulk of it.  This is actually only the <strong>first draft</strong> of it.  The actual github code is better.  The detailed stuff is handled by aws_monitor.rb which is a short class of static methods just to simplify the rake task and make them testable.  The only bad thing I can ever say about Jim Weirich is that Rake tasks aren’t really testable.  Other than that I wish he was still with us.  Right now this code is a bit of a rough draft as the failure hasn’t happened again yet and things like error handling always need to get addressed but it looks something like this:</p>
+<p>Listed below is a rake task which encapsulates the bulk of it.  This is actually only the <strong>first draft</strong> of it.  The actual <a href="https://github.com/fuzzygroup/aws_monitor">github</a> code is better but I’ve been up all night so I don’t think trying to write a good description of it is wise.  The detailed stuff is handled by aws_monitor.rb which is a short class of static methods just to simplify the rake task and make them testable.  The only bad thing I can ever say about Jim Weirich is that Rake tasks aren’t really testable.  Other than that I wish he was still with us.  Right now this code is a bit of a rough draft as the failure hasn’t happened again yet and things like error handling always need to get addressed but it looks something like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>namespace :monitor_aws do
   # bundle exec rake monitor_aws:ansible_hosts --trace
@@ -264,7 +264,7 @@ end
 
 <p>And that’s about all there is to it.  The complicated version, which is also written, but not yet published has some other tricks like using ping to make sure my local connectivity didn’t fail.  I don’t want to publish that yet since I don’t understand if my failure condition is going to be a  Net::SSH::AuthenticationFailed or a session.error message or what.</p>
 
-<p>Postscript</p>
+<h2 id="postscript">Postscript</h2>
 
 <p>This morning I added a running timer to track how long the boxes were up.  This is what it looks like now:</p>
 
@@ -279,6 +279,18 @@ Success!  The box ficrawler9 is still alive and has been for: 9300 seconds!!!
 Success!  The box ficrawler10 is still alive and has been for: 9300 seconds!!!
 </code></pre>
 </div>
+
+<h2 id="postscript-2">Postscript 2</h2>
+
+<p>I had wanted to make this work with Twilio for alerting but I just ran out of time.  If anyone needs help with that reach out to me and I’ll get it in.  Its not hard and Twilio is an awesome, awesome company to work with.</p>
+
+<h2 id="postscript-3">Postscript 3</h2>
+
+<p>I just realized that I think the Twilio credentials are in the git repo.  Sigh.  I turned on 2 factor authentication so that should prevent them from getting used by someone other than me.</p>
+
+<h2 id="license">License</h2>
+
+<p>Do with it as you will.  Enjoy it; fork it, etc.  Sorry it took so long to get this post out.</p>
 
   </div>
 
