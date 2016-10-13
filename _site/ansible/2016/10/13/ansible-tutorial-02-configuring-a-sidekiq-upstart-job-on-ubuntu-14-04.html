@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Ansible Tutorial 02 - Configuring a Sidekiq Upstart Job on Ubuntu 14.04</title>
+  <meta name="description" content="As I’ve now noted a number of times, I’m in the process of a large scale AWS migration and we’ve had stability problems.  Unlike previous times in my life wh...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/ansible/2016/10/13/ansible-tutorial-02-configuring-a-sidekiq-upstart-job-on-ubuntu-14-04.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Ansible Tutorial 02 - Configuring a Sidekiq Upstart Job on Ubuntu 14.04</h1>
+    <p class="post-meta"><time datetime="2016-10-13T00:00:00-04:00" itemprop="datePublished">Oct 13, 2016</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>As I’ve now noted a number of times, I’m in the process of a large scale AWS migration and we’ve had stability problems.  Unlike previous times in my life where I threw my hands up, got tired with devops and just hacked something together, I’m determined that, this time, things will be different.  At the heart of our issues has been ballooning memory use in Ruby.  Whether the issue is in our code, a gem, an interaction or something else entirely is, at present, unknown.</p>
+
+<p>The solution I’ve opted to go with for solving this is:</p>
+
+<ol>
+  <li>Remove our own threading code</li>
+  <li>Use <a href="http://www.mikeperham.com">Mike Perham</a>’s astonishingly wonderful <a href="http://sidekiq.org">Sidekiq</a></li>
+  <li>Sign up for paid support / <a href="http://sidekiq.org/products/pro">Sidekiq Pro</a> so any assistance that we need is possible.</li>
+  <li>Move to an upstart job to run sidekiq</li>
+  <li>Use <a href="https://github.com/mperham/inspeqtor">inspeqtor</a> to Monitor Sidekiq</li>
+</ol>
+
+<p>In this blog post I’m going to focus on #4 – using an Upstart Job to Run Sidekiq and define that job with Ansible.  The very first thing to know is that my previous ansible task, <a href="https://fuzzygroup.github.io/blog/ansible/2016/10/09/ansible-quickie-fixing-a-poorly-designed-galaxy-role.html">here</a>, is absolute crap as best I can tell.  Even with my fixes, like so many things on <a href="https://galaxy.ansible.com">Ansible Galaxy</a>, it was just plain wrong.  Where Galaxy is good, its excellent, but that’s rare in my experience.</p>
+
+<p>Just a disclaimer - any errors here are mine, not Mike’s or Sidekiq’s.  I own the responsibility here.</p>
+
+<h1 id="using-ansible-to-install-a-sidekiq-service">Using Ansible to Install a Sidekiq Service</h1>
+
+<p>Here are our assumptions that we’re basing our ansible code on:</p>
+
+<ul>
+  <li>Ubuntu 14.04</li>
+  <li>Upstart</li>
+  <li>Single, global ruby per server</li>
+  <li>RVM (even though it isn’t strictly necessary)</li>
+  <li>One ruby app per server</li>
+</ul>
+
+<p>Let’s begin with the structure of our role:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cd ~/whatever_your_ansible_root_is
+mkdir -p roles/software_licenses/tasks
+mkdir -p roles/services
+mkdir roles/services/tasks
+mkdir roles/servies/templates
+</code></pre>
+</div>
+
+<h2 id="optional---adding-your-sidekiq-pro-software-license">Optional - Adding Your Sidekiq Pro Software License</h2>
+
+<p>Sidekiq Pro is commercial software, not open source, so if you’re using it instead of the open source version, you’ll need to authorize it.  Here’s how to do this.  Here’s what goes in your roles/software_licenses/tasks/main.yml:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="gd">--- 
+- name: set the licensing for sidekiq pro
+</span>  become: no
+  shell:  "cd /var/www/apps/banks/current &amp;&amp; bundle config gems.contribsys.com YOUR_SECURITY_KEY"    
+</code></pre>
+</div>
+
+<h2 id="defining-your-group-vars">Defining Your Group Vars</h2>
+
+<p>Here’s what goes in your group_vars context.  I had these in all but you may choose a different approach:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>app_name: banks
+app_base: /var/www/apps/banks/
+app_path: /var/www/apps/banks/current/
+user_name: ubuntu
+db_root_password: FDFJKSDJFKLSFJSLKFJSKLFSJFKLSDJF
+my_ip_address: 64.184.12.117
+server_env: production
+rvm_path: /usr/local/rvm/bin/rvm    
+</code></pre>
+</div>
+
+<h2 id="your-template-for-the-upstart-job">Your Template for the Upstart Job</h2>
+
+<p>Here’s what goes in roles/services/templates/sidekiq_perham_init.j2:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># /etc/init/sidekiq.conf - Sidekiq config
+# source: https://github.com/mperham/sidekiq/blob/master/examples/upstart/sidekiq.conf
+
+# This example config should work with Ubuntu 12.04+.  It
+# allows you to manage multiple Sidekiq instances with
+# Upstart, Ubuntu's native service management tool.
+#
+# See workers.conf for how to manage all Sidekiq instances at once.
+#
+# Save this config as /etc/init/sidekiq.conf then manage sidekiq with:
+#   sudo start sidekiq index=0
+#   sudo stop sidekiq index=0
+#   sudo status sidekiq index=0
+#
+# Hack Upstart's reload command to 'quiet' Sidekiq:
+#
+#   sudo reload sidekiq index=0
+#
+# or use the service command:
+#   sudo service sidekiq {start,stop,restart,status}
+#
+
+description "Sidekiq Background Worker"
+
+# This script is not meant to start on bootup, workers.conf
+# will start all sidekiq instances explicitly when it starts.
+#start on runlevel [2345]
+#stop on runlevel [06]
+
+# change to match your deployment user
+setuid 
+setgid 
+env HOME=
+
+respawn
+respawn limit 3 30
+
+# TERM is sent by sidekiqctl when stopping sidekiq. Without declaring these as
+# normal exit codes, it just respawns.
+normal exit 0 TERM
+
+# Older versions of Upstart might not support the reload command and need
+# this commented out.
+reload signal USR1
+
+# Upstart waits 5 seconds by default to kill the a process. Increase timeout to
+# give sidekiq process enough time to exit.
+kill timeout 15
+
+#instance $index
+instance 0
+
+script
+# this script runs in /bin/sh by default
+# respawn as bash so we can source in rbenv
+exec /bin/bash &lt;&lt;'EOT'
+  # Pick your poison :) Or none if you're using a system wide installed Ruby.
+  # rbenv
+  # source /home/apps/.bash_profile
+  # OR
+  # source /home/apps/.profile
+  # OR system:
+  # source /etc/profile.d/rbenv.sh
+  #
+  # rvm
+  # source /home/apps/.rvm/scripts/rvm
+  source 
+
+  # Logs out to /var/log/upstart/sidekiq.log by default
+
+  cd 
+  #exec bundle exec sidekiq -i ${index} -e production
+  exec bundle exec sidekiq -i 0 -e production
+EOT
+end script
+</code></pre>
+</div>
+
+<p>Please note that the template above comes directly from Mike Perham’s Sidekiq Wiki, <a href="https://github.com/mperham/sidekiq/blob/master/examples/upstart/sidekiq.conf">here</a>.  I modified it slightly to incorporate ansible variables and to remove the index parameter which didn’t function, at least for me, on Ubuntu 14.04.</p>
+
+<h2 id="pulling-the-template-and-service-together">Pulling the Template and Service Together</h2>
+
+<p>Here’s what goes in roles/services/tasks/main.yml:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>- name: prevent sidekiq init from running if it has already been done
+  stat: path=/etc/init/sidekiq.conf
+  register: sidekiq_init_installed
+  
+- name: Copy sidekiq init template to init.d dir
+  template: src=sidekiq_perham_init.j2 dest=/etc/init/sidekiq.conf owner=root group=root force=yes
+  sudo: yes
+  when: sidekiq_init_installed.stat.exists == False
+
+- name: start_sidekiq
+  service: name=sidekiq state=started
+</code></pre>
+</div>
+
+<p>The only real Ansible trick here is to figure out how to make this idempotent so it only installs the upstart job once.  To do that I use the stat module to check the location of the upstart sidekiq.conf file and register a variable.  Then I only install the template when that variable is false.</p>
+
+<h2 id="calling-everything-from-the-playbook">Calling Everything from the Playbook</h2>
+
+<p>The final step here is to pull the roles into the playbook so it can run.  Here’s how:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>- { role: software_licenses, tags: software_licenses }
+- { role: services, tags: services }
+</code></pre>
+</div>
+
+<p>Because the service depends on the gem it is important that the software_licenses role run first so the gem is authorized.  Otherwise Sidekiq won’t start and the service will be borked.</p>
+
+<h2 id="optional---your-ruby-apps-gemfile">Optional - Your Ruby App’s Gemfile</h2>
+
+<p>If you’re using Sidekiq Pro, you’ll need to update your gem file with the stuff you got from Sidekiq support.</p>
+
+<h2 id="running-the-playbook">Running the Playbook</h2>
+
+<p>If you just want to run part the services and software_licenses role then you can use:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/ficrawler3 playbook_crawler.yml --tags="software_licenses, services"
+</code></pre>
+</div>
+
+<p>Here’s the output from running just the services role on a single one of my boxes:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/ficrawler3 playbook_crawler.yml --tags="services"
+
+[DEPRECATION WARNING]: Instead of sudo/sudo_user, use become/become_user and make sure become_method is 'sudo' (default).
+This feature will be removed in a future release. Deprecation warnings can be
+disabled by setting deprecation_warnings=False in ansible.cfg.
+
+PLAY [crawler, ansibletest] ****************************************************
+
+TASK [setup] *******************************************************************
+ok: [ficrawler3]
+
+TASK [services : stop_sendmail] ************************************************
+ok: [ficrawler3]
+
+TASK [services : stop_apache2] *************************************************
+ok: [ficrawler3]
+
+TASK [services : stop_memcached] ***********************************************
+ok: [ficrawler3]
+
+TASK [services : prevent sidekiq init from running if it has already been done]
+ok: [ficrawler3]
+
+TASK [services : Copy sidekiq init template to init.d dir] *********************
+skipping: [ficrawler3]
+
+TASK [services : start_sidekiq] ************************************************
+changed: [ficrawler3]
+
+PLAY RECAP *********************************************************************
+ficrawler3                 : ok=6    changed=1    unreachable=0    failed=0
+</code></pre>
+</div>
+
+<p>Your results may differ a bit but it should be similar to that.</p>
+
+<h1 id="log-file">Log File</h1>
+
+<p>It is always terribly important with long running processes to know where their log file goes.  In this case it is located at:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>/var/log/upstart/sidekiq_0.log  
+</code></pre>
+</div>
+
+<p>I’ll return to that in a later Ansible tutorial when I configure cross server log management with Graylog.  For my work, sidekiq logs are critical so I added a bash command to the shells on all my boxes so I can tail them easily.  All it takes is to drop alias tailsidekiq=’tail -f /var/log/upstart/sidekiq_0.log’ into the .bashrc on all your boxes.</p>
+
+<p>And, yes, I’m am showing off here.  This points out just how awesome automatically provisioning your boxes with ansible is.  When you can make changes across a farm of boxes with a single command, you can apply the same types of refactoring / continuous improvement that you do with code to devops.  In years past if I wanted this I’d have had to do it manually.  Now its a change to a template file and running an ansible playbook.  Tomorrow I’ll likely pipe all log files over the network to Graylog but until then I have my tailsidekiq command.</p>
+
+<h1 id="sidebar-why-use-rvm-with-a-single-ruby">Sidebar: Why Use RVM With a Single Ruby?</h1>
+
+<p>I know someone’s going to ask this so I may as well answer it.  RVM is the easiest way, that I’ve found, to get Ruby installed anywhere.  Even with a single Ruby, RVM makes getting it installed better.</p>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff.  Ruby / Rails / Elixir.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
