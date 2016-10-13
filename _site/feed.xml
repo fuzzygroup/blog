@@ -6,9 +6,73 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 13 Oct 2016 04:08:22 -0400</pubDate>
-    <lastBuildDate>Thu, 13 Oct 2016 04:08:22 -0400</lastBuildDate>
+    <pubDate>Thu, 13 Oct 2016 05:52:21 -0400</pubDate>
+    <lastBuildDate>Thu, 13 Oct 2016 05:52:21 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Sidekiq - Graceful Versus Forceful</title>
+        <description>&lt;p&gt;So now that I’m using Sidekiq for background processes, I need to be able to start it up, shut it down and I need to understand the difference between forceful and graceful.&lt;/p&gt;
+
+&lt;h1 id=&quot;running-sidekiq-interactively&quot;&gt;Running Sidekiq Interactively&lt;/h1&gt;
+
+&lt;p&gt;This is easy and we all should know this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd /my_rails_app/where_ever_that_is
+bundle exec sidekiq
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This will run Sidekiq interactively.  Now if you want it to run even if your connection to the remote box drops then you need to use Tmux or something similar.&lt;/p&gt;
+
+&lt;h1 id=&quot;running-it-as-a-service&quot;&gt;Running it as a Service&lt;/h1&gt;
+
+&lt;p&gt;See my last blog post on using Ansible to configure Sidekiq and I think that will become clear.&lt;/p&gt;
+
+&lt;h1 id=&quot;forceful-versus-graceful&quot;&gt;Forceful versus Graceful&lt;/h1&gt;
+
+&lt;p&gt;Forceful versus Graceful defines how you want Sidekiq to shut down and it basically boils down to the speed of the shutdown.  Sidekiq runs “jobs” which basically means “long running methods” and here’s the difference:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;forceful – shut down NOW; abandon all work in process&lt;/li&gt;
+  &lt;li&gt;graceful – tell sidekiq to shut down when each of its threads is done processing&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Let’s use an analogy here to make this clear.  Imagine that sidekiq was a hitchhiker you picked up on the side of the road.  Forceful would be you opening the door and kicking the hitchhiker out while the car is still moving.  Graceful would be you saying “I think you need to get out at the next exit and the hitchhiker saying - &lt;em&gt;I’m sorry but I need a bit more time; I’ll get out when I’m ready&lt;/em&gt;”.&lt;/p&gt;
+
+&lt;p&gt;There isn’t a right answer here whether or not to use Forceful or Graceful – it really depends on your context.  If you use Sidekiq to handle short lived asynchronous tasks like, say, sending a welcome email then you probably want to use Graceful since it shouldn’t take that long for each thread to idle down.  I, on the other hand, use sidekiq to handle tasks that might take hours or even a whole day to finish so I usually use Forceful.  Given that my tasks have their own journal, this isn’t terrible.  It isn’t great but it isn’t terrible.&lt;/p&gt;
+
+&lt;p&gt;Here’s an example of a Forceful shutdown:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ps -ef | grep sidekiq | grep -v grep | awk '{print $2}' | xargs kill -9
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here’s an example of a Graceful shutdown:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ps auwwx | grep sidekiq  # and give the pid value to the next command where &amp;lt;pid&amp;gt; is
+sidekiqctl stop &amp;lt;pid&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;My thanks to the fine community at &lt;a href=&quot;http://www.sidekiq.com/&quot;&gt;Stack Overflow&lt;/a&gt; for these &lt;a href=&quot;http://stackoverflow.com/questions/12143350/gracefully-shutting-down-sidekiq-processes&quot;&gt;Sidekiq Graceful answers&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 13 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/ruby/2016/10/13/sidekiq-graceful-versus-forceful.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ruby/2016/10/13/sidekiq-graceful-versus-forceful.html</guid>
+        
+        <category>rails</category>
+        
+        <category>ruby</category>
+        
+        <category>sidekiq</category>
+        
+        <category>unix</category>
+        
+        
+        <category>ruby</category>
+        
+      </item>
     
       <item>
         <title>Ansible Tutorial 02 - Configuring a Sidekiq Upstart Job on Ubuntu 14.04</title>
@@ -21,7 +85,7 @@
   &lt;li&gt;Use &lt;a href=&quot;http://www.mikeperham.com&quot;&gt;Mike Perham&lt;/a&gt;’s astonishingly wonderful &lt;a href=&quot;http://sidekiq.org&quot;&gt;Sidekiq&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Sign up for paid support / &lt;a href=&quot;http://sidekiq.org/products/pro&quot;&gt;Sidekiq Pro&lt;/a&gt; so any assistance that we need is possible.&lt;/li&gt;
   &lt;li&gt;Move to an upstart job to run sidekiq&lt;/li&gt;
-  &lt;li&gt;Use &lt;a href=&quot;https://github.com/mperham/inspeqtor&quot;&gt;inspeqtor&lt;/a&gt; to Monitor Sidekiq&lt;/li&gt;
+  &lt;li&gt;Use &lt;a href=&quot;https://mmonit.com/monit/&quot;&gt;Monit&lt;/a&gt; or &lt;a href=&quot;https://github.com/mperham/inspeqtor&quot;&gt;inspeqtor&lt;/a&gt; to Monitor Sidekiq&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;In this blog post I’m going to focus on #4 – using an Upstart Job to Run Sidekiq and define that job with Ansible.  The very first thing to know is that my previous ansible task, &lt;a href=&quot;https://fuzzygroup.github.io/blog/ansible/2016/10/09/ansible-quickie-fixing-a-poorly-designed-galaxy-role.html&quot;&gt;here&lt;/a&gt;, is absolute crap as best I can tell.  Even with my fixes, like so many things on &lt;a href=&quot;https://galaxy.ansible.com&quot;&gt;Ansible Galaxy&lt;/a&gt;, it was just plain wrong.  Where Galaxy is good, its excellent, but that’s rare in my experience.&lt;/p&gt;
@@ -945,47 +1009,6 @@ ssh_exchange_identification: read: Connection reset by peer
         
         
         <category>ruby</category>
-        
-      </item>
-    
-      <item>
-        <title>Managing a Large Scale Sidekiq Installation</title>
-        <description>&lt;p&gt;http://stackoverflow.com/questions/12143350/gracefully-shutting-down-sidekiq-processes&lt;/p&gt;
-
-&lt;p&gt;fiweb1 | SUCCESS | rc=0 »
-Total Memory: 65966140 (62 gb) / Used Memory: 14217064 (13 gb) / Free Memory: 51749076 (49 gb)&lt;/p&gt;
-
-&lt;p&gt;ficrawlerbig | SUCCESS | rc=0 »
-Total Memory: 15666140 (14 gb) / Used Memory: 12453420 (11 gb) / Free Memory: 3212720 (3 gb)&lt;/p&gt;
-
-&lt;p&gt;ficrawler3 | SUCCESS | rc=0 »
-Total Memory: 15666140 (14 gb) / Used Memory: 7130500 (6 gb) / Free Memory: 8535640 (8 gb)&lt;/p&gt;
-
-&lt;p&gt;ficrawler4 | SUCCESS | rc=0 »
-Total Memory: 15666140 (14 gb) / Used Memory: 545296 (0 gb) / Free Memory: 15120844 (14 gb)&lt;/p&gt;
-
-&lt;p&gt;ficrawler5 | SUCCESS | rc=0 »
-Total Memory: 15666140 (14 gb) / Used Memory: 8835068 (8 gb) / Free Memory: 6831072 (6 gb)&lt;/p&gt;
-
-&lt;p&gt;ficrawler6 | SUCCESS | rc=0 »
-Total Memory: 15666140 (14 gb) / Used Memory: 14846820 (14 gb) / Free Memory: 819320 (0 gb)&lt;/p&gt;
-
-&lt;p&gt;ficrawler7 | SUCCESS | rc=0 »
-Total Memory: 15666140 (14 gb) / Used Memory: 11149072 (10 gb) / Free Memory: 4517068 (4 gb)&lt;/p&gt;
-
-&lt;p&gt;ficrawler8 | SUCCESS | rc=0 »
-Total Memory: 15666140 (14 gb) / Used Memory: 3378360 (3 gb) / Free Memory: 12287780 (11 gb)&lt;/p&gt;
-
-&lt;p&gt;ficrawler9 | SUCCESS | rc=0 »
-Total Memory: 15666140 (14 gb) / Used Memory: 2316296 (2 gb) / Free Memory: 13349844 (12 gb)&lt;/p&gt;
-
-&lt;p&gt;ficrawler10 | SUCCESS | rc=0 »
-Total Memory: 15666140 (14 gb) / Used Memory: 12465468 (11 gb) / Free Memory: 3200672 (3 gb)&lt;/p&gt;
-</description>
-        <pubDate>Sun, 09 Oct 2016 12:21:09 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/10/09/managing-a-large-scale-sidekiq-installation.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/09/managing-a-large-scale-sidekiq-installation.html</guid>
-        
         
       </item>
     

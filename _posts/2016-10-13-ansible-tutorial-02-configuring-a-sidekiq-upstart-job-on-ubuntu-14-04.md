@@ -12,7 +12,7 @@ The solution I've opted to go with for solving this is:
 2. Use [Mike Perham](http://www.mikeperham.com)'s astonishingly wonderful [Sidekiq](http://sidekiq.org)
 3. Sign up for paid support / [Sidekiq Pro](http://sidekiq.org/products/pro) so any assistance that we need is possible.
 4. Move to an upstart job to run sidekiq
-5. Use [inspeqtor](https://github.com/mperham/inspeqtor) to Monitor Sidekiq
+5. Use [Monit](https://mmonit.com/monit/) or [inspeqtor](https://github.com/mperham/inspeqtor) to Monitor Sidekiq
 
 In this blog post I'm going to focus on #4 -- using an Upstart Job to Run Sidekiq and define that job with Ansible.  The very first thing to know is that my previous ansible task, [here](https://fuzzygroup.github.io/blog/ansible/2016/10/09/ansible-quickie-fixing-a-poorly-designed-galaxy-role.html), is absolute crap as best I can tell.  Even with my fixes, like so many things on [Ansible Galaxy](https://galaxy.ansible.com), it was just plain wrong.  Where Galaxy is good, its excellent, but that's rare in my experience.
 

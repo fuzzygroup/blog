@@ -105,7 +105,7 @@
   <li>Use <a href="http://www.mikeperham.com">Mike Perham</a>’s astonishingly wonderful <a href="http://sidekiq.org">Sidekiq</a></li>
   <li>Sign up for paid support / <a href="http://sidekiq.org/products/pro">Sidekiq Pro</a> so any assistance that we need is possible.</li>
   <li>Move to an upstart job to run sidekiq</li>
-  <li>Use <a href="https://github.com/mperham/inspeqtor">inspeqtor</a> to Monitor Sidekiq</li>
+  <li>Use <a href="https://mmonit.com/monit/">Monit</a> or <a href="https://github.com/mperham/inspeqtor">inspeqtor</a> to Monitor Sidekiq</li>
 </ol>
 
 <p>In this blog post I’m going to focus on #4 – using an Upstart Job to Run Sidekiq and define that job with Ansible.  The very first thing to know is that my previous ansible task, <a href="https://fuzzygroup.github.io/blog/ansible/2016/10/09/ansible-quickie-fixing-a-poorly-designed-galaxy-role.html">here</a>, is absolute crap as best I can tell.  Even with my fixes, like so many things on <a href="https://galaxy.ansible.com">Ansible Galaxy</a>, it was just plain wrong.  Where Galaxy is good, its excellent, but that’s rare in my experience.</p>
