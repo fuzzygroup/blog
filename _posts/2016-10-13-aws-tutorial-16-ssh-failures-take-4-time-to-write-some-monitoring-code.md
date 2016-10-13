@@ -1,6 +1,6 @@
 ---
 layout: post
-title: AWS Tutorial 15 - SSH Failures Take 4 - Time to Write Some Monitoring Code
+title: AWS Tutorial 16 - SSH Failures Take 4 - Time to Write Some Monitoring Code
 category: aws
 tags: ["aws", "ssh", "ruby", "monitoring"]
 ---
