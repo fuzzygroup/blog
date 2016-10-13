@@ -7,10 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>AWS Tutorial 15 - SSH Failures Take 3 - Time to Write Some Monitoring Code</title>
-  <meta name="description" content="OOD Picture">
+  <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/aws/2016/10/07/aws-tutorial-16-ssh-failures-take-4-time-to-write-some-monitoring-code.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/aws/2016/10/13/aws-tutorial-16-ssh-failures-take-4-time-to-write-some-monitoring-code.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
   
   <script>
@@ -92,13 +92,13 @@
 
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">AWS Tutorial 15 - SSH Failures Take 3 - Time to Write Some Monitoring Code</h1>
-    <p class="post-meta"><time datetime="2016-10-07T02:44:48-04:00" itemprop="datePublished">Oct 7, 2016</time></p>
+    <p class="post-meta"><time datetime="2016-10-13T00:00:00-04:00" itemprop="datePublished">Oct 13, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>OOD Picture</p>
+    <p><img src="/blog/assets/ood_not_oom.jpg" alt="ood_not_oom.jpg" /></p>
 
-<p>http://www.bbc.co.uk/doctorwho/medialibrary/images/800/s4_03_wal_16.jpg?size=800&amp;promo=/doctorwho/medialibrary/images/main-promo/s4_03_wal_16.jpg&amp;purpose=Computer%20wallpaper&amp;summary=The%20circle%20must%20be%20broken.&amp;info=&amp;tag_file_id=s4_03_wal_16</p>
+<p>My apologies to the <a href="https://en.wikipedia.org/wiki/Tenth_Doctor">Good Doctor</a> but when <a href="https://linux-mm.org/OOM_Killer">OOM</a> is failing you, you have to make an <a href="https://en.wikipedia.org/wiki/Ood">OOD</a> joke.  We’re nerdy over hear.  Every one of us.</p>
 
 <p>Well crap.  I just ran my ansible df -h test which checks to make sure my boxes are up and running and I got complete failure:</p>
 
@@ -218,7 +218,7 @@ ficrawler10 | UNREACHABLE! =&gt; {
 
 <h1 id="the-code">The Code</h1>
 
-<p>Listed below is a rake task which encapsulates the bulk of it.  The detailed stuff is handled by aws_monitor.rb which is a short class of static methods just to simplify the rake task and make them testable.  The only bad thing I can ever say about Jim Weirich is that Rake tasks aren’t really testable.  Other than that I wish he was still with us.  Right now this code is a bit of a rough draft as the failure hasn’t happened again yet and things like error handling always need to get addressed but it looks something like this:</p>
+<p>Listed below is a rake task which encapsulates the bulk of it.  This is actually only the <strong>first draft</strong> of it.  The actual github code is better.  The detailed stuff is handled by aws_monitor.rb which is a short class of static methods just to simplify the rake task and make them testable.  The only bad thing I can ever say about Jim Weirich is that Rake tasks aren’t really testable.  Other than that I wish he was still with us.  Right now this code is a bit of a rough draft as the failure hasn’t happened again yet and things like error handling always need to get addressed but it looks something like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>namespace :monitor_aws do
   # bundle exec rake monitor_aws:ansible_hosts --trace
@@ -263,6 +263,22 @@ end
 </div>
 
 <p>And that’s about all there is to it.  The complicated version, which is also written, but not yet published has some other tricks like using ping to make sure my local connectivity didn’t fail.  I don’t want to publish that yet since I don’t understand if my failure condition is going to be a  Net::SSH::AuthenticationFailed or a session.error message or what.</p>
+
+<p>Postscript</p>
+
+<p>This morning I added a running timer to track how long the boxes were up.  This is what it looks like now:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Monitoring run: 31
+Success!  The box ficrawler3 is still alive and has been for: 9300 seconds!!!
+Success!  The box ficrawler4 is still alive and has been for: 9300 seconds!!!
+Success!  The box ficrawler5 is still alive and has been for: 9300 seconds!!!
+Success!  The box ficrawler6 is still alive and has been for: 9300 seconds!!!
+Success!  The box ficrawler7 is still alive and has been for: 9300 seconds!!!
+Success!  The box ficrawler8 is still alive and has been for: 9300 seconds!!!
+Success!  The box ficrawler9 is still alive and has been for: 9300 seconds!!!
+Success!  The box ficrawler10 is still alive and has been for: 9300 seconds!!!
+</code></pre>
+</div>
 
   </div>
 

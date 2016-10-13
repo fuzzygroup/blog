@@ -4,6 +4,8 @@ title: Ansible Quickie Fixing a Poorly Designed Galaxy Role
 category: ansible
 tags: ["ansible", "galaxy", "sidekiq"]
 ---
+Update: This really, really doesn't work.  Please read my [revised Sidekiq post](https://fuzzygroup.github.io/blog/ansible/2016/10/13/ansible-tutorial-02-configuring-a-sidekiq-upstart-job-on-ubuntu-14-04.html).
+
 Earlier today I used an Ansible Galaxy role to set [Sidekiq as a background process started with an Ubuntu Upstart service](https://github.com/crushlovely/ansible-sidekiq-upstart/).  Unfortunately when I went to run the service, I found that it would not start at all.  While I like the concept of Ansible Galaxy, I have described it as: 
 
     Galaxy is DockerHub without the stars for ratings

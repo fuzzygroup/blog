@@ -5,11 +5,9 @@ category: aws
 tags: ["aws", "ssh", "ruby", "monitoring"]
 ---
 
-OOD Picture
+![ood_not_oom.jpg](/blog/assets/ood_not_oom.jpg)
 
-http://www.bbc.co.uk/doctorwho/medialibrary/images/800/s4_03_wal_16.jpg?size=800&promo=/doctorwho/medialibrary/images/main-promo/s4_03_wal_16.jpg&purpose=Computer%20wallpaper&summary=The%20circle%20must%20be%20broken.&info=&tag_file_id=s4_03_wal_16
-
-
+My apologies to the [Good Doctor](https://en.wikipedia.org/wiki/Tenth_Doctor) but when [OOM](https://linux-mm.org/OOM_Killer) is failing you, you have to make an [OOD](https://en.wikipedia.org/wiki/Ood) joke.  We're nerdy over hear.  Every one of us.
 
 Well crap.  I just ran my ansible df -h test which checks to make sure my boxes are up and running and I got complete failure:
 
@@ -121,7 +119,7 @@ This is the core of a monitoring tool and where crap gets tricky:
 
 # The Code
 
-Listed below is a rake task which encapsulates the bulk of it.  The detailed stuff is handled by aws_monitor.rb which is a short class of static methods just to simplify the rake task and make them testable.  The only bad thing I can ever say about Jim Weirich is that Rake tasks aren't really testable.  Other than that I wish he was still with us.  Right now this code is a bit of a rough draft as the failure hasn't happened again yet and things like error handling always need to get addressed but it looks something like this:
+Listed below is a rake task which encapsulates the bulk of it.  This is actually only the **first draft** of it.  The actual [github](https://github.com/fuzzygroup/aws_monitor) code is better but I've been up all night so I don't think trying to write a good description of it is wise.  The detailed stuff is handled by aws_monitor.rb which is a short class of static methods just to simplify the rake task and make them testable.  The only bad thing I can ever say about Jim Weirich is that Rake tasks aren't really testable.  Other than that I wish he was still with us.  Right now this code is a bit of a rough draft as the failure hasn't happened again yet and things like error handling always need to get addressed but it looks something like this:
 
     namespace :monitor_aws do
       # bundle exec rake monitor_aws:ansible_hosts --trace
@@ -164,3 +162,21 @@ Listed below is a rake task which encapsulates the bulk of it.  The detailed stu
     end
 
 And that's about all there is to it.  The complicated version, which is also written, but not yet published has some other tricks like using ping to make sure my local connectivity didn't fail.  I don't want to publish that yet since I don't understand if my failure condition is going to be a  Net::SSH::AuthenticationFailed or a session.error message or what.  
+
+## Postscript
+
+This morning I added a running timer to track how long the boxes were up.  This is what it looks like now:
+
+    Monitoring run: 31
+    Success!  The box ficrawler3 is still alive and has been for: 9300 seconds!!!
+    Success!  The box ficrawler4 is still alive and has been for: 9300 seconds!!!
+    Success!  The box ficrawler5 is still alive and has been for: 9300 seconds!!!
+    Success!  The box ficrawler6 is still alive and has been for: 9300 seconds!!!
+    Success!  The box ficrawler7 is still alive and has been for: 9300 seconds!!!
+    Success!  The box ficrawler8 is still alive and has been for: 9300 seconds!!!
+    Success!  The box ficrawler9 is still alive and has been for: 9300 seconds!!!
+    Success!  The box ficrawler10 is still alive and has been for: 9300 seconds!!!
+    
+## License
+
+Do with it as you will.  Enjoy it; fork it, etc.  Sorry it took so long to get this post out.    

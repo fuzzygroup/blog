@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 13 Oct 2016 05:52:21 -0400</pubDate>
-    <lastBuildDate>Thu, 13 Oct 2016 05:52:21 -0400</lastBuildDate>
+    <pubDate>Thu, 13 Oct 2016 10:22:14 -0400</pubDate>
+    <lastBuildDate>Thu, 13 Oct 2016 10:22:14 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -71,6 +71,209 @@ sidekiqctl stop &amp;lt;pid&amp;gt;
         
         
         <category>ruby</category>
+        
+      </item>
+    
+      <item>
+        <title>AWS Tutorial 15 - SSH Failures Take 3 - Time to Write Some Monitoring Code</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/blog/assets/ood_not_oom.jpg&quot; alt=&quot;ood_not_oom.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;My apologies to the &lt;a href=&quot;https://en.wikipedia.org/wiki/Tenth_Doctor&quot;&gt;Good Doctor&lt;/a&gt; but when &lt;a href=&quot;https://linux-mm.org/OOM_Killer&quot;&gt;OOM&lt;/a&gt; is failing you, you have to make an &lt;a href=&quot;https://en.wikipedia.org/wiki/Ood&quot;&gt;OOD&lt;/a&gt; joke.  We’re nerdy over hear.  Every one of us.&lt;/p&gt;
+
+&lt;p&gt;Well crap.  I just ran my ansible df -h test which checks to make sure my boxes are up and running and I got complete failure:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fiweb1 | UNREACHABLE! =&amp;gt; {
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
+    &quot;unreachable&quot;: true
+}
+fiansible2 | UNREACHABLE! =&amp;gt; {
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
+    &quot;unreachable&quot;: true
+}
+ficrawlerbig | UNREACHABLE! =&amp;gt; {
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
+    &quot;unreachable&quot;: true
+}
+ficrawler3 | UNREACHABLE! =&amp;gt; {
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
+    &quot;unreachable&quot;: true
+}
+ficrawler4 | UNREACHABLE! =&amp;gt; {
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
+    &quot;unreachable&quot;: true
+}
+ficrawler5 | UNREACHABLE! =&amp;gt; {
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
+    &quot;unreachable&quot;: true
+}
+ficrawler6 | UNREACHABLE! =&amp;gt; {
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
+    &quot;unreachable&quot;: true
+}
+ficrawler7 | UNREACHABLE! =&amp;gt; {
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
+    &quot;unreachable&quot;: true
+}
+ficrawler8 | UNREACHABLE! =&amp;gt; {
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
+    &quot;unreachable&quot;: true
+}
+ficrawler9 | UNREACHABLE! =&amp;gt; {
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
+    &quot;unreachable&quot;: true
+}
+ficrawler10 | UNREACHABLE! =&amp;gt; {
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
+    &quot;unreachable&quot;: true
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Curiouser and curiouser said Alice.  The interesting thing here is that two of these boxes ARE NOT running our crawler code.  They’re actually doing nothing at all.  So what does this tell us:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Perhaps the issue has nothing to do with our code at all.&lt;/li&gt;
+  &lt;li&gt;Perhaps it is an underlying Linux problem on AWS w/ Ubuntu.&lt;/li&gt;
+  &lt;li&gt;It seems to be related to resource consumption but that’s a guess not a true statement.&lt;/li&gt;
+  &lt;li&gt;There is no damn way to monitor this (&amp;amp;$#($&lt;em&gt;#()$&lt;/em&gt;#)) problem since it no one monitors SSH failures.  Sigh.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;writing-your-own-monitoring-tool&quot;&gt;Writing Your Own Monitoring Tool&lt;/h1&gt;
+
+&lt;p&gt;And so I now get to time travel back to 2007, the first time I wrote a monitoring tool in Ruby.  I was working for the late, not-lamented eduFire and there wasn’t money to sign up for a monitoring tool.  Ah life in startup land.  My children can and do tell the tale of Dad’s computer waking up in the middle of the night screaming “eduFire IS DOWN!!!”.  And then there was the incarnation that, a few years later, would plain Billy Idol’s White Wedding at top volume.  So this is old territory for me.  But maybe we can do a bit better.  So what do we need to do?&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Run forever&lt;/li&gt;
+  &lt;li&gt;Run reliably - this is Ruby after all&lt;/li&gt;
+  &lt;li&gt;Read from the ansible hosts file and get a list of resources to monitor&lt;/li&gt;
+  &lt;li&gt;Loop over the hosts&lt;/li&gt;
+  &lt;li&gt;Establish an ssh connection&lt;/li&gt;
+  &lt;li&gt;If successful then do nothing&lt;/li&gt;
+  &lt;li&gt;If unsuccessful increment a failure counter&lt;/li&gt;
+  &lt;li&gt;If failure ctr &amp;gt; a threshold then fire off an alert by playing White Wedding and also send an alert to my phone&lt;/li&gt;
+  &lt;li&gt;Optionally incorporate AWS API calls to restart the instance if this is possible and it has failed more times than a restart threshold&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;run-forever&quot;&gt;Run Forever&lt;/h2&gt;
+
+&lt;p&gt;This can be nothing more than a while(true) loop construct.  It isn’t elegant but it will work.&lt;/p&gt;
+
+&lt;h2 id=&quot;run-reliably&quot;&gt;Run Reliably&lt;/h2&gt;
+
+&lt;p&gt;We can wrap this within daemon tools supervise to make sure it stays running.&lt;/p&gt;
+
+&lt;h2 id=&quot;read-from-ansible-hosts-file&quot;&gt;Read from Ansible Hosts file&lt;/h2&gt;
+
+&lt;p&gt;This can be done with any of a number of gems which read from an INI file.  No matter what we use, the Ansible INI syntax is funky so we’re likely to need some parsing.&lt;/p&gt;
+
+&lt;h2 id=&quot;loop-over-the-hosts&quot;&gt;Loop Over The Hosts&lt;/h2&gt;
+
+&lt;p&gt;The INI gem will return an enumerable collection so this is just a .each call.  Piece of cake.  .each is my single favorite thing in all of Ruby.&lt;/p&gt;
+
+&lt;h2 id=&quot;establish-an-ssh-connection&quot;&gt;Establish an SSH connection&lt;/h2&gt;
+
+&lt;p&gt;There has to be a gem for this.  &lt;strong&gt;Google Furiously&lt;/strong&gt;  Yep.  Even better Jamis Buck wrote it.  Fantastic.  That means I can trust it.&lt;/p&gt;
+
+&lt;h2 id=&quot;items-6-thru-9&quot;&gt;Items 6 thru 9&lt;/h2&gt;
+
+&lt;p&gt;This is the core of a monitoring tool and where crap gets tricky:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You have to make sure you actually have outbound connectivity so you need something to test against that NEVER goes down.  Hm… 8.8.8.8 is perfect – it is Google’s DNS server and it can be ping’d so I don’t have to test via SSH.  There must be a ping gem.  &lt;strong&gt;More Furious Googling&lt;/strong&gt;.  Yep.&lt;/li&gt;
+  &lt;li&gt;You have to alert.  Yep.  That means I’m going to use Twilio again.  Twilio is fantastic.&lt;/li&gt;
+  &lt;li&gt;In the event of a failure you have to get my attention and no alert needs to be sent if I’m already at the computer.  I’ll yank out the old white wedding play routine I used for my second monitoring tool (which indirectly was this same damn code base) and I’ll just reuse it.&lt;/li&gt;
+  &lt;li&gt;You need a machine which is 24x7 connected to the Internet and never goes away.  Well my Macbook Air travels everywhere I go these days but my Macbook Pro is constantly on.  So I’ll use that.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;the-code&quot;&gt;The Code&lt;/h1&gt;
+
+&lt;p&gt;Listed below is a rake task which encapsulates the bulk of it.  This is actually only the &lt;strong&gt;first draft&lt;/strong&gt; of it.  The actual github code is better.  The detailed stuff is handled by aws_monitor.rb which is a short class of static methods just to simplify the rake task and make them testable.  The only bad thing I can ever say about Jim Weirich is that Rake tasks aren’t really testable.  Other than that I wish he was still with us.  Right now this code is a bit of a rough draft as the failure hasn’t happened again yet and things like error handling always need to get addressed but it looks something like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;namespace :monitor_aws do
+  # bundle exec rake monitor_aws:ansible_hosts --trace
+  task :ansible_hosts =&amp;gt; :environment do
+    #
+    # Things to change easily for adapting to different environments
+    #
+
+    # CHANGE THIS to your ansible inventory file
+    ansible_hosts_file = File.join(Rails.root, 'script/ansible/inventories/production2')
+    # CHANGE THIS to how frequently to monitor
+    sleep_time = 60 * 5  # every five minutes we will execute
+    # CHANGE THIS to your ssh login
+    username = &quot;ubuntu&quot;
+    # CHANGE THIS to the number of consecutive failures you want to alert on
+    min_failures = 2     
+
+    run_ctr = 0
+    while(true) do
+      run_ctr = run_ctr + 1
+      puts &quot;Monitoring run: #{run_ctr}&quot;
+      ansible_hosts = AwsMonitor.load_ansible_hosts(ansible_hosts_file)
+      failure_ctr = 0
+      ansible_hosts.entries.each do |entry|
+        ansible_host = AwsMonitor.ini_entry_to_struct(entry)
+        session = Net::SSH.start( ansible_host.host_name, username, :keys =&amp;gt; ansible_host.keyfile )
+        if session.error.nil?
+          puts &quot;Success!  The box #{ansible_host.human_name} is still alive!!!&quot;.green
+        else
+          puts &quot;#{session.error}&quot;
+          AwsMonitor.play_white_wedding(ansible_host, '')
+          debugger          
+        end
+        session.close
+      end
+      puts &quot;\n\n\n&quot;
+      sleep(sleep_time)
+    end
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And that’s about all there is to it.  The complicated version, which is also written, but not yet published has some other tricks like using ping to make sure my local connectivity didn’t fail.  I don’t want to publish that yet since I don’t understand if my failure condition is going to be a  Net::SSH::AuthenticationFailed or a session.error message or what.&lt;/p&gt;
+
+&lt;p&gt;Postscript&lt;/p&gt;
+
+&lt;p&gt;This morning I added a running timer to track how long the boxes were up.  This is what it looks like now:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Monitoring run: 31
+Success!  The box ficrawler3 is still alive and has been for: 9300 seconds!!!
+Success!  The box ficrawler4 is still alive and has been for: 9300 seconds!!!
+Success!  The box ficrawler5 is still alive and has been for: 9300 seconds!!!
+Success!  The box ficrawler6 is still alive and has been for: 9300 seconds!!!
+Success!  The box ficrawler7 is still alive and has been for: 9300 seconds!!!
+Success!  The box ficrawler8 is still alive and has been for: 9300 seconds!!!
+Success!  The box ficrawler9 is still alive and has been for: 9300 seconds!!!
+Success!  The box ficrawler10 is still alive and has been for: 9300 seconds!!!
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Thu, 13 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/10/13/aws-tutorial-16-ssh-failures-take-4-time-to-write-some-monitoring-code.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/13/aws-tutorial-16-ssh-failures-take-4-time-to-write-some-monitoring-code.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ssh</category>
+        
+        <category>ruby</category>
+        
+        <category>monitoring</category>
+        
+        
+        <category>aws</category>
         
       </item>
     
@@ -960,55 +1163,6 @@ ssh_exchange_identification: read: Connection reset by peer
         
         
         <category>udemy</category>
-        
-      </item>
-    
-      <item>
-        <title>A Conversation with Mike Perham</title>
-        <description>&lt;p&gt;One of the most gratifying aspects of working in the Open Source world is the ability to get to know the people who build the tools you rely on.  I’ve been in the Open Source world since ‘99 and I’ve been to a lot of conferences.  Not to humble brag but here are some of the people who’ve I’ve gotten to know:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Greg Stein / Apache&lt;/li&gt;
-  &lt;li&gt;Monte / MySQL&lt;/li&gt;
-  &lt;li&gt;George and Theo Schlossnagle / PHP&lt;/li&gt;
-  &lt;li&gt;Matt Mullenweg / WordPress and so much more&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;This isn’t a humble brag because probably only one of these people &lt;em&gt;might&lt;/em&gt; recognize me on the street – maybe.  I’m a user of their stuff and I promote it as much as I can.  I’ve been using Apache and promoting it, honestly, because it is what I know.  But also because I know Greg and once upon a time he was chair of the Apache foundation.  And also because Apache has been good to me; it just works.  And I use MySQL / MariaDB not only because its fast and stable but also because I’ve seen my wife go shot for shot with Monty (picture a tiny red head drinking shots with a Finn; priceless).  I bailed out of the PHP world years and years ago but I still love the &lt;a href=&quot;https://www.sparkpost.com&quot;&gt;work&lt;/a&gt; that the Schlossnagle brothers do; I learned more solid computer science from &lt;a href=&quot;https://www.amazon.com/Advanced-PHP-Programming-George-Schlossnagle/dp/0672325616&quot;&gt;George’s book&lt;/a&gt; than I ever learned in college and I still read it from time to time when there’s a problem I know he would have a perspective on.  And I’m a fan of &lt;a href=&quot;https://fuzzygroup.github.io/blog/startup/2016/09/01/what-matt-mullenweg-taught-me.html&quot;&gt;Matt&lt;/a&gt; even though I moved to the dark side and use Jekyll.&lt;/p&gt;
-
-&lt;p&gt;Today I got the chance to know &lt;a href=&quot;http://www.mikeperham.com/&quot;&gt;Mike Perham&lt;/a&gt;, the author of &lt;a href=&quot;http://www.sidekiq.org&quot;&gt;Sidekiq&lt;/a&gt;, just a little bit.  I sat in on his weekly &lt;a href=&quot;http://sidekiq.org/support&quot;&gt;Happy Hour&lt;/a&gt;.  This is where he offers a video chat about Sidekiq and answers questions / gives suggestions.  Mike Perham is someone who’s intellectual work product is very familiar to me.  And I’ve long lauded his work as “the best guy in Ruby threading in known space”.  When people ask me about Ruby threading, I tend to just point them toward’s &lt;a href=&quot;http://www.mikeperham.com/&quot;&gt;Mike’s blog&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Now, despite my positive opinions about Mike, I’ve actually used Sidekiq only sporadically.  I had a bad experience with asynchronous job processors years ago and ever since I’ve been gun shy.  I’ve always taken the perspective that when you’re doing big back end systems, your data processing is core to your application and you should own the IP.  So I wrote my own threaded code, years ago, and I’ve been using it ever since.  But when my code gave up the ghost with an MTBF of 30 minutes, Sidekiq leapt to my rescue and has given me a 38x improvement.  Machine’s still crash but I can now go to bed and sleep thru the night.  Given my recent trials and travails with SSH problems and machines crashing due to out of memory issues, I thought that talking to the literal source might at least give insight.  &lt;strong&gt;And it did&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;Here’s what I learned:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Mike is a very professional, very nice guy&lt;/li&gt;
-  &lt;li&gt;Shared tenancy on AWS really is an issue; nearest neighbors can actually hurt your performance pretty dramatically&lt;/li&gt;
-  &lt;li&gt;Redis really wants high performance box; not necessarily a ton of cores&lt;/li&gt;
-  &lt;li&gt;Memory leaks are always an issue; sometimes its your code; sometimes its a gem that you use or an update to a gem that you use (so it can be fixed and then a gem update causes it to happen again)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;THE ANSWER TO MY PROBLEM&lt;/strong&gt;: The best approach is belt and suspenders.  Memory leaks are as much a state of being in a dynamic, garbage collected language.  Even if it gets fixed, a gem update could break everything once again.  The best approach is to use process monitoring and simply kill the process and restart it if the memory use is too great.  Either use &lt;a href=&quot;https://mmonit.com/monit/&quot;&gt;Monit&lt;/a&gt; or &lt;a href=&quot;http://contribsys.com/inspeqtor/&quot;&gt;Inspeqtor&lt;/a&gt;.  Mike has a &lt;a href=&quot;http://contribsys.com/inspeqtor/&quot;&gt;great video&lt;/a&gt; on this page and I’d recommend watching it; having setup monit in the past, Inspeqtor looks awesome.&lt;/li&gt;
-  &lt;li&gt;Tracking down memory leaks in Ruby is hard and just may not be worth it.&lt;/li&gt;
-  &lt;li&gt;Process monitoring would also fix my ruby segfault issues&lt;/li&gt;
-  &lt;li&gt;I need to look into the commercial offerings for Sidekiq and Inspeqtor.  We’re already a commercial support customer for Sphinx; we might be able to be a commercial customer for Sidekiq.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Thank you very, very much Mike.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 10 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html</guid>
-        
-        <category>ruby</category>
-        
-        <category>rails</category>
-        
-        <category>sidekiq</category>
-        
-        <category>open_source</category>
-        
-        
-        <category>ruby</category>
         
       </item>
     
