@@ -6,9 +6,314 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 13 Oct 2016 10:40:45 -0400</pubDate>
-    <lastBuildDate>Thu, 13 Oct 2016 10:40:45 -0400</lastBuildDate>
+    <pubDate>Sat, 15 Oct 2016 02:54:38 -0400</pubDate>
+    <lastBuildDate>Sat, 15 Oct 2016 02:54:38 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Brew XZ and Nokogiri and Tmux - An Unmitigated Disaster</title>
+        <description>&lt;p&gt;It has been one really, really bad day this past 24 hours.  While my AWS stability problems have gone away entirely, I had to get a new Rails code base up and running locally today, one done by another developer here.  This required Gem install and since it was Rails, that meant a Nokogiri install.  And I love what Nokogiri does but I &lt;em&gt;hate&lt;/em&gt;, &lt;em&gt;loathe&lt;/em&gt;, &lt;em&gt;despise&lt;/em&gt; the installation process.  In every single repo I work on there is a top level docs directory and then a file called gems.txt which lists what I internally refer to as &lt;em&gt;the incantations&lt;/em&gt;.  These are those crap ass command lines that are so long you just can’t remember them.  Here’s the list of the tricks that I use to install Nokogiri when it inevitably fails:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install nokogumbo -- --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2 --use-system-libraries
+gem install nokogiri -- --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2 --use-system-libraries
+gem install nokogiri -- --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2 --use-system-libraries --with-pkg-config=/usr/local/bin/pkg-config
+gem install nokogiri -- --with-xml2-include=/usr/local/opt/libxml2/lib --use-system-libraries --with-pkg-config=/usr/local/bin/pkg-config
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And not one of those worked.  The one that usually works without fail is:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install nokogiri -- --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2 --use-system-libraries
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;but not today.  I knew this was going to be a bad day.  I told the other guy here “your code, doesn’t install; give me solution”.  He found this &lt;a href=&quot;https://github.com/sparklemotion/nokogiri/issues/1483&quot;&gt;nugget of disturbing truth&lt;/a&gt;.  Apparently there is an incompatibility between Nokogiri and xz.  His suggestion was uninstall xz and I did that.  And Nokogiri was then fine – but I had to also reinstall ruby.   And that did work – until about an hour ago when I had a late night desire to write about Docker (hey - it is my Friday night; I can spend it however I please) – and I started getting this little gem of an error:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jekyll post &quot;Learning From a Docker Captain - Nick Janetakis - Making AWS Monitor Run Under Docker&quot;
+Your bundle is locked to i18n (0.7.0), but that version could not be found in any of the sources listed in your Gemfile. If you haven't changed sources, that means the author of i18n (0.7.0) has removed it. You'll need to update your bundle to a different version of i18n (0.7.0) that hasn't been removed in order to install.
+Run `bundle install` to install missing gems.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And this led to the inevitable cavalcade of swearing, muttering and normal gyrations when something absolutely essential to you is broken and you have no idea why.  Brew wouldn’t work, Gem wouldn’t work, Bundler wouldn’t work, etc.  Here was the problem:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I run jekyll under a Tmuxinator/Tmux shell which runs the server in one window, runs the command line in another and a 3rd tab to remind me to migrate my old Radio Userland blog into Jekyll.&lt;/li&gt;
+  &lt;li&gt;Remember that ruby re-install?  Well Tmuxinator knows what the Ruby is and that ruby had gone away.&lt;/li&gt;
+  &lt;li&gt;So everything was trying to reference an executable that was no longer there and apparently the normal error for that is something about i18n.  Sheesh.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;And I do get it, this was an exceptional set of circumstances but it still did cost me about half a man day on a day when I can ill afford it.  And it made me surly, nasty and unresponsive to my family and while that’s on me, that’s definitely not cool.&lt;/p&gt;
+
+&lt;h1 id=&quot;what-to-do&quot;&gt;What to Do?&lt;/h1&gt;
+
+&lt;p&gt;This is a hard one.  I rely on brew as does, well, every developer I know on OSX.  And since xz is a required part of brew (as well as the miraculous ag), getting rid of it is likely bad.  What I should have done is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;brew unlink xz BEFORE my nokogiri install&lt;/li&gt;
+  &lt;li&gt;nokogiri install (with one of my incantations)&lt;/li&gt;
+  &lt;li&gt;brew link xz&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;But, honestly, it is 2016 after all, doesn’t that feel, well, &lt;em&gt;dated&lt;/em&gt;?  I don’t know about anybody else out there but it feels like this is my Murtagh Moment, the &lt;em&gt;I’m too old for this shite&lt;/em&gt; point of a technology transition.  &lt;a href=&quot;http://nickjanetakis.com&quot;&gt;Nick&lt;/a&gt; has been pushing me for a while to make the Docker transition for development and I think it is time.  &lt;a href=&quot;http://dasari.me&quot;&gt;Dv&lt;/a&gt; and I tried this back in 2014 and failed miserably at it but Docker is loads better now.  And since I can’t run my monitoring code on the machine that is permanently hooked up to the internet (again a Nokogiri failure), well, I guess I’ll make that work first and then figure this all out.  Sigh.  What a craptastic day here in the “what’s broken today world”.&lt;/p&gt;
+
+&lt;p&gt;And I am sure that this will get fixed at some point but the question:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;when will it be fixed&lt;/li&gt;
+  &lt;li&gt;will I then even update to that version&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If I move to Docker for my development then I skip the whole bundle install crap fest and everything will run under Linux.  I’m finding it harder and hard to object to that.&lt;/p&gt;
+
+&lt;h1 id=&quot;a-great-docker-resource&quot;&gt;A Great Docker Resource&lt;/h1&gt;
+
+&lt;p&gt;Obligatory disclaimer – Nick Janetakis is now a friend of mine.  But he is a bona fide Docker expert, a Docker Captain.  He also has a good course on &lt;a href=&quot;http://bit.ly/2ecakFU&quot;&gt;Docker for Devops&lt;/a&gt; hosted on Udemy.  he has a few others too but this one I’ve taken parts of and I know is excellent.  Recommended.&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 15 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/ruby/2016/10/15/brew-xz-and-nokogiri-and-tmux-an-unmitigated-disaster.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ruby/2016/10/15/brew-xz-and-nokogiri-and-tmux-an-unmitigated-disaster.html</guid>
+        
+        <category>ruby</category>
+        
+        <category>nokogiri</category>
+        
+        <category>rvm</category>
+        
+        <category>brew</category>
+        
+        <category>tmux</category>
+        
+        
+        <category>ruby</category>
+        
+      </item>
+    
+      <item>
+        <title>Understanding Systems By Observation - Dropbox</title>
+        <description>&lt;p&gt;One of the best bits of computer science I ever learned, I learned in 1989 from my first business partner, Brian Giedt.  We were at a Society for Technical Communications (stc) conference on Technical Documentation and my partner was trying to impress a pretty girl.  And I watch him look at an animation product and pretty much instantly &lt;strong&gt;grok&lt;/strong&gt; how it was doing the animation.  Where as I saw a pretty flow of images, he looked at it and understood how the animation was being done.  That was the very first time I saw someone really understand something about the internals from its externals.  And once I knew it was possible – I’ve striven to do it as often as I can.  Very often, if you set up the right set of circumstances, you’ll realize exactly how something has to be implemented internally.&lt;/p&gt;
+
+&lt;p&gt;Let’s use Dropbox as an example.  We all know that Dropbox transfers the content you put in it to all other machines you have hooked up to it.  And that’s simple 1 to many transfer.  But how does Dropbox work when you already have content in it and you re-arrange it?  Does it resend everything or does it figure out what it has to do and send a command stream to do it instead?&lt;/p&gt;
+
+&lt;p&gt;A few minutes ago I:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;created a folder within a folder in DropBox&lt;/li&gt;
+  &lt;li&gt;moved about 15 gb of video files in initial folder to the new folder&lt;/li&gt;
+  &lt;li&gt;checked on my iPad about a minute later&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And all the files I moved were in the new folder already.  Here’s what this tells me&lt;/p&gt;
+</description>
+        <pubDate>Fri, 14 Oct 2016 04:25:52 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/software_engineering/2016/10/14/understanding-systems-by-observation-dropbox.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/software_engineering/2016/10/14/understanding-systems-by-observation-dropbox.html</guid>
+        
+        <category>software_engineering</category>
+        
+        
+        <category>software_engineering</category>
+        
+      </item>
+    
+      <item>
+        <title>To Every U.S. Workaholic Out There</title>
+        <description>&lt;p&gt;Reminder to every U.S. Workaholic - https://www.redcort.com/us-federal-bank-holidays/&lt;/p&gt;
+</description>
+        <pubDate>Thu, 13 Oct 2016 22:07:36 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/10/13/to-every-u-s-workaholic-out-there.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/13/to-every-u-s-workaholic-out-there.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>AWS Tutorial 17 - Wrapping Up Our SSH Issues By Using Monit For Process Monitoring</title>
+        <description>&lt;p&gt;So the solution to our SSH issues is actually fairly simple:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ruby code is using too much memory / cpu; memory leak?  bad code?  who knows.&lt;/li&gt;
+  &lt;li&gt;A watchdog process needs to look out for processes using too many resources and shut them down so that the underlying init / service system can restart them&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html&quot;&gt;Mike Perham&lt;/a&gt; helpfully pointed out the right approach to solving this - use a systems monitoring tool like &lt;a href=&quot;https://github.com/mperham/inspeqtor&quot;&gt;Inspeqtor&lt;/a&gt; or &lt;a href=&quot;https://mmonit.com/monit/&quot;&gt;Monit&lt;/a&gt;.  I don’t normally do devops to the level that I am now so getting this perspective was key.  Given that its a 50 / 50 choice, I flipped a coin and chose Monit.&lt;/p&gt;
+
+&lt;p&gt;In the rest of this post, I’ll go over how I used Ansible to configure Monit.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 13 Oct 2016 21:43:31 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/10/13/aws-tutorial-17-wrapping-up-our-ssh-issues-by-using-monit-for-process-monitoring.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/13/aws-tutorial-17-wrapping-up-our-ssh-issues-by-using-monit-for-process-monitoring.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ssh</category>
+        
+        <category>monit</category>
+        
+        <category>ansible</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
+    
+      <item>
+        <title>Moving AWS Monitor to Docker or Troubleshooting Docker Bit By Bit</title>
+        <description>&lt;p&gt;So now that my monitoring code is actually working, I need to move it to my MacBook Pro.  Unfortunately this machine is, inexplicably, unable to natively install Nokogiri.  I’ve tried, &lt;a href=&quot;http://dasari.me&quot;&gt;Dv&lt;/a&gt; has tried and so has &lt;a href=&quot;http://winstonkotzan.com/blog/&quot;&gt;Winston&lt;/a&gt;.  And no matter what we do, it seems that this machine is just hosed for Rails development.  Or is it – I know what &lt;a href=&quot;http://www.nickjanetakis.com&quot;&gt;Nick&lt;/a&gt; would say:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Use Docker&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;And he’s a Docker Captain so he should know.  And while I’ve been a fan of Docker so far for treating almost any app as an API, I’ve never been a fan for my own code base.  But now its time.  Happily I did build this using my derivative of &lt;a href=&quot;https://github.com/nickjj/orats&quot;&gt;Nick’s Orats Gem&lt;/a&gt; so I’m actually ok as a starting point.&lt;/p&gt;
+
+&lt;h1 id=&quot;getting-started-with-docker&quot;&gt;Getting Started with Docker&lt;/h1&gt;
+
+&lt;p&gt;The first step was to replace my docker-compose.yml with the official Orats one.  A quick trip over to github gave me this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;version: '2'
+
+services:
+  postgres:
+    image: 'postgres:9.5'
+    environment:
+      POSTGRES_USER: 'orats_base'
+      POSTGRES_PASSWORD: 'yourpassword'
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'postgres:/var/lib/postgresql/data'
+
+  redis:
+    image: 'redis:3.2-alpine'
+    command: redis-server --requirepass yourpassword
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis:/var/lib/redis/data'
+
+  website:
+    depends_on:
+      - 'postgres'
+      - 'redis'
+    build: .
+    ports:
+      - '3000:3000'
+    volumes:
+      - '.:/orats_base'
+    env_file:
+      - '.env'
+
+  sidekiq:
+    depends_on:
+      - 'postgres'
+      - 'redis'
+    build: .
+    command: sidekiq -C config/sidekiq.yml.erb
+    volumes:
+      - '.:/orats_base'
+    env_file:
+      - '.env'
+
+  cable:
+    depends_on:
+      - 'redis'
+    build: .
+    command: puma -p 28080 cable/config.ru
+    ports:
+      - '28080:28080'
+    volumes:
+      - '.:/orats_base'
+    env_file:
+      - '.env'
+
+volumes:
+  redis:
+  postgres:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The reason for replacing it is that I had wanted to make a version of Orats with MySQL support but I never had the chance to finish it.  It is likely faster to use Nick’s postgres approach over my own half baked one.&lt;/p&gt;
+
+&lt;p&gt;The next step is to compile everything using docker-compose:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose up --build
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now what happened next is a bit puzzling:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Installing pg 0.19.0 with native extensions
+
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+    current directory: /usr/local/bundle/gems/pg-0.19.0/ext
+/usr/local/bin/ruby -r ./siteconf20161013-6-1sug58s.rb extconf.rb
+checking for pg_config... no
+No pg_config... trying anyway. If building fails, please try again with
+ --with-pg-config=/path/to/pg_config
+checking for libpq-fe.h... no
+Can't find the 'libpq-fe.h header
+*** extconf.rb failed ***
+Could not create Makefile due to some reason, probably lack of necessary
+libraries and/or headers.  Check the mkmf.log file for more details.  You may
+need configuration options.
+
+Provided configuration options:
+	--with-opt-dir
+	--without-opt-dir
+	--with-opt-include
+	--without-opt-include=${opt-dir}/include
+	--with-opt-lib
+	--without-opt-lib=${opt-dir}/lib
+	--with-make-prog
+	--without-make-prog
+	--srcdir=.
+	--curdir
+	--ruby=/usr/local/bin/$(RUBY_BASE_NAME)
+	--with-pg
+	--without-pg
+	--enable-windows-cross
+	--disable-windows-cross
+	--with-pg-config
+	--without-pg-config
+	--with-pg_config
+	--without-pg_config
+	--with-pg-dir
+	--without-pg-dir
+	--with-pg-include
+	--without-pg-include=${pg-dir}/include
+	--with-pg-lib
+	--without-pg-lib=${pg-dir}/lib
+
+To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+  /usr/local/bundle/extensions/x86_64-linux/2.3.0-static/pg-0.19.0/mkmf.log
+
+extconf failed, exit code 1
+
+Gem files will remain installed in /usr/local/bundle/gems/pg-0.19.0 for inspection.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So now the question becomes how do you debug a Ruby gem failure inside a Docker container.  I honestly don’t know so I reached out to Nick for clarification:&lt;/p&gt;
+
+&lt;p&gt;Now I have to admit that I rushed thru this but that’s still not a reason – its an excuse.  Nick, in about a minute, pointed out that I was missing libpq so the Postgres gem wouldn’t build.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 13 Oct 2016 21:20:28 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/10/13/moving-aws-monitor-to-docker-or-troubleshooting-docker-bit-by-bit.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/13/moving-aws-monitor-to-docker-or-troubleshooting-docker-bit-by-bit.html</guid>
+        
+        <category>aws</category>
+        
+        <category>rails</category>
+        
+        <category>docker</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
     
       <item>
         <title>Sidekiq - Graceful Versus Forceful</title>
@@ -803,378 +1108,6 @@ https://github.com/bundler/bundler/issues/new
         
         
         <category>bundler</category>
-        
-      </item>
-    
-      <item>
-        <title>AWS Tutorial 17 - When You've Lost You Web Server, How to Find an AWS Resource</title>
-        <description>&lt;p&gt;I find myself, at the time of this writing, in the middle of an embarrassing situtation for a web professional.  You see, the situation is this:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;I wrote a new feature&lt;/li&gt;
-  &lt;li&gt;I deployed my new feature&lt;/li&gt;
-  &lt;li&gt;I refreshed my page&lt;/li&gt;
-  &lt;li&gt;My feature isn’t there&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;Great Googly Moogly!  I’ve lost my web server!&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Let me explain one of the things about cloud hosting that’s disconcerting.  When you first move to the cloud, your impulse is to organize your computing resources the way you used to.  So if you used to have say 3 clusters of powerful machines, that’s what you do.  Then you realize just how mind blowingly powerful a platform like AWS actually is and you start to think about &lt;strong&gt;Single Purpose Servers&lt;/strong&gt;.  A single purpose server is just what it sounds like – it does one thing.  And that’s fantastic because it makes trouble shooting so much easier.  When a server does only one thing, well, its easy to know if its broken.  And that’s great but do you know what the side effect of that is?  You don’t have a handful of servers anymore, you have a lot.  Me?  I’ve got over &lt;strong&gt;20&lt;/strong&gt; right now.  And somewhere in there is my web server.  But I can’t find it.  In this tutorial we’re going to quickly and easily figure this out.&lt;/p&gt;
-
-&lt;h1 id=&quot;start-with-a-hypothesis&quot;&gt;Start with a Hypothesis&lt;/h1&gt;
-
-&lt;p&gt;As normal we’re going to start with a theory - that is one of these three boxes:  fimariadb, ficrawler1, ficrawler2.  So our diagnostic dance, crude tho it may be, is:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;ssh into one of the boxes&lt;/li&gt;
-  &lt;li&gt;sudo su -&lt;/li&gt;
-  &lt;li&gt;apache2ctl stop&lt;/li&gt;
-  &lt;li&gt;reload the page&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;If the page comes up, well, we know it wasn’t that one box.  So you then lather, rinse, repeat for each of the other 2 boxes.  And, at the end, we’re going to find out that it was none of these.&lt;/p&gt;
-
-&lt;p&gt;You might be saying “Hey wait a minute – why would a web front end be on a box that does crawling?”  Well I’m still feeling all this out and I initially went for the old model where every box could do everything.  And that was a bad decision but I still have to live it for at least a little while longer.&lt;/p&gt;
-
-&lt;h1 id=&quot;formulate-a-new-hypothesis---lets-use-ping&quot;&gt;Formulate a New Hypothesis - Let’s Use Ping!&lt;/h1&gt;
-
-&lt;p&gt;Since our first plan failed, we need a new plan.  The program ping is a basic IP networking tool which lets us send a packet to a destination and if it answers, well, that means its alive.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ping banks.finavd.com
-PING web-1166333941.us-west-2.elb.amazonaws.com (52.41.182.115): 56 data bytes
-64 bytes from 52.41.182.115: icmp_seq=0 ttl=47 time=67.589 ms
-64 bytes from 52.41.182.115: icmp_seq=1 ttl=47 time=67.301 ms
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Ah ha!  We have an ip address of 52.41.182.115.  I know! I know!  I know!  I’ll just search for that ip address on EC2 dashboard.  And it will fail.  Now the smart kids in the back are already chuckling to themselves and they know the answer.&lt;/p&gt;
-
-&lt;h1 id=&quot;hypothesis-3-elb-is-being-used&quot;&gt;Hypothesis 3: ELB Is Being Used&lt;/h1&gt;
-
-&lt;p&gt;If you look at the url that responded, NOT the ip address, the answer is revealed:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;web-1166333941.us-west-2.elb.amazonaws.com
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;You see the text string “.elb.”?  That means that a piece of software called an Elastic Load Balancer is sitting in front of the http request and distributing the load out to one or more EC2 instances.  If you’ve ever used HAProxy, well, ELB is that only far, far better.  Let’s goto the AWS Console and select the Load Balancers option from the choices on the left:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/aws/aws_elb_01_overview.png&quot; alt=&quot;aws_elb_01_overview.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Here we’ll see an overview of all of our load balancers and their basic settings.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/aws/aws_elb_02_instances.png&quot; alt=&quot;aws_elb_02_instances.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Clicking the instances tab shows us where the HTTP request is being sent.  We can now goto the ec2 console and figure out what we need.  If you put the machine names into your &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/09/20/aws-tutorial-08-using-ssh-s-config-file-with-your-aws-boxes.html&quot;&gt;SSH Config as I recommended&lt;/a&gt; then you might not even need to goto the console.  In my case I just needed to know the names worker2 and worker2a and I know that they’re in my ssh config file and I can just add those boxes to my Capistrano deploy process.  And the “bug” is fixed!&lt;/p&gt;
-
-&lt;h1 id=&quot;conclusion-and-suggestion&quot;&gt;Conclusion and Suggestion&lt;/h1&gt;
-
-&lt;p&gt;I know that it must seem like I’m a bit of a buffoon – how can you lost a web server after all?  Well, things do happen when you move fast.  You start with one plan and then it doesn’t work and before you know it you have something working but its not where you originally planned.  And you mean to fix it but you get busy and then the next &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-10-diagnosing-ssh-failures-or-when-ping-works-but-ssh-fails.html&quot;&gt;crisis&lt;/a&gt; happens and you’re not even in the same head space any more.  And by the time you return to it over 10 days have passed.&lt;/p&gt;
-
-&lt;p&gt;Here are some suggestions for setting up your AWS architecture to avoid this kind of silliness:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Name things well.&lt;/li&gt;
-  &lt;li&gt;Name things logically.&lt;/li&gt;
-  &lt;li&gt;Use the key value options when you set up your EC2 servers.  For example, having keys for both name and role might have helped.&lt;/li&gt;
-  &lt;li&gt;Remember that there are often abstractions around everything.&lt;/li&gt;
-  &lt;li&gt;Try and use single purpose servers from the start.  Yes the number of discrete servers increases complexity but their very single purpose nature makes debugging vastly easier.  And keep in mind that Amazon offers free servers.  Even a t2.micro free instance has 1 gig of ram and 8 gigs of storage.  I know that sounds funny but travel back in your head 5 years and that’s a beefy server and its &lt;strong&gt;FREE&lt;/strong&gt;.  If you’re just running something small, say Redis, Memcached, sendmail, etc that might be enough for a lot of applications.&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Tue, 11 Oct 2016 11:26:16 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/10/11/aws-tutorial-17-when-you-ve-lost-you-web-server-how-to-find-an-aws-resource.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/11/aws-tutorial-17-when-you-ve-lost-you-web-server-how-to-find-an-aws-resource.html</guid>
-        
-        <category>aws</category>
-        
-        
-        <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>What to Do When Bundle Install Fails with JSON 1.8.1</title>
-        <description>&lt;p&gt;I cannot express my abject frustration at times with the Ruby ecosystem in general and bundler in particular.  When you hit this bug:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
-
-    current directory: /usr/local/rvm/gems/ruby-2.3.1/gems/json-1.8.1/ext/json/ext/generator
-/usr/local/rvm/rubies/ruby-2.3.1/bin/ruby -r ./siteconf20161011-22175-140avvd.rb extconf.rb
-creating Makefile
-
-current directory: /usr/local/rvm/gems/ruby-2.3.1/gems/json-1.8.1/ext/json/ext/generator
-make &quot;DESTDIR=&quot; clean
-
-current directory: /usr/local/rvm/gems/ruby-2.3.1/gems/json-1.8.1/ext/json/ext/generator
-make &quot;DESTDIR=&quot;
-compiling generator.c
-In file included from generator.c:1:0:
-../fbuffer/fbuffer.h: In function ‘fbuffer_to_s’:
-../fbuffer/fbuffer.h:175:47: error: macro &quot;rb_str_new&quot; requires 2 arguments, but only 1 given
-     VALUE result = rb_str_new(FBUFFER_PAIR(fb));
-                                               ^
-../fbuffer/fbuffer.h:175:20: warning: initialization makes integer from pointer without a cast [enabled by default]
-     VALUE result = rb_str_new(FBUFFER_PAIR(fb));
-                    ^
-make: *** [generator.o] Error 1
-
-make failed, exit code 2
-
-Gem files will remain installed in /usr/local/rvm/gems/ruby-2.3.1/gems/json-1.8.1 for inspection.
-Results logged to /usr/local/rvm/gems/ruby-2.3.1/extensions/x86_64-linux/2.3.0/json-1.8.1/gem_make.out
-
-An error occurred while installing json (1.8.1), and Bundler cannot continue.
-Make sure that `gem install json -v '1.8.1'` succeeds before bundling.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I’ve hit this error, I suspect, a few hundred times and I always forget the solution.  And I’m not the only one.  &lt;a href=&quot;http://dasari.me&quot;&gt;Dv&lt;/a&gt; and I hit this together today and we shot about 20 minutes today to need this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install json -v1.8.3
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Thank you &lt;a href=&quot;http://stackoverflow.com/questions/21095098/why-wont-bundler-install-json-gem&quot;&gt;Stack Overflow&lt;/a&gt; for this answer.  Even if it was buried so deep in the thread that I almost missed it.&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 11 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/ruby/2016/10/11/what-to-do-when-bundle-install-fails-with-json-1-8-1.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ruby/2016/10/11/what-to-do-when-bundle-install-fails-with-json-1-8-1.html</guid>
-        
-        <category>ruby</category>
-        
-        <category>rails</category>
-        
-        <category>json</category>
-        
-        <category>gem</category>
-        
-        <category>bundle</category>
-        
-        <category>things_that_make_me_postal</category>
-        
-        
-        <category>ruby</category>
-        
-      </item>
-    
-      <item>
-        <title>AWS Tutorial 15 - SSH Take 3 - Using Ansible To Diagnose my SSH Troubles</title>
-        <description>&lt;p&gt;Everyone wants to think that that complex computing problems are solved with a single flash of blinding insight.  And sometimes you do have that one epiphany that brings everything home.  But, more often than not, computing problems are solved by dogged persistence, by being more stubborn than the problem itself and by careful, diligent incremental progress where you observe the problem in question, altering one variable at a time until you understand what’s happening.&lt;/p&gt;
-
-&lt;p&gt;In this step of our ongoing SSH disaster, we’re going to use Ansible to gather metrics on our running system and give ourselves a command line tool we can execute regularly.  By building this into a single command line tool, we can run it quickly and easily.  When we can do things quickly and easily we will do them more frequently and more frequency means more data.  And, I tend to believe that more data gives us the opportunity for more insights.&lt;/p&gt;
-
-&lt;h1 id=&quot;a-hypothesis&quot;&gt;A Hypothesis&lt;/h1&gt;
-
-&lt;p&gt;We’ve been working on the hypothesis that what’s going on is a problem of memory leaks causing an out of memory (OOM) condition on our Linux EC2 instance.  And even though Linux is supposed to kill a run away process that uses too much memory that doesn’t seem to be happening.  And, no, I don’t understand why.&lt;/p&gt;
-
-&lt;p&gt;There are two basic compute resources that cause any Linux or Unix systems to have problems when they run low:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;memory&lt;/li&gt;
-  &lt;li&gt;disc&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Linux has two tools that we can always run when we’re logged into a linux system to monitor these resources:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;df -h
-
-df -h
-Filesystem      Size  Used Avail Use% Mounted on
-udev            7.5G   12K  7.5G   1% /dev
-tmpfs           1.5G  376K  1.5G   1% /run
-/dev/xvda1      7.8G  5.5G  1.9G  75% /
-none            4.0K     0  4.0K   0% /sys/fs/cgroup
-none            5.0M     0  5.0M   0% /run/lock
-none            7.5G     0  7.5G   0% /run/shm
-none            100M     0  100M   0% /run/user
-
-free -m
-
-free -m
-             total       used       free     shared    buffers     cached
-Mem:         15298       8184       7114          0        201       1250
--/+ buffers/cache:       6732       8566
-Swap:            0          0          0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;a-script&quot;&gt;A Script&lt;/h1&gt;
-
-&lt;p&gt;What we’re going to do is write a tiny script, in Ruby, that we can use to monitor these resources.  And while there are literally hundreds of different monitoring tools that could do this for us, we’re going to do it ourselves so we introduce the smallest possible changes to our environments.  I call this type of approach reducing things to &lt;strong&gt;first principles&lt;/strong&gt;.  Yes a real monitoring tool would be far more powerful but setting it up would take a bunch of time, introduce multiple changes and then we’d have to learn how to use it.  We’re going to write our Ruby script in about 10 minutes and we’re done.&lt;/p&gt;
-
-&lt;p&gt;Here’s all you need:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;script/free_memory.rb
-
-#!/usr/local/rvm/rubies/ruby-2.3.1/bin/ruby
-output = %x(free)
-parts = output.split(&quot; &quot;)
-total_memory = parts[7].to_i
-used_memory = parts[8].to_i
-free_memory = parts[9].to_i
-output = %x(df -h)
-parts = output.split(&quot; &quot;)
-free_disc = parts[22]
-used_disc = parts[23]
-puts  &quot;Total Memory: #{total_memory} (#{total_memory/1024 / 1024} gb) / Used Memory: #{used_memory} (#{used_memory/1024 / 1024} gb) / Free Memory: #{free_memory} (#{free_memory/1024 / 1024} gb) / Free Disc: #{free_disc} / % Used Disc: #{used_disc}&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;This is what I call hobbesian coding after the British philosopher Thomas Hobbes who coined the expression &lt;strong&gt;Life is nasty, brutish and short&lt;/strong&gt;.  This is ugly but its quick.  All we need to do is run the command and capture the output.  This is done with output = %x(free) and output = %x(df -h).  We then split it into an array on the space character and then map it to variables.  Finally we have a single puts statement that we displays the result and does some math.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: This could have been written in anything.  Bash / awk would have been great for it but I’m a Ruby guy so I use the tool that I know.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-ansible-connection&quot;&gt;The Ansible Connection&lt;/h1&gt;
-
-&lt;p&gt;If you remember, I said &lt;em&gt;Linux has two tools that we can always run when we’re logged into a linux system&lt;/em&gt;, well being logged into a system is what Ansible &lt;strong&gt;does&lt;/strong&gt;.  Ansible is brilliant because it runs via ssh.   SSH means you have a login so  all we need to monitor our box is an ansible ad hoc command to run this and here that is:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible all -i inventories/production2 -u ubuntu -a &quot;/var/www/apps/banks/current/script/free_memory.rb&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;That tells Ansible to run on all boxes in the inventories/production2 collection using the username ubuntu and then run whatever code exists at /var/www/apps/banks/current/script/free_memory.rb.&lt;/p&gt;
-
-&lt;p&gt;And here’s an example of the result:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible all -i inventories/production2 -u ubuntu -a &quot;/var/www/apps/banks/current/script/free_memory.rb&quot;
-ficrawlerbig | SUCCESS | rc=0 &amp;gt;&amp;gt;
-Total Memory: 15666140 (14 gb) / Used Memory: 351564 (0 gb) / Free Memory: 15314576 (14 gb) / Free Disc: 1.2G / % Used Disc: 84%
-
-ficrawler4 | SUCCESS | rc=0 &amp;gt;&amp;gt;
-Total Memory: 15666140 (14 gb) / Used Memory: 327688 (0 gb) / Free Memory: 15338452 (14 gb) / Free Disc: 1.5G / % Used Disc: 81%
-
-fiweb1 | SUCCESS | rc=0 &amp;gt;&amp;gt;
-Total Memory: 65966140 (62 gb) / Used Memory: 3847964 (3 gb) / Free Memory: 62118176 (59 gb) / Free Disc: 305M / % Used Disc: 96%
-
-ficrawler3 | SUCCESS | rc=0 &amp;gt;&amp;gt;
-Total Memory: 15666140 (14 gb) / Used Memory: 8385776 (7 gb) / Free Memory: 7280364 (6 gb) / Free Disc: 1.9G / % Used Disc: 75%
-
-ficrawler5 | SUCCESS | rc=0 &amp;gt;&amp;gt;
-Total Memory: 15666140 (14 gb) / Used Memory: 9511684 (9 gb) / Free Memory: 6154456 (5 gb) / Free Disc: 1.2G / % Used Disc: 85%
-
-ficrawler6 | SUCCESS | rc=0 &amp;gt;&amp;gt;
-Total Memory: 15666140 (14 gb) / Used Memory: 946336 (0 gb) / Free Memory: 14719804 (14 gb) / Free Disc: 1.4G / % Used Disc: 83%
-
-ficrawler10 | SUCCESS | rc=0 &amp;gt;&amp;gt;
-Total Memory: 15666140 (14 gb) / Used Memory: 351416 (0 gb) / Free Memory: 15314724 (14 gb) / Free Disc: 1.2G / % Used Disc: 84%
-
-ficrawler7 | SUCCESS | rc=0 &amp;gt;&amp;gt;
-Total Memory: 15666140 (14 gb) / Used Memory: 12421004 (11 gb) / Free Memory: 3245136 (3 gb) / Free Disc: 2.0G / % Used Disc: 74%
-
-ficrawler8 | SUCCESS | rc=0 &amp;gt;&amp;gt;
-Total Memory: 15666140 (14 gb) / Used Memory: 4821588 (4 gb) / Free Memory: 10844552 (10 gb) / Free Disc: 1.4G / % Used Disc: 82%
-
-ficrawler9 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I’ve now been running this repeatedly for several days.  And I’ve learned that I can now pretty well predict when failures are going to occur.  I can also use this to diagnose problems on the boxes.  What we know is that if we’re running a heavy weight process like Sidekiq that is literally chewing through memory, the used memory column should actually show something.  If you look above you can see that ficrawler4 has (0 gb) in use.  That means that something has gone wrong.  So if we log into the box and change to the tmux session where this is executing, here’s what we find:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;after get_mechanize_links_on_a_pageKilled                                                                                                                                                           │·····························
-__AWS_PRODUCTION__ ubuntu@ip-172-31-32-54:/var/www/apps/banks/current$
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Now that’s interesting, isn’t it?  This is actually what’s supposed to happen.  When you see Killed on a Linux machine it means that the OOM actually worked for a change.  Praise Be!  And if we log into the box ficrawler10 we will actually find the same thing.  But when we log into ficrawler6, here’s what we find:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh ficrawler6
-ssh_exchange_identification: read: Connection reset by peer
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Sigh.  Now that’s the whole problem we’re suffering from.  Now here’s what that means – this crash of ssh – just happened!  I’ve been writing this post in real time and running this ad hoc ansible command so about 5 minutes ago ansible could ssh in and run the command.  Now it can’t.  So what that means is that there is a time period where we have 0 gb free and the system is still responsive.  That’s &lt;strong&gt;really&lt;/strong&gt; interesting.  What that means is that we could manually ssh into the box, if we caught it soon enough, and restart the sidekiq process and NOT have to restart the whole box.&lt;/p&gt;
-
-&lt;p&gt;Hm… I need to think about that and I’m pretty sure that it is &lt;strong&gt;important&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;Here’s what happens on ficrawler6 when we run our ansible routine again:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ficrawler6 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;We’ve learned some valuable things from gathering metrics and being able to run them easily.  Lots of people would have taken the approach of using an off the shelf tool for this and while tools are great, they’re big.  And they can be intrusive.  Breaking things down to first principles helps you understand.  And sure our ruby script for this is absolute crap.  Move it to a different distro and formatting will likely be off and it will break.  Who cares?  We spent 10 minutes writing it.&lt;/p&gt;
-
-&lt;h1 id=&quot;credit&quot;&gt;Credit&lt;/h1&gt;
-
-&lt;p&gt;A Shout Out to &lt;a href=&quot;http://nickjanetakis.com/&quot;&gt;Nick Janetakis&lt;/a&gt; who was a consultant on &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/10/06/aws-tutorial-14-diagnosing-ssh-failures-take-2.html&quot;&gt;Take 2&lt;/a&gt; of this series of posts.  The first thing Nick said was disc space and I probably wouldn’t have thought to include disc space monitoring in my Ruby script if he hadn’t done that.  Thanks man!&lt;/p&gt;
-</description>
-        <pubDate>Tue, 11 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/10/11/aws-tutorial-15-using-ansible-to-diagnose-my-ssh-troubles.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/11/aws-tutorial-15-using-ansible-to-diagnose-my-ssh-troubles.html</guid>
-        
-        <category>aws</category>
-        
-        <category>ansible</category>
-        
-        <category>ssh</category>
-        
-        <category>ruby</category>
-        
-        
-        <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>Rates</title>
-        <description>&lt;p&gt;Picture of me on the side&lt;/p&gt;
-
-&lt;p&gt;Resume link&lt;/p&gt;
-
-&lt;p&gt;On a short term basis my rate is $200 per hour.  If you’d like to negotiate an ongoing arrangement that can be done and that can pretty dramatically affect the rate.&lt;/p&gt;
-
-&lt;p&gt;Here’s what I bring to the table&lt;/p&gt;
-
-&lt;p&gt;What can I do for you?&lt;/p&gt;
-
-&lt;p&gt;Who the Heck Are You?&lt;/p&gt;
-
-&lt;p&gt;At heart I’m a software engineer.  Nothing makes me happier than solving complex problems with code.  But I can also qualify as senior technical staff for an organization.&lt;/p&gt;
-
-&lt;p&gt;What Have You Built&lt;/p&gt;
-
-&lt;p&gt;Over the years I’ve built a lot of shipping products including:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The HyperWriter family of authoring tools - HyperWriter, HyperWriter for Training, HyperWriter Professional, HyperAwk&lt;/li&gt;
-  &lt;li&gt;The Doctor Dobbs Journal on CD-ROM&lt;/li&gt;
-  &lt;li&gt;eduFire - An online marketplace for freelance educators and students to discover each other and run for pay video learning sessions using the Adobe Connect platform (Rails)&lt;/li&gt;
-  &lt;li&gt;The Feedster blog search platform&lt;/li&gt;
-  &lt;li&gt;AppData -&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;And that doesn’t count the different products I’ve consulted on from time to time.  That’s just the full stack systems I’ve been primarily responsible for developing.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 10 Oct 2016 06:30:52 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/10/10/rates.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/10/rates.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>What Nick Taught Me About Udemy, eBooks and More</title>
-        <description>
-</description>
-        <pubDate>Mon, 10 Oct 2016 05:56:22 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/udemy/2016/10/10/what-nick-taught-me-about-udemy-ebooks-and-more.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/udemy/2016/10/10/what-nick-taught-me-about-udemy-ebooks-and-more.html</guid>
-        
-        <category>udemy</category>
-        
-        <category>ebooks</category>
-        
-        
-        <category>udemy</category>
         
       </item>
     
