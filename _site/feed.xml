@@ -6,9 +6,20 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 16 Oct 2016 09:33:48 -0400</pubDate>
-    <lastBuildDate>Sun, 16 Oct 2016 09:33:48 -0400</lastBuildDate>
+    <pubDate>Sun, 16 Oct 2016 13:24:43 -0400</pubDate>
+    <lastBuildDate>Sun, 16 Oct 2016 13:24:43 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Becoming an Online Content Rockstar Using Udemy and Other Tools</title>
+        <description>
+</description>
+        <pubDate>Sun, 16 Oct 2016 12:05:08 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/10/16/becoming-an-online-content-rockstar-using-udemy-and-other-tools.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/16/becoming-an-online-content-rockstar-using-udemy-and-other-tools.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Understanding Systems By Observation - Dropbox</title>
@@ -41,6 +52,112 @@
         
         
         <category>software_engineering</category>
+        
+      </item>
+    
+      <item>
+        <title>Thinking About a Ruby Driven AWS Lambda Approach for Big Data Computing</title>
+        <description>&lt;p&gt;So I have a computing problem to solve where the amount of data to process vastly exceeds even my desire to spin up EC2 instances.  I really do actually enjoy &lt;a href=&quot;https://fuzzygroup.github.io/blog/tag.html#ansible&quot;&gt;Ansible&lt;/a&gt; but at some point you have to cry to the heavens and shout out “There must be a better way!”.  This is literally an “oh crap” moment when I realized exactly the scale of the problem.&lt;/p&gt;
+
+&lt;p&gt;Note: I’m not at liberty here to give specifics so I’m talking in generalities quite a bit in this post.  Apologies.&lt;/p&gt;
+
+&lt;p&gt;AWS has a lot of tools that can be applied to big data process but two come to mind:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://aws.amazon.com/emr/&quot;&gt;Elastic Map Reduce&lt;/a&gt; or EMR&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://aws.amazon.com/lambda/&quot;&gt;Lambda&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;EMR is older and harder to use so I’m going to avoid it for now in favor of the new hotness – &lt;strong&gt;Lambda&lt;/strong&gt;.  Here’s the brag statement about Lambda:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Run code without thinking about servers.
+Pay for only the compute time you consume.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;That’s a pretty compelling statement to make and it is actually close to a holy grail of distributed computing.&lt;br /&gt;
+I have a big data problem that:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Involves about 15,000 unique domains that need to be checked against an index of data&lt;/li&gt;
+  &lt;li&gt;Where if the domain is a match a secondary request needs to be made and several data points extracted from an api&lt;/li&gt;
+  &lt;li&gt;The results of #2 need to be posted to an API that we control&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;For valid separation of concerns issues the data fed into 1 is separate from the code in 1 (its driven by a separate git repo).  And all of our code is in Ruby which is not a supported Lambda language.  This raises some actual issues in terms of:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;How do we make this work&lt;/li&gt;
+  &lt;li&gt;How do we get our existing ruby code to run in Lambda&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There is an interesting approach to packaging up our existing ruby code using Traveling Ruby and then run that &lt;a href=&quot;https://www.krautcomputing.com/blog/2016/02/29/how-to-run-ruby-scripts-on-aws-lambda-using-ansible/&quot;&gt;package on Lambda&lt;/a&gt;.  But before we goto that level of effort perhaps we need to examine the metrics on the codebase in question:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rake stats
++----------------------+--------+--------+---------+---------+-----+-------+
+| Name                 |  Lines |    LOC | Classes | Methods | M/C | LOC/M |
++----------------------+--------+--------+---------+---------+-----+-------+
+| Controllers          |      3 |      3 |       1 |       0 |   0 |     0 |
+| Helpers              |      2 |      2 |       0 |       0 |   0 |     0 |
+| Jobs                 |      2 |      2 |       1 |       0 |   0 |     0 |
+| Models               |      3 |      3 |       1 |       0 |   0 |     0 |
+| Mailers              |      4 |      4 |       1 |       0 |   0 |     0 |
+| Channels             |      8 |      8 |       2 |       0 |   0 |     0 |
+| Javascripts          |     29 |      4 |       0 |       1 |   0 |     2 |
+| Libraries            |    480 |    366 |      12 |      38 |   3 |     7 |
+| Tasks                |      7 |      6 |       0 |       0 |   0 |     0 |
+| Controller tests     |      0 |      0 |       0 |       0 |   0 |     0 |
+| Helper tests         |      0 |      0 |       0 |       0 |   0 |     0 |
+| Model tests          |      0 |      0 |       0 |       0 |   0 |     0 |
+| Mailer tests         |      0 |      0 |       0 |       0 |   0 |     0 |
+| Integration tests    |      0 |      0 |       0 |       0 |   0 |     0 |
+| Lib specs            |    270 |    231 |       0 |       1 |   0 |   229 |
++----------------------+--------+--------+---------+---------+-----+-------+
+| Total                |    808 |    629 |      18 |      40 |   2 |    13 |
++----------------------+--------+--------+---------+---------+-----+-------+
+  Code LOC: 398     Test LOC: 231     Code to Test Ratio: 1:0.6
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So we’re actually only talking about 12 classes, 38 methods and 366 LOC.  So this isn’t large at all.  We know that one approach to running this is running it as packaged ruby.  Another approach would be &lt;em&gt;code that writes code&lt;/em&gt; but before we talk about this, let’s talk about the execution context.&lt;/p&gt;
+
+&lt;p&gt;This application needs to run every time period from 2013 to present.  And depending on the results from our initial prototype, that will be either monthly or quarterly.  So if this is quarterly we need to run it 12 times - (4 in 2013, 4 in 2015, 4 in 2016) and if its monthly then we need to run it 36 times.  And we’ll need to run it monthly going forward.  And, each time, the input data is different.&lt;/p&gt;
+
+&lt;h1 id=&quot;code-that-writes-code&quot;&gt;Code that Writes Code&lt;/h1&gt;
+
+&lt;p&gt;There are lots of different approaches to code that writes code – generators, real AI and template based approaches.  For this I would use a template based approach as follows:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Port the Ruby code to JavaScript using a single file approach as much as possible.&lt;/li&gt;
+  &lt;li&gt;Locate the input data we need to send to the initial api near the top as essentially a global array of values.  For test purposes you only need to use 1 or 2; only enough to prove the concept.&lt;/li&gt;
+  &lt;li&gt;Convert the code in #2 to a template just as Rails uses, say, an ERB template (you can actually use ERB in other contexts than views).&lt;/li&gt;
+  &lt;li&gt;Treat the underlying ruby code as a systems automation tool which:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;operates over an array of dates from the past to the present&lt;/li&gt;
+  &lt;li&gt;keeps track of what has been submitted to AWS Lambda&lt;/li&gt;
+  &lt;li&gt;Reads the template in #3 and fills in the data based on the internal api.&lt;/li&gt;
+  &lt;li&gt;packages everything per the &lt;a href=&quot;http://docs.aws.amazon.com/lambda/latest/dg/nodejs-create-deployment-pkg.html&quot;&gt;Lambda spec&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;uses the &lt;a href=&quot;http://docs.aws.amazon.com/sdkforruby/api/Aws/Lambda/Client.html&quot;&gt;AWS Lambda Ruby APIs&lt;/a&gt; to submit the job&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;With this approach while we’re not using Lambda to actually execute our Ruby code, we’re getting the same result, using Lambda’s native JavaScript / node support but still using our overall Ruby framework to run everything and manage the process.  And this will have the advantage of generating an auditable code base that we can dig into if we find any problems.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 16 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/10/16/thinking-about-a-ruby-driven-aws-lambda-approach-for-big-data-computing.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/16/thinking-about-a-ruby-driven-aws-lambda-approach-for-big-data-computing.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ruby</category>
+        
+        <category>lambda</category>
+        
+        <category>software_engineering</category>
+        
+        
+        <category>aws</category>
         
       </item>
     
@@ -155,7 +272,7 @@
       </item>
     
       <item>
-        <title>AWS Tutorial 18 - When You've Lost You Web Server, How to Find an AWS Resource</title>
+        <title>AWS Tutorial 18 - When You've Lost Your Web Server, How to Find an AWS Resource</title>
         <description>&lt;p&gt;I find myself, at the time of this writing, in the middle of an embarrassing situtation for a web professional.  You see, the situation is this:&lt;/p&gt;
 
 &lt;ol&gt;
@@ -653,485 +770,6 @@ sidekiqctl stop &amp;lt;pid&amp;gt;
         
         
         <category>ruby</category>
-        
-      </item>
-    
-      <item>
-        <title>AWS Tutorial 16 - SSH Failures Take 4 - Time to Write Some Monitoring Code</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/blog/assets/ood_not_oom.jpg&quot; alt=&quot;ood_not_oom.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;My apologies to the &lt;a href=&quot;https://en.wikipedia.org/wiki/Tenth_Doctor&quot;&gt;Good Doctor&lt;/a&gt; but when &lt;a href=&quot;https://linux-mm.org/OOM_Killer&quot;&gt;OOM&lt;/a&gt; is failing you, you have to make an &lt;a href=&quot;https://en.wikipedia.org/wiki/Ood&quot;&gt;OOD&lt;/a&gt; joke.  We’re nerdy over here.  Every one of us.&lt;/p&gt;
-
-&lt;p&gt;Well crap.  I just ran my ansible df -h test which checks to make sure my boxes are up and running and I got complete failure:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fiweb1 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-fiansible2 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawlerbig | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawler3 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawler4 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawler5 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawler6 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawler7 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawler8 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawler9 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawler10 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Curiouser and curiouser said Alice.  The interesting thing here is that two of these boxes ARE NOT running our crawler code.  They’re actually doing nothing at all.  So what does this tell us:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Perhaps the issue has nothing to do with our code at all.&lt;/li&gt;
-  &lt;li&gt;Perhaps it is an underlying Linux problem on AWS w/ Ubuntu.&lt;/li&gt;
-  &lt;li&gt;It seems to be related to resource consumption but that’s a guess not a true statement.&lt;/li&gt;
-  &lt;li&gt;There is no damn way to monitor this (&amp;amp;$#($&lt;em&gt;#()$&lt;/em&gt;#)) problem since it no one monitors SSH failures.  Sigh.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;writing-your-own-monitoring-tool&quot;&gt;Writing Your Own Monitoring Tool&lt;/h1&gt;
-
-&lt;p&gt;And so I now get to time travel back to 2007, the first time I wrote a monitoring tool in Ruby.  I was working for the late, not-lamented eduFire and there wasn’t money to sign up for a monitoring tool.  Ah life in startup land.  My children can and do tell the tale of Dad’s computer waking up in the middle of the night screaming “eduFire IS DOWN!!!”.  And then there was the incarnation that, a few years later, would plain Billy Idol’s White Wedding at top volume.  So this is old territory for me.  But maybe we can do a bit better.  So what do we need to do?&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Run forever&lt;/li&gt;
-  &lt;li&gt;Run reliably - this is Ruby after all&lt;/li&gt;
-  &lt;li&gt;Read from the ansible hosts file and get a list of resources to monitor&lt;/li&gt;
-  &lt;li&gt;Loop over the hosts&lt;/li&gt;
-  &lt;li&gt;Establish an ssh connection&lt;/li&gt;
-  &lt;li&gt;If successful then do nothing&lt;/li&gt;
-  &lt;li&gt;If unsuccessful increment a failure counter&lt;/li&gt;
-  &lt;li&gt;If failure ctr &amp;gt; a threshold then fire off an alert by playing White Wedding and also send an alert to my phone&lt;/li&gt;
-  &lt;li&gt;Optionally incorporate AWS API calls to restart the instance if this is possible and it has failed more times than a restart threshold&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;run-forever&quot;&gt;Run Forever&lt;/h2&gt;
-
-&lt;p&gt;This can be nothing more than a while(true) loop construct.  It isn’t elegant but it will work.&lt;/p&gt;
-
-&lt;h2 id=&quot;run-reliably&quot;&gt;Run Reliably&lt;/h2&gt;
-
-&lt;p&gt;We can wrap this within daemon tools supervise to make sure it stays running.&lt;/p&gt;
-
-&lt;h2 id=&quot;read-from-ansible-hosts-file&quot;&gt;Read from Ansible Hosts file&lt;/h2&gt;
-
-&lt;p&gt;This can be done with any of a number of gems which read from an INI file.  No matter what we use, the Ansible INI syntax is funky so we’re likely to need some parsing.&lt;/p&gt;
-
-&lt;h2 id=&quot;loop-over-the-hosts&quot;&gt;Loop Over The Hosts&lt;/h2&gt;
-
-&lt;p&gt;The INI gem will return an enumerable collection so this is just a .each call.  Piece of cake.  .each is my single favorite thing in all of Ruby.&lt;/p&gt;
-
-&lt;h2 id=&quot;establish-an-ssh-connection&quot;&gt;Establish an SSH connection&lt;/h2&gt;
-
-&lt;p&gt;There has to be a gem for this.  &lt;strong&gt;Google Furiously&lt;/strong&gt;  Yep.  Even better Jamis Buck wrote it.  Fantastic.  That means I can trust it.&lt;/p&gt;
-
-&lt;h2 id=&quot;items-6-thru-9&quot;&gt;Items 6 thru 9&lt;/h2&gt;
-
-&lt;p&gt;This is the core of a monitoring tool and where crap gets tricky:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;You have to make sure you actually have outbound connectivity so you need something to test against that NEVER goes down.  Hm… 8.8.8.8 is perfect – it is Google’s DNS server and it can be ping’d so I don’t have to test via SSH.  There must be a ping gem.  &lt;strong&gt;More Furious Googling&lt;/strong&gt;.  Yep.&lt;/li&gt;
-  &lt;li&gt;You have to alert.  Yep.  That means I’m going to use Twilio again.  Twilio is fantastic.&lt;/li&gt;
-  &lt;li&gt;In the event of a failure you have to get my attention and no alert needs to be sent if I’m already at the computer.  I’ll yank out the old white wedding play routine I used for my second monitoring tool (which indirectly was this same damn code base) and I’ll just reuse it.&lt;/li&gt;
-  &lt;li&gt;You need a machine which is 24x7 connected to the Internet and never goes away.  Well my Macbook Air travels everywhere I go these days but my Macbook Pro is constantly on.  So I’ll use that.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;the-code&quot;&gt;The Code&lt;/h1&gt;
-
-&lt;p&gt;Listed below is a rake task which encapsulates the bulk of it.  This is actually only the &lt;strong&gt;first draft&lt;/strong&gt; of it.  The actual &lt;a href=&quot;https://github.com/fuzzygroup/aws_monitor&quot;&gt;github&lt;/a&gt; code is better but I’ve been up all night so I don’t think trying to write a good description of it is wise.  The detailed stuff is handled by aws_monitor.rb which is a short class of static methods just to simplify the rake task and make them testable.  The only bad thing I can ever say about Jim Weirich is that Rake tasks aren’t really testable.  Other than that I wish he was still with us.  Right now this code is a bit of a rough draft as the failure hasn’t happened again yet and things like error handling always need to get addressed but it looks something like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;namespace :monitor_aws do
-  # bundle exec rake monitor_aws:ansible_hosts --trace
-  task :ansible_hosts =&amp;gt; :environment do
-    #
-    # Things to change easily for adapting to different environments
-    #
-
-    # CHANGE THIS to your ansible inventory file
-    ansible_hosts_file = File.join(Rails.root, 'script/ansible/inventories/production2')
-    # CHANGE THIS to how frequently to monitor
-    sleep_time = 60 * 5  # every five minutes we will execute
-    # CHANGE THIS to your ssh login
-    username = &quot;ubuntu&quot;
-    # CHANGE THIS to the number of consecutive failures you want to alert on
-    min_failures = 2     
-
-    run_ctr = 0
-    while(true) do
-      run_ctr = run_ctr + 1
-      puts &quot;Monitoring run: #{run_ctr}&quot;
-      ansible_hosts = AwsMonitor.load_ansible_hosts(ansible_hosts_file)
-      failure_ctr = 0
-      ansible_hosts.entries.each do |entry|
-        ansible_host = AwsMonitor.ini_entry_to_struct(entry)
-        session = Net::SSH.start( ansible_host.host_name, username, :keys =&amp;gt; ansible_host.keyfile )
-        if session.error.nil?
-          puts &quot;Success!  The box #{ansible_host.human_name} is still alive!!!&quot;.green
-        else
-          puts &quot;#{session.error}&quot;
-          AwsMonitor.play_white_wedding(ansible_host, '')
-          debugger          
-        end
-        session.close
-      end
-      puts &quot;\n\n\n&quot;
-      sleep(sleep_time)
-    end
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And that’s about all there is to it.  The complicated version, which is also written, but not yet published has some other tricks like using ping to make sure my local connectivity didn’t fail.  I don’t want to publish that yet since I don’t understand if my failure condition is going to be a  Net::SSH::AuthenticationFailed or a session.error message or what.&lt;/p&gt;
-
-&lt;h2 id=&quot;postscript&quot;&gt;Postscript&lt;/h2&gt;
-
-&lt;p&gt;This morning I added a running timer to track how long the boxes were up.  This is what it looks like now:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Monitoring run: 31
-Success!  The box ficrawler3 is still alive and has been for: 9300 seconds!!!
-Success!  The box ficrawler4 is still alive and has been for: 9300 seconds!!!
-Success!  The box ficrawler5 is still alive and has been for: 9300 seconds!!!
-Success!  The box ficrawler6 is still alive and has been for: 9300 seconds!!!
-Success!  The box ficrawler7 is still alive and has been for: 9300 seconds!!!
-Success!  The box ficrawler8 is still alive and has been for: 9300 seconds!!!
-Success!  The box ficrawler9 is still alive and has been for: 9300 seconds!!!
-Success!  The box ficrawler10 is still alive and has been for: 9300 seconds!!!
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;postscript-2&quot;&gt;Postscript 2&lt;/h2&gt;
-
-&lt;p&gt;I had wanted to make this work with Twilio for alerting but I just ran out of time.  If anyone needs help with that reach out to me and I’ll get it in.  Its not hard and Twilio is an awesome, awesome company to work with.&lt;/p&gt;
-
-&lt;h2 id=&quot;postscript-3&quot;&gt;Postscript 3&lt;/h2&gt;
-
-&lt;p&gt;I just realized that I think the Twilio credentials are in the git repo.  Sigh.  I turned on 2 factor authentication so that should prevent them from getting used by someone other than me.&lt;/p&gt;
-
-&lt;h2 id=&quot;license&quot;&gt;License&lt;/h2&gt;
-
-&lt;p&gt;Do with it as you will.  Enjoy it; fork it, etc.  Sorry it took so long to get this post out.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 13 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/10/13/aws-tutorial-16-ssh-failures-take-4-time-to-write-some-monitoring-code.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/13/aws-tutorial-16-ssh-failures-take-4-time-to-write-some-monitoring-code.html</guid>
-        
-        <category>aws</category>
-        
-        <category>ssh</category>
-        
-        <category>ruby</category>
-        
-        <category>monitoring</category>
-        
-        
-        <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>Ansible Tutorial 02 - Configuring a Sidekiq Upstart Job on Ubuntu 14.04</title>
-        <description>&lt;p&gt;As I’ve now noted a number of times, I’m in the process of a large scale AWS migration and we’ve had stability problems.  Unlike previous times in my life where I threw my hands up, got tired with devops and just hacked something together, I’m determined that, this time, things will be different.  At the heart of our issues has been ballooning memory use in Ruby.  Whether the issue is in our code, a gem, an interaction or something else entirely is, at present, unknown.&lt;/p&gt;
-
-&lt;p&gt;The solution I’ve opted to go with for solving this is:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Remove our own threading code&lt;/li&gt;
-  &lt;li&gt;Use &lt;a href=&quot;http://www.mikeperham.com&quot;&gt;Mike Perham&lt;/a&gt;’s astonishingly wonderful &lt;a href=&quot;http://sidekiq.org&quot;&gt;Sidekiq&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Sign up for paid support / &lt;a href=&quot;http://sidekiq.org/products/pro&quot;&gt;Sidekiq Pro&lt;/a&gt; so any assistance that we need is possible.&lt;/li&gt;
-  &lt;li&gt;Move to an upstart job to run sidekiq&lt;/li&gt;
-  &lt;li&gt;Use &lt;a href=&quot;https://mmonit.com/monit/&quot;&gt;Monit&lt;/a&gt; or &lt;a href=&quot;https://github.com/mperham/inspeqtor&quot;&gt;inspeqtor&lt;/a&gt; to Monitor Sidekiq&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;In this blog post I’m going to focus on #4 – using an Upstart Job to Run Sidekiq and define that job with Ansible.  The very first thing to know is that my previous ansible task, &lt;a href=&quot;https://fuzzygroup.github.io/blog/ansible/2016/10/09/ansible-quickie-fixing-a-poorly-designed-galaxy-role.html&quot;&gt;here&lt;/a&gt;, is absolute crap as best I can tell.  Even with my fixes, like so many things on &lt;a href=&quot;https://galaxy.ansible.com&quot;&gt;Ansible Galaxy&lt;/a&gt;, it was just plain wrong.  Where Galaxy is good, its excellent, but that’s rare in my experience.&lt;/p&gt;
-
-&lt;p&gt;Just a disclaimer - any errors here are mine, not Mike’s or Sidekiq’s.  I own the responsibility here.&lt;/p&gt;
-
-&lt;h1 id=&quot;using-ansible-to-install-a-sidekiq-service&quot;&gt;Using Ansible to Install a Sidekiq Service&lt;/h1&gt;
-
-&lt;p&gt;Here are our assumptions that we’re basing our ansible code on:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Ubuntu 14.04&lt;/li&gt;
-  &lt;li&gt;Upstart&lt;/li&gt;
-  &lt;li&gt;Single, global ruby per server&lt;/li&gt;
-  &lt;li&gt;RVM (even though it isn’t strictly necessary)&lt;/li&gt;
-  &lt;li&gt;One ruby app per server&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Let’s begin with the structure of our role:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~/whatever_your_ansible_root_is
-mkdir -p roles/software_licenses/tasks
-mkdir -p roles/services
-mkdir roles/services/tasks
-mkdir roles/servies/templates
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;optional---adding-your-sidekiq-pro-software-license&quot;&gt;Optional - Adding Your Sidekiq Pro Software License&lt;/h2&gt;
-
-&lt;p&gt;Sidekiq Pro is commercial software, not open source, so if you’re using it instead of the open source version, you’ll need to authorize it.  Here’s how to do this.  Here’s what goes in your roles/software_licenses/tasks/main.yml:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gd&quot;&gt;--- 
-- name: set the licensing for sidekiq pro
-&lt;/span&gt;  become: no
-  shell:  &quot;cd /var/www/apps/banks/current &amp;amp;&amp;amp; bundle config gems.contribsys.com YOUR_SECURITY_KEY&quot;    
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;defining-your-group-vars&quot;&gt;Defining Your Group Vars&lt;/h2&gt;
-
-&lt;p&gt;Here’s what goes in your group_vars context.  I had these in all but you may choose a different approach:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;app_name: banks
-app_base: /var/www/apps/banks/
-app_path: /var/www/apps/banks/current/
-user_name: ubuntu
-db_root_password: FDFJKSDJFKLSFJSLKFJSKLFSJFKLSDJF
-my_ip_address: 64.184.12.117
-server_env: production
-rvm_path: /usr/local/rvm/bin/rvm    
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;your-template-for-the-upstart-job&quot;&gt;Your Template for the Upstart Job&lt;/h2&gt;
-
-&lt;p&gt;Here’s what goes in roles/services/templates/sidekiq_perham_init.j2:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# /etc/init/sidekiq.conf - Sidekiq config
-# source: https://github.com/mperham/sidekiq/blob/master/examples/upstart/sidekiq.conf
-
-# This example config should work with Ubuntu 12.04+.  It
-# allows you to manage multiple Sidekiq instances with
-# Upstart, Ubuntu's native service management tool.
-#
-# See workers.conf for how to manage all Sidekiq instances at once.
-#
-# Save this config as /etc/init/sidekiq.conf then manage sidekiq with:
-#   sudo start sidekiq index=0
-#   sudo stop sidekiq index=0
-#   sudo status sidekiq index=0
-#
-# Hack Upstart's reload command to 'quiet' Sidekiq:
-#
-#   sudo reload sidekiq index=0
-#
-# or use the service command:
-#   sudo service sidekiq {start,stop,restart,status}
-#
-
-description &quot;Sidekiq Background Worker&quot;
-
-# This script is not meant to start on bootup, workers.conf
-# will start all sidekiq instances explicitly when it starts.
-#start on runlevel [2345]
-#stop on runlevel [06]
-
-# change to match your deployment user
-setuid 
-setgid 
-env HOME=
-
-respawn
-respawn limit 3 30
-
-# TERM is sent by sidekiqctl when stopping sidekiq. Without declaring these as
-# normal exit codes, it just respawns.
-normal exit 0 TERM
-
-# Older versions of Upstart might not support the reload command and need
-# this commented out.
-reload signal USR1
-
-# Upstart waits 5 seconds by default to kill the a process. Increase timeout to
-# give sidekiq process enough time to exit.
-kill timeout 15
-
-#instance $index
-instance 0
-
-script
-# this script runs in /bin/sh by default
-# respawn as bash so we can source in rbenv
-exec /bin/bash &amp;lt;&amp;lt;'EOT'
-  # Pick your poison :) Or none if you're using a system wide installed Ruby.
-  # rbenv
-  # source /home/apps/.bash_profile
-  # OR
-  # source /home/apps/.profile
-  # OR system:
-  # source /etc/profile.d/rbenv.sh
-  #
-  # rvm
-  # source /home/apps/.rvm/scripts/rvm
-  source 
-
-  # Logs out to /var/log/upstart/sidekiq.log by default
-
-  cd 
-  #exec bundle exec sidekiq -i ${index} -e production
-  exec bundle exec sidekiq -i 0 -e production
-EOT
-end script
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Please note that the template above comes directly from Mike Perham’s Sidekiq Wiki, &lt;a href=&quot;https://github.com/mperham/sidekiq/blob/master/examples/upstart/sidekiq.conf&quot;&gt;here&lt;/a&gt;.  I modified it slightly to incorporate ansible variables and to remove the index parameter which didn’t function, at least for me, on Ubuntu 14.04.&lt;/p&gt;
-
-&lt;h2 id=&quot;pulling-the-template-and-service-together&quot;&gt;Pulling the Template and Service Together&lt;/h2&gt;
-
-&lt;p&gt;Here’s what goes in roles/services/tasks/main.yml:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- name: prevent sidekiq init from running if it has already been done
-  stat: path=/etc/init/sidekiq.conf
-  register: sidekiq_init_installed
-  
-- name: Copy sidekiq init template to init.d dir
-  template: src=sidekiq_perham_init.j2 dest=/etc/init/sidekiq.conf owner=root group=root force=yes
-  sudo: yes
-  when: sidekiq_init_installed.stat.exists == False
-
-- name: start_sidekiq
-  service: name=sidekiq state=started
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The only real Ansible trick here is to figure out how to make this idempotent so it only installs the upstart job once.  To do that I use the stat module to check the location of the upstart sidekiq.conf file and register a variable.  Then I only install the template when that variable is false.&lt;/p&gt;
-
-&lt;h2 id=&quot;calling-everything-from-the-playbook&quot;&gt;Calling Everything from the Playbook&lt;/h2&gt;
-
-&lt;p&gt;The final step here is to pull the roles into the playbook so it can run.  Here’s how:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: software_licenses, tags: software_licenses }
-- { role: services, tags: services }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Because the service depends on the gem it is important that the software_licenses role run first so the gem is authorized.  Otherwise Sidekiq won’t start and the service will be borked.&lt;/p&gt;
-
-&lt;h2 id=&quot;optional---your-ruby-apps-gemfile&quot;&gt;Optional - Your Ruby App’s Gemfile&lt;/h2&gt;
-
-&lt;p&gt;If you’re using Sidekiq Pro, you’ll need to update your gem file with the stuff you got from Sidekiq support.&lt;/p&gt;
-
-&lt;h2 id=&quot;running-the-playbook&quot;&gt;Running the Playbook&lt;/h2&gt;
-
-&lt;p&gt;If you just want to run part the services and software_licenses role then you can use:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/ficrawler3 playbook_crawler.yml --tags=&quot;software_licenses, services&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Here’s the output from running just the services role on a single one of my boxes:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/ficrawler3 playbook_crawler.yml --tags=&quot;services&quot;
-
-[DEPRECATION WARNING]: Instead of sudo/sudo_user, use become/become_user and make sure become_method is 'sudo' (default).
-This feature will be removed in a future release. Deprecation warnings can be
-disabled by setting deprecation_warnings=False in ansible.cfg.
-
-PLAY [crawler, ansibletest] ****************************************************
-
-TASK [setup] *******************************************************************
-ok: [ficrawler3]
-
-TASK [services : stop_sendmail] ************************************************
-ok: [ficrawler3]
-
-TASK [services : stop_apache2] *************************************************
-ok: [ficrawler3]
-
-TASK [services : stop_memcached] ***********************************************
-ok: [ficrawler3]
-
-TASK [services : prevent sidekiq init from running if it has already been done]
-ok: [ficrawler3]
-
-TASK [services : Copy sidekiq init template to init.d dir] *********************
-skipping: [ficrawler3]
-
-TASK [services : start_sidekiq] ************************************************
-changed: [ficrawler3]
-
-PLAY RECAP *********************************************************************
-ficrawler3                 : ok=6    changed=1    unreachable=0    failed=0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Your results may differ a bit but it should be similar to that.&lt;/p&gt;
-
-&lt;h1 id=&quot;log-file&quot;&gt;Log File&lt;/h1&gt;
-
-&lt;p&gt;It is always terribly important with long running processes to know where their log file goes.  In this case it is located at:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/var/log/upstart/sidekiq_0.log  
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I’ll return to that in a later Ansible tutorial when I configure cross server log management with Graylog.  For my work, sidekiq logs are critical so I added a bash command to the shells on all my boxes so I can tail them easily.  All it takes is to drop alias tailsidekiq=’tail -f /var/log/upstart/sidekiq_0.log’ into the .bashrc on all your boxes.&lt;/p&gt;
-
-&lt;p&gt;And, yes, I’m am showing off here.  This points out just how awesome automatically provisioning your boxes with ansible is.  When you can make changes across a farm of boxes with a single command, you can apply the same types of refactoring / continuous improvement that you do with code to devops.  In years past if I wanted this I’d have had to do it manually.  Now its a change to a template file and running an ansible playbook.  Tomorrow I’ll likely pipe all log files over the network to Graylog but until then I have my tailsidekiq command.&lt;/p&gt;
-
-&lt;h1 id=&quot;sidebar-why-use-rvm-with-a-single-ruby&quot;&gt;Sidebar: Why Use RVM With a Single Ruby?&lt;/h1&gt;
-
-&lt;p&gt;I know someone’s going to ask this so I may as well answer it.  RVM is the easiest way, that I’ve found, to get Ruby installed anywhere.  Even with a single Ruby, RVM makes getting it installed better.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 13 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/ansible/2016/10/13/ansible-tutorial-02-configuring-a-sidekiq-upstart-job-on-ubuntu-14-04.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ansible/2016/10/13/ansible-tutorial-02-configuring-a-sidekiq-upstart-job-on-ubuntu-14-04.html</guid>
-        
-        <category>ansible</category>
-        
-        <category>sidekiq</category>
-        
-        <category>ruby</category>
-        
-        <category>rvm</category>
-        
-        
-        <category>ansible</category>
         
       </item>
     
