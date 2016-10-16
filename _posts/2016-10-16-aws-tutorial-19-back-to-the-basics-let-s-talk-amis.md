@@ -1,6 +1,6 @@
 ---
 layout: post
-title: AWS Tutorial 16 - Back to the Basics, Let's Talk AMIs and EC2 basics
+title: AWS Tutorial 19 - Back to the Basics, Let's Talk AMIs and EC2 basics
 category: aws
 tags: ["aws", "ami", "linux", "ec2"]
 ---
@@ -17,7 +17,7 @@ An EC2 instance is just a server in Amazon's cloud.  And, from what I can tell, 
 
 Here's a picture of the initial EC2 instance selection web page:
 
-![aws_ami_ec2.png.png](/blog/assets/aws/aws_ami_ec2.png.png)
+![aws_ami_ec2.png.png](/blog/assets/aws/aws_ami_ec2.png)
 
 There are a few basic options that you really want to keep in mind:
 
@@ -59,7 +59,7 @@ Pros:
 * AWS command line tools installed standard
 * Good support for the AWS ECS 
 * Cool text mode EC2 login logo that makes me smile whenever I see it
-* They seem to really care about performance.  The 2016.09 release notes specifically call out the [7 seconds of boot time](https://aws.amazon.com/amazon-linux-ami/2016.09-release-notes/) that they cut out.  Sounds silly but its a big deal when you have a lot of machines.
+* They seem to really care about performance.  The 2016.09 release notes specifically call out the [7 seconds of boot time](https://aws.amazon.com/amazon-linux-ami/2016.09-release-notes/) that they cut out.  Sounds silly but its a big deal when you have a lot of machines.  And given that they write the billing rules, they could easily use that 7 seconds in their favor.  The fact that they don't gives me an incredible amount of confidence in AWS's billing practices.  Go AWS!
   
 Cons:
 

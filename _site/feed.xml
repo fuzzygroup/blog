@@ -6,9 +6,343 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 15 Oct 2016 02:54:38 -0400</pubDate>
-    <lastBuildDate>Sat, 15 Oct 2016 02:54:38 -0400</lastBuildDate>
+    <pubDate>Sun, 16 Oct 2016 09:31:59 -0400</pubDate>
+    <lastBuildDate>Sun, 16 Oct 2016 09:31:59 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Understanding Systems By Observation - Dropbox</title>
+        <description>&lt;p&gt;One of the best bits of computer science I ever learned, I learned in 1989 from my first business partner, Brian Giedt.  We were at a Society for Technical Communications (stc) conference on Technical Documentation and my partner was trying to impress a pretty girl.  And I watch him look at an animation product and pretty much instantly &lt;strong&gt;grok&lt;/strong&gt; how it was doing the animation.  Where I saw a pretty flow of images, he looked at it and understood how the animation was being done.  That was the very first time I saw someone really understand something about the &lt;em&gt;internals&lt;/em&gt; from its &lt;em&gt;externals&lt;/em&gt;.  And once I knew it was possible – I’ve striven to do it as often as I can.  Very often, if you set up the right set of circumstances, you’ll realize exactly how something has to be implemented internally.&lt;/p&gt;
+
+&lt;p&gt;Let’s use Dropbox as an example.  We all know that Dropbox transfers the content you put in it to all other machines you have hooked up to it.  And that’s a simple 1 to many transfer.  But how does Dropbox work when you already have content in it and you re-arrange it?  Does it resend everything or does it figure out what it has to do and send a command stream to do it instead?&lt;/p&gt;
+
+&lt;p&gt;A few minutes ago I:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;created a folder within a folder in Dropbox&lt;/li&gt;
+  &lt;li&gt;moved about 15 gb of video files in initial folder to the new folder&lt;/li&gt;
+  &lt;li&gt;checked on my iPad about a minute later&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And all the files I moved were in the new folder already.  Here’s what this tells me&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;There’s no way that Dropbox deleted and re-transmitted the files in that time; it is simply impossible&lt;/li&gt;
+  &lt;li&gt;What Dropbox has to be doing is sending commands that amount to move THIS from HERE to THERE&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The best I’ve seen to do this is you set up conditions that you know can’t be argued with by physical constraints.  I knew that 15 gb of video data was a big arse chunk of data.  If I had used say a megabyte, well, I wouldn’t have really known if it was a full bandwidth re-arrange or a command stream.  By setting up such a large test, well, I knew something smarter had to be going on.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 16 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/software_engineering/2016/10/16/understanding-systems-by-observation-dropbox.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/software_engineering/2016/10/16/understanding-systems-by-observation-dropbox.html</guid>
+        
+        <category>software_engineering</category>
+        
+        
+        <category>software_engineering</category>
+        
+      </item>
+    
+      <item>
+        <title>AWS Tutorial 19 - Back to the Basics, Let's Talk AMIs and EC2 basics</title>
+        <description>&lt;p&gt;I just used Hyde to examine my blog and I realized that I have written almost 20,000 words on AWS since 8/23/16 (note some of that is still unfinished and in draft form).  Using my standard writer metric of 250 words per page, that’s 78 printed pages.  Wow.  And, alas, I realize that there are still things I haven’t written about.  And some of them are the sort of basic things that you either just ignore or that you accept by rote - “I know, we’ll use Ubuntu, we love Ubuntu!”.  And, yes, that would be me.  So let’s take a deeper dive here at some of the basic options when you build an EC2 instance.&lt;/p&gt;
+
+&lt;h1 id=&quot;what-is-an-ec2-instance&quot;&gt;What is an EC2 Instance?&lt;/h1&gt;
+
+&lt;p&gt;An EC2 instance is just a server in Amazon’s cloud.  And, from what I can tell, pretty much everything AWS offers comes down to a server somehow.  When you build an EC2 instance you have to base it on an operating system which is called an AMI and there are a bunch of options that define what AMI you want to pick:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Quick Start - the most popular options&lt;/li&gt;
+  &lt;li&gt;My AMIs - these are amis that you have saved from a machine you already built&lt;/li&gt;
+  &lt;li&gt;AWS Marketplace - these are commercial offerings from vendors&lt;/li&gt;
+  &lt;li&gt;Community AMIs - these are generally open source AMIs and the number is enormous – more than 50,000 when I checked&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Here’s a picture of the initial EC2 instance selection web page:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/aws/aws_ami_ec2.png&quot; alt=&quot;aws_ami_ec2.png.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There are a few basic options that you really want to keep in mind:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Linux Distro&lt;/strong&gt;.  This is important but can’t be written in a bullet point so it is discussed below.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;32 / 64 bit&lt;/strong&gt;.  There’s no real reason to not go 64 bit.  And if you have a reason then you should be writing this not reading it.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Virtualization Type&lt;/strong&gt;.  This should always be HVM as PVM is being phased out.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Root Device Type&lt;/strong&gt;.  This should pretty much always be set to EBS.  EBS allows you to turn off the volume without losing the data on the instance and thus allows you to resize your instance.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;the-linux-distro-question&quot;&gt;The Linux Distro Question&lt;/h1&gt;
+
+&lt;p&gt;Asking anyone in the Open Source world what is the best Linux flavor or “distro” (that’s short for distribution) is a bit like asking someone their favorite color – the answer is always different and always subjective.  And while there are differences, in the end, it is all Linux and if you can use one Linux then you can use a different Linux.  I know there are serious Linux folk that read this line and are gnashing their teeth and I apologize.&lt;/p&gt;
+
+&lt;p&gt;Personally I’ve used at different times:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Red Hat&lt;/li&gt;
+  &lt;li&gt;Gentoo (I even had a whole data center of more than 100 Gentoo boxes)&lt;/li&gt;
+  &lt;li&gt;Ubuntu 12&lt;/li&gt;
+  &lt;li&gt;Ubuntu 14&lt;/li&gt;
+  &lt;li&gt;Mandriva&lt;/li&gt;
+  &lt;li&gt;Suse&lt;/li&gt;
+  &lt;li&gt;Debian&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And I’m pretty sure there were some others; that’s just want I can remember using.  The short answer is you want to pick a Linux distribution that:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;matches what you want to do&lt;/li&gt;
+  &lt;li&gt;is well supported&lt;/li&gt;
+  &lt;li&gt;is something you understand&lt;/li&gt;
+  &lt;li&gt;has a package manager that you can deal with&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;the-amazon-linux-distribution&quot;&gt;The Amazon Linux Distribution&lt;/h1&gt;
+
+&lt;p&gt;Interestingly Amazon has their own Linux distribution.  I don’t have a ton of experience with it yet but I’m keenly interested in it and I really like their focus on performance.&lt;/p&gt;
+
+&lt;p&gt;Pros:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Good support for Docker&lt;/li&gt;
+  &lt;li&gt;Good support for at least somewhat modern development tools; Ruby, PHP and Python all installed right from the start&lt;/li&gt;
+  &lt;li&gt;Good package support for the basics - mysql, postgres, etc&lt;/li&gt;
+  &lt;li&gt;AWS command line tools installed standard&lt;/li&gt;
+  &lt;li&gt;Good support for the AWS ECS&lt;/li&gt;
+  &lt;li&gt;Cool text mode EC2 login logo that makes me smile whenever I see it&lt;/li&gt;
+  &lt;li&gt;They seem to really care about performance.  The 2016.09 release notes specifically call out the &lt;a href=&quot;https://aws.amazon.com/amazon-linux-ami/2016.09-release-notes/&quot;&gt;7 seconds of boot time&lt;/a&gt; that they cut out.  Sounds silly but its a big deal when you have a lot of machines.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Cons:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It can’t run anywhere but Amazon.&lt;/li&gt;
+  &lt;li&gt;It can’t run on Vagrant for local development&lt;/li&gt;
+  &lt;li&gt;Yum / RPM as package managers; this is a personal choice but I vastly prefer apt-get&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;how-important-is-this-with-automated-provisioning&quot;&gt;How Important Is this With Automated Provisioning?&lt;/h1&gt;
+
+&lt;p&gt;In the days where you configured Linux manually, picking the right distribution was actually quite important.  Thanks to automated provisioning tools like Ansible, I’m not so sure now.  I’ve already used Ansible to move from one version of Linux to another and its just not that hard.  If you write your Ansible playbook properly and abstract things like the username into variables, you can modify it pretty easily to go between distros.&lt;/p&gt;
+
+&lt;h1 id=&quot;summary&quot;&gt;Summary&lt;/h1&gt;
+
+&lt;p&gt;In the end you likely want to pick:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A well supported Linux distro.  I’d recommend either Ubuntu, RedHat or the Amazon Linux AMI&lt;/li&gt;
+  &lt;li&gt;64 Bit&lt;/li&gt;
+  &lt;li&gt;HVM Virtualization&lt;/li&gt;
+  &lt;li&gt;EBS Root Device&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Sun, 16 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/10/16/aws-tutorial-19-back-to-the-basics-let-s-talk-amis.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/16/aws-tutorial-19-back-to-the-basics-let-s-talk-amis.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ami</category>
+        
+        <category>linux</category>
+        
+        <category>ec2</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
+    
+      <item>
+        <title>AWS Tutorial 18 - When You've Lost You Web Server, How to Find an AWS Resource</title>
+        <description>&lt;p&gt;I find myself, at the time of this writing, in the middle of an embarrassing situtation for a web professional.  You see, the situation is this:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I wrote a new feature&lt;/li&gt;
+  &lt;li&gt;I deployed my new feature&lt;/li&gt;
+  &lt;li&gt;I refreshed my page&lt;/li&gt;
+  &lt;li&gt;My feature isn’t there&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Great Googly Moogly!  I’ve lost my web server!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Let me explain one of the things about cloud hosting that’s disconcerting.  When you first move to the cloud, your impulse is to organize your computing resources the way you used to.  So if you used to have say 3 clusters of powerful machines, that’s what you do.  Then you realize just how mind blowingly powerful a platform like AWS actually is and you start to think about &lt;strong&gt;Single Purpose Servers&lt;/strong&gt;.  A single purpose server is just what it sounds like – it does one thing.  And that’s fantastic because it makes trouble shooting so much easier.  When a server does only one thing, well, its easy to know if its broken.  And that’s great but do you know what the side effect of that is?  You don’t have a handful of servers anymore, you have a lot.  Me?  I’ve got over &lt;strong&gt;20&lt;/strong&gt; right now.  And somewhere in there is my web server.  But I can’t find it.  In this tutorial we’re going to quickly and easily figure this out.&lt;/p&gt;
+
+&lt;h1 id=&quot;start-with-a-hypothesis&quot;&gt;Start with a Hypothesis&lt;/h1&gt;
+
+&lt;p&gt;As normal we’re going to start with a theory - that is one of these three boxes:  fimariadb, ficrawler1, ficrawler2.  So our diagnostic dance, crude tho it may be, is:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;ssh into one of the boxes&lt;/li&gt;
+  &lt;li&gt;sudo su -&lt;/li&gt;
+  &lt;li&gt;apache2ctl stop&lt;/li&gt;
+  &lt;li&gt;reload the page&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If the page comes up, well, we know it wasn’t that one box.  So you then lather, rinse, repeat for each of the other 2 boxes.  And, at the end, we’re going to find out that it was none of these.&lt;/p&gt;
+
+&lt;p&gt;You might be saying “Hey wait a minute – why would a web front end be on a box that does crawling?”  Well I’m still feeling all this out and I initially went for the old model where every box could do everything.  And that was a bad decision but I still have to live it for at least a little while longer.&lt;/p&gt;
+
+&lt;h1 id=&quot;formulate-a-new-hypothesis---lets-use-ping&quot;&gt;Formulate a New Hypothesis - Let’s Use Ping!&lt;/h1&gt;
+
+&lt;p&gt;Since our first plan failed, we need a new plan.  The program ping is a basic IP networking tool which lets us send a packet to a destination and if it answers, well, that means its alive.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ping banks.finavd.com
+PING web-1166333941.us-west-2.elb.amazonaws.com (52.41.182.115): 56 data bytes
+64 bytes from 52.41.182.115: icmp_seq=0 ttl=47 time=67.589 ms
+64 bytes from 52.41.182.115: icmp_seq=1 ttl=47 time=67.301 ms
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Ah ha!  We have an ip address of 52.41.182.115.  I know! I know!  I know!  I’ll just search for that ip address on EC2 dashboard.  And it will fail.  Now the smart kids in the back are already chuckling to themselves and they know the answer.&lt;/p&gt;
+
+&lt;h1 id=&quot;hypothesis-3-elb-is-being-used&quot;&gt;Hypothesis 3: ELB Is Being Used&lt;/h1&gt;
+
+&lt;p&gt;If you look at the url that responded, NOT the ip address, the answer is revealed:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;web-1166333941.us-west-2.elb.amazonaws.com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You see the text string “.elb.”?  That means that a piece of software called an Elastic Load Balancer is sitting in front of the http request and distributing the load out to one or more EC2 instances.  If you’ve ever used HAProxy, well, ELB is that only far, far better.  Let’s goto the AWS Console and select the Load Balancers option from the choices on the left:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/aws/aws_elb_01_overview.png&quot; alt=&quot;aws_elb_01_overview.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here we’ll see an overview of all of our load balancers and their basic settings.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/aws/aws_elb_02_instances.png&quot; alt=&quot;aws_elb_02_instances.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Clicking the instances tab shows us where the HTTP request is being sent.  We can now goto the ec2 console and figure out what we need.  If you put the machine names into your &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/09/20/aws-tutorial-08-using-ssh-s-config-file-with-your-aws-boxes.html&quot;&gt;SSH Config as I recommended&lt;/a&gt; then you might not even need to goto the console.  In my case I just needed to know the names worker2 and worker2a and I know that they’re in my ssh config file and I can just add those boxes to my Capistrano deploy process.  And the “bug” is fixed!&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion-and-suggestion&quot;&gt;Conclusion and Suggestion&lt;/h1&gt;
+
+&lt;p&gt;I know that it must seem like I’m a bit of a buffoon – how can you lost a web server after all?  Well, things do happen when you move fast.  You start with one plan and then it doesn’t work and before you know it you have something working but its not where you originally planned.  And you mean to fix it but you get busy and then the next &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-10-diagnosing-ssh-failures-or-when-ping-works-but-ssh-fails.html&quot;&gt;crisis&lt;/a&gt; happens and you’re not even in the same head space any more.  And by the time you return to it over 10 days have passed.&lt;/p&gt;
+
+&lt;p&gt;Here are some suggestions for setting up your AWS architecture to avoid this kind of silliness:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Name things well.&lt;/li&gt;
+  &lt;li&gt;Name things logically.&lt;/li&gt;
+  &lt;li&gt;Use the key value options when you set up your EC2 servers.  For example, having keys for both name and role might have helped.&lt;/li&gt;
+  &lt;li&gt;Remember that there are often abstractions around everything.&lt;/li&gt;
+  &lt;li&gt;Try and use single purpose servers from the start.  Yes the number of discrete servers increases complexity but their very single purpose nature makes debugging vastly easier.  And keep in mind that Amazon offers free servers.  Even a t2.micro free instance has 1 gig of ram and 8 gigs of storage.  I know that sounds funny but travel back in your head 5 years and that’s a beefy server and its &lt;strong&gt;FREE&lt;/strong&gt;.  If you’re just running something small, say Redis, Memcached, sendmail, etc that might be enough for a lot of applications.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 16 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/10/16/aws-tutorial-18-when-you-ve-lost-you-web-server-how-to-find-an-aws-resource.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/16/aws-tutorial-18-when-you-ve-lost-you-web-server-how-to-find-an-aws-resource.html</guid>
+        
+        <category>aws</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
+    
+      <item>
+        <title>AWS Tutorial 17 - Wrapping Up Our SSH Issues By Using Monit For Process Monitoring</title>
+        <description>&lt;p&gt;So the solution to our SSH issues is actually fairly simple:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ruby code is using too much memory / cpu; memory leak?  bad code?  who knows.&lt;/li&gt;
+  &lt;li&gt;A watchdog process needs to look out for processes using too many resources and shut them down so that the underlying init / service system can restart them&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html&quot;&gt;Mike Perham&lt;/a&gt; helpfully pointed out the right approach to solving this - use a systems monitoring tool like &lt;a href=&quot;https://github.com/mperham/inspeqtor&quot;&gt;Inspeqtor&lt;/a&gt; or &lt;a href=&quot;https://mmonit.com/monit/&quot;&gt;Monit&lt;/a&gt;.  I don’t normally do devops to the level that I am now so getting this perspective was key.  Given that its a 50 / 50 choice, I flipped a coin and chose Monit.&lt;/p&gt;
+
+&lt;p&gt;In the rest of this post, I’ll go over how I used Ansible to configure Monit.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-role&quot;&gt;The Role&lt;/h1&gt;
+
+&lt;p&gt;The first thing we need is a role for monit so we’re going to build out our role structure as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir -p your_ansible_root_path/roles/monit/tasks
+mkdir -p your_ansible_root_path/roles/monit/templates
+touch your_ansible_root_path/roles/monit/tasks/main.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Then we’re going to need a few things in our role (main.yml):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
+- name: install monit
+  apt: pkg=monit state=present
+  
+- name: start monit
+  service: name=monit state=started
+
+- name: install monit sidekiq config file
+  template: src=roles/monit/templates/sidekiq.j2 dest=/etc/monit/conf.d/sidekiq
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Our template for monitoring sidekiq is going to rely on a handful of variables that for simplicity’s sake, I’ve defined in the file all in groupvars:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;app_base: /var/www/apps/banks/
+app_path: /var/www/apps/banks/current/
+server_env: production
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Since I have sidekiq running on two different machines with different configurations, I used variables in the inventory file to define the number of threads and the max ram:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[crawler]
+ficrawlerbig ansible_ssh_host=BLAH1.compute.amazonaws.com  ansible_ssh_private_key_file=/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem  max_sidekiq_memory=&quot;50 GB&quot; max_sidekiq_threads=50
+ficrawler3 ansible_ssh_host=BLAH2.compute.amazonaws.com ansible_ssh_private_key_file=/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem max_sidekiq_memory=&quot;13 GB&quot; max_sidekiq_threads=25
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here’s what that template looks like:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;check process sidekiq
+  with pidfile shared/tmp/pids/sidekiq.pid
+  start program = &quot;cd  &amp;amp;&amp;amp; bundle exec ./bin/sidekiq -C ./config/sidekiq.yml -e &quot;
+  
+  stop program = &quot;/bin/bash -l -c 'cd  &amp;amp;&amp;amp; bundle exec sidekiqctl stop shared/tmp/pids/sidekiq.pid 10'&quot;
+  if totalmem is greater than  for 3 cycles then restart
+  
+  if 3 restarts within 5 cycles then timeout
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And here’s the playbook routine which calls the monit role:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: monit, tags: monit}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Once you put that all together, you’ll have monit watching the sidekiq process on a regular basis.  One thing I didn’t cover above is that we need to modify the config/sidekiq.yml file in the Rails root directory to use the right number of threads.  This is left as an exercise for the reader.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion-to-this-series-of-posts-on-ssh-trauma-and-thank-you-time-2&quot;&gt;Conclusion to this Series of Posts on SSH Trauma and Thank You Time 2&lt;/h1&gt;
+
+&lt;p&gt;When I started this series of posts, 16 days ago, I really didn’t think all that much about SSH.  To an Internet developer, ssh is like &lt;em&gt;oxygen&lt;/em&gt;, you only notice it when it is &lt;strong&gt;gone&lt;/strong&gt;.  By having such a fundamental part of the infrastructure go away unexpectedly, it brought me new depths of understanding.  And, all of this occurred, while daily data processing and data crunching was going on.  Even with all the failures, our boxes stopped working.  Yes they would die periodically but I would just restart them while I explored my next hypothesis.  In the real world, business needs don’t stop even though things aren’t working correctly – you still have to get the job done.  And I did.&lt;/p&gt;
+
+&lt;p&gt;Two people were absolutely essential to sorting this all out:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://nickjanetakis.com&quot;&gt;Nick Janetakis&lt;/a&gt;.  I initially met Nick thru his outstandingly excellent &lt;a href=&quot;http://www.udemy.com&quot;&gt;Udemy&lt;/a&gt; &lt;a href=&quot;http://nickjanetakis.com/courses/&quot;&gt;course on Docker&lt;/a&gt; and I’ve since gotten to know him a bit and hired him twice for &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/10/06/aws-tutorial-14-diagnosing-ssh-failures-take-2.html&quot;&gt;ad hoc consulting&lt;/a&gt;.  Nick is a smart guy, knows Docker like the back of his hand and can think.  Thinking always sounds easy but it never is.  Recommended.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.mikeperham.com&quot;&gt;Mike Perham&lt;/a&gt;.  I’ve known of Mike Perham’s work intellectually for years and years and always described him as &lt;em&gt;the best guy in known space for Ruby threading&lt;/em&gt;.  I only met him recently when we adopted sidekiq as a partial solution for this problem.  In Mike’s weekly Happy Hour where he provides &lt;em&gt;free&lt;/em&gt; support to the Ruby community for Sidekiq, &lt;a href=&quot;https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html&quot;&gt;he correctly analyzed the problem and suggested a solution&lt;/a&gt;.  And you can bet that I’ve made sure that we purchased the &lt;a href=&quot;http://sidekiq.org/products/pro&quot;&gt;commercial version of Sidekiq&lt;/a&gt; in order to ensure that we have access to Mike should any future Sidekiq issues come up.  And don’t forget that the commercial version of Sidekiq includes more features as well as support.  Recommended as well.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Thank you Nick; thank you Mike.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 16 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/10/16/aws-tutorial-17-wrapping-up-our-ssh-issues-by-using-monit-for-process-monitoring.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/16/aws-tutorial-17-wrapping-up-our-ssh-issues-by-using-monit-for-process-monitoring.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ssh</category>
+        
+        <category>monit</category>
+        
+        <category>ansible</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
     
       <item>
         <title>Brew XZ and Nokogiri and Tmux - An Unmitigated Disaster</title>
@@ -91,33 +425,6 @@ Run `bundle install` to install missing gems.
       </item>
     
       <item>
-        <title>Understanding Systems By Observation - Dropbox</title>
-        <description>&lt;p&gt;One of the best bits of computer science I ever learned, I learned in 1989 from my first business partner, Brian Giedt.  We were at a Society for Technical Communications (stc) conference on Technical Documentation and my partner was trying to impress a pretty girl.  And I watch him look at an animation product and pretty much instantly &lt;strong&gt;grok&lt;/strong&gt; how it was doing the animation.  Where as I saw a pretty flow of images, he looked at it and understood how the animation was being done.  That was the very first time I saw someone really understand something about the internals from its externals.  And once I knew it was possible – I’ve striven to do it as often as I can.  Very often, if you set up the right set of circumstances, you’ll realize exactly how something has to be implemented internally.&lt;/p&gt;
-
-&lt;p&gt;Let’s use Dropbox as an example.  We all know that Dropbox transfers the content you put in it to all other machines you have hooked up to it.  And that’s simple 1 to many transfer.  But how does Dropbox work when you already have content in it and you re-arrange it?  Does it resend everything or does it figure out what it has to do and send a command stream to do it instead?&lt;/p&gt;
-
-&lt;p&gt;A few minutes ago I:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;created a folder within a folder in DropBox&lt;/li&gt;
-  &lt;li&gt;moved about 15 gb of video files in initial folder to the new folder&lt;/li&gt;
-  &lt;li&gt;checked on my iPad about a minute later&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;And all the files I moved were in the new folder already.  Here’s what this tells me&lt;/p&gt;
-</description>
-        <pubDate>Fri, 14 Oct 2016 04:25:52 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/software_engineering/2016/10/14/understanding-systems-by-observation-dropbox.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/software_engineering/2016/10/14/understanding-systems-by-observation-dropbox.html</guid>
-        
-        <category>software_engineering</category>
-        
-        
-        <category>software_engineering</category>
-        
-      </item>
-    
-      <item>
         <title>To Every U.S. Workaholic Out There</title>
         <description>&lt;p&gt;Reminder to every U.S. Workaholic - https://www.redcort.com/us-federal-bank-holidays/&lt;/p&gt;
 </description>
@@ -125,36 +432,6 @@ Run `bundle install` to install missing gems.
         <link>https://fuzzygroup.github.io/blog/2016/10/13/to-every-u-s-workaholic-out-there.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/13/to-every-u-s-workaholic-out-there.html</guid>
         
-        
-      </item>
-    
-      <item>
-        <title>AWS Tutorial 17 - Wrapping Up Our SSH Issues By Using Monit For Process Monitoring</title>
-        <description>&lt;p&gt;So the solution to our SSH issues is actually fairly simple:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Ruby code is using too much memory / cpu; memory leak?  bad code?  who knows.&lt;/li&gt;
-  &lt;li&gt;A watchdog process needs to look out for processes using too many resources and shut them down so that the underlying init / service system can restart them&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html&quot;&gt;Mike Perham&lt;/a&gt; helpfully pointed out the right approach to solving this - use a systems monitoring tool like &lt;a href=&quot;https://github.com/mperham/inspeqtor&quot;&gt;Inspeqtor&lt;/a&gt; or &lt;a href=&quot;https://mmonit.com/monit/&quot;&gt;Monit&lt;/a&gt;.  I don’t normally do devops to the level that I am now so getting this perspective was key.  Given that its a 50 / 50 choice, I flipped a coin and chose Monit.&lt;/p&gt;
-
-&lt;p&gt;In the rest of this post, I’ll go over how I used Ansible to configure Monit.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 13 Oct 2016 21:43:31 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/10/13/aws-tutorial-17-wrapping-up-our-ssh-issues-by-using-monit-for-process-monitoring.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/13/aws-tutorial-17-wrapping-up-our-ssh-issues-by-using-monit-for-process-monitoring.html</guid>
-        
-        <category>aws</category>
-        
-        <category>ssh</category>
-        
-        <category>monit</category>
-        
-        <category>ansible</category>
-        
-        
-        <category>aws</category>
         
       </item>
     
@@ -855,259 +1132,6 @@ ficrawler3                 : ok=6    changed=1    unreachable=0    failed=0
         
         
         <category>ansible</category>
-        
-      </item>
-    
-      <item>
-        <title>OSX Tip - How to Reposition Your Dock When Google Hangout Messes With It</title>
-        <description>&lt;p&gt;So I did an Elixir pair programming session with &lt;a href=&quot;http://www.nickjanetakis.com&quot;&gt;Nick&lt;/a&gt; today and he and I talked Elixir and tried to get some stuff done with it.  We were only marginally successful and the issue was me not him.  A few different things blew up today and then other things when wrong and, well, everything.  Nick is a Google Hangouts fan and perhaps the last person on the planet to not have Skype installed on his development system so we used Google Hangouts.  This led to my inevitable Google Hangouts issues.  Today the browser I used last time failed to work correctly with the microphone (Vivaldi) but Google Chrome itself did work.  Sigh.  But Google Chrome, running Hangouts, decided:&lt;/p&gt;
-
-&lt;p&gt;“Hey!  I’m going to take over your dual monitor setup and relocate your dock and command+tab application switching off your primary monitor and jam it onto your secondary monitor.”&lt;/p&gt;
-
-&lt;p&gt;Grrr….  So rather than luxuriating in my Dell ultra wide monitor with plenty of screen real estate, I was jammed onto a tiny MacBook air monitor and my Dock was wrong and so was everything else.  And after the screen sharing shut down it was still borked.  Here’s how to fix that:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Goto System Preferences.&lt;/li&gt;
-  &lt;li&gt;Select Dock.&lt;/li&gt;
-  &lt;li&gt;Change the Dock position.  If you have it on bottom then put it on left.&lt;/li&gt;
-  &lt;li&gt;Change it back to where it was.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Even running &lt;a href=&quot;https://fuzzygroup.github.io/blog/osx/2016/08/30/using-missioncontrol-and-loving-it.html&quot;&gt;Mission Control with Total Spaces&lt;/a&gt; on top of that it still worked.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 12 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/osx/2016/10/12/osx-tip-how-to-reposition-your-dock-when-google-hangout-messes-with-it.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/osx/2016/10/12/osx-tip-how-to-reposition-your-dock-when-google-hangout-messes-with-it.html</guid>
-        
-        <category>osx</category>
-        
-        <category>spaces</category>
-        
-        <category>dock</category>
-        
-        <category>virtual_desktop</category>
-        
-        
-        <category>osx</category>
-        
-      </item>
-    
-      <item>
-        <title>Hacking Bundler For Fun, Profit and Less Anger at the World</title>
-        <description>&lt;p&gt;I recently wrote a blog post about my rage at Bundler and the fact that I have to manually remember than when the command:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install json -v1.8.1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;blows up, I have to remember to instead use:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install json -v1.8.3
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;As someone who has consulted on a LOT of different ruby code bases, I see this constantly.  At times it feels that every time I start a project I have to face some kind of gem / bundler issue.  Now my friend Nick would argue that this is really something best solved by Docker and he does have a point.&lt;/p&gt;
-
-&lt;p&gt;But me?  I’m stubborn.  I want this fixed and I’m finally willing to stop bitching and write some code to do so.  I mean that’s what open source is about.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-solution&quot;&gt;The Solution&lt;/h1&gt;
-
-&lt;p&gt;People are universally bad at remembering complex things.  And when complex things have negative contexts, they are even worse at remembering them.  I &lt;strong&gt;hate&lt;/strong&gt; gem failures.  And I don’t mean I hate them a little - gem install failures send me into a rage.  And every time I fix it, I promptly forget about it.  What I want to do is tell bundler about the solution I found to the problem.  I want bundler to &lt;strong&gt;learn&lt;/strong&gt;.  Here’s my proposed syntax:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle learn bad=&quot;&quot; good=&quot;&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And here’s an actual example:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle learn bad=&quot;gem install json -v1.8.1&quot; good=&quot;gem install json -v1.8.3&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;So what do we need to make a learn option work?  Here’s my initial thoughts:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;We need to add learn as an option with two parameters, good and bad.&lt;/li&gt;
-  &lt;li&gt;We need a method which takes the two parameters and saves them to disc&lt;/li&gt;
-  &lt;li&gt;We need test coverage&lt;/li&gt;
-  &lt;li&gt;We need to hook into the overall failure mode and display any things that we learned that have a close match to the actual failure.&lt;/li&gt;
-  &lt;li&gt;Long term: Allow these learnings to be shared over the Internet so that other people can benefit from the issues that you solved.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;the-context---in-the-minivan&quot;&gt;The Context - In the Minivan&lt;/h1&gt;
-
-&lt;p&gt;When I thought of this I was out and about with my wife and teenage son on &lt;em&gt;The Great Home Schooling Lobster Misadventure&lt;/em&gt;.  While they were shopping before we picked up the lobster that we needed, I thought of this sitting in a minivan in the parking lot.  I don’t have a lot of time and I don’t have much in the way of connectivity so here’s what I did:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Found the &lt;a href=&quot;https://github.com/bundler/bundler&quot;&gt;bundler source&lt;/a&gt; on github.&lt;/li&gt;
-  &lt;li&gt;Forked it to my &lt;a href=&quot;https://github.com/fuzzygroup/bundler&quot;&gt;github account&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;Cloned it to my local box.&lt;/li&gt;
-  &lt;li&gt;Changed to the right directory.&lt;/li&gt;
-  &lt;li&gt;Set the ruby version with RVM.&lt;/li&gt;
-  &lt;li&gt;Opened the directory in TextMate with mate .&lt;/li&gt;
-  &lt;li&gt;Read DEVELOPMENT.md and do steps 1 (groff), 2 (dependencies) 3 (run tests) and 4 (shell alias).&lt;/li&gt;
-  &lt;li&gt;Try and figure out where this might go.  And fail &lt;strong&gt;miserably&lt;/strong&gt; – bundler is big!&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;If you think about the code that I want to write, I actually don’t need to understand very much about bundler.  All I need to do, at least to start, is add a command line option that writes some data to a file.  Making this get looked up by a bundler failure obviously will be harder.&lt;/p&gt;
-
-&lt;h1 id=&quot;search-to-the-rescue&quot;&gt;Search to the Rescue!&lt;/h1&gt;
-
-&lt;p&gt;Whenever I’m faced with a complex code base and the need to find an integration point, I always, always do the same thing – I &lt;strong&gt;search&lt;/strong&gt;.  My rationale was this:&lt;/p&gt;
-
-&lt;p&gt;There must be a relatively unused command line option in bundler.  If its relatively unused there won’t be a lot of calls to it so finding it should be simple.&lt;/p&gt;
-
-&lt;p&gt;Running bundle –help and paging thru the results showed me the viz option which I had never heard of.  Here’s a screen shot:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/bundler_viz.png&quot; alt=&quot;bundler_viz.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;hacking-clirb&quot;&gt;Hacking cli.rb&lt;/h1&gt;
-
-&lt;p&gt;What I found was cli.rb where there was a method that seemed to indicate that you could patch in.  Here’s what it looks like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;desc &quot;viz [OPTIONS]&quot;, &quot;Generates a visual dependency graph&quot;
-long_desc &amp;lt;&amp;lt;-D
-  Viz generates a PNG file of the current Gemfile as a dependency graph.
-  Viz requires the ruby-graphviz gem (and its dependencies).
-  The associated gems must also be installed via 'bundle install'.
-D
-method_option :file, :type =&amp;gt; :string, :default =&amp;gt; &quot;gem_graph&quot;, :aliases =&amp;gt; &quot;-f&quot;, :desc =&amp;gt; &quot;The name to use for the generated file. see format option&quot;
-method_option :format, :type =&amp;gt; :string, :default =&amp;gt; &quot;png&quot;, :aliases =&amp;gt; &quot;-F&quot;, :desc =&amp;gt; &quot;This is output format option. Supported format is png, jpg, svg, dot ...&quot;
-method_option :requirements, :type =&amp;gt; :boolean, :default =&amp;gt; false, :aliases =&amp;gt; &quot;-R&quot;, :desc =&amp;gt; &quot;Set to show the version of each required dependency.&quot;
-method_option :version, :type =&amp;gt; :boolean, :default =&amp;gt; false, :aliases =&amp;gt; &quot;-v&quot;, :desc =&amp;gt; &quot;Set to show each gem version.&quot;
-method_option :without, :type =&amp;gt; :array, :default =&amp;gt; [], :aliases =&amp;gt; &quot;-W&quot;, :banner =&amp;gt; &quot;GROUP[ GROUP...]&quot;, :desc =&amp;gt; &quot;Exclude gems that are part of the specified named group.&quot;
-def viz
-  require &quot;bundler/cli/viz&quot;
-  Viz.new(options.dup).run
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;So what I need is a similar routine that gets called when the learn option is entered on the command line.  My first several attempts were fairly miserable failures but here’s what I ended up with:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;desc &quot;learn [OPTIONS]&quot;, &quot;Allows bundler to learn that what to do when a command is broken&quot;
-
-long_desc &amp;lt;&amp;lt;-D
-  learn stores your personal approach to getting around gem breakages.
-  Example: bundle learn bad=&quot;gem install json -v1.8.1&quot; good=&quot;gem install json -v1.8.3&quot;.
-  will prompt you with the correct command when the failure occurs
-D
-method_option &quot;bad&quot;, :type =&amp;gt; :string, :default =&amp;gt; &quot;&quot;, :aliases =&amp;gt; &quot;-b&quot;, :desc =&amp;gt; &quot;The bad gem command&quot;
-method_option &quot;good&quot;, :type =&amp;gt; :string, :default =&amp;gt; &quot;&quot;, :aliases =&amp;gt; &quot;-g&quot;, :desc =&amp;gt; &quot;The good gem command&quot;
-
-def learn
-  require &quot;bundler/cli/learn&quot;
-  raise &quot;Hit learn!!!&quot;
-  Learn.new(options.dup).run
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;That require statement means that I needed to create bundler/cli/learn.rb immediately or I’d get a nasty missing file error.  No big deal though.&lt;/p&gt;
-
-&lt;p&gt;This can be called with:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; dbundle learn --bad=&quot;gem install json -v '1.8.1'&quot; --good=&quot;update your ruby&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;or&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; dbundle learn --bad=&quot;gem install json -v '1.8.1'&quot; --good=&quot;gem install json -v1.8.3&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Note: Its called dbundle in this example since I have a local shell alias so my modified bundler will be run instead of bundler itself.&lt;/p&gt;
-
-&lt;p&gt;Here’s an example of the output:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dbundle learn --bad=&quot;gem install json --version='1.7.3'&quot; --good=&quot;update your ruby&quot;
---- ERROR REPORT TEMPLATE -------------------------------------------------------
-- What did you do?
-
-  I ran the command `/Users/sjohnson/me/fuzzygroup/rails/bundler/exe/bundle learn --bad=gem install json --version='1.7.3' --good=update your ruby`
-
-- What did you expect to happen?
-
-  I expected Bundler to...
-
-- What happened instead?
-
-  Instead, what happened was...
-
-
-Error details
-
-    RuntimeError: Hit learn!!!
-      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/cli.rb:426:in `learn'
-      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/vendor/thor/lib/thor/command.rb:27:in `run'
-      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/vendor/thor/lib/thor/invocation.rb:126:in `invoke_command'
-      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/vendor/thor/lib/thor.rb:359:in `dispatch'
-      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/cli.rb:20:in `dispatch'
-      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/vendor/thor/lib/thor/base.rb:440:in `start'
-      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/cli.rb:11:in `start'
-      /Users/sjohnson/me/fuzzygroup/rails/bundler/exe/bundle:32:in `block in &amp;lt;main&amp;gt;'
-      /Users/sjohnson/me/fuzzygroup/rails/bundler/lib/bundler/friendly_errors.rb:105:in `with_friendly_errors'
-      /Users/sjohnson/me/fuzzygroup/rails/bundler/exe/bundle:24:in `&amp;lt;main&amp;gt;'
-
-Environment
-
-  Bundler   1.13.3
-  Rubygems  2.6.6
-  Ruby      2.3.1p112 (2016-04-26 revision 54768) [x86_64-darwin15]
-  GEM_HOME  /Users/sjohnson/.rvm/gems/ruby-2.3.1
-  GEM_PATH  /Users/sjohnson/.rvm/gems/ruby-2.3.1:/Users/sjohnson/.rvm/gems/ruby-2.3.1@global
-  RVM       1.26.1 (latest)
-  Git       2.2.1
-  Platform  x86_64-darwin-15
-  OpenSSL   OpenSSL 1.0.2h  3 May 2016
-  rubygems-bundler (1.4.4)
-
-      Bundler settings
-
-  build.nokogiri
-    Set for the current user (/Users/sjohnson/.bundle/config): &quot;--use-system-libraries&quot;
-  disable_postit
-    Set via BUNDLE_DISABLE_POSTIT: &quot;1&quot;
---- TEMPLATE END ----------------------------------------------------------------
-
-Unfortunately, an unexpected error occurred, and Bundler cannot continue.
-
-First, try this link to see if there are any existing issue reports for this error:
-https://github.com/bundler/bundler/search?q=Hit+learn%21%21%21&amp;amp;type=Issues
-
-If there aren't any reports for this error yet, please create copy and paste the report template above into a new issue. Don't forget to anonymize any private data! The new issue form is located at:
-https://github.com/bundler/bundler/issues/new
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;so-now-we-need-a-method-so-bundler-can-learn&quot;&gt;So Now We Need a Method So Bundler Can Learn&lt;/h1&gt;
-
-&lt;p&gt;If you think about what this needs to do, it looks something like this:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Figure out if what you’re telling it to learn is a duplicate or not.&lt;/li&gt;
-  &lt;li&gt;Write a file to some kind of local storage which files away the bad, good and machine details.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Now that’s actually fairly simple.  The hard part is figuring out where that data can live.  I honestly have no idea where that might go given the&lt;/p&gt;
-
-&lt;h1 id=&quot;so-how-do-you-profit-from-this&quot;&gt;So How Do You Profit from this?&lt;/h1&gt;
-</description>
-        <pubDate>Tue, 11 Oct 2016 16:55:30 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/bundler/2016/10/11/hacking-bundler-for-fun-profit-and-less-anger-at-the-world.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/bundler/2016/10/11/hacking-bundler-for-fun-profit-and-less-anger-at-the-world.html</guid>
-        
-        <category>bundler</category>
-        
-        <category>ruby</category>
-        
-        <category>open_source</category>
-        
-        <category>github</category>
-        
-        
-        <category>bundler</category>
         
       </item>
     

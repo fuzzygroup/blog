@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>AWS Tutorial 17 - Wrapping Up Our SSH Issues By Using Monit For Process Monitoring</title>
-  <meta name="description" content="So the solution to our SSH issues is actually fairly simple:">
+  <title>Understanding Systems By Observation - Dropbox</title>
+  <meta name="description" content="One of the best bits of computer science I ever learned, I learned in 1989 from my first business partner, Brian Giedt.  We were at a Society for Technical C...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/aws/2016/10/13/aws-tutorial-17-wrapping-up-our-ssh-issues-by-using-monit-for-process-monitoring.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/software_engineering/2016/10/16/understanding-systems-by-observation-dropbox.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
   
   <script>
@@ -91,21 +91,31 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">AWS Tutorial 17 - Wrapping Up Our SSH Issues By Using Monit For Process Monitoring</h1>
-    <p class="post-meta"><time datetime="2016-10-13T21:43:31-04:00" itemprop="datePublished">Oct 13, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">Understanding Systems By Observation - Dropbox</h1>
+    <p class="post-meta"><time datetime="2016-10-16T00:00:00-04:00" itemprop="datePublished">Oct 16, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>So the solution to our SSH issues is actually fairly simple:</p>
+    <p>One of the best bits of computer science I ever learned, I learned in 1989 from my first business partner, Brian Giedt.  We were at a Society for Technical Communications (stc) conference on Technical Documentation and my partner was trying to impress a pretty girl.  And I watch him look at an animation product and pretty much instantly <strong>grok</strong> how it was doing the animation.  Where I saw a pretty flow of images, he looked at it and understood how the animation was being done.  That was the very first time I saw someone really understand something about the <em>internals</em> from its <em>externals</em>.  And once I knew it was possible – I’ve striven to do it as often as I can.  Very often, if you set up the right set of circumstances, you’ll realize exactly how something has to be implemented internally.</p>
+
+<p>Let’s use Dropbox as an example.  We all know that Dropbox transfers the content you put in it to all other machines you have hooked up to it.  And that’s a simple 1 to many transfer.  But how does Dropbox work when you already have content in it and you re-arrange it?  Does it resend everything or does it figure out what it has to do and send a command stream to do it instead?</p>
+
+<p>A few minutes ago I:</p>
 
 <ul>
-  <li>Ruby code is using too much memory / cpu; memory leak?  bad code?  who knows.</li>
-  <li>A watchdog process needs to look out for processes using too many resources and shut them down so that the underlying init / service system can restart them</li>
+  <li>created a folder within a folder in Dropbox</li>
+  <li>moved about 15 gb of video files in initial folder to the new folder</li>
+  <li>checked on my iPad about a minute later</li>
 </ul>
 
-<p><a href="https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html">Mike Perham</a> helpfully pointed out the right approach to solving this - use a systems monitoring tool like <a href="https://github.com/mperham/inspeqtor">Inspeqtor</a> or <a href="https://mmonit.com/monit/">Monit</a>.  I don’t normally do devops to the level that I am now so getting this perspective was key.  Given that its a 50 / 50 choice, I flipped a coin and chose Monit.</p>
+<p>And all the files I moved were in the new folder already.  Here’s what this tells me</p>
 
-<p>In the rest of this post, I’ll go over how I used Ansible to configure Monit.</p>
+<ul>
+  <li>There’s no way that Dropbox deleted and re-transmitted the files in that time; it is simply impossible</li>
+  <li>What Dropbox has to be doing is sending commands that amount to move THIS from HERE to THERE</li>
+</ul>
+
+<p>The best I’ve seen to do this is you set up conditions that you know can’t be argued with by physical constraints.  I knew that 15 gb of video data was a big arse chunk of data.  If I had used say a megabyte, well, I wouldn’t have really known if it was a full bandwidth re-arrange or a command stream.  By setting up such a large test, well, I knew something smarter had to be going on.</p>
 
   </div>
 
