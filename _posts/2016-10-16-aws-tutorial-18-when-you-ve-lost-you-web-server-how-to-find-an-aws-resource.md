@@ -1,6 +1,6 @@
 ---
 layout: post
-title: AWS Tutorial 18 - When You've Lost You Web Server, How to Find an AWS Resource
+title: AWS Tutorial 18 - When You've Lost Your Web Server, How to Find an AWS Resource
 category: aws
 tags: ["aws"]
 ---
