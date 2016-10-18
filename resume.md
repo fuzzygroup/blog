@@ -6,7 +6,7 @@ J. Scott Johnson / Indianapolis, IN / Software Engineer / fuzzygroup [at] gmail.
 
 ## Profile
 An experienced Software Engineer with a proven ability to innovate and deliver new products in a startup context.  Heavy focus on testing applications (RSpec, Test Unit / Functional) and agile methodologies.
-Skilled in Ruby, Ruby on Rails, PHP, MySQL and the Apache Web Server.  Extensive experience with both deploying and administering Rails applications using tools such as Phusion Passenger, Vlad and Capistrano, Git and Docker.
+Skilled in DevOps, AWS, Ansible, Elixir, Redis, Ruby, Rails, PHP, MySQL, Sidekiq, Apache Web Server.  Extensive experience with both deploying and administering Rails applications using tools such as Phusion Passenger, Vlad, Capistrano, Anistrano, Git and Docker.
 
 ## Experience
 
@@ -20,9 +20,10 @@ Led all development activities for FI Navigator, a leading provider of financial
 # President / VP Engineering, AppData, LLC, Indianapolis, IN 2014 - 2015
 Led all development activities for AppData, LLC including ecommerce, crawling, data center migration and more.
 
-# Consulting Software Engineer, Assorted; Telecommute, 2010 - 2014
+# Consulting Software Engineer, Assorted; Telecommute, 2010 - 2016
 Remote software engineer for several different Ruby on Rails based web sites including:
 
+* **AddApp**. Key part of new products initiative culminating in MVP designed for next generation remote psychological tools for mental health professionals.
 * **MDDX**.  Built a prostate cancer diagnostic system from the ground up based on an evidence based medicine approach combined with mathematical analysis of input data.  Full admin tools for creating medical knowledge bases in a hierarchical structure.  Custom report writer allows medical professionals to generate new reports on the fly.
 * **Inside Network Store**.  Implemented a cross site store front and subscription service to provide authentication, authorization and recurring billing services across multiple web sites using a JSON api.  Supported growth of multiple paid subscription products using a common API across platform (WordPress, PHP app, Ruby app).
 * **Inside Network AppData**.  Ported an existing data analytics package from PHP to Ruby on Rails and extended its functionality with new graphing, data editing, large scale email delivery and spam blocking.  Created custom multi threaded crawlers written in Ruby to handle millions of new objects per day from multiple data sources.
@@ -57,8 +58,13 @@ Led all Product Management activities for Dataware Knowledge Management System (
 Co-founded NTERGAID to create a suite of hypertext / hypermedia tools for online publishing.  Led all Marketing and Product Management activities for the HyperWriter electronic publishing system.
 
 ## Technologies / APIs
+
+* Elixir
 * Ruby
 * Rails
+* Ansible
+* AWS
+* Docker
 * MySQL including big data applications
 * NLP
 * Full Text Indexing 
@@ -66,7 +72,6 @@ Co-founded NTERGAID to create a suite of hypertext / hypermedia tools for online
 * Capistrano / VLAD
 * RSpec
 * Docker
-* AWS
 
 ## Education
 B.S., Cum Laude, 3.4 GPA, University of Bridgeport, May 1990.  Major in Management. Selected as the year’s “Best Management Student” (1989/1990 academic year).  Dean’s List for last two years of college.

@@ -6,9 +6,50 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 18 Oct 2016 08:08:51 -0400</pubDate>
-    <lastBuildDate>Tue, 18 Oct 2016 08:08:51 -0400</lastBuildDate>
+    <pubDate>Tue, 18 Oct 2016 15:40:55 -0400</pubDate>
+    <lastBuildDate>Tue, 18 Oct 2016 15:40:55 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>AWS Quickie - Making Your Boxes Pingable</title>
+        <description>&lt;p&gt;http://stackoverflow.com/questions/21981796/cannot-ping-aws-ec2-instance&lt;/p&gt;
+
+&lt;p&gt;You have to edit the Security Group to which your EC2 instance belongs and allow access (or alternatively create a new one and add the instance to it).&lt;/p&gt;
+
+&lt;p&gt;By default everything is denied. The exception you need to add to the Security Group depends on the service you need to make available to the internet.&lt;/p&gt;
+
+&lt;p&gt;If it is a webserver you will need to allow access to port 80 for 0.0.0.0/0 (which means every IP address).&lt;/p&gt;
+
+&lt;p&gt;To allow pinging the instance you need to enable ICMP traffic.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 18 Oct 2016 08:18:34 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/10/18/aws-quickie-making-your-boxes-pingable.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/18/aws-quickie-making-your-boxes-pingable.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Add a gitignore to your Jekyll Installation</title>
+        <description>
+</description>
+        <pubDate>Tue, 18 Oct 2016 08:16:14 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/10/18/add-a-gitignore-to-your-jekyll-installation.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/18/add-a-gitignore-to-your-jekyll-installation.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Test</title>
+        <description>
+</description>
+        <pubDate>Tue, 18 Oct 2016 08:09:11 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/10/18/test.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/18/test.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Life Beyond the Retina Display</title>
@@ -502,201 +543,6 @@ PING web-1166333941.us-west-2.elb.amazonaws.com (52.41.182.115): 56 data bytes
         
         
         <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>AWS Tutorial 17 - Wrapping Up Our SSH Issues By Using Monit For Process Monitoring</title>
-        <description>&lt;p&gt;So the solution to our SSH issues is actually fairly simple:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Ruby code is using too much memory / cpu; memory leak?  bad code?  who knows.&lt;/li&gt;
-  &lt;li&gt;A watchdog process needs to look out for processes using too many resources and shut them down so that the underlying init / service system can restart them&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html&quot;&gt;Mike Perham&lt;/a&gt; helpfully pointed out the right approach to solving this - use a systems monitoring tool like &lt;a href=&quot;https://github.com/mperham/inspeqtor&quot;&gt;Inspeqtor&lt;/a&gt; or &lt;a href=&quot;https://mmonit.com/monit/&quot;&gt;Monit&lt;/a&gt;.  I don’t normally do devops to the level that I am now so getting this perspective was key.  Given that its a 50 / 50 choice, I flipped a coin and chose Monit.&lt;/p&gt;
-
-&lt;p&gt;In the rest of this post, I’ll go over how I used Ansible to configure Monit.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-role&quot;&gt;The Role&lt;/h1&gt;
-
-&lt;p&gt;The first thing we need is a role for monit so we’re going to build out our role structure as follows:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir -p your_ansible_root_path/roles/monit/tasks
-mkdir -p your_ansible_root_path/roles/monit/templates
-touch your_ansible_root_path/roles/monit/tasks/main.yml
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Then we’re going to need a few things in our role (main.yml):&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
-- name: install monit
-  apt: pkg=monit state=present
-  
-- name: start monit
-  service: name=monit state=started
-
-- name: install monit sidekiq config file
-  template: src=roles/monit/templates/sidekiq.j2 dest=/etc/monit/conf.d/sidekiq
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Our template for monitoring sidekiq is going to rely on a handful of variables that for simplicity’s sake, I’ve defined in the file all in groupvars:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;app_base: /var/www/apps/banks/
-app_path: /var/www/apps/banks/current/
-server_env: production
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Since I have sidekiq running on two different machines with different configurations, I used variables in the inventory file to define the number of threads and the max ram:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[crawler]
-ficrawlerbig ansible_ssh_host=BLAH1.compute.amazonaws.com  ansible_ssh_private_key_file=/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem  max_sidekiq_memory=&quot;50 GB&quot; max_sidekiq_threads=50
-ficrawler3 ansible_ssh_host=BLAH2.compute.amazonaws.com ansible_ssh_private_key_file=/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem max_sidekiq_memory=&quot;13 GB&quot; max_sidekiq_threads=25
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Here’s what that template looks like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;check process sidekiq
-  with pidfile shared/tmp/pids/sidekiq.pid
-  start program = &quot;cd  &amp;amp;&amp;amp; bundle exec ./bin/sidekiq -C ./config/sidekiq.yml -e &quot;
-  
-  stop program = &quot;/bin/bash -l -c 'cd  &amp;amp;&amp;amp; bundle exec sidekiqctl stop shared/tmp/pids/sidekiq.pid 10'&quot;
-  if totalmem is greater than  for 3 cycles then restart
-  
-  if 3 restarts within 5 cycles then timeout
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And here’s the playbook routine which calls the monit role:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: monit, tags: monit}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Once you put that all together, you’ll have monit watching the sidekiq process on a regular basis.  One thing I didn’t cover above is that we need to modify the config/sidekiq.yml file in the Rails root directory to use the right number of threads.  This is left as an exercise for the reader.&lt;/p&gt;
-
-&lt;h1 id=&quot;conclusion-to-this-series-of-posts-on-ssh-trauma-and-thank-you-time-2&quot;&gt;Conclusion to this Series of Posts on SSH Trauma and Thank You Time 2&lt;/h1&gt;
-
-&lt;p&gt;When I started this series of posts, 16 days ago, I really didn’t think all that much about SSH.  To an Internet developer, ssh is like &lt;em&gt;oxygen&lt;/em&gt;, you only notice it when it is &lt;strong&gt;gone&lt;/strong&gt;.  By having such a fundamental part of the infrastructure go away unexpectedly, it brought me new depths of understanding.  And, all of this occurred, while daily data processing and data crunching was going on.  Even with all the failures, our boxes stopped working.  Yes they would die periodically but I would just restart them while I explored my next hypothesis.  In the real world, business needs don’t stop even though things aren’t working correctly – you still have to get the job done.  And I did.&lt;/p&gt;
-
-&lt;p&gt;Two people were absolutely essential to sorting this all out:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://nickjanetakis.com&quot;&gt;Nick Janetakis&lt;/a&gt;.  I initially met Nick thru his outstandingly excellent &lt;a href=&quot;http://www.udemy.com&quot;&gt;Udemy&lt;/a&gt; &lt;a href=&quot;http://nickjanetakis.com/courses/&quot;&gt;course on Docker&lt;/a&gt; and I’ve since gotten to know him a bit and hired him twice for &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/10/06/aws-tutorial-14-diagnosing-ssh-failures-take-2.html&quot;&gt;ad hoc consulting&lt;/a&gt;.  Nick is a smart guy, knows Docker like the back of his hand and can think.  Thinking always sounds easy but it never is.  Recommended.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.mikeperham.com&quot;&gt;Mike Perham&lt;/a&gt;.  I’ve known of Mike Perham’s work intellectually for years and years and always described him as &lt;em&gt;the best guy in known space for Ruby threading&lt;/em&gt;.  I only met him recently when we adopted sidekiq as a partial solution for this problem.  In Mike’s weekly Happy Hour where he provides &lt;em&gt;free&lt;/em&gt; support to the Ruby community for Sidekiq, &lt;a href=&quot;https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html&quot;&gt;he correctly analyzed the problem and suggested a solution&lt;/a&gt;.  And you can bet that I’ve made sure that we purchased the &lt;a href=&quot;http://sidekiq.org/products/pro&quot;&gt;commercial version of Sidekiq&lt;/a&gt; in order to ensure that we have access to Mike should any future Sidekiq issues come up.  And don’t forget that the commercial version of Sidekiq includes more features as well as support.  Recommended as well.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Thank you Nick; thank you Mike.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 16 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/10/16/aws-tutorial-17-wrapping-up-our-ssh-issues-by-using-monit-for-process-monitoring.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/16/aws-tutorial-17-wrapping-up-our-ssh-issues-by-using-monit-for-process-monitoring.html</guid>
-        
-        <category>aws</category>
-        
-        <category>ssh</category>
-        
-        <category>monit</category>
-        
-        <category>ansible</category>
-        
-        
-        <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>Brew XZ and Nokogiri and Tmux - An Unmitigated Disaster</title>
-        <description>&lt;p&gt;It has been one really, really bad day this past 24 hours.  While my AWS stability problems have gone away entirely, I had to get a new Rails code base up and running locally today, one done by another developer here.  This required Gem install and since it was Rails, that meant a Nokogiri install.  And I love what Nokogiri does but I &lt;em&gt;hate&lt;/em&gt;, &lt;em&gt;loathe&lt;/em&gt;, &lt;em&gt;despise&lt;/em&gt; the installation process.  In every single repo I work on there is a top level docs directory and then a file called gems.txt which lists what I internally refer to as &lt;em&gt;the incantations&lt;/em&gt;.  These are those crap ass command lines that are so long you just can’t remember them.  Here’s the list of the tricks that I use to install Nokogiri when it inevitably fails:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install nokogumbo -- --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2 --use-system-libraries
-gem install nokogiri -- --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2 --use-system-libraries
-gem install nokogiri -- --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2 --use-system-libraries --with-pkg-config=/usr/local/bin/pkg-config
-gem install nokogiri -- --with-xml2-include=/usr/local/opt/libxml2/lib --use-system-libraries --with-pkg-config=/usr/local/bin/pkg-config
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And not one of those worked.  The one that usually works without fail is:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install nokogiri -- --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2 --use-system-libraries
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;but not today.  I knew this was going to be a bad day.  I told the other guy here “your code, doesn’t install; give me solution”.  He found this &lt;a href=&quot;https://github.com/sparklemotion/nokogiri/issues/1483&quot;&gt;nugget of disturbing truth&lt;/a&gt;.  Apparently there is an incompatibility between Nokogiri and xz.  His suggestion was uninstall xz and I did that.  And Nokogiri was then fine – but I had to also reinstall ruby.   And that did work – until about an hour ago when I had a late night desire to write about Docker (hey - it is my Friday night; I can spend it however I please) – and I started getting this little gem of an error:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jekyll post &quot;Learning From a Docker Captain - Nick Janetakis - Making AWS Monitor Run Under Docker&quot;
-Your bundle is locked to i18n (0.7.0), but that version could not be found in any of the sources listed in your Gemfile. If you haven't changed sources, that means the author of i18n (0.7.0) has removed it. You'll need to update your bundle to a different version of i18n (0.7.0) that hasn't been removed in order to install.
-Run `bundle install` to install missing gems.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And this led to the inevitable cavalcade of swearing, muttering and normal gyrations when something absolutely essential to you is broken and you have no idea why.  Brew wouldn’t work, Gem wouldn’t work, Bundler wouldn’t work, etc.  Here was the problem:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;I run jekyll under a Tmuxinator/Tmux shell which runs the server in one window, runs the command line in another and a 3rd tab to remind me to migrate my old Radio Userland blog into Jekyll.&lt;/li&gt;
-  &lt;li&gt;Remember that ruby re-install?  Well Tmuxinator knows what the Ruby is and that ruby had gone away.&lt;/li&gt;
-  &lt;li&gt;So everything was trying to reference an executable that was no longer there and apparently the normal error for that is something about i18n.  Sheesh.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;And I do get it, this was an exceptional set of circumstances but it still did cost me about half a man day on a day when I can ill afford it.  And it made me surly, nasty and unresponsive to my family and while that’s on me, that’s definitely not cool.&lt;/p&gt;
-
-&lt;h1 id=&quot;what-to-do&quot;&gt;What to Do?&lt;/h1&gt;
-
-&lt;p&gt;This is a hard one.  I rely on brew as does, well, every developer I know on OSX.  And since xz is a required part of brew (as well as the miraculous ag), getting rid of it is likely bad.  What I should have done is:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;brew unlink xz BEFORE my nokogiri install&lt;/li&gt;
-  &lt;li&gt;nokogiri install (with one of my incantations)&lt;/li&gt;
-  &lt;li&gt;brew link xz&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;But, honestly, it is 2016 after all, doesn’t that feel, well, &lt;em&gt;dated&lt;/em&gt;?  I don’t know about anybody else out there but it feels like this is my Murtagh Moment, the &lt;em&gt;I’m too old for this shite&lt;/em&gt; point of a technology transition.  &lt;a href=&quot;http://nickjanetakis.com&quot;&gt;Nick&lt;/a&gt; has been pushing me for a while to make the Docker transition for development and I think it is time.  &lt;a href=&quot;http://dasari.me&quot;&gt;Dv&lt;/a&gt; and I tried this back in 2014 and failed miserably at it but Docker is loads better now.  And since I can’t run my monitoring code on the machine that is permanently hooked up to the internet (again a Nokogiri failure), well, I guess I’ll make that work first and then figure this all out.  Sigh.  What a craptastic day here in the “what’s broken today world”.&lt;/p&gt;
-
-&lt;p&gt;And I am sure that this will get fixed at some point but the question:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;when will it be fixed&lt;/li&gt;
-  &lt;li&gt;will I then even update to that version&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;If I move to Docker for my development then I skip the whole bundle install crap fest and everything will run under Linux.  I’m finding it harder and hard to object to that.&lt;/p&gt;
-
-&lt;h1 id=&quot;a-great-docker-resource&quot;&gt;A Great Docker Resource&lt;/h1&gt;
-
-&lt;p&gt;Obligatory disclaimer – Nick Janetakis is now a friend of mine.  But he is a bona fide Docker expert, a Docker Captain.  He also has a good course on &lt;a href=&quot;http://bit.ly/2ecakFU&quot;&gt;Docker for Devops&lt;/a&gt; hosted on Udemy.  he has a few others too but this one I’ve taken parts of and I know is excellent.  Recommended.&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 15 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/ruby/2016/10/15/brew-xz-and-nokogiri-and-tmux-an-unmitigated-disaster.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ruby/2016/10/15/brew-xz-and-nokogiri-and-tmux-an-unmitigated-disaster.html</guid>
-        
-        <category>ruby</category>
-        
-        <category>nokogiri</category>
-        
-        <category>rvm</category>
-        
-        <category>brew</category>
-        
-        <category>tmux</category>
-        
-        
-        <category>ruby</category>
-        
-      </item>
-    
-      <item>
-        <title>To Every U.S. Workaholic Out There</title>
-        <description>&lt;p&gt;Reminder to every U.S. Workaholic - https://www.redcort.com/us-federal-bank-holidays/&lt;/p&gt;
-</description>
-        <pubDate>Thu, 13 Oct 2016 22:07:36 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/10/13/to-every-u-s-workaholic-out-there.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/13/to-every-u-s-workaholic-out-there.html</guid>
-        
         
       </item>
     
