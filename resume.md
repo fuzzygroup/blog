@@ -12,6 +12,8 @@ Skilled in DevOps, AWS, Ansible, Elixir, Redis, Ruby, Rails, PHP, MySQL, Sidekiq
 
 # Architect, FI Navigator, Inc., Atlanta, GA 2015 - Present
 Led all development activities for FI Navigator, a leading provider of financial information for the banking industry.  Accomplishments include:
+
+* Responsible for all DevOps including automated provisioning of all machines using Ansible
 * Developed a multithreaded data science pipeline for performing detailed analytical calculations
 * Developed a multithreaded crawler for dealing with data capture from a diverse community of websites spanning a range of technology standards from today back to the start of the web
 * Built categorization engine for dealing with html micro expressions and inferring relationships from them
@@ -77,8 +79,8 @@ Co-founded NTERGAID to create a suite of hypertext / hypermedia tools for online
 B.S., Cum Laude, 3.4 GPA, University of Bridgeport, May 1990.  Major in Management. Selected as the year’s “Best Management Student” (1989/1990 academic year).  Dean’s List for last two years of college.
 
 ## Books Written and Other Things
-Blogging Essentials by O'Reilly & Associates, 2002.
-The Digital Publishing Construction Kit by John Wiley & Sons, 1996.
 
-Innumerable blog posts, speaking engagements (including ApacheCon) and other public appearances.
+* Blogging Essentials by O'Reilly & Associates, 2002.
+* The Digital Publishing Construction Kit by John Wiley & Sons, 1996.
+* Blogging since 2002; Innumerable blog posts; Speaking engagements (including ApacheCon) and other public appearances.
 
