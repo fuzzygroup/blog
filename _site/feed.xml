@@ -6,18 +6,166 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 16 Oct 2016 13:24:43 -0400</pubDate>
-    <lastBuildDate>Sun, 16 Oct 2016 13:24:43 -0400</lastBuildDate>
+    <pubDate>Tue, 18 Oct 2016 08:08:51 -0400</pubDate>
+    <lastBuildDate>Tue, 18 Oct 2016 08:08:51 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
-        <title>Becoming an Online Content Rockstar Using Udemy and Other Tools</title>
+        <title>Life Beyond the Retina Display</title>
         <description>
 </description>
-        <pubDate>Sun, 16 Oct 2016 12:05:08 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/10/16/becoming-an-online-content-rockstar-using-udemy-and-other-tools.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/16/becoming-an-online-content-rockstar-using-udemy-and-other-tools.html</guid>
+        <pubDate>Mon, 17 Oct 2016 13:49:50 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/10/17/life-beyond-the-retina-display.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/17/life-beyond-the-retina-display.html</guid>
         
+        
+      </item>
+    
+      <item>
+        <title>Adapting your Rails Tmux Development Flow to a Docker Development Flow</title>
+        <description>&lt;p&gt;I first experimented with Docker back in summer of 2014 when I was bringing up a new data center and experimenting with development tools.  My buddy &lt;a href=&quot;http://dasari.me&quot;&gt;Dv&lt;/a&gt; remembers this all too well. This was back in the days where compose was still called fig and nothing actually worked all that well.  And since it didn’t work all that well, I quickly noped away.  But, even then, Docker had the feel of something important, something seminal.  Fast forward two years and Docker is all the rage and a bright luminary in the tech world.&lt;/p&gt;
+
+&lt;p&gt;As a long time engineer, and yes you can translate that to “old guy”, I’m naturally conservative.  And, as such, I haven’t moved to Docker as part of my primary development flow.  To this point I’ve been using Docker as a way to treat applications as APIs and I’ve had a lot of success with that.  However, after a recent &lt;a href=&quot;https://fuzzygroup.github.io/blog/ruby/2016/10/15/brew-xz-and-nokogiri-and-tmux-an-unmitigated-disaster.html&quot;&gt;unmitigated disaster&lt;/a&gt;, involving the wonderful but troubled Nokogiri, I’m far more willing to explore Docker.&lt;/p&gt;
+
+&lt;p&gt;In this blog post I’m going to use my open source &lt;a href=&quot;https://github.com/fuzzygroup/aws_monitor&quot;&gt;AWS Monitor&lt;/a&gt; codebase as the example.  This is a Rails application that is basically a Rake task which monitors a series of Ansible hosts to make sure that you can ssh into them.  It was written as part of my &lt;a href=&quot;https://fuzzygroup.github.io/blog/tag.html#ssh&quot;&gt;AWS / SSH hell period&lt;/a&gt; where I had a large application on AWS where the SSH servers would stay alive no longer than about 30 minutes.&lt;/p&gt;
+
+&lt;h1 id=&quot;my-personal-development-flow&quot;&gt;My Personal Development Flow&lt;/h1&gt;
+
+&lt;p&gt;I have a personal development flow that could essentially be described as “Lots and lots of terminal windows”.  I use a terminal window to represent each of the “stages” of Rails development:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;running server&lt;/li&gt;
+  &lt;li&gt;generic command line&lt;/li&gt;
+  &lt;li&gt;command line for deploy&lt;/li&gt;
+  &lt;li&gt;rails console&lt;/li&gt;
+  &lt;li&gt;test results&lt;/li&gt;
+  &lt;li&gt;database sql window&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I used to manage all this with tabs in a terminal window but as I added more and more rails projects to my workflow that tended not to scale up.  Now my approach is to use the combination of &lt;a href=&quot;https://tmux.github.io&quot;&gt;Tmux&lt;/a&gt; and &lt;a href=&quot;https://github.com/tmuxinator/tmuxinator&quot;&gt;Tmuxinator&lt;/a&gt;, two open source projects.  Tmux acts as a virtual window manager allowing one terminal to front any number of character applications and Tmuxinator acts as an easy to use configuration manager for Tmux.  Here’s a picture of my typical approach to development:&lt;/p&gt;
+
+&lt;p&gt;tmux_rails_dev_flow.png&lt;/p&gt;
+
+&lt;p&gt;#&lt;/p&gt;
+</description>
+        <pubDate>Mon, 17 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/docker/2016/10/17/adapting-your-rails-tmux-development-flow-to-a-docker-development-flow.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/docker/2016/10/17/adapting-your-rails-tmux-development-flow-to-a-docker-development-flow.html</guid>
+        
+        <category>rails</category>
+        
+        <category>docker</category>
+        
+        <category>tmux</category>
+        
+        
+        <category>docker</category>
+        
+      </item>
+    
+      <item>
+        <title>Thinking About a Ruby Driven AWS Lambda Approach Using Code that Writes Code</title>
+        <description>&lt;p&gt;So I have a computing problem to solve where the amount of data to process vastly exceeds even my desire to spin up EC2 instances.  I really do actually enjoy &lt;a href=&quot;https://fuzzygroup.github.io/blog/tag.html#ansible&quot;&gt;Ansible&lt;/a&gt; but at some point you have to cry to the heavens and shout out “There must be a better way!”.  This is literally an “oh crap” moment when I realized exactly the scale of the problem.&lt;/p&gt;
+
+&lt;p&gt;Note: I’m not at liberty here to give specifics so I’m talking in generalities quite a bit in this post.  Apologies.&lt;/p&gt;
+
+&lt;p&gt;AWS has a lot of tools that can be applied to big data process but two come to mind:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://aws.amazon.com/emr/&quot;&gt;Elastic Map Reduce&lt;/a&gt; or EMR&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://aws.amazon.com/lambda/&quot;&gt;Lambda&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;EMR is older and harder to use so I’m going to avoid it for now in favor of the new hotness – &lt;strong&gt;Lambda&lt;/strong&gt;.  Here’s the brag statement about Lambda:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Run code without thinking about servers.
+Pay for only the compute time you consume.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;That’s a pretty compelling statement to make and it is actually close to a holy grail of distributed computing.&lt;br /&gt;
+I have a big data problem that:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Involves about 15,000 unique domains that need to be checked against an index of data&lt;/li&gt;
+  &lt;li&gt;Where if the domain is a match a secondary request needs to be made and several data points extracted from an api&lt;/li&gt;
+  &lt;li&gt;The results of #2 need to be posted to an API that we control&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;For valid separation of concerns issues the data fed into 1 is separate from the code in 1 (its driven by a separate git repo).  And all of our code is in Ruby which is not a supported Lambda language.  This raises some actual issues in terms of:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;How do we make this work&lt;/li&gt;
+  &lt;li&gt;How do we get our existing ruby code to run in Lambda&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There is an interesting approach to packaging up our existing ruby code using Traveling Ruby and then run that &lt;a href=&quot;https://www.krautcomputing.com/blog/2016/02/29/how-to-run-ruby-scripts-on-aws-lambda-using-ansible/&quot;&gt;package on Lambda&lt;/a&gt;.  But before we goto that level of effort perhaps we need to examine the metrics on the codebase in question:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rake stats
++----------------------+--------+--------+---------+---------+-----+-------+
+| Name                 |  Lines |    LOC | Classes | Methods | M/C | LOC/M |
++----------------------+--------+--------+---------+---------+-----+-------+
+| Controllers          |      3 |      3 |       1 |       0 |   0 |     0 |
+| Helpers              |      2 |      2 |       0 |       0 |   0 |     0 |
+| Jobs                 |      2 |      2 |       1 |       0 |   0 |     0 |
+| Models               |      3 |      3 |       1 |       0 |   0 |     0 |
+| Mailers              |      4 |      4 |       1 |       0 |   0 |     0 |
+| Channels             |      8 |      8 |       2 |       0 |   0 |     0 |
+| Javascripts          |     29 |      4 |       0 |       1 |   0 |     2 |
+| Libraries            |    480 |    366 |      12 |      38 |   3 |     7 |
+| Tasks                |      7 |      6 |       0 |       0 |   0 |     0 |
+| Controller tests     |      0 |      0 |       0 |       0 |   0 |     0 |
+| Helper tests         |      0 |      0 |       0 |       0 |   0 |     0 |
+| Model tests          |      0 |      0 |       0 |       0 |   0 |     0 |
+| Mailer tests         |      0 |      0 |       0 |       0 |   0 |     0 |
+| Integration tests    |      0 |      0 |       0 |       0 |   0 |     0 |
+| Lib specs            |    270 |    231 |       0 |       1 |   0 |   229 |
++----------------------+--------+--------+---------+---------+-----+-------+
+| Total                |    808 |    629 |      18 |      40 |   2 |    13 |
++----------------------+--------+--------+---------+---------+-----+-------+
+  Code LOC: 398     Test LOC: 231     Code to Test Ratio: 1:0.6
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So we’re actually only talking about 12 classes, 38 methods and 366 LOC.  So this isn’t large at all.  We know that one approach to running this is running it as packaged ruby.  Another approach would be &lt;em&gt;code that writes code&lt;/em&gt; but before we talk about this, let’s talk about the execution context.&lt;/p&gt;
+
+&lt;p&gt;This application needs to run every time period from 2013 to present.  And depending on the results from our initial prototype, that will be either monthly or quarterly.  So if this is quarterly we need to run it 12 times - (4 in 2013, 4 in 2015, 4 in 2016) and if its monthly then we need to run it 36 times.  And we’ll need to run it monthly going forward.  And, each time, the input data is different.&lt;/p&gt;
+
+&lt;h1 id=&quot;code-that-writes-code&quot;&gt;Code that Writes Code&lt;/h1&gt;
+
+&lt;p&gt;There are lots of different approaches to code that writes code – generators, real AI and template based approaches.  For this I would use a template based approach as follows:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Port the Ruby code to JavaScript using a single file approach as much as possible.&lt;/li&gt;
+  &lt;li&gt;Locate the input data we need to send to the initial api near the top as essentially a global array of values.  For test purposes you only need to use 1 or 2; only enough to prove the concept.&lt;/li&gt;
+  &lt;li&gt;Convert the code in #2 to a template just as Rails uses, say, an ERB template (you can actually use ERB in other contexts than views).&lt;/li&gt;
+  &lt;li&gt;Treat the underlying ruby code as a systems automation tool which:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;operates over an array of dates from the past to the present&lt;/li&gt;
+  &lt;li&gt;keeps track of what has been submitted to AWS Lambda&lt;/li&gt;
+  &lt;li&gt;Reads the template in #3 and fills in the data based on the internal api.&lt;/li&gt;
+  &lt;li&gt;packages everything per the &lt;a href=&quot;http://docs.aws.amazon.com/lambda/latest/dg/nodejs-create-deployment-pkg.html&quot;&gt;Lambda spec&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;uses the &lt;a href=&quot;http://docs.aws.amazon.com/sdkforruby/api/Aws/Lambda/Client.html&quot;&gt;AWS Lambda Ruby APIs&lt;/a&gt; to submit the job&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;With this approach while we’re not using Lambda to actually execute our Ruby code, we’re getting the same result, using Lambda’s native JavaScript / node support but still using our overall Ruby framework to run everything and manage the process.  And this will have the advantage of generating an auditable code base that we can dig into if we find any problems.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 16 Oct 2016 13:34:50 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/10/16/thinking-about-a-ruby-driven-aws-lambda-approach-for-big-data-computing.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/16/thinking-about-a-ruby-driven-aws-lambda-approach-for-big-data-computing.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ruby</category>
+        
+        <category>lambda</category>
+        
+        <category>software_engineering</category>
+        
+        
+        <category>aws</category>
         
       </item>
     
@@ -549,227 +697,6 @@ Run `bundle install` to install missing gems.
         <link>https://fuzzygroup.github.io/blog/2016/10/13/to-every-u-s-workaholic-out-there.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/13/to-every-u-s-workaholic-out-there.html</guid>
         
-        
-      </item>
-    
-      <item>
-        <title>Moving AWS Monitor to Docker or Troubleshooting Docker Bit By Bit</title>
-        <description>&lt;p&gt;So now that my monitoring code is actually working, I need to move it to my MacBook Pro.  Unfortunately this machine is, inexplicably, unable to natively install Nokogiri.  I’ve tried, &lt;a href=&quot;http://dasari.me&quot;&gt;Dv&lt;/a&gt; has tried and so has &lt;a href=&quot;http://winstonkotzan.com/blog/&quot;&gt;Winston&lt;/a&gt;.  And no matter what we do, it seems that this machine is just hosed for Rails development.  Or is it – I know what &lt;a href=&quot;http://www.nickjanetakis.com&quot;&gt;Nick&lt;/a&gt; would say:&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Use Docker&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;And he’s a Docker Captain so he should know.  And while I’ve been a fan of Docker so far for treating almost any app as an API, I’ve never been a fan for my own code base.  But now its time.  Happily I did build this using my derivative of &lt;a href=&quot;https://github.com/nickjj/orats&quot;&gt;Nick’s Orats Gem&lt;/a&gt; so I’m actually ok as a starting point.&lt;/p&gt;
-
-&lt;h1 id=&quot;getting-started-with-docker&quot;&gt;Getting Started with Docker&lt;/h1&gt;
-
-&lt;p&gt;The first step was to replace my docker-compose.yml with the official Orats one.  A quick trip over to github gave me this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;version: '2'
-
-services:
-  postgres:
-    image: 'postgres:9.5'
-    environment:
-      POSTGRES_USER: 'orats_base'
-      POSTGRES_PASSWORD: 'yourpassword'
-    ports:
-      - '5432:5432'
-    volumes:
-      - 'postgres:/var/lib/postgresql/data'
-
-  redis:
-    image: 'redis:3.2-alpine'
-    command: redis-server --requirepass yourpassword
-    ports:
-      - '6379:6379'
-    volumes:
-      - 'redis:/var/lib/redis/data'
-
-  website:
-    depends_on:
-      - 'postgres'
-      - 'redis'
-    build: .
-    ports:
-      - '3000:3000'
-    volumes:
-      - '.:/orats_base'
-    env_file:
-      - '.env'
-
-  sidekiq:
-    depends_on:
-      - 'postgres'
-      - 'redis'
-    build: .
-    command: sidekiq -C config/sidekiq.yml.erb
-    volumes:
-      - '.:/orats_base'
-    env_file:
-      - '.env'
-
-  cable:
-    depends_on:
-      - 'redis'
-    build: .
-    command: puma -p 28080 cable/config.ru
-    ports:
-      - '28080:28080'
-    volumes:
-      - '.:/orats_base'
-    env_file:
-      - '.env'
-
-volumes:
-  redis:
-  postgres:
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The reason for replacing it is that I had wanted to make a version of Orats with MySQL support but I never had the chance to finish it.  It is likely faster to use Nick’s postgres approach over my own half baked one.&lt;/p&gt;
-
-&lt;p&gt;The next step is to compile everything using docker-compose:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose up --build
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Now what happened next is a bit puzzling:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Installing pg 0.19.0 with native extensions
-
-Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
-
-    current directory: /usr/local/bundle/gems/pg-0.19.0/ext
-/usr/local/bin/ruby -r ./siteconf20161013-6-1sug58s.rb extconf.rb
-checking for pg_config... no
-No pg_config... trying anyway. If building fails, please try again with
- --with-pg-config=/path/to/pg_config
-checking for libpq-fe.h... no
-Can't find the 'libpq-fe.h header
-*** extconf.rb failed ***
-Could not create Makefile due to some reason, probably lack of necessary
-libraries and/or headers.  Check the mkmf.log file for more details.  You may
-need configuration options.
-
-Provided configuration options:
-	--with-opt-dir
-	--without-opt-dir
-	--with-opt-include
-	--without-opt-include=${opt-dir}/include
-	--with-opt-lib
-	--without-opt-lib=${opt-dir}/lib
-	--with-make-prog
-	--without-make-prog
-	--srcdir=.
-	--curdir
-	--ruby=/usr/local/bin/$(RUBY_BASE_NAME)
-	--with-pg
-	--without-pg
-	--enable-windows-cross
-	--disable-windows-cross
-	--with-pg-config
-	--without-pg-config
-	--with-pg_config
-	--without-pg_config
-	--with-pg-dir
-	--without-pg-dir
-	--with-pg-include
-	--without-pg-include=${pg-dir}/include
-	--with-pg-lib
-	--without-pg-lib=${pg-dir}/lib
-
-To see why this extension failed to compile, please check the mkmf.log which can be found here:
-
-  /usr/local/bundle/extensions/x86_64-linux/2.3.0-static/pg-0.19.0/mkmf.log
-
-extconf failed, exit code 1
-
-Gem files will remain installed in /usr/local/bundle/gems/pg-0.19.0 for inspection.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;So now the question becomes how do you debug a Ruby gem failure inside a Docker container.  I honestly don’t know so I reached out to Nick for clarification:&lt;/p&gt;
-
-&lt;p&gt;Now I have to admit that I rushed thru this but that’s still not a reason – its an excuse.  Nick, in about a minute, pointed out that I was missing libpq so the Postgres gem wouldn’t build.&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 13 Oct 2016 21:20:28 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/10/13/moving-aws-monitor-to-docker-or-troubleshooting-docker-bit-by-bit.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/13/moving-aws-monitor-to-docker-or-troubleshooting-docker-bit-by-bit.html</guid>
-        
-        <category>aws</category>
-        
-        <category>rails</category>
-        
-        <category>docker</category>
-        
-        
-        <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>Sidekiq - Graceful Versus Forceful</title>
-        <description>&lt;p&gt;So now that I’m using Sidekiq for background processes, I need to be able to start it up, shut it down and I need to understand the difference between forceful and graceful.&lt;/p&gt;
-
-&lt;h1 id=&quot;running-sidekiq-interactively&quot;&gt;Running Sidekiq Interactively&lt;/h1&gt;
-
-&lt;p&gt;This is easy and we all should know this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd /my_rails_app/where_ever_that_is
-bundle exec sidekiq
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;This will run Sidekiq interactively.  Now if you want it to run even if your connection to the remote box drops then you need to use Tmux or something similar.&lt;/p&gt;
-
-&lt;h1 id=&quot;running-it-as-a-service&quot;&gt;Running it as a Service&lt;/h1&gt;
-
-&lt;p&gt;See my last blog post on using Ansible to configure Sidekiq and I think that will become clear.&lt;/p&gt;
-
-&lt;h1 id=&quot;forceful-versus-graceful&quot;&gt;Forceful versus Graceful&lt;/h1&gt;
-
-&lt;p&gt;Forceful versus Graceful defines how you want Sidekiq to shut down and it basically boils down to the speed of the shutdown.  Sidekiq runs “jobs” which basically means “long running methods” and here’s the difference:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;forceful – shut down NOW; abandon all work in process&lt;/li&gt;
-  &lt;li&gt;graceful – tell sidekiq to shut down when each of its threads is done processing&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Let’s use an analogy here to make this clear.  Imagine that sidekiq was a hitchhiker you picked up on the side of the road.  Forceful would be you opening the door and kicking the hitchhiker out while the car is still moving.  Graceful would be you saying “I think you need to get out at the next exit and the hitchhiker saying - &lt;em&gt;I’m sorry but I need a bit more time; I’ll get out when I’m ready&lt;/em&gt;”.&lt;/p&gt;
-
-&lt;p&gt;There isn’t a right answer here whether or not to use Forceful or Graceful – it really depends on your context.  If you use Sidekiq to handle short lived asynchronous tasks like, say, sending a welcome email then you probably want to use Graceful since it shouldn’t take that long for each thread to idle down.  I, on the other hand, use sidekiq to handle tasks that might take hours or even a whole day to finish so I usually use Forceful.  Given that my tasks have their own journal, this isn’t terrible.  It isn’t great but it isn’t terrible.&lt;/p&gt;
-
-&lt;p&gt;Here’s an example of a Forceful shutdown:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ps -ef | grep sidekiq | grep -v grep | awk '{print $2}' | xargs kill -9
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Here’s an example of a Graceful shutdown:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ps auwwx | grep sidekiq  # and give the pid value to the next command where &amp;lt;pid&amp;gt; is
-sidekiqctl stop &amp;lt;pid&amp;gt; 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;My thanks to the fine community at &lt;a href=&quot;http://www.sidekiq.com/&quot;&gt;Stack Overflow&lt;/a&gt; for these &lt;a href=&quot;http://stackoverflow.com/questions/12143350/gracefully-shutting-down-sidekiq-processes&quot;&gt;Sidekiq Graceful answers&lt;/a&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 13 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/ruby/2016/10/13/sidekiq-graceful-versus-forceful.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ruby/2016/10/13/sidekiq-graceful-versus-forceful.html</guid>
-        
-        <category>rails</category>
-        
-        <category>ruby</category>
-        
-        <category>sidekiq</category>
-        
-        <category>unix</category>
-        
-        
-        <category>ruby</category>
         
       </item>
     
