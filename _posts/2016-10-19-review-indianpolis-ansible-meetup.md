@@ -381,3 +381,9 @@ Run it with:
 Unfortunately this results in a low level python error ("RepresenterError: cannot represent an object: 172.31.36.55") at the Yaml class level as described [here](https://github.com/openshift/openshift-ansible/issues/2401) which seems to be tied to Ansible's Unicode implementation.
 
 This is really a pity since I think it is exactly what is needed but people seem to be actively working on the bug which is at least good.
+
+After this failed, I tried the coderwall trick above and that failed with different errors:
+
+    fatal: [ficrawler3]: FAILED! => {"changed": false, "failed": true, "msg": "AnsibleUndefinedVariable: Unable to look up a name or access an attribute in template string (Module Variables (\"group_vars\"):\n--------------------------------\n{{ group_vars | to_nice_json }} \n\n).\nMake sure your variable name does not contain invalid characters like '-': unbound method default() must be called with JSONEncoder instance as first argument (got StrictUndefined instance instead)"}
+    
+Sheesh!  This shouldn't be all that hard.  Sigh.  

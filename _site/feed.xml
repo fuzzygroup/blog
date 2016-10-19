@@ -6,9 +6,429 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 19 Oct 2016 05:54:35 -0400</pubDate>
-    <lastBuildDate>Wed, 19 Oct 2016 05:54:35 -0400</lastBuildDate>
+    <pubDate>Wed, 19 Oct 2016 07:06:37 -0400</pubDate>
+    <lastBuildDate>Wed, 19 Oct 2016 07:06:37 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Review - Indianpolis Ansible Meetup</title>
+        <description>&lt;p&gt;I attended the Indianapolis Ansible meetup last night and it was a wonderful, albeit amusing, success.  The thrust of the meetup was watching an Ansible Fest video on TDD and Ansible.  And, well, it was a hoot!  I have rarely, if ever, watched a conference video that got something so damn wrong.  All the videos are &lt;a href=&quot;https://www.ansible.com/videos-ansiblefest-sf-2016&quot;&gt;here&lt;/a&gt; and most looked excellent.  The video we watched and that I mocked mercilessly is &lt;a href=&quot;https://www.ansible.com/beginners-guide-to-testing-infrastructure-as-code&quot;&gt;here&lt;/a&gt;.  The problems with it were many including:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The date on the video was 2016 but it felt like we had time traveled back a decade or more “there’s this thing called extreme programming”&lt;/li&gt;
+  &lt;li&gt;The guy who made it terms himself a “Agile Coach” which confirms everything I’ve ever thought about methodologies&lt;/li&gt;
+  &lt;li&gt;He advocated that you test not your main ansible playbook but a playbook specifically designed for being tested.  Sheesh.  That’s ludicrous.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;All problems aside, Jason and Nick did a great job hosting a meetup and I’ll definitely be back.  While the video was laughable, here’s some of the things I learned:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;If you’re going to test Ansible stuff then use &lt;a href=&quot;http://serverspec.org&quot;&gt;ServerSpec&lt;/a&gt; which is basically RSpec for machine configuration.&lt;/li&gt;
+  &lt;li&gt;I’m not the only one who despises the RSpec expect syntax - ServerSpec is using .should also.  Yay!&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.cloudone.com&quot;&gt;CloudOne&lt;/a&gt; is doing really interesting things with IOT right here in Indianapolis about 10 minutes from my house.  Bizarre!&lt;/li&gt;
+  &lt;li&gt;Brixx Pizza is not particularly good (the post meetup food).  Good flavor but horrible crust.&lt;/li&gt;
+  &lt;li&gt;I’m not the only one who finds almost everything on Ansible Galaxy to be poorly done and barely usable.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Understanding the scope of your variables in Ansible is confusing to everyone not just me.  I recommended:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://coderwall.com/p/13lh6w/dump-all-variables&quot;&gt;https://coderwall.com/p/13lh6w/dump-all-variables&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/f500/ansible-dumpall&quot;&gt;https://github.com/f500/ansible-dumpall&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;They recommended &lt;a href=&quot;https://github.com/nickjj/ansigenome&quot;&gt;Ansible Genome&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can also use the &lt;a href=&quot;http://stackoverflow.com/questions/18839509/where-can-i-get-a-list-of-ansible-pre-defined-variables&quot;&gt;setup&lt;/a&gt; command which has a tricky syntax.  I finally got it to work with:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible -m setup ficrawlerbig -i inventories/production2 -u ubuntu
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;and it produced this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ficrawlerbig | SUCCESS =&amp;gt; {
+    &quot;ansible_facts&quot;: {
+        &quot;ansible_all_ipv4_addresses&quot;: [
+            &quot;172.31.36.55&quot;,
+            &quot;172.17.42.1&quot;
+        ],
+        &quot;ansible_all_ipv6_addresses&quot;: [
+            &quot;fe80::42c:36ff:fe65:9b93&quot;
+        ],
+        &quot;ansible_architecture&quot;: &quot;x86_64&quot;,
+        &quot;ansible_bios_date&quot;: &quot;05/11/2016&quot;,
+        &quot;ansible_bios_version&quot;: &quot;4.2.amazon&quot;,
+        &quot;ansible_cmdline&quot;: {
+            &quot;BOOT_IMAGE&quot;: &quot;/boot/vmlinuz-3.13.0-92-generic&quot;,
+            &quot;console&quot;: &quot;ttyS0&quot;,
+            &quot;ro&quot;: true,
+            &quot;root&quot;: &quot;UUID=87d0529b-216b-4930-9b54-45b0cdca9c06&quot;
+        },
+        &quot;ansible_date_time&quot;: {
+            &quot;date&quot;: &quot;2016-10-19&quot;,
+            &quot;day&quot;: &quot;19&quot;,
+            &quot;epoch&quot;: &quot;1476872950&quot;,
+            &quot;hour&quot;: &quot;10&quot;,
+            &quot;iso8601&quot;: &quot;2016-10-19T10:29:10Z&quot;,
+            &quot;iso8601_basic&quot;: &quot;20161019T102910892399&quot;,
+            &quot;iso8601_basic_short&quot;: &quot;20161019T102910&quot;,
+            &quot;iso8601_micro&quot;: &quot;2016-10-19T10:29:10.892455Z&quot;,
+            &quot;minute&quot;: &quot;29&quot;,
+            &quot;month&quot;: &quot;10&quot;,
+            &quot;second&quot;: &quot;10&quot;,
+            &quot;time&quot;: &quot;10:29:10&quot;,
+            &quot;tz&quot;: &quot;UTC&quot;,
+            &quot;tz_offset&quot;: &quot;+0000&quot;,
+            &quot;weekday&quot;: &quot;Wednesday&quot;,
+            &quot;weekday_number&quot;: &quot;3&quot;,
+            &quot;weeknumber&quot;: &quot;42&quot;,
+            &quot;year&quot;: &quot;2016&quot;
+        },
+        &quot;ansible_default_ipv4&quot;: {
+            &quot;address&quot;: &quot;172.31.36.55&quot;,
+            &quot;alias&quot;: &quot;eth0&quot;,
+            &quot;broadcast&quot;: &quot;172.31.47.255&quot;,
+            &quot;gateway&quot;: &quot;172.31.32.1&quot;,
+            &quot;interface&quot;: &quot;eth0&quot;,
+            &quot;macaddress&quot;: &quot;06:2c:36:65:9b:93&quot;,
+            &quot;mtu&quot;: 9001,
+            &quot;netmask&quot;: &quot;255.255.240.0&quot;,
+            &quot;network&quot;: &quot;172.31.32.0&quot;,
+            &quot;type&quot;: &quot;ether&quot;
+        },
+        &quot;ansible_default_ipv6&quot;: {},
+        &quot;ansible_devices&quot;: {
+            &quot;xvda&quot;: {
+                &quot;holders&quot;: [],
+                &quot;host&quot;: &quot;&quot;,
+                &quot;model&quot;: null,
+                &quot;partitions&quot;: {
+                    &quot;xvda1&quot;: {
+                        &quot;sectors&quot;: &quot;16755795&quot;,
+                        &quot;sectorsize&quot;: 512,
+                        &quot;size&quot;: &quot;7.99 GB&quot;,
+                        &quot;start&quot;: &quot;16065&quot;
+                    }
+                },
+                &quot;removable&quot;: &quot;0&quot;,
+                &quot;rotational&quot;: &quot;0&quot;,
+                &quot;sas_address&quot;: null,
+                &quot;sas_device_handle&quot;: null,
+                &quot;scheduler_mode&quot;: &quot;deadline&quot;,
+                &quot;sectors&quot;: &quot;16777216&quot;,
+                &quot;sectorsize&quot;: &quot;512&quot;,
+                &quot;size&quot;: &quot;8.00 GB&quot;,
+                &quot;support_discard&quot;: &quot;0&quot;,
+                &quot;vendor&quot;: null
+            }
+        },
+        &quot;ansible_distribution&quot;: &quot;Ubuntu&quot;,
+        &quot;ansible_distribution_major_version&quot;: &quot;14&quot;,
+        &quot;ansible_distribution_release&quot;: &quot;trusty&quot;,
+        &quot;ansible_distribution_version&quot;: &quot;14.04&quot;,
+        &quot;ansible_dns&quot;: {
+            &quot;nameservers&quot;: [
+                &quot;172.31.0.2&quot;
+            ],
+            &quot;search&quot;: [
+                &quot;us-west-2.compute.internal&quot;
+            ]
+        },
+        &quot;ansible_docker0&quot;: {
+            &quot;active&quot;: false,
+            &quot;device&quot;: &quot;docker0&quot;,
+            &quot;id&quot;: &quot;8000.56847afe9799&quot;,
+            &quot;interfaces&quot;: [],
+            &quot;ipv4&quot;: {
+                &quot;address&quot;: &quot;172.17.42.1&quot;,
+                &quot;broadcast&quot;: &quot;global&quot;,
+                &quot;netmask&quot;: &quot;255.255.0.0&quot;,
+                &quot;network&quot;: &quot;172.17.0.0&quot;
+            },
+            &quot;macaddress&quot;: &quot;56:84:7a:fe:97:99&quot;,
+            &quot;mtu&quot;: 1500,
+            &quot;promisc&quot;: false,
+            &quot;stp&quot;: false,
+            &quot;type&quot;: &quot;bridge&quot;
+        },
+        &quot;ansible_domain&quot;: &quot;us-west-2.compute.internal&quot;,
+        &quot;ansible_env&quot;: {
+            &quot;HOME&quot;: &quot;/home/ubuntu&quot;,
+            &quot;LANG&quot;: &quot;en_US.UTF-8&quot;,
+            &quot;LC_ALL&quot;: &quot;en_US.UTF-8&quot;,
+            &quot;LC_MESSAGES&quot;: &quot;en_US.UTF-8&quot;,
+            &quot;LOGNAME&quot;: &quot;ubuntu&quot;,
+            &quot;MAIL&quot;: &quot;/var/mail/ubuntu&quot;,
+            &quot;PATH&quot;: &quot;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games&quot;,
+            &quot;PWD&quot;: &quot;/home/ubuntu&quot;,
+            &quot;RAILS_ENV&quot;: &quot;production&quot;,
+            &quot;SHELL&quot;: &quot;/bin/bash&quot;,
+            &quot;SHLVL&quot;: &quot;1&quot;,
+            &quot;SSH_CLIENT&quot;: &quot;64.184.12.117 61220 22&quot;,
+            &quot;SSH_CONNECTION&quot;: &quot;64.184.12.117 61220 172.31.36.55 22&quot;,
+            &quot;SSH_TTY&quot;: &quot;/dev/pts/0&quot;,
+            &quot;TERM&quot;: &quot;xterm-256color&quot;,
+            &quot;USER&quot;: &quot;ubuntu&quot;,
+            &quot;XDG_RUNTIME_DIR&quot;: &quot;/run/user/1000&quot;,
+            &quot;XDG_SESSION_ID&quot;: &quot;93&quot;,
+            &quot;_&quot;: &quot;/bin/sh&quot;
+        },
+        &quot;ansible_eth0&quot;: {
+            &quot;active&quot;: true,
+            &quot;device&quot;: &quot;eth0&quot;,
+            &quot;ipv4&quot;: {
+                &quot;address&quot;: &quot;172.31.36.55&quot;,
+                &quot;broadcast&quot;: &quot;172.31.47.255&quot;,
+                &quot;netmask&quot;: &quot;255.255.240.0&quot;,
+                &quot;network&quot;: &quot;172.31.32.0&quot;
+            },
+            &quot;ipv6&quot;: [
+                {
+                    &quot;address&quot;: &quot;fe80::42c:36ff:fe65:9b93&quot;,
+                    &quot;prefix&quot;: &quot;64&quot;,
+                    &quot;scope&quot;: &quot;link&quot;
+                }
+            ],
+            &quot;macaddress&quot;: &quot;06:2c:36:65:9b:93&quot;,
+            &quot;module&quot;: &quot;ixgbevf&quot;,
+            &quot;mtu&quot;: 9001,
+            &quot;pciid&quot;: &quot;0000:00:03.0&quot;,
+            &quot;promisc&quot;: false,
+            &quot;type&quot;: &quot;ether&quot;
+        },
+        &quot;ansible_fips&quot;: false,
+        &quot;ansible_form_factor&quot;: &quot;Other&quot;,
+        &quot;ansible_fqdn&quot;: &quot;ip-172-31-36-55.us-west-2.compute.internal&quot;,
+        &quot;ansible_gather_subset&quot;: [
+            &quot;hardware&quot;,
+            &quot;network&quot;,
+            &quot;virtual&quot;
+        ],
+        &quot;ansible_hostname&quot;: &quot;ip-172-31-36-55&quot;,
+        &quot;ansible_interfaces&quot;: [
+            &quot;lo&quot;,
+            &quot;docker0&quot;,
+            &quot;eth0&quot;
+        ],
+        &quot;ansible_kernel&quot;: &quot;3.13.0-92-generic&quot;,
+        &quot;ansible_lo&quot;: {
+            &quot;active&quot;: true,
+            &quot;device&quot;: &quot;lo&quot;,
+            &quot;ipv4&quot;: {
+                &quot;address&quot;: &quot;127.0.0.1&quot;,
+                &quot;broadcast&quot;: &quot;host&quot;,
+                &quot;netmask&quot;: &quot;255.0.0.0&quot;,
+                &quot;network&quot;: &quot;127.0.0.0&quot;
+            },
+            &quot;ipv6&quot;: [
+                {
+                    &quot;address&quot;: &quot;::1&quot;,
+                    &quot;prefix&quot;: &quot;128&quot;,
+                    &quot;scope&quot;: &quot;host&quot;
+                }
+            ],
+            &quot;mtu&quot;: 65536,
+            &quot;promisc&quot;: false,
+            &quot;type&quot;: &quot;loopback&quot;
+        },
+        &quot;ansible_lsb&quot;: {
+            &quot;codename&quot;: &quot;trusty&quot;,
+            &quot;description&quot;: &quot;Ubuntu 14.04.4 LTS&quot;,
+            &quot;id&quot;: &quot;Ubuntu&quot;,
+            &quot;major_release&quot;: &quot;14&quot;,
+            &quot;release&quot;: &quot;14.04&quot;
+        },
+        &quot;ansible_machine&quot;: &quot;x86_64&quot;,
+        &quot;ansible_machine_id&quot;: &quot;3b8fd0372b0e32185bef793d5787f9de&quot;,
+        &quot;ansible_memfree_mb&quot;: 60182,
+        &quot;ansible_memory_mb&quot;: {
+            &quot;nocache&quot;: {
+                &quot;free&quot;: 62374,
+                &quot;used&quot;: 2046
+            },
+            &quot;real&quot;: {
+                &quot;free&quot;: 60182,
+                &quot;total&quot;: 64420,
+                &quot;used&quot;: 4238
+            },
+            &quot;swap&quot;: {
+                &quot;cached&quot;: 0,
+                &quot;free&quot;: 0,
+                &quot;total&quot;: 0,
+                &quot;used&quot;: 0
+            }
+        },
+        &quot;ansible_memtotal_mb&quot;: 64420,
+        &quot;ansible_mounts&quot;: [
+            {
+                &quot;device&quot;: &quot;/dev/xvda1&quot;,
+                &quot;fstype&quot;: &quot;ext4&quot;,
+                &quot;mount&quot;: &quot;/&quot;,
+                &quot;options&quot;: &quot;rw,discard&quot;,
+                &quot;size_available&quot;: 748208128,
+                &quot;size_total&quot;: 8309932032,
+                &quot;uuid&quot;: &quot;&quot;
+            }
+        ],
+        &quot;ansible_nodename&quot;: &quot;ip-172-31-36-55&quot;,
+        &quot;ansible_os_family&quot;: &quot;Debian&quot;,
+        &quot;ansible_pkg_mgr&quot;: &quot;apt&quot;,
+        &quot;ansible_processor&quot;: [
+            &quot;GenuineIntel&quot;,
+            &quot;Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz&quot;,
+            &quot;GenuineIntel&quot;,
+            &quot;Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz&quot;,
+            &quot;GenuineIntel&quot;,
+            &quot;Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz&quot;,
+            &quot;GenuineIntel&quot;,
+            &quot;Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz&quot;,
+            &quot;GenuineIntel&quot;,
+            &quot;Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz&quot;,
+            &quot;GenuineIntel&quot;,
+            &quot;Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz&quot;,
+            &quot;GenuineIntel&quot;,
+            &quot;Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz&quot;,
+            &quot;GenuineIntel&quot;,
+            &quot;Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz&quot;,
+            &quot;GenuineIntel&quot;,
+            &quot;Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz&quot;,
+            &quot;GenuineIntel&quot;,
+            &quot;Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz&quot;,
+            &quot;GenuineIntel&quot;,
+            &quot;Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz&quot;,
+            &quot;GenuineIntel&quot;,
+            &quot;Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz&quot;,
+            &quot;GenuineIntel&quot;,
+            &quot;Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz&quot;,
+            &quot;GenuineIntel&quot;,
+            &quot;Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz&quot;,
+            &quot;GenuineIntel&quot;,
+            &quot;Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz&quot;,
+            &quot;GenuineIntel&quot;,
+            &quot;Intel(R) Xeon(R) CPU E5-2686 v4 @ 2.30GHz&quot;
+        ],
+        &quot;ansible_processor_cores&quot;: 16,
+        &quot;ansible_processor_count&quot;: 16,
+        &quot;ansible_processor_threads_per_core&quot;: 1,
+        &quot;ansible_processor_vcpus&quot;: 16,
+        &quot;ansible_product_name&quot;: &quot;HVM domU&quot;,
+        &quot;ansible_product_serial&quot;: &quot;NA&quot;,
+        &quot;ansible_product_uuid&quot;: &quot;NA&quot;,
+        &quot;ansible_product_version&quot;: &quot;4.2.amazon&quot;,
+        &quot;ansible_python&quot;: {
+            &quot;executable&quot;: &quot;/usr/bin/python&quot;,
+            &quot;has_sslcontext&quot;: false,
+            &quot;type&quot;: &quot;CPython&quot;,
+            &quot;version&quot;: {
+                &quot;major&quot;: 2,
+                &quot;micro&quot;: 6,
+                &quot;minor&quot;: 7,
+                &quot;releaselevel&quot;: &quot;final&quot;,
+                &quot;serial&quot;: 0
+            },
+            &quot;version_info&quot;: [
+                2,
+                7,
+                6,
+                &quot;final&quot;,
+                0
+            ]
+        },
+        &quot;ansible_python_version&quot;: &quot;2.7.6&quot;,
+        &quot;ansible_selinux&quot;: false,
+        &quot;ansible_service_mgr&quot;: &quot;upstart&quot;,
+        &quot;ansible_ssh_host_key_dsa_public&quot;: &quot;AAAAB3NzaC1kc3MAAACBAPWIrEktKYrh0VIi4NX/RsuaR4nCi4+MiHz4JOI0jUu1b5EtL8QNE2wXWFOi9NqYDWe35E3Gfep8xUKHsFlVtnEXqnIebPYXwtB39eIolnJP7zuVLDGLB2Ny5/+apN0Md6Kr6ewX75MsvLqb8QlTF8xcp2gzLJycAr4lW5uI+sI3AAAAFQDtkRxdu5rw6iIhDnHNAIO/G0NiewAAAIALCsKgsr9wB1273VND4VLHf9/TjSWBQkNX8BBE+oMlAbmLIPHpNnl7aHmdyyJ6EPXGztqYtF2uacMhSxj5T05I8pqQgjPRDzoJuk1DSS/Q0JmLBkmMHDZxEzsOBcMLzlwSxNaBRhXfMJhCAcv1/rVQeioMIzK0H7RinmO1ypmUmwAAAIBD+Mpmrt9fdTs+442QOOgmAtNI/BsdFBncVPkVHroRH5gyAgmkt/a0D1MFNmv+FF63NXrcmpsuAAwiYsn6vF0ijwEre59vsT7IB4xmsY+2Sv1t11lUUWgPI1RgHCUZnbuAbRhceran34eiIC8gGQO94RkTpuR4+mJeVE8p/kO96w==&quot;,
+        &quot;ansible_ssh_host_key_ecdsa_public&quot;: &quot;AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMjrf03fvK2638wDbB+gsL6z5AQtXHFB37O6H8sJV0fJI++Jl1bOE5vEUQIJgm7KAjY5E78gBMbl93yY9uMJHdc=&quot;,
+        &quot;ansible_ssh_host_key_ed25519_public&quot;: &quot;AAAAC3NzaC1lZDI1NTE5AAAAIP/0jQTWuLTf5s0puYbxJABXIs6vSv8DvLWWdRPr7Fb8&quot;,
+        &quot;ansible_ssh_host_key_rsa_public&quot;: &quot;AAAAB3NzaC1yc2EAAAADAQABAAABAQDqBYCkVLZtWSjaN4bb5wJAKuxqWlWGoorvmRFsFkdNjUVP8HAV/ImcdJ/ifkPn0Vfoa0ioNHB0AJuyawUDKq6bS/8/rm4rcL2fuFSCfRXTUde+KWuMUOFyMGKRTuqJZxei3BLlbJCdsJRJGC5DDgQf9vlWhTYMlRMDgZKEai2Dii/2mHGN0gZRF/9OXkwRJvj3hASj43B4DnIJ5MKdfmjRDOA9NuGaL45KoA1j4Vjds96QZ4g8Wo1HBI/6iZZRohq58RvRvP/uIJrrQjcANXTYa4tIEgqHyIpuylLDWAtuDrj6/XninBs4oZu3++p8PE7eu++O0iq8IXk9B72VSKuF&quot;,
+        &quot;ansible_swapfree_mb&quot;: 0,
+        &quot;ansible_swaptotal_mb&quot;: 0,
+        &quot;ansible_system&quot;: &quot;Linux&quot;,
+        &quot;ansible_system_capabilities&quot;: [
+            &quot;&quot;
+        ],
+        &quot;ansible_system_capabilities_enforced&quot;: &quot;True&quot;,
+        &quot;ansible_system_vendor&quot;: &quot;Xen&quot;,
+        &quot;ansible_uptime_seconds&quot;: 617356,
+        &quot;ansible_user_dir&quot;: &quot;/home/ubuntu&quot;,
+        &quot;ansible_user_gecos&quot;: &quot;Ubuntu&quot;,
+        &quot;ansible_user_gid&quot;: 1000,
+        &quot;ansible_user_id&quot;: &quot;ubuntu&quot;,
+        &quot;ansible_user_shell&quot;: &quot;/bin/bash&quot;,
+        &quot;ansible_user_uid&quot;: 1000,
+        &quot;ansible_userspace_architecture&quot;: &quot;x86_64&quot;,
+        &quot;ansible_userspace_bits&quot;: &quot;64&quot;,
+        &quot;ansible_virtualization_role&quot;: &quot;guest&quot;,
+        &quot;ansible_virtualization_type&quot;: &quot;xen&quot;,
+        &quot;module_setup&quot;: true
+    },
+    &quot;changed&quot;: false
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Which isn’t anything about the variables in my playbook but I think I have a much better handle on how to use ansible system level variables like the machine’s memory size which would let me dynamically adjust my sidekiq thread count for example.&lt;/p&gt;
+
+&lt;p&gt;Here’s an example of the dumpall approach:&lt;/p&gt;
+
+&lt;p&gt;create a playbook called playbook_dump_variables.yml and put this in it:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- hosts: all
+  tasks:
+  - template:
+      src: templates/dump_variables
+      dest: /tmp/ansible_variables
+  - fetch:
+      src: /tmp/ansible_variables
+      dest: &quot;_ansible_variables&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;create a template called templates/dump_variables and put this in it:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;HOSTVARS (ANSIBLE GATHERED, group_vars, host_vars) :
+
+
+
+PLAYBOOK VARS:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Run it with:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ansible-playbook -i inventories/production2 playbook_dump_variables.yml -u ubuntu
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Unfortunately this results in a low level python error (“RepresenterError: cannot represent an object: 172.31.36.55”) at the Yaml class level as described &lt;a href=&quot;https://github.com/openshift/openshift-ansible/issues/2401&quot;&gt;here&lt;/a&gt; which seems to be tied to Ansible’s Unicode implementation.&lt;/p&gt;
+
+&lt;p&gt;This is really a pity since I think it is exactly what is needed but people seem to be actively working on the bug which is at least good.&lt;/p&gt;
+
+&lt;p&gt;After this failed, I tried the coderwall trick above and that failed with different errors:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fatal: [ficrawler3]: FAILED! =&amp;gt; {&quot;changed&quot;: false, &quot;failed&quot;: true, &quot;msg&quot;: &quot;AnsibleUndefinedVariable: Unable to look up a name or access an attribute in template string (Module Variables (\&quot;group_vars\&quot;):\n--------------------------------\n \n\n).\nMake sure your variable name does not contain invalid characters like '-': unbound method default() must be called with JSONEncoder instance as first argument (got StrictUndefined instance instead)&quot;}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Sheesh!  This shouldn’t be all that hard.  Sigh.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 19 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/ansible/2016/10/19/review-indianpolis-ansible-meetup.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ansible/2016/10/19/review-indianpolis-ansible-meetup.html</guid>
+        
+        <category>ansible</category>
+        
+        <category>tdd</category>
+        
+        <category>humor</category>
+        
+        <category>serverspec</category>
+        
+        
+        <category>ansible</category>
+        
+      </item>
     
       <item>
         <title>Gluten Free Cookies for a Wedding</title>
@@ -1012,221 +1432,6 @@ sidekiqctl stop &amp;lt;pid&amp;gt;
         
         
         <category>ruby</category>
-        
-      </item>
-    
-      <item>
-        <title>AWS Tutorial 16 - SSH Failures Take 4 - Time to Write Some Monitoring Code</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/blog/assets/ood_not_oom.jpg&quot; alt=&quot;ood_not_oom.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;My apologies to the &lt;a href=&quot;https://en.wikipedia.org/wiki/Tenth_Doctor&quot;&gt;Good Doctor&lt;/a&gt; but when &lt;a href=&quot;https://linux-mm.org/OOM_Killer&quot;&gt;OOM&lt;/a&gt; is failing you, you have to make an &lt;a href=&quot;https://en.wikipedia.org/wiki/Ood&quot;&gt;OOD&lt;/a&gt; joke.  We’re nerdy over here.  Every one of us.&lt;/p&gt;
-
-&lt;p&gt;Well crap.  I just ran my ansible df -h test which checks to make sure my boxes are up and running and I got complete failure:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fiweb1 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-fiansible2 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawlerbig | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawler3 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawler4 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawler5 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawler6 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawler7 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawler8 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawler9 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-ficrawler10 | UNREACHABLE! =&amp;gt; {
-    &quot;changed&quot;: false,
-    &quot;msg&quot;: &quot;Failed to connect to the host via ssh.&quot;,
-    &quot;unreachable&quot;: true
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Curiouser and curiouser said Alice.  The interesting thing here is that two of these boxes ARE NOT running our crawler code.  They’re actually doing nothing at all.  So what does this tell us:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Perhaps the issue has nothing to do with our code at all.&lt;/li&gt;
-  &lt;li&gt;Perhaps it is an underlying Linux problem on AWS w/ Ubuntu.&lt;/li&gt;
-  &lt;li&gt;It seems to be related to resource consumption but that’s a guess not a true statement.&lt;/li&gt;
-  &lt;li&gt;There is no damn way to monitor this (&amp;amp;$#($&lt;em&gt;#()$&lt;/em&gt;#)) problem since it no one monitors SSH failures.  Sigh.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;writing-your-own-monitoring-tool&quot;&gt;Writing Your Own Monitoring Tool&lt;/h1&gt;
-
-&lt;p&gt;And so I now get to time travel back to 2007, the first time I wrote a monitoring tool in Ruby.  I was working for the late, not-lamented eduFire and there wasn’t money to sign up for a monitoring tool.  Ah life in startup land.  My children can and do tell the tale of Dad’s computer waking up in the middle of the night screaming “eduFire IS DOWN!!!”.  And then there was the incarnation that, a few years later, would plain Billy Idol’s White Wedding at top volume.  So this is old territory for me.  But maybe we can do a bit better.  So what do we need to do?&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Run forever&lt;/li&gt;
-  &lt;li&gt;Run reliably - this is Ruby after all&lt;/li&gt;
-  &lt;li&gt;Read from the ansible hosts file and get a list of resources to monitor&lt;/li&gt;
-  &lt;li&gt;Loop over the hosts&lt;/li&gt;
-  &lt;li&gt;Establish an ssh connection&lt;/li&gt;
-  &lt;li&gt;If successful then do nothing&lt;/li&gt;
-  &lt;li&gt;If unsuccessful increment a failure counter&lt;/li&gt;
-  &lt;li&gt;If failure ctr &amp;gt; a threshold then fire off an alert by playing White Wedding and also send an alert to my phone&lt;/li&gt;
-  &lt;li&gt;Optionally incorporate AWS API calls to restart the instance if this is possible and it has failed more times than a restart threshold&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;run-forever&quot;&gt;Run Forever&lt;/h2&gt;
-
-&lt;p&gt;This can be nothing more than a while(true) loop construct.  It isn’t elegant but it will work.&lt;/p&gt;
-
-&lt;h2 id=&quot;run-reliably&quot;&gt;Run Reliably&lt;/h2&gt;
-
-&lt;p&gt;We can wrap this within daemon tools supervise to make sure it stays running.&lt;/p&gt;
-
-&lt;h2 id=&quot;read-from-ansible-hosts-file&quot;&gt;Read from Ansible Hosts file&lt;/h2&gt;
-
-&lt;p&gt;This can be done with any of a number of gems which read from an INI file.  No matter what we use, the Ansible INI syntax is funky so we’re likely to need some parsing.&lt;/p&gt;
-
-&lt;h2 id=&quot;loop-over-the-hosts&quot;&gt;Loop Over The Hosts&lt;/h2&gt;
-
-&lt;p&gt;The INI gem will return an enumerable collection so this is just a .each call.  Piece of cake.  .each is my single favorite thing in all of Ruby.&lt;/p&gt;
-
-&lt;h2 id=&quot;establish-an-ssh-connection&quot;&gt;Establish an SSH connection&lt;/h2&gt;
-
-&lt;p&gt;There has to be a gem for this.  &lt;strong&gt;Google Furiously&lt;/strong&gt;  Yep.  Even better Jamis Buck wrote it.  Fantastic.  That means I can trust it.&lt;/p&gt;
-
-&lt;h2 id=&quot;items-6-thru-9&quot;&gt;Items 6 thru 9&lt;/h2&gt;
-
-&lt;p&gt;This is the core of a monitoring tool and where crap gets tricky:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;You have to make sure you actually have outbound connectivity so you need something to test against that NEVER goes down.  Hm… 8.8.8.8 is perfect – it is Google’s DNS server and it can be ping’d so I don’t have to test via SSH.  There must be a ping gem.  &lt;strong&gt;More Furious Googling&lt;/strong&gt;.  Yep.&lt;/li&gt;
-  &lt;li&gt;You have to alert.  Yep.  That means I’m going to use Twilio again.  Twilio is fantastic.&lt;/li&gt;
-  &lt;li&gt;In the event of a failure you have to get my attention and no alert needs to be sent if I’m already at the computer.  I’ll yank out the old white wedding play routine I used for my second monitoring tool (which indirectly was this same damn code base) and I’ll just reuse it.&lt;/li&gt;
-  &lt;li&gt;You need a machine which is 24x7 connected to the Internet and never goes away.  Well my Macbook Air travels everywhere I go these days but my Macbook Pro is constantly on.  So I’ll use that.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;the-code&quot;&gt;The Code&lt;/h1&gt;
-
-&lt;p&gt;Listed below is a rake task which encapsulates the bulk of it.  This is actually only the &lt;strong&gt;first draft&lt;/strong&gt; of it.  The actual &lt;a href=&quot;https://github.com/fuzzygroup/aws_monitor&quot;&gt;github&lt;/a&gt; code is better but I’ve been up all night so I don’t think trying to write a good description of it is wise.  The detailed stuff is handled by aws_monitor.rb which is a short class of static methods just to simplify the rake task and make them testable.  The only bad thing I can ever say about Jim Weirich is that Rake tasks aren’t really testable.  Other than that I wish he was still with us.  Right now this code is a bit of a rough draft as the failure hasn’t happened again yet and things like error handling always need to get addressed but it looks something like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;namespace :monitor_aws do
-  # bundle exec rake monitor_aws:ansible_hosts --trace
-  task :ansible_hosts =&amp;gt; :environment do
-    #
-    # Things to change easily for adapting to different environments
-    #
-
-    # CHANGE THIS to your ansible inventory file
-    ansible_hosts_file = File.join(Rails.root, 'script/ansible/inventories/production2')
-    # CHANGE THIS to how frequently to monitor
-    sleep_time = 60 * 5  # every five minutes we will execute
-    # CHANGE THIS to your ssh login
-    username = &quot;ubuntu&quot;
-    # CHANGE THIS to the number of consecutive failures you want to alert on
-    min_failures = 2     
-
-    run_ctr = 0
-    while(true) do
-      run_ctr = run_ctr + 1
-      puts &quot;Monitoring run: #{run_ctr}&quot;
-      ansible_hosts = AwsMonitor.load_ansible_hosts(ansible_hosts_file)
-      failure_ctr = 0
-      ansible_hosts.entries.each do |entry|
-        ansible_host = AwsMonitor.ini_entry_to_struct(entry)
-        session = Net::SSH.start( ansible_host.host_name, username, :keys =&amp;gt; ansible_host.keyfile )
-        if session.error.nil?
-          puts &quot;Success!  The box #{ansible_host.human_name} is still alive!!!&quot;.green
-        else
-          puts &quot;#{session.error}&quot;
-          AwsMonitor.play_white_wedding(ansible_host, '')
-          debugger          
-        end
-        session.close
-      end
-      puts &quot;\n\n\n&quot;
-      sleep(sleep_time)
-    end
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And that’s about all there is to it.  The complicated version, which is also written, but not yet published has some other tricks like using ping to make sure my local connectivity didn’t fail.  I don’t want to publish that yet since I don’t understand if my failure condition is going to be a  Net::SSH::AuthenticationFailed or a session.error message or what.&lt;/p&gt;
-
-&lt;h2 id=&quot;postscript&quot;&gt;Postscript&lt;/h2&gt;
-
-&lt;p&gt;This morning I added a running timer to track how long the boxes were up.  This is what it looks like now:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Monitoring run: 31
-Success!  The box ficrawler3 is still alive and has been for: 9300 seconds!!!
-Success!  The box ficrawler4 is still alive and has been for: 9300 seconds!!!
-Success!  The box ficrawler5 is still alive and has been for: 9300 seconds!!!
-Success!  The box ficrawler6 is still alive and has been for: 9300 seconds!!!
-Success!  The box ficrawler7 is still alive and has been for: 9300 seconds!!!
-Success!  The box ficrawler8 is still alive and has been for: 9300 seconds!!!
-Success!  The box ficrawler9 is still alive and has been for: 9300 seconds!!!
-Success!  The box ficrawler10 is still alive and has been for: 9300 seconds!!!
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;postscript-2&quot;&gt;Postscript 2&lt;/h2&gt;
-
-&lt;p&gt;I had wanted to make this work with Twilio for alerting but I just ran out of time.  If anyone needs help with that reach out to me and I’ll get it in.  Its not hard and Twilio is an awesome, awesome company to work with.&lt;/p&gt;
-
-&lt;h2 id=&quot;postscript-3&quot;&gt;Postscript 3&lt;/h2&gt;
-
-&lt;p&gt;I just realized that I think the Twilio credentials are in the git repo.  Sigh.  I turned on 2 factor authentication so that should prevent them from getting used by someone other than me.&lt;/p&gt;
-
-&lt;h2 id=&quot;license&quot;&gt;License&lt;/h2&gt;
-
-&lt;p&gt;Do with it as you will.  Enjoy it; fork it, etc.  Sorry it took so long to get this post out.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 13 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/10/13/aws-tutorial-16-ssh-failures-take-4-time-to-write-some-monitoring-code.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/13/aws-tutorial-16-ssh-failures-take-4-time-to-write-some-monitoring-code.html</guid>
-        
-        <category>aws</category>
-        
-        <category>ssh</category>
-        
-        <category>ruby</category>
-        
-        <category>monitoring</category>
-        
-        
-        <category>aws</category>
         
       </item>
     
