@@ -18,6 +18,8 @@ My wife estimates we need to make 250 cookies, 125 double chocolate and 125 pean
 
 [https://docs.google.com/spreadsheets/d/16IW5moFWTUneeNsLTIMt-c6uhXCAtQXOxy0p9yPSt0A/pubhtml](https://docs.google.com/spreadsheets/d/16IW5moFWTUneeNsLTIMt-c6uhXCAtQXOxy0p9yPSt0A/pubhtml)
 
+Note: There's some kind of subtle spreadsheet error since I ended up with too many chocolate chips at the end; I think I didn't allow for the right number of chips per batch or something.  
+
 This tells us that we need to bake for 1.5 hours w/ one sheet per oven (we have 2 ovens).  A quick optimization is to bake two sheets per oven.  This will give a slight increase in batch time from 12 minutes to 15 minutes but dramatically increase our thru put.
 
 ## Step 2: Benchmark
@@ -114,3 +116,60 @@ So a rewritten version give us:
 * salt
 
 4. Use cookie scoop to place on cookie sheet and flatten with tines of fork and bake for 10 minutes rotating the sheets once at the 5 minute mark.
+
+# Postscript
+
+Well I've achieved success:
+
+![cookies_and_more_cookies.jpg](/blog/assets/cookies_and_more_cookies.jpg)
+
+One thing to know is that gluten free cookies come out softer than normal cookies.  This means they need to air dry for quite a long time to get hard enough to travel. The double chocolate chip cookies usually need 24 to 36 hours of sitting out before they are crisp enough.  The peanut butter cookies can generally make do with 8 to 12 hours of air drying time.
+
+The only downside to my success was that during the execution I figured out how to make them more efficiently still.  Rewritten below are both recipes.  
+
+## Double Chocolate Chip Cookies 
+
+* Preheat both ovens to 350 and line four baking sheets with parchment paper.
+* In a four cup measuring cup combine:
+
+  * 4.25 oz Bob's red mill gluten free flour
+  * 4 oz buck wheat flour
+  * 2.5 oz cocoa powder
+  * 1/2 tsp salt
+  * 1/2 tsp baking soda
+
+*  In the bowl for the standing mixer add the below ingredients and beat until fluffy:
+
+  * 2 sticks butter
+  * 5 oz white sugar
+  * 5.75 oz brown sugar
+  * 2 eggs
+
+*  Add the below ingredients and mix:
+
+  * 2 oz milk
+  * 0.5 oz vanilla
+
+* Add 1 bag chips and beat until combined.
+
+* Use cookie scoop to place on cookie sheet and bake for 14 to 15 minutes rotating the sheets once at the 7 minute mark.
+
+
+## Peanut Butter Cookies
+
+Note: This is effectively a double batch made in a single mixing bowl for volume.  It will make at least 24 cookies (4 trays).
+
+* Preheat both ovens to 350 and line four baking sheets with parchment paper.
+* In a stand mixer combine:
+
+  * 18 oz peanut butter
+  * 7 oz brown sugar
+  * 7 oz white sugar
+  * 2 eggs
+  * 2 tsp baking soda
+  * 2 tsp vanilla
+  * 1/2 tsp salt
+
+* Use cookie scoop to place on cookie sheet and flatten with tines of fork (both ways; you're making a grid).  Put in oven.
+* Set a 10 minute timer for the whole batch and a 5 minute timer so they can be rotated between top and bottom racks of the oven
+* Cool for at least 8 hours before you package for transport or try to put away.
