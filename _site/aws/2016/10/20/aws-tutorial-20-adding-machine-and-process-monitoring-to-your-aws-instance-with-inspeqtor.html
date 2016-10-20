@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>AWS Tutorial 20 - Adding Machine and Process Monitoring To Your AWS Instances with Inspeqtor</title>
+  <meta name="description" content="Disclaimer: Inspeqtor is an excellent piece of open source software, any errors are mine and mine alone.  This was fully tested by deploying onto a clean EC2...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/aws/2016/10/20/aws-tutorial-20-adding-machine-and-process-monitoring-to-your-aws-instance-with-inspeqtor.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">AWS Tutorial 20 - Adding Machine and Process Monitoring To Your AWS Instances with Inspeqtor</h1>
+    <p class="post-meta"><time datetime="2016-10-20T00:00:00-04:00" itemprop="datePublished">Oct 20, 2016</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p><strong>Disclaimer</strong>: Inspeqtor is an excellent piece of open source software, any errors are mine and mine alone.  This was fully tested by deploying onto a clean EC2 instance and verifying that it functioned correctly end to end.</p>
+
+<p>One of the aspects of cloud computing versus traditional hosting is that with cloud computing you tend to work with computing resources that, in general, are:</p>
+
+<ul>
+  <li>less <strong>powerful</strong></li>
+  <li>less <strong>reliable</strong></li>
+  <li>have less <strong>storage</strong></li>
+</ul>
+
+<p>Finally there tend to be <strong>more</strong> of these resources.  One way to term this might be that traditional data centers are <em>molecular</em> where as cloud computing is more <em>atomic</em>.</p>
+
+<p>In my own experience, I ran a data center for 5 years without having to worry about process monitoring and tools like Monit or Inspeqtor but the very first time I put my AWS data center under heavy load, I found things <a href="https://fuzzygroup.github.io/blog/tag.html#ssh">crashing right, left and center</a>.  All of my problems were magically solved simply by the addition of <a href="https://mmonit.com/monit/">Monit</a> to watch dog the sidekiq process and restart it when it gets too large.  And while this solved my sidekiq problem, two nights ago, I ran out of disc space on a key resource – my MariaDB instance.</p>
+
+<p>One approach would be to continue to use Monit and add rules to it for disc space monitoring but I’ve been intrigued by the <em>simple</em> configuration that <a href="http://www.mikeperham.com">Mike Perham’s</a> <a href="https://github.com/mperham/inspeqtor">Inspeqtor</a> offers.  Sidekiq has served me well as of late and Mike’s support, even <a href="https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html">the free community support</a>, he offers is fantastic.  So rather than double down on Monit, I’m going to branch out and use Inspeqtor.</p>
+
+<h1 id="goals">Goals</h1>
+
+<p>We want to use Inspeqtor as follows:</p>
+
+<ul>
+  <li>be configured on all boxes by ansible so we never have to do anything manually</li>
+  <li>function on Ubuntu 14.04 with upstart</li>
+  <li>deliver alerts by email (sendmail) that contain the problem and the instance id</li>
+  <li>monitor sidekiq</li>
+  <li>monitor apache</li>
+  <li>monitor disc space</li>
+  <li>monitor ram</li>
+  <li>monitor load</li>
+</ul>
+
+<h1 id="inspeqtor-vs-monit">Inspeqtor vs Monit</h1>
+
+<p>Monit and Inspeqtor are two very different animals.  Whereas Monit is a general purpose monitoring tool, Inspeqtor is specialized focusing on process that are run thru <a href="https://github.com/mperham/inspeqtor/wiki/Initd">init.d / upstart</a> as well as generalized machine configuration.  So while you can technically do more with Monit, you’ll have a much easier time doing what you generally need with Inspeqtor.</p>
+
+<h1 id="configuring-sendmail">Configuring Sendmail</h1>
+
+<p>Inspeqtor can work with a number of different email delivery approaches from gmail to a local sendmail instance.  The configuration for Inspeqtor for different email delivery engines looks like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>#
+# This is the default alert statement.  This tells Inspeqtor where to
+# send alert emails.
+#
+# Here we'll configure the default to send email alerts via gmail to "dev@example.com"
+#
+# send alerts via gmail
+#   with username mike, password fuzzbucket, to_email dev@example.com
+
+#
+# Here's a generic email example, not requiring Google Mail.
+# Your SMTP server must accept Authentication/TLS.
+#
+# send alerts via email with
+#   username bob,
+#   password "foo bar baz",
+#   smtp_server smtp.example.com,
+#   tls_port 587,
+#   to_email analytics@example.com,
+#   from_email inspeqtor@example.com
+
+#
+# Here is another generic email example, not requiring authentication.
+# Your local SMTP server must be listening on port 25.
+#
+send alerts via email with
+  smtp_server localhost,
+  to_email fuzzygroup@gmail.com,
+  from_email inspeqtor@
+</code></pre>
+</div>
+
+<p>I’ve got the other approaches commented out just showing the local smtp_server (in my case sendmail).</p>
+
+<p>Here’s an ansible role to configure sendmail:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>mkdir -p ansible_root/roles/sendmail/tasks
+touch ansible_root/roles/sendmail/tasks/main.yml
+</code></pre>
+</div>
+
+<p>Edit the file main.yml and add these lines:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>- name: install sendmail 
+  apt: name=sendmail state=present
+</code></pre>
+</div>
+
+<p>In your playbook, call this role as follows:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>- { role: sendmail, tags: sendmail}
+</code></pre>
+</div>
+
+<p>Here’s how to verify if your local sendmail instance is actually running:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>echo "ficrawler1 My test email being sent from sendmail" | /usr/sbin/sendmail fuzzygroup@gmail.com
+</code></pre>
+</div>
+
+<p>Check your inbox for the message.  You may find that you need to check a spam or junk folder since this isn’t a modern mail server using SPIF / DKIM standards.  If the message didn’t arrive then you need to troubleshoot and figure out why.</p>
+
+<h1 id="configuring-inspeqtor-with-ansible">Configuring Inspeqtor with Ansible</h1>
+
+<p>Inspeqtor relies on several files that determine how it works:</p>
+
+<ul>
+  <li>/etc/inspeqtor/inspeqtor.conf – how the overall inspeqtor instance runs and how to notifies</li>
+  <li>/etc/inspeqtor/host.inq – what to monitor about the host itself</li>
+  <li>/etc/inspeqtor/services.d/WHATEVER_YOU_WANT_TO_MONITOR.inq</li>
+</ul>
+
+<p>Examples of each of these are given below.</p>
+
+<h2 id="here-is-etcinspeqtorinspeqtorconf">Here is /etc/inspeqtor/inspeqtor.conf</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>#
+# Welcome to the global Inspeqtor config file!
+#
+
+#
+# The cycle time is how often Inspeqtor will capture metrics and
+# verify rules, in seconds.
+#
+set cycle_time 15
+
+#
+# The deploy length is the maximum length of your application deploys, in
+# seconds. If you start a deploy and then never signal its finish, Inspeqtor will
+# time out the deploy after this many seconds and start checking rules again.
+#
+# This is a failsafe.  Normally you will signal Inspeqtor when your
+# deploys finish.
+#
+set deploy_length 300
+
+#
+# Set logging level, legal values are:
+#   warn
+#   info (default)
+#   debug (-l debug)
+#   verbose (-l verbose)
+# At info, inspeqtor will not log anything when everything is ok.
+#
+set log_level info
+
+# Inspeqtor Pro can send collected metrics to Statsd
+# set statsd_location localhost:8125
+
+#
+# This is the default alert statement.  This tells Inspeqtor where to
+# send alert emails.
+#
+# Here we'll configure the default to send email alerts via gmail to "dev@example.com"
+#
+# send alerts via gmail
+#   with username mike, password fuzzbucket, to_email dev@example.com
+
+#
+# Here's a generic email example, not requiring Google Mail.
+# Your SMTP server must accept Authentication/TLS.
+#
+# send alerts via email with
+#   username bob,
+#   password "foo bar baz",
+#   smtp_server smtp.example.com,
+#   tls_port 587,
+#   to_email analytics@example.com,
+#   from_email inspeqtor@example.com
+
+#
+# Here is another generic email example, not requiring authentication.
+# Your local SMTP server must be listening on port 25.
+#
+send alerts via email with
+  smtp_server localhost,
+  to_email fuzzygroup@gmail.com,
+  from_email inspeqtor@ip-172-31-38-2
+</code></pre>
+</div>
+
+<h2 id="here-is-etcinspeqtorhostinq">Here is /etc/inspeqtor/host.inq</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>check host
+  if load:1 &gt; 1 for 2 cycles then alert
+  if load:5 &gt; 1 then alert
+  if cpu:user &gt; 95% for 2 cycles then alert
+  if swap &gt; 20% for 2 cycles then alert
+  if disk:/ &gt; 90% then alert
+</code></pre>
+</div>
+
+<h2 id="here-is-etcinspeqtorservicesdserviceinqtemplate">Here is /etc/inspeqtor/services.d/service.inq.template</h2>
+
+<p>This is a generic starting point template to monitor any service in /etc/init.d</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cat  /etc/inspeqtor/services.d/service.inq.template
+# NOTE this file should be renamed to &lt;name&gt;.inq where name is explained below.
+#
+# Inspeqtor is designed to monitor a host and the services running
+# on that host. Services must be controlled by your OS's init system:
+# upstart, systemd, launchd or runit.
+#
+# Inspeqtor knows how to monitor services for each major init system,
+# as long as you give the exact name of that service.
+#
+# In systemd:
+#   /usr/lib/systemd/system/&lt;name&gt;.service
+# In upstart:
+#   /etc/init/&lt;name&gt;.conf
+# In runit:
+#   /etc/service/&lt;name&gt;/run
+# In launchd:
+#   ~/Library/LaunchAgents/&lt;name&gt;.plist
+#
+# Supporting traditional init.d is a little trickier, see the
+# https://github.com/mperham/inspeqtor/wiki/Initd wiki page
+# for more details. tl;dr You need to populate a PID file at
+# /var/run/&lt;name&gt;.pid or /var/run/&lt;name&gt;/&lt;name&gt;.pid
+#
+
+#
+# Here we define the service to monitor. The name of the service
+# ('mysql') must match the name that your init system uses.
+# You'll want to rename this file to mysql.inq to match.
+#
+check service mysql
+
+  #
+  # if you want to monitor daemon-specific metrics, you'll need
+  # to tell Inspeqtor how to connect to the daemon.
+  # See https://github.com/mperham/inspeqtor/wiki/Daemon-Specific-Metrics
+  #
+  #with username root, socket /var/run/mysqld/mysqld.sock
+
+  #
+  # Add any normal process metrics you want to verify.
+  #
+  if memory:rss &gt; 2g then alert
+
+  #
+  # Since a cycle defaults to 15 seconds, this rule triggers if
+  # there's excessive CPU usage for more than 30 seconds.
+  #
+  if cpu:user &gt; 90% for 2 cycles then alert
+
+  #
+  # Alert if we see too many queries or slow queries. These are
+  # examples of Daemon-Specific Metrics.
+  #
+  #if mysql:Queries &gt; 100/sec for 2 cycles then alert
+  #if mysql:Slow_queries &gt; 1/sec for 2 cycles then alert    
+</code></pre>
+</div>
+
+<p>For more on writing your own inq files, see the <a href="https://github.com/mperham/inspeqtor/wiki/INQ-Configuration">wiki</a>.</p>
+
+<h2 id="here-is-my-sample-sidekiqinq-file">Here is my sample sidekiq.inq file</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>check service sidekiq
+  if memory:rss &gt; 6g then alert, restart
+  if cpu:user &gt; 95% for 2 cycles then alert
+</code></pre>
+</div>
+
+<h2 id="configuring-inspeqtor-with-ansible-1">Configuring Inspeqtor with Ansible</h2>
+
+<p>Rather than write out a playbook, roles and template files manually, I hosted it on <a href="https://github.com/fuzzygroup/ansible_inspeqtor">github</a>.  Clone it from there and adapt it for your needs.  But, in case you’re curious, here is the overall structure:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>tree
+.
+├── ansible.cfg
+├── group_vars
+│   └── all
+├── inventories
+│   └── ficrawler11
+├── playbook_inspeqtor.yml
+├── playbooks
+├── readme.md
+└── roles
+    ├── inspeqtor
+    │   ├── files
+    │   │   ├── apache.inq
+    │   │   ├── host.inq
+    │   │   ├── inspeqtor.conf
+    │   │   └── sidekiq.inq
+    │   └── tasks
+    │       └── main.yml
+    ├── sendmail
+    │   └── tasks
+    │       └── main.yml
+    └── setup
+        └── tasks
+            └── main.yml
+</code></pre>
+</div>
+
+<p>The setup task exists to register an ansible variable that gives the instance-id so it can be used in alerting.  This is handled by calling the <a href="https://fuzzygroup.github.io/blog/aws/2016/09/07/aws-tutorial-getting-your-instance-id.html">instance id api</a> which I covered previously.  While there is an instance_ids method in the <a href="http://docs.ansible.com/ansible/ec2_module.html">Ansible EC2 module</a>, this approach means you don’t have your security keys as its a private API you only call from inside the instance itself.</p>
+
+<h1 id="managing-inspeqtor-on-a-daily-basis">Managing Inspeqtor on a Daily Basis</h1>
+
+<p>With almost any Unix tool you need to know how to do at least two things:</p>
+
+<ul>
+  <li>start / stop</li>
+  <li>view logs</li>
+</ul>
+
+<p>Start / Stop on Ubuntu is handled with:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo service inspeqtor restart
+</code></pre>
+</div>
+
+<p>Logs can be viewed with:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo tail -f /var/log/upstart/inspeqtor.log  
+</code></pre>
+</div>
+
+<h1 id="more-info">More Info</h1>
+
+<p>More info on Inspeqtor can be found on the <a href="https://github.com/mperham/inspeqtor/wiki">wiki</a>.</p>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

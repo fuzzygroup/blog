@@ -6,9 +6,349 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 19 Oct 2016 07:06:37 -0400</pubDate>
-    <lastBuildDate>Wed, 19 Oct 2016 07:06:37 -0400</lastBuildDate>
+    <pubDate>Thu, 20 Oct 2016 15:31:56 -0400</pubDate>
+    <lastBuildDate>Thu, 20 Oct 2016 15:31:56 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>AWS Tutorial 20 - Adding Machine and Process Monitoring To Your AWS Instances with Inspeqtor</title>
+        <description>&lt;p&gt;&lt;strong&gt;Disclaimer&lt;/strong&gt;: Inspeqtor is an excellent piece of open source software, any errors are mine and mine alone.  This was fully tested by deploying onto a clean EC2 instance and verifying that it functioned correctly end to end.&lt;/p&gt;
+
+&lt;p&gt;One of the aspects of cloud computing versus traditional hosting is that with cloud computing you tend to work with computing resources that, in general, are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;less &lt;strong&gt;powerful&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;less &lt;strong&gt;reliable&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;have less &lt;strong&gt;storage&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Finally there tend to be &lt;strong&gt;more&lt;/strong&gt; of these resources.  One way to term this might be that traditional data centers are &lt;em&gt;molecular&lt;/em&gt; where as cloud computing is more &lt;em&gt;atomic&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;In my own experience, I ran a data center for 5 years without having to worry about process monitoring and tools like Monit or Inspeqtor but the very first time I put my AWS data center under heavy load, I found things &lt;a href=&quot;https://fuzzygroup.github.io/blog/tag.html#ssh&quot;&gt;crashing right, left and center&lt;/a&gt;.  All of my problems were magically solved simply by the addition of &lt;a href=&quot;https://mmonit.com/monit/&quot;&gt;Monit&lt;/a&gt; to watch dog the sidekiq process and restart it when it gets too large.  And while this solved my sidekiq problem, two nights ago, I ran out of disc space on a key resource – my MariaDB instance.&lt;/p&gt;
+
+&lt;p&gt;One approach would be to continue to use Monit and add rules to it for disc space monitoring but I’ve been intrigued by the &lt;em&gt;simple&lt;/em&gt; configuration that &lt;a href=&quot;http://www.mikeperham.com&quot;&gt;Mike Perham’s&lt;/a&gt; &lt;a href=&quot;https://github.com/mperham/inspeqtor&quot;&gt;Inspeqtor&lt;/a&gt; offers.  Sidekiq has served me well as of late and Mike’s support, even &lt;a href=&quot;https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html&quot;&gt;the free community support&lt;/a&gt;, he offers is fantastic.  So rather than double down on Monit, I’m going to branch out and use Inspeqtor.&lt;/p&gt;
+
+&lt;h1 id=&quot;goals&quot;&gt;Goals&lt;/h1&gt;
+
+&lt;p&gt;We want to use Inspeqtor as follows:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;be configured on all boxes by ansible so we never have to do anything manually&lt;/li&gt;
+  &lt;li&gt;function on Ubuntu 14.04 with upstart&lt;/li&gt;
+  &lt;li&gt;deliver alerts by email (sendmail) that contain the problem and the instance id&lt;/li&gt;
+  &lt;li&gt;monitor sidekiq&lt;/li&gt;
+  &lt;li&gt;monitor apache&lt;/li&gt;
+  &lt;li&gt;monitor disc space&lt;/li&gt;
+  &lt;li&gt;monitor ram&lt;/li&gt;
+  &lt;li&gt;monitor load&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;inspeqtor-vs-monit&quot;&gt;Inspeqtor vs Monit&lt;/h1&gt;
+
+&lt;p&gt;Monit and Inspeqtor are two very different animals.  Whereas Monit is a general purpose monitoring tool, Inspeqtor is specialized focusing on process that are run thru &lt;a href=&quot;https://github.com/mperham/inspeqtor/wiki/Initd&quot;&gt;init.d / upstart&lt;/a&gt; as well as generalized machine configuration.  So while you can technically do more with Monit, you’ll have a much easier time doing what you generally need with Inspeqtor.&lt;/p&gt;
+
+&lt;h1 id=&quot;configuring-sendmail&quot;&gt;Configuring Sendmail&lt;/h1&gt;
+
+&lt;p&gt;Inspeqtor can work with a number of different email delivery approaches from gmail to a local sendmail instance.  The configuration for Inspeqtor for different email delivery engines looks like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#
+# This is the default alert statement.  This tells Inspeqtor where to
+# send alert emails.
+#
+# Here we'll configure the default to send email alerts via gmail to &quot;dev@example.com&quot;
+#
+# send alerts via gmail
+#   with username mike, password fuzzbucket, to_email dev@example.com
+
+#
+# Here's a generic email example, not requiring Google Mail.
+# Your SMTP server must accept Authentication/TLS.
+#
+# send alerts via email with
+#   username bob,
+#   password &quot;foo bar baz&quot;,
+#   smtp_server smtp.example.com,
+#   tls_port 587,
+#   to_email analytics@example.com,
+#   from_email inspeqtor@example.com
+
+#
+# Here is another generic email example, not requiring authentication.
+# Your local SMTP server must be listening on port 25.
+#
+send alerts via email with
+  smtp_server localhost,
+  to_email fuzzygroup@gmail.com,
+  from_email inspeqtor@
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I’ve got the other approaches commented out just showing the local smtp_server (in my case sendmail).&lt;/p&gt;
+
+&lt;p&gt;Here’s an ansible role to configure sendmail:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir -p ansible_root/roles/sendmail/tasks
+touch ansible_root/roles/sendmail/tasks/main.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Edit the file main.yml and add these lines:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- name: install sendmail 
+  apt: name=sendmail state=present
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In your playbook, call this role as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: sendmail, tags: sendmail}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here’s how to verify if your local sendmail instance is actually running:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;echo &quot;ficrawler1 My test email being sent from sendmail&quot; | /usr/sbin/sendmail fuzzygroup@gmail.com
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Check your inbox for the message.  You may find that you need to check a spam or junk folder since this isn’t a modern mail server using SPIF / DKIM standards.  If the message didn’t arrive then you need to troubleshoot and figure out why.&lt;/p&gt;
+
+&lt;h1 id=&quot;configuring-inspeqtor-with-ansible&quot;&gt;Configuring Inspeqtor with Ansible&lt;/h1&gt;
+
+&lt;p&gt;Inspeqtor relies on several files that determine how it works:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;/etc/inspeqtor/inspeqtor.conf – how the overall inspeqtor instance runs and how to notifies&lt;/li&gt;
+  &lt;li&gt;/etc/inspeqtor/host.inq – what to monitor about the host itself&lt;/li&gt;
+  &lt;li&gt;/etc/inspeqtor/services.d/WHATEVER_YOU_WANT_TO_MONITOR.inq&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Examples of each of these are given below.&lt;/p&gt;
+
+&lt;h2 id=&quot;here-is-etcinspeqtorinspeqtorconf&quot;&gt;Here is /etc/inspeqtor/inspeqtor.conf&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#
+# Welcome to the global Inspeqtor config file!
+#
+
+#
+# The cycle time is how often Inspeqtor will capture metrics and
+# verify rules, in seconds.
+#
+set cycle_time 15
+
+#
+# The deploy length is the maximum length of your application deploys, in
+# seconds. If you start a deploy and then never signal its finish, Inspeqtor will
+# time out the deploy after this many seconds and start checking rules again.
+#
+# This is a failsafe.  Normally you will signal Inspeqtor when your
+# deploys finish.
+#
+set deploy_length 300
+
+#
+# Set logging level, legal values are:
+#   warn
+#   info (default)
+#   debug (-l debug)
+#   verbose (-l verbose)
+# At info, inspeqtor will not log anything when everything is ok.
+#
+set log_level info
+
+# Inspeqtor Pro can send collected metrics to Statsd
+# set statsd_location localhost:8125
+
+#
+# This is the default alert statement.  This tells Inspeqtor where to
+# send alert emails.
+#
+# Here we'll configure the default to send email alerts via gmail to &quot;dev@example.com&quot;
+#
+# send alerts via gmail
+#   with username mike, password fuzzbucket, to_email dev@example.com
+
+#
+# Here's a generic email example, not requiring Google Mail.
+# Your SMTP server must accept Authentication/TLS.
+#
+# send alerts via email with
+#   username bob,
+#   password &quot;foo bar baz&quot;,
+#   smtp_server smtp.example.com,
+#   tls_port 587,
+#   to_email analytics@example.com,
+#   from_email inspeqtor@example.com
+
+#
+# Here is another generic email example, not requiring authentication.
+# Your local SMTP server must be listening on port 25.
+#
+send alerts via email with
+  smtp_server localhost,
+  to_email fuzzygroup@gmail.com,
+  from_email inspeqtor@ip-172-31-38-2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;here-is-etcinspeqtorhostinq&quot;&gt;Here is /etc/inspeqtor/host.inq&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;check host
+  if load:1 &amp;gt; 1 for 2 cycles then alert
+  if load:5 &amp;gt; 1 then alert
+  if cpu:user &amp;gt; 95% for 2 cycles then alert
+  if swap &amp;gt; 20% for 2 cycles then alert
+  if disk:/ &amp;gt; 90% then alert
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;here-is-etcinspeqtorservicesdserviceinqtemplate&quot;&gt;Here is /etc/inspeqtor/services.d/service.inq.template&lt;/h2&gt;
+
+&lt;p&gt;This is a generic starting point template to monitor any service in /etc/init.d&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cat  /etc/inspeqtor/services.d/service.inq.template
+# NOTE this file should be renamed to &amp;lt;name&amp;gt;.inq where name is explained below.
+#
+# Inspeqtor is designed to monitor a host and the services running
+# on that host. Services must be controlled by your OS's init system:
+# upstart, systemd, launchd or runit.
+#
+# Inspeqtor knows how to monitor services for each major init system,
+# as long as you give the exact name of that service.
+#
+# In systemd:
+#   /usr/lib/systemd/system/&amp;lt;name&amp;gt;.service
+# In upstart:
+#   /etc/init/&amp;lt;name&amp;gt;.conf
+# In runit:
+#   /etc/service/&amp;lt;name&amp;gt;/run
+# In launchd:
+#   ~/Library/LaunchAgents/&amp;lt;name&amp;gt;.plist
+#
+# Supporting traditional init.d is a little trickier, see the
+# https://github.com/mperham/inspeqtor/wiki/Initd wiki page
+# for more details. tl;dr You need to populate a PID file at
+# /var/run/&amp;lt;name&amp;gt;.pid or /var/run/&amp;lt;name&amp;gt;/&amp;lt;name&amp;gt;.pid
+#
+
+#
+# Here we define the service to monitor. The name of the service
+# ('mysql') must match the name that your init system uses.
+# You'll want to rename this file to mysql.inq to match.
+#
+check service mysql
+
+  #
+  # if you want to monitor daemon-specific metrics, you'll need
+  # to tell Inspeqtor how to connect to the daemon.
+  # See https://github.com/mperham/inspeqtor/wiki/Daemon-Specific-Metrics
+  #
+  #with username root, socket /var/run/mysqld/mysqld.sock
+
+  #
+  # Add any normal process metrics you want to verify.
+  #
+  if memory:rss &amp;gt; 2g then alert
+
+  #
+  # Since a cycle defaults to 15 seconds, this rule triggers if
+  # there's excessive CPU usage for more than 30 seconds.
+  #
+  if cpu:user &amp;gt; 90% for 2 cycles then alert
+
+  #
+  # Alert if we see too many queries or slow queries. These are
+  # examples of Daemon-Specific Metrics.
+  #
+  #if mysql:Queries &amp;gt; 100/sec for 2 cycles then alert
+  #if mysql:Slow_queries &amp;gt; 1/sec for 2 cycles then alert    
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;For more on writing your own inq files, see the &lt;a href=&quot;https://github.com/mperham/inspeqtor/wiki/INQ-Configuration&quot;&gt;wiki&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;here-is-my-sample-sidekiqinq-file&quot;&gt;Here is my sample sidekiq.inq file&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;check service sidekiq
+  if memory:rss &amp;gt; 6g then alert, restart
+  if cpu:user &amp;gt; 95% for 2 cycles then alert
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;configuring-inspeqtor-with-ansible-1&quot;&gt;Configuring Inspeqtor with Ansible&lt;/h2&gt;
+
+&lt;p&gt;Rather than write out a playbook, roles and template files manually, I hosted it on &lt;a href=&quot;https://github.com/fuzzygroup/ansible_inspeqtor&quot;&gt;github&lt;/a&gt;.  Clone it from there and adapt it for your needs.  But, in case you’re curious, here is the overall structure:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;tree
+.
+├── ansible.cfg
+├── group_vars
+│   └── all
+├── inventories
+│   └── ficrawler11
+├── playbook_inspeqtor.yml
+├── playbooks
+├── readme.md
+└── roles
+    ├── inspeqtor
+    │   ├── files
+    │   │   ├── apache.inq
+    │   │   ├── host.inq
+    │   │   ├── inspeqtor.conf
+    │   │   └── sidekiq.inq
+    │   └── tasks
+    │       └── main.yml
+    ├── sendmail
+    │   └── tasks
+    │       └── main.yml
+    └── setup
+        └── tasks
+            └── main.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The setup task exists to register an ansible variable that gives the instance-id so it can be used in alerting.  This is handled by calling the &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/09/07/aws-tutorial-getting-your-instance-id.html&quot;&gt;instance id api&lt;/a&gt; which I covered previously.  While there is an instance_ids method in the &lt;a href=&quot;http://docs.ansible.com/ansible/ec2_module.html&quot;&gt;Ansible EC2 module&lt;/a&gt;, this approach means you don’t have your security keys as its a private API you only call from inside the instance itself.&lt;/p&gt;
+
+&lt;h1 id=&quot;managing-inspeqtor-on-a-daily-basis&quot;&gt;Managing Inspeqtor on a Daily Basis&lt;/h1&gt;
+
+&lt;p&gt;With almost any Unix tool you need to know how to do at least two things:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;start / stop&lt;/li&gt;
+  &lt;li&gt;view logs&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Start / Stop on Ubuntu is handled with:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo service inspeqtor restart
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Logs can be viewed with:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo tail -f /var/log/upstart/inspeqtor.log  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;more-info&quot;&gt;More Info&lt;/h1&gt;
+
+&lt;p&gt;More info on Inspeqtor can be found on the &lt;a href=&quot;https://github.com/mperham/inspeqtor/wiki&quot;&gt;wiki&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 20 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/10/20/aws-tutorial-20-adding-machine-and-process-monitoring-to-your-aws-instance-with-inspeqtor.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/20/aws-tutorial-20-adding-machine-and-process-monitoring-to-your-aws-instance-with-inspeqtor.html</guid>
+        
+        <category>aws</category>
+        
+        <category>inspeqtor</category>
+        
+        <category>ubuntu</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
     
       <item>
         <title>Review - Indianpolis Ansible Meetup</title>
@@ -1365,70 +1705,6 @@ Run `bundle install` to install missing gems.
         <category>brew</category>
         
         <category>tmux</category>
-        
-        
-        <category>ruby</category>
-        
-      </item>
-    
-      <item>
-        <title>Sidekiq - Graceful Versus Forceful</title>
-        <description>&lt;p&gt;So now that I’m using Sidekiq for background processes, I need to be able to start it up, shut it down and I need to understand the difference between forceful and graceful.&lt;/p&gt;
-
-&lt;h1 id=&quot;running-sidekiq-interactively&quot;&gt;Running Sidekiq Interactively&lt;/h1&gt;
-
-&lt;p&gt;This is easy and we all should know this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd /my_rails_app/where_ever_that_is
-bundle exec sidekiq
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;This will run Sidekiq interactively.  Now if you want it to run even if your connection to the remote box drops then you need to use Tmux or something similar.&lt;/p&gt;
-
-&lt;h1 id=&quot;running-it-as-a-service&quot;&gt;Running it as a Service&lt;/h1&gt;
-
-&lt;p&gt;See my last blog post on using Ansible to configure Sidekiq and I think that will become clear.&lt;/p&gt;
-
-&lt;h1 id=&quot;forceful-versus-graceful&quot;&gt;Forceful versus Graceful&lt;/h1&gt;
-
-&lt;p&gt;Forceful versus Graceful defines how you want Sidekiq to shut down and it basically boils down to the speed of the shutdown.  Sidekiq runs “jobs” which basically means “long running methods” and here’s the difference:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;forceful – shut down NOW; abandon all work in process&lt;/li&gt;
-  &lt;li&gt;graceful – tell sidekiq to shut down when each of its threads is done processing&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Let’s use an analogy here to make this clear.  Imagine that sidekiq was a hitchhiker you picked up on the side of the road.  Forceful would be you opening the door and kicking the hitchhiker out while the car is still moving.  Graceful would be you saying “I think you need to get out at the next exit and the hitchhiker saying - &lt;em&gt;I’m sorry but I need a bit more time; I’ll get out when I’m ready&lt;/em&gt;”.&lt;/p&gt;
-
-&lt;p&gt;There isn’t a right answer here whether or not to use Forceful or Graceful – it really depends on your context.  If you use Sidekiq to handle short lived asynchronous tasks like, say, sending a welcome email then you probably want to use Graceful since it shouldn’t take that long for each thread to idle down.  I, on the other hand, use sidekiq to handle tasks that might take hours or even a whole day to finish so I usually use Forceful.  Given that my tasks have their own journal, this isn’t terrible.  It isn’t great but it isn’t terrible.&lt;/p&gt;
-
-&lt;p&gt;Here’s an example of a Forceful shutdown:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ps -ef | grep sidekiq | grep -v grep | awk '{print $2}' | xargs kill -9
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Here’s an example of a Graceful shutdown:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ps auwwx | grep sidekiq  # and give the pid value to the next command where &amp;lt;pid&amp;gt; is
-sidekiqctl stop &amp;lt;pid&amp;gt; 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;My thanks to the fine community at &lt;a href=&quot;http://www.sidekiq.com/&quot;&gt;Stack Overflow&lt;/a&gt; for these &lt;a href=&quot;http://stackoverflow.com/questions/12143350/gracefully-shutting-down-sidekiq-processes&quot;&gt;Sidekiq Graceful answers&lt;/a&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 13 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/ruby/2016/10/13/sidekiq-graceful-versus-forceful.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ruby/2016/10/13/sidekiq-graceful-versus-forceful.html</guid>
-        
-        <category>rails</category>
-        
-        <category>ruby</category>
-        
-        <category>sidekiq</category>
-        
-        <category>unix</category>
         
         
         <category>ruby</category>
