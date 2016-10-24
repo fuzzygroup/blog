@@ -6,9 +6,99 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 21 Oct 2016 10:54:07 -0400</pubDate>
-    <lastBuildDate>Fri, 21 Oct 2016 10:54:07 -0400</lastBuildDate>
+    <pubDate>Mon, 24 Oct 2016 07:49:56 -0400</pubDate>
+    <lastBuildDate>Mon, 24 Oct 2016 07:49:56 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>AWS Tutorial 21 - Naming Your EC2 Machines, Defining Your Bash Prompt and More</title>
+        <description>&lt;p&gt;It has been said that there are really only two hard problems in computer science – &lt;a href=&quot;http://martinfowler.com/bliki/TwoHardThings.html&quot;&gt;naming things and cache invalidation&lt;/a&gt;.  Once upon a time I would have argued against that but increasingly I tend to fall into this camp.  I would tend to argue that if you can’t name something that you don’t &lt;em&gt;understand&lt;/em&gt; it.  And I’ve recently run up against this in terms of my EC2 instances:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;how should they be named&lt;/li&gt;
+  &lt;li&gt;where should that name be represented&lt;/li&gt;
+  &lt;li&gt;how should the bash prompt look&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I know this sounds simple but its really not.  We’re still at the stage of actively debugging our EC2 cluster of boxes and I’m regularly zipping into a box or out of a box via SSH along with frequent cursing such as “Dang it – why isn’t X working #&lt;em&gt;$#&amp;amp;$()#$&lt;/em&gt;#($)”.  I know according to a lot of people you’re not supposed to bother SSH’ing into EC2 instances – they are supposed to be single purpose, ephemeral, etc.  But even though everything is live, well, we’re still debugging &lt;strong&gt;everything&lt;/strong&gt;.  Sorry folks but that’s just the state of my life right now.&lt;/p&gt;
+
+&lt;p&gt;So I’ve got some number of EC2 instances – more than 10, less than 1000 and any one of them could fail at any point.  I might learn about failures from &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/10/20/aws-tutorial-20-adding-machine-and-process-monitoring-to-your-aws-instance-with-inspeqtor.html&quot;&gt;Inspeqtor&lt;/a&gt; or &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/10/16/aws-tutorial-17-wrapping-up-our-ssh-issues-by-using-monit-for-process-monitoring.html&quot;&gt;Monit&lt;/a&gt; or by some other means (log files).  Some failures I might discard and others I might need to investigate at the box level by ssh’ing in.  So what has this told us:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We need to easily be able to get into any box at any time&lt;/li&gt;
+  &lt;li&gt;Any alerts that we get need to include the machine name&lt;/li&gt;
+  &lt;li&gt;We need to know what box we’re in when we are in it (otherwise its easy to get confused)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And what do we know about working with EC2 boxes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The instance id is really all that Amazon cares about&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Given that we know that EC2 machines are supposed to be non snowflakes, ephemeral and automatically provisioned, this, to me, argues for a naming convention something like:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PrefixRoleNumber
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;with those tokens defined as follows:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;prefix - something distinct to the overall project; allows you to have different machines in the same aws account with the same role&lt;/li&gt;
+  &lt;li&gt;role - what the machine is doing; its function; something like worker or web&lt;/li&gt;
+  &lt;li&gt;number - just an integer&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So if you this all together you get a naming structure like:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;fiworker1&lt;/li&gt;
+  &lt;li&gt;fiweb1&lt;/li&gt;
+  &lt;li&gt;fiworker199&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And then if you pair this with an ssh config file where names like these are mapped to hosts, particularly if you generate your SSH config file dynamically, you can easily ssh into any box by typing something like &lt;strong&gt;ssh fiworker199&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Note: If we are going to have a single AWS account manage boxes across multiple projects then we may want to inject the prefix into the role as well.  This would allow automated manipulation of classes of boxes by just tapping into the ec2 name / value space.  If we don’t do this then we might manipulate say all web servers for all projects at a time instead of just the web servers for a single project.&lt;/p&gt;
+
+&lt;p&gt;So now we know how we want to name boxes, the question comes up as to our bash prompt (or zshell prompt if you’re fancy).  I’m not a bash expert by any means but I do know the importance of a good prompt.  What we likely want is something like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;username@local_ip@machine_name@instance_id:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;That’s long but it actually gives us everything we need.  The advantage to a token like @ being injected is that when you double click a portion of the prompt you’ll get that information selected so you’re just a command+c away from copying it to the clipboard for use somewhere else.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-ansible-side-of-things&quot;&gt;The Ansible Side of Things&lt;/h1&gt;
+
+&lt;p&gt;Given how much I do with Ansible, you’re likely not surprised that I’m going to automate this.  Given the number of boxes, automation is the only way to go and Ansible, while quirky, is a fantastic tool.&lt;/p&gt;
+
+&lt;p&gt;Given how well my previous approach of illustrating the structure and then giving a git repo for the code went recently, I’m doing the same thing again:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;tree .
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here’s the git repo.&lt;/p&gt;
+
+&lt;p&gt;One of the tricks that we’re going to use to make this work is push variables at the host level into the inventory file.  This is a very simple trick&lt;/p&gt;
+
+&lt;p&gt;Here’s how to use it:&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 22 Oct 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/10/22/aws-tutorial-21-what-should-your-ec2-bash-prompt-look-like.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/22/aws-tutorial-21-what-should-your-ec2-bash-prompt-look-like.html</guid>
+        
+        <category>aws</category>
+        
+        <category>bash</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
     
       <item>
         <title>Startup Learnings What Francois Schiettecatte Taught Me</title>
@@ -1554,110 +1644,6 @@ PING web-1166333941.us-west-2.elb.amazonaws.com (52.41.182.115): 56 data bytes
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/16/aws-tutorial-18-when-you-ve-lost-you-web-server-how-to-find-an-aws-resource.html</guid>
         
         <category>aws</category>
-        
-        
-        <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>AWS Tutorial 17 - Wrapping Up Our SSH Issues By Using Monit For Process Monitoring</title>
-        <description>&lt;p&gt;So the solution to our SSH issues is actually fairly simple:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Ruby code is using too much memory / cpu; memory leak?  bad code?  who knows.&lt;/li&gt;
-  &lt;li&gt;A watchdog process needs to look out for processes using too many resources and shut them down so that the underlying init / service system can restart them&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html&quot;&gt;Mike Perham&lt;/a&gt; helpfully pointed out the right approach to solving this - use a systems monitoring tool like &lt;a href=&quot;https://github.com/mperham/inspeqtor&quot;&gt;Inspeqtor&lt;/a&gt; or &lt;a href=&quot;https://mmonit.com/monit/&quot;&gt;Monit&lt;/a&gt;.  I don’t normally do devops to the level that I am now so getting this perspective was key.  Given that its a 50 / 50 choice, I flipped a coin and chose Monit.&lt;/p&gt;
-
-&lt;p&gt;In the rest of this post, I’ll go over how I used Ansible to configure Monit.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-role&quot;&gt;The Role&lt;/h1&gt;
-
-&lt;p&gt;The first thing we need is a role for monit so we’re going to build out our role structure as follows:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir -p your_ansible_root_path/roles/monit/tasks
-mkdir -p your_ansible_root_path/roles/monit/templates
-touch your_ansible_root_path/roles/monit/tasks/main.yml
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Then we’re going to need a few things in our role (main.yml):&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
-- name: install monit
-  apt: pkg=monit state=present
-  
-- name: start monit
-  service: name=monit state=started
-
-- name: install monit sidekiq config file
-  template: src=roles/monit/templates/sidekiq.j2 dest=/etc/monit/conf.d/sidekiq
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Our template for monitoring sidekiq is going to rely on a handful of variables that for simplicity’s sake, I’ve defined in the file all in groupvars:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;app_base: /var/www/apps/banks/
-app_path: /var/www/apps/banks/current/
-server_env: production
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Since I have sidekiq running on two different machines with different configurations, I used variables in the inventory file to define the number of threads and the max ram:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[crawler]
-ficrawlerbig ansible_ssh_host=BLAH1.compute.amazonaws.com  ansible_ssh_private_key_file=/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem  max_sidekiq_memory=&quot;50 GB&quot; max_sidekiq_threads=50
-ficrawler3 ansible_ssh_host=BLAH2.compute.amazonaws.com ansible_ssh_private_key_file=/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem max_sidekiq_memory=&quot;13 GB&quot; max_sidekiq_threads=25
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Here’s what that template looks like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;check process sidekiq
-  with pidfile shared/tmp/pids/sidekiq.pid
-  start program = &quot;cd  &amp;amp;&amp;amp; bundle exec ./bin/sidekiq -C ./config/sidekiq.yml -e &quot;
-  
-  stop program = &quot;/bin/bash -l -c 'cd  &amp;amp;&amp;amp; bundle exec sidekiqctl stop shared/tmp/pids/sidekiq.pid 10'&quot;
-  if totalmem is greater than  for 3 cycles then restart
-  
-  if 3 restarts within 5 cycles then timeout
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And here’s the playbook routine which calls the monit role:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: monit, tags: monit}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Once you put that all together, you’ll have monit watching the sidekiq process on a regular basis.  One thing I didn’t cover above is that we need to modify the config/sidekiq.yml file in the Rails root directory to use the right number of threads.  This is left as an exercise for the reader.&lt;/p&gt;
-
-&lt;h1 id=&quot;conclusion-to-this-series-of-posts-on-ssh-trauma-and-thank-you-time-2&quot;&gt;Conclusion to this Series of Posts on SSH Trauma and Thank You Time 2&lt;/h1&gt;
-
-&lt;p&gt;When I started this series of posts, 16 days ago, I really didn’t think all that much about SSH.  To an Internet developer, ssh is like &lt;em&gt;oxygen&lt;/em&gt;, you only notice it when it is &lt;strong&gt;gone&lt;/strong&gt;.  By having such a fundamental part of the infrastructure go away unexpectedly, it brought me new depths of understanding.  And, all of this occurred, while daily data processing and data crunching was going on.  Even with all the failures, our boxes stopped working.  Yes they would die periodically but I would just restart them while I explored my next hypothesis.  In the real world, business needs don’t stop even though things aren’t working correctly – you still have to get the job done.  And I did.&lt;/p&gt;
-
-&lt;p&gt;Two people were absolutely essential to sorting this all out:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://nickjanetakis.com&quot;&gt;Nick Janetakis&lt;/a&gt;.  I initially met Nick thru his outstandingly excellent &lt;a href=&quot;http://www.udemy.com&quot;&gt;Udemy&lt;/a&gt; &lt;a href=&quot;http://nickjanetakis.com/courses/&quot;&gt;course on Docker&lt;/a&gt; and I’ve since gotten to know him a bit and hired him twice for &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/10/06/aws-tutorial-14-diagnosing-ssh-failures-take-2.html&quot;&gt;ad hoc consulting&lt;/a&gt;.  Nick is a smart guy, knows Docker like the back of his hand and can think.  Thinking always sounds easy but it never is.  Recommended.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.mikeperham.com&quot;&gt;Mike Perham&lt;/a&gt;.  I’ve known of Mike Perham’s work intellectually for years and years and always described him as &lt;em&gt;the best guy in known space for Ruby threading&lt;/em&gt;.  I only met him recently when we adopted sidekiq as a partial solution for this problem.  In Mike’s weekly Happy Hour where he provides &lt;em&gt;free&lt;/em&gt; support to the Ruby community for Sidekiq, &lt;a href=&quot;https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html&quot;&gt;he correctly analyzed the problem and suggested a solution&lt;/a&gt;.  And you can bet that I’ve made sure that we purchased the &lt;a href=&quot;http://sidekiq.org/products/pro&quot;&gt;commercial version of Sidekiq&lt;/a&gt; in order to ensure that we have access to Mike should any future Sidekiq issues come up.  And don’t forget that the commercial version of Sidekiq includes more features as well as support.  Recommended as well.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Thank you Nick; thank you Mike.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 16 Oct 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/10/16/aws-tutorial-17-wrapping-up-our-ssh-issues-by-using-monit-for-process-monitoring.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/10/16/aws-tutorial-17-wrapping-up-our-ssh-issues-by-using-monit-for-process-monitoring.html</guid>
-        
-        <category>aws</category>
-        
-        <category>ssh</category>
-        
-        <category>monit</category>
-        
-        <category>ansible</category>
         
         
         <category>aws</category>
