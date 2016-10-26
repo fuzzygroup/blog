@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Rails Tip How to Fix Could not find a JavaScript runtime
-title: Rails Tip How to Fix Incomplete response received from application
 category: rails
 tags: ["rails", "javascript", "therubyracer", "bundler", "capistrano", "deploy"]
 ---
