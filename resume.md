@@ -22,6 +22,7 @@ Led all development activities for FI Navigator, a leading provider of financial
 
 # President / VP Engineering, AppData, LLC, Indianapolis, IN 2014 - 2015
 Led all development activities for AppData, LLC including:
+
 * Ecommerce based on Braintree and PayPal APIs
 * Crawling based on internally developed multithreaded
 * Data center migration
