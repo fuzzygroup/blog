@@ -1,7 +1,9 @@
 ---
 layout: post
 title: Rails Tip How to Fix Could not find a JavaScript runtime
-tags: ["rails", "apache", "passenger", "bundler", "capistrano", "deploy"]
+title: Rails Tip How to Fix Incomplete response received from application
+category: rails
+tags: ["rails", "javascript", "therubyracer", "bundler", "capistrano", "deploy"]
 ---
 One of my least favorite things in the entire rails ecosystem is deployment.  Deployment was ass painful in 2007 when I started with Rails and it is still ass painful.  Sigh.  Capistrano is worlds better than it used to be but its still tricky.  And you always end up with arcane error messages that you haven't solved in six months or so so you never quite have the answer.
 
