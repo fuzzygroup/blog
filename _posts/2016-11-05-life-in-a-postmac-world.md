@@ -141,7 +141,7 @@ Various things I discovered about Elementary OS and related hardware / software 
 
 Yesterday I got my copy of Linux Format magazine and I laughingly scoffed at the DVD to my son -- "who needs that".  And then earlier today I noticed that the included distro was actually Elementary.  Well, during the course of a very busy work day, I still managed to get an old MacBook up and running Elementary using that same, initially scoffed at DVD.  Here's a pic to prove it:
 
-(elementary_on_old_mac)[/blog/assets/elementary_on_old_mac.jpg]
+![elementary_on_old_mac.jpg](/blog/assets/elementary_on_old_mac.jpg)
 
 This is hardware that I haven't touched in maybe 3 years.  It was even too slow for the kids to play Minecraft on so I pulled it out of the closet and its now sitting alongside my other kit.  Hopefully I'll pull some of the tools above onto it and see how things work.
 
