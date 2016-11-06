@@ -6,9 +6,55 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 06 Nov 2016 02:44:49 -0500</pubDate>
-    <lastBuildDate>Sun, 06 Nov 2016 02:44:49 -0500</lastBuildDate>
+    <pubDate>Sun, 06 Nov 2016 02:54:33 -0500</pubDate>
+    <lastBuildDate>Sun, 06 Nov 2016 02:54:33 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>AWS Tutorial 22 - Making Your Boxes Pingable</title>
+        <description>&lt;p&gt;The security default for AWS is brilliantly simple: &lt;strong&gt;Everything, absolutely everything, is locked down by default&lt;/strong&gt;.  Once you understand that then developing on the AWS platform becomes a lot simpler.  Let’s take, for example, a simple EC2 instance:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;You create it and you would generally assume that a server is pingable.&lt;/li&gt;
+  &lt;li&gt;So you try pinging the DNS name and it fails.  Hm…&lt;/li&gt;
+  &lt;li&gt;So you try pinging the public IP and that fails.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The answer here is simple – everything is locked down by default.  Even something as innocuous as ping.  Every AWS box comes with what’s called a Security Group and Amazon describes this a &lt;em&gt;&lt;a href=&quot;http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html&quot;&gt;virtual firewall that controls the traffic for one or more instances&lt;/a&gt;&lt;/em&gt;.  Every box you create on AWS will automatically get a Security Group, confusingly named, Launch Wizard N where N is just an incrementing integer.  And since most of us generally accept defaults, you may end up with security groups named:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Launch Wizard 1&lt;/li&gt;
+  &lt;li&gt;Launch Wizard 2&lt;/li&gt;
+  &lt;li&gt;Launch Wizard ..&lt;/li&gt;
+  &lt;li&gt;Launch Wizard 11&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;At least that’s what my many attempts at AWS experimentation have left me with.  I’d strongly suggest you name these well.  For the bulk of us, networking is confusing enough without cruft like “Launch Wizard N”.  Honestly!&lt;/p&gt;
+
+&lt;p&gt;Stack Overflow, as always, has a useful &lt;a href=&quot;http://stackoverflow.com/questions/21981796/cannot-ping-aws-ec2-instance&quot;&gt;piece&lt;/a&gt; on this.  Here’s what to do:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;You have to edit the Security Group to which your EC2 instance belongs.  If you don’t yet have a security group then add a new one.&lt;/li&gt;
+  &lt;li&gt;Add a new rule and select the All ICMP option from the drop downs.&lt;/li&gt;
+  &lt;li&gt;If you want to restrict people probing for your instance then lock it down to your own IP address.  If you are using a remote monitoring service, however, like the absolutely wonderful &lt;a href=&quot;http://www.wormly.com&quot;&gt;wormly&lt;/a&gt;, then locking this down to your ip address will prevent that remote service from monitoring via ping.  Given that ping is far less overhead than http monitoring, you might want this so make a real decision here.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Sun, 06 Nov 2016 02:54:27 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/11/06/aws-quickie-making-your-boxes-pingable.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/11/06/aws-quickie-making-your-boxes-pingable.html</guid>
+        
+        <category>aws</category>
+        
+        <category>security_group</category>
+        
+        <category>ping</category>
+        
+        <category>security</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
     
       <item>
         <title>Postmac 002 -- Evaluating Editors for Elementary OS - VS Code, Sublime Text, Atom</title>
@@ -519,51 +565,6 @@ Server: thin
         
         
         <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>Job Hunting for the Senior Engineer</title>
-        <description>&lt;h1 id=&quot;places-to-look-for-work&quot;&gt;Places to Look for Work&lt;/h1&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;http://www.truejob.com/&lt;/li&gt;
-  &lt;li&gt;http://oldgeekjobs.com/&lt;/li&gt;
-  &lt;li&gt;hacker news monthly Who’s Hiring.  Here’s &lt;a href=&quot;https://news.ycombinator.com/item?id=12846216&quot;&gt;November&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;glass-door&quot;&gt;Glass Door&lt;/h1&gt;
-
-&lt;p&gt;https://www.glassdoor.com/Salary/Salesforce-Salaries-E11159.htm&lt;/p&gt;
-
-&lt;h1 id=&quot;its-ok-to-job-hop&quot;&gt;Its Ok to Job Hop&lt;/h1&gt;
-
-&lt;h1 id=&quot;interviewing-tests&quot;&gt;Interviewing Tests&lt;/h1&gt;
-
-&lt;p&gt;Its increasingly common for there to be tests for even senior talent.  Personally I find this beyond insulting but reality is what it is.  Here are some excellent resources that I’ve seen over the years:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://blog.asana.com/2016/03/asana-engineering-interview-guide/&quot;&gt;Asana Seems to take a Decent Approach to this&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Facebook&lt;/li&gt;
-  &lt;li&gt;Google&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;hn-job-search&quot;&gt;HN Job Search&lt;/h1&gt;
-
-&lt;p&gt;https://news.ycombinator.com/item?id=12846216&lt;/p&gt;
-
-&lt;h1 id=&quot;automating-the-process&quot;&gt;Automating the Process&lt;/h1&gt;
-
-&lt;p&gt;I thought it was an interesting exercise to take the last three HackerNews postings and feed it into a job board database.  I’ve got pretty stringent text search requirements and rather than&lt;/p&gt;
-
-&lt;p&gt;Buidl this into a pile of json and then grep over it&lt;/p&gt;
-
-&lt;p&gt;use a hash on the input data as an identifier&lt;/p&gt;
-</description>
-        <pubDate>Tue, 01 Nov 2016 13:01:45 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/11/01/job-hunting-for-the-senior-engineer.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/01/job-hunting-for-the-senior-engineer.html</guid>
-        
         
       </item>
     
