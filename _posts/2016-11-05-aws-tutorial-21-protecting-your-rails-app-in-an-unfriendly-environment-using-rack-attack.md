@@ -10,8 +10,8 @@ The more I do in a cloud environment, the more I learn that cloud hosting, despi
 
 One of the differences between hosting in a traditional data center and on the "cloud" is that the cloud offers a larger *attack surface*.  From the perspective of a security research the idea of an attack surface is as follows:
 
-    The attack surface of a software environment is the sum of the different points (the "attack vectors") where an unauthorized user (the "attacker") can try to enter data to or extract data from an environment.
-    [Wikipedia](https://en.wikipedia.org/wiki/Attack_surface)
+> The attack surface of a software environment is the sum of the different points (the "attack vectors") where an unauthorized user (the "attacker") can try to enter data to or extract data from an environment.
+> [Wikipedia](https://en.wikipedia.org/wiki/Attack_surface)
     
 One way to think of attack surface is in terms of your own system -- you run software on these ports for example.  Each port is a place where we can be attacked.  However there is a meta way to look at the idea of an attack surface -- think about the whole expanse of machines where you host your nodes.  Given the size of AWS in terms of the number of customers it has and the vast number of instances that they host, if you're looking to do something malicious online, would you rather target a tiny regional data center or a vast sprawling expanse of targets like AWS?  I'm not a malicious guy and even I can tell that the right answer here is **AWS**.
 
