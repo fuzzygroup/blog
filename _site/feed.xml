@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 05 Nov 2016 16:45:57 -0400</pubDate>
-    <lastBuildDate>Sat, 05 Nov 2016 16:45:57 -0400</lastBuildDate>
+    <pubDate>Sun, 06 Nov 2016 02:31:11 -0500</pubDate>
+    <lastBuildDate>Sun, 06 Nov 2016 02:31:11 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -318,6 +318,8 @@ alias pbpaste=’xsel –clipboard –output’&lt;/p&gt;
 
 &lt;p&gt;It was a unending session of &lt;strong&gt;suck&lt;/strong&gt; – so bad that I finally asked &lt;a href=&quot;http://www.dasari.me&quot;&gt;Dv&lt;/a&gt; to pair with me on it. And he and I tried a number of things and nothing worked.  Then things started to feel oh so &lt;a href=&quot;https://fuzzygroup.github.io/blog/ruby/2016/10/15/brew-xz-and-nokogiri-and-tmux-an-unmitigated-disaster.html&quot;&gt;familiar&lt;/a&gt;.&lt;/p&gt;
 
+&lt;p&gt;Quick summary if you don’t follow the link – if you’re running RVM inside a Tmux session and something happens to the underlying Tmux session, everything can go absolutely crazy at the core Ruby layer.  And if that happens then Bundler will have its own set of issues.&lt;/p&gt;
+
 &lt;p&gt;So, honestly, I give you this:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Friends Don't Let Friends Bundle Under Tmux
@@ -343,6 +345,179 @@ alias pbpaste=’xsel –clipboard –output’&lt;/p&gt;
         
         
         <category>ruby</category>
+        
+      </item>
+    
+      <item>
+        <title>AWS Tutorial 21 - Protecting Your Rails App In an Unfriendly Environment Using Rack Attack</title>
+        <description>&lt;p&gt;The more I do in a cloud environment, the more I learn that cloud hosting, despite being essentially the same linux stack that I’m used to is just plain &lt;strong&gt;different&lt;/strong&gt;.  Ever since 2008 I’ve done AWS stuff on and off but my focus for core hosting has generally been a stack of Linux boxes in a traditional data center.&lt;/p&gt;
+
+&lt;h1 id=&quot;understanding-the-attack-surface&quot;&gt;Understanding The Attack Surface&lt;/h1&gt;
+
+&lt;p&gt;One of the differences between hosting in a traditional data center and on the “cloud” is that the cloud offers a larger &lt;em&gt;attack surface&lt;/em&gt;.  From the perspective of a security research the idea of an attack surface is as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;The attack surface of a software environment is the sum of the different points (the &quot;attack vectors&quot;) where an unauthorized user (the &quot;attacker&quot;) can try to enter data to or extract data from an environment.
+[Wikipedia](https://en.wikipedia.org/wiki/Attack_surface)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;One way to think of attack surface is in terms of your own system – you run software on these ports for example.  Each port is a place where we can be attacked.  However there is a meta way to look at the idea of an attack surface – think about the whole expanse of machines where you host your nodes.  Given the size of AWS in terms of the number of customers it has and the vast number of instances that they host, if you’re looking to do something malicious online, would you rather target a tiny regional data center or a vast sprawling expanse of targets like AWS?  I’m not a malicious guy and even I can tell that the right answer here is &lt;strong&gt;AWS&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;What sparked this blog post is the other day I tossed up an EC2 instance for a project and I discovered, within minutes, of that instance coming online was this crap in my production.log file:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;::RoutingError: No route matches [GET] &quot;/phpMyAdmin/scripts/setup.php&quot;
+2016-11-01 22:56:58.373977 D [4520:7264940] [3ac9ff5b-0c86-410c-aab4-d78c09a6ec29] Rails -- Started -- {:method=&amp;gt;&quot;GET&quot;, :path=&amp;gt;&quot;/phpmyadmin/scripts/setup.php&quot;, :ip=&amp;gt;&quot;119.97.146.76&quot;}
+2016-11-01 22:56:58.374377 F [4520:7264940 debug_exceptions.rb:7] [3ac9ff5b-0c86-410c-aab4-d78c09a6ec29] Rails -- Exception: ActionController::RoutingError: No route matches [GET] &quot;/phpmyadmin/scripts/setup.php&quot;
+2016-11-01 22:57:00.091348 D [4520:7264940] [1bec8c74-fdbb-4e6f-9347-570b228e37ec] Rails -- Started -- {:method=&amp;gt;&quot;GET&quot;, :path=&amp;gt;&quot;/pma/scripts/setup.php&quot;, :ip=&amp;gt;&quot;119.97.146.76&quot;}
+2016-11-01 22:57:00.091622 F [4520:7264940 debug_exceptions.rb:7] [1bec8c74-fdbb-4e6f-9347-570b228e37ec] Rails -- Exception: ActionController::RoutingError: No route matches [GET] &quot;/pma/scripts/setup.php&quot;
+2016-11-01 22:57:03.753760 D [4520:7264940] [747bb428-70ab-4385-a879-972ba9e81448] Rails -- Started -- {:method=&amp;gt;&quot;GET&quot;, :path=&amp;gt;&quot;/MyAdmin/scripts/setup.php&quot;, :ip=&amp;gt;&quot;119.97.146.76&quot;}
+2016-11-01 22:57:03.754170 F [4520:7264940 debug_exceptions.rb:7] [747bb428-70ab-4385-a879-972ba9e81448] Rails -- Exception: ActionController::RoutingError: No route matches [GET] &quot;/MyAdmin/scripts/setup.php&quot;
+2016-11-02 08:26:12.789703 D [2820:10343780] [f462f464-591a-4171-9aca-67241b22c29d] Rails -- Started -- {:method=&amp;gt;&quot;GET&quot;, :path=&amp;gt;&quot;/testproxy.php&quot;, :ip=&amp;gt;&quot;91.196.50.33&quot;}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;What’s happening here is that a botnet somewhere in the world is probing for software with known security vulnerabilities; phpMyAdmin is a well known source of problems.  According to this &lt;a href=&quot;http://sparkcognition.com/2016/06/sparkblog-navigating-perils-phpmyadmin-security/&quot;&gt;report&lt;/a&gt;, phpMyAdmin is actually the #2 target by volume of security probes.&lt;/p&gt;
+
+&lt;p&gt;So you’re probably thinking something like:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;This is a rails app; I don't have any php apps on my system and so this isn't a problem since there's nothing to find.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And that’s technically true but each of these probes is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;polluting our log files making it harder to find real problems&lt;/li&gt;
+  &lt;li&gt;raising an exception which is computationally expensive i.e. we’re actually paying something for someone to probe our system&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;filtering-inbound-requests-in-rails&quot;&gt;Filtering Inbound Requests in Rails&lt;/h1&gt;
+
+&lt;p&gt;There are lots and lots of ways to deal with this kind of problem but let’s talk about what’s desirable:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;stop the request as early as possible; the sooner you stop this type of request the less of your system resources are consumed&lt;/li&gt;
+  &lt;li&gt;let’s not write this from scratch; someone else must have already solved this&lt;/li&gt;
+  &lt;li&gt;the rules for this need to be checked into git so we have a history of what we changed&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A little bit of googling turns up the gem &lt;a href=&quot;https://github.com/kickstarter/rack-attack&quot;&gt;rack-attack&lt;/a&gt; which plugs into the Rack middle ware layer that sits between the inbound http layer and our Rails application.&lt;/p&gt;
+
+&lt;p&gt;Here’s how to configure Rack Attack for your Rails application.  All of this is actually quite easy and was tested on production Rails 4 and Rails 5 applications running on AWS.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-1-add-rack-attack-to-gemfile&quot;&gt;Step 1: Add rack-attack to Gemfile&lt;/h2&gt;
+
+&lt;p&gt;The first step is to add rack-attack to your Gemfile as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem 'rack-attack'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;step-2-bundle-install&quot;&gt;Step 2: Bundle Install&lt;/h2&gt;
+
+&lt;p&gt;After adding to your Gemfile, you obviously need to bundle install:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;step-3-add-rack-attack-to-applicationrb&quot;&gt;Step 3: Add rack-attack to application.rb&lt;/h2&gt;
+
+&lt;p&gt;The next step is to modify application.rb or config.ru so that rack-attack is called.  Here’s an example for both:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;For application.rb:
+
+config.middleware.use Rack::Attack
+
+For config.ru
+
+use Rack::Attack
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;step-4-write-your-rules&quot;&gt;Step 4: Write Your Rules&lt;/h2&gt;
+
+&lt;p&gt;At this stage you have rack-attack properly setup and stuck into the middle for your data flow but it won’t &lt;strong&gt;do&lt;/strong&gt; anything.  Like a lot of security products it needs a set of rules to execute.  Since this is essentially Rails system software, its controlled at startup by a chunk of Ruby code located in config/initializers.  Any Ruby code in this directory is executed once at startup.  Here are some of the caveats of initializers:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;If there is a syntax error in an initializer the entire Rails system won’t start.  Honestly problems with initializers having code problems and my not noticing it was why I developed my fascination with &lt;a href=&quot;https://fuzzygroup.github.io/blog/git/2014/08/29/the-importance-of-git-hooks.html&quot;&gt;.git/hooks&lt;/a&gt; and why I’ve &lt;strong&gt;required&lt;/strong&gt; them for any engineer who works on a Ruby project with me.  If you don’t have your engineers using .git/hooks then you’re doing yourself a disservice.&lt;/li&gt;
+  &lt;li&gt;The name for the initializer doesn’t matter at all; theoretically you should name this rack-attack.rb but you could name it magic-bananna.rb and it would be just as happy.&lt;/li&gt;
+  &lt;li&gt;Initializers are executed once and only once per execution of the core Rails stack; if you need to make a change stop your development server and restart it.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The basic look and feel for a rack-attack.rb file is as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# In config/initializers/rack-attack.rb
+class Rack::Attack
+  # your custom configuration...
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The rack-attack wiki has a great example of a configuration &lt;a href=&quot;https://github.com/kickstarter/rack-attack/wiki/Example-Configuration&quot;&gt;here&lt;/a&gt; which illustrates the power of rack-attack and what it can do for you.  Here’s the custom rule I wrote for any .php request:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Rack::Attack.blocklist('any php request') do |req|
+  req.path =~ /\.php/ &amp;amp;&amp;amp; req.get? #&amp;amp;&amp;amp; req.user_agent == 'BadUA'
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;All this is doing is looking for any request containing .php that is also a get request.  Four things:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I didn’t make the regex be .php$ because there might be parameters its trying to pass along like ?foo=bar&lt;/li&gt;
+  &lt;li&gt;The commented out bit lets you optionally test the name of the user agent also.  I didn’t do this because the user-agent is so regularly spoofed that its not funny.&lt;/li&gt;
+  &lt;li&gt;If you are going to use the example from the rack-attack wiki linked above then don’t forget to modify the examples for your specific urls on login.  I missed that the first time around.&lt;/li&gt;
+  &lt;li&gt;This will only do get requests.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If you want to do posts then you could easily do this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Rack::Attack.blocklist('any php request') do |req|
+  req.path =~ /\.php/ &amp;amp;&amp;amp; (req.get? || req.post?) 
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;step-5-verifying-this&quot;&gt;Step 5: Verifying This&lt;/h2&gt;
+
+&lt;p&gt;The easiest way to verify this is a browser or curl.  I like curl -I because then I get to see the http headers:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -I http://localhost:3025/auth/login.php
+
+HTTP/1.1 406 Not Acceptable
+Content-Type: text/plain; charset=utf-8
+X-Request-Id: 5cc96bb1-a369-4b9a-bbd7-5bf44c4a2620
+X-Runtime: 0.083266
+Connection: close
+Server: thin
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;step-6-tail-your-logfiles-looking-for-abusers&quot;&gt;Step 6: Tail Your Logfiles Looking for Abusers&lt;/h2&gt;
+
+&lt;p&gt;The way your system is being abused – and it likely is being abused – is probably different from mine.  You should really do a tail -f log/production.rb on a production instance and just leave it running and watch.  These things do tend to stand out.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-7-learning-more-and-other-approaches&quot;&gt;Step 7: Learning More and Other Approaches&lt;/h2&gt;
+
+&lt;p&gt;You absolutely should read the &lt;a href=&quot;https://github.com/kickstarter/rack-attack&quot;&gt;rack-attack home page&lt;/a&gt; – it has almost everything you need to know and more.  As with all things security there are lots and lots of different ways to approach this.  Here are two:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://wincent.com/wiki/Using_iptables_on_EC2_instances&quot;&gt;iptables&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 05 Nov 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/11/05/aws-tutorial-21-protecting-your-rails-app-in-an-unfriendly-environment-using-rack-attack.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/11/05/aws-tutorial-21-protecting-your-rails-app-in-an-unfriendly-environment-using-rack-attack.html</guid>
+        
+        <category>aws</category>
+        
+        <category>rails</category>
+        
+        <category>security</category>
+        
+        
+        <category>aws</category>
         
       </item>
     
@@ -387,17 +562,6 @@ alias pbpaste=’xsel –clipboard –output’&lt;/p&gt;
         <pubDate>Tue, 01 Nov 2016 13:01:45 -0400</pubDate>
         <link>https://fuzzygroup.github.io/blog/2016/11/01/job-hunting-for-the-senior-engineer.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/01/job-hunting-for-the-senior-engineer.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Dad Why Does Subway Say Fresh is What We Do?</title>
-        <description>
-</description>
-        <pubDate>Sun, 30 Oct 2016 13:23:07 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/10/30/dad-why-does-subway-say-fresh-is-what-we-do.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/10/30/dad-why-does-subway-say-fresh-is-what-we-do.html</guid>
         
         
       </item>
