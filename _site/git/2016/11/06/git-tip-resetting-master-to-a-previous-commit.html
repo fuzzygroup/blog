@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>AWS Tutorial 22 - Making Your Boxes Pingable</title>
-  <meta name="description" content="The security default for AWS is brilliantly simple: Everything, absolutely everything, is locked down by default.  Once you understand that then developing o...">
+  <title>Git Tip - Resetting Master to A Previous Commit</title>
+  <meta name="description" content="I would argue that most of our git usage is pretty straight forward:">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/aws/2016/11/06/aws-tutorial-22-making-your-boxes-pingable.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/git/2016/11/06/git-tip-resetting-master-to-a-previous-commit.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
   
   <script>
@@ -91,39 +91,40 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">AWS Tutorial 22 - Making Your Boxes Pingable</h1>
+    <h1 class="post-title" itemprop="name headline">Git Tip - Resetting Master to A Previous Commit</h1>
     <p class="post-meta"><time datetime="2016-11-06T00:00:00-04:00" itemprop="datePublished">Nov 6, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>The security default for AWS is brilliantly simple: <strong>Everything, absolutely everything, is locked down by default</strong>.  Once you understand that then developing on the AWS platform becomes a lot simpler.  Let’s take, for example, a simple EC2 instance:</p>
-
-<ol>
-  <li>You create it and you would generally assume that a server is pingable.</li>
-  <li>So you try pinging the DNS name and it fails.  Hm…</li>
-  <li>So you try pinging the public IP and that fails.</li>
-</ol>
-
-<p>The answer here is simple – everything is locked down by default.  Even something as innocuous as ping.  Every AWS box comes with what’s called a Security Group and Amazon describes this a <em><a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html">virtual firewall that controls the traffic for one or more instances</a></em>.  Every box you create on AWS will automatically get a Security Group, confusingly named, Launch Wizard N where N is just an incrementing integer.  And since most of us generally accept defaults, you may end up with security groups named:</p>
+    <p>I would argue that most of our git usage is pretty straight forward:</p>
 
 <ul>
-  <li>Launch Wizard 1</li>
-  <li>Launch Wizard 2</li>
-  <li>Launch Wizard ..</li>
-  <li>Launch Wizard 11</li>
+  <li>git add</li>
+  <li>git commit</li>
+  <li>git push</li>
+  <li>git branch</li>
+  <li>git co</li>
+  <li>git merge</li>
+  <li>git log</li>
+  <li>git diff</li>
 </ul>
 
-<p>At least that’s what my many attempts at AWS experimentation have left me with.  I’d strongly suggest you name these well.  For the bulk of us, networking is confusing enough without cruft like “Launch Wizard N”.  Honestly!</p>
-
-<p>Stack Overflow, as always, has a useful <a href="http://stackoverflow.com/questions/21981796/cannot-ping-aws-ec2-instance">piece</a> on this.  Here’s what to do:</p>
+<p>That covers literally 99% of what I have to do with git on a daily basis.  So when you need to do something more complex it can be a bit disconcerting.  Today I had to revert to a previous git hash and make that commit, from 2 days ago, master.  Here’s the process:</p>
 
 <ol>
-  <li>You have to edit the Security Group to which your EC2 instance belongs.  If you don’t yet have a security group then add a new one.</li>
-  <li>Add a new rule and select the All ICMP option from the drop downs.</li>
-  <li>If you want to restrict people probing for your instance then lock it down to your own IP address but there are pros and cons.</li>
+  <li>Use github to find the commit you want to revert to.  This will be referred to as COMMIT_HASH</li>
+  <li>Commit everything currently in progress so you don’t get any error messages about it.  Or delete everything (I have a git trash alias which does checkout -f).</li>
+  <li>Use this command: <strong>git reset –hard COMMIT_HASH</strong></li>
+  <li>This makes COMMIT_HASH your local master.  However you will NOT be able to push because you have “time traveled” to the past.  The secret here is to do a -f push so your changes are forced to the serve.  Use this command: <strong>git push -f origin master</strong></li>
 </ol>
 
-<p><strong>Note:</strong> AWS strongly wants you to lock down all non http / https traffic to your own ip address and it will actually natter at you about this even for ping.  If you are using a remote monitoring service, however, like the absolutely wonderful <a href="http://www.wormly.com">wormly</a>, then locking this down to your ip address will prevent that remote service from monitoring via ping.  Given that ping is far less overhead than http monitoring, you might want this so make a real decision here.</p>
+<p>Note 1: In this case I didn’t even try to preserve the changes made within that 2 day period.  That’s possible but definitely harder.</p>
+
+<p>Note 2: The -f overwrites what’s on the server since COMMIT_HASH so it will never be available.  <strong>Please understand this well before doing this.</strong></p>
+
+<p>Note 3: My pairing buddy, <a href="http://www.dasari.me">Dv</a>, helped out with this.  Thanks man!</p>
+
+<p>Note 4: <a href="http://stackoverflow.com/questions/10298291/cannot-push-to-github-keeps-saying-need-merge">Stack Overflow on git push -f</a></p>
 
   </div>
   

@@ -6,9 +6,224 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 06 Nov 2016 03:01:44 -0500</pubDate>
-    <lastBuildDate>Sun, 06 Nov 2016 03:01:44 -0500</lastBuildDate>
+    <pubDate>Tue, 08 Nov 2016 05:09:13 -0500</pubDate>
+    <lastBuildDate>Tue, 08 Nov 2016 05:09:13 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title></title>
+        <description>&lt;p&gt;Devise is now close to a standard in the Rails community.  And, despite some concerns that I generally have about it, Devise is a solid piece of software with much to recommend it.  My concerns are always around extending it and I thought that perhaps I should actually document how to extend Devise so I don’t have to rely on their &lt;a href=&quot;https://github.com/plataformatec/devise/wiki&quot;&gt;wiki&lt;/a&gt; (which is oddly incorrect in places) – expand it to all pages and look at the number of things all named&lt;/p&gt;
+
+&lt;h1 id=&quot;branching-to-custom-urls-after-specific-actions&quot;&gt;Branching to Custom Urls After Specific Actions&lt;/h1&gt;
+
+&lt;p&gt;The simple way for this is to define a custom action in ApplicationController.  Example:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def after_sign_in_path_for(resource) 
+  return &quot;/users&quot;
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Theoretically any path should be able to be returned&lt;/p&gt;
+
+&lt;h1 id=&quot;generating-your-own-controllers&quot;&gt;Generating Your Own Controllers&lt;/h1&gt;
+
+&lt;p&gt;While the after_sign_in_path_for approach works the problem is that if you want to do something really custom then you need your own controller.  Let’s say you want to deeply hook into login and registration.  Then you need to generate new controllers as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rails generate devise:controllers users
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This will produce this output:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Running via Spring preloader in process 59017
+create  app/controllers/users/confirmations_controller.rb
+create  app/controllers/users/passwords_controller.rb
+create  app/controllers/users/registrations_controller.rb
+create  app/controllers/users/sessions_controller.rb
+create  app/controllers/users/unlocks_controller.rb
+create  app/controllers/users/omniauth_callbacks_controller.rb    
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now that’s more than we actually want.  There are options that let you specify exactly which controller you want but I didn’t have a lot of luck making them work so I just deleted what I didn’t want.&lt;/p&gt;
+
+&lt;p&gt;Usually you find out that you need this after you’ve already gotten Devise working and have a custom set of routes.  In my case I had this set of routes:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;devise_for :users, path: &quot;auth&quot;, path_names: {sign_in: 'login', 
+                                              sign_out: 'logout',
+                                              password: 'secret', 
+                                              confirmation: 'verification', 
+                                              unlock: 'unblock', 
+                                              registration: 'register', 
+                                              sign_up: 'cmon_let_me_in'}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After generating my controllers, here’s how I changed the routes above to integrate:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;devise_for :users, path: &quot;auth&quot;, controllers: {
+  sessions: 'users/sessions',
+  registrations: 'users/registrations'
+},
+path_names:  {
+  sign_in: 'login',
+  sign_out: 'logout',
+  password: 'secret',
+  confirmation: 'verification',
+  unlock: 'unblock',
+  registration: 'register',
+  sign_up: 'cmon_let_me_in'
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now once you generate your controllers, Devise will give you a nice stub showing that you need to uncomment an action to revise it and super is there indicating that you can mostly just inherit the functionality you want.  You can then add your own code either before or after the super.  If you’re uncomfortable with super then you can always go and get the full devise controller code from Github:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/plataformatec/devise/blob/master/app/controllers/devise/registrations_controller.rb&quot;&gt;Registrations Controller&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/plataformatec/devise/blob/master/app/controllers/devise/sessions_controller.rb&quot;&gt;Sessions Controller&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Note: In case it wasn’t obvious the registrations controller creates accounts and the sessions controller creates logins.  Both are restful so, for example, sessions#new is the login form and sessions#create is the actual login itself.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 08 Nov 2016 05:09:13 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/11/08/2016-11-07-extending-devise.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/08/2016-11-07-extending-devise.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Advice for Chris Kimball of Milk Street</title>
+        <description>
+</description>
+        <pubDate>Sun, 06 Nov 2016 12:14:45 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/11/06/advice-for-chris-kimball-of-milk-street.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/06/advice-for-chris-kimball-of-milk-street.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Going Deeper - Debugging Saml</title>
+        <description>&lt;p&gt;This blog post expands on my current interest in &lt;a href=&quot;https://fuzzygroup.github.io/blog/saml/2016/10/28/understanding-saml-and-sso.html&quot;&gt;SAML&lt;/a&gt; with a more detailed investigation of SAML, IdP versus SP initiation and how you actually debug it.  In the process of writing this, I reached out to two companies that support SAML in their products and I wanted to express a special thanks to Scott G at &lt;a href=&quot;http://www.mindtouch.com/&quot;&gt;MindTouch&lt;/a&gt; who did an absolutely fantastic job of answering questions – honestly the best technical support I’ve received in years.  Kudos and thank you!&lt;/p&gt;
+
+&lt;h1 id=&quot;debugging-a-saml-transaction&quot;&gt;Debugging a SAML Transaction&lt;/h1&gt;
+
+&lt;p&gt;The very first thing you want to do if you’re debugging saml stuff is use FireFox and get the &lt;a href=&quot;https://www.google.com/url?sa=t&amp;amp;rct=j&amp;amp;q=&amp;amp;esrc=s&amp;amp;source=web&amp;amp;cd=1&amp;amp;cad=rja&amp;amp;uact=8&amp;amp;ved=0ahUKEwjS3Lbu3pPQAhVL0oMKHTOtAwgQFggdMAA&amp;amp;url=https%3A%2F%2Faddons.mozilla.org%2Fen-US%2Ffirefox%2Faddon%2Fsaml-tracer%2F&amp;amp;usg=AFQjCNHN7JDX_TkQIZOiPV2tMSVDyfgwkA&quot;&gt;SAML tracer&lt;/a&gt; plugin.  This tool shows you the SAML back and forth flow and it is absolutely brilliant:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/saml_tracer.png&quot; alt=&quot;saml_tracer&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;When Scott G was helping me, his first suggestion was “Ok – go and get the FireFox SAML tracer” and with that we were off to the races.  Good tools always make things better and this was excellent.&lt;/p&gt;
+
+&lt;p&gt;Note: There is also a &lt;a href=&quot;https://chrome.google.com/webstore/detail/saml-chrome-panel/paijfdbeoenhembfhkhllainmocckace?hl=en&quot;&gt;Chrome SAML tool&lt;/a&gt; which I haven’t tried yet.  It doesn’t appear to be as complete as SAML Tracer since it only supports post requests.&lt;/p&gt;
+
+&lt;h1 id=&quot;idp-versus-sp-initiation&quot;&gt;IdP versus SP Initiation&lt;/h1&gt;
+
+&lt;p&gt;When you first get involved with SAML one of the initial things you’ll be asked is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;IdP init or SP Init?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;As you may remember from my &lt;a href=&quot;https://fuzzygroup.github.io/blog/saml/2016/10/28/understanding-saml-and-sso.html&quot;&gt;last post on SAML&lt;/a&gt;, IdP is the identity provider, the bit of software that owns the user information and SP is the service provider, the bit of software that us trying to use identity.&lt;/p&gt;
+
+&lt;p&gt;This is a really, really big deal in the SAML community and what sounds like a network protocol question is actually a user flow question that centers on a chicken and egg issue of what happens first.  The &lt;a href=&quot;https://www.google.com/webhp?sourceid=chrome-instant&amp;amp;ion=1&amp;amp;espv=2&amp;amp;ie=UTF-8#q=saml%20idp%20vs%20sp%20initiated&quot;&gt;almost 7,000 results&lt;/a&gt; in Google for this very simple thing indicates just how many people are confused about it.  As always Stack Overflow has a &lt;a href=&quot;http://stackoverflow.com/questions/12779532/differences-between-sp-initiated-sso-and-idp-initiated-sso&quot;&gt;great page on this topic&lt;/a&gt; but let me try and paraphrase:&lt;/p&gt;
+
+&lt;p&gt;For IdP Init:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The user starts at the IdP login page and then drills deeper into the resources granted by the service provider.&lt;/li&gt;
+  &lt;li&gt;This is done with an HTTP post to an  end point on the service provider that contains two things:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;a SAML Assertion which says essentially “here is who I am”.&lt;/li&gt;
+  &lt;li&gt;a destination parameter of what data they want.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For SP init:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Sun, 06 Nov 2016 03:57:39 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/11/06/going-deeper-debugging-saml.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/06/going-deeper-debugging-saml.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>When Bundler Insists On Putting Gems into vendor/cache</title>
+        <description>&lt;p&gt;If you’ve ever find that Bundler insists on putting gems in vendor/cache and you can’t make it stop, check the .bundle/config file and you will find a directive that was written there as a result of a bundle install –path vendor/bundle command you did previously.  Once you execute this command, bundler will write gems to this directory forever more unless you delete the directive.  This can be maddening as .bundle/config isn’t a file that many of us look at.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://bundler.io/v1.2/bundle_install.html&quot;&gt;Bundler Reference&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 06 Nov 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/rails/2016/11/06/when-bundler-insists-on-putting-gems-into-vendor-cache.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails/2016/11/06/when-bundler-insists-on-putting-gems-into-vendor-cache.html</guid>
+        
+        <category>rails</category>
+        
+        <category>ruby</category>
+        
+        <category>bundler</category>
+        
+        <category>gem</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Git Tip - Resetting Master to A Previous Commit</title>
+        <description>&lt;p&gt;I would argue that most of our git usage is pretty straight forward:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;git add&lt;/li&gt;
+  &lt;li&gt;git commit&lt;/li&gt;
+  &lt;li&gt;git push&lt;/li&gt;
+  &lt;li&gt;git branch&lt;/li&gt;
+  &lt;li&gt;git co&lt;/li&gt;
+  &lt;li&gt;git merge&lt;/li&gt;
+  &lt;li&gt;git log&lt;/li&gt;
+  &lt;li&gt;git diff&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;That covers literally 99% of what I have to do with git on a daily basis.  So when you need to do something more complex it can be a bit disconcerting.  Today I had to revert to a previous git hash and make that commit, from 2 days ago, master.  Here’s the process:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Use github to find the commit you want to revert to.  This will be referred to as COMMIT_HASH&lt;/li&gt;
+  &lt;li&gt;Commit everything currently in progress so you don’t get any error messages about it.  Or delete everything (I have a git trash alias which does checkout -f).&lt;/li&gt;
+  &lt;li&gt;Use this command: &lt;strong&gt;git reset –hard COMMIT_HASH&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;This makes COMMIT_HASH your local master.  However you will NOT be able to push because you have “time traveled” to the past.  The secret here is to do a -f push so your changes are forced to the serve.  Use this command: &lt;strong&gt;git push -f origin master&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Note 1: In this case I didn’t even try to preserve the changes made within that 2 day period.  That’s possible but definitely harder.&lt;/p&gt;
+
+&lt;p&gt;Note 2: The -f overwrites what’s on the server since COMMIT_HASH so it will never be available.  &lt;strong&gt;Please understand this well before doing this.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Note 3: My pairing buddy, &lt;a href=&quot;http://www.dasari.me&quot;&gt;Dv&lt;/a&gt;, helped out with this.  Thanks man!&lt;/p&gt;
+
+&lt;p&gt;Note 4: &lt;a href=&quot;http://stackoverflow.com/questions/10298291/cannot-push-to-github-keeps-saying-need-merge&quot;&gt;Stack Overflow on git push -f&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 06 Nov 2016 00:00:00 -0400</pubDate>
+        <link>https://fuzzygroup.github.io/blog/git/2016/11/06/git-tip-resetting-master-to-a-previous-commit.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/git/2016/11/06/git-tip-resetting-master-to-a-previous-commit.html</guid>
+        
+        <category>git</category>
+        
+        <category>version_control</category>
+        
+        
+        <category>git</category>
+        
+      </item>
     
       <item>
         <title>AWS Tutorial 22 - Making Your Boxes Pingable</title>
@@ -39,7 +254,7 @@
   &lt;li&gt;If you want to restrict people probing for your instance then lock it down to your own IP address but there are pros and cons.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: AWS strongly wants you to lock down all non http / https traffic to your own ip address and it will actually natter at you about this even for ping.  If you are using a remote monitoring service, however, like the absolutely wonderful &lt;a href=&quot;http://www.wormly.com&quot;&gt;wormly&lt;/a&gt;, then locking this down to your ip address will prevent that remote service from monitoring via ping.  Given that ping is far less overhead than http monitoring, you might want this so make a real decision here.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; AWS strongly wants you to lock down all non http / https traffic to your own ip address and it will actually natter at you about this even for ping.  If you are using a remote monitoring service, however, like the absolutely wonderful &lt;a href=&quot;http://www.wormly.com&quot;&gt;wormly&lt;/a&gt;, then locking this down to your ip address will prevent that remote service from monitoring via ping.  Given that ping is far less overhead than http monitoring, you might want this so make a real decision here.&lt;/p&gt;
 </description>
         <pubDate>Sun, 06 Nov 2016 00:00:00 -0400</pubDate>
         <link>https://fuzzygroup.github.io/blog/aws/2016/11/06/aws-tutorial-22-making-your-boxes-pingable.html</link>
@@ -104,469 +319,6 @@
         <link>https://fuzzygroup.github.io/blog/2016/11/05/foo1.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/05/foo1.html</guid>
         
-        
-      </item>
-    
-      <item>
-        <title>foo</title>
-        <description>
-</description>
-        <pubDate>Sat, 05 Nov 2016 08:37:08 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/11/05/foo.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/05/foo.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>PostMac 001 -- Adding pbcopy to ElementaryOS or Another Unix</title>
-        <description>&lt;p&gt;Well as will become clear in another few blog posts, I took ElementaryOS and installed it on my 2012 MBP with 16 gigs RAM and 768 mb SSD storage.  This used to be my full time machine up until a few months ago when I shifted everything to my Macbook Air due to this box becoming flat out unusable as a Ruby dev box.  Even after re-install brew and all the tools, I just can’t get gems to reliably build.&lt;/p&gt;
-
-&lt;p&gt;So, two days ago, between that and my disappointment in not being able to upgrade to a new machine that I want, in a fit of abject rage, I wiped the disc and did a full install &lt;strong&gt;overwriting&lt;/strong&gt; OSX – making it a real commitment.  And when I went to write a blog post on it the first thing I realized was no SSH keys.  Generating SSH keys was easy but then I realized that I didn’t have pbcopy.  Sigh.&lt;/p&gt;
-
-&lt;h1 id=&quot;heres-what-you-need-to-do-to-add-pbcopy-to-elementaryos-or-another-linux&quot;&gt;Here’s what you need to do to add pbcopy to ElementaryOS or another Linux&lt;/h1&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Install xsel.  sudo apt-get install xsel&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Alias xsel and put it into .bashrc.&lt;/p&gt;
-
-    &lt;p&gt;vi ~/.bashrc&lt;/p&gt;
-
-    &lt;p&gt;Add these lines:&lt;/p&gt;
-
-    &lt;p&gt;alias pbcopy=’xsel –clipboard –input’
-alias pbpaste=’xsel –clipboard –output’&lt;/p&gt;
-
-    &lt;p&gt;Save and exit&lt;/p&gt;
-
-    &lt;p&gt;ESC :wq&lt;/p&gt;
-
-    &lt;p&gt;Source the .bashrc file&lt;/p&gt;
-
-    &lt;p&gt;source ~/.bashrc&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://superuser.com/questions/288320/whats-like-osxs-pbcopy-for-linux&quot;&gt;Stack Overflow Reference&lt;/a&gt;
-&lt;a href=&quot;http://www.joshstaiger.org/archives/2005/07/bash_profile_vs.html&quot;&gt;Bash rc Vs Bash Profile&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sat, 05 Nov 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/postmac/2016/11/05/postmac-001-adding-pbcopy-to-elementaryos-or-another-unix.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/postmac/2016/11/05/postmac-001-adding-pbcopy-to-elementaryos-or-another-unix.html</guid>
-        
-        <category>postmac</category>
-        
-        <category>linux</category>
-        
-        
-        <category>postmac</category>
-        
-      </item>
-    
-      <item>
-        <title>Life in a Postmac World</title>
-        <description>&lt;p&gt;Given the astonishingly pathetic nature of the latest Macbook Pro release – from the perspective of someone who, first and foremost, is a software developer — I’ve begun thinking of this as a &lt;strong&gt;Postmac Universe&lt;/strong&gt; and that has forced me into a deep dive on some basic things I don’t normally think about.&lt;/p&gt;
-
-&lt;p&gt;My first conclusion is that the past decade or so has actually been a golden age for developers.  We were able to have a single machine, a Macbook Pro, which served as our one device.  It handled software development and personal / workplace data.  We could have one box which let us:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;write code&lt;/li&gt;
-  &lt;li&gt;store our pictures&lt;/li&gt;
-  &lt;li&gt;listen to our music&lt;/li&gt;
-  &lt;li&gt;write proposals&lt;/li&gt;
-  &lt;li&gt;make videos&lt;/li&gt;
-  &lt;li&gt;play some degree of games&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;As I think back on my career that’s actually unprecedented.&lt;/p&gt;
-
-&lt;p&gt;As I look back on my Mac hardware in the post Snow Leopard world, I’ve had:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Macbook Pro, 15”, Mid 2010&lt;/li&gt;
-  &lt;li&gt;Macbook Pro, 15”, Retina, Mid 2012&lt;/li&gt;
-  &lt;li&gt;Macbook Air, 13”, Mid 2014&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;So I’ve averaged a new machine every two years or so.  And all of them are still in use.  My 2010 is a plex server for the house.  My 2012 is my back up dev box and my Macbook Air, dinky as it is, is now my primary development box.  I’d been hoping that the recent Macbook Pro (MBP) release would let me move forward by giving me more ram, more storage and more cpu.  And, alas, Apple has dashed my hopes upon the rocks.  The changes to the new keyboard also bother the hell out of me but, perhaps, I can get past that.&lt;/p&gt;
-
-&lt;p&gt;So I’ve spent pretty much all my free time since the MBP release in research mode and I’ve come to some conclusions:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The apple tax is very, very real - 64 gigs of RAM on a pc platform is about $200.  Apple’s charge for the same amount of ram but a generation behind, for the 3 year old computer that you actually shouldn’t buy, is about $1,200&lt;/li&gt;
-  &lt;li&gt;PC Hardware is a confusing ecosystem that makes your eyes want to bleed just from the naming conventions alone (I’ll come back to that later)&lt;/li&gt;
-  &lt;li&gt;PC Hardware is cheap, fast and can be easily upgraded&lt;/li&gt;
-  &lt;li&gt;There are lots and lots of inexpensive, fast computers, with way more cpu and ram than Apple will sell you.  If you’ve been locked in the Mac world as I have, its time to wake up and smell the cheapness&lt;/li&gt;
-  &lt;li&gt;Apple still makes the best laptops around; the only thing that I’ve found that looks close in terms of build quality is &lt;a href=&quot;http://www.razerzone.com&quot;&gt;Razer&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;what-are-my-computing-needs&quot;&gt;What Are My Computing Needs?&lt;/h1&gt;
-
-&lt;p&gt;My personal needs fall into two categories:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;software development&lt;/li&gt;
-  &lt;li&gt;everything else&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The lack of ram is what’s killing me right now.  Roughly once per day my creative flow is shot to hell when I have to shut down apps because something isn’t responding.  And I have a well honed process now.  First to go is Skype.  Then its WhatsApp.  Then its Slack. Then its Hangouts.  Then the programming editor.  Then its whatever piece of crap browser is chewing too much ram today.  Just a few minutes ago, it was chrome that when I killed it, gave back my machine to me (and 3.7 gigs of ram).&lt;/p&gt;
-
-&lt;p&gt;I think the logical thing to do is separate out my software development work from everything else.  I run an ordinate number of terminal windows as each Rails app I work on generally requires a tmux session (fronted by tmuxinator) to run what I refer to as the Rails Trinity (server, logs, console, sql client, deploy, login window on production box, etc).  And yes I know that’s more than 3 but it has the same Father / Son / Holy Ghost feel to it.  If I had different hardware for development then my ram needs &lt;strong&gt;per device&lt;/strong&gt; wouldn’t be so large.&lt;/p&gt;
-
-&lt;h2 id=&quot;computing-for-software-development&quot;&gt;Computing for Software Development&lt;/h2&gt;
-
-&lt;p&gt;In terms of my computing needs for software development, I’m looking at the Intel NUC series of devices.  All I need is:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;small&lt;/li&gt;
-  &lt;li&gt;fast&lt;/li&gt;
-  &lt;li&gt;at least 32 gigs of ram&lt;/li&gt;
-  &lt;li&gt;whisper quiet&lt;/li&gt;
-  &lt;li&gt;ssd storage; at least 1 tb&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I’ve settled on the Intel NUC Kit NUC6i5SYH which is a generation behind the very cool Skull Canyon  but has the advantage of there being a &lt;a href=&quot;https://www.tonymacx86.com/threads/guide-el-capitan-on-the-intel-skylake-nuc.183839/&quot;&gt;better chance of getting OSX running on it&lt;/a&gt;.  Now, that said, I’m likely to start with &lt;a href=&quot;https://elementary.io/&quot;&gt;Elementary OS&lt;/a&gt; because I’m just so damn tired of performance issues.  If I can do development under Linux that would be great and future proof me.  If not I can go the hackintosh route.&lt;/p&gt;
-
-&lt;p&gt;The reason for Elementary OS is that I find the current UI direction in Linux desktops actually bewildering.  I recently installed Ubuntu on my Chromebook and using it was an absolute WTF moment.  Given that I’m going to be going back and forth between OSX and Linux for years to come, having a Unix that works like OSX feels compelling.&lt;/p&gt;
-
-&lt;p&gt;This isn’t as fast as Kevin Burton’s &lt;a href=&quot;http://www.tbray.org/ongoing/When/201x/2016/10/29/Post-Mac#c1477858058.300020&quot;&gt;8 core Ubuntu box&lt;/a&gt; which he describes as:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;It's INSANELY powerful. It's like using god's computer.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;But I’m not &lt;a href=&quot;https://www.spinn3r.com/&quot;&gt;Kevin&lt;/a&gt; and this is likely good enough for me.&lt;/p&gt;
-
-&lt;p&gt;If I’m ever going to branch out from Ruby to Elixir, which I want to do desperately, I can’t be fighting performance every single day.  It is just plain too distracting.&lt;/p&gt;
-
-&lt;p&gt;Oh and a NUC is only $375 or so plus ram and SSD.  That’s dirt cheap by Mac standards.  Honestly seeing that kind of price makes me feel a bit stupid for how much money I’ve spent in the Apple ecosystem over the years.&lt;/p&gt;
-
-&lt;p&gt;Oh and did I mention that a NUC can, out of the box, drive two full displays?  Damn.&lt;/p&gt;
-
-&lt;p&gt;Finally if using it for development doesn’t work out then it can always become a full time plex server allowing me to retire a still functional latop into one of the kids computers.&lt;/p&gt;
-
-&lt;h2 id=&quot;computing-for-everything-else&quot;&gt;Computing for Everything Else&lt;/h2&gt;
-
-&lt;p&gt;In terms of computing for everything else, I’ve look at all the candidates:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Razer&lt;/li&gt;
-  &lt;li&gt;Thinkpad&lt;/li&gt;
-  &lt;li&gt;Asus Zenbook&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Here’s a &lt;a href=&quot;https://news.ycombinator.com/item?id=12843775&quot;&gt;Hacker News thread that is inadvertently on high quality machines&lt;/a&gt; and this is a good &lt;a href=&quot;https://news.ycombinator.com/item?id=12845081&quot;&gt;sub thread&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;All of those machines have one or more issues.  Most of it is around hardware quality.  Apple’s hardware really is lovely and its robust.  My 2010 Macbook is now 6 years old and it runs 24x7x365 with nary a hiccup.  Find a PC laptop that’s 6 years old and still running that hard.&lt;/p&gt;
-
-&lt;p&gt;The only machine that made me drool was the Razer and it just feels too big.  I went over to the Macbook Air for mobility - the combination of size and weight was hugely desirable.  What I found with that decision was that the 13” form factor is, for me, the sweet spot.&lt;/p&gt;
-
-&lt;p&gt;What I’m actually considering for a Macbook Air replacement is … wait for it … a Macbook Pro.  Despite my vitriol there is one option I hadn’t considered – the &lt;strong&gt;old Macbook Pro&lt;/strong&gt;.  Apple is still selling them and they are even on clearance if you don’t need a custom configuration.  That would get me onto a 2015 model which a 3 gig processor, 1 tb storage and 16 gigs of ram.  Yes its not what I wanted but considering that the cost of a tricked out past generation Macbook Pro plus a NUC is less than a tricked out new Macbook Pro, well, its a no brainer.  And it would get me HDMI out, real usb, thunderbolt, SD card slot, etc.  Apple’s new port strategy is bold but I don’t think its viable yet.  And it would get me the keyboard that I actually enjoy.&lt;/p&gt;
-
-&lt;p&gt;The other side of getting a new mac is that I’m still interested in building iOS apps and XCode is painful on a Macbook Air.  And XCode will never run on anything that isn’t apple hardware (nor should it).   And I’ll never carry two laptops ever again; that’s a suck ass experience in an airport.&lt;/p&gt;
-
-&lt;h1 id=&quot;conclusion---a-synchronized-computing-environment-for-me&quot;&gt;Conclusion - A Synchronized Computing Environment For Me&lt;/h1&gt;
-
-&lt;p&gt;Given that I’ll be dealing with two primary computing devices and want the ability to pick up and goto a coffee shop from time to time with either code or non code that’s a concern.  What I’ve done across all my Mac boxes is used Dropbox with a paid account and the core bit of my data that has to move with me is always synchronized.  As long as I’m not modifying the same git repo across multiple boxes at the same time, I’m absolutely fine.  &lt;a href=&quot;http://dasari.me/&quot;&gt;Dv&lt;/a&gt; showed me this trick and I’m eternally grateful as it is honestly life changing.&lt;/p&gt;
-
-&lt;p&gt;Beyond data, the application I spend more time in than anything else is an editor and I suspect this is where I need to change my habits.  I’ve been using TextMate now since 2006 and I think the time has come to bite the bullet and move to either Atom or Sublime.  Neither excite or inspire me but partly that’s an old dog new tricks type of thing.&lt;/p&gt;
-
-&lt;p&gt;In conclusion the concept of Apple not selling good enough gear for a professional developer is profoundly disturbing to me.  But, as its said, all good things must come to an end.  And it does feel like we’ve been in a golden age that we’re transitioning away from.  When I changed from Windows to the Mac for development it was a huge boost to my skill set and I suspect being on a full Linux full time will be a similar boost.&lt;/p&gt;
-
-&lt;h1 id=&quot;references-and-other-interesting-things&quot;&gt;References and Other Interesting Things&lt;/h1&gt;
-
-&lt;p&gt;Various things I discovered about Elementary OS and related hardware / software stuff using my iPad in a pre bed time research session:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Intel Nuc Stuff&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;http://www.digitaltrends.com/desktop-computer-reviews/intel-nuc-core-i7-review/&quot;&gt;An intel nuc review&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;http://www.digitaltrends.com/desktop-computer-reviews/intel-nuc6i7kyk-skull-canyon-review/&quot;&gt;An Intel Skull Canyon Review&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;http://www.crucial.com/usa/en/compatible-upgrade-for/Intel/nuc6i5syh&quot;&gt;Ram pricing for the NUC&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Elementary OS&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;https://news.ycombinator.com/item?id=12830761&quot;&gt;Good Hacker News Thread About Elementary OS and its Many Pros and Cons&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://adam.merrifield.ca/2016/09/17/a-week-with-elementary-os-loki-0-4-0/&quot;&gt;Very Good “A Week with Elementary” Article&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://hn.algolia.com/?query=elementary%20os&amp;amp;sort=byDate&amp;amp;prefix&amp;amp;page=0&amp;amp;dateRange=all&amp;amp;type=story&quot;&gt;All Hacker News Coverage of Elementary&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;http://forlearning.com/dual-booting-elementary-os-and-osx&quot;&gt;Installing Elementary on a Macbook Pro&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;http://cavaliercoder.com/blog/dmidecode-for-apple-osx.html&quot;&gt;To figure out what hardware is in your Mac use dmidecode&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;http://www.everymac.com/&quot;&gt;Use dmidecode with EveryMac&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://reddit.com/r/elementaryos&quot;&gt;Reddit Forum&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://adam.merrifield.ca/2016/09/20/web-development-on-elementary-os-0-4-0-loki/&quot;&gt;Web Development on Elementary OS Loki&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Unix Versions of Common Mac Tools&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;https://www.reddit.com/r/Ubuntu/comments/3u2l5r/which_is_best_iterm_alternative_for_ubuntu_guake/&quot;&gt;Terminal Alternatives to iTerm&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://adam.merrifield.ca/2015/11/23/4-steps-to-replace-the-terminal-in-elementary-os-freya/&quot;&gt;Replacing the Elementary Terminal&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://github.com/ManuelSchneid3r/albert/wiki&quot;&gt;Linux Alternative to Alfred - Albert!&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;http://www.atom.io&quot;&gt;Atom.io works as an editor&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;http://www.rastersoft.com/programas/cronopete.html&quot;&gt;Cronopete is one TimeMachine replacement&lt;/a&gt; - warning no changes to github for 6 months; mildly concerning&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://github.com/bit-team/backintime&quot;&gt;Back in Time is another Backup Tool&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Misc&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;https://antergos.com/wiki/install/installing-antergos-on-a-macbook-82-mid-2011/&quot;&gt;How to get a Linux running on an older PowerBook&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://system76.com/laptops/lemur&quot;&gt;Yes Virginia Dedicated Linux Hardware Firms Offer Laptops&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://system76.com/cart/configure/meer2&quot;&gt;And they Offer Overpriced, Fully Configured NUCs&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://puri.sm&quot;&gt;Another Linux Laptop Company Albeit One with Controversy&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;https://kororaproject.org&quot;&gt;A Fedora Based Distro Supposedly Easier to Install on a Macbook with Elements of the same Goals as Elementary OS&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;sidebar---elementary-os-really-does-work-on-mac-hardware-even-old-mac-hardware&quot;&gt;Sidebar - Elementary OS Really Does Work on Mac Hardware, Even Old Mac Hardware&lt;/h1&gt;
-
-&lt;p&gt;Yesterday I got my copy of Linux Format magazine and I laughingly scoffed at the DVD to my son – “who needs that”.  And then earlier today I noticed that the included distro was actually Elementary.  Well, during the course of a very busy work day, I still managed to get an old MacBook up and running Elementary using that same, initially scoffed at DVD.  Here’s a pic to prove it:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/elementary_on_old_mac.jpg&quot; alt=&quot;elementary_on_old_mac.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This is hardware that I haven’t touched in maybe 3 years.  It was even too slow for the kids to play Minecraft on so I pulled it out of the closet and its now sitting alongside my other kit.  Hopefully I’ll pull some of the tools above onto it and see how things work.&lt;/p&gt;
-
-&lt;p&gt;The one thing that I’ve noticed is that mouse sensitivity is way too high and its hard to click on things. Other than that it really is a beautiful distro.&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 05 Nov 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/postmac/2016/11/05/life-in-a-postmac-world.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/postmac/2016/11/05/life-in-a-postmac-world.html</guid>
-        
-        <category>postmac</category>
-        
-        <category>osx</category>
-        
-        <category>mac</category>
-        
-        
-        <category>postmac</category>
-        
-      </item>
-    
-      <item>
-        <title>Friends Don't Let Friends Bundle Under Tmux</title>
-        <description>&lt;p&gt;So I had one of those crazy bundler errors on thursday that just drives you insane.  Among the errors were:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;the git source not yet checked out. Please run &lt;code class=&quot;highlighter-rouge&quot;&gt;bundle install&lt;/code&gt; before trying to start your application - Google Search&lt;/li&gt;
-  &lt;li&gt;could not find a valid gem&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;It was a unending session of &lt;strong&gt;suck&lt;/strong&gt; – so bad that I finally asked &lt;a href=&quot;http://www.dasari.me&quot;&gt;Dv&lt;/a&gt; to pair with me on it. And he and I tried a number of things and nothing worked.  Then things started to feel oh so &lt;a href=&quot;https://fuzzygroup.github.io/blog/ruby/2016/10/15/brew-xz-and-nokogiri-and-tmux-an-unmitigated-disaster.html&quot;&gt;familiar&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Quick summary if you don’t follow the link – if you’re running RVM inside a Tmux session and something happens to the underlying Tmux session, everything can go absolutely crazy at the core Ruby layer.  And if that happens then Bundler will have its own set of issues.&lt;/p&gt;
-
-&lt;p&gt;So, honestly, I give you this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Friends Don't Let Friends Bundle Under Tmux
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Sat, 05 Nov 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/ruby/2016/11/05/friends-don-t-let-friends-bundle-under-tmux.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ruby/2016/11/05/friends-don-t-let-friends-bundle-under-tmux.html</guid>
-        
-        <category>ruby</category>
-        
-        <category>rails</category>
-        
-        <category>gem</category>
-        
-        <category>bundle</category>
-        
-        <category>bundler</category>
-        
-        <category>tmux</category>
-        
-        
-        <category>ruby</category>
-        
-      </item>
-    
-      <item>
-        <title>AWS Tutorial 21 - Protecting Your Rails App In an Unfriendly Environment Using Rack Attack</title>
-        <description>&lt;p&gt;The more I do in a cloud environment, the more I learn that cloud hosting, despite being essentially the same linux stack that I’m used to is just plain &lt;strong&gt;different&lt;/strong&gt;.  Ever since 2008 I’ve done AWS stuff on and off but my focus for core hosting has generally been a stack of Linux boxes in a traditional data center.&lt;/p&gt;
-
-&lt;h1 id=&quot;understanding-the-attack-surface&quot;&gt;Understanding The Attack Surface&lt;/h1&gt;
-
-&lt;p&gt;One of the differences between hosting in a traditional data center and on the “cloud” is that the cloud offers a larger &lt;em&gt;attack surface&lt;/em&gt;.  From the perspective of a security research the idea of an attack surface is as follows:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;The attack surface of a software environment is the sum of the different points (the “attack vectors”) where an unauthorized user (the “attacker”) can try to enter data to or extract data from an environment.
-&lt;a href=&quot;https://en.wikipedia.org/wiki/Attack_surface&quot;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;One way to think of attack surface is in terms of your own system – you run software on these ports for example.  Each port is a place where we can be attacked.  However there is a meta way to look at the idea of an attack surface – think about the whole expanse of machines where you host your nodes.  Given the size of AWS in terms of the number of customers it has and the vast number of instances that they host, if you’re looking to do something malicious online, would you rather target a tiny regional data center or a vast sprawling expanse of targets like AWS?  I’m not a malicious guy and even I can tell that the right answer here is &lt;strong&gt;AWS&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;What sparked this blog post is the other day I tossed up an EC2 instance for a project and I discovered, within minutes, of that instance coming online was this crap in my production.log file:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;::RoutingError: No route matches [GET] &quot;/phpMyAdmin/scripts/setup.php&quot;
-2016-11-01 22:56:58.373977 D [4520:7264940] [3ac9ff5b-0c86-410c-aab4-d78c09a6ec29] Rails -- Started -- {:method=&amp;gt;&quot;GET&quot;, :path=&amp;gt;&quot;/phpmyadmin/scripts/setup.php&quot;, :ip=&amp;gt;&quot;119.97.146.76&quot;}
-2016-11-01 22:56:58.374377 F [4520:7264940 debug_exceptions.rb:7] [3ac9ff5b-0c86-410c-aab4-d78c09a6ec29] Rails -- Exception: ActionController::RoutingError: No route matches [GET] &quot;/phpmyadmin/scripts/setup.php&quot;
-2016-11-01 22:57:00.091348 D [4520:7264940] [1bec8c74-fdbb-4e6f-9347-570b228e37ec] Rails -- Started -- {:method=&amp;gt;&quot;GET&quot;, :path=&amp;gt;&quot;/pma/scripts/setup.php&quot;, :ip=&amp;gt;&quot;119.97.146.76&quot;}
-2016-11-01 22:57:00.091622 F [4520:7264940 debug_exceptions.rb:7] [1bec8c74-fdbb-4e6f-9347-570b228e37ec] Rails -- Exception: ActionController::RoutingError: No route matches [GET] &quot;/pma/scripts/setup.php&quot;
-2016-11-01 22:57:03.753760 D [4520:7264940] [747bb428-70ab-4385-a879-972ba9e81448] Rails -- Started -- {:method=&amp;gt;&quot;GET&quot;, :path=&amp;gt;&quot;/MyAdmin/scripts/setup.php&quot;, :ip=&amp;gt;&quot;119.97.146.76&quot;}
-2016-11-01 22:57:03.754170 F [4520:7264940 debug_exceptions.rb:7] [747bb428-70ab-4385-a879-972ba9e81448] Rails -- Exception: ActionController::RoutingError: No route matches [GET] &quot;/MyAdmin/scripts/setup.php&quot;
-2016-11-02 08:26:12.789703 D [2820:10343780] [f462f464-591a-4171-9aca-67241b22c29d] Rails -- Started -- {:method=&amp;gt;&quot;GET&quot;, :path=&amp;gt;&quot;/testproxy.php&quot;, :ip=&amp;gt;&quot;91.196.50.33&quot;}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;What’s happening here is that a botnet somewhere in the world is probing for software with known security vulnerabilities; phpMyAdmin is a well known source of problems.  According to this &lt;a href=&quot;http://sparkcognition.com/2016/06/sparkblog-navigating-perils-phpmyadmin-security/&quot;&gt;report&lt;/a&gt;, phpMyAdmin is actually the #2 target by volume of security probes.&lt;/p&gt;
-
-&lt;p&gt;So you’re probably thinking something like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;This is a rails app; I don't have any php apps on my system and so this isn't a problem since there's nothing to find.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And that’s technically true but each of these probes is:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;polluting our log files making it harder to find real problems&lt;/li&gt;
-  &lt;li&gt;raising an exception which is computationally expensive i.e. we’re actually paying something for someone to probe our system&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;filtering-inbound-requests-in-rails&quot;&gt;Filtering Inbound Requests in Rails&lt;/h1&gt;
-
-&lt;p&gt;There are lots and lots of ways to deal with this kind of problem but let’s talk about what’s desirable:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;stop the request as early as possible; the sooner you stop this type of request the less of your system resources are consumed&lt;/li&gt;
-  &lt;li&gt;let’s not write this from scratch; someone else must have already solved this&lt;/li&gt;
-  &lt;li&gt;the rules for this need to be checked into git so we have a history of what we changed&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;A little bit of googling turns up the gem &lt;a href=&quot;https://github.com/kickstarter/rack-attack&quot;&gt;rack-attack&lt;/a&gt; which plugs into the Rack middle ware layer that sits between the inbound http layer and our Rails application.&lt;/p&gt;
-
-&lt;p&gt;Here’s how to configure Rack Attack for your Rails application.  All of this is actually quite easy and was tested on production Rails 4 and Rails 5 applications running on AWS.&lt;/p&gt;
-
-&lt;h2 id=&quot;step-1-add-rack-attack-to-gemfile&quot;&gt;Step 1: Add rack-attack to Gemfile&lt;/h2&gt;
-
-&lt;p&gt;The first step is to add rack-attack to your Gemfile as follows:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem 'rack-attack'
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;step-2-bundle-install&quot;&gt;Step 2: Bundle Install&lt;/h2&gt;
-
-&lt;p&gt;After adding to your Gemfile, you obviously need to bundle install:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle install
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;step-3-add-rack-attack-to-applicationrb&quot;&gt;Step 3: Add rack-attack to application.rb&lt;/h2&gt;
-
-&lt;p&gt;The next step is to modify application.rb or config.ru so that rack-attack is called.  Here’s an example for both:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;For application.rb:
-
-config.middleware.use Rack::Attack
-
-For config.ru
-
-use Rack::Attack
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;step-4-write-your-rules&quot;&gt;Step 4: Write Your Rules&lt;/h2&gt;
-
-&lt;p&gt;At this stage you have rack-attack properly setup and stuck into the middle for your data flow but it won’t &lt;strong&gt;do&lt;/strong&gt; anything.  Like a lot of security products it needs a set of rules to execute.  Since this is essentially Rails system software, its controlled at startup by a chunk of Ruby code located in config/initializers.  Any Ruby code in this directory is executed once at startup.  Here are some of the caveats of initializers:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;If there is a syntax error in an initializer the entire Rails system won’t start.  Honestly problems with initializers having code problems and my not noticing it was why I developed my fascination with &lt;a href=&quot;https://fuzzygroup.github.io/blog/git/2014/08/29/the-importance-of-git-hooks.html&quot;&gt;.git/hooks&lt;/a&gt; and why I’ve &lt;strong&gt;required&lt;/strong&gt; them for any engineer who works on a Ruby project with me.  If you don’t have your engineers using .git/hooks then you’re doing yourself a disservice.&lt;/li&gt;
-  &lt;li&gt;The name for the initializer doesn’t matter at all; theoretically you should name this rack-attack.rb but you could name it magic-bananna.rb and it would be just as happy.&lt;/li&gt;
-  &lt;li&gt;Initializers are executed once and only once per execution of the core Rails stack; if you need to make a change stop your development server and restart it.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The basic look and feel for a rack-attack.rb file is as follows:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# In config/initializers/rack-attack.rb
-class Rack::Attack
-  # your custom configuration...
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The rack-attack wiki has a great example of a configuration &lt;a href=&quot;https://github.com/kickstarter/rack-attack/wiki/Example-Configuration&quot;&gt;here&lt;/a&gt; which illustrates the power of rack-attack and what it can do for you.  Here’s the custom rule I wrote for any .php request:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Rack::Attack.blocklist('any php request') do |req|
-  req.path =~ /\.php/ &amp;amp;&amp;amp; req.get? #&amp;amp;&amp;amp; req.user_agent == 'BadUA'
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;All this is doing is looking for any request containing .php that is also a get request.  Four things:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;I didn’t make the regex be .php$ because there might be parameters its trying to pass along like ?foo=bar&lt;/li&gt;
-  &lt;li&gt;The commented out bit lets you optionally test the name of the user agent also.  I didn’t do this because the user-agent is so regularly spoofed that its not funny.&lt;/li&gt;
-  &lt;li&gt;If you are going to use the example from the rack-attack wiki linked above then don’t forget to modify the examples for your specific urls on login.  I missed that the first time around.&lt;/li&gt;
-  &lt;li&gt;This will only do get requests.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;If you want to do posts then you could easily do this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Rack::Attack.blocklist('any php request') do |req|
-  req.path =~ /\.php/ &amp;amp;&amp;amp; (req.get? || req.post?) 
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;step-5-verifying-this&quot;&gt;Step 5: Verifying This&lt;/h2&gt;
-
-&lt;p&gt;The easiest way to verify this is a browser or curl.  I like curl -I because then I get to see the http headers:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -I http://localhost:3025/auth/login.php
-
-HTTP/1.1 406 Not Acceptable
-Content-Type: text/plain; charset=utf-8
-X-Request-Id: 5cc96bb1-a369-4b9a-bbd7-5bf44c4a2620
-X-Runtime: 0.083266
-Connection: close
-Server: thin
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;step-6-tail-your-logfiles-looking-for-abusers&quot;&gt;Step 6: Tail Your Logfiles Looking for Abusers&lt;/h2&gt;
-
-&lt;p&gt;The way your system is being abused – and it likely is being abused – is probably different from mine.  You should really do a tail -f log/production.rb on a production instance and just leave it running and watch.  These things do tend to stand out.&lt;/p&gt;
-
-&lt;h2 id=&quot;step-7-learning-more-and-other-approaches&quot;&gt;Step 7: Learning More and Other Approaches&lt;/h2&gt;
-
-&lt;p&gt;You absolutely should read the &lt;a href=&quot;https://github.com/kickstarter/rack-attack&quot;&gt;rack-attack home page&lt;/a&gt; – it has almost everything you need to know and more.  As with all things security there are lots and lots of different ways to approach this.  Here are two:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://wincent.com/wiki/Using_iptables_on_EC2_instances&quot;&gt;iptables&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://fuzzygroup.github.io/blog/sysadmin/2014/09/05/blocking-site-abusers.html&quot;&gt;ufw&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Sat, 05 Nov 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/11/05/aws-tutorial-21-protecting-your-rails-app-in-an-unfriendly-environment-using-rack-attack.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/11/05/aws-tutorial-21-protecting-your-rails-app-in-an-unfriendly-environment-using-rack-attack.html</guid>
-        
-        <category>aws</category>
-        
-        <category>rails</category>
-        
-        <category>security</category>
-        
-        
-        <category>aws</category>
         
       </item>
     

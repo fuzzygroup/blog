@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>AWS Tutorial 22 - Making Your Boxes Pingable</title>
-  <meta name="description" content="The security default for AWS is brilliantly simple: Everything, absolutely everything, is locked down by default.  Once you understand that then developing o...">
+  <title>Advice for Chris Kimball of Milk Street</title>
+  <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/aws/2016/11/06/aws-tutorial-22-making-your-boxes-pingable.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/2016/11/06/advice-for-chris-kimball-of-milk-street.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
   
   <script>
@@ -91,39 +91,12 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">AWS Tutorial 22 - Making Your Boxes Pingable</h1>
-    <p class="post-meta"><time datetime="2016-11-06T00:00:00-04:00" itemprop="datePublished">Nov 6, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">Advice for Chris Kimball of Milk Street</h1>
+    <p class="post-meta"><time datetime="2016-11-06T12:14:45-05:00" itemprop="datePublished">Nov 6, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>The security default for AWS is brilliantly simple: <strong>Everything, absolutely everything, is locked down by default</strong>.  Once you understand that then developing on the AWS platform becomes a lot simpler.  Let’s take, for example, a simple EC2 instance:</p>
-
-<ol>
-  <li>You create it and you would generally assume that a server is pingable.</li>
-  <li>So you try pinging the DNS name and it fails.  Hm…</li>
-  <li>So you try pinging the public IP and that fails.</li>
-</ol>
-
-<p>The answer here is simple – everything is locked down by default.  Even something as innocuous as ping.  Every AWS box comes with what’s called a Security Group and Amazon describes this a <em><a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html">virtual firewall that controls the traffic for one or more instances</a></em>.  Every box you create on AWS will automatically get a Security Group, confusingly named, Launch Wizard N where N is just an incrementing integer.  And since most of us generally accept defaults, you may end up with security groups named:</p>
-
-<ul>
-  <li>Launch Wizard 1</li>
-  <li>Launch Wizard 2</li>
-  <li>Launch Wizard ..</li>
-  <li>Launch Wizard 11</li>
-</ul>
-
-<p>At least that’s what my many attempts at AWS experimentation have left me with.  I’d strongly suggest you name these well.  For the bulk of us, networking is confusing enough without cruft like “Launch Wizard N”.  Honestly!</p>
-
-<p>Stack Overflow, as always, has a useful <a href="http://stackoverflow.com/questions/21981796/cannot-ping-aws-ec2-instance">piece</a> on this.  Here’s what to do:</p>
-
-<ol>
-  <li>You have to edit the Security Group to which your EC2 instance belongs.  If you don’t yet have a security group then add a new one.</li>
-  <li>Add a new rule and select the All ICMP option from the drop downs.</li>
-  <li>If you want to restrict people probing for your instance then lock it down to your own IP address but there are pros and cons.</li>
-</ol>
-
-<p><strong>Note:</strong> AWS strongly wants you to lock down all non http / https traffic to your own ip address and it will actually natter at you about this even for ping.  If you are using a remote monitoring service, however, like the absolutely wonderful <a href="http://www.wormly.com">wormly</a>, then locking this down to your ip address will prevent that remote service from monitoring via ping.  Given that ping is far less overhead than http monitoring, you might want this so make a real decision here.</p>
+    
 
   </div>
   
