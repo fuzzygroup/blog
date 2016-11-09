@@ -2,7 +2,7 @@
 layout: post
 title: Extending Devise
 category: rails
-tags ["rails", "devise", "login", "authorization"]
+tags: ["rails", "devise", "login", "authorization"]
 ---
 Devise is now close to a standard in the Rails community.  And, despite some concerns that I generally have about it, Devise is a solid piece of software with much to recommend it.  My concerns are always around extending it and I thought that perhaps I should actually document how to extend Devise so I don't have to rely on their [wiki](https://github.com/plataformatec/devise/wiki) (which is oddly incorrect in places) -- expand it to all pages and look at the number of things all named 
 

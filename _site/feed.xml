@@ -6,12 +6,95 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 08 Nov 2016 05:09:13 -0500</pubDate>
-    <lastBuildDate>Tue, 08 Nov 2016 05:09:13 -0500</lastBuildDate>
+    <pubDate>Wed, 09 Nov 2016 03:41:10 -0500</pubDate>
+    <lastBuildDate>Wed, 09 Nov 2016 03:41:10 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
-        <title></title>
+        <title>Going Deeper - Debugging Saml</title>
+        <description>&lt;p&gt;This blog post expands on my current interest in &lt;a href=&quot;https://fuzzygroup.github.io/blog/saml/2016/10/28/understanding-saml-and-sso.html&quot;&gt;SAML&lt;/a&gt; with a more detailed investigation of SAML, IdP versus SP initiation and how you actually debug it.  In the process of writing this, I reached out to two companies that support SAML in their products and I wanted to express a special thanks to Scott G at &lt;a href=&quot;http://www.mindtouch.com/&quot;&gt;MindTouch&lt;/a&gt; who did an absolutely fantastic job of answering questions – honestly the best technical support I’ve received in years.  Kudos and thank you!&lt;/p&gt;
+
+&lt;h1 id=&quot;tools-for-working-on-saml&quot;&gt;Tools for Working on SAML&lt;/h1&gt;
+
+&lt;p&gt;Here are some of the tools for working on SAML that I recently learned about:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ruby &lt;a href=&quot;https://github.com/digidentity/libsaml&quot;&gt;libsaml&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Firefox SAML Tracer&lt;/li&gt;
+  &lt;li&gt;Chrome SAML Tracer (not as good)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.samltool.com/decode.php&quot;&gt;The SAML Decoder&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;not-all-vendors-are-created-equal&quot;&gt;Not All Vendors are Created Equal&lt;/h1&gt;
+
+&lt;p&gt;When I worked with SAML, my context was:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I was creating the IdP&lt;/li&gt;
+  &lt;li&gt;One vendor (MindTouch) I worked with had us in a SP init role where they would push login stuff to us&lt;/li&gt;
+  &lt;li&gt;Another vendor (Lithium) I worked with had us in an IdP init role where we would push login stuff to them&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;debugging-a-saml-transaction&quot;&gt;Debugging a SAML Transaction&lt;/h1&gt;
+
+&lt;p&gt;The very first thing you want to do if you’re debugging saml stuff is use FireFox and get the &lt;a href=&quot;https://www.google.com/url?sa=t&amp;amp;rct=j&amp;amp;q=&amp;amp;esrc=s&amp;amp;source=web&amp;amp;cd=1&amp;amp;cad=rja&amp;amp;uact=8&amp;amp;ved=0ahUKEwjS3Lbu3pPQAhVL0oMKHTOtAwgQFggdMAA&amp;amp;url=https%3A%2F%2Faddons.mozilla.org%2Fen-US%2Ffirefox%2Faddon%2Fsaml-tracer%2F&amp;amp;usg=AFQjCNHN7JDX_TkQIZOiPV2tMSVDyfgwkA&quot;&gt;SAML tracer&lt;/a&gt; plugin.  This tool shows you the SAML back and forth flow and it is absolutely brilliant:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/saml_tracer.png&quot; alt=&quot;saml_tracer&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;When Scott G was helping me, his first suggestion was “Ok – go and get the FireFox SAML tracer” and with that we were off to the races.  Good tools always make things better and this was excellent.&lt;/p&gt;
+
+&lt;p&gt;Note: There is also a &lt;a href=&quot;https://chrome.google.com/webstore/detail/saml-chrome-panel/paijfdbeoenhembfhkhllainmocckace?hl=en&quot;&gt;Chrome SAML tool&lt;/a&gt; which I haven’t tried yet.  It doesn’t appear to be as complete as SAML Tracer since it only supports post requests.&lt;/p&gt;
+
+&lt;h1 id=&quot;idp-versus-sp-initiation&quot;&gt;IdP versus SP Initiation&lt;/h1&gt;
+
+&lt;p&gt;When you first get involved with SAML one of the initial things you’ll be asked is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;IdP init or SP Init?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;As you may remember from my &lt;a href=&quot;https://fuzzygroup.github.io/blog/saml/2016/10/28/understanding-saml-and-sso.html&quot;&gt;last post on SAML&lt;/a&gt;, IdP is the identity provider, the bit of software that owns the user information and SP is the service provider, the bit of software that us trying to use identity.&lt;/p&gt;
+
+&lt;p&gt;This is a really, really big deal in the SAML community and what sounds like a network protocol question is actually a user flow question that centers on a chicken and egg issue of what happens first.  The &lt;a href=&quot;https://www.google.com/webhp?sourceid=chrome-instant&amp;amp;ion=1&amp;amp;espv=2&amp;amp;ie=UTF-8#q=saml%20idp%20vs%20sp%20initiated&quot;&gt;almost 7,000 results&lt;/a&gt; in Google for this very simple thing indicates just how many people are confused about it.  As always Stack Overflow has a &lt;a href=&quot;http://stackoverflow.com/questions/12779532/differences-between-sp-initiated-sso-and-idp-initiated-sso&quot;&gt;great page on this topic&lt;/a&gt; but let me try and paraphrase:&lt;/p&gt;
+
+&lt;p&gt;For IdP Init:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The user starts at the IdP login page and then drills deeper into the resources granted by the service provider.&lt;/li&gt;
+  &lt;li&gt;This is done with an HTTP post to an  end point on the service provider that contains two things:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;a SAML Assertion which says essentially “here is who I am”.&lt;/li&gt;
+  &lt;li&gt;a destination parameter of what data they want.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For SP init:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Wed, 09 Nov 2016 03:40:45 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/11/09/going-deeper-debugging-saml.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/09/going-deeper-debugging-saml.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>ScottG - The Model of a Support Technician</title>
+        <description>
+</description>
+        <pubDate>Wed, 09 Nov 2016 03:36:31 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/11/09/scottg-the-model-of-a-support-technician.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/09/scottg-the-model-of-a-support-technician.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Extending Devise</title>
         <description>&lt;p&gt;Devise is now close to a standard in the Rails community.  And, despite some concerns that I generally have about it, Devise is a solid piece of software with much to recommend it.  My concerns are always around extending it and I thought that perhaps I should actually document how to extend Devise so I don’t have to rely on their &lt;a href=&quot;https://github.com/plataformatec/devise/wiki&quot;&gt;wiki&lt;/a&gt; (which is oddly incorrect in places) – expand it to all pages and look at the number of things all named&lt;/p&gt;
 
 &lt;h1 id=&quot;branching-to-custom-urls-after-specific-actions&quot;&gt;Branching to Custom Urls After Specific Actions&lt;/h1&gt;
@@ -87,10 +170,20 @@ path_names:  {
 
 &lt;p&gt;Note: In case it wasn’t obvious the registrations controller creates accounts and the sessions controller creates logins.  Both are restful so, for example, sessions#new is the login form and sessions#create is the actual login itself.&lt;/p&gt;
 </description>
-        <pubDate>Tue, 08 Nov 2016 05:09:13 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/11/08/2016-11-07-extending-devise.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/08/2016-11-07-extending-devise.html</guid>
+        <pubDate>Mon, 07 Nov 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/rails/2016/11/07/extending-devise.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails/2016/11/07/extending-devise.html</guid>
         
+        <category>rails</category>
+        
+        <category>devise</category>
+        
+        <category>login</category>
+        
+        <category>authorization</category>
+        
+        
+        <category>rails</category>
         
       </item>
     
@@ -106,61 +199,15 @@ path_names:  {
       </item>
     
       <item>
-        <title>Going Deeper - Debugging Saml</title>
-        <description>&lt;p&gt;This blog post expands on my current interest in &lt;a href=&quot;https://fuzzygroup.github.io/blog/saml/2016/10/28/understanding-saml-and-sso.html&quot;&gt;SAML&lt;/a&gt; with a more detailed investigation of SAML, IdP versus SP initiation and how you actually debug it.  In the process of writing this, I reached out to two companies that support SAML in their products and I wanted to express a special thanks to Scott G at &lt;a href=&quot;http://www.mindtouch.com/&quot;&gt;MindTouch&lt;/a&gt; who did an absolutely fantastic job of answering questions – honestly the best technical support I’ve received in years.  Kudos and thank you!&lt;/p&gt;
+        <title>When Bundler Insists On Putting Gems into vendor/cache</title>
+        <description>&lt;p&gt;If you’ve ever find that Bundler insists on putting gems in vendor/cache and you can’t make it stop, check the .bundle/config file and you will find a directive that was written there as a result of a bundle install –path vendor/bundle command you did &lt;em&gt;previously&lt;/em&gt;.  Once you execute this command, bundler will write gems to this directory forever more unless you delete the directive.  This can be maddening as .bundle/config isn’t a file that many of us look at.&lt;/p&gt;
 
-&lt;h1 id=&quot;debugging-a-saml-transaction&quot;&gt;Debugging a SAML Transaction&lt;/h1&gt;
-
-&lt;p&gt;The very first thing you want to do if you’re debugging saml stuff is use FireFox and get the &lt;a href=&quot;https://www.google.com/url?sa=t&amp;amp;rct=j&amp;amp;q=&amp;amp;esrc=s&amp;amp;source=web&amp;amp;cd=1&amp;amp;cad=rja&amp;amp;uact=8&amp;amp;ved=0ahUKEwjS3Lbu3pPQAhVL0oMKHTOtAwgQFggdMAA&amp;amp;url=https%3A%2F%2Faddons.mozilla.org%2Fen-US%2Ffirefox%2Faddon%2Fsaml-tracer%2F&amp;amp;usg=AFQjCNHN7JDX_TkQIZOiPV2tMSVDyfgwkA&quot;&gt;SAML tracer&lt;/a&gt; plugin.  This tool shows you the SAML back and forth flow and it is absolutely brilliant:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/saml_tracer.png&quot; alt=&quot;saml_tracer&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;When Scott G was helping me, his first suggestion was “Ok – go and get the FireFox SAML tracer” and with that we were off to the races.  Good tools always make things better and this was excellent.&lt;/p&gt;
-
-&lt;p&gt;Note: There is also a &lt;a href=&quot;https://chrome.google.com/webstore/detail/saml-chrome-panel/paijfdbeoenhembfhkhllainmocckace?hl=en&quot;&gt;Chrome SAML tool&lt;/a&gt; which I haven’t tried yet.  It doesn’t appear to be as complete as SAML Tracer since it only supports post requests.&lt;/p&gt;
-
-&lt;h1 id=&quot;idp-versus-sp-initiation&quot;&gt;IdP versus SP Initiation&lt;/h1&gt;
-
-&lt;p&gt;When you first get involved with SAML one of the initial things you’ll be asked is:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;IdP init or SP Init?&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;As you may remember from my &lt;a href=&quot;https://fuzzygroup.github.io/blog/saml/2016/10/28/understanding-saml-and-sso.html&quot;&gt;last post on SAML&lt;/a&gt;, IdP is the identity provider, the bit of software that owns the user information and SP is the service provider, the bit of software that us trying to use identity.&lt;/p&gt;
-
-&lt;p&gt;This is a really, really big deal in the SAML community and what sounds like a network protocol question is actually a user flow question that centers on a chicken and egg issue of what happens first.  The &lt;a href=&quot;https://www.google.com/webhp?sourceid=chrome-instant&amp;amp;ion=1&amp;amp;espv=2&amp;amp;ie=UTF-8#q=saml%20idp%20vs%20sp%20initiated&quot;&gt;almost 7,000 results&lt;/a&gt; in Google for this very simple thing indicates just how many people are confused about it.  As always Stack Overflow has a &lt;a href=&quot;http://stackoverflow.com/questions/12779532/differences-between-sp-initiated-sso-and-idp-initiated-sso&quot;&gt;great page on this topic&lt;/a&gt; but let me try and paraphrase:&lt;/p&gt;
-
-&lt;p&gt;For IdP Init:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;The user starts at the IdP login page and then drills deeper into the resources granted by the service provider.&lt;/li&gt;
-  &lt;li&gt;This is done with an HTTP post to an  end point on the service provider that contains two things:&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;Notes:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;a SAML Assertion which says essentially “here is who I am”.&lt;/li&gt;
-  &lt;li&gt;a destination parameter of what data they want.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://bundler.io/v1.2/bundle_install.html&quot;&gt;Bundler Reference&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Thanks to &lt;a href=&quot;http://www.dasari.me&quot;&gt;Dv&lt;/a&gt; who pitched in on this on a busy Sunday morning&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;For SP init:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Sun, 06 Nov 2016 03:57:39 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/11/06/going-deeper-debugging-saml.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/06/going-deeper-debugging-saml.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>When Bundler Insists On Putting Gems into vendor/cache</title>
-        <description>&lt;p&gt;If you’ve ever find that Bundler insists on putting gems in vendor/cache and you can’t make it stop, check the .bundle/config file and you will find a directive that was written there as a result of a bundle install –path vendor/bundle command you did previously.  Once you execute this command, bundler will write gems to this directory forever more unless you delete the directive.  This can be maddening as .bundle/config isn’t a file that many of us look at.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://bundler.io/v1.2/bundle_install.html&quot;&gt;Bundler Reference&lt;/a&gt;&lt;/p&gt;
 
 </description>
         <pubDate>Sun, 06 Nov 2016 00:00:00 -0400</pubDate>
@@ -307,17 +354,6 @@ path_names:  {
         <pubDate>Sat, 05 Nov 2016 09:00:43 -0400</pubDate>
         <link>https://fuzzygroup.github.io/blog/2016/11/05/how-to-set-a-new-url-in-chrome-on-new-tab.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/05/how-to-set-a-new-url-in-chrome-on-new-tab.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>foo1</title>
-        <description>
-</description>
-        <pubDate>Sat, 05 Nov 2016 08:40:48 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/11/05/foo1.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/05/foo1.html</guid>
         
         
       </item>

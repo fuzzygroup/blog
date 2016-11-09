@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Going Deeper - Debugging Saml</title>
-  <meta name="description" content="This blog post expands on my current interest in SAML with a more detailed investigation of SAML, IdP versus SP initiation and how you actually debug it.  In...">
+  <title>ScottG - The Model of a Support Technician</title>
+  <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/2016/11/06/going-deeper-debugging-saml.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/2016/11/09/scottg-the-model-of-a-support-technician.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
   
   <script>
@@ -91,52 +91,12 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Going Deeper - Debugging Saml</h1>
-    <p class="post-meta"><time datetime="2016-11-06T03:57:39-05:00" itemprop="datePublished">Nov 6, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">ScottG - The Model of a Support Technician</h1>
+    <p class="post-meta"><time datetime="2016-11-09T03:36:31-05:00" itemprop="datePublished">Nov 9, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>This blog post expands on my current interest in <a href="https://fuzzygroup.github.io/blog/saml/2016/10/28/understanding-saml-and-sso.html">SAML</a> with a more detailed investigation of SAML, IdP versus SP initiation and how you actually debug it.  In the process of writing this, I reached out to two companies that support SAML in their products and I wanted to express a special thanks to Scott G at <a href="http://www.mindtouch.com/">MindTouch</a> who did an absolutely fantastic job of answering questions – honestly the best technical support I’ve received in years.  Kudos and thank you!</p>
-
-<h1 id="debugging-a-saml-transaction">Debugging a SAML Transaction</h1>
-
-<p>The very first thing you want to do if you’re debugging saml stuff is use FireFox and get the <a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjS3Lbu3pPQAhVL0oMKHTOtAwgQFggdMAA&amp;url=https%3A%2F%2Faddons.mozilla.org%2Fen-US%2Ffirefox%2Faddon%2Fsaml-tracer%2F&amp;usg=AFQjCNHN7JDX_TkQIZOiPV2tMSVDyfgwkA">SAML tracer</a> plugin.  This tool shows you the SAML back and forth flow and it is absolutely brilliant:</p>
-
-<p><img src="/blog/assets/saml_tracer.png" alt="saml_tracer" /></p>
-
-<p>When Scott G was helping me, his first suggestion was “Ok – go and get the FireFox SAML tracer” and with that we were off to the races.  Good tools always make things better and this was excellent.</p>
-
-<p>Note: There is also a <a href="https://chrome.google.com/webstore/detail/saml-chrome-panel/paijfdbeoenhembfhkhllainmocckace?hl=en">Chrome SAML tool</a> which I haven’t tried yet.  It doesn’t appear to be as complete as SAML Tracer since it only supports post requests.</p>
-
-<h1 id="idp-versus-sp-initiation">IdP versus SP Initiation</h1>
-
-<p>When you first get involved with SAML one of the initial things you’ll be asked is:</p>
-
-<blockquote>
-  <p>IdP init or SP Init?</p>
-</blockquote>
-
-<p>As you may remember from my <a href="https://fuzzygroup.github.io/blog/saml/2016/10/28/understanding-saml-and-sso.html">last post on SAML</a>, IdP is the identity provider, the bit of software that owns the user information and SP is the service provider, the bit of software that us trying to use identity.</p>
-
-<p>This is a really, really big deal in the SAML community and what sounds like a network protocol question is actually a user flow question that centers on a chicken and egg issue of what happens first.  The <a href="https://www.google.com/webhp?sourceid=chrome-instant&amp;ion=1&amp;espv=2&amp;ie=UTF-8#q=saml%20idp%20vs%20sp%20initiated">almost 7,000 results</a> in Google for this very simple thing indicates just how many people are confused about it.  As always Stack Overflow has a <a href="http://stackoverflow.com/questions/12779532/differences-between-sp-initiated-sso-and-idp-initiated-sso">great page on this topic</a> but let me try and paraphrase:</p>
-
-<p>For IdP Init:</p>
-
-<ol>
-  <li>The user starts at the IdP login page and then drills deeper into the resources granted by the service provider.</li>
-  <li>This is done with an HTTP post to an  end point on the service provider that contains two things:</li>
-</ol>
-
-<ul>
-  <li>a SAML Assertion which says essentially “here is who I am”.</li>
-  <li>a destination parameter of what data they want.</li>
-</ul>
-
-<p>For SP init:</p>
-
-<ol>
-  <li></li>
-</ol>
+    
 
   </div>
   

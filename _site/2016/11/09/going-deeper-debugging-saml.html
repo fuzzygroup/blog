@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>When Bundler Insists On Putting Gems into vendor/cache</title>
-  <meta name="description" content="If you’ve ever find that Bundler insists on putting gems in vendor/cache and you can’t make it stop, check the .bundle/config file and you will find a direct...">
+  <title>Going Deeper - Debugging Saml</title>
+  <meta name="description" content="This blog post expands on my current interest in SAML with a more detailed investigation of SAML, IdP versus SP initiation and how you actually debug it.  In...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/rails/2016/11/06/when-bundler-insists-on-putting-gems-into-vendor-cache.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/2016/11/09/going-deeper-debugging-saml.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
   
   <script>
@@ -91,20 +91,73 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">When Bundler Insists On Putting Gems into vendor/cache</h1>
-    <p class="post-meta"><time datetime="2016-11-06T00:00:00-04:00" itemprop="datePublished">Nov 6, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">Going Deeper - Debugging Saml</h1>
+    <p class="post-meta"><time datetime="2016-11-09T03:40:45-05:00" itemprop="datePublished">Nov 9, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>If you’ve ever find that Bundler insists on putting gems in vendor/cache and you can’t make it stop, check the .bundle/config file and you will find a directive that was written there as a result of a bundle install –path vendor/bundle command you did <em>previously</em>.  Once you execute this command, bundler will write gems to this directory forever more unless you delete the directive.  This can be maddening as .bundle/config isn’t a file that many of us look at.</p>
+    <p>This blog post expands on my current interest in <a href="https://fuzzygroup.github.io/blog/saml/2016/10/28/understanding-saml-and-sso.html">SAML</a> with a more detailed investigation of SAML, IdP versus SP initiation and how you actually debug it.  In the process of writing this, I reached out to two companies that support SAML in their products and I wanted to express a special thanks to Scott G at <a href="http://www.mindtouch.com/">MindTouch</a> who did an absolutely fantastic job of answering questions – honestly the best technical support I’ve received in years.  Kudos and thank you!</p>
 
-<p>Notes:</p>
+<h1 id="tools-for-working-on-saml">Tools for Working on SAML</h1>
+
+<p>Here are some of the tools for working on SAML that I recently learned about:</p>
 
 <ul>
-  <li><a href="http://bundler.io/v1.2/bundle_install.html">Bundler Reference</a></li>
-  <li>Thanks to <a href="http://www.dasari.me">Dv</a> who pitched in on this on a busy Sunday morning</li>
+  <li>Ruby <a href="https://github.com/digidentity/libsaml">libsaml</a></li>
+  <li>Firefox SAML Tracer</li>
+  <li>Chrome SAML Tracer (not as good)</li>
+  <li><a href="https://www.samltool.com/decode.php">The SAML Decoder</a></li>
 </ul>
 
+<h1 id="not-all-vendors-are-created-equal">Not All Vendors are Created Equal</h1>
+
+<p>When I worked with SAML, my context was:</p>
+
+<ul>
+  <li>I was creating the IdP</li>
+  <li>One vendor (MindTouch) I worked with had us in a SP init role where they would push login stuff to us</li>
+  <li>Another vendor (Lithium) I worked with had us in an IdP init role where we would push login stuff to them</li>
+</ul>
+
+<h1 id="debugging-a-saml-transaction">Debugging a SAML Transaction</h1>
+
+<p>The very first thing you want to do if you’re debugging saml stuff is use FireFox and get the <a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjS3Lbu3pPQAhVL0oMKHTOtAwgQFggdMAA&amp;url=https%3A%2F%2Faddons.mozilla.org%2Fen-US%2Ffirefox%2Faddon%2Fsaml-tracer%2F&amp;usg=AFQjCNHN7JDX_TkQIZOiPV2tMSVDyfgwkA">SAML tracer</a> plugin.  This tool shows you the SAML back and forth flow and it is absolutely brilliant:</p>
+
+<p><img src="/blog/assets/saml_tracer.png" alt="saml_tracer" /></p>
+
+<p>When Scott G was helping me, his first suggestion was “Ok – go and get the FireFox SAML tracer” and with that we were off to the races.  Good tools always make things better and this was excellent.</p>
+
+<p>Note: There is also a <a href="https://chrome.google.com/webstore/detail/saml-chrome-panel/paijfdbeoenhembfhkhllainmocckace?hl=en">Chrome SAML tool</a> which I haven’t tried yet.  It doesn’t appear to be as complete as SAML Tracer since it only supports post requests.</p>
+
+<h1 id="idp-versus-sp-initiation">IdP versus SP Initiation</h1>
+
+<p>When you first get involved with SAML one of the initial things you’ll be asked is:</p>
+
+<blockquote>
+  <p>IdP init or SP Init?</p>
+</blockquote>
+
+<p>As you may remember from my <a href="https://fuzzygroup.github.io/blog/saml/2016/10/28/understanding-saml-and-sso.html">last post on SAML</a>, IdP is the identity provider, the bit of software that owns the user information and SP is the service provider, the bit of software that us trying to use identity.</p>
+
+<p>This is a really, really big deal in the SAML community and what sounds like a network protocol question is actually a user flow question that centers on a chicken and egg issue of what happens first.  The <a href="https://www.google.com/webhp?sourceid=chrome-instant&amp;ion=1&amp;espv=2&amp;ie=UTF-8#q=saml%20idp%20vs%20sp%20initiated">almost 7,000 results</a> in Google for this very simple thing indicates just how many people are confused about it.  As always Stack Overflow has a <a href="http://stackoverflow.com/questions/12779532/differences-between-sp-initiated-sso-and-idp-initiated-sso">great page on this topic</a> but let me try and paraphrase:</p>
+
+<p>For IdP Init:</p>
+
+<ol>
+  <li>The user starts at the IdP login page and then drills deeper into the resources granted by the service provider.</li>
+  <li>This is done with an HTTP post to an  end point on the service provider that contains two things:</li>
+</ol>
+
+<ul>
+  <li>a SAML Assertion which says essentially “here is who I am”.</li>
+  <li>a destination parameter of what data they want.</li>
+</ul>
+
+<p>For SP init:</p>
+
+<ol>
+  <li></li>
+</ol>
 
   </div>
   
