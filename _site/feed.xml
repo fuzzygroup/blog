@@ -6,9 +6,44 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 09 Nov 2016 03:41:10 -0500</pubDate>
-    <lastBuildDate>Wed, 09 Nov 2016 03:41:10 -0500</lastBuildDate>
+    <pubDate>Fri, 11 Nov 2016 16:25:56 -0500</pubDate>
+    <lastBuildDate>Fri, 11 Nov 2016 16:25:56 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>How to Set a New URL in Chrome on New Tab</title>
+        <description>&lt;p&gt;If you’ve ever used Chrome and wanted to have a particular url opened when you press COMMAND+T then this one is for you. This is an incredibly common use case that is mildly unbelievable that it &lt;a href=&quot;https://support.google.com/chrome/answer/95314?hl=en&quot;&gt;isn’t supported out of the box&lt;/a&gt;.  The default for Chrome when you press COMMAND+T seems to be “show me stuff I’ve used recently”.  And that’s one of those things that sounds great until:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You discover what you are getting for your birthday when you use your wife’s computer and you open a new tab&lt;/li&gt;
+  &lt;li&gt;You learn about someone’s personal medical concerns as you are watching over their shoulder as they use their computer.  Erectile dysfunction?  I’m so sorry – I didn’t know that about a next door neighbor.&lt;/li&gt;
+  &lt;li&gt;Your eldest child discovers what pornography his grandfather has recently browsed when he’s fixing his grandfather’s new computer&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There are all kinds of reasons why you don’t want to know what stuff someone has recently looked up online.  All kinds of reasons!&lt;/p&gt;
+
+&lt;p&gt;Happily there is a Chrome Extension that solves this for you:&lt;/p&gt;
+
+&lt;p&gt;https://chrome.google.com/webstore/detail/new-tab-redirect/icpgjfneehieebagbmdbhnlpiopdcmna/related&lt;/p&gt;
+
+&lt;p&gt;You can have this open any url when the new tab opens.  Personally I have it open a local home page which displays an enormous swath of resources that I use constantly.&lt;/p&gt;
+
+&lt;h1 id=&quot;disadvantages&quot;&gt;Disadvantages&lt;/h1&gt;
+
+&lt;p&gt;The one massive disadvantage to this is that if you had to shut down Chrome forcibly, the yellow overlay which offers to restore all previous sessions will go away the first them you use this extension.  That nailed me hard the first time I used this.  Now I’ve adapted.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 11 Nov 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/chrome/2016/11/11/how-to-set-a-new-url-in-chrome-on-new-tab.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/chrome/2016/11/11/how-to-set-a-new-url-in-chrome-on-new-tab.html</guid>
+        
+        <category>chrome</category>
+        
+        <category>extension</category>
+        
+        
+        <category>chrome</category>
+        
+      </item>
     
       <item>
         <title>Going Deeper - Debugging Saml</title>
@@ -22,7 +57,7 @@
   &lt;li&gt;Ruby &lt;a href=&quot;https://github.com/digidentity/libsaml&quot;&gt;libsaml&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Firefox SAML Tracer&lt;/li&gt;
   &lt;li&gt;Chrome SAML Tracer (not as good)&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.samltool.com/decode.php&quot;&gt;The SAML Decoder&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.samltool.com/decode.php&quot;&gt;The SAML Decoder&lt;/a&gt;.  The UI here sucks blue monkey chunks but it does the job.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h1 id=&quot;not-all-vendors-are-created-equal&quot;&gt;Not All Vendors are Created Equal&lt;/h1&gt;
@@ -31,9 +66,24 @@
 
 &lt;ul&gt;
   &lt;li&gt;I was creating the IdP&lt;/li&gt;
-  &lt;li&gt;One vendor (MindTouch) I worked with had us in a SP init role where they would push login stuff to us&lt;/li&gt;
-  &lt;li&gt;Another vendor (Lithium) I worked with had us in an IdP init role where we would push login stuff to them&lt;/li&gt;
+  &lt;li&gt;One vendor (&lt;a href=&quot;http://www.mindtouch.com/&quot;&gt;MindTouch&lt;/a&gt;) I worked with had us in a SP init role where they would push login stuff to us&lt;/li&gt;
+  &lt;li&gt;Another vendor (who shall not be named) I worked with had us in an IdP init role where we would push login stuff to them&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;The experience between the two was night and day different.  The SP Init role vendor was a dream to work with and their product line was so astonishingly forgiving and pleasant that it would tell the errors and how far it got.  The other vendor, well, you had to ask your project manager for each error one at a time.&lt;/p&gt;
+
+&lt;h2 id=&quot;examples-of-how-to-make-a-ui-that-uses-saml&quot;&gt;Examples of How to Make a UI that Uses SAML&lt;/h2&gt;
+
+&lt;p&gt;Here are examples of a great SAML user interface for a developer.  This is from &lt;a href=&quot;http://www.mindtouch.com/&quot;&gt;MindTouch&lt;/a&gt;.  Whether we get a success or a failure there’s enough context for the developer to actually understand what’s happening:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/great_saml_ui_mind_touch_saml_success.png&quot; alt=&quot;&quot; /&gt;
+If you have the debug tracer on then you can see the whole SAML transaction&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/saml_great_ui_shows_errors.png&quot; alt=&quot;&quot; /&gt;
+If you hit errors part way thru a SAML transaction then you can see at least as far as you got.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/saml_success_but_no_access.png&quot; alt=&quot;&quot; /&gt;
+If you are requesting a page which requires administrative access you don’t have then you’ll get logged in but blocked access to the requested resource.  See below under “Local Users Haven’t Gone Away - Local Login Has Gone Away”&lt;/p&gt;
 
 &lt;h1 id=&quot;debugging-a-saml-transaction&quot;&gt;Debugging a SAML Transaction&lt;/h1&gt;
 
@@ -45,6 +95,18 @@
 
 &lt;p&gt;Note: There is also a &lt;a href=&quot;https://chrome.google.com/webstore/detail/saml-chrome-panel/paijfdbeoenhembfhkhllainmocckace?hl=en&quot;&gt;Chrome SAML tool&lt;/a&gt; which I haven’t tried yet.  It doesn’t appear to be as complete as SAML Tracer since it only supports post requests.&lt;/p&gt;
 
+&lt;h1 id=&quot;local-users-havent-gone-away---local-login-has-gone-away&quot;&gt;Local Users Haven’t Gone Away - Local Login Has Gone Away&lt;/h1&gt;
+
+&lt;p&gt;One thing to understand about SAML is that local users, at the level of the Service Provider, have not gone away.  What has gone away is &lt;strong&gt;local login&lt;/strong&gt; and &lt;strong&gt;local passwords&lt;/strong&gt;.  Your application will, almost certainly, still have a local set of users that you have to administer.  This becomes most apparent when you want to grant administrative rights to a user who has logged in via saml.  Even my SAML poster child for a great implementation, MindTouch, says this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Can I automatically seat users as pro members?
+Users cannot be seated by a SAML assertion. A user must be explicitly seated by an administrator using the control panel. If automatic seating is required, this can be accomplished via our API.
+&lt;a href=&quot;https://success.mindtouch.com/Documentation/MindTouchResponsive/Authentication/Authenticate_via_SSO/Implement_SAML_SSO?=&quot;&gt;Mindtouch Docs&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The way that admin rights are granted to a SAML user is that the Service Provider has an admin tool where a user can be located by whatever is the unique identifier for a user (generally email or username) and then administrative rights are granted to the user.&lt;/p&gt;
+
 &lt;h1 id=&quot;idp-versus-sp-initiation&quot;&gt;IdP versus SP Initiation&lt;/h1&gt;
 
 &lt;p&gt;When you first get involved with SAML one of the initial things you’ll be asked is:&lt;/p&gt;
@@ -55,41 +117,180 @@
 
 &lt;p&gt;As you may remember from my &lt;a href=&quot;https://fuzzygroup.github.io/blog/saml/2016/10/28/understanding-saml-and-sso.html&quot;&gt;last post on SAML&lt;/a&gt;, IdP is the identity provider, the bit of software that owns the user information and SP is the service provider, the bit of software that us trying to use identity.&lt;/p&gt;
 
-&lt;p&gt;This is a really, really big deal in the SAML community and what sounds like a network protocol question is actually a user flow question that centers on a chicken and egg issue of what happens first.  The &lt;a href=&quot;https://www.google.com/webhp?sourceid=chrome-instant&amp;amp;ion=1&amp;amp;espv=2&amp;amp;ie=UTF-8#q=saml%20idp%20vs%20sp%20initiated&quot;&gt;almost 7,000 results&lt;/a&gt; in Google for this very simple thing indicates just how many people are confused about it.  As always Stack Overflow has a &lt;a href=&quot;http://stackoverflow.com/questions/12779532/differences-between-sp-initiated-sso-and-idp-initiated-sso&quot;&gt;great page on this topic&lt;/a&gt; but let me try and paraphrase:&lt;/p&gt;
+&lt;p&gt;This is a really, really big deal in the SAML community and what sounds like a network protocol question is actually a &lt;strong&gt;user flow&lt;/strong&gt; question that centers on a chicken and egg issue of what happens first.  The &lt;a href=&quot;https://www.google.com/webhp?sourceid=chrome-instant&amp;amp;ion=1&amp;amp;espv=2&amp;amp;ie=UTF-8#q=saml%20idp%20vs%20sp%20initiated&quot;&gt;almost 7,000 results&lt;/a&gt; in Google for this very simple thing indicates just how many people are confused about it.  As always Stack Overflow has a &lt;a href=&quot;http://stackoverflow.com/questions/12779532/differences-between-sp-initiated-sso-and-idp-initiated-sso&quot;&gt;great page on this topic&lt;/a&gt; but let me try and paraphrase:&lt;/p&gt;
 
 &lt;p&gt;For IdP Init:&lt;/p&gt;
 
-&lt;ol&gt;
-  &lt;li&gt;The user starts at the IdP login page and then drills deeper into the resources granted by the service provider.&lt;/li&gt;
-  &lt;li&gt;This is done with an HTTP post to an  end point on the service provider that contains two things:&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;a SAML Assertion which says essentially “here is who I am”.&lt;/li&gt;
-  &lt;li&gt;a destination parameter of what data they want.&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;The best advice I can give you is read &lt;a href=&quot;http://saml.xml.org/wiki/idp-initiated-single-sign-on-post-binding&quot;&gt;this old web page&lt;/a&gt;.  When I found this and implemented it exactly this way then IdP Init just fell in to place for me.&lt;/p&gt;
 
 &lt;p&gt;For SP init:&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;&lt;/li&gt;
+  &lt;li&gt;The user starts on a url on the service provider and when access is needed they are pushed BACK to the IdP to a special login page which is run by the SAML side of the house.&lt;/li&gt;
+  &lt;li&gt;A SAML assertion is generated and pushed to the SP.&lt;/li&gt;
+  &lt;li&gt;If the assertion is valid the user is granted access.&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;p&gt;Here’s the rub from a technical perspective: &lt;strong&gt;IdP Init is MUCH MUCH HARDER&lt;/strong&gt;.  When you are doing IdP Init you need to do all the low level SAML junk yourself.  When you are doing SP init then they do the SAML junk.&lt;/p&gt;
+
+&lt;p&gt;Just to illustrate how much work the SP versus IdP approach changes things, you should look at these two configuration UIs below.  One is for SP Init and one is for IdP Init.  The IdP Init one is trivial to configure – all you have to do is set a few urls.  The SP Init one is much harder to configure – it requires your certificate and more low level details.  But there’s an inversion here – the more complex it is to configure the SP, the less code you have to write yourself.  Repeat that after me – the less code you have to write.  I got the SP Init up and running in a matter of hours.  The IdP init took days.&lt;/p&gt;
+
+&lt;h2 id=&quot;configuration-screen-when-you-are-the-idp-and-the-sp-wants-sp-init&quot;&gt;Configuration Screen when You Are the IdP And the SP wants SP Init&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/mindtouch_saml_config.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;configuration-screen-when-you-are-the-idp-and-the-sp-wants-idp-init&quot;&gt;Configuration Screen when You Are the IdP and the SP wants IdP Init&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/saml_idp_init_configuration.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;example-of-a-saml-assertion-when-you-are-the-idp-pushing-to-an-sp&quot;&gt;Example of a SAML Assertion When You Are the IdP Pushing to an SP&lt;/h1&gt;
+
+&lt;p&gt;Here’s a full example of a SAML assertion.  This, if you updated the time stamps, would correctly validate (a few urls have been changed, however):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;samlp:Response xmlns:samlp=&quot;urn:oasis:names:tc:SAML:2.0:protocol&quot; ID=&quot;_a4f7e48e0-88e7-0134-4eb1-22000ab35e7b&quot; Version=&quot;2.0&quot; IssueInstant=&quot;2016-11-10T19:21:13.116Z&quot; Destination=&quot;https://community-staging.interania.com/auth/saml/SSO&quot; Consent=&quot;urn:oasis:names:tc:SAML:2.0:consent:unspecified&quot; &amp;gt;
+  &amp;lt;Issuer xmlns=&quot;urn:oasis:names:tc:SAML:2.0:assertion&quot;&amp;gt;http://sso.interania.com/saml/auth&amp;lt;/Issuer&amp;gt;
+  &amp;lt;samlp:Status&amp;gt;
+    &amp;lt;samlp:StatusCode Value=&quot;urn:oasis:names:tc:SAML:2.0:status:Success&quot;/&amp;gt;
+  &amp;lt;/samlp:Status&amp;gt;
+  &amp;lt;Assertion xmlns=&quot;urn:oasis:names:tc:SAML:2.0:assertion&quot; ID=&quot;_a4f7e4b30-88e7-0134-4eb1-22000ab35e7b&quot; IssueInstant=&quot;2016-11-10T19:21:13.116Z&quot; Version=&quot;2.0&quot;&amp;gt;
+    &amp;lt;Issuer&amp;gt;http://sso.interania.com/saml/auth&amp;lt;/Issuer&amp;gt;
+    &amp;lt;ds:Signature xmlns:ds=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&amp;gt;
+      &amp;lt;ds:SignedInfo xmlns:ds=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&amp;gt;
+        &amp;lt;ds:CanonicalizationMethod Algorithm=&quot;http://www.w3.org/2001/10/xml-exc-c14n#&quot;/&amp;gt;
+        &amp;lt;ds:SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#rsa-sha1&quot;/&amp;gt;
+        &amp;lt;ds:Reference URI=&quot;#_a4f7e4b30-88e7-0134-4eb1-22000ab35e7b&quot;&amp;gt;
+          &amp;lt;ds:Transforms&amp;gt;
+            &amp;lt;ds:Transform Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#enveloped-signature&quot;/&amp;gt;
+            &amp;lt;ds:Transform Algorithm=&quot;http://www.w3.org/2001/10/xml-exc-c14n#&quot;/&amp;gt;
+          &amp;lt;/ds:Transforms&amp;gt;
+          &amp;lt;ds:DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;/&amp;gt;
+          &amp;lt;ds:DigestValue&amp;gt;IxemD9eHnPTFaA9Th4+2mQncXuI=&amp;lt;/ds:DigestValue&amp;gt;
+        &amp;lt;/ds:Reference&amp;gt;
+      &amp;lt;/ds:SignedInfo&amp;gt;
+      &amp;lt;ds:SignatureValue&amp;gt;jrTDXKvv2wevCIIJ48gL1kIvgBwMMtl+RO6wligTVQp7iYglReUIKdnEZo9vuFucd+ocWkg7EQ3N3WWsZiBvyVGTJ80jC8QRTD+CtTEEMMVgtS2BkLFUv7gfH5yZ9Affk+qF+uAEK4Ij2Zy+0Zq6jleQlUTyCoZNDOFzNF1zWHo=&amp;lt;/ds:SignatureValue&amp;gt;
+      &amp;lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&amp;gt;
+        &amp;lt;ds:X509Data&amp;gt;
+          &amp;lt;ds:X509Certificate&amp;gt;MIICrzCCAhgCCQCAZjKq3Nb4xTANBgkqhkiG9w0BAQsFADCBmzELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAkNBMRUwEwYDVQQHDAxSZWR3b29kIENpdHkxEDAOBgNVBAoMB0ludGVybmExFDASBgNVBAsMC0VuZ2luZWVyaW5nMRowGAYDVQQDDBFzc28uaW50ZXJhbmlhLmNvbTEkMCIGCSqGSIb3DQEJARYVc2pvaG5zb25AaW50ZXJhbmEuY29tMB4XDTE2MTEwMzExMDAwN1oXDTE3MTEwMzExMDAwN1owgZsxCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJDQTEVMBMGA1UEBwwMUmVkd29vZCBDaXR5MRAwDgYDVQQKDAdJbnRlcm5hMRQwEgYDVQQLDAtFbmdpbmVlcmluZzEaMBgGA1UEAwwRc3NvLmludGVyYW5pYS5jb20xJDAiBgkqhkiG9w0BCQEWFXNqb2huc29uQGludGVyYW5hLmNvbTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEA1NaloseOtTva09VahTNozzHbO6rpuT7/FpQOi3eHKWwU4zHgEvOI2biUkTRYocZkunilBxqtTrCgbDay4MqXFykt+lKujnV10OG4+cVUxds8a50nkHXVbpMC48m5gfkUfut4EIURE5RHjLJ/nCpgC67QUl1/ztkFvJaNDJeWoQMCAwEAATANBgkqhkiG9w0BAQsFAAOBgQCTkZmrFEhmW4MoX6OovuKwCNwQBWPXju/po8d7YTVpRf7tIfGsD/4x8jBgUaeSPQ4QXCMQqB6244win3u1veVQd5UYRP37RteEP+F302Gw2MbOl2fYUQoSwINayWA/CinYBQAlzTAJovIsc/P8dNFUsSQzqme2aF1nIuH3h/8/Kg==&amp;lt;/ds:X509Certificate&amp;gt;
+        &amp;lt;/ds:X509Data&amp;gt;
+      &amp;lt;/KeyInfo&amp;gt;
+    &amp;lt;/ds:Signature&amp;gt;
+    &amp;lt;Subject&amp;gt;
+      &amp;lt;NameID Format=&quot;urn:oasis:names:tc:SAML:2.0:nameid-format:transient&quot;&amp;gt;scott_johnson&amp;lt;/NameID&amp;gt;
+      &amp;lt;SubjectConfirmation Method=&quot;urn:oasis:names:tc:SAML:2.0:cm:bearer&quot;&amp;gt;
+        &amp;lt;SubjectConfirmationData NotOnOrAfter=&quot;2016-11-10T19:25:13.116Z&quot; Recipient=&quot;https://community-staging.interania.com/auth/saml/SSO&quot;/&amp;gt;
+      &amp;lt;/SubjectConfirmation&amp;gt;
+    &amp;lt;/Subject&amp;gt;
+    &amp;lt;Conditions NotBefore=&quot;2016-11-10T19:21:13.116Z&quot; NotOnOrAfter=&quot;2016-11-10T20:07:13.116Z&quot;&amp;gt;
+      &amp;lt;AudienceRestriction&amp;gt;
+        &amp;lt;Audience&amp;gt;https://community-staging.interania.com/auth/saml&amp;lt;/Audience&amp;gt;
+      &amp;lt;/AudienceRestriction&amp;gt;
+    &amp;lt;/Conditions&amp;gt;
+    &amp;lt;AttributeStatement&amp;gt;
+      &amp;lt;Attribute Name=&quot;email&quot; NameFormat=&quot;urn:oasis:names:tc:SAML:2.0:attrname-format:uri&quot; FriendlyName=&quot;email&quot;&amp;gt;
+        &amp;lt;AttributeValue&amp;gt;sjohnson@interana.com&amp;lt;/AttributeValue&amp;gt;
+      &amp;lt;/Attribute&amp;gt;
+      &amp;lt;Attribute Name=&quot;first_name&quot; NameFormat=&quot;urn:oasis:names:tc:SAML:2.0:attrname-format:uri&quot; FriendlyName=&quot;first_name&quot;&amp;gt;
+        &amp;lt;AttributeValue&amp;gt;Scott&amp;lt;/AttributeValue&amp;gt;
+      &amp;lt;/Attribute&amp;gt;
+      &amp;lt;Attribute Name=&quot;last_name&quot; NameFormat=&quot;urn:oasis:names:tc:SAML:2.0:attrname-format:uri&quot; FriendlyName=&quot;last_name&quot;&amp;gt;
+        &amp;lt;AttributeValue&amp;gt;Johnson&amp;lt;/AttributeValue&amp;gt;
+      &amp;lt;/Attribute&amp;gt;
+    &amp;lt;/AttributeStatement&amp;gt;
+    &amp;lt;AuthnStatement AuthnInstant=&quot;2016-11-10T19:21:13.116Z&quot; SessionIndex=&quot;_a4f7e4b30-88e7-0134-4eb1-22000ab35e7b&quot;&amp;gt;
+      &amp;lt;AuthnContext&amp;gt;
+        &amp;lt;AuthnContextClassRef&amp;gt;urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport&amp;lt;/AuthnContextClassRef&amp;gt;
+      &amp;lt;/AuthnContext&amp;gt;
+    &amp;lt;/AuthnStatement&amp;gt;
+  &amp;lt;/Assertion&amp;gt;
+&amp;lt;/samlp:Response&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;writing-your-own-idp&quot;&gt;Writing Your Own IdP&lt;/h1&gt;
+
+&lt;p&gt;I’ve open sourced &lt;a href=&quot;https://github.com/fuzzygroup/saml_idp&quot;&gt;my fork of the Ruby IdP&lt;/a&gt; I based this all on and I’ll be updating it at least somewhat regularly.  I put a bunch of advice on the home page there.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 09 Nov 2016 03:40:45 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/11/09/going-deeper-debugging-saml.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/09/going-deeper-debugging-saml.html</guid>
+        <pubDate>Fri, 11 Nov 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/11/11/going-deeper-debugging-saml.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/11/going-deeper-debugging-saml.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Ruby Testing - Mocks Versus Stubs</title>
+        <description>
+</description>
+        <pubDate>Thu, 10 Nov 2016 11:49:19 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/11/10/ruby-testing-mocks-versus-stubs.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/10/ruby-testing-mocks-versus-stubs.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Simple JavaScript Basics</title>
+        <description>&lt;h1 id=&quot;how-do-i-know-if-jquery-is-installed&quot;&gt;How Do I Know if JQuery is Installed&lt;/h1&gt;
+&lt;p&gt;$(‘*’)
+# How Do I Submit a Form on Page Load&lt;/p&gt;
+&lt;form method=&quot;post&quot; action=&quot;&amp;lt;%=SAML_URLS[:lithium_endpoint_consume]%&amp;gt;&quot; id=&quot;sso_form&quot;&gt; 
+&lt;input type=&quot;hidden&quot; name=&quot;SAMLResponse&quot; value=&quot;&amp;lt;%=@SAMLResponse%&amp;gt;&quot; /&gt; 
+&lt;input type=&quot;hidden&quot; name=&quot;RelayState&quot; value=&quot;&amp;lt;%=@RelayState%&amp;gt;&quot; /&gt; 
+&lt;input type=&quot;submit&quot; value=&quot; Go &quot; id=&quot;form_submit&quot; /&gt; 
+&lt;/form&gt;
+&lt;script&gt;
+  $(document).ready(function(){
+    $('#sso_form').submit();
+  });
+&lt;/script&gt;
+
+&lt;h1 id=&quot;how-do-i-submit-a-form-with-javascript&quot;&gt;How Do I Submit a Form with JavaScript&lt;/h1&gt;
+&lt;script&gt;
+$('#form_submit').click(function(e){
+  e.preventDefault();
+  $('#sso_form').submit();  
+});
+&lt;/script&gt;
+
+</description>
+        <pubDate>Thu, 10 Nov 2016 11:49:04 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/11/10/simple-javascript-basics.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/10/simple-javascript-basics.html</guid>
         
         
       </item>
     
       <item>
         <title>ScottG - The Model of a Support Technician</title>
-        <description>
+        <description>&lt;p&gt;I don’t think I’m wrong in saying that working in technical support is a lot like working in plumbing.  Now bear in mind that I’m not saying that in an insulting fashion by any means.  Specifically:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Disclaimer:  I grew up working in a hardware store.  My first “technical training” was selling to people like plumbers and electricians.  I have tremendous respect for plumbers.  Also in the class of random skills, I’m a certified outboard motor technician.  Suffice it to say that I’m a believer in getting your hands dirty.  Finally I’m fairly certain that the plumber I use makes more money than I do.  Also I’ve run the help desk before and I’ve been a support technician myself (Level 1 and Level 2).&lt;/li&gt;
+  &lt;li&gt;Both professions are about getting you hands dirty and mucking about.&lt;/li&gt;
+  &lt;li&gt;Both professions require you to be hands on, thorough and detailed.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If you’re a bad plumber then well pipes burst and things leak and you have unhappy customers.  Similarly if you are a bad support technician then problems don’t get solved and you have unhappy customers.  If you are a good plumber then you’ll have happy customers forever.  Similarly if you are a good support technician then you’ll have happy customers.  I am a happy customer.  In fact I’m so happy that I’m writing a whole blog post about a recent support encounter and the fantastic support I got from a technician named ScottG at a company called &lt;a href=&quot;http://www.mindtouch.com/&quot;&gt;MindTouch&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;scottg---an-excellent-support-technican&quot;&gt;ScottG - An Excellent Support Technican&lt;/h1&gt;
+
+&lt;p&gt;So the situation was that I was working with SAML which is a notoriously finicky technology.  Just to give you an idea how finicky there are 8.1 million hits on Google for &lt;a href=&quot;https://www.google.com/search?q=h.264+video+compression+algorithm&amp;amp;oq=h.26&amp;amp;aqs=chrome.0.69i59j69i57j5j0l3.2887j0j3&amp;amp;sourceid=chrome&amp;amp;ie=UTF-8&quot;&gt;H.264 video compression algorithm&lt;/a&gt; and there are 4.6 million hits on Google for &lt;a href=&quot;https://www.google.com/search?q=h.264+video+compression+algorithm&amp;amp;oq=h.26&amp;amp;aqs=chrome.0.69i59j69i57j5j0l3.2887j0j3&amp;amp;sourceid=chrome&amp;amp;ie=UTF-8#q=saml&quot;&gt;SAML&lt;/a&gt;.  SAML is a hard thing but it shouldn’t be half as hard as decompressing video but that’s how many problems people have with SAML.&lt;/p&gt;
+
+&lt;h1 id=&quot;it-helps-to-have-an-excellent-product-or-excellent-aspect-to-your-product&quot;&gt;It Helps to Have an Excellent Product or Excellent Aspect to Your Product&lt;/h1&gt;
+&lt;p&gt;# It Helps to Have an Organization Run Support Correctly&lt;/p&gt;
+
+&lt;p&gt;One of&lt;/p&gt;
 </description>
-        <pubDate>Wed, 09 Nov 2016 03:36:31 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/11/09/scottg-the-model-of-a-support-technician.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/09/scottg-the-model-of-a-support-technician.html</guid>
+        <pubDate>Wed, 09 Nov 2016 04:28:18 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/technical_support/2016/11/09/scottg-the-model-of-a-support-technician.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/technical_support/2016/11/09/scottg-the-model-of-a-support-technician.html</guid>
         
+        <category>technical_support</category>
+        
+        <category>mindtouch</category>
+        
+        
+        <category>technical_support</category>
         
       </item>
     
@@ -317,44 +518,6 @@ path_names:  {
         
         
         <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>Postmac 002 -- Evaluating Editors for Elementary OS - VS Code, Sublime Text, Atom</title>
-        <description>
-</description>
-        <pubDate>Sat, 05 Nov 2016 15:52:57 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/11/05/postmac-002-evaluating-editors-for-elementary-os-vs-code-sublime-text-atom.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/05/postmac-002-evaluating-editors-for-elementary-os-vs-code-sublime-text-atom.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Postmac 002 -- Adding a New SSH Key and Setting It For Github</title>
-        <description>&lt;p&gt;https://confluence.atlassian.com/bitbucketserver/creating-ssh-keys-776639788.html&lt;/p&gt;
-
-&lt;p&gt;https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 05 Nov 2016 09:03:39 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/11/05/postmac-002-adding-a-new-ssh-key-and-setting-it-for-github.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/05/postmac-002-adding-a-new-ssh-key-and-setting-it-for-github.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>How to Set a New URL in Chrome on New Tab</title>
-        <description>&lt;p&gt;https://chrome.google.com/webstore/detail/new-tab-redirect/icpgjfneehieebagbmdbhnlpiopdcmna/related&lt;/p&gt;
-
-&lt;p&gt;https://support.google.com/chrome/answer/95314?hl=en &amp;lt;== this crap is unacceptable.  grandfather’s porn&lt;/p&gt;
-</description>
-        <pubDate>Sat, 05 Nov 2016 09:00:43 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/11/05/how-to-set-a-new-url-in-chrome-on-new-tab.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/05/how-to-set-a-new-url-in-chrome-on-new-tab.html</guid>
-        
         
       </item>
     
