@@ -96,7 +96,6 @@ Just to illustrate how much work the SP versus IdP approach changes things, you 
 
 Here's a full example of a SAML assertion.  This, if you updated the time stamps, would correctly validate (a few urls have been changed, however):
 
-    {% highlight xml %}
     <samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="_a4f7e48e0-88e7-0134-4eb1-22000ab35e7b" Version="2.0" IssueInstant="2016-11-10T19:21:13.116Z" Destination="https://community-staging.foo.com/auth/saml/SSO" Consent="urn:oasis:names:tc:SAML:2.0:consent:unspecified" >
       <Issuer xmlns="urn:oasis:names:tc:SAML:2.0:assertion">http://sso.foo.com/saml/auth</Issuer>
       <samlp:Status>
