@@ -92,7 +92,7 @@
 
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">Going Deeper - Debugging Saml</h1>
-    <p class="post-meta"><time datetime="2016-11-11T00:00:00-05:00" itemprop="datePublished">Nov 11, 2016</time></p>
+    <p class="post-meta"><time datetime="2016-11-11T16:47:52-05:00" itemprop="datePublished">Nov 11, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
@@ -196,13 +196,13 @@ Users cannot be seated by a SAML assertion. A user must be explicitly seated by 
 
 <p>Here’s a full example of a SAML assertion.  This, if you updated the time stamps, would correctly validate (a few urls have been changed, however):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="_a4f7e48e0-88e7-0134-4eb1-22000ab35e7b" Version="2.0" IssueInstant="2016-11-10T19:21:13.116Z" Destination="https://community-staging.interania.com/auth/saml/SSO" Consent="urn:oasis:names:tc:SAML:2.0:consent:unspecified" &gt;
-  &lt;Issuer xmlns="urn:oasis:names:tc:SAML:2.0:assertion"&gt;http://sso.interania.com/saml/auth&lt;/Issuer&gt;
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="_a4f7e48e0-88e7-0134-4eb1-22000ab35e7b" Version="2.0" IssueInstant="2016-11-10T19:21:13.116Z" Destination="https://community-staging.foo.com/auth/saml/SSO" Consent="urn:oasis:names:tc:SAML:2.0:consent:unspecified" &gt;
+  &lt;Issuer xmlns="urn:oasis:names:tc:SAML:2.0:assertion"&gt;http://sso.foo.com/saml/auth&lt;/Issuer&gt;
   &lt;samlp:Status&gt;
     &lt;samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/&gt;
   &lt;/samlp:Status&gt;
   &lt;Assertion xmlns="urn:oasis:names:tc:SAML:2.0:assertion" ID="_a4f7e4b30-88e7-0134-4eb1-22000ab35e7b" IssueInstant="2016-11-10T19:21:13.116Z" Version="2.0"&gt;
-    &lt;Issuer&gt;http://sso.interania.com/saml/auth&lt;/Issuer&gt;
+    &lt;Issuer&gt;http://sso.foo.com/saml/auth&lt;/Issuer&gt;
     &lt;ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#"&gt;
       &lt;ds:SignedInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"&gt;
         &lt;ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/&gt;
@@ -226,17 +226,17 @@ Users cannot be seated by a SAML assertion. A user must be explicitly seated by 
     &lt;Subject&gt;
       &lt;NameID Format="urn:oasis:names:tc:SAML:2.0:nameid-format:transient"&gt;scott_johnson&lt;/NameID&gt;
       &lt;SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer"&gt;
-        &lt;SubjectConfirmationData NotOnOrAfter="2016-11-10T19:25:13.116Z" Recipient="https://community-staging.interania.com/auth/saml/SSO"/&gt;
+        &lt;SubjectConfirmationData NotOnOrAfter="2016-11-10T19:25:13.116Z" Recipient="https://community-staging.foo.com/auth/saml/SSO"/&gt;
       &lt;/SubjectConfirmation&gt;
     &lt;/Subject&gt;
     &lt;Conditions NotBefore="2016-11-10T19:21:13.116Z" NotOnOrAfter="2016-11-10T20:07:13.116Z"&gt;
       &lt;AudienceRestriction&gt;
-        &lt;Audience&gt;https://community-staging.interania.com/auth/saml&lt;/Audience&gt;
+        &lt;Audience&gt;https://community-staging.foo.com/auth/saml&lt;/Audience&gt;
       &lt;/AudienceRestriction&gt;
     &lt;/Conditions&gt;
     &lt;AttributeStatement&gt;
       &lt;Attribute Name="email" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="email"&gt;
-        &lt;AttributeValue&gt;sjohnson@interana.com&lt;/AttributeValue&gt;
+        &lt;AttributeValue&gt;sjohnson@foo1.com&lt;/AttributeValue&gt;
       &lt;/Attribute&gt;
       &lt;Attribute Name="first_name" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="first_name"&gt;
         &lt;AttributeValue&gt;Scott&lt;/AttributeValue&gt;
@@ -254,6 +254,20 @@ Users cannot be seated by a SAML assertion. A user must be explicitly seated by 
 &lt;/samlp:Response&gt;
 </code></pre>
 </div>
+
+<p>The important thing to understand about SAML assertions is that they are very, very precise – you have to exactly and correctly match values between the assertion, the response and the metadata signature.  So when you have a problem you need to look for mis-matches.  Even when you think they aren’t there they likely are.  SAML, for all of its difficulty, is a well thought out, time tested standard.  It is more likely that you have an implementation problem than SAML itself being broken.</p>
+
+<h1 id="example-of-a-debugging-flow">Example of a Debugging Flow</h1>
+
+<p>When you start to do this a lot you need to think hard about how to make your debugging flow easier.  I burned a lot of time thinking that I was <em>almost</em> there.  And if you’re almost there then why do you need to make debugging easy?  Well, honestly, I probably had another 50+ odd debugging sessions before I actually got there.  I finally ended up writing a simple rake task which generated the SAML assertion I needed to validate so instead of logging into a web ui, tailing logs, capturing base64 encoded data, pasting it into ruby as a string, decoding it and then using an editor to make it viewable, I could just type something like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake saml:go1 --trace
+</code></pre>
+</div>
+
+<p>I cannot express what a huge improvement that was.  So, even if you think you’re almost there, you’re likely not and you should work on your debugging tools.</p>
+
+<p>Oh and if you’re going to do it the hard way then Base64.decode64(encoded_assertion) is your very best friend.</p>
 
 <h1 id="writing-your-own-idp">Writing Your Own IdP</h1>
 

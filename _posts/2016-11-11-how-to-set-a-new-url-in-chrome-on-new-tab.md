@@ -16,7 +16,7 @@ Happily there is a Chrome Extension that solves this for you:
 
 https://chrome.google.com/webstore/detail/new-tab-redirect/icpgjfneehieebagbmdbhnlpiopdcmna/related
 
-You can have this open any url when the new tab opens.  Personally I have it open a local home page which displays an enormous swath of resources that I use constantly.
+You can have this load any url when the new tab opens.  Personally I have it open a local home page which displays an enormous swath of resources that I use constantly.
 
 # Disadvantages
 
