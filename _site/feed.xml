@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 11 Nov 2016 16:52:01 -0500</pubDate>
-    <lastBuildDate>Fri, 11 Nov 2016 16:52:01 -0500</lastBuildDate>
+    <pubDate>Fri, 11 Nov 2016 16:55:29 -0500</pubDate>
+    <lastBuildDate>Fri, 11 Nov 2016 16:55:29 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -212,7 +212,7 @@ Users cannot be seated by a SAML assertion. A user must be explicitly seated by 
 
 &lt;p&gt;https://chrome.google.com/webstore/detail/new-tab-redirect/icpgjfneehieebagbmdbhnlpiopdcmna/related&lt;/p&gt;
 
-&lt;p&gt;You can have this open any url when the new tab opens.  Personally I have it open a local home page which displays an enormous swath of resources that I use constantly.&lt;/p&gt;
+&lt;p&gt;You can have this load any url when the new tab opens.  Personally I have it open a local home page which displays an enormous swath of resources that I use constantly.&lt;/p&gt;
 
 &lt;h1 id=&quot;disadvantages&quot;&gt;Disadvantages&lt;/h1&gt;
 
@@ -228,6 +228,210 @@ Users cannot be seated by a SAML assertion. A user must be explicitly seated by 
         
         
         <category>chrome</category>
+        
+      </item>
+    
+      <item>
+        <title>Going Deeper Debugging SAML</title>
+        <description>&lt;p&gt;This blog post expands on my current interest in &lt;a href=&quot;https://fuzzygroup.github.io/blog/saml/2016/10/28/understanding-saml-and-sso.html&quot;&gt;SAML&lt;/a&gt; with a more detailed investigation of SAML, IdP versus SP initiation and how you actually debug it.  In the process of writing this, I reached out to two companies that support SAML in their products and I wanted to express a special thanks to Scott G at &lt;a href=&quot;http://www.mindtouch.com/&quot;&gt;MindTouch&lt;/a&gt; who did an absolutely fantastic job of answering questions – honestly the best technical support I’ve received in years.  Kudos and thank you!&lt;/p&gt;
+
+&lt;h1 id=&quot;tools-for-working-on-saml&quot;&gt;Tools for Working on SAML&lt;/h1&gt;
+
+&lt;p&gt;Here are some of the tools for working on SAML that I recently learned about:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ruby &lt;a href=&quot;https://github.com/digidentity/libsaml&quot;&gt;libsaml&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Firefox SAML Tracer&lt;/li&gt;
+  &lt;li&gt;Chrome SAML Tracer (not as good)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.samltool.com/decode.php&quot;&gt;The SAML Decoder&lt;/a&gt;.  The UI here sucks blue monkey chunks but it does the job.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;not-all-vendors-are-created-equal&quot;&gt;Not All Vendors are Created Equal&lt;/h1&gt;
+
+&lt;p&gt;When I worked with SAML, my context was:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I was creating the IdP&lt;/li&gt;
+  &lt;li&gt;One vendor (&lt;a href=&quot;http://www.mindtouch.com/&quot;&gt;MindTouch&lt;/a&gt;) I worked with had us in a SP init role where they would push login stuff to us&lt;/li&gt;
+  &lt;li&gt;Another vendor (who shall not be named) I worked with had us in an IdP init role where we would push login stuff to them&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The experience between the two was night and day different.  The SP Init role vendor was a dream to work with and their product line was so astonishingly forgiving and pleasant that it would tell the errors and how far it got.  The other vendor, well, you had to ask your project manager for each error one at a time.&lt;/p&gt;
+
+&lt;h2 id=&quot;examples-of-how-to-make-a-ui-that-uses-saml&quot;&gt;Examples of How to Make a UI that Uses SAML&lt;/h2&gt;
+
+&lt;p&gt;Here are examples of a great SAML user interface for a developer.  This is from &lt;a href=&quot;http://www.mindtouch.com/&quot;&gt;MindTouch&lt;/a&gt;.  Whether we get a success or a failure there’s enough context for the developer to actually understand what’s happening:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/great_saml_ui_mind_touch_saml_success.png&quot; alt=&quot;&quot; /&gt;
+If you have the debug tracer on then you can see the whole SAML transaction&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/saml_great_ui_shows_errors.png&quot; alt=&quot;&quot; /&gt;
+If you hit errors part way thru a SAML transaction then you can see at least as far as you got.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/saml_success_but_no_access.png&quot; alt=&quot;&quot; /&gt;
+If you are requesting a page which requires administrative access you don’t have then you’ll get logged in but blocked access to the requested resource.  See below under “Local Users Haven’t Gone Away - Local Login Has Gone Away”&lt;/p&gt;
+
+&lt;h1 id=&quot;debugging-a-saml-transaction&quot;&gt;Debugging a SAML Transaction&lt;/h1&gt;
+
+&lt;p&gt;The very first thing you want to do if you’re debugging saml stuff is use FireFox and get the &lt;a href=&quot;https://www.google.com/url?sa=t&amp;amp;rct=j&amp;amp;q=&amp;amp;esrc=s&amp;amp;source=web&amp;amp;cd=1&amp;amp;cad=rja&amp;amp;uact=8&amp;amp;ved=0ahUKEwjS3Lbu3pPQAhVL0oMKHTOtAwgQFggdMAA&amp;amp;url=https%3A%2F%2Faddons.mozilla.org%2Fen-US%2Ffirefox%2Faddon%2Fsaml-tracer%2F&amp;amp;usg=AFQjCNHN7JDX_TkQIZOiPV2tMSVDyfgwkA&quot;&gt;SAML tracer&lt;/a&gt; plugin.  This tool shows you the SAML back and forth flow and it is absolutely brilliant:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/saml_tracer.png&quot; alt=&quot;saml_tracer&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;When Scott G was helping me, his first suggestion was “Ok – go and get the FireFox SAML tracer” and with that we were off to the races.  Good tools always make things better and this was excellent.&lt;/p&gt;
+
+&lt;p&gt;Note: There is also a &lt;a href=&quot;https://chrome.google.com/webstore/detail/saml-chrome-panel/paijfdbeoenhembfhkhllainmocckace?hl=en&quot;&gt;Chrome SAML tool&lt;/a&gt; which I haven’t tried yet.  It doesn’t appear to be as complete as SAML Tracer since it only supports post requests.&lt;/p&gt;
+
+&lt;h1 id=&quot;local-users-havent-gone-away---local-login-has-gone-away&quot;&gt;Local Users Haven’t Gone Away - Local Login Has Gone Away&lt;/h1&gt;
+
+&lt;p&gt;One thing to understand about SAML is that local users, at the level of the Service Provider, have not gone away.  What has gone away is &lt;strong&gt;local login&lt;/strong&gt; and &lt;strong&gt;local passwords&lt;/strong&gt;.  Your application will, almost certainly, still have a local set of users that you have to administer.  This becomes most apparent when you want to grant administrative rights to a user who has logged in via saml.  Even my SAML poster child for a great implementation, MindTouch, says this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Can I automatically seat users as pro members?
+Users cannot be seated by a SAML assertion. A user must be explicitly seated by an administrator using the control panel. If automatic seating is required, this can be accomplished via our API.
+&lt;a href=&quot;https://success.mindtouch.com/Documentation/MindTouchResponsive/Authentication/Authenticate_via_SSO/Implement_SAML_SSO?=&quot;&gt;Mindtouch Docs&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The way that admin rights are granted to a SAML user is that the Service Provider has an admin tool where a user can be located by whatever is the unique identifier for a user (generally email or username) and then administrative rights are granted to the user.&lt;/p&gt;
+
+&lt;h1 id=&quot;idp-versus-sp-initiation&quot;&gt;IdP versus SP Initiation&lt;/h1&gt;
+
+&lt;p&gt;When you first get involved with SAML one of the initial things you’ll be asked is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;IdP init or SP Init?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;As you may remember from my &lt;a href=&quot;https://fuzzygroup.github.io/blog/saml/2016/10/28/understanding-saml-and-sso.html&quot;&gt;last post on SAML&lt;/a&gt;, IdP is the identity provider, the bit of software that owns the user information and SP is the service provider, the bit of software that us trying to use identity.&lt;/p&gt;
+
+&lt;p&gt;This is a really, really big deal in the SAML community and what sounds like a network protocol question is actually a &lt;strong&gt;user flow&lt;/strong&gt; question that centers on a chicken and egg issue of what happens first.  The &lt;a href=&quot;https://www.google.com/webhp?sourceid=chrome-instant&amp;amp;ion=1&amp;amp;espv=2&amp;amp;ie=UTF-8#q=saml%20idp%20vs%20sp%20initiated&quot;&gt;almost 7,000 results&lt;/a&gt; in Google for this very simple thing indicates just how many people are confused about it.  As always Stack Overflow has a &lt;a href=&quot;http://stackoverflow.com/questions/12779532/differences-between-sp-initiated-sso-and-idp-initiated-sso&quot;&gt;great page on this topic&lt;/a&gt; but let me try and paraphrase:&lt;/p&gt;
+
+&lt;p&gt;For IdP Init:&lt;/p&gt;
+
+&lt;p&gt;The best advice I can give you is read &lt;a href=&quot;http://saml.xml.org/wiki/idp-initiated-single-sign-on-post-binding&quot;&gt;this old web page&lt;/a&gt;.  When I found this and implemented it exactly this way then IdP Init just fell in to place for me.&lt;/p&gt;
+
+&lt;p&gt;For SP init:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The user starts on a url on the service provider and when access is needed they are pushed BACK to the IdP to a special login page which is run by the SAML side of the house.&lt;/li&gt;
+  &lt;li&gt;A SAML assertion is generated and pushed to the SP.&lt;/li&gt;
+  &lt;li&gt;If the assertion is valid the user is granted access.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Here’s the rub from a technical perspective: &lt;strong&gt;IdP Init is MUCH MUCH HARDER&lt;/strong&gt;.  When you are doing IdP Init you need to do all the low level SAML junk yourself.  When you are doing SP init then they do the SAML junk.&lt;/p&gt;
+
+&lt;p&gt;Just to illustrate how much work the SP versus IdP approach changes things, you should look at these two configuration UIs below.  One is for SP Init and one is for IdP Init.  The IdP Init one is trivial to configure – all you have to do is set a few urls.  The SP Init one is much harder to configure – it requires your certificate and more low level details.  But there’s an inversion here – the more complex it is to configure the SP, the less code you have to write yourself.  Repeat that after me – the less code you have to write.  I got the SP Init up and running in a matter of hours.  The IdP init took days.&lt;/p&gt;
+
+&lt;h2 id=&quot;configuration-screen-when-you-are-the-idp-and-the-sp-wants-sp-init&quot;&gt;Configuration Screen when You Are the IdP And the SP wants SP Init&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/mindtouch_saml_config.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;configuration-screen-when-you-are-the-idp-and-the-sp-wants-idp-init&quot;&gt;Configuration Screen when You Are the IdP and the SP wants IdP Init&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/saml_idp_init_configuration.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;example-of-a-saml-assertion-when-you-are-the-idp-pushing-to-an-sp&quot;&gt;Example of a SAML Assertion When You Are the IdP Pushing to an SP&lt;/h1&gt;
+
+&lt;p&gt;Here’s a full example of a SAML assertion.  This, if you updated the time stamps, would correctly validate (a few urls have been changed, however):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;samlp:Response xmlns:samlp=&quot;urn:oasis:names:tc:SAML:2.0:protocol&quot; ID=&quot;_a4f7e48e0-88e7-0134-4eb1-22000ab35e7b&quot; Version=&quot;2.0&quot; IssueInstant=&quot;2016-11-10T19:21:13.116Z&quot; Destination=&quot;https://community-staging.foo.com/auth/saml/SSO&quot; Consent=&quot;urn:oasis:names:tc:SAML:2.0:consent:unspecified&quot; &amp;gt;
+  &amp;lt;Issuer xmlns=&quot;urn:oasis:names:tc:SAML:2.0:assertion&quot;&amp;gt;http://sso.foo.com/saml/auth&amp;lt;/Issuer&amp;gt;
+  &amp;lt;samlp:Status&amp;gt;
+    &amp;lt;samlp:StatusCode Value=&quot;urn:oasis:names:tc:SAML:2.0:status:Success&quot;/&amp;gt;
+  &amp;lt;/samlp:Status&amp;gt;
+  &amp;lt;Assertion xmlns=&quot;urn:oasis:names:tc:SAML:2.0:assertion&quot; ID=&quot;_a4f7e4b30-88e7-0134-4eb1-22000ab35e7b&quot; IssueInstant=&quot;2016-11-10T19:21:13.116Z&quot; Version=&quot;2.0&quot;&amp;gt;
+    &amp;lt;Issuer&amp;gt;http://sso.foo.com/saml/auth&amp;lt;/Issuer&amp;gt;
+    &amp;lt;ds:Signature xmlns:ds=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&amp;gt;
+      &amp;lt;ds:SignedInfo xmlns:ds=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&amp;gt;
+        &amp;lt;ds:CanonicalizationMethod Algorithm=&quot;http://www.w3.org/2001/10/xml-exc-c14n#&quot;/&amp;gt;
+        &amp;lt;ds:SignatureMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#rsa-sha1&quot;/&amp;gt;
+        &amp;lt;ds:Reference URI=&quot;#_a4f7e4b30-88e7-0134-4eb1-22000ab35e7b&quot;&amp;gt;
+          &amp;lt;ds:Transforms&amp;gt;
+            &amp;lt;ds:Transform Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#enveloped-signature&quot;/&amp;gt;
+            &amp;lt;ds:Transform Algorithm=&quot;http://www.w3.org/2001/10/xml-exc-c14n#&quot;/&amp;gt;
+          &amp;lt;/ds:Transforms&amp;gt;
+          &amp;lt;ds:DigestMethod Algorithm=&quot;http://www.w3.org/2000/09/xmldsig#sha1&quot;/&amp;gt;
+          &amp;lt;ds:DigestValue&amp;gt;IxemD9eHnPTFaA9Th4+2mQncXuI=&amp;lt;/ds:DigestValue&amp;gt;
+        &amp;lt;/ds:Reference&amp;gt;
+      &amp;lt;/ds:SignedInfo&amp;gt;
+      &amp;lt;ds:SignatureValue&amp;gt;jrTDXKvv2wevCIIJ48gL1kIvgBwMMtl+RO6wligTVQp7iYglReUIKdnEZo9vuFucd+ocWkg7EQ3N3WWsZiBvyVGTJ80jC8QRTD+CtTEEMMVgtS2BkLFUv7gfH5yZ9Affk+qF+uAEK4Ij2Zy+0Zq6jleQlUTyCoZNDOFzNF1zWHo=&amp;lt;/ds:SignatureValue&amp;gt;
+      &amp;lt;KeyInfo xmlns=&quot;http://www.w3.org/2000/09/xmldsig#&quot;&amp;gt;
+        &amp;lt;ds:X509Data&amp;gt;
+          &amp;lt;ds:X509Certificate&amp;gt;MIICrzCCAhgCCQCAZjKq3Nb4xTANBgkqhkiG9w0BAQsFADCBmzELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAkNBMRUwEwYDVQQHDAxSZWR3b29kIENpdHkxEDAOBgNVBAoMB0ludGVybmExFDASBgNVBAsMC0VuZ2luZWVyaW5nMRowGAYDVQQDDBFzc28uaW50ZXJhbmlhLmNvbTEkMCIGCSqGSIb3DQEJARYVc2pvaG5zb25AaW50ZXJhbmEuY29tMB4XDTE2MTEwMzExMDAwN1oXDTE3MTEwMzExMDAwN1owgZsxCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJDQTEVMBMGA1UEBwwMUmVkd29vZCBDaXR5MRAwDgYDVQQKDAdJbnRlcm5hMRQwEgYDVQQLDAtFbmdpbmVlcmluZzEaMBgGA1UEAwwRc3NvLmludGVyYW5pYS5jb20xJDAiBgkqhkiG9w0BCQEWFXNqb2huc29uQGludGVyYW5hLmNvbTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEA1NaloseOtTva09VahTNozzHbO6rpuT7/FpQOi3eHKWwU4zHgEvOI2biUkTRYocZkunilBxqtTrCgbDay4MqXFykt+lKujnV10OG4+cVUxds8a50nkHXVbpMC48m5gfkUfut4EIURE5RHjLJ/nCpgC67QUl1/ztkFvJaNDJeWoQMCAwEAATANBgkqhkiG9w0BAQsFAAOBgQCTkZmrFEhmW4MoX6OovuKwCNwQBWPXju/po8d7YTVpRf7tIfGsD/4x8jBgUaeSPQ4QXCMQqB6244win3u1veVQd5UYRP37RteEP+F302Gw2MbOl2fYUQoSwINayWA/CinYBQAlzTAJovIsc/P8dNFUsSQzqme2aF1nIuH3h/8/Kg==&amp;lt;/ds:X509Certificate&amp;gt;
+        &amp;lt;/ds:X509Data&amp;gt;
+      &amp;lt;/KeyInfo&amp;gt;
+    &amp;lt;/ds:Signature&amp;gt;
+    &amp;lt;Subject&amp;gt;
+      &amp;lt;NameID Format=&quot;urn:oasis:names:tc:SAML:2.0:nameid-format:transient&quot;&amp;gt;scott_johnson&amp;lt;/NameID&amp;gt;
+      &amp;lt;SubjectConfirmation Method=&quot;urn:oasis:names:tc:SAML:2.0:cm:bearer&quot;&amp;gt;
+        &amp;lt;SubjectConfirmationData NotOnOrAfter=&quot;2016-11-10T19:25:13.116Z&quot; Recipient=&quot;https://community-staging.foo.com/auth/saml/SSO&quot;/&amp;gt;
+      &amp;lt;/SubjectConfirmation&amp;gt;
+    &amp;lt;/Subject&amp;gt;
+    &amp;lt;Conditions NotBefore=&quot;2016-11-10T19:21:13.116Z&quot; NotOnOrAfter=&quot;2016-11-10T20:07:13.116Z&quot;&amp;gt;
+      &amp;lt;AudienceRestriction&amp;gt;
+        &amp;lt;Audience&amp;gt;https://community-staging.foo.com/auth/saml&amp;lt;/Audience&amp;gt;
+      &amp;lt;/AudienceRestriction&amp;gt;
+    &amp;lt;/Conditions&amp;gt;
+    &amp;lt;AttributeStatement&amp;gt;
+      &amp;lt;Attribute Name=&quot;email&quot; NameFormat=&quot;urn:oasis:names:tc:SAML:2.0:attrname-format:uri&quot; FriendlyName=&quot;email&quot;&amp;gt;
+        &amp;lt;AttributeValue&amp;gt;sjohnson@foo1.com&amp;lt;/AttributeValue&amp;gt;
+      &amp;lt;/Attribute&amp;gt;
+      &amp;lt;Attribute Name=&quot;first_name&quot; NameFormat=&quot;urn:oasis:names:tc:SAML:2.0:attrname-format:uri&quot; FriendlyName=&quot;first_name&quot;&amp;gt;
+        &amp;lt;AttributeValue&amp;gt;Scott&amp;lt;/AttributeValue&amp;gt;
+      &amp;lt;/Attribute&amp;gt;
+      &amp;lt;Attribute Name=&quot;last_name&quot; NameFormat=&quot;urn:oasis:names:tc:SAML:2.0:attrname-format:uri&quot; FriendlyName=&quot;last_name&quot;&amp;gt;
+        &amp;lt;AttributeValue&amp;gt;Johnson&amp;lt;/AttributeValue&amp;gt;
+      &amp;lt;/Attribute&amp;gt;
+    &amp;lt;/AttributeStatement&amp;gt;
+    &amp;lt;AuthnStatement AuthnInstant=&quot;2016-11-10T19:21:13.116Z&quot; SessionIndex=&quot;_a4f7e4b30-88e7-0134-4eb1-22000ab35e7b&quot;&amp;gt;
+      &amp;lt;AuthnContext&amp;gt;
+        &amp;lt;AuthnContextClassRef&amp;gt;urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport&amp;lt;/AuthnContextClassRef&amp;gt;
+      &amp;lt;/AuthnContext&amp;gt;
+    &amp;lt;/AuthnStatement&amp;gt;
+  &amp;lt;/Assertion&amp;gt;
+&amp;lt;/samlp:Response&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The important thing to understand about SAML assertions is that they are very, very precise – you have to exactly and correctly match values between the assertion, the response and the metadata signature.  So when you have a problem you need to look for mis-matches.  Even when you think they aren’t there they likely are.  SAML, for all of its difficulty, is a well thought out, time tested standard.  It is more likely that you have an implementation problem than SAML itself being broken.&lt;/p&gt;
+
+&lt;h1 id=&quot;example-of-a-debugging-flow&quot;&gt;Example of a Debugging Flow&lt;/h1&gt;
+
+&lt;p&gt;When you start to do this a lot you need to think hard about how to make your debugging flow easier.  I burned a lot of time thinking that I was &lt;em&gt;almost&lt;/em&gt; there.  And if you’re almost there then why do you need to make debugging easy?  Well, honestly, I probably had another 50+ odd debugging sessions before I actually got there.  I finally ended up writing a simple rake task which generated the SAML assertion I needed to validate so instead of logging into a web ui, tailing logs, capturing base64 encoded data, pasting it into ruby as a string, decoding it and then using an editor to make it viewable, I could just type something like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle exec rake saml:go1 --trace
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I cannot express what a huge improvement that was.  So, even if you think you’re almost there, you’re likely not and you should work on your debugging tools.&lt;/p&gt;
+
+&lt;p&gt;Oh and if you’re going to do it the hard way then Base64.decode64(encoded_assertion) is your very best friend.&lt;/p&gt;
+
+&lt;h1 id=&quot;writing-your-own-idp&quot;&gt;Writing Your Own IdP&lt;/h1&gt;
+
+&lt;p&gt;I’ve open sourced &lt;a href=&quot;https://github.com/fuzzygroup/saml_idp&quot;&gt;my fork of the Ruby IdP&lt;/a&gt; I based this all on and I’ll be updating it at least somewhat regularly.  I put a bunch of advice on the home page there.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 11 Nov 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/saml/2016/11/11/going-deeper-debugging-saml.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/saml/2016/11/11/going-deeper-debugging-saml.html</guid>
+        
+        <category>saml</category>
+        
+        <category>ruby</category>
+        
+        <category>debugging</category>
+        
+        <category>mindtouch</category>
+        
+        <category>xml</category>
+        
+        <category>idp</category>
+        
+        <category>sp</category>
+        
+        <category>assertion</category>
+        
+        
+        <category>saml</category>
         
       </item>
     
@@ -484,54 +688,6 @@ path_names:  {
         
         
         <category>git</category>
-        
-      </item>
-    
-      <item>
-        <title>AWS Tutorial 22 - Making Your Boxes Pingable</title>
-        <description>&lt;p&gt;The security default for AWS is brilliantly simple: &lt;strong&gt;Everything, absolutely everything, is locked down by default&lt;/strong&gt;.  Once you understand that then developing on the AWS platform becomes a lot simpler.  Let’s take, for example, a simple EC2 instance:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;You create it and you would generally assume that a server is pingable.&lt;/li&gt;
-  &lt;li&gt;So you try pinging the DNS name and it fails.  Hm…&lt;/li&gt;
-  &lt;li&gt;So you try pinging the public IP and that fails.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;The answer here is simple – everything is locked down by default.  Even something as innocuous as ping.  Every AWS box comes with what’s called a Security Group and Amazon describes this a &lt;em&gt;&lt;a href=&quot;http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html&quot;&gt;virtual firewall that controls the traffic for one or more instances&lt;/a&gt;&lt;/em&gt;.  Every box you create on AWS will automatically get a Security Group, confusingly named, Launch Wizard N where N is just an incrementing integer.  And since most of us generally accept defaults, you may end up with security groups named:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Launch Wizard 1&lt;/li&gt;
-  &lt;li&gt;Launch Wizard 2&lt;/li&gt;
-  &lt;li&gt;Launch Wizard ..&lt;/li&gt;
-  &lt;li&gt;Launch Wizard 11&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;At least that’s what my many attempts at AWS experimentation have left me with.  I’d strongly suggest you name these well.  For the bulk of us, networking is confusing enough without cruft like “Launch Wizard N”.  Honestly!&lt;/p&gt;
-
-&lt;p&gt;Stack Overflow, as always, has a useful &lt;a href=&quot;http://stackoverflow.com/questions/21981796/cannot-ping-aws-ec2-instance&quot;&gt;piece&lt;/a&gt; on this.  Here’s what to do:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;You have to edit the Security Group to which your EC2 instance belongs.  If you don’t yet have a security group then add a new one.&lt;/li&gt;
-  &lt;li&gt;Add a new rule and select the All ICMP option from the drop downs.&lt;/li&gt;
-  &lt;li&gt;If you want to restrict people probing for your instance then lock it down to your own IP address but there are pros and cons.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; AWS strongly wants you to lock down all non http / https traffic to your own ip address and it will actually natter at you about this even for ping.  If you are using a remote monitoring service, however, like the absolutely wonderful &lt;a href=&quot;http://www.wormly.com&quot;&gt;wormly&lt;/a&gt;, then locking this down to your ip address will prevent that remote service from monitoring via ping.  Given that ping is far less overhead than http monitoring, you might want this so make a real decision here.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 06 Nov 2016 00:00:00 -0400</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/11/06/aws-tutorial-22-making-your-boxes-pingable.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/11/06/aws-tutorial-22-making-your-boxes-pingable.html</guid>
-        
-        <category>aws</category>
-        
-        <category>security_group</category>
-        
-        <category>ping</category>
-        
-        <category>security</category>
-        
-        
-        <category>aws</category>
         
       </item>
     
