@@ -1,6 +1,6 @@
 ---
 layout: post
-title: PostMac Linux Take 2: Ubuntu Mate
+title: PostMac Linux Take 2 - Ubuntu Mate
 category: postmac
 tags: ["postmac", "linux", "ubuntu", "mate", "elementary"]
 ---
