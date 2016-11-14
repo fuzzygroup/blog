@@ -168,6 +168,34 @@ I cannot express what a huge improvement that was.  So, even if you think you're
 
 Oh and if you're going to do it the hard way then Base64.decode64(encoded_assertion) is your very best friend.  
 
+# Accept that You're Not Going to Understand Everything and Just Try It
+
+One of the better pieces of advice that I can give you is that you can have SAML issues that a vendor swears up and down **will not work** and they still might.  I had a situation where the vendor swore up, down, right, left and sideways that my signatures were wrong and my IdP was at fault.  This was the absolutely worst type of technical support situation where neither party was willing to admit fault.  Things had been checked, re-checked and checked again and everything seemed to be in order.  Finally I thought *screw it* and just tried to authenticate and **whammo** it just plain worked.
+
+To this day the vendor can't explain why.  Here's the XML / Java stack trace in case anyone can tell me why given that the signatures here don't verify but access is still granted.  Personally I would think that you wouldn't validate an untrusted credential but maybe this is a common thing???
+
+    <<   2016-11-10 14:33:04,007 -0800 [937-exec-5] DEBUG  [cid=gqaoh85646, tx=9ab899b9-acd9-43cc-af52-e00f95efe725, rh=54.224.44.177, userId=] ty.trust.ExplicitKeyTrustEvaluator - Successfully validated untrusted credential against trusted key
+    <<   2016-11-10 14:33:04,007 -0800 [937-exec-5] DEBUG  [cid=gqaoh85646, tx=9ab899b9-acd9-43cc-af52-e00f95efe725, rh=54.224.44.177, userId=] ture.impl.BaseSignatureTrustEngine - Successfully established trust of KeyInfo-derived credential
+    <<   2016-11-10 14:33:04,007 -0800 [937-exec-5] DEBUG  [cid=gqaoh85646, tx=9ab899b9-acd9-43cc-af52-e00f95efe725, rh=54.224.44.177, userId=] ture.saml.LiaWebSSOProfileConsumer - confirmation method: urn:oasis:names:tc:SAML:2.0:cm:bearer
+    <<   2016-11-10 14:33:04,007 -0800 [937-exec-5] DEBUG  [cid=gqaoh85646, tx=9ab899b9-acd9-43cc-af52-e00f95efe725, rh=54.224.44.177, userId=] ture.saml.LiaWebSSOProfileConsumer - validating against SP SSO Descriptor (for recipient: https://community-staging.interania.com/auth/saml/SSO)
+    <<   2016-11-10 14:33:04,007 -0800 [937-exec-5] DEBUG  [cid=gqaoh85646, tx=9ab899b9-acd9-43cc-af52-e00f95efe725, rh=54.224.44.177, userId=] ture.saml.LiaWebSSOProfileConsumer - does urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST match urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST ?
+    <<   AND https://community-staging.interania.com/auth/saml/SSO against https://community-staging.interania.com/auth/saml/SSO ?
+    <<   2016-11-10 14:33:04,008 -0800 [937-exec-5] DEBUG  [cid=gqaoh85646, tx=9ab899b9-acd9-43cc-af52-e00f95efe725, rh=54.224.44.177, userId=] .
+    .
+    .
+    .
+    .
+    org.springframework.security.web.context.HttpSessionSecurityContextRepository$Servlet3SaveToSessionRequestWrapper
+    <<   2016-11-10 14:33:04,318 -0800 [937-exec-5] DEBUG  [cid=gqaoh85646, tx=9ab899b9-acd9-43cc-af52-e00f95efe725, rh=54.224.44.177, userId=] ature.saml.LiaSAMLProcessingFilter - ssoParams.settings={profile.name_first=Scott, profile.name_last=Johnson}
+    <<   2016-11-10 14:33:04,318 -0800 [937-exec-5] DEBUG  [cid=gqaoh85646, tx=9ab899b9-acd9-43cc-af52-e00f95efe725, rh=54.224.44.177, userId=] ature.saml.LiaSAMLProcessingFilter - Authentication success. Updating SecurityContextHolder to contain: lithium.common.feature.saml.AuthenticationDetailsWrapper@1db556ec: Principal: CoreUser[uid=29,login=scott_johnson]; Credentials: [PROTECTED]; Authenticated: true; Details: lithium.lia.security.authentication.sso.AuthenticationDetails@53d2a043; Not granted any authorities
+    <<   2016-11-10 14:33:04,523 -0800 [on Task-30] DEBUG  [cid=, tx=, rh=, userId=-1] otificationServiceEventManagerImpl - event toString for transaction 5ea86fe8-f180-4ee9-82b3-c57ac794523e is: UserRankEvent[rankId=24,userId=29,timeOfAssignment=1478817184501,eventType=USER_RANK_EVENT,useMessageChannel=true,headers=BaseMessageHeaders[tenantId=e0f6dd3c-7987-4346-b4d0-2f5ef70fa74b,messageSentTime=1478817184512,transactionId=5ea86fe8-f180-4ee9-82b3-c57ac794523e,useRequestTimeforWriteTime=true,sourceEndpoint=http://sjc1sapp08.sj.lithium.com:8937,liaCommunityName=gqaoh85646]]
+    <<   2016-11-10 14:33:04,558 -0800 [on Task-30] INFO   [cid=, tx=, rh=, userId=-1] otificationServiceEventManagerImpl - posted userRankEvent event to NS
+    <<   2016-11-10 14:33:04,622 -0800 [ontainer-4] DEBUG  [cid=, tx=, rh=, userId=-1] tionServiceNotificationManagerImpl - processing notification directive for the event with the original UUID of 5ea86fe8-f180-4ee9-82b3-c57ac794523e and original type of USER_RANK_EVENT
+    <<   2016-11-10 14:33:04,625 -0800 [ontainer-4] DEBUG  [cid=, tx=, rh=, userId=-1] tionServiceNotificationManagerImpl - processing notifications for a total of 1 interested entities
+    <<   2016-11-10 14:33:04,625 -0800 [ontainer-4] DEBUG  [cid=, tx=, rh=, userId=-1] tionServiceNotificationManagerImpl - processing 1 notifications for entity with type USER and id 29
+    <<   2016-11-10 14:33:04,625 -0800 [ontainer-4] DEBUG  [cid=, tx=, rh=, userId=-1] tionServiceNotificationManagerImpl - resolving notification setting for notification
+    <<   2016-11-10 14:33:04,626 -0800 [ontainer-4] DEBUG  [cid=, tx=, rh=, userId=-1] tionServiceNotificationManagerImpl - found notification settings on the notification directive payload: lithium.domain.subscriptions.settings.impl.SubscriptionTemplateImpl@247a1a7b[emailDistributionSettings=lithium.domain.subscriptions.settings.impl.DistributionChannelSettingsImpl@7cd9d117[enabled=true,enabedIsDefault=false,distributionFrequency=IMMEDIATE],type=RANK,customKey=<null>,templateMetadata={newsFeedExclusionBoolean=false},headers=<null>]
+    <<   2016-11-10 14:33:04,626 -0800 [ontainer-4] DEBUG  [cid=, tx=, rh=, userId=-1] tionServiceNotificationManagerImpl - Notification of type RANK, for userID 29, transactionId 5ea86fe8-f180-4ee9-82b3-c57ac794523e will be sent immediately
 # Writing Your Own IdP
 
 I've open sourced [my fork of the Ruby IdP](https://github.com/fuzzygroup/saml_idp) I based this all on and I'll be updating it at least somewhat regularly.  I put a bunch of advice on the home page there.
