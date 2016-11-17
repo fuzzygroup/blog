@@ -1,6 +1,6 @@
 ---
 layout: post
-title: A Tricky Bit of Rails ActiveRecord Optimization'
+title: A Tricky Bit of Rails ActiveRecord Optimization
 category: rails
 tags: ["rails", "active_record", "sql", "optimization", "mysql"]
 ---
