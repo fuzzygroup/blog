@@ -13,7 +13,7 @@ This table has a number of indices on it although none of them were exactly what
 * never re-thought as business needs change
 * are too large to go back and change
 
-this is actually common.  It is often what I think of as The Forrest Gump school of working with databases:
+this is actually common.  It is often what I think of as The Forrest Gump school of working with indices:
 
 > Indices are like a box of chocolate; you never know what you're going to get.
 > [Source](https://en.wiktionary.org/wiki/life_is_like_a_box_of_chocolates)
@@ -47,7 +47,7 @@ As with any optimization problem in computing -- any -- you have to understand w
 
 The first thing that I noticed here was that ActiveRecord was appending an order construct to the query, the "order by id asc" crap -- I didn't put that into ActiveRecord where statement.  *more grumbling*.  So what happens to our query plan if we remove that?  Here you go:
 
-  explain SELECT  `link2016_q1s`.* FROM `link2016_q1s` WHERE `link2016_q1s`.`site_id` = 215345 AND `link2016_q1s`.`page_id` = 2401963 AND `link2016_q1s`.`url_no_www_sha1` = 'fe9f2487051ac4ab2a86bdf5c501336c2bda315b'  LIMIT 1\G
+    explain SELECT  `link2016_q1s`.* FROM `link2016_q1s` WHERE `link2016_q1s`.`site_id` = 215345 AND `link2016_q1s`.`page_id` = 2401963 AND `link2016_q1s`.`url_no_www_sha1` = 'fe9f2487051ac4ab2a86bdf5c501336c2bda315b'  LIMIT 1\G
   *************************** 1. row ***************************
              id: 1
     select_type: SIMPLE
@@ -66,8 +66,8 @@ Fixing this default ordering is actually fairly easy, just add *.order("")* to t
 
 Looking at the explain statement above still bothers me as we're dealing with 16K rows.  There has to be something better than that.  So digging into the possible indices shows this:
 
-UNIQUE KEY `s_c_p_u` (`site_id`,`crawl_id`,`page_id`,`crawler_id`,`url_no_www_sha1`) USING BTREE,
-KEY `s_c_d_p` (`site_id`,`crawl_id`,`domain_id`,`page_id`) USING BTREE
+    UNIQUE KEY `s_c_p_u` (`site_id`,`crawl_id`,`page_id`,`crawler_id`,`url_no_www_sha1`) USING BTREE,
+    KEY `s_c_d_p` (`site_id`,`crawl_id`,`domain_id`,`page_id`) USING BTREE
 
 Looking at these two indices, knowing that one of them is a UNIQUE key means that there will be less data in it -- and it is *always* faster, even with indices, to deal with less data.  I remember debating this point at length with my Feedster cofounder back in the day when we were building our 64 bit XML search engine.  He took the position that the indices would be efficient enough that the amount of data wouldn't matter.  I took the position that it is always faster, even with an index, to have less data to sift through.  
 
