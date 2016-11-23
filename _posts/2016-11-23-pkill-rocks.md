@@ -14,7 +14,7 @@ Activity Monitor wasn't helpful and the only thing that was responsive was a sol
 
 A quick google for *kill process by name* led me [here](http://stackoverflow.com/questions/160924/how-can-i-kill-a-process-by-name-instead-of-pid) and it was a great illustration of the swiss army knife nature of Unix.  Options ranged from *pkill* to *killall* to *shell one liners*.  pkill, while risky, worked great:
 
-![pkill_rocks](/blog/assets/pkill_rocks_01.png)
+![pkill_rocks](/blog/assets/pkill_rocks_02.png)
 
 # Risky
 
