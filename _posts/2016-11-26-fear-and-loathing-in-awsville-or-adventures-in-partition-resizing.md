@@ -229,9 +229,9 @@ So, *somewhat* unfortunately, I ended up having to do a full dump / restore of m
 
 While at this step we hit a number of gotchas that were really confusing at first.  The first of these was the fact that logical device names change depending on AWS versus which kernel you have.
 
-![beware_names_are_inconsistent_01.png](beware_names_are_inconsistent_01.png)
-![beware_names_are_inconsistent_02.png](beware_names_are_inconsistent_02.png)
-![beware_names_are_inconsistent_03.png](beware_names_are_inconsistent_02.png)
+![beware_names_are_inconsistent_01.png](/blog/assets/beware_names_are_inconsistent_01.png)
+![beware_names_are_inconsistent_02.png](/blog/assets/beware_names_are_inconsistent_02.png)
+![beware_names_are_inconsistent_03.png](/blog/assets/beware_names_are_inconsistent_02.png)
 
 I find it absolutely inconcievable that Amazon can't do better than this.  Given the possibility for destructive errors by getting things wrong this should be much, much better.  
 
@@ -239,7 +239,7 @@ Note: I'm a self admitted amazon fan boy for AWS so for me to say this means I t
 
 When you create a disc volume there is no option for naming / tagging it at creation time:
 
-![create_volume.png](create_volume.png)
+![create_volume.png](/blog/assets/create_volume.png)
 
 That is equally sucky.  Do this a lot and you end with a bunch of things name vol-64bb3234d and vol-534343bc and you're scratching your head going "hm...".  Yes you can name them after but that increases the chance that they never get named.
 
