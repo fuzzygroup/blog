@@ -230,15 +230,18 @@ So, *somewhat* unfortunately, I ended up having to do a full dump / restore of m
 While at this step we hit a number of gotchas that were really confusing at first.  The first of these was the fact that logical device names change depending on AWS versus which kernel you have.
 
 ![beware_names_are_inconsistent_01.png](/blog/assets/beware_names_are_inconsistent_01.png)
-(sdf)
+
+(Here it is /dev/sdf)
 
 ![beware_names_are_inconsistent_02.png](/blog/assets/beware_names_are_inconsistent_02.png)
-(xvdf)
+
+(Here it is /dev/xvdf)
 
 ![beware_names_are_inconsistent_03.png](/blog/assets/beware_names_are_inconsistent_03.png)
-(the warning)
 
-I find it absolutely inconceivable that Amazon can't do better than this.  Given the possibility for destructive errors by getting things wrong this should be much, much better.  
+(Here is the warning)
+
+I find it absolutely inconceivable that Amazon can't do better than this.  Given the possibility for destructive errors by getting things wrong this should be much, much better.  Given that this is a controlled cloud computing environment, doesn't Amazon know the kernel?
 
 Note: I'm a self admitted amazon fan boy for AWS so for me to say this means I think its really really serious.
 
