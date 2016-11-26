@@ -20,8 +20,9 @@ The thing that I've had real issues with is figuring out who to follow and wheth
 * [https://twitter.com/NadiaShapiro](https://twitter.com/NadiaShapiro)
 * [https://twitter.com/SimoRanieriCHEF](https://twitter.com/SimoRanieriCHEF)
 * [https://twitter.com/FossaTeam](https://twitter.com/FossaTeam)
+* [https://twitter.com/LaSavonnerie](https://twitter.com/LaSavonnerie)
 
-Each of these people directly corresponds to specific tweet I made roughly at the time they followed me.  In the case of FossaTeam, for example, I posted something about email and then someone in the email space close to immediately followed me.  
+Each of these people directly corresponds to specific tweet I made roughly at the time they followed me - with one exception.  Why in the world would LaSavonnerie ever follow me?  I have nothing to do with french milled soap.  That one was bizarre.  In the case of FossaTeam, for example, I posted something about email and then someone in the email space close to immediately followed me.  
 
 The twitterverse is filled with APIs and is highly automated.  The implications of this became fully evident when this person followed me the other day:
 
