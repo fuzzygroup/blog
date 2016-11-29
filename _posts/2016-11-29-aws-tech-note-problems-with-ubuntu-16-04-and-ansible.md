@@ -2,7 +2,7 @@
 layout: post
 title: AWS Tech Note - Problems with Ubuntu 16.04 and Ansible
 category: aws
-tags: ["aws", "ansible", "ubuntu"]
+tags: ["aws", "ansible", "ubuntu", "python"]
 ---
 When i started going heavy down the path of AWS, Ubuntu 14.04 was the default Ubuntu in AWS and it appeared at the top of the Operating System list when you built a new EC2 server.  I've run Ubuntu for **years** ever since I asked [Matt](https://ma.tt/) what distro WordPress used and he replied Ubuntu.  *blink*  At the time I looked at Ubuntu as a personal distro but, hey, if it is good enough for WordPress then it is good enough for my crappy, little farm of boxes.  And so I've been in Ubuntu ever since.
 

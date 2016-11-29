@@ -6,54 +6,9 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 29 Nov 2016 03:41:57 -0500</pubDate>
-    <lastBuildDate>Tue, 29 Nov 2016 03:41:57 -0500</lastBuildDate>
+    <pubDate>Tue, 29 Nov 2016 03:43:15 -0500</pubDate>
+    <lastBuildDate>Tue, 29 Nov 2016 03:43:15 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
-    
-      <item>
-        <title>AWS Tech Note - Problems with Ubuntu 16.04 and Ansible</title>
-        <description>&lt;p&gt;When i started going heavy down the path of AWS, Ubuntu 14.04 was the default Ubuntu in AWS and it appeared at the top of the Operating System list when you built a new EC2 server.  I’ve run Ubuntu for &lt;strong&gt;years&lt;/strong&gt; ever since I asked &lt;a href=&quot;https://ma.tt/&quot;&gt;Matt&lt;/a&gt; what distro WordPress used and he replied Ubuntu.  &lt;em&gt;blink&lt;/em&gt;  At the time I looked at Ubuntu as a personal distro but, hey, if it is good enough for WordPress then it is good enough for my crappy, little farm of boxes.  And so I’ve been in Ubuntu ever since.&lt;/p&gt;
-
-&lt;p&gt;Today was the first bad Ubuntu experience that I’ve really ever had.  What happened was I went to bring up a new EC2 instance and I noticed that the default Ubuntu was now 16.04.  Hm… That’s different but I’ll try it.  So I trot out my ansible playbook and here’s what happened:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/proxy playbook_appdata_proxy.yml
-
-PLAY [all] *********************************************************************
-
-TASK [setup] *******************************************************************
-fatal: [adproxy2]: FAILED! =&amp;gt; {&quot;changed&quot;: false, &quot;failed&quot;: true, &quot;module_stderr&quot;: &quot;&quot;, &quot;module_stdout&quot;: &quot;/bin/sh: 1: /usr/bin/python: not found\r\n&quot;, &quot;msg&quot;: &quot;MODULE FAILURE&quot;, &quot;parsed&quot;: false}
-fatal: [adproxy1]: FAILED! =&amp;gt; {&quot;changed&quot;: false, &quot;failed&quot;: true, &quot;module_stderr&quot;: &quot;&quot;, &quot;module_stdout&quot;: &quot;/bin/sh: 1: /usr/bin/python: not found\r\n&quot;, &quot;msg&quot;: &quot;MODULE FAILURE&quot;, &quot;parsed&quot;: false}
-
-NO MORE HOSTS LEFT *************************************************************
-[WARNING]: Could not create retry file 'playbook_appdata_proxy.retry'.         [Errno 2] No such file or directory: ''
-
-
-PLAY RECAP *********************************************************************
-adproxy1                   : ok=0    changed=0    unreachable=0    failed=1
-adproxy2                   : ok=0    changed=0    unreachable=0    failed=1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;What??? There error is here: &lt;strong&gt;“/bin/sh: 1: /usr/bin/python: not found\r\n”&lt;/strong&gt;.  Apparently Python is NOT a default install on Ubuntu 16.04 LTS.  That means that you can’t use Ansible to bootstrap a box into functionality until you’ve first installed Python.&lt;/p&gt;
-
-&lt;p&gt;One of the single best attributes of Ansible is that you don’t have to install anything to use it – until now.  Unlike tools like Chef or Puppet which require an agent to be installed, Ansible has always just required nothing but python.  And since python used to be a default install you could trivially just “ansible-ize” a box into functionality.  This is a huge deal.  Happily Ubuntu 14.04 is still available – you just have to dig down to the very bottom of the Operating Systems list to find it.&lt;/p&gt;
-
-&lt;p&gt;And yes I’m absolutely certain that there are very real reasons why I want 16.04 instead of 14.04 but at least for now the operational benefits of being able to bring a box up with Ansible far, far outweigh them.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 29 Nov 2016 03:41:56 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/11/29/aws-tech-note-problems-with-ubuntu-16-04-and-ansible.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/11/29/aws-tech-note-problems-with-ubuntu-16-04-and-ansible.html</guid>
-        
-        <category>aws</category>
-        
-        <category>ansible</category>
-        
-        <category>ubuntu</category>
-        
-        
-        <category>aws</category>
-        
-      </item>
     
       <item>
         <title>Startup Learnings - Three Things that Betsy Devine Taught Me</title>
@@ -149,6 +104,53 @@ adproxy2                   : ok=0    changed=0    unreachable=0    failed=1
         
         
         <category>startup</category>
+        
+      </item>
+    
+      <item>
+        <title>AWS Tech Note - Problems with Ubuntu 16.04 and Ansible</title>
+        <description>&lt;p&gt;When i started going heavy down the path of AWS, Ubuntu 14.04 was the default Ubuntu in AWS and it appeared at the top of the Operating System list when you built a new EC2 server.  I’ve run Ubuntu for &lt;strong&gt;years&lt;/strong&gt; ever since I asked &lt;a href=&quot;https://ma.tt/&quot;&gt;Matt&lt;/a&gt; what distro WordPress used and he replied Ubuntu.  &lt;em&gt;blink&lt;/em&gt;  At the time I looked at Ubuntu as a personal distro but, hey, if it is good enough for WordPress then it is good enough for my crappy, little farm of boxes.  And so I’ve been in Ubuntu ever since.&lt;/p&gt;
+
+&lt;p&gt;Today was the first bad Ubuntu experience that I’ve really ever had.  What happened was I went to bring up a new EC2 instance and I noticed that the default Ubuntu was now 16.04.  Hm… That’s different but I’ll try it.  So I trot out my ansible playbook and here’s what happened:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/proxy playbook_appdata_proxy.yml
+
+PLAY [all] *********************************************************************
+
+TASK [setup] *******************************************************************
+fatal: [adproxy2]: FAILED! =&amp;gt; {&quot;changed&quot;: false, &quot;failed&quot;: true, &quot;module_stderr&quot;: &quot;&quot;, &quot;module_stdout&quot;: &quot;/bin/sh: 1: /usr/bin/python: not found\r\n&quot;, &quot;msg&quot;: &quot;MODULE FAILURE&quot;, &quot;parsed&quot;: false}
+fatal: [adproxy1]: FAILED! =&amp;gt; {&quot;changed&quot;: false, &quot;failed&quot;: true, &quot;module_stderr&quot;: &quot;&quot;, &quot;module_stdout&quot;: &quot;/bin/sh: 1: /usr/bin/python: not found\r\n&quot;, &quot;msg&quot;: &quot;MODULE FAILURE&quot;, &quot;parsed&quot;: false}
+
+NO MORE HOSTS LEFT *************************************************************
+[WARNING]: Could not create retry file 'playbook_appdata_proxy.retry'.         [Errno 2] No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
+adproxy1                   : ok=0    changed=0    unreachable=0    failed=1
+adproxy2                   : ok=0    changed=0    unreachable=0    failed=1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;What??? There error is here: &lt;strong&gt;“/bin/sh: 1: /usr/bin/python: not found\r\n”&lt;/strong&gt;.  Apparently Python is NOT a default install on Ubuntu 16.04 LTS.  That means that you can’t use Ansible to bootstrap a box into functionality until you’ve first installed Python.&lt;/p&gt;
+
+&lt;p&gt;One of the single best attributes of Ansible is that you don’t have to install anything to use it – until now.  Unlike tools like Chef or Puppet which require an agent to be installed, Ansible has always just required nothing but python.  And since python used to be a default install you could trivially just “ansible-ize” a box into functionality.  This is a huge deal.  Happily Ubuntu 14.04 is still available – you just have to dig down to the very bottom of the Operating Systems list to find it.&lt;/p&gt;
+
+&lt;p&gt;And yes I’m absolutely certain that there are very real reasons why I want 16.04 instead of 14.04 but at least for now the operational benefits of being able to bring a box up with Ansible far, far outweigh them.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 29 Nov 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/11/29/aws-tech-note-problems-with-ubuntu-16-04-and-ansible.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/11/29/aws-tech-note-problems-with-ubuntu-16-04-and-ansible.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ansible</category>
+        
+        <category>ubuntu</category>
+        
+        <category>python</category>
+        
+        
+        <category>aws</category>
         
       </item>
     

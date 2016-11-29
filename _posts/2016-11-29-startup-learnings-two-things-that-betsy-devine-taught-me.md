@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Startup Learnings - Three Things that Betsy Devine Taught Me
+title: Startup Learnings - Four Things that Betsy Devine Taught Me
 category: startup
 tags: ["startup"]
 ---
