@@ -6,9 +6,54 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 29 Nov 2016 03:27:28 -0500</pubDate>
-    <lastBuildDate>Tue, 29 Nov 2016 03:27:28 -0500</lastBuildDate>
+    <pubDate>Tue, 29 Nov 2016 03:41:57 -0500</pubDate>
+    <lastBuildDate>Tue, 29 Nov 2016 03:41:57 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>AWS Tech Note - Problems with Ubuntu 16.04 and Ansible</title>
+        <description>&lt;p&gt;When i started going heavy down the path of AWS, Ubuntu 14.04 was the default Ubuntu in AWS and it appeared at the top of the Operating System list when you built a new EC2 server.  I’ve run Ubuntu for &lt;strong&gt;years&lt;/strong&gt; ever since I asked &lt;a href=&quot;https://ma.tt/&quot;&gt;Matt&lt;/a&gt; what distro WordPress used and he replied Ubuntu.  &lt;em&gt;blink&lt;/em&gt;  At the time I looked at Ubuntu as a personal distro but, hey, if it is good enough for WordPress then it is good enough for my crappy, little farm of boxes.  And so I’ve been in Ubuntu ever since.&lt;/p&gt;
+
+&lt;p&gt;Today was the first bad Ubuntu experience that I’ve really ever had.  What happened was I went to bring up a new EC2 instance and I noticed that the default Ubuntu was now 16.04.  Hm… That’s different but I’ll try it.  So I trot out my ansible playbook and here’s what happened:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/proxy playbook_appdata_proxy.yml
+
+PLAY [all] *********************************************************************
+
+TASK [setup] *******************************************************************
+fatal: [adproxy2]: FAILED! =&amp;gt; {&quot;changed&quot;: false, &quot;failed&quot;: true, &quot;module_stderr&quot;: &quot;&quot;, &quot;module_stdout&quot;: &quot;/bin/sh: 1: /usr/bin/python: not found\r\n&quot;, &quot;msg&quot;: &quot;MODULE FAILURE&quot;, &quot;parsed&quot;: false}
+fatal: [adproxy1]: FAILED! =&amp;gt; {&quot;changed&quot;: false, &quot;failed&quot;: true, &quot;module_stderr&quot;: &quot;&quot;, &quot;module_stdout&quot;: &quot;/bin/sh: 1: /usr/bin/python: not found\r\n&quot;, &quot;msg&quot;: &quot;MODULE FAILURE&quot;, &quot;parsed&quot;: false}
+
+NO MORE HOSTS LEFT *************************************************************
+[WARNING]: Could not create retry file 'playbook_appdata_proxy.retry'.         [Errno 2] No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
+adproxy1                   : ok=0    changed=0    unreachable=0    failed=1
+adproxy2                   : ok=0    changed=0    unreachable=0    failed=1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;What??? There error is here: &lt;strong&gt;“/bin/sh: 1: /usr/bin/python: not found\r\n”&lt;/strong&gt;.  Apparently Python is NOT a default install on Ubuntu 16.04 LTS.  That means that you can’t use Ansible to bootstrap a box into functionality until you’ve first installed Python.&lt;/p&gt;
+
+&lt;p&gt;One of the single best attributes of Ansible is that you don’t have to install anything to use it – until now.  Unlike tools like Chef or Puppet which require an agent to be installed, Ansible has always just required nothing but python.  And since python used to be a default install you could trivially just “ansible-ize” a box into functionality.  This is a huge deal.  Happily Ubuntu 14.04 is still available – you just have to dig down to the very bottom of the Operating Systems list to find it.&lt;/p&gt;
+
+&lt;p&gt;And yes I’m absolutely certain that there are very real reasons why I want 16.04 instead of 14.04 but at least for now the operational benefits of being able to bring a box up with Ansible far, far outweigh them.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 29 Nov 2016 03:41:56 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/11/29/aws-tech-note-problems-with-ubuntu-16-04-and-ansible.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/11/29/aws-tech-note-problems-with-ubuntu-16-04-and-ansible.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ansible</category>
+        
+        <category>ubuntu</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
     
       <item>
         <title>Startup Learnings - Three Things that Betsy Devine Taught Me</title>
@@ -387,75 +432,6 @@ page = agent.get(url)
         <link>https://fuzzygroup.github.io/blog/2016/11/26/anistrano-review.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/26/anistrano-review.html</guid>
         
-        
-      </item>
-    
-      <item>
-        <title>Understanding Twitter - Why Is This Person Following Me?</title>
-        <description>&lt;p&gt;I am what is generally referred to as an old school blogger.  My first blog post was back in 2002 and the first time I used hypertext links to keep daily notes was probably back in 1988.  Needless to say I’ve been using this as a medium for a very, very long time.  And I’m a wordy bastard at times so &lt;a href=&quot;http://twitter.com/fuzzygroup&quot;&gt;Twitter, for me&lt;/a&gt;, is a particular challenge:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;I know there’s something very, very real there&lt;/li&gt;
-  &lt;li&gt;People I &lt;a href=&quot;https://twitter.com/niall?lang=en&quot;&gt;really, really respect&lt;/a&gt; work there including the &lt;a href=&quot;https://twitter.com/wolframarnold&quot;&gt;guy who taught me Rails&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;It is a hell of an ecosystem&lt;/li&gt;
-  &lt;li&gt;It is closer to the open world of blogging than the closed garden of Facebook&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;When I came back to blogging in 2016 after a hiatius, I had an intuitive feeling that Twitter was now part of it and I’ve been trying to make sense of it ever since.  What I’ve personally found is that Twitter is a way to distribute your content.  It provides much the same function that RSS used to once upon a time.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-question-of-who-to-follow&quot;&gt;The Question of Who to Follow&lt;/h1&gt;
-
-&lt;p&gt;The thing that I’ve had real issues with is figuring out who to follow and whether or not reciprocal follow as a strategy actually makes sense.  When I first started really using Twitter I used what is called a reciprocal follow strategy – if someone followed me then I followed them.  And I did it fairly blindly where I didn’t first look at the “person” blindly.  This resulted in my following people like these:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://twitter.com/NadiaShapiro&quot;&gt;https://twitter.com/NadiaShapiro&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://twitter.com/SimoRanieriCHEF&quot;&gt;https://twitter.com/SimoRanieriCHEF&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://twitter.com/FossaTeam&quot;&gt;https://twitter.com/FossaTeam&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://twitter.com/LaSavonnerie&quot;&gt;https://twitter.com/LaSavonnerie&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Each of these people directly corresponds to specific tweet I made roughly at the time they followed me - with one exception.  Why in the world would LaSavonnerie ever follow me?  I have nothing to do with french milled soap.  That one was bizarre.  In the case of FossaTeam, for example, I posted something about email and then someone in the email space close to immediately followed me.&lt;/p&gt;
-
-&lt;p&gt;The twitterverse is filled with APIs and is highly automated.  The implications of this became fully evident when this person followed me the other day:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/untangling_twitter_why_would_this_person_ever_follow_me.png&quot; alt=&quot;untangling_twitter_why_would_this_person_ever_follow_me.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;On first glance this is really, really cool – the &lt;strong&gt;voice of Siri&lt;/strong&gt; follows me!  And then you look at the numbers - &lt;strong&gt;1.4 million&lt;/strong&gt; &lt;em&gt;followers&lt;/em&gt;.  That kind of makes sense, right?  I mean Siri is a big deal so this is kind of like the number of followers that a celebrity might have.  The next number, however, gives me great pause: &lt;strong&gt;1.1 million&lt;/strong&gt; &lt;em&gt;following&lt;/em&gt;.  Let’s just assume that you can find a Twitter user, evaluate their content quickly and make the decision to follow someone in say just 10 seconds.  That means that this person has spent &lt;strong&gt;12.7 years&lt;/strong&gt; doing nothing more than clicking follow.  Mission Control – we have a problem here …&lt;/p&gt;
-
-&lt;p&gt;What seems to be going on here is that this person has a bot that is automatically finding “interesting” people to follow.  Perhaps via content matching similar to their goals or perhaps just via existence by monitoring new tweets.  The bot, acting as this person, then follows those people in the interest of building an audience.  This audience can likely then be monitized either thru advertising, promoting a product or service, delivering other people’s tweets to it or by driving people somewhere else on the web.&lt;/p&gt;
-
-&lt;h1 id=&quot;conclusions&quot;&gt;Conclusions&lt;/h1&gt;
-
-&lt;p&gt;None of this is illegal, immoral or fattening but it absolutely feels &lt;strong&gt;spammy&lt;/strong&gt;.  It feels spammy enough that I spent my free time this past September when my family and I were at DisneyWorld working on using Twitter’s APIs to analyze my following list to see if I should continue to follow them.  I actually came up with a fairly decent algorithm but Twitter’s rate limits on API calls makes it hard to use reliably.  However I’m still trying to figure out a work around.&lt;/p&gt;
-
-&lt;p&gt;Here are the rules around who to follow that I came up with:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Never blindly reciprocally follow anyone.  It pollutes your twitter feed dramatically.  I’m still getting rid of followers.&lt;/li&gt;
-  &lt;li&gt;Follow people NOT products, not companies, not entities.&lt;/li&gt;
-  &lt;li&gt;Don’t follow celebrities - who cares.&lt;/li&gt;
-  &lt;li&gt;Follow people who have interest similar to yours.  Yes that ends up with a bit of an echo chamber effect but it gives you a feed of information that is consonant with your information needs.&lt;/li&gt;
-  &lt;li&gt;Don’t follow general purpose media organizations.  Just goto Google News and let information surface that way.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;IMPORTANT&lt;/strong&gt;: The bottom line is that if you carefully curate the people you follow on Twitter it can be a tremendous source of constantly flowing information.  When you incorporate follow people blindly the signal to noise ratio drops dramatically and Twitter becomes much less useful.  Wolfram, see below, explained this well to me and that really made Twitter much more useful for me.&lt;/p&gt;
-
-&lt;h1 id=&quot;thank-you&quot;&gt;Thank You&lt;/h1&gt;
-
-&lt;p&gt;Thank you to &lt;a href=&quot;https://twitter.com/niall&quot;&gt;Niall Kennedy&lt;/a&gt; and &lt;a href=&quot;https://twitter.com/wolframarnold&quot;&gt;Wolfram Arnold&lt;/a&gt; for advice on Twitter.  Both of these people are Twitter engineers that I knew in a previous life and both gave me great advice.  Appreciated.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 26 Nov 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/twitter/2016/11/26/understanding-twitter-why-is-this-person-following-me.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/twitter/2016/11/26/understanding-twitter-why-is-this-person-following-me.html</guid>
-        
-        <category>twitter</category>
-        
-        <category>blogging</category>
-        
-        <category>siri</category>
-        
-        
-        <category>twitter</category>
         
       </item>
     

@@ -7,10 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>AWS Tech Note - Problems with Ubuntu 16.04 and Ansible</title>
-  <meta name="description" content="AWS Tech Note No python as default install on ubuntu 16.04 LTS">
+  <meta name="description" content="When i started going heavy down the path of AWS, Ubuntu 14.04 was the default Ubuntu in AWS and it appeared at the top of the Operating System list when you ...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/2016/11/23/aws-tech-note-problems-with-ubuntu-16-04-and-ansible.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/aws/2016/11/29/aws-tech-note-problems-with-ubuntu-16-04-and-ansible.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
   
   <script>
@@ -92,26 +92,37 @@
 
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">AWS Tech Note - Problems with Ubuntu 16.04 and Ansible</h1>
-    <p class="post-meta"><time datetime="2016-11-23T12:08:35-05:00" itemprop="datePublished">Nov 23, 2016</time></p>
+    <p class="post-meta"><time datetime="2016-11-29T03:41:56-05:00" itemprop="datePublished">Nov 29, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>AWS Tech Note No python as default install on ubuntu 16.04 LTS</p>
+    <p>When i started going heavy down the path of AWS, Ubuntu 14.04 was the default Ubuntu in AWS and it appeared at the top of the Operating System list when you built a new EC2 server.  I’ve run Ubuntu for <strong>years</strong> ever since I asked <a href="https://ma.tt/">Matt</a> what distro WordPress used and he replied Ubuntu.  <em>blink</em>  At the time I looked at Ubuntu as a personal distro but, hey, if it is good enough for WordPress then it is good enough for my crappy, little farm of boxes.  And so I’ve been in Ubuntu ever since.</p>
 
-<p>ansible-playbook -i inventories/proxy playbook_appdata_proxy.yml</p>
+<p>Today was the first bad Ubuntu experience that I’ve really ever had.  What happened was I went to bring up a new EC2 instance and I noticed that the default Ubuntu was now 16.04.  Hm… That’s different but I’ll try it.  So I trot out my ansible playbook and here’s what happened:</p>
 
-<p>PLAY [all] <strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong>***</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/proxy playbook_appdata_proxy.yml
 
-<p>TASK [setup] <strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong>*
-fatal: [adproxy2]: FAILED! =&gt; {“changed”: false, “failed”: true, “module_stderr”: “”, “module_stdout”: “/bin/sh: 1: /usr/bin/python: not found\r\n”, “msg”: “MODULE FAILURE”, “parsed”: false}
-fatal: [adproxy1]: FAILED! =&gt; {“changed”: false, “failed”: true, “module_stderr”: “”, “module_stdout”: “/bin/sh: 1: /usr/bin/python: not found\r\n”, “msg”: “MODULE FAILURE”, “parsed”: false}</p>
+PLAY [all] *********************************************************************
 
-<p>NO MORE HOSTS LEFT <strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong>*
- [WARNING]: Could not create retry file ‘playbook_appdata_proxy.retry’.         [Errno 2] No such file or directory: ‘’</p>
+TASK [setup] *******************************************************************
+fatal: [adproxy2]: FAILED! =&gt; {"changed": false, "failed": true, "module_stderr": "", "module_stdout": "/bin/sh: 1: /usr/bin/python: not found\r\n", "msg": "MODULE FAILURE", "parsed": false}
+fatal: [adproxy1]: FAILED! =&gt; {"changed": false, "failed": true, "module_stderr": "", "module_stdout": "/bin/sh: 1: /usr/bin/python: not found\r\n", "msg": "MODULE FAILURE", "parsed": false}
 
-<p>PLAY RECAP <strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong>***
+NO MORE HOSTS LEFT *************************************************************
+[WARNING]: Could not create retry file 'playbook_appdata_proxy.retry'.         [Errno 2] No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
 adproxy1                   : ok=0    changed=0    unreachable=0    failed=1
-adproxy2                   : ok=0    changed=0    unreachable=0    failed=1</p>
+adproxy2                   : ok=0    changed=0    unreachable=0    failed=1
+</code></pre>
+</div>
+
+<p>What??? There error is here: <strong>“/bin/sh: 1: /usr/bin/python: not found\r\n”</strong>.  Apparently Python is NOT a default install on Ubuntu 16.04 LTS.  That means that you can’t use Ansible to bootstrap a box into functionality until you’ve first installed Python.</p>
+
+<p>One of the single best attributes of Ansible is that you don’t have to install anything to use it – until now.  Unlike tools like Chef or Puppet which require an agent to be installed, Ansible has always just required nothing but python.  And since python used to be a default install you could trivially just “ansible-ize” a box into functionality.  This is a huge deal.  Happily Ubuntu 14.04 is still available – you just have to dig down to the very bottom of the Operating Systems list to find it.</p>
+
+<p>And yes I’m absolutely certain that there are very real reasons why I want 16.04 instead of 14.04 but at least for now the operational benefits of being able to bring a box up with Ansible far, far outweigh them.</p>
 
   </div>
   
