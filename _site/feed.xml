@@ -6,9 +6,116 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 30 Nov 2016 21:07:59 -0500</pubDate>
-    <lastBuildDate>Wed, 30 Nov 2016 21:07:59 -0500</lastBuildDate>
+    <pubDate>Thu, 01 Dec 2016 07:01:57 -0500</pubDate>
+    <lastBuildDate>Thu, 01 Dec 2016 07:01:57 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Debugging Christmas Lights</title>
+        <description>&lt;p&gt;In any family, over time, you specialize in your roles.  This is similar to a work environment where one person gets good at an aspect of the code base and then that person gets tasked with it on a regular basis.  In an ideal world everyone would always be 100% capable at all aspects of the code but we all know that’s generally not the case.  In our family, Dad (me) puts up the Christmas lights.  Part of it is that I don’t mind heights terribly, not the same as saying I like them but you get it but the other part of it is that &lt;em&gt;debugging crap that doesn’t work&lt;/em&gt; is really my very job definition.  And, a few days ago I wanted this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/debugging_xmas_lights.jpg&quot; alt=&quot;debugging_xmas_lights.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;but after 10 minutes or so I got this instead:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/debugging_xmas_lights2.jpg&quot; alt=&quot;debugging_xmas_lights2.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And while I was initially reminded of the Bob Rivers / Twisted Christmas album - “I plug in one light and THEY ALL #$#(&lt;em&gt;$&lt;/em&gt;#) go OUT”, that wasn’t this.  Everything worked perfectly – until it all stopped.  Sigh.&lt;/p&gt;
+
+&lt;p&gt;The very essence of debugging is the quest for understanding and your key tool is &lt;em&gt;persistence&lt;/em&gt;.  I’ve worked with a lot of smart people in my life, many of them dramatically smarter than I am but I haven’t worked with many people who are as persistent.  Whether you are debugging software, hardware or even christmas lights, &lt;em&gt;persistence&lt;/em&gt; is what you want.  If you just think of yourself as a dog with a bone, that’s the right image.&lt;/p&gt;
+
+&lt;p&gt;Ok then.  The first step was to get out the tools.  Happily I recently bought a &lt;a href=&quot;https://www.amazon.com/gp/product/B019EJXUJU/ref=oh_aui_search_detailpage?ie=UTF8&amp;amp;psc=1&quot;&gt;non-contact AC voltage tester from Amazon&lt;/a&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/non_contact_tester.jpg&quot; alt=&quot;debugging_xmas_lights2.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;What this does is essentially &lt;em&gt;sniff&lt;/em&gt; electricity.  I’m not enough of a hardware guy to really understand it but I tried it and it works!  Given that I was doing this on a rainy day, not having to manipulate two test leads or a digital volt ohm meter was a huge, huge win.  This little gadget is actually sensitive enough that you can touch it to the end of a lightning cable and it will detect the voltage there so, apparently, it does both DC and AC.  Oh and did I mention it has an LED pen light built into it?  This thing rocks!&lt;/p&gt;
+
+&lt;p&gt;Whenever you have something, related to electricity, that happens after a period of latency, the natural suspect is somehow thermal or load related.  But here was the aggregate load:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;1 power strip&lt;/li&gt;
+  &lt;li&gt;4 strings of relatively low voltage lights&lt;/li&gt;
+  &lt;li&gt;1 &lt;a href=&quot;https://www.amazon.com/gp/product/B01JBTO16E/ref=oh_aui_search_detailpage?ie=UTF8&amp;amp;psc=1&quot;&gt;Christmas Laser Projector&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Two of the strings and the projector were all plugged into a contractor grade, 20 amp, thick as hell extension cord coming from a GFCI outlet.  Call this one Big Green.  The remaining two strings were plugged into a separate contractor grade cord but one that was only 15 amp.  And call this Little Orange.  Both of these have served me thru tree house building, home remodeling, etc.&lt;/p&gt;
+
+&lt;p&gt;This isn’t sufficient load to trip a breaker.  I grew up doing AC wiring stuff so I have no issues stating that as a fact.&lt;/p&gt;
+
+&lt;p&gt;So if we think of this in terms of debugging here are the different components at hand:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;power strip&lt;/li&gt;
+  &lt;li&gt;light string 1&lt;/li&gt;
+  &lt;li&gt;light string 2&lt;/li&gt;
+  &lt;li&gt;light string 3&lt;/li&gt;
+  &lt;li&gt;light string 4&lt;/li&gt;
+  &lt;li&gt;extension cord 1 - Big Green&lt;/li&gt;
+  &lt;li&gt;extension cord 2 - Little Orange&lt;/li&gt;
+  &lt;li&gt;GFCI outlet&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Any one of these, or any combination of these, could be leading to this problem.  And since it only happened after 10 minutes, I knew that at a worst case I was looking at N * 10 minutes in terms of potential maximum time that I’d be trouble shooting this where N was the number of components, 8.  So this was potentially at least a 90 minute plus exercise.  Given that the amount of time involved was now known to be non trivial, it was time to start by eliminating things outright.&lt;/p&gt;
+
+&lt;p&gt;Note: My worst case estimate was actually incorrect.  If the problem was combinatorial in nature like string 1 interacting with string 3 and causing the outage, well, I’m glad I didn’t realize this – its a lot more options.&lt;/p&gt;
+
+&lt;p&gt;My first task was to remove the power strip.  My wife had wanted to add more lasers to the mix so that was there to support the end goal – but we don’t have them yet so it was a case of over-engineering.  So, remove powerstrip, rejigger wires, try again.  &lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;My next step was to look at this in terms of overall complexity.  The most complex component is generally the one most likely to fail.  That meant that I should pull the laser projector from the mix.  Even though it was brand, stinking new, it is definitely more complex than christmas lights so out it goes.  And, once again, &lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;The lights are only a year old but they are very poorly made.  Even though they are a name brand, Sylvania, they seem to epitomize the term &lt;em&gt;shite quality&lt;/em&gt;.  Some of the time just screwing a bulb in blows out the bulb due to poor socket quality.  But my wife loves the visual so the chances of my being able to route these strands of lights to /dev/null approximates zero.  Given that I have issues with the light quality, the next step is to alternately remove each string of lights in turn:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;Grumble&lt;/em&gt;.  Ok then so what’s left.  At this point we’re down to two extensions cords.  Little Orange isn’t as robust as big green so let’s take that out of the loop - &lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Hm… The message seems clear – we’re down to Big Green so let’s un plug it and substitute another one:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;10 minute and LIGHT!&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;10 more minute and still LIGHT!&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;10 more minute and still LIGHT!&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So we’re good now but what went wrong?  To some extent if you debug something and you don’t actually understand the failure cause at the end then you may have won the battle but you have perhaps lost the war as the real goal should always be understanding.&lt;/p&gt;
+
+&lt;p&gt;When I look a more detailed look at my Big Green extension cord I saw this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/big_green_big_culprit.jpg&quot; alt=&quot;big_green_big_culprit.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Apparently I’ve fixed this extension cord in the past – and then it all made sense.  If you remember I have this all going into a GFCI outlet and I also mentioned that I was doing all this in the rain.  And that was the vital clue.  GFCI stands for Ground Fault Circuit Interrupter and it is a way for an electrical outlet to automatically shut down in dangerous conditions.  Since a GFCI outlet is more expensive than a standard outlet you don’t see them everywhere but they are &lt;strong&gt;required&lt;/strong&gt; for use in commercial bathrooms due to the potential issues with respect to water and electricity.  And if your home builder was any good you likely have them in your home bathrooms for the same reason.&lt;/p&gt;
+
+&lt;p&gt;So what seems to have been happening was that moisture was slowly affecting the Big Green extension cord.  After about 10 minutes it caused a GFCI issue which led to a power shut down.  Strangely it seemed to clear itself up almost immediately.  Odder still is that when I checked the extension cord with a circuit tester designed to catch GFCI wiring errors it reported just fine.&lt;/p&gt;
+
+&lt;p&gt;The morals of the story seem to be:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Don’t fix your extension cord – just replace it&lt;/li&gt;
+  &lt;li&gt;Debugging is the same when its software, hardware or christmas mights – it call comes down to persistence&lt;/li&gt;
+  &lt;li&gt;Anything can be debugged, you just have to take it step by step, bit by bit&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Merry Christmas!&lt;/p&gt;
+</description>
+        <pubDate>Thu, 01 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/debugging/2016/12/01/debugging-christmas-lights.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/debugging/2016/12/01/debugging-christmas-lights.html</guid>
+        
+        <category>debugging</category>
+        
+        <category>christmas</category>
+        
+        <category>software_engineering</category>
+        
+        
+        <category>debugging</category>
+        
+      </item>
     
       <item>
         <title>Code Monkey, Software Engineer, Computer Scientist</title>
@@ -359,106 +466,6 @@ SHOW FULL PROCESS LIST\G
         
         
         <category>startup</category>
-        
-      </item>
-    
-      <item>
-        <title>Native Apps Are Not Doomed</title>
-        <description>&lt;p&gt;So there was a meme that went around a week ago that I meant to jump on but, well, &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/11/26/fear-and-loathing-in-awsville-or-adventures-in-partition-resizing.html&quot;&gt;database crash and my life was subsumed into disaster recovery&lt;/a&gt; so there you go.  Here are the relevant links:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://medium.com/javascript-scene/native-apps-are-doomed-ac397148a2c0#.knd91wksx&quot;&gt;Native Apps Are Doomed - 1&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://medium.com/javascript-scene/why-native-apps-really-are-doomed-native-apps-are-doomed-pt-2-e035b43170e9#.iipzbyled&quot;&gt;Native Apps Are Doomed - 2&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://news.ycombinator.com/item?id=13002598&quot;&gt;Hacker News Thread&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I don’t know the author of these pieces but I really, really don’t think he’s at all correct.  His basic thesis seems to be that native app development is going to be replaced by some kind of “progressive web apps” – essentially an embedded browser and the reasons are many:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;users install too few apps&lt;/li&gt;
-  &lt;li&gt;app development is hard&lt;/li&gt;
-  &lt;li&gt;app development is expensive&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;All of these are good points but they are all also wrong and I’m going to explore this along two dimensions: The History of Cross Platform Development Tools and The Very Young.  The first is relevant along the technical axis and the second is relevant along the install axis.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-history-of-cross-platform-development-tools&quot;&gt;The History of Cross Platform Development Tools&lt;/h1&gt;
-
-&lt;p&gt;The year was 1996 and I was being heavily courted by a company called Dataware.  They wanted to acquire my company, NTERGAID, and the CEO / Founder, Kurt Mueller, and I were out for a very, very nice meal at one of the, at the time, leading Boston restaurants.  Kurt was at his very charismatic best as he so often was and he pitched Dataware &lt;strong&gt;hard&lt;/strong&gt;.  One of the things he held out to me was the possibility of cross platform development, something we were weak on.  I can’t remember the exact words but it was something like this:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;And we’re committed to this new cross platform framework called XVT.  It will let you get your browser software onto platforms like the Mac easily and it is fantastic.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Ultimately Dataware did buy NTERGAID but that’s not really relevant.  After we joined up, well, XVT was never actually used for any of the products we were involved in – or for much of anything.  Simply put it just didn’t work well; apps it made didn’t feel right.&lt;/p&gt;
-
-&lt;p&gt;The position that the author is taking is that cross platform development is hard and non economical so you have to use progressive web apps.  NO YOU DON’T.  Progressive web apps are just another take on cross platform development tools and history has shown us that cross platform development tools don’t work well.&lt;/p&gt;
-
-&lt;p&gt;It is interesting to me that 20 years later, XVT is still around and still a niche tool:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.xvt.com/&quot;&gt;XVT Today&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://web.archive.org/web/19970605034017/http://www.xvt.com/docs/products.html&quot;&gt;XVT 20 Years Ago&lt;/a&gt; - Thanks Archive!&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;And lest you think that this is all about XVT, its not.  XVT is just an example.  I could just as easily have picked &lt;a href=&quot;https://www.qt.io/&quot;&gt;QT&lt;/a&gt; which has been around a similar amount of time.&lt;/p&gt;
-
-&lt;p&gt;The bottom line about cross platform development tools is that the bulk of users only use one platform at a time.  Cross platform tools are great for the developer but they are generally irrelevant to users.  What users want are great feeling, great looking, performant apps.  And, at least in my experience and the experience of the industry, apps like that &lt;strong&gt;NEVER&lt;/strong&gt; come from cross platform tools.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note 1&lt;/strong&gt;: It might be different for back end / server software which doesn’t have a UI but for beautiful apps that users actually want to use, those come solely from native development.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note 2&lt;/strong&gt;: Cross platform development tools go back way further in time than 1996.  I remember seeing ads for them back in Dr. Dobb’s Journal starting in the mid 80s.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-very-young&quot;&gt;The Very Young&lt;/h1&gt;
-
-&lt;p&gt;One of the interesting points that this author, Eric Elliot, makes is that people don’t install apps:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;I mean that most web traffic comes from mobile devices, and that users install between 0–3 new apps per month, on average. That means that people aren’t spending a lot of time looking for new apps to try out in the app store, but they are spending lots of time on the web, where they might discover and use your app.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;I think he’s absolutely &lt;strong&gt;wrong&lt;/strong&gt; here.  I have two kids and they both use either iOS or Google Play (really Amazon’s Fire Tablet) constantly.  And their information access patterns are radically different from those of my wife and myself.  They &lt;strong&gt;do not&lt;/strong&gt; surf the web.  And as an Internet professional, while that breaks my heart, as a parent I find it &lt;em&gt;profoundly&lt;/em&gt; interesting.  They look at information in terms of can it be delivered in an app form or not.  They use the web certainly but they use it in terms of Googling for something, getting an answer and getting out.  I’ve never seen either of them lost in the web as so often happens to me or my wife.&lt;/p&gt;
-
-&lt;p&gt;And the number of new apps they use – it changes constantly.  For my youngest I have his iTunes account set to authorize app purchases through me.  So I see literally every app he gets and I know the rate of change.  Adults may only be installing 0 to 3 apps per month but kids are not.  And the kids of today are the adults of tomorrow.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: Lest you think that I’m a closed minded, controlling parent, go search the iTunes app store for Feeld or 3somer or Trippple and then ask yourself if you’d want your 10 year old child being able to install that.&lt;/p&gt;
-
-&lt;p&gt;You should note that “very young” is perhaps misleading.  What I mean by it is “the people growing up with iOS and Google Play”.&lt;/p&gt;
-
-&lt;h1 id=&quot;conclusion--tldr&quot;&gt;Conclusion / TLDR&lt;/h1&gt;
-
-&lt;p&gt;I absolutely understand the desire for progressive web apps to work.  If they did it would:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;increase consumer choice&lt;/li&gt;
-  &lt;li&gt;decrease platform vendor power&lt;/li&gt;
-  &lt;li&gt;decrease developer costs dramatically&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;As a developer I want this too but, unfortunately, the software industry has now tried for well over 3 decades to build development tools for good cross platform experiences and they still &lt;strong&gt;don’t work&lt;/strong&gt;.  I see no reason that this will change in the near term; history is on my side.  This, coupled with the fact that younger people have no problem installing apps regularly, means that native apps have a long life in front of them.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 29 Nov 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/mobile/2016/11/29/native-apps-are-not-doomed.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/mobile/2016/11/29/native-apps-are-not-doomed.html</guid>
-        
-        <category>apps</category>
-        
-        <category>iphone</category>
-        
-        <category>google_play</category>
-        
-        <category>android</category>
-        
-        <category>xvt</category>
-        
-        <category>qt</category>
-        
-        <category>software_development</category>
-        
-        <category>mobile</category>
-        
-        
-        <category>mobile</category>
         
       </item>
     
