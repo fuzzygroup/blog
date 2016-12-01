@@ -12,7 +12,7 @@ So there was a meme that went around a week ago that I meant to jump on but, wel
 
 I don't know the author of these pieces but I really, really don't think he's at all correct.  His basic thesis seems to be that native app development is going to be replaced by some kind of "progressive web apps" -- essentially an embedded browser and the reasons are many:
 
-* users install too few apps 
+* users install too few apps   
 * app development is hard
 * app development is expensive
 
