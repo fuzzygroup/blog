@@ -6,9 +6,239 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 01 Dec 2016 15:12:40 -0500</pubDate>
-    <lastBuildDate>Thu, 01 Dec 2016 15:12:40 -0500</lastBuildDate>
+    <pubDate>Fri, 02 Dec 2016 07:07:56 -0500</pubDate>
+    <lastBuildDate>Fri, 02 Dec 2016 07:07:56 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Clearing Rails Log Files on AWS with Ansible</title>
+        <description>&lt;p&gt;If you are reading this and you’ve read more than a few things I’ve written then you know that I’m, well, a &lt;em&gt;wordy son of a bitch&lt;/em&gt;.  I mean come on – did you see the post on &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/11/26/fear-and-loathing-in-awsville-or-adventures-in-partition-resizing.html&quot;&gt;AWS Partition Resizing&lt;/a&gt;?  I took like 7800 words to say “can’t do it” – apologies.&lt;/p&gt;
+
+&lt;p&gt;Anyway the digression into wordiness is because like me, Rails log files are wordy son’s of bitches – the number of times in my career that I’ve had to log into a box and do the log dance:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle exec rake log:clear
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;has to be measured in the hundreds if not thousands.  This morning I finally got mad enough to automate it with Ansible.  Here’s how:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;playbook: playbook_logs_clear_rails_logs.yml
+
+#
+# MONDAY ansible-playbook -i ec2.py playbook_logs_clear_rails_logs.yml
+# ansible-playbook -i inventories/production2 playbook_logs_clear_rails_logs.yml
+#
+---
+  
+- hosts: worker
+  become: yes
+  remote_user: ubuntu
+  gather_facts: true
+  vars: 
+    - app_path: /var/www/apps/banks/current
+  roles:
+    - { role: logs_clear_rails_logs, tags: logs}
+
+role: 
+folder: logs_clear_rails_logs
+file: tasks/main.yml
+
+---
+- name: logs_clear_rails_logs
+  shell: &quot;cd  &amp;amp;&amp;amp; bundle exec rake log:clear&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here are the results:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/production2 playbook_logs_clear_rails_logs.yml
+
+PLAY [worker] ******************************************************************
+
+TASK [setup] *******************************************************************
+ok: [fiworkerbig]
+ok: [fiworker5]
+ok: [fiworker3]
+ok: [fiworker6]
+ok: [fiworker4]
+ok: [fiworker9]
+ok: [fiworker8]
+ok: [fiworker11]
+ok: [fiworker10]
+ok: [fiworker7]
+
+TASK [logs_clear_rails_logs : logs_clear_rails_logs] ***************************
+changed: [fiworker3]
+changed: [fiworker6]
+changed: [fiworker5]
+changed: [fiworker4]
+changed: [fiworkerbig]
+changed: [fiworker7]
+changed: [fiworker8]
+changed: [fiworker9]
+changed: [fiworker10]
+changed: [fiworker11]
+
+PLAY RECAP *********************************************************************
+fiworker10                 : ok=2    changed=1    unreachable=0    failed=0
+fiworker11                 : ok=2    changed=1    unreachable=0    failed=0
+fiworker3                  : ok=2    changed=1    unreachable=0    failed=0
+fiworker4                  : ok=2    changed=1    unreachable=0    failed=0
+fiworker5                  : ok=2    changed=1    unreachable=0    failed=0
+fiworker6                  : ok=2    changed=1    unreachable=0    failed=0
+fiworker7                  : ok=2    changed=1    unreachable=0    failed=0
+fiworker8                  : ok=2    changed=1    unreachable=0    failed=0
+fiworker9                  : ok=2    changed=1    unreachable=0    failed=0
+fiworkerbig                : ok=2    changed=1    unreachable=0    failed=0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Fri, 02 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/12/02/clearing-rails-log-files-on-aws-with-ansible.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/12/02/clearing-rails-log-files-on-aws-with-ansible.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ansible</category>
+        
+        <category>logs</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
+    
+      <item>
+        <title>On Donner, On Blitzen, On Martians, On Pebbles, On FitBits, On AppleWatches</title>
+        <description>
+</description>
+        <pubDate>Thu, 01 Dec 2016 15:44:09 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/gadget/2016/12/01/on-donner-on-blitzen-on-martians-on-pebbles-on-fitbits-on-applewatches.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/gadget/2016/12/01/on-donner-on-blitzen-on-martians-on-pebbles-on-fitbits-on-applewatches.html</guid>
+        
+        <category>gadget</category>
+        
+        <category>smartwatch</category>
+        
+        <category>pebble</category>
+        
+        <category>martian</category>
+        
+        <category>fitbit</category>
+        
+        <category>apple_watch</category>
+        
+        
+        <category>gadget</category>
+        
+      </item>
+    
+      <item>
+        <title>Debugging Christmas Lights</title>
+        <description>&lt;p&gt;In any family, over time, you specialize in your roles.  This is similar to a work environment where one person gets good at an aspect of the code base and then that person gets tasked with it on a regular basis.  In an ideal world everyone would always be 100% capable at all aspects of the code but we all know that’s generally not the case.  In our family, Dad (me) puts up the Christmas lights.  Part of it is that I don’t mind heights terribly, not the same as saying I like them but you get it but the other part of it is that &lt;em&gt;debugging crap that doesn’t work&lt;/em&gt; is really my very job definition.  And, a few days ago I wanted this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/debugging_xmas_lights.jpg&quot; alt=&quot;debugging_xmas_lights.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;but after 10 minutes or so I got this instead:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/debugging_xmas_lights2.jpg&quot; alt=&quot;debugging_xmas_lights2.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And while I was initially reminded of the Bob Rivers / Twisted Christmas album - “I plug in one light and THEY ALL #$#(&lt;em&gt;$&lt;/em&gt;#) go OUT”, that wasn’t this.  Everything worked perfectly – until it all stopped.  Sigh.&lt;/p&gt;
+
+&lt;p&gt;The very essence of debugging is the quest for understanding and your key tool is &lt;em&gt;persistence&lt;/em&gt;.  I’ve worked with a lot of smart people in my life, many of them dramatically smarter than I am but I haven’t worked with many people who are as persistent.  Whether you are debugging software, hardware or even christmas lights, &lt;em&gt;persistence&lt;/em&gt; is what you want.  If you just think of yourself as a dog with a bone, that’s the right image.&lt;/p&gt;
+
+&lt;p&gt;Ok then.  The first step was to get out the tools.  Happily I recently bought a &lt;a href=&quot;https://www.amazon.com/gp/product/B019EJXUJU/ref=oh_aui_search_detailpage?ie=UTF8&amp;amp;psc=1&quot;&gt;non-contact AC voltage tester from Amazon&lt;/a&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/non_contact_tester.jpg&quot; alt=&quot;debugging_xmas_lights2.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;What this does is essentially &lt;em&gt;sniff&lt;/em&gt; electricity.  I’m not enough of a hardware guy to really understand it but I tried it and it works!  Given that I was doing this on a rainy day, not having to manipulate two test leads or a digital volt ohm meter was a huge, huge win.  This little gadget is actually sensitive enough that you can touch it to the end of a lightning cable and it will detect the voltage there so, apparently, it does both DC and AC.  Oh and did I mention it has an LED pen light built into it?  This thing rocks!&lt;/p&gt;
+
+&lt;p&gt;Whenever you have something, related to electricity, that happens after a period of latency, the natural suspect is somehow thermal or load related.  But here was the aggregate load:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;1 power strip&lt;/li&gt;
+  &lt;li&gt;4 strings of relatively low voltage lights&lt;/li&gt;
+  &lt;li&gt;1 &lt;a href=&quot;https://www.amazon.com/gp/product/B01JBTO16E/ref=oh_aui_search_detailpage?ie=UTF8&amp;amp;psc=1&quot;&gt;Christmas Laser Projector&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Two of the strings and the projector were all plugged into a contractor grade, 20 amp, thick as hell extension cord coming from a GFCI outlet.  Call this one Big Green.  The remaining two strings were plugged into a separate contractor grade cord but one that was only 15 amp.  And call this Little Orange.  Both of these have served me thru tree house building, home remodeling, etc.&lt;/p&gt;
+
+&lt;p&gt;This isn’t sufficient load to trip a breaker.  I grew up doing AC wiring stuff so I have no issues stating that as a fact.&lt;/p&gt;
+
+&lt;p&gt;So if we think of this in terms of debugging here are the different components at hand:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;power strip&lt;/li&gt;
+  &lt;li&gt;light string 1&lt;/li&gt;
+  &lt;li&gt;light string 2&lt;/li&gt;
+  &lt;li&gt;light string 3&lt;/li&gt;
+  &lt;li&gt;light string 4&lt;/li&gt;
+  &lt;li&gt;extension cord 1 - Big Green&lt;/li&gt;
+  &lt;li&gt;extension cord 2 - Little Orange&lt;/li&gt;
+  &lt;li&gt;GFCI outlet&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Any one of these, or any combination of these, could be leading to this problem.  And since it only happened after 10 minutes, I knew that at a worst case I was looking at N * 10 minutes in terms of potential maximum time that I’d be trouble shooting this where N was the number of components, 8.  So this was potentially at least a 90 minute plus exercise.  Given that the amount of time involved was now known to be non trivial, it was time to start by eliminating things outright.&lt;/p&gt;
+
+&lt;p&gt;Note: My worst case estimate was actually incorrect.  If the problem was combinatorial in nature like string 1 interacting with string 3 and causing the outage, well, I’m glad I didn’t realize this – its a lot more options.&lt;/p&gt;
+
+&lt;p&gt;My first task was to remove the power strip.  My wife had wanted to add more lasers to the mix so that was there to support the end goal – but we don’t have them yet so it was a case of over-engineering.  So, remove powerstrip, rejigger wires, try again.  &lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;My next step was to look at this in terms of overall complexity.  The most complex component is generally the one most likely to fail.  That meant that I should pull the laser projector from the mix.  Even though it was brand, stinking new, it is definitely more complex than christmas lights so out it goes.  And, once again, &lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;The lights are only a year old but they are very poorly made.  Even though they are a name brand, Sylvania, they seem to epitomize the term &lt;em&gt;shite quality&lt;/em&gt;.  Some of the time just screwing a bulb in blows out the bulb due to poor socket quality.  But my wife loves the visual so the chances of my being able to route these strands of lights to /dev/null approximates zero.  Given that I have issues with the light quality, the next step is to alternately remove each string of lights in turn:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;Grumble&lt;/em&gt;.  Ok then so what’s left.  At this point we’re down to two extensions cords.  Little Orange isn’t as robust as big green so let’s take that out of the loop - &lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Hm… The message seems clear – we’re down to Big Green so let’s un plug it and substitute another one:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;10 minute and LIGHT!&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;10 more minute and still LIGHT!&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;10 more minute and still LIGHT!&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So we’re good now but what went wrong?  To some extent if you debug something and you don’t actually understand the failure cause at the end then you may have won the battle but you have perhaps lost the war as the real goal should always be understanding.&lt;/p&gt;
+
+&lt;p&gt;When I look a more detailed look at my Big Green extension cord I saw this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/big_green_big_culprit.jpg&quot; alt=&quot;big_green_big_culprit.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Apparently I’ve fixed this extension cord in the past – and then it all made sense.  If you remember I have this all going into a GFCI outlet and I also mentioned that I was doing all this in the rain.  And that was the vital clue.  GFCI stands for Ground Fault Circuit Interrupter and it is a way for an electrical outlet to automatically shut down in dangerous conditions.  Since a GFCI outlet is more expensive than a standard outlet you don’t see them everywhere but they are &lt;strong&gt;required&lt;/strong&gt; for use in commercial bathrooms due to the potential issues with respect to water and electricity.  And if your home builder was any good you likely have them in your home bathrooms for the same reason.&lt;/p&gt;
+
+&lt;p&gt;So what seems to have been happening was that moisture was slowly affecting the Big Green extension cord.  After about 10 minutes it caused a GFCI issue which led to a power shut down.  Strangely it seemed to clear itself up almost immediately.  Odder still is that when I checked the extension cord with a circuit tester designed to catch GFCI wiring errors it reported just fine.&lt;/p&gt;
+
+&lt;p&gt;The morals of the story seem to be:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Don’t fix your extension cord – just replace it&lt;/li&gt;
+  &lt;li&gt;Debugging is the same when its software, hardware or christmas mights – it call comes down to persistence&lt;/li&gt;
+  &lt;li&gt;Anything can be debugged, you just have to take it step by step, bit by bit&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Merry Christmas!&lt;/p&gt;
+</description>
+        <pubDate>Thu, 01 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/debugging/2016/12/01/debugging-christmas-lights.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/debugging/2016/12/01/debugging-christmas-lights.html</guid>
+        
+        <category>debugging</category>
+        
+        <category>christmas</category>
+        
+        <category>software_engineering</category>
+        
+        
+        <category>debugging</category>
+        
+      </item>
     
       <item>
         <title>AWS, Ansible and Boto or Virtualization IS the Answer</title>
@@ -146,7 +376,7 @@ end
 
 &lt;p&gt;Given how hard it can be at times to deal with virtual environments like rvm or its python equivalent and to deal with software troubleshooting this whole process really makes me wonder about whether I should be using Vagrant for other issues.  &lt;strong&gt;Recommended&lt;/strong&gt;.&lt;/p&gt;
 </description>
-        <pubDate>Thu, 01 Dec 2016 15:12:40 -0500</pubDate>
+        <pubDate>Thu, 01 Dec 2016 00:00:00 -0500</pubDate>
         <link>https://fuzzygroup.github.io/blog/aws/2016/12/01/aws-ansible-and-boto-or-virtualization-is-the-answer.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/12/01/aws-ansible-and-boto-or-virtualization-is-the-answer.html</guid>
         
@@ -162,113 +392,6 @@ end
         
         
         <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>Debugging Christmas Lights</title>
-        <description>&lt;p&gt;In any family, over time, you specialize in your roles.  This is similar to a work environment where one person gets good at an aspect of the code base and then that person gets tasked with it on a regular basis.  In an ideal world everyone would always be 100% capable at all aspects of the code but we all know that’s generally not the case.  In our family, Dad (me) puts up the Christmas lights.  Part of it is that I don’t mind heights terribly, not the same as saying I like them but you get it but the other part of it is that &lt;em&gt;debugging crap that doesn’t work&lt;/em&gt; is really my very job definition.  And, a few days ago I wanted this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/debugging_xmas_lights.jpg&quot; alt=&quot;debugging_xmas_lights.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;but after 10 minutes or so I got this instead:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/debugging_xmas_lights2.jpg&quot; alt=&quot;debugging_xmas_lights2.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;And while I was initially reminded of the Bob Rivers / Twisted Christmas album - “I plug in one light and THEY ALL #$#(&lt;em&gt;$&lt;/em&gt;#) go OUT”, that wasn’t this.  Everything worked perfectly – until it all stopped.  Sigh.&lt;/p&gt;
-
-&lt;p&gt;The very essence of debugging is the quest for understanding and your key tool is &lt;em&gt;persistence&lt;/em&gt;.  I’ve worked with a lot of smart people in my life, many of them dramatically smarter than I am but I haven’t worked with many people who are as persistent.  Whether you are debugging software, hardware or even christmas lights, &lt;em&gt;persistence&lt;/em&gt; is what you want.  If you just think of yourself as a dog with a bone, that’s the right image.&lt;/p&gt;
-
-&lt;p&gt;Ok then.  The first step was to get out the tools.  Happily I recently bought a &lt;a href=&quot;https://www.amazon.com/gp/product/B019EJXUJU/ref=oh_aui_search_detailpage?ie=UTF8&amp;amp;psc=1&quot;&gt;non-contact AC voltage tester from Amazon&lt;/a&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/non_contact_tester.jpg&quot; alt=&quot;debugging_xmas_lights2.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;What this does is essentially &lt;em&gt;sniff&lt;/em&gt; electricity.  I’m not enough of a hardware guy to really understand it but I tried it and it works!  Given that I was doing this on a rainy day, not having to manipulate two test leads or a digital volt ohm meter was a huge, huge win.  This little gadget is actually sensitive enough that you can touch it to the end of a lightning cable and it will detect the voltage there so, apparently, it does both DC and AC.  Oh and did I mention it has an LED pen light built into it?  This thing rocks!&lt;/p&gt;
-
-&lt;p&gt;Whenever you have something, related to electricity, that happens after a period of latency, the natural suspect is somehow thermal or load related.  But here was the aggregate load:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;1 power strip&lt;/li&gt;
-  &lt;li&gt;4 strings of relatively low voltage lights&lt;/li&gt;
-  &lt;li&gt;1 &lt;a href=&quot;https://www.amazon.com/gp/product/B01JBTO16E/ref=oh_aui_search_detailpage?ie=UTF8&amp;amp;psc=1&quot;&gt;Christmas Laser Projector&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Two of the strings and the projector were all plugged into a contractor grade, 20 amp, thick as hell extension cord coming from a GFCI outlet.  Call this one Big Green.  The remaining two strings were plugged into a separate contractor grade cord but one that was only 15 amp.  And call this Little Orange.  Both of these have served me thru tree house building, home remodeling, etc.&lt;/p&gt;
-
-&lt;p&gt;This isn’t sufficient load to trip a breaker.  I grew up doing AC wiring stuff so I have no issues stating that as a fact.&lt;/p&gt;
-
-&lt;p&gt;So if we think of this in terms of debugging here are the different components at hand:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;power strip&lt;/li&gt;
-  &lt;li&gt;light string 1&lt;/li&gt;
-  &lt;li&gt;light string 2&lt;/li&gt;
-  &lt;li&gt;light string 3&lt;/li&gt;
-  &lt;li&gt;light string 4&lt;/li&gt;
-  &lt;li&gt;extension cord 1 - Big Green&lt;/li&gt;
-  &lt;li&gt;extension cord 2 - Little Orange&lt;/li&gt;
-  &lt;li&gt;GFCI outlet&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Any one of these, or any combination of these, could be leading to this problem.  And since it only happened after 10 minutes, I knew that at a worst case I was looking at N * 10 minutes in terms of potential maximum time that I’d be trouble shooting this where N was the number of components, 8.  So this was potentially at least a 90 minute plus exercise.  Given that the amount of time involved was now known to be non trivial, it was time to start by eliminating things outright.&lt;/p&gt;
-
-&lt;p&gt;Note: My worst case estimate was actually incorrect.  If the problem was combinatorial in nature like string 1 interacting with string 3 and causing the outage, well, I’m glad I didn’t realize this – its a lot more options.&lt;/p&gt;
-
-&lt;p&gt;My first task was to remove the power strip.  My wife had wanted to add more lasers to the mix so that was there to support the end goal – but we don’t have them yet so it was a case of over-engineering.  So, remove powerstrip, rejigger wires, try again.  &lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;My next step was to look at this in terms of overall complexity.  The most complex component is generally the one most likely to fail.  That meant that I should pull the laser projector from the mix.  Even though it was brand, stinking new, it is definitely more complex than christmas lights so out it goes.  And, once again, &lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;The lights are only a year old but they are very poorly made.  Even though they are a name brand, Sylvania, they seem to epitomize the term &lt;em&gt;shite quality&lt;/em&gt;.  Some of the time just screwing a bulb in blows out the bulb due to poor socket quality.  But my wife loves the visual so the chances of my being able to route these strands of lights to /dev/null approximates zero.  Given that I have issues with the light quality, the next step is to alternately remove each string of lights in turn:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;em&gt;Grumble&lt;/em&gt;.  Ok then so what’s left.  At this point we’re down to two extensions cords.  Little Orange isn’t as robust as big green so let’s take that out of the loop - &lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Hm… The message seems clear – we’re down to Big Green so let’s un plug it and substitute another one:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;10 minute and LIGHT!&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;10 more minute and still LIGHT!&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;10 more minute and still LIGHT!&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;So we’re good now but what went wrong?  To some extent if you debug something and you don’t actually understand the failure cause at the end then you may have won the battle but you have perhaps lost the war as the real goal should always be understanding.&lt;/p&gt;
-
-&lt;p&gt;When I look a more detailed look at my Big Green extension cord I saw this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/big_green_big_culprit.jpg&quot; alt=&quot;big_green_big_culprit.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Apparently I’ve fixed this extension cord in the past – and then it all made sense.  If you remember I have this all going into a GFCI outlet and I also mentioned that I was doing all this in the rain.  And that was the vital clue.  GFCI stands for Ground Fault Circuit Interrupter and it is a way for an electrical outlet to automatically shut down in dangerous conditions.  Since a GFCI outlet is more expensive than a standard outlet you don’t see them everywhere but they are &lt;strong&gt;required&lt;/strong&gt; for use in commercial bathrooms due to the potential issues with respect to water and electricity.  And if your home builder was any good you likely have them in your home bathrooms for the same reason.&lt;/p&gt;
-
-&lt;p&gt;So what seems to have been happening was that moisture was slowly affecting the Big Green extension cord.  After about 10 minutes it caused a GFCI issue which led to a power shut down.  Strangely it seemed to clear itself up almost immediately.  Odder still is that when I checked the extension cord with a circuit tester designed to catch GFCI wiring errors it reported just fine.&lt;/p&gt;
-
-&lt;p&gt;The morals of the story seem to be:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Don’t fix your extension cord – just replace it&lt;/li&gt;
-  &lt;li&gt;Debugging is the same when its software, hardware or christmas mights – it call comes down to persistence&lt;/li&gt;
-  &lt;li&gt;Anything can be debugged, you just have to take it step by step, bit by bit&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Merry Christmas!&lt;/p&gt;
-</description>
-        <pubDate>Thu, 01 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/debugging/2016/12/01/debugging-christmas-lights.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/debugging/2016/12/01/debugging-christmas-lights.html</guid>
-        
-        <category>debugging</category>
-        
-        <category>christmas</category>
-        
-        <category>software_engineering</category>
-        
-        
-        <category>debugging</category>
         
       </item>
     
@@ -311,17 +434,6 @@ end
         
         
         <category>software_engineering</category>
-        
-      </item>
-    
-      <item>
-        <title>On Donner, On Blitzen, On Martians, On Pebbles, On FitBits, On AppleWatches</title>
-        <description>
-</description>
-        <pubDate>Wed, 30 Nov 2016 16:13:01 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/11/30/on-donner-on-blitzen-on-martians-on-pebbles-on-fitbits-on-applewatches.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/30/on-donner-on-blitzen-on-martians-on-pebbles-on-fitbits-on-applewatches.html</guid>
-        
         
       </item>
     
@@ -509,21 +621,6 @@ SHOW FULL PROCESS LIST\G
         
         
         <category>osx</category>
-        
-      </item>
-    
-      <item>
-        <title>Painful Checks I have Written as an Entrepreneur</title>
-        <description>&lt;p&gt;Painful Check #1 $4,000 or so – in Pennies&lt;/p&gt;
-
-&lt;p&gt;Painful Check #2 $13,000 in $1,000 Payments Per Month&lt;/p&gt;
-
-&lt;p&gt;Painful Check #3: $801.21 / Month&lt;/p&gt;
-</description>
-        <pubDate>Tue, 29 Nov 2016 16:13:24 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/11/29/painful-checks-i-have-written-as-an-entrepreneur.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/29/painful-checks-i-have-written-as-an-entrepreneur.html</guid>
-        
         
       </item>
     
