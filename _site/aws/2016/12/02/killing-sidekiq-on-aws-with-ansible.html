@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Clearing Rails Log Files on AWS with Ansible</title>
-  <meta name="description" content="If you are reading this and you’ve read more than a few things I’ve written then you know that I’m, well, a wordy son of a bitch.  I mean come on – did you s...">
+  <title>Killing Sidekiq on AWS with Ansible</title>
+  <meta name="description" content="We do a lot of batch data processing here and much of that involves shoving crap into Sidekiq to be run in a threaded fashion.  I’m not done with my own thre...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/aws/2016/12/02/clearing-rails-log-files-on-aws-with-ansible.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/aws/2016/12/02/killing-sidekiq-on-aws-with-ansible.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
   
   <script>
@@ -91,26 +91,93 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Clearing Rails Log Files on AWS with Ansible</h1>
+    <h1 class="post-title" itemprop="name headline">Killing Sidekiq on AWS with Ansible</h1>
     <p class="I'll"><time datetime="2016-12-02T00:00:00-05:00" itemprop="datePublished">Dec 2, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>If you are reading this and you’ve read more than a few things I’ve written then you know that I’m, well, a <em>wordy son of a bitch</em>.  I mean come on – did you see the post on <a href="https://fuzzygroup.github.io/blog/aws/2016/11/26/fear-and-loathing-in-awsville-or-adventures-in-partition-resizing.html">AWS Partition Resizing</a>?  I took like 7800 words to say “can’t do it” – apologies.</p>
+    <p>We do a lot of batch data processing here and much of that involves shoving crap into <a href="http://sidekiq.org/">Sidekiq</a> to be run in a threaded fashion.  I’m not done with my own threading stuff yet by any means but, for now, Sidekiq is a superstar so we’re going to use it and bow west towards the <a href="http://www.mikeperham.com/">Mike Perham</a> alter of threaded awesomeness that is Sidekiq.</p>
 
-<p>Anyway the digression into wordiness is because like me, Rails log files are wordy son’s of bitches – the number of times in my career that I’ve had to log into a box and do the log dance:</p>
+<p>One issue we had recently was that we thought we had killed sidekiq dead but, since it was running as a background service instead of a foreground task, it popped back up and kept happily eating data.  This would have been fine except for the fact that we had a db dump and restore in process and this caused data to be in an inconsistent state.  And that led to a second round of table dump / restore tangoing.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake log:clear
+<p>The first thing to understand here is that this is <strong>my</strong> mistake.  I’m the moron who set it as a background service after all and, in the utter panic that accompanies disaster recovery, well, I forgot.  I did my normal kill -9 dance and went on my merry way ignoring the fact that Ubuntu would happily cackle gleefully as it re-launched it.  <em>Sigh</em>.</p>
+
+<p>So there’s at least two playbooks here:</p>
+
+<ul>
+  <li>playbook_status_sidekiq.yml</li>
+  <li>playbook_stop_sidekiq_with_prejudice.yml</li>
+</ul>
+
+<p>Two additional related playbooks I could write are:</p>
+
+<ul>
+  <li>playbook_stop_sidekiq.yml</li>
+  <li>playbook_service_stop_sidekiq.yml</li>
+</ul>
+
+<p>And here we go!  The first thing we need is the ability to know what’s going on in our cluster of boxes.  This means the ability to know if sidekiq is running:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>playbook:
+
+role:
+
+output:
+
+ansible-playbook -i inventories/production2 playbook_status_sidekiq.yml
+
+PLAY [worker] ******************************************************************
+
+TASK [setup] *******************************************************************
+ok: [fiworker5]
+ok: [fiworker6]
+ok: [fiworker3]
+ok: [fiworkerbig]
+ok: [fiworker4]
+ok: [fiworker8]
+ok: [fiworker7]
+ok: [fiworker9]
+ok: [fiworker10]
+ok: [fiworker11]
+
+TASK [status_sidekiq : display sidekiq's status] *******************************
+changed: [fiworker5]
+changed: [fiworker3]
+changed: [fiworkerbig]
+changed: [fiworker4]
+changed: [fiworker6]
+changed: [fiworker7]
+changed: [fiworker8]
+changed: [fiworker10]
+changed: [fiworker9]
+changed: [fiworker11]
+
+TASK [status_sidekiq : view the output] ****************************************
+ok: [fiworker5] =&gt; {
+    "out.stdout_lines": [
+        "root     11103  0.0  0.0   4440   636 pts/5    S+   12:43   0:00 /bin/sh -c ps auwwx | grep sidekiq",
+        "root     11105  0.0  0.0  10460   912 pts/5    S+   12:43   0:00 grep sidekiq",
+        "ubuntu   17371  0.0  0.0  27920  5328 ?        Ss   Oct27  13:57 tmux new -s sidekiq",
+        "ubuntu   25815  0.6  6.5 1933952 1022068 pts/1 Sl+  Dec01   7:13 sidekiq 4.2.3 banks [0 of 25 busy] stopping                                                                         "
+    ]
+}
+ok: [fiworker6] =&gt; {
+    "out.stdout_lines": [
+        "ubuntu   17308  5.7  6.1 1948728 957972 pts/1  Sl+  Dec01  63:18 sidekiq 4.2.3 banks [25 of 25 busy]                                                                                 ",
+        "root     18126  0.0  0.0   4440   636 pts/5    S+   12:43   0:00 /bin/sh -c ps auwwx | grep sidekiq",
+        "root     18128  0.0  0.0  10460   912 pts/5    S+   12:43   0:00 grep sidekiq",
+        "ubuntu   23040  0.0  0.0  31808  9200 ?        Ss   Oct27  15:12 tmux new -s sidekiq"
+    ]
+}
 </code></pre>
 </div>
 
-<p>has to be measured in the hundreds if not thousands.  This morning I finally got mad enough to automate it with Ansible.  Here’s how:</p>
+<p>As you can see in the first bit out output, fiworker5, I missed when I manually shut stuff down yesterday.  Oops.  And this brings us to our next playbook:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>playbook: playbook_logs_clear_rails_logs.yml
-
+<div class="highlighter-rouge"><pre class="highlight"><code>playbook:
 #
-# MONDAY ansible-playbook -i ec2.py playbook_logs_clear_rails_logs.yml
-# ansible-playbook -i inventories/production2 playbook_logs_clear_rails_logs.yml
+# MONDAY ansible-playbook -i ec2.py playbook_stop_sidekiq_with_prejudice.yml
+# ansible-playbook -i inventories/production2 playbook_stop_sidekiq_with_prejudice.yml
 #
 ---
   
@@ -118,48 +185,42 @@
   become: yes
   remote_user: ubuntu
   gather_facts: true
-  vars: 
-    - app_path: /var/www/apps/banks/current
   roles:
-    - { role: logs_clear_rails_logs, tags: logs}
+    - { role: kill_sidekiq_with_prejudice, tags: sidekiq}
 
-role: 
-folder: logs_clear_rails_logs
-file: tasks/main.yml
-
+role:
 ---
-- name: logs_clear_rails_logs
-  shell: "cd  &amp;&amp; bundle exec rake log:clear"
-</code></pre>
-</div>
+- name: kill_sidekiq_with_prejudice
+  shell: ps -ef | grep sidekiq | grep -v grep | awk '{print $2}' | xargs kill -9
 
-<p>Here are the results:</p>
+output:
+(fiworker5 shut down on its own before this ran; sigh)
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/production2 playbook_logs_clear_rails_logs.yml
+ansible-playbook -i inventories/production2 playbook_stop_sidekiq_with_prejudice.yml
 
 PLAY [worker] ******************************************************************
 
 TASK [setup] *******************************************************************
+ok: [fiworker3]
 ok: [fiworkerbig]
 ok: [fiworker5]
-ok: [fiworker3]
-ok: [fiworker6]
 ok: [fiworker4]
+ok: [fiworker6]
+ok: [fiworker7]
 ok: [fiworker9]
+ok: [fiworker10]
 ok: [fiworker8]
 ok: [fiworker11]
-ok: [fiworker10]
-ok: [fiworker7]
 
-TASK [logs_clear_rails_logs : logs_clear_rails_logs] ***************************
-changed: [fiworker3]
-changed: [fiworker6]
+TASK [kill_sidekiq_with_prejudice : kill_sidekiq_with_prejudice] ***************
 changed: [fiworker5]
+changed: [fiworker6]
+changed: [fiworker3]
 changed: [fiworker4]
 changed: [fiworkerbig]
 changed: [fiworker7]
-changed: [fiworker8]
 changed: [fiworker9]
+changed: [fiworker8]
 changed: [fiworker10]
 changed: [fiworker11]
 
@@ -177,7 +238,9 @@ fiworkerbig                : ok=2    changed=1    unreachable=0    failed=0
 </code></pre>
 </div>
 
-<p>Right now this is working with a static inventory file.  If anyone expresses interest, on Monday, I’ll publish a revised version which uses the python boto module to clear log files based on all boxes on EC2 dynamically matching a criteria like a name tag.</p>
+<p>Given my <a href="https://fuzzygroup.github.io/blog/unix/2016/11/23/pkill-rocks.html">previous praise of pkill</a>, readers may be wondering why I used the old xargs trick.  Simply put I couldn’t make pkill work.  There are google posts on the topic but I didn’t have time to dig into it – I <strong>knew</strong> that xargs had to work so I went with it.  Honestly I dont understand why Ansible doesn’t have a process module – it just seems so absolutely needed.</p>
+
+<p>As with my previous example if there is interest, on Monday, I’ll publish examples showing the dynamic inventory version of this.</p>
 
   </div>
   
