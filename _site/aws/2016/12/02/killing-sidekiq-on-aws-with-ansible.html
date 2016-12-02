@@ -109,6 +109,8 @@
   <li>playbook_stop_sidekiq_with_prejudice.yml</li>
 </ul>
 
+<p>The “_with_prejudice” refers to stopping Sidekiq with a -9 argument to kill.  This tells Linux “really, truly, right DAMN NOW kill this process”.  Sometimes Sidekiq fails to stop; often because of the ruby code its executing and while that’s fine there are lots of times that you just need it to go away.  This is one of them.</p>
+
 <p>Two additional related playbooks I could write are:</p>
 
 <ul>

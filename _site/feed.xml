@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 02 Dec 2016 15:15:13 -0500</pubDate>
-    <lastBuildDate>Fri, 02 Dec 2016 15:15:13 -0500</lastBuildDate>
+    <pubDate>Fri, 02 Dec 2016 15:45:33 -0500</pubDate>
+    <lastBuildDate>Fri, 02 Dec 2016 15:45:33 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -53,6 +53,110 @@
       </item>
     
       <item>
+        <title>When MySQL Loads Go Wrong - What Do You Do?</title>
+        <description>&lt;p&gt;This piece is the natural follow on to my &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/11/26/fear-and-loathing-in-awsville-or-adventures-in-partition-resizing.html&quot;&gt;Adventures in Partition Resizing&lt;/a&gt; epic.  At this point our systems still aren’t fully back up yet and, well, it tastes like ashes.  Like a lot of hard core techies I tend to internalize the state of my system and when its not right, well, things suck for me.&lt;/p&gt;
+
+&lt;p&gt;The current state of things is that out of 187 tables that needed to be migrated over, we’re down to the last one – big number 187 and nothing appears to be happening.  All I see at the console is the same thing I’ve seen for over 24 hours:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ubuntu@ip-172-31-43-176:~$ mysql -uappdata -p4PfnGtEGy9JtFF foo_production &amp;lt; /mnt/old2/foo2016_m2s.sql
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And it just sits there.  Sigh.  Figuring out the next logical step means that you need to wrap your head around the quirky aspects of the MySQL load architecture.  Happily this isn’t the first time for me so here goes.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-1---show-full-process-list&quot;&gt;Step 1 - SHOW FULL PROCESS LIST;&lt;/h1&gt;
+
+&lt;p&gt;When you have a large table coming in the command line like this, well, MySQL gets seriously weird.  You can’t select a row to see the status.  The best you can do is a SHOW FULL PROCESS LIST which makes the system go nuts.  Seriously - try it sometime.  What you get is an enormous SQL dump showing what’s being loaded and since it scrolls by at like 90 miles per hour, well, that’s not helpful.  Here’s a little trick tho:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pager less;
+SHOW FULL PROCESS LIST\G
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And this will give you something like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;*************************** 1. row ***************************
+      Id: 257
+    User: appdata
+    Host: localhost
+      db: foo_production
+ Command: Query
+    Time: 0
+   State: update
+    Info: INSERT INTO `foo2016_q1s` VALUES (240213,'2016-03-16 21:14:57','2016-
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Given that there 927,040 records in this table what this has shown us is that after 36 hours or so we’re only 1/4 of the way thru.  Press ESC and run SHOW FULL PROCESS LIST a few times to make sure that id value keeps changing to get confirmation that the load is continuing.&lt;/p&gt;
+
+&lt;p&gt;The only problem is that what I just wrote above may &lt;strong&gt;NOT&lt;/strong&gt; be reliable – emphasis on the &lt;strong&gt;NOT&lt;/strong&gt;.  Here’s what I just got when I ran it again:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Id: 257
+    User: appdata
+    Host: localhost
+      db: banks_production
+ Command: Query
+    Time: 0
+   State: update
+    Info: INSERT INTO `foo2016_q1s` VALUES (406347,'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;There’s no way that roughly 200K records went in while I was writing two paragraphs so what we now know is that SHOW FULL PROCESS LIST tells you that the load is proceeding but it may be &lt;strong&gt;utterly useless&lt;/strong&gt; as a monitoring tool.  Deep, Deep Sigh.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-2---desc-foo2016m2s&quot;&gt;Step 2 - DESC foo2016_m2s&lt;/h1&gt;
+
+&lt;p&gt;The next logical step is to check the schema to make sure nothing weird is going on.  This can be done with:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;DESC foo2016_m2s;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In MySQL checking the schema tells you nothing about the index structures so you can check those with:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SHOW CREATE TABLE foo2016_m2s;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;My guess is that you won’t learn anything from these operations but this is step by step, high value debugging so you check everything.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-3---options&quot;&gt;Step 3 - Options&lt;/h1&gt;
+
+&lt;p&gt;The logical next step would be to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;stop the load&lt;/li&gt;
+  &lt;li&gt;delete the last record as it might not be complete&lt;/li&gt;
+  &lt;li&gt;find the last id (thank heavens that ids are sequential)&lt;/li&gt;
+  &lt;li&gt;re-dump from the original source table from the last record + 1 forward&lt;/li&gt;
+  &lt;li&gt;re-import&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If, Ghu Help Us, we find that stopping the load means that there isn’t any data in the table then the next step would be:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Export from the original source in say 100K record chunks&lt;/li&gt;
+  &lt;li&gt;Import the first one and see what happens&lt;/li&gt;
+  &lt;li&gt;Import the next one and see what happens&lt;/li&gt;
+  &lt;li&gt;Think carefully if we want to proceed sequentially or move to loading files in parallel; if the issue is bad data somewhere in a load file then parallel is a bad, bad, bad idea.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;step-4---patience&quot;&gt;Step 4 - Patience&lt;/h1&gt;
+
+&lt;p&gt;Happily, whilst writing this screed, I looked up and noticed “oh hell – it finished!”.  And that’s the happiest of all results.  Hopefully what this post illustrates is how to tackle long running load processes even if I didn’t have to act on any of them.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 02 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/mysql/2016/12/02/when-mysql-loads-go-wrong-what-do-you-do.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/mysql/2016/12/02/when-mysql-loads-go-wrong-what-do-you-do.html</guid>
+        
+        <category>mysql</category>
+        
+        
+        <category>mysql</category>
+        
+      </item>
+    
+      <item>
         <title>Killing Sidekiq on AWS with Ansible</title>
         <description>&lt;p&gt;We do a lot of batch data processing here and much of that involves shoving crap into &lt;a href=&quot;http://sidekiq.org/&quot;&gt;Sidekiq&lt;/a&gt; to be run in a threaded fashion.  I’m not done with my own threading stuff yet by any means but, for now, Sidekiq is a superstar so we’re going to use it and bow west towards the &lt;a href=&quot;http://www.mikeperham.com/&quot;&gt;Mike Perham&lt;/a&gt; alter of threaded awesomeness that is Sidekiq.&lt;/p&gt;
 
@@ -66,6 +170,8 @@
   &lt;li&gt;playbook_status_sidekiq.yml&lt;/li&gt;
   &lt;li&gt;playbook_stop_sidekiq_with_prejudice.yml&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;The “_with_prejudice” refers to stopping Sidekiq with a -9 argument to kill.  This tells Linux “really, truly, right DAMN NOW kill this process”.  Sometimes Sidekiq fails to stop; often because of the ruby code its executing and while that’s fine there are lots of times that you just need it to go away.  This is one of them.&lt;/p&gt;
 
 &lt;p&gt;Two additional related playbooks I could write are:&lt;/p&gt;
 
@@ -656,17 +762,6 @@ end
         <pubDate>Wed, 30 Nov 2016 09:48:58 -0500</pubDate>
         <link>https://fuzzygroup.github.io/blog/2016/11/30/aws-ansible-and-dynamic-inventory-with-profiles.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/30/aws-ansible-and-dynamic-inventory-with-profiles.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Life Lesson - Sometimes It Is Ok to Deliberately Break Things</title>
-        <description>
-</description>
-        <pubDate>Wed, 30 Nov 2016 09:02:39 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/11/30/life-lesson-sometimes-it-is-ok-to-deliberately-break-things.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/30/life-lesson-sometimes-it-is-ok-to-deliberately-break-things.html</guid>
         
         
       </item>

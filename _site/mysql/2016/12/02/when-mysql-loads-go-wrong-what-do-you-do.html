@@ -10,7 +10,7 @@
   <meta name="description" content="This piece is the natural follow on to my Adventures in Partition Resizing epic.  At this point our systems still aren’t fully back up yet and, well, it tast...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/2016/11/30/when-mysql-loads-go-wrong-what-do-you-do.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/mysql/2016/12/02/when-mysql-loads-go-wrong-what-do-you-do.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
   
   <script>
@@ -92,7 +92,7 @@
 
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">When MySQL Loads Go Wrong - What Do You Do?</h1>
-    <p class="I'll"><time datetime="2016-11-30T00:57:04-05:00" itemprop="datePublished">Nov 30, 2016</time></p>
+    <p class="I'll"><time datetime="2016-12-02T00:00:00-05:00" itemprop="datePublished">Dec 2, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
@@ -183,7 +183,9 @@ SHOW FULL PROCESS LIST\G
   <li>Think carefully if we want to proceed sequentially or move to loading files in parallel; if the issue is bad data somewhere in a load file then parallel is a bad, bad, bad idea.</li>
 </ul>
 
-<p>Need a long job architecture</p>
+<h1 id="step-4---patience">Step 4 - Patience</h1>
+
+<p>Happily, whilst writing this screed, I looked up and noticed “oh hell – it finished!”.  And that’s the happiest of all results.  Hopefully what this post illustrates is how to tackle long running load processes even if I didn’t have to act on any of them.</p>
 
   </div>
   
