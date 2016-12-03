@@ -103,7 +103,7 @@
   <li>Viewing the status of the service</li>
 </ul>
 
-<p>Let’s start with installing Sidekiq as a service.  Happily Mike Perham has built Sidekiq to run as a service.  Here’s what you need:</p>
+<p>Let’s start with installing Sidekiq as a service.  Happily <a href="http://www.sidekiq.org">Mike Perham</a> has built Sidekiq to run as a service (and thanks to Mike for the service configuration; noted and appreciated).  Here’s what you need:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>playbook: playbook_service_install_and_start_sidekiq.yml
 
@@ -201,11 +201,37 @@ exec /bin/bash &lt;&lt;'EOT'
 EOT
 end script
 
-output:
+output: 
+
+ansible-playbook -i inventories/production2 playbook_service_install_and_start_sidekiq.yml
+ [WARNING]: While constructing a mapping from
+/Users/sjohnson/Dropbox/appdatallc/ansible/roles/service_install_and_start_sidekiq/tasks/main.yml, line 6, column 3, found a duplicate dict
+key (template). Using last defined value only.
+
+[DEPRECATION WARNING]: Instead of sudo/sudo_user, use become/become_user and make sure become_method is 'sudo' (default).
+This feature will
+be removed in a future release. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+
+PLAY [worker] ******************************************************************
+
+TASK [setup] *******************************************************************
+ok: [fiworker3]
+
+TASK [service_install_and_start_sidekiq : prevent sidekiq init from running if it has already been done] ***
+ok: [fiworker3]
+
+TASK [service_install_and_start_sidekiq : Copy sidekiq init template to init.d dir] ***
+skipping: [fiworker3]
+
+TASK [service_install_and_start_sidekiq : start_sidekiq] ***********************
+changed: [fiworker3]
+
+PLAY RECAP *********************************************************************
+fiworker3                  : ok=3    changed=0    unreachable=0    failed=0
 </code></pre>
 </div>
 
-<p>Once you install this as service you do not want to log into N machines and check if its manually running so now you need this:</p>
+<p>Once you install this as service you <strong>do not</strong> want to log into N machines and check if its manually running so now you need this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>playbook: playbook_service_status_sidekiq.yml
 
@@ -227,39 +253,22 @@ ansible-playbook -i inventories/production2 playbook_service_status_sidekiq.yml
 PLAY [worker] ******************************************************************
 
 TASK [setup] *******************************************************************
-ok: [fiworker6]
-ok: [fiworker4]
 ok: [fiworker3]
-ok: [fiworkerbig]
-ok: [fiworker5]
-ok: [fiworker9]
-ok: [fiworker7]
-ok: [fiworker8]
-ok: [fiworker10]
-ok: [fiworker11]
 
 TASK [service_status_sidekiq : display sidekiq's status] ***********************
-changed: [fiworker4]
+changed: [fiworker3]
  [WARNING]: Consider using service module rather than running service
 
-changed: [fiworkerbig]
-changed: [fiworker3]
-changed: [fiworker5]
-changed: [fiworker6]
-changed: [fiworker8]
-changed: [fiworker10]
-changed: [fiworker7]
-changed: [fiworker11]
-changed: [fiworker9]
-
 TASK [service_status_sidekiq : view the output] ********************************
-ok: [fiworker4] =&gt; {
+ok: [fiworker3] =&gt; {
     "out.stdout_lines": [
         "sidekiq (0) start/running, process 7759"
     ]
 }
 </code></pre>
 </div>
+
+<p>As long as you see a process id here then you know its running.  Would it be better to have this report out something like “Out of N boxes, sidekiq is running on N-1”?  Sure.  And I suspect that I will get there at some point but I have critical pressing needs <strong>today</strong> – all these examples are being written as part of actual devops that I’m doing now.  These blog posts are the time stamped documentation that I can refer back to.</p>
 
   </div>
   

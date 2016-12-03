@@ -6,9 +6,112 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 03 Dec 2016 07:34:21 -0500</pubDate>
-    <lastBuildDate>Sat, 03 Dec 2016 07:34:21 -0500</lastBuildDate>
+    <pubDate>Sat, 03 Dec 2016 11:20:51 -0500</pubDate>
+    <lastBuildDate>Sat, 03 Dec 2016 11:20:51 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>MySQL and Time Machine Woes Part 2</title>
+        <description>&lt;p&gt;So I’m not alone with MySQL Time Machine woes.  My buddy &lt;a href=&quot;http://dasari.me&quot;&gt;Dv&lt;/a&gt; skyped me last night along the lines of “how do I get my MySQL stuff off Time Machine”.  Sheesh – it is an epidemic.  He is having the same type of virtual environment woes that I am where rvm / rbenv / chruby seem to cause nothing but OSX issues and he is looking to Vagrant for an answer.  This means that he’s likely doing the re-install dance.  And since he has been a stellar trooper in assisting me for years with all kinds of random ass crap, it is my turn.&lt;/p&gt;
+
+&lt;h1 id=&quot;where-are-my-mysql-databases&quot;&gt;Where Are My MySQL Databases?&lt;/h1&gt;
+
+&lt;p&gt;The first step towards getting your databases back from Time Machine is to locate where they are supposed to be.  MySQL itself can tell you this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SHOW VARIABLES WHERE Variable_Name LIKE &quot;%dir&quot;;
++---------------------------+------------------------------------------------------+
+| Variable_name             | Value                                                |
++---------------------------+------------------------------------------------------+
+| basedir                   | /usr/local/Cellar/mysql/5.6.21                       |
+| character_sets_dir        | /usr/local/Cellar/mysql/5.6.21/share/mysql/charsets/ |
+| datadir                   | /usr/local/var/mysql/                                |
+| innodb_data_home_dir      |                                                      |
+| innodb_log_group_home_dir | ./                                                   |
+| lc_messages_dir           | /usr/local/Cellar/mysql/5.6.21/share/mysql/          |
+| plugin_dir                | /usr/local/Cellar/mysql/5.6.21/lib/plugin/           |
+| slave_load_tmpdir         | /var/folders/rf/3tfhwgrj1sl85y6rcs4x_s5c0000gn/T/    |
+| tmpdir                    | /var/folders/rf/3tfhwgrj1sl85y6rcs4x_s5c0000gn/T/    |
++---------------------------+------------------------------------------------------+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So we now know that our databases are supposed to be stored in /usr/local/var/mysql/.  That’s what we need to get them back from Time Machine.&lt;/p&gt;
+
+&lt;h1 id=&quot;important-stop-mysql-first&quot;&gt;Important STOP MYSQL First&lt;/h1&gt;
+
+&lt;p&gt;The very first thing you need to do is stop mysql first:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql.server stop
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;getting-them-back-from-time-machine&quot;&gt;Getting Them Back from Time Machine&lt;/h1&gt;
+
+&lt;p&gt;Open a Terminal window and cd /Volumes and then find your Time Machine latest backup and change into /usr/local/var/mysql underneath it.  You should then theoretically be able to copy the back with a cp -r * /usr/local/var/mysql as per this &lt;a href=&quot;http://apple.stackexchange.com/questions/139175/transferring-a-single-folder-from-a-time-machine-to-a-different-mac&quot;&gt;Stack Overflow post&lt;/a&gt;.  Please note that I have not done this myself yet since for my issues I cannot find the damn backup ever being made.&lt;/p&gt;
+
+&lt;h1 id=&quot;recommendation---do-not-restore-to-previous-location---do-this-instead&quot;&gt;Recommendation - DO NOT Restore to Previous Location - Do This Instead&lt;/h1&gt;
+
+&lt;p&gt;After my personal issues with Time Machine and MySQL I no longer have faith that any data outside of /User/my_username will be correctly restored.  Personally I would make a directory structure like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/Users/sjohnson
+/Users/sjohnson/servers
+/Users/sjohnson/servers/mysql
+/Users/sjohnson/servers/mysql/data
+/Users/sjohnson/servers/postgres
+/Users/sjohnson/servers/postgres/data
+/Users/sjohnson/servers/redis
+/Users/sjohnson/servers/redis/data
+/Users/sjohnson/servers/mongo
+/Users/sjohnson/servers/mongo/data
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;As best I can tell, I have lost every mysql database I’ve built since 2011 on my main development system and the only reason I’m not raging further is that I just don’t have the mental energy given everything else I’m juggling.  I do think that if I do this approach then when Apple gets stupid in the future with Time Machine that this will protect me.&lt;/p&gt;
+
+&lt;p&gt;If you’re going to this then you need to follow the steps below.  Alas I am getting a bit theoretical here since I haven’t had time to do this for myself yet.&lt;/p&gt;
+
+&lt;h2 id=&quot;finding-mycnf&quot;&gt;Finding my.cnf&lt;/h2&gt;
+
+&lt;p&gt;After HomeBrew installs mysql for you it creates a shell routine mysql.server.  Find it with which:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;which mysql.server
+/usr/local/bin/mysql.server
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This file tells mysql where to store its data and you’re going to need to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;stop mysql&lt;/li&gt;
+  &lt;li&gt;edit this shell script&lt;/li&gt;
+  &lt;li&gt;edit /etc/my.cnf which also seems to store this location&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I don’t know which is the primary and which is the default so personally I’d edit both.  You would then need to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;adjust permissions and groups accordingly&lt;/li&gt;
+  &lt;li&gt;adjust postgres, redis and mongo / anything else as well&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 03 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/mysql/2016/12/03/mysql-and-time-machine-woes-part-2.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/mysql/2016/12/03/mysql-and-time-machine-woes-part-2.html</guid>
+        
+        <category>mysql</category>
+        
+        <category>time_machine</category>
+        
+        <category>backup</category>
+        
+        <category>mac</category>
+        
+        <category>osx</category>
+        
+        
+        <category>mysql</category>
+        
+      </item>
     
       <item>
         <title>More Ansible on AWS for Sidekiq</title>
@@ -19,7 +122,7 @@
   &lt;li&gt;Viewing the status of the service&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Let’s start with installing Sidekiq as a service.  Happily Mike Perham has built Sidekiq to run as a service.  Here’s what you need:&lt;/p&gt;
+&lt;p&gt;Let’s start with installing Sidekiq as a service.  Happily &lt;a href=&quot;http://www.sidekiq.org&quot;&gt;Mike Perham&lt;/a&gt; has built Sidekiq to run as a service (and thanks to Mike for the service configuration; noted and appreciated).  Here’s what you need:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;playbook: playbook_service_install_and_start_sidekiq.yml
 
@@ -117,11 +220,37 @@ exec /bin/bash &amp;lt;&amp;lt;'EOT'
 EOT
 end script
 
-output:
+output: 
+
+ansible-playbook -i inventories/production2 playbook_service_install_and_start_sidekiq.yml
+ [WARNING]: While constructing a mapping from
+/Users/sjohnson/Dropbox/appdatallc/ansible/roles/service_install_and_start_sidekiq/tasks/main.yml, line 6, column 3, found a duplicate dict
+key (template). Using last defined value only.
+
+[DEPRECATION WARNING]: Instead of sudo/sudo_user, use become/become_user and make sure become_method is 'sudo' (default).
+This feature will
+be removed in a future release. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+
+PLAY [worker] ******************************************************************
+
+TASK [setup] *******************************************************************
+ok: [fiworker3]
+
+TASK [service_install_and_start_sidekiq : prevent sidekiq init from running if it has already been done] ***
+ok: [fiworker3]
+
+TASK [service_install_and_start_sidekiq : Copy sidekiq init template to init.d dir] ***
+skipping: [fiworker3]
+
+TASK [service_install_and_start_sidekiq : start_sidekiq] ***********************
+changed: [fiworker3]
+
+PLAY RECAP *********************************************************************
+fiworker3                  : ok=3    changed=0    unreachable=0    failed=0
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;Once you install this as service you do not want to log into N machines and check if its manually running so now you need this:&lt;/p&gt;
+&lt;p&gt;Once you install this as service you &lt;strong&gt;do not&lt;/strong&gt; want to log into N machines and check if its manually running so now you need this:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;playbook: playbook_service_status_sidekiq.yml
 
@@ -143,39 +272,22 @@ ansible-playbook -i inventories/production2 playbook_service_status_sidekiq.yml
 PLAY [worker] ******************************************************************
 
 TASK [setup] *******************************************************************
-ok: [fiworker6]
-ok: [fiworker4]
 ok: [fiworker3]
-ok: [fiworkerbig]
-ok: [fiworker5]
-ok: [fiworker9]
-ok: [fiworker7]
-ok: [fiworker8]
-ok: [fiworker10]
-ok: [fiworker11]
 
 TASK [service_status_sidekiq : display sidekiq's status] ***********************
-changed: [fiworker4]
+changed: [fiworker3]
  [WARNING]: Consider using service module rather than running service
 
-changed: [fiworkerbig]
-changed: [fiworker3]
-changed: [fiworker5]
-changed: [fiworker6]
-changed: [fiworker8]
-changed: [fiworker10]
-changed: [fiworker7]
-changed: [fiworker11]
-changed: [fiworker9]
-
 TASK [service_status_sidekiq : view the output] ********************************
-ok: [fiworker4] =&amp;gt; {
+ok: [fiworker3] =&amp;gt; {
     &quot;out.stdout_lines&quot;: [
         &quot;sidekiq (0) start/running, process 7759&quot;
     ]
 }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
+
+&lt;p&gt;As long as you see a process id here then you know its running.  Would it be better to have this report out something like “Out of N boxes, sidekiq is running on N-1”?  Sure.  And I suspect that I will get there at some point but I have critical pressing needs &lt;strong&gt;today&lt;/strong&gt; – all these examples are being written as part of actual devops that I’m doing now.  These blog posts are the time stamped documentation that I can refer back to.&lt;/p&gt;
 </description>
         <pubDate>Sat, 03 Dec 2016 00:00:00 -0500</pubDate>
         <link>https://fuzzygroup.github.io/blog/aws/2016/12/03/more-ansible-on-aws-for-sidekiq.html</link>
@@ -889,48 +1001,6 @@ end
         
         
         <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>Code Monkey, Software Engineer, Computer Scientist</title>
-        <description>&lt;p&gt;So my buddy Nick mentioned to me that he wrote a blog post titled &lt;a href=&quot;https://nickjanetakis.com/blog/are-you-a-computer-scientist-or-a-code-monkey&quot;&gt;Are You a Computer Scientist or a Code Monkey?&lt;/a&gt; and I almost instantly had typed:&lt;/p&gt;
-
-&lt;p&gt;jekyll post “Code Monkey, Software Engineer, Computer Scientist”&lt;/p&gt;
-
-&lt;p&gt;I don’t actually think that he had finished talking before I had my take on this going.  So:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Go read &lt;a href=&quot;https://nickjanetakis.com/blog/are-you-a-computer-scientist-or-a-code-monkey&quot;&gt;Nick’s post&lt;/a&gt;; it is good and I’ll wait.&lt;/li&gt;
-  &lt;li&gt;Come back because my take on it is different.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Nick looked at this in terms of are you a code monkey or are you a computer scientist.  Personally I think that this is more nuanced than that.  And I don’t think that it is impossible to actually be all of these at once depending on the project.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: If you haven’t ever listened to &lt;a href=&quot;https://www.youtube.com/watch?v=v4Wy7gRGgeA&quot;&gt;Jonathan Coulton’s Code Monkey&lt;/a&gt; then you absolutely should.  It is one of the very best, most self aware coding songs anyware.  I have it as the top play in my iTunes collection and it is part of my programming playlist.&lt;/p&gt;
-
-&lt;h1 id=&quot;science-versus-engineering&quot;&gt;Science Versus Engineering&lt;/h1&gt;
-
-&lt;p&gt;There are a great many people on the Internet who can talk to you about the difference between science and engineering.  To me the fundamental difference is that science is concerned with the &lt;strong&gt;WHY&lt;/strong&gt; and engineering is concerned with the &lt;strong&gt;HOW&lt;/strong&gt;.  As an example consider a hashing algorithm like MD5.  A computer scientist can explain &lt;em&gt;why&lt;/em&gt; it works but a software engineer just cares about &lt;em&gt;how&lt;/em&gt; it works.  And to draw in our code monkeys, well, a code monkey might not even know that what a hashing algorithm is.&lt;/p&gt;
-
-&lt;h1 id=&quot;code-monkey&quot;&gt;Code Monkey&lt;/h1&gt;
-
-&lt;p&gt;I don’t care what anyone says – we all start as &lt;em&gt;code monkeys&lt;/em&gt;.  I’ve seem trained “computer scientists” come out of university that I would barely give a status of code monkey.  A code monkey is someone who can use a computer to get tasks done in some kind of automated fashion.  This might be&lt;/p&gt;
-
-&lt;h1 id=&quot;software-engineer&quot;&gt;Software Engineer&lt;/h1&gt;
-&lt;p&gt;# Computer Scientist
-# An Example&lt;/p&gt;
-
-&lt;p&gt;If you look at my recent Poor Man’s Load Balancer post, I think this is a nice illustration of shifting between Computer Scientist and Software Engineer.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 30 Nov 2016 19:54:31 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/software_engineering/2016/11/30/code-monkey-software-engineer-computer-scientist-(J-s-MacBook-Pro's-conflicted-copy-2016-11-30).html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/software_engineering/2016/11/30/code-monkey-software-engineer-computer-scientist-(J-s-MacBook-Pro's-conflicted-copy-2016-11-30).html</guid>
-        
-        <category>software_engineering</category>
-        
-        
-        <category>software_engineering</category>
         
       </item>
     
