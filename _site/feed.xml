@@ -6,9 +6,191 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 02 Dec 2016 15:45:33 -0500</pubDate>
-    <lastBuildDate>Fri, 02 Dec 2016 15:45:33 -0500</lastBuildDate>
+    <pubDate>Sat, 03 Dec 2016 07:34:21 -0500</pubDate>
+    <lastBuildDate>Sat, 03 Dec 2016 07:34:21 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>More Ansible on AWS for Sidekiq</title>
+        <description>&lt;p&gt;So, much like the Godfather, just when I think I’m out, Ansible pulls me back in…  Yesterday I tackled using Ansible to manage Sidekiq.  Today I’m going to bring you:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Installing Sidekiq as a service&lt;/li&gt;
+  &lt;li&gt;Viewing the status of the service&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Let’s start with installing Sidekiq as a service.  Happily Mike Perham has built Sidekiq to run as a service.  Here’s what you need:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;playbook: playbook_service_install_and_start_sidekiq.yml
+
+role: service_install_and_start_sidekiq.yml
+
+---
+- name: prevent sidekiq init from running if it has already been done
+  stat: path=/etc/init/sidekiq.conf
+  register: sidekiq_init_installed
+
+- name: Copy sidekiq init template to init.d dir
+  template: src=sidekiq_perham_init.j2 dest=/etc/init/_worker.conf owner=root group=root force=yes
+  template: src=sidekiq_perham_init.j2 dest=/etc/init/sidekiq.conf owner=root group=root force=yes
+  sudo: yes
+  when: sidekiq_init_installed.stat.exists == False
+
+- name: start_sidekiq
+  service: name=sidekiq state=started enabled=yes
+
+template: sidekiq_perham_init.js
+
+# /etc/init/sidekiq.conf - Sidekiq config
+# source: https://github.com/mperham/sidekiq/blob/master/examples/upstart/sidekiq.conf
+
+# This example config should work with Ubuntu 12.04+.  It
+# allows you to manage multiple Sidekiq instances with
+# Upstart, Ubuntu's native service management tool.
+#
+# See workers.conf for how to manage all Sidekiq instances at once.
+#
+# Save this config as /etc/init/sidekiq.conf then manage sidekiq with:
+#   sudo start sidekiq index=0
+#   sudo stop sidekiq index=0
+#   sudo status sidekiq index=0
+#
+# Hack Upstart's reload command to 'quiet' Sidekiq:
+#
+#   sudo reload sidekiq index=0
+#
+# or use the service command:
+#   sudo service sidekiq {start,stop,restart,status}
+#
+
+description &quot;Sidekiq Background Worker&quot;
+
+# This script is not meant to start on bootup, workers.conf
+# will start all sidekiq instances explicitly when it starts.
+#start on runlevel [2345]
+#stop on runlevel [06]
+
+# change to match your deployment user
+setuid 
+setgid 
+env HOME=
+
+respawn
+respawn limit 3 30
+
+# TERM is sent by sidekiqctl when stopping sidekiq. Without declaring these as
+# normal exit codes, it just respawns.
+normal exit 0 TERM
+
+# Older versions of Upstart might not support the reload command and need
+# this commented out.
+reload signal USR1
+
+# Upstart waits 5 seconds by default to kill the a process. Increase timeout to
+# give sidekiq process enough time to exit.
+kill timeout 15
+
+#instance $index
+instance 0
+
+script
+# this script runs in /bin/sh by default
+# respawn as bash so we can source in rbenv
+exec /bin/bash &amp;lt;&amp;lt;'EOT'
+  # Pick your poison :) Or none if you're using a system wide installed Ruby.
+  # rbenv
+  # source /home/apps/.bash_profile
+  # OR
+  # source /home/apps/.profile
+  # OR system:
+  # source /etc/profile.d/rbenv.sh
+  #
+  # rvm
+  # source /home/apps/.rvm/scripts/rvm
+  source 
+
+  # Logs out to /var/log/upstart/sidekiq.log by default
+
+  cd 
+  #exec bundle exec sidekiq -i ${index} -e production
+  exec bundle exec sidekiq -i 0 -e production
+EOT
+end script
+
+output:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Once you install this as service you do not want to log into N machines and check if its manually running so now you need this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;playbook: playbook_service_status_sidekiq.yml
+
+role: service_status_sidekiq.yml
+
+--- 
+  
+- name: display sidekiq's status
+  shell: &quot;service sidekiq status&quot;
+  register: out
+
+- name: view the output
+  debug: var=out.stdout_lines
+
+output:
+
+ansible-playbook -i inventories/production2 playbook_service_status_sidekiq.yml
+
+PLAY [worker] ******************************************************************
+
+TASK [setup] *******************************************************************
+ok: [fiworker6]
+ok: [fiworker4]
+ok: [fiworker3]
+ok: [fiworkerbig]
+ok: [fiworker5]
+ok: [fiworker9]
+ok: [fiworker7]
+ok: [fiworker8]
+ok: [fiworker10]
+ok: [fiworker11]
+
+TASK [service_status_sidekiq : display sidekiq's status] ***********************
+changed: [fiworker4]
+ [WARNING]: Consider using service module rather than running service
+
+changed: [fiworkerbig]
+changed: [fiworker3]
+changed: [fiworker5]
+changed: [fiworker6]
+changed: [fiworker8]
+changed: [fiworker10]
+changed: [fiworker7]
+changed: [fiworker11]
+changed: [fiworker9]
+
+TASK [service_status_sidekiq : view the output] ********************************
+ok: [fiworker4] =&amp;gt; {
+    &quot;out.stdout_lines&quot;: [
+        &quot;sidekiq (0) start/running, process 7759&quot;
+    ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 03 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/aws/2016/12/03/more-ansible-on-aws-for-sidekiq.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/12/03/more-ansible-on-aws-for-sidekiq.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ansible</category>
+        
+        <category>sidekiq</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
     
       <item>
         <title>Gaming the LinkedIn Systems Leaves Us All Weaker</title>
@@ -58,7 +240,7 @@
 
 &lt;p&gt;The current state of things is that out of 187 tables that needed to be migrated over, we’re down to the last one – big number 187 and nothing appears to be happening.  All I see at the console is the same thing I’ve seen for over 24 hours:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ubuntu@ip-172-31-43-176:~$ mysql -uappdata -p4PfnGtEGy9JtFF foo_production &amp;lt; /mnt/old2/foo2016_m2s.sql
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ubuntu@ip-172-31-43-176:~$ mysql -uappdata -pSOMEPASSWORD foo_production &amp;lt; /mnt/old2/foo2016_m2s.sql
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
@@ -132,7 +314,7 @@ SHOW FULL PROCESS LIST\G
   &lt;li&gt;re-import&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;If, Ghu Help Us, we find that stopping the load means that there isn’t any data in the table then the next step would be:&lt;/p&gt;
+&lt;p&gt;If, Great Ghu Help Us, we find that stopping the load means that there isn’t any data in the table then the next step would be:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Export from the original source in say 100K record chunks&lt;/li&gt;
@@ -749,20 +931,6 @@ end
         
         
         <category>software_engineering</category>
-        
-      </item>
-    
-      <item>
-        <title>AWS, Ansible and Dynamic Inventory with Profiles</title>
-        <description>&lt;p&gt;python ec2.py –profile appdata –list&lt;/p&gt;
-
-&lt;p&gt;~/.aws/config
-~/.aws/credentials &amp;lt;=== profile data goes here NOT in ec2.ini&lt;/p&gt;
-</description>
-        <pubDate>Wed, 30 Nov 2016 09:48:58 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/11/30/aws-ansible-and-dynamic-inventory-with-profiles.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/11/30/aws-ansible-and-dynamic-inventory-with-profiles.html</guid>
-        
         
       </item>
     
