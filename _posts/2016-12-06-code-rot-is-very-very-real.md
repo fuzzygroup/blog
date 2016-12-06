@@ -4,7 +4,7 @@ title: Code Rot is Very, Very Real
 category: rails
 tags: ["ruby", "rails", "software_engineering"]
 ---
-Today has been an unmitigated disaster.  In the process of reviving a MacBook Pro that was old I had to delete and re-install rvm, gemsets, etc and, **damn**, has it ever sucked.  And I don't mean "oh it sucked" -- I mean this has sucked monkey balls.  I've been at it 12 hours and my conclusion is that I'm not sure that it will ever work.  And this brings us to **code rot**.  Rot is what happens to a physical artifact when you don't take care of it.  Now if you haven't been at this for too long you're thinking something like: 
+Today has been an unmitigated disaster.  In the process of reviving a [MacBook Pro that was old](https://fuzzygroup.github.io/blog/osx/2016/12/06/bringing-an-old-macbook-pro-back-to-life.html) I had to delete and re-install rvm, gemsets, etc and, **damn**, has it ever sucked.  And I don't mean "oh it sucked" -- I mean this has sucked monkey balls.  I've been at it 12 hours and my conclusion is that I'm not sure that it will ever work.  And this brings us to **code rot**.  Rot is what happens to a physical artifact when you don't take care of it.  Now if you haven't been at this for too long you're thinking something like: 
 
 > These are perfect digital assets how can there possibly be rot; Scott is smoking the whacky weed.
 
