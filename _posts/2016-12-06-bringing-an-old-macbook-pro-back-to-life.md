@@ -14,4 +14,4 @@ Here's the process I've been thru:
 * kill bundler and re-install it:  **gem install bundler**
 * kill gem and reinstall it: **gem update --system '2.3.0'** [SO](http://stackoverflow.com/questions/13626143/how-to-upgrade-rubygems)
 
-I then updated my Ansible MacBook Pro configuration routine and ran it against the box.  And then I hit a high degree of [code rot](https://fuzzygroup.github.io/blog/rails/2016/12/06/code-rot-is-very-very-real.html) that, well, totally ruined my day.  
+I then updated my [Ansible MacBook Pro configuration routine](https://github.com/fuzzygroup/ansible-macbook-pro) and ran it against the box.  And then I hit a high degree of [code rot](https://fuzzygroup.github.io/blog/rails/2016/12/06/code-rot-is-very-very-real.html) that, well, totally ruined my day.  
