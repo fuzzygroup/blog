@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 06 Dec 2016 16:00:19 -0500</pubDate>
-    <lastBuildDate>Tue, 06 Dec 2016 16:00:19 -0500</lastBuildDate>
+    <pubDate>Tue, 06 Dec 2016 18:17:58 -0500</pubDate>
+    <lastBuildDate>Tue, 06 Dec 2016 18:17:58 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -64,7 +64,7 @@
     
       <item>
         <title>No Rdoc Once and For All</title>
-        <description>&lt;p&gt;After watching me swear like a sailor earlier today, Dv provided this snippet:&lt;/p&gt;
+        <description>&lt;p&gt;After watching me swear like a sailor earlier today, &lt;a href=&quot;http://www.dasari.me/&quot;&gt;Dv&lt;/a&gt; provided this snippet:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cat ~/.gemrc
 install: --no-rdoc --no-ri
@@ -72,6 +72,7 @@ update: --no-rdoc --no-ri
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
+&lt;p&gt;Never again will I have to wait for rdoc to generate (which at times takes longer than the damn gem itself).  Huzzah!&lt;/p&gt;
 </description>
         <pubDate>Tue, 06 Dec 2016 00:00:00 -0500</pubDate>
         <link>https://fuzzygroup.github.io/blog/ruby/2016/12/06/no-rdoc-once-and-for-all.html</link>
@@ -87,6 +88,70 @@ update: --no-rdoc --no-ri
         
         
         <category>ruby</category>
+        
+      </item>
+    
+      <item>
+        <title>Code Rot is Very, Very Real</title>
+        <description>&lt;p&gt;Today has been an unmitigated disaster.  In the process of reviving a MacBook Pro that was old I had to delete and re-install rvm, gemsets, etc and, &lt;strong&gt;damn&lt;/strong&gt;, has it ever sucked.  And I don’t mean “oh it sucked” – I mean this has sucked monkey balls.  I’ve been at it 12 hours and my conclusion is that I’m not sure that it will ever work.  And this brings us to &lt;strong&gt;code rot&lt;/strong&gt;.  Rot is what happens to a physical artifact when you don’t take care of it.  Now if you haven’t been at this for too long you’re thinking something like:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;These are perfect digital assets how can there possibly be rot; Scott is smoking the whacky weed.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Alas, no and I wish I was.  Even if your digital assets don’t decay, the supporting ecosystem that they are in actually does change.  As an example part of the Gemfile had a nokogiri 1.4.4 hard coded version number in it.  Now I might refer to Nokogiri as NokoVietnameGiri since I’m generally about as successful in installing Nokogiri as the U.S. was in winning Vietnam.  But today was far, far worse.  Finally I discovered that Nokogiri 1.4.x is now considered too old and things have changed too much and their recommendation is simple – &lt;strong&gt;upgrade&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Note: No disrespect meant to anyone or their family involved in Vietnam.  Vietnam was a political war and soldiers were not allowed to win it.&lt;/p&gt;
+
+&lt;p&gt;And that’s what I mean by code rot – all executable code these days depends on a precarious web of dependencies.  If you’re not actively maintaining it then you are very, very much hosed should a sufficient amount of time pass and you need to re-install things.&lt;/p&gt;
+
+&lt;p&gt;In this case I have to go into a code base that has laid fallow for well over a year now.  And while it has run like a champ until recently, certain things have changed and I now need to actively make changes to the code, modify vendored gems, etc.  And that means I really, really need a workable code base.  And without the ability to run bundle install, well, I’ve got nothing.&lt;/p&gt;
+
+&lt;p&gt;Since I grew up in a family that made their living from, among other things, real estate, I’m going to make an analogy.  If you owned physical real estate, you wouldn’t dream of not touching it for more than a year – you’d expect to do small maintenance, plumbing,  paint, weatherstrip, whatever.  And if it was a revenue producing property, as this was a revenue producing bit of software, you would really never dream of letting it lie fallow for a year.&lt;/p&gt;
+
+&lt;p&gt;So code rot is real but I don’t think that it really is any different from physical artifacts.  The universe does, after all, trend from order to disorder, towards ever increasing entropy.&lt;/p&gt;
+
+&lt;p&gt;The bottom line here is that the next time someone tells you that its ok to let code just sit around and decay, perhaps you might advocate more strongly for doing at least some maintenance on it.  I strongly wish that I had done a better job of that.  &lt;em&gt;regrets&lt;/em&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 06 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/rails/2016/12/06/code-rot-is-very-very-real.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails/2016/12/06/code-rot-is-very-very-real.html</guid>
+        
+        <category>ruby</category>
+        
+        <category>rails</category>
+        
+        <category>software_engineering</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Accessing MariaDB without sudo on Ubuntu</title>
+        <description>&lt;p&gt;So I’m finally able to get back to trying Rails development on my Ubuntu box and the first real error I found was when I tried to create a database – I couldn’t get into MariaDB unless I used sudo – very, very odd.  I found the solution on &lt;a href=&quot;https://ubuntuforums.org/showthread.php?t=2275033&quot;&gt;Ubuntu Forums&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo mysql -u root
+use mysql;
+update user set plugin='' where User='root';
+flush privileges;
+\q
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Honestly I have no idea what this is.  Sigh.  Oh well it works and it is documented at least.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 06 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/mariadb/2016/12/06/accessing-mariadb-without-sudo-on-ubuntu.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/mariadb/2016/12/06/accessing-mariadb-without-sudo-on-ubuntu.html</guid>
+        
+        <category>mariadb</category>
+        
+        <category>ubuntu</category>
+        
+        
+        <category>mariadb</category>
         
       </item>
     
@@ -344,300 +409,6 @@ page = agent.get(url)
         
         
         <category>big_data</category>
-        
-      </item>
-    
-      <item>
-        <title>MySQL and Time Machine Woes Part 2</title>
-        <description>&lt;p&gt;So I’m not alone with MySQL Time Machine woes.  My buddy &lt;a href=&quot;http://dasari.me&quot;&gt;Dv&lt;/a&gt; skyped me last night along the lines of “how do I get my MySQL stuff off Time Machine”.  Sheesh – it is an epidemic.  He is having the same type of virtual environment woes that I am where rvm / rbenv / chruby seem to cause nothing but OSX issues and he is looking to Vagrant for an answer.  This means that he’s likely doing the re-install dance.  And since he has been a stellar trooper in assisting me for years with all kinds of random ass crap, it is my turn.&lt;/p&gt;
-
-&lt;h1 id=&quot;where-are-my-mysql-databases&quot;&gt;Where Are My MySQL Databases?&lt;/h1&gt;
-
-&lt;p&gt;The first step towards getting your databases back from Time Machine is to locate where they are supposed to be.  MySQL itself can tell you this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SHOW VARIABLES WHERE Variable_Name LIKE &quot;%dir&quot;;
-+---------------------------+------------------------------------------------------+
-| Variable_name             | Value                                                |
-+---------------------------+------------------------------------------------------+
-| basedir                   | /usr/local/Cellar/mysql/5.6.21                       |
-| character_sets_dir        | /usr/local/Cellar/mysql/5.6.21/share/mysql/charsets/ |
-| datadir                   | /usr/local/var/mysql/                                |
-| innodb_data_home_dir      |                                                      |
-| innodb_log_group_home_dir | ./                                                   |
-| lc_messages_dir           | /usr/local/Cellar/mysql/5.6.21/share/mysql/          |
-| plugin_dir                | /usr/local/Cellar/mysql/5.6.21/lib/plugin/           |
-| slave_load_tmpdir         | /var/folders/rf/3tfhwgrj1sl85y6rcs4x_s5c0000gn/T/    |
-| tmpdir                    | /var/folders/rf/3tfhwgrj1sl85y6rcs4x_s5c0000gn/T/    |
-+---------------------------+------------------------------------------------------+
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;So we now know that our databases are supposed to be stored in /usr/local/var/mysql/.  That’s what we need to get them back from Time Machine.&lt;/p&gt;
-
-&lt;h1 id=&quot;important-stop-mysql-first&quot;&gt;Important STOP MYSQL First&lt;/h1&gt;
-
-&lt;p&gt;The very first thing you need to do is stop mysql first:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql.server stop
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;getting-them-back-from-time-machine&quot;&gt;Getting Them Back from Time Machine&lt;/h1&gt;
-
-&lt;p&gt;Open a Terminal window and cd /Volumes and then find your Time Machine latest backup and change into /usr/local/var/mysql underneath it.  You should then theoretically be able to copy the back with a cp -r * /usr/local/var/mysql as per this &lt;a href=&quot;http://apple.stackexchange.com/questions/139175/transferring-a-single-folder-from-a-time-machine-to-a-different-mac&quot;&gt;Stack Overflow post&lt;/a&gt;.  Please note that I have not done this myself yet since for my issues I cannot find the damn backup ever being made.&lt;/p&gt;
-
-&lt;h1 id=&quot;recommendation---do-not-restore-to-previous-location---do-this-instead&quot;&gt;Recommendation - DO NOT Restore to Previous Location - Do This Instead&lt;/h1&gt;
-
-&lt;p&gt;After my personal issues with Time Machine and MySQL I no longer have faith that any data outside of /User/my_username will be correctly restored.  Personally I would make a directory structure like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/Users/sjohnson
-/Users/sjohnson/servers
-/Users/sjohnson/servers/mysql
-/Users/sjohnson/servers/mysql/data
-/Users/sjohnson/servers/postgres
-/Users/sjohnson/servers/postgres/data
-/Users/sjohnson/servers/redis
-/Users/sjohnson/servers/redis/data
-/Users/sjohnson/servers/mongo
-/Users/sjohnson/servers/mongo/data
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;As best I can tell, I have lost every mysql database I’ve built since 2011 on my main development system and the only reason I’m not raging further is that I just don’t have the mental energy given everything else I’m juggling.  I do think that if I do this approach then when Apple gets stupid in the future with Time Machine that this will protect me.&lt;/p&gt;
-
-&lt;p&gt;If you’re going to this then you need to follow the steps below.  Alas I am getting a bit theoretical here since I haven’t had time to do this for myself yet.&lt;/p&gt;
-
-&lt;h2 id=&quot;finding-mycnf&quot;&gt;Finding my.cnf&lt;/h2&gt;
-
-&lt;p&gt;After HomeBrew installs mysql for you it creates a shell routine mysql.server.  Find it with which:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;which mysql.server
-/usr/local/bin/mysql.server
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;This file tells mysql where to store its data and you’re going to need to:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;stop mysql&lt;/li&gt;
-  &lt;li&gt;edit this shell script&lt;/li&gt;
-  &lt;li&gt;edit /etc/my.cnf which also seems to store this location&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I don’t know which is the primary and which is the default so personally I’d edit both.  You would then need to:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;adjust permissions and groups accordingly&lt;/li&gt;
-  &lt;li&gt;adjust postgres, redis and mongo / anything else as well&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Sat, 03 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/mysql/2016/12/03/mysql-and-time-machine-woes-part-2.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/mysql/2016/12/03/mysql-and-time-machine-woes-part-2.html</guid>
-        
-        <category>mysql</category>
-        
-        <category>time_machine</category>
-        
-        <category>backup</category>
-        
-        <category>mac</category>
-        
-        <category>osx</category>
-        
-        
-        <category>mysql</category>
-        
-      </item>
-    
-      <item>
-        <title>More Ansible on AWS for Sidekiq</title>
-        <description>&lt;p&gt;So, much like the Godfather, just when I think I’m out, Ansible pulls me back in…  Yesterday I tackled using Ansible to manage Sidekiq.  Today I’m going to bring you:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Installing Sidekiq as a service&lt;/li&gt;
-  &lt;li&gt;Viewing the status of the service&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Let’s start with installing Sidekiq as a service.  Happily &lt;a href=&quot;http://www.sidekiq.org&quot;&gt;Mike Perham&lt;/a&gt; has built Sidekiq to run as a service (and thanks to Mike for the service configuration; noted and appreciated).  Here’s what you need:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;playbook: playbook_service_install_and_start_sidekiq.yml
-
-role: service_install_and_start_sidekiq.yml
-
----
-- name: prevent sidekiq init from running if it has already been done
-  stat: path=/etc/init/sidekiq.conf
-  register: sidekiq_init_installed
-
-- name: Copy sidekiq init template to init.d dir
-  template: src=sidekiq_perham_init.j2 dest=/etc/init/_worker.conf owner=root group=root force=yes
-  template: src=sidekiq_perham_init.j2 dest=/etc/init/sidekiq.conf owner=root group=root force=yes
-  sudo: yes
-  when: sidekiq_init_installed.stat.exists == False
-
-- name: start_sidekiq
-  service: name=sidekiq state=started enabled=yes
-
-template: sidekiq_perham_init.js
-
-# /etc/init/sidekiq.conf - Sidekiq config
-# source: https://github.com/mperham/sidekiq/blob/master/examples/upstart/sidekiq.conf
-
-# This example config should work with Ubuntu 12.04+.  It
-# allows you to manage multiple Sidekiq instances with
-# Upstart, Ubuntu's native service management tool.
-#
-# See workers.conf for how to manage all Sidekiq instances at once.
-#
-# Save this config as /etc/init/sidekiq.conf then manage sidekiq with:
-#   sudo start sidekiq index=0
-#   sudo stop sidekiq index=0
-#   sudo status sidekiq index=0
-#
-# Hack Upstart's reload command to 'quiet' Sidekiq:
-#
-#   sudo reload sidekiq index=0
-#
-# or use the service command:
-#   sudo service sidekiq {start,stop,restart,status}
-#
-
-description &quot;Sidekiq Background Worker&quot;
-
-# This script is not meant to start on bootup, workers.conf
-# will start all sidekiq instances explicitly when it starts.
-#start on runlevel [2345]
-#stop on runlevel [06]
-
-# change to match your deployment user
-setuid 
-setgid 
-env HOME=
-
-respawn
-respawn limit 3 30
-
-# TERM is sent by sidekiqctl when stopping sidekiq. Without declaring these as
-# normal exit codes, it just respawns.
-normal exit 0 TERM
-
-# Older versions of Upstart might not support the reload command and need
-# this commented out.
-reload signal USR1
-
-# Upstart waits 5 seconds by default to kill the a process. Increase timeout to
-# give sidekiq process enough time to exit.
-kill timeout 15
-
-#instance $index
-instance 0
-
-script
-# this script runs in /bin/sh by default
-# respawn as bash so we can source in rbenv
-exec /bin/bash &amp;lt;&amp;lt;'EOT'
-  # Pick your poison :) Or none if you're using a system wide installed Ruby.
-  # rbenv
-  # source /home/apps/.bash_profile
-  # OR
-  # source /home/apps/.profile
-  # OR system:
-  # source /etc/profile.d/rbenv.sh
-  #
-  # rvm
-  # source /home/apps/.rvm/scripts/rvm
-  source 
-
-  # Logs out to /var/log/upstart/sidekiq.log by default
-
-  cd 
-  #exec bundle exec sidekiq -i ${index} -e production
-  exec bundle exec sidekiq -i 0 -e production
-EOT
-end script
-
-output: 
-
-ansible-playbook -i inventories/production2 playbook_service_install_and_start_sidekiq.yml
- [WARNING]: While constructing a mapping from
-/Users/sjohnson/Dropbox/appdatallc/ansible/roles/service_install_and_start_sidekiq/tasks/main.yml, line 6, column 3, found a duplicate dict
-key (template). Using last defined value only.
-
-[DEPRECATION WARNING]: Instead of sudo/sudo_user, use become/become_user and make sure become_method is 'sudo' (default).
-This feature will
-be removed in a future release. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
-
-PLAY [worker] ******************************************************************
-
-TASK [setup] *******************************************************************
-ok: [fiworker3]
-
-TASK [service_install_and_start_sidekiq : prevent sidekiq init from running if it has already been done] ***
-ok: [fiworker3]
-
-TASK [service_install_and_start_sidekiq : Copy sidekiq init template to init.d dir] ***
-skipping: [fiworker3]
-
-TASK [service_install_and_start_sidekiq : start_sidekiq] ***********************
-changed: [fiworker3]
-
-PLAY RECAP *********************************************************************
-fiworker3                  : ok=3    changed=0    unreachable=0    failed=0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Once you install this as service you &lt;strong&gt;do not&lt;/strong&gt; want to log into N machines and check if its manually running so now you need this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;playbook: playbook_service_status_sidekiq.yml
-
-role: service_status_sidekiq.yml
-
---- 
-  
-- name: display sidekiq's status
-  shell: &quot;service sidekiq status&quot;
-  register: out
-
-- name: view the output
-  debug: var=out.stdout_lines
-
-output:
-
-ansible-playbook -i inventories/production2 playbook_service_status_sidekiq.yml
-
-PLAY [worker] ******************************************************************
-
-TASK [setup] *******************************************************************
-ok: [fiworker3]
-
-TASK [service_status_sidekiq : display sidekiq's status] ***********************
-changed: [fiworker3]
- [WARNING]: Consider using service module rather than running service
-
-TASK [service_status_sidekiq : view the output] ********************************
-ok: [fiworker3] =&amp;gt; {
-    &quot;out.stdout_lines&quot;: [
-        &quot;sidekiq (0) start/running, process 7759&quot;
-    ]
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;As long as you see a process id here then you know its running.  Would it be better to have this report out something like “Out of N boxes, sidekiq is running on N-1”?  Sure.  And I suspect that I will get there at some point but I have critical pressing needs &lt;strong&gt;today&lt;/strong&gt; – all these examples are being written as part of actual devops that I’m doing now.  These blog posts are the time stamped documentation that I can refer back to.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 03 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/12/03/more-ansible-on-aws-for-sidekiq.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/12/03/more-ansible-on-aws-for-sidekiq.html</guid>
-        
-        <category>aws</category>
-        
-        <category>ansible</category>
-        
-        <category>sidekiq</category>
-        
-        
-        <category>aws</category>
         
       </item>
     

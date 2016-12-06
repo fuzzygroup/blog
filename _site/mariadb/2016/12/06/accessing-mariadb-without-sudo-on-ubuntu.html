@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>No Rdoc Once and For All</title>
-  <meta name="description" content="After watching me swear like a sailor earlier today, Dv provided this snippet:">
+  <title>Accessing MariaDB without sudo on Ubuntu</title>
+  <meta name="description" content="So I’m finally able to get back to trying Rails development on my Ubuntu box and the first real error I found was when I tried to create a database – I could...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/ruby/2016/12/06/no-rdoc-once-and-for-all.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/mariadb/2016/12/06/accessing-mariadb-without-sudo-on-ubuntu.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
   
   <script>
@@ -91,20 +91,22 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">No Rdoc Once and For All</h1>
+    <h1 class="post-title" itemprop="name headline">Accessing MariaDB without sudo on Ubuntu</h1>
     <p class="I'll"><time datetime="2016-12-06T00:00:00-05:00" itemprop="datePublished">Dec 6, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>After watching me swear like a sailor earlier today, <a href="http://www.dasari.me/">Dv</a> provided this snippet:</p>
+    <p>So I’m finally able to get back to trying Rails development on my Ubuntu box and the first real error I found was when I tried to create a database – I couldn’t get into MariaDB unless I used sudo – very, very odd.  I found the solution on <a href="https://ubuntuforums.org/showthread.php?t=2275033">Ubuntu Forums</a>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cat ~/.gemrc
-install: --no-rdoc --no-ri
-update: --no-rdoc --no-ri
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo mysql -u root
+use mysql;
+update user set plugin='' where User='root';
+flush privileges;
+\q
 </code></pre>
 </div>
 
-<p>Never again will I have to wait for rdoc to generate (which at times takes longer than the damn gem itself).  Huzzah!</p>
+<p>Honestly I have no idea what this is.  Sigh.  Oh well it works and it is documented at least.</p>
 
   </div>
   
