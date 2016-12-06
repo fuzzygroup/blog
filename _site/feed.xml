@@ -6,9 +6,346 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 03 Dec 2016 11:20:51 -0500</pubDate>
-    <lastBuildDate>Sat, 03 Dec 2016 11:20:51 -0500</lastBuildDate>
+    <pubDate>Tue, 06 Dec 2016 16:00:19 -0500</pubDate>
+    <lastBuildDate>Tue, 06 Dec 2016 16:00:19 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Bringing an Old MacBook Pro Back to Life</title>
+        <description>&lt;p&gt;This morning has been more than a tad frustrating – and let’s leave Tad out of this, shall we?  I’ve been engaged in bringing my 2011 MacBook Pro 15 back to life.  After a brief venture into Linux, I found that I really needed the data on this box back and despite my Time Machine woes I was able to restore most everything.  I’m now trying to make it actually a functional development tool since it is the only machine that generally seems to run this particular obsolete gem stack – although &lt;a href=&quot;http://www.dasari.me/&quot;&gt;Dv&lt;/a&gt; would argue I should just kill everything and run Vagrant – something I’m thinking about.&lt;/p&gt;
+
+&lt;p&gt;Here’s the process I’ve been thru:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;kill brew and reinstall it: &lt;strong&gt;ruby -e “$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)”&lt;/strong&gt; and then &lt;strong&gt;ruby -e “$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)”&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;kill rvm and re-install it: &lt;strong&gt;rvm implode&lt;/strong&gt; and then **\curl -sSL https://get.rvm.io&lt;/td&gt;
+          &lt;td&gt;bash** &lt;a href=&quot;https://richonrails.com/articles/uninstalling-rvm&quot;&gt;Docs&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;install cask room: &lt;strong&gt;brew cask install google-chrome&lt;/strong&gt; &lt;a href=&quot;https://caskroom.github.io/&quot;&gt;Docs&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;kill bundler and re-install it:  &lt;strong&gt;gem install bundler&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;kill gem and reinstall it: &lt;strong&gt;gem update –system ‘2.3.0’&lt;/strong&gt; &lt;a href=&quot;http://stackoverflow.com/questions/13626143/how-to-upgrade-rubygems&quot;&gt;SO&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I then updated my Ansible MacBook Pro configuration routine and ran it against the box.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 06 Dec 2016 07:59:54 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/osx/2016/12/06/bringing-an-old-macbook-pro-back-to-life.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/osx/2016/12/06/bringing-an-old-macbook-pro-back-to-life.html</guid>
+        
+        <category>osx</category>
+        
+        <category>mac</category>
+        
+        <category>rvm</category>
+        
+        <category>ruby</category>
+        
+        <category>bundler</category>
+        
+        <category>gem</category>
+        
+        <category>brew</category>
+        
+        <category>cask</category>
+        
+        <category>mysql</category>
+        
+        
+        <category>osx</category>
+        
+      </item>
+    
+      <item>
+        <title>No Rdoc Once and For All</title>
+        <description>&lt;p&gt;After watching me swear like a sailor earlier today, Dv provided this snippet:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cat ~/.gemrc
+install: --no-rdoc --no-ri
+update: --no-rdoc --no-ri
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Tue, 06 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/ruby/2016/12/06/no-rdoc-once-and-for-all.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ruby/2016/12/06/no-rdoc-once-and-for-all.html</guid>
+        
+        <category>ruby</category>
+        
+        <category>rails</category>
+        
+        <category>gem</category>
+        
+        <category>rdoc</category>
+        
+        
+        <category>ruby</category>
+        
+      </item>
+    
+      <item>
+        <title>AWS Tutorial - Using Squid, EC2 and ELB to Defeat Crawling Blockages</title>
+        <description>&lt;p&gt;I write crawlers.  I have crawlers for years.  And I &lt;strong&gt;hate&lt;/strong&gt; beyond &lt;strong&gt;hate&lt;/strong&gt; when companies throw up roadblocks to defeat crawlers.  As a general rule of thumb the big Internet companies tend to be the worst at this – they, who shall be unnamed, love information to be “free” but they hate like hell to themselves be indexed.&lt;/p&gt;
+
+&lt;p&gt;Well, in the age of the cloud, crawling blockages can be really, really easy to defeat.  In this tutorial I’m going to show you how.&lt;/p&gt;
+
+&lt;h1 id=&quot;proxying&quot;&gt;Proxying&lt;/h1&gt;
+
+&lt;p&gt;The core technology to defeat blockages is simple – you use a proxy server.  Let’s say that you have a server on this ip address:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;24.36.48.19
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If someone wants to block your crawler all they need to do is place a block on that ip address by any number of means - code, router level, firewall level, etc and your code can’t actually access the data.  A proxy server sits in between your code and the data you want to access.  Here’s a ruby example using Mechanize:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;agent = Mechanize.new
+url = &quot;http://www.google.com/&quot;
+proxy_server_url = &quot;proxy.foo.com&quot;
+proxy_server_port = 3199    
+agent.set_proxy(proxy_server_url, proxy_server_port)
+page = agent.get(url)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;That will cause the request to be through the proxy server and NOT from your actual server.  Given that a proxy server can be blocked as easily as your actual server this may not seem all that significant – but think of this in terms of a cloud computing environment like AWS:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;In aws you can create instances trivially with tools like ansible&lt;/li&gt;
+  &lt;li&gt;In aws you can automatically / automagically install a full featured proxy server like squid with one command&lt;/li&gt;
+  &lt;li&gt;In aws you can front end a cluster of proxy server instances behind an elastic load balancer allowing your software to simply access the load balancer and then the proxy servers can be dynamically replaced either when they are blocked or perhaps proactively every single day&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;squid&quot;&gt;Squid&lt;/h1&gt;
+
+&lt;p&gt;Squid is the proxy server we’re going to be using.  Squid is an old school Internet tool – I remember experimenting with it back in maybe 2002 although that seems impossible but it actually isn’t since it is cited in papers going back to &lt;a href=&quot;https://en.wikipedia.org/wiki/Squid_(software)&quot;&gt;1995&lt;/a&gt;.  We’re going to need to use the 3.5 or later version of Squid since we need support for what is called ProxyPass which is what lets a proxy transaction travel through a load balancer.&lt;/p&gt;
+
+&lt;p&gt;If you’re uncertain about the installed version of Squid then run this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/sbin/squid -v
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Thanks to &lt;a href=&quot;http://mamchenkov.net/wordpress/2004/03/23/how-to-check-squid-proxy-server-version-on-a-linux-system/&quot;&gt;Mamchenkov&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;architecture&quot;&gt;Architecture&lt;/h1&gt;
+
+&lt;p&gt;We’re going to need the following architecture bits:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;an elastic load balancer&lt;/li&gt;
+  &lt;li&gt;1 or more EC2 instances that run squid&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;ansibling-this-all-together&quot;&gt;Ansibling This All Together&lt;/h1&gt;
+
+&lt;h1 id=&quot;be-careful---bandwidth-bills-are-real&quot;&gt;Be Careful - Bandwidth Bills Are Real&lt;/h1&gt;
+</description>
+        <pubDate>Mon, 05 Dec 2016 17:24:54 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/12/05/aws-tutorial-using-squid-ec2-and-elb-to-defeat-crawling-blockages.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/05/aws-tutorial-using-squid-ec2-and-elb-to-defeat-crawling-blockages.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Interviewing with the Big Tech Firms</title>
+        <description>&lt;p&gt;I have never been a big company person.  My ideal company fits into a volkswagen and can generally be well fed with a single pizza.  My one big company experience was 450 people globally, 46 million in annual revenues, 25 locations – and that’s not actually big anymore – when even Twitter employs over 4,000 people.&lt;/p&gt;
+
+&lt;p&gt;Now, all that said, I find the big tech companies absolutely fascinating:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;in terms of the scale at which they operate&lt;/li&gt;
+  &lt;li&gt;their hardware and data resources&lt;/li&gt;
+  &lt;li&gt;their very significant inconsistencies&lt;/li&gt;
+  &lt;li&gt;their management structures&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can’t exist in the high tech world and not find companies like Google, Facebook and Twitter fascinating.  Recently I’ve been doing a deep dive on their HR policies and specifically how they interview and I thought my findings were instructive.&lt;/p&gt;
+
+&lt;h1 id=&quot;tldr-no-need-to-read-further&quot;&gt;TLDR; No Need to Read Further&lt;/h1&gt;
+
+&lt;p&gt;The single most important thing to understand is that the overall interviewing system for all the big technical firms is currently&lt;/p&gt;
+
+&lt;h1 id=&quot;understanding-the-detailed-technical-interview-with-the-low-level-computer-science-questions&quot;&gt;Understanding the Detailed Technical Interview with the Low Level Computer Science Questions&lt;/h1&gt;
+
+&lt;p&gt;To my understanding all the big tech firms currently have problems recruiting senior technical staff.  My suspicion is that their very interview process is what keeps people out, let me explain.&lt;/p&gt;
+
+&lt;h1 id=&quot;google-is-not-harvard&quot;&gt;Google Is Not Harvard&lt;/h1&gt;
+
+&lt;p&gt;Goal is keep the wrong person OUT&lt;/p&gt;
+</description>
+        <pubDate>Mon, 05 Dec 2016 16:49:20 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/interview/2016/12/05/interviewing-with-the-big-tech-firms.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/interview/2016/12/05/interviewing-with-the-big-tech-firms.html</guid>
+        
+        <category>interview</category>
+        
+        <category>startup</category>
+        
+        <category>hiring</category>
+        
+        <category>hr</category>
+        
+        <category>google</category>
+        
+        <category>facebook</category>
+        
+        <category>twitter</category>
+        
+        
+        <category>interview</category>
+        
+      </item>
+    
+      <item>
+        <title>Signs of Systemic Organizational Failure</title>
+        <description>&lt;p&gt;[8:26 AM, 12/5/2016] Scott Johnson: rant for later today “We just have to be creative and figure out how to get more done — we’re behind every week”                      &lt;br /&gt;
+[8:27 AM, 12/5/2016] Wife: Wow.                      &lt;br /&gt;
+[8:28 AM, 12/5/2016] Scott Johnson: Because the way to make someone that regularly works more than 40 hours per week work harder is to diminish their efforts.  How about accepting that — AS YOU’VE BEEN TOLD — that you are under staffed and your problem is bigger than you initially understood.                      &lt;br /&gt;
+[8:28 AM, 12/5/2016] Scott Johnson: m o r o n s                      &lt;br /&gt;
+[8:28 AM, 12/5/2016] Wife: Seriously!                      &lt;br /&gt;
+[8:29 AM, 12/5/2016] Wife: What the hell do they expect from you?! Sheesh.                      &lt;br /&gt;
+[8:30 AM, 12/5/2016] Scott Johnson: Honestly they will never, ever be happy.  This is the kind of job where I could work 100 + hours per week and there’s still no way to succeed.  It is why I’m always so frustrated                      &lt;br /&gt;
+[8:30 AM, 12/5/2016] Scott Johnson: in reviewing the week’s work I had more than 10 top level “current” projects                      &lt;br /&gt;
+[8:30 AM, 12/5/2016] Scott Johnson: and no one other than me sees the flaw in that.                      &lt;br /&gt;
+[8:30 AM, 12/5/2016] Wife: They are not very smart                      &lt;br /&gt;
+[8:31 AM, 12/5/2016] Scott Johnson: Good at their domain but they know nothing about software engineering and they are too arrogant to ask&lt;/p&gt;
+</description>
+        <pubDate>Mon, 05 Dec 2016 09:04:48 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/12/05/signs-of-systemic-organizational-failure.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/05/signs-of-systemic-organizational-failure.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Finding Your Rhythm As a Remote Worker</title>
+        <description>&lt;p&gt;I have been, with one 9 month exception, a remote worker since 1999.  Heading into 2017 that puts me at almost 20 years of solid, day in and day out remote work and, I’ll admit, that I know a thing or two about remote work.  I’ve both been a remote worker, managed remote workers and I think all possible permutations.  This post attempts to summarize what works for &lt;strong&gt;me&lt;/strong&gt;.  What works for &lt;strong&gt;you&lt;/strong&gt; will almost certainly be different but I suspect the same meta principles will apply.&lt;/p&gt;
+
+&lt;h1 id=&quot;routine-routine-routine&quot;&gt;Routine, Routine, Routine&lt;/h1&gt;
+
+&lt;p&gt;Day in and day out my days look remarkably similar:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;roll out of bed around 3 am&lt;/li&gt;
+  &lt;li&gt;shower, shave, dress, etc.  Even tho the only people that ever see me are my wife, kids and cat I still dress like I was going into an office every day.&lt;/li&gt;
+  &lt;li&gt;hit &lt;a href=&quot;http://www.meh.com/&quot;&gt;meh&lt;/a&gt; while it hasn’t sold out and see if there is something cheap I can treat myself to&lt;/li&gt;
+  &lt;li&gt;hit the hardest code immediately and get my momentum going&lt;/li&gt;
+  &lt;li&gt;take advantage of the &lt;a href=&quot;https://fuzzygroup.github.io/blog/startup/2016/10/29/startup-learnings-i-do-all-my-coding-before-anyone-gets-to-work-or-what-ed-fisher-taught-me.html&quot;&gt;early morning, blessed quiet&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;continue until the end of the day&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I know that some remote workers are constantly changing location and fully embrace the digital nomad lifestyle (&lt;a href=&quot;http://wanderling.co/how-i-work-from-anywhere-in-the-world&quot;&gt;example&lt;/a&gt;).  And that is brilliant that they are able to do so but for myself I really appreciate consistency.  And I adore having a solid, fast connection like fiber – you don’t get that when you move regularly.&lt;/p&gt;
+
+&lt;h1 id=&quot;it-is-still-work&quot;&gt;It Is Still Work&lt;/h1&gt;
+
+&lt;p&gt;The single biggest mistake that everyone, and that has included me in the past, makes with remote work is not treating it as work.  Because you are the one at home it is all too easy for your spouse (or yourself) to assume “oh they can also do a load of laundry” or some other house hold task.  No.  You.  Can’t.  Work is work and home is home.  I find that my greatest productivity comes when my door is shut and I can concentrate.  Now your results might vary&lt;/p&gt;
+
+&lt;h1 id=&quot;you-dont-have-colleagues-so-figure-out-how-to-do-everything-alone&quot;&gt;You Don’t Have Colleagues So Figure Out How to Do Everything Alone&lt;/h1&gt;
+
+&lt;p&gt;When you are a remote worker you do have colleagues but when you are the odd man out in the remote wilderness you may find that, ahem, they aren’t always helpful.&lt;/p&gt;
+
+&lt;h1 id=&quot;gear---you-never-know&quot;&gt;Gear - You Never Know&lt;/h1&gt;
+
+&lt;p&gt;I almost never throw any computer gear out.  As a remote engineer there is no one to turn to in the next cubicle and say something like “I need a USB to firewire adapter to get some data off this old drive that might help me with my current code”.  Can I go to the computer store for that?  Sure.  I even have a Fry’s 20 minutes away but that 20 minute drive easily turns into:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;20 minutes there&lt;/li&gt;
+  &lt;li&gt;20 minutes back&lt;/li&gt;
+  &lt;li&gt;20 minutes shopping&lt;/li&gt;
+  &lt;li&gt;an hour plus getting my head back where it was before I left&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If I stay in my cozy home environment, even if I’m rooting thru a cable bin for something I can keep my current context solid in my head.  But if I have to get into a car and engage the outside world then it is a given that I have lost it and it will usually take a solid hour to get my brain back to where it needs to be (if the problem is complex).&lt;/p&gt;
+
+&lt;p&gt;If you don’t keep a gear box where you toss old hard drives, cables, an odd network hub, etc then I strongly encourage you to do so.  Odds are that this pack rat tendency will drive your spouse mad but the productivity benefits are real.&lt;/p&gt;
+
+&lt;h1 id=&quot;know-when-to-have-distractions-and-not&quot;&gt;Know When to Have Distractions and Not&lt;/h1&gt;
+
+&lt;h1 id=&quot;engineer-invest-in-thyself&quot;&gt;Engineer Invest In Thyself&lt;/h1&gt;
+
+&lt;p&gt;I don’t thinK I’m wrong in saying that engineers are notoriously cheap.  We all look at technology and think to ourselves “I could build that” – even when it is normally untrue.  One of the very best decisions you can make is to invest in yourself.  There are three great purchases that I’ve made over the years that really, truly improved my productivity:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://fuzzygroup.github.io/blog/startup/2016/10/21/startup-learnings-what-francois-schiettecatte-taught-me.html&quot;&gt;an Aeron chair&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Bose Quiet Comfort Headphones&lt;/li&gt;
+  &lt;li&gt;Building My Own Computer Desk&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I’ll sit in the same chair for sometimes 14 to 16 hours per day.  I don’t ever have back pain and I never even notice my chair – an Aeron is just that good.  Similarly there are times when I’ve pair programmed for 10 hours straight and my ears don’t hurt.  I can wear Quiet Comfort headphones all damn day.  When I got them they were $350 which I thought at the time was absurd but all other pairs of headphones just didn’t cut it.  And if you buy two or three pairs of $60 headphones then you’re almost half way there anyway.&lt;/p&gt;
+
+&lt;p&gt;I haven’t spoken about my adventures earlier this year in building exactly the computer desk I’ve always wanted but I will someday.  A bad day in the office about a month ago sent me racing to the lumber yard and two days later I had ripped out the absolutely shite working surface I had and replaced it with this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/desk1.jpg&quot; alt=&quot;desk1&quot; /&gt; 
+(simple, flat, 8 foot span)
+&lt;img src=&quot;/blog/assets/desk2.jpg&quot; alt=&quot;desk2&quot; /&gt;
+(most of the computers in place; there are more now)
+&lt;img src=&quot;/blog/assets/desk3.jpg&quot; alt=&quot;desk3&quot; /&gt; 
+(Nice cut outs for cable transfer)
+&lt;img src=&quot;/blog/assets/desk4.jpg&quot; alt=&quot;desk4&quot; /&gt; 
+(why you make your own desk - the desire to NOT have a visual rats nest of all the cabling that modern computing &lt;strong&gt;requires&lt;/strong&gt;; there are 6 power strips under my desk and all are full; I’m about to add a seventh)&lt;/p&gt;
+
+&lt;p&gt;All total I spent less than 8 hours in rough carpentry from start to finish on this and I highly recommend it if you are a hands on person.  I’ve wanted to do this for more than a decade now and I’m tremendously happy that I did.&lt;/p&gt;
+
+&lt;p&gt;The only sad thing about making my own desk is that my wife recently got me &lt;a href=&quot;https://www.amazon.com/Good-Clean-Fun-Misadventures-Offerman/dp/1101984651/ref=sr_1_1?ie=UTF8&amp;amp;qid=1480930872&amp;amp;sr=8-1&amp;amp;keywords=nick+offerman&quot;&gt;Nick Offerman’s Good Clean Fun&lt;/a&gt; book and now I really want to make another one this time as a trestle table.  Sigh.  If you are a woodworker and you haven’t read Offerman yet then I highly recommend it.  You would never believe that an actor could teach you wood working but he does a credible job and spins a wonderful tale in the doing.&lt;/p&gt;
+
+&lt;h1 id=&quot;know-when-to-stop-and-move-off-the-keyboard&quot;&gt;Know When to Stop and Move Off the Keyboard&lt;/h1&gt;
+
+&lt;h1 id=&quot;embrace-punctuation&quot;&gt;Embrace Punctuation&lt;/h1&gt;
+
+&lt;p&gt;When you are a remote worker what you will find is that the normal social cues that cause you to &lt;em&gt;stop working&lt;/em&gt; are gone.  Things like going to the fridge for a soda or stopping by a co-worker’s cubicle have just up and disappeared from your life.&lt;/p&gt;
+
+&lt;h1 id=&quot;communicate&quot;&gt;Communicate&lt;/h1&gt;
+
+&lt;h1 id=&quot;backup-and-synchronization&quot;&gt;Backup and Synchronization&lt;/h1&gt;
+
+</description>
+        <pubDate>Mon, 05 Dec 2016 04:57:52 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/remote/2016/12/05/finding-your-rhythm-as-a-remote-worker.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/remote/2016/12/05/finding-your-rhythm-as-a-remote-worker.html</guid>
+        
+        <category>remote</category>
+        
+        <category>work_from_home</category>
+        
+        
+        <category>remote</category>
+        
+      </item>
+    
+      <item>
+        <title>The Delays that Make Management Crazy</title>
+        <description>
+</description>
+        <pubDate>Sun, 04 Dec 2016 05:28:36 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/12/04/the-delays-that-make-management-crazy.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/04/the-delays-that-make-management-crazy.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>So You're Going to Process Large Amounts of Data...</title>
+        <description>
+</description>
+        <pubDate>Sat, 03 Dec 2016 12:21:16 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/big_data/2016/12/03/so-you-re-going-to-process-large-amounts-of-data.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/big_data/2016/12/03/so-you-re-going-to-process-large-amounts-of-data.html</guid>
+        
+        <category>big_data</category>
+        
+        
+        <category>big_data</category>
+        
+      </item>
     
       <item>
         <title>MySQL and Time Machine Woes Part 2</title>
@@ -298,706 +635,6 @@ ok: [fiworker3] =&amp;gt; {
         <category>ansible</category>
         
         <category>sidekiq</category>
-        
-        
-        <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>Gaming the LinkedIn Systems Leaves Us All Weaker</title>
-        <description>
-</description>
-        <pubDate>Fri, 02 Dec 2016 10:16:28 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/12/02/gaming-the-linkedin-systems-leaves-us-all-weaker.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/02/gaming-the-linkedin-systems-leaves-us-all-weaker.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Menards Excellence in Marketing to Men</title>
-        <description>&lt;p&gt;Menards is one of those retail things that I had no idea existed until I moved to Indiana.  Imagine a home improvement store that:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;is bigger than Home Depot&lt;/li&gt;
-  &lt;li&gt;is cleaner and more attractive than Home Depot&lt;/li&gt;
-  &lt;li&gt;has better lumber than either Home Depot or Lowes&lt;/li&gt;
-  &lt;li&gt;sells more tools that Home Depot or Lowes combined&lt;/li&gt;
-  &lt;li&gt;doesn’t force you to check out your own stuff like Home Depot&lt;/li&gt;
-  &lt;li&gt;has staff that is more pleasant, helpful and smarter than Home Depot&lt;/li&gt;
-  &lt;li&gt;has all kinds of crazy stuff including food, candy, coffee and board games&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Well – that’s Menards.  The best analogy I can come up with is Menard does for DIY what Fry’s does for computer / entertainment stuff.  It is just that good a place.  I now aggressively try to avoid either Lowes or Home Depot in favor of Menards at all opportunities.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 02 Dec 2016 10:14:19 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/marketing/2016/12/02/menards-excellence-in-marketing-to-men.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/marketing/2016/12/02/menards-excellence-in-marketing-to-men.html</guid>
-        
-        <category>marketing</category>
-        
-        <category>business</category>
-        
-        <category>startup</category>
-        
-        
-        <category>marketing</category>
-        
-      </item>
-    
-      <item>
-        <title>When MySQL Loads Go Wrong - What Do You Do?</title>
-        <description>&lt;p&gt;This piece is the natural follow on to my &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/11/26/fear-and-loathing-in-awsville-or-adventures-in-partition-resizing.html&quot;&gt;Adventures in Partition Resizing&lt;/a&gt; epic.  At this point our systems still aren’t fully back up yet and, well, it tastes like ashes.  Like a lot of hard core techies I tend to internalize the state of my system and when its not right, well, things suck for me.&lt;/p&gt;
-
-&lt;p&gt;The current state of things is that out of 187 tables that needed to be migrated over, we’re down to the last one – big number 187 and nothing appears to be happening.  All I see at the console is the same thing I’ve seen for over 24 hours:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ubuntu@ip-172-31-43-176:~$ mysql -uappdata -pSOMEPASSWORD foo_production &amp;lt; /mnt/old2/foo2016_m2s.sql
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And it just sits there.  Sigh.  Figuring out the next logical step means that you need to wrap your head around the quirky aspects of the MySQL load architecture.  Happily this isn’t the first time for me so here goes.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-1---show-full-process-list&quot;&gt;Step 1 - SHOW FULL PROCESS LIST;&lt;/h1&gt;
-
-&lt;p&gt;When you have a large table coming in the command line like this, well, MySQL gets seriously weird.  You can’t select a row to see the status.  The best you can do is a SHOW FULL PROCESS LIST which makes the system go nuts.  Seriously - try it sometime.  What you get is an enormous SQL dump showing what’s being loaded and since it scrolls by at like 90 miles per hour, well, that’s not helpful.  Here’s a little trick tho:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pager less;
-SHOW FULL PROCESS LIST\G
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And this will give you something like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;*************************** 1. row ***************************
-      Id: 257
-    User: appdata
-    Host: localhost
-      db: foo_production
- Command: Query
-    Time: 0
-   State: update
-    Info: INSERT INTO `foo2016_q1s` VALUES (240213,'2016-03-16 21:14:57','2016-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Given that there 927,040 records in this table what this has shown us is that after 36 hours or so we’re only 1/4 of the way thru.  Press ESC and run SHOW FULL PROCESS LIST a few times to make sure that id value keeps changing to get confirmation that the load is continuing.&lt;/p&gt;
-
-&lt;p&gt;The only problem is that what I just wrote above may &lt;strong&gt;NOT&lt;/strong&gt; be reliable – emphasis on the &lt;strong&gt;NOT&lt;/strong&gt;.  Here’s what I just got when I ran it again:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Id: 257
-    User: appdata
-    Host: localhost
-      db: banks_production
- Command: Query
-    Time: 0
-   State: update
-    Info: INSERT INTO `foo2016_q1s` VALUES (406347,'
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;There’s no way that roughly 200K records went in while I was writing two paragraphs so what we now know is that SHOW FULL PROCESS LIST tells you that the load is proceeding but it may be &lt;strong&gt;utterly useless&lt;/strong&gt; as a monitoring tool.  Deep, Deep Sigh.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-2---desc-foo2016m2s&quot;&gt;Step 2 - DESC foo2016_m2s&lt;/h1&gt;
-
-&lt;p&gt;The next logical step is to check the schema to make sure nothing weird is going on.  This can be done with:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;DESC foo2016_m2s;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;In MySQL checking the schema tells you nothing about the index structures so you can check those with:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SHOW CREATE TABLE foo2016_m2s;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;My guess is that you won’t learn anything from these operations but this is step by step, high value debugging so you check everything.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-3---options&quot;&gt;Step 3 - Options&lt;/h1&gt;
-
-&lt;p&gt;The logical next step would be to:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;stop the load&lt;/li&gt;
-  &lt;li&gt;delete the last record as it might not be complete&lt;/li&gt;
-  &lt;li&gt;find the last id (thank heavens that ids are sequential)&lt;/li&gt;
-  &lt;li&gt;re-dump from the original source table from the last record + 1 forward&lt;/li&gt;
-  &lt;li&gt;re-import&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;If, Great Ghu Help Us, we find that stopping the load means that there isn’t any data in the table then the next step would be:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Export from the original source in say 100K record chunks&lt;/li&gt;
-  &lt;li&gt;Import the first one and see what happens&lt;/li&gt;
-  &lt;li&gt;Import the next one and see what happens&lt;/li&gt;
-  &lt;li&gt;Think carefully if we want to proceed sequentially or move to loading files in parallel; if the issue is bad data somewhere in a load file then parallel is a bad, bad, bad idea.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;step-4---patience&quot;&gt;Step 4 - Patience&lt;/h1&gt;
-
-&lt;p&gt;Happily, whilst writing this screed, I looked up and noticed “oh hell – it finished!”.  And that’s the happiest of all results.  Hopefully what this post illustrates is how to tackle long running load processes even if I didn’t have to act on any of them.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 02 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/mysql/2016/12/02/when-mysql-loads-go-wrong-what-do-you-do.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/mysql/2016/12/02/when-mysql-loads-go-wrong-what-do-you-do.html</guid>
-        
-        <category>mysql</category>
-        
-        
-        <category>mysql</category>
-        
-      </item>
-    
-      <item>
-        <title>Killing Sidekiq on AWS with Ansible</title>
-        <description>&lt;p&gt;We do a lot of batch data processing here and much of that involves shoving crap into &lt;a href=&quot;http://sidekiq.org/&quot;&gt;Sidekiq&lt;/a&gt; to be run in a threaded fashion.  I’m not done with my own threading stuff yet by any means but, for now, Sidekiq is a superstar so we’re going to use it and bow west towards the &lt;a href=&quot;http://www.mikeperham.com/&quot;&gt;Mike Perham&lt;/a&gt; alter of threaded awesomeness that is Sidekiq.&lt;/p&gt;
-
-&lt;p&gt;One issue we had recently was that we thought we had killed sidekiq dead but, since it was running as a background service instead of a foreground task, it popped back up and kept happily eating data.  This would have been fine except for the fact that we had a db dump and restore in process and this caused data to be in an inconsistent state.  And that led to a second round of table dump / restore tangoing.&lt;/p&gt;
-
-&lt;p&gt;The first thing to understand here is that this is &lt;strong&gt;my&lt;/strong&gt; mistake.  I’m the moron who set it as a background service after all and, in the utter panic that accompanies disaster recovery, well, I forgot.  I did my normal kill -9 dance and went on my merry way ignoring the fact that Ubuntu would happily cackle gleefully as it re-launched it.  &lt;em&gt;Sigh&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;So there’s at least two playbooks here:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;playbook_status_sidekiq.yml&lt;/li&gt;
-  &lt;li&gt;playbook_stop_sidekiq_with_prejudice.yml&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The “_with_prejudice” refers to stopping Sidekiq with a -9 argument to kill.  This tells Linux “really, truly, right DAMN NOW kill this process”.  Sometimes Sidekiq fails to stop; often because of the ruby code its executing and while that’s fine there are lots of times that you just need it to go away.  This is one of them.&lt;/p&gt;
-
-&lt;p&gt;Two additional related playbooks I could write are:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;playbook_stop_sidekiq.yml&lt;/li&gt;
-  &lt;li&gt;playbook_service_stop_sidekiq.yml&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;And here we go!  The first thing we need is the ability to know what’s going on in our cluster of boxes.  This means the ability to know if sidekiq is running:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;playbook:
-
-role:
-
-output:
-
-ansible-playbook -i inventories/production2 playbook_status_sidekiq.yml
-
-PLAY [worker] ******************************************************************
-
-TASK [setup] *******************************************************************
-ok: [fiworker5]
-ok: [fiworker6]
-ok: [fiworker3]
-ok: [fiworkerbig]
-ok: [fiworker4]
-ok: [fiworker8]
-ok: [fiworker7]
-ok: [fiworker9]
-ok: [fiworker10]
-ok: [fiworker11]
-
-TASK [status_sidekiq : display sidekiq's status] *******************************
-changed: [fiworker5]
-changed: [fiworker3]
-changed: [fiworkerbig]
-changed: [fiworker4]
-changed: [fiworker6]
-changed: [fiworker7]
-changed: [fiworker8]
-changed: [fiworker10]
-changed: [fiworker9]
-changed: [fiworker11]
-
-TASK [status_sidekiq : view the output] ****************************************
-ok: [fiworker5] =&amp;gt; {
-    &quot;out.stdout_lines&quot;: [
-        &quot;root     11103  0.0  0.0   4440   636 pts/5    S+   12:43   0:00 /bin/sh -c ps auwwx | grep sidekiq&quot;,
-        &quot;root     11105  0.0  0.0  10460   912 pts/5    S+   12:43   0:00 grep sidekiq&quot;,
-        &quot;ubuntu   17371  0.0  0.0  27920  5328 ?        Ss   Oct27  13:57 tmux new -s sidekiq&quot;,
-        &quot;ubuntu   25815  0.6  6.5 1933952 1022068 pts/1 Sl+  Dec01   7:13 sidekiq 4.2.3 banks [0 of 25 busy] stopping                                                                         &quot;
-    ]
-}
-ok: [fiworker6] =&amp;gt; {
-    &quot;out.stdout_lines&quot;: [
-        &quot;ubuntu   17308  5.7  6.1 1948728 957972 pts/1  Sl+  Dec01  63:18 sidekiq 4.2.3 banks [25 of 25 busy]                                                                                 &quot;,
-        &quot;root     18126  0.0  0.0   4440   636 pts/5    S+   12:43   0:00 /bin/sh -c ps auwwx | grep sidekiq&quot;,
-        &quot;root     18128  0.0  0.0  10460   912 pts/5    S+   12:43   0:00 grep sidekiq&quot;,
-        &quot;ubuntu   23040  0.0  0.0  31808  9200 ?        Ss   Oct27  15:12 tmux new -s sidekiq&quot;
-    ]
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;As you can see in the first bit out output, fiworker5, I missed when I manually shut stuff down yesterday.  Oops.  And this brings us to our next playbook:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;playbook:
-#
-# MONDAY ansible-playbook -i ec2.py playbook_stop_sidekiq_with_prejudice.yml
-# ansible-playbook -i inventories/production2 playbook_stop_sidekiq_with_prejudice.yml
-#
----
-  
-- hosts: worker
-  become: yes
-  remote_user: ubuntu
-  gather_facts: true
-  roles:
-    - { role: kill_sidekiq_with_prejudice, tags: sidekiq}
-
-role:
----
-- name: kill_sidekiq_with_prejudice
-  shell: ps -ef | grep sidekiq | grep -v grep | awk '{print $2}' | xargs kill -9
-
-output:
-(fiworker5 shut down on its own before this ran; sigh)
-
-ansible-playbook -i inventories/production2 playbook_stop_sidekiq_with_prejudice.yml
-
-PLAY [worker] ******************************************************************
-
-TASK [setup] *******************************************************************
-ok: [fiworker3]
-ok: [fiworkerbig]
-ok: [fiworker5]
-ok: [fiworker4]
-ok: [fiworker6]
-ok: [fiworker7]
-ok: [fiworker9]
-ok: [fiworker10]
-ok: [fiworker8]
-ok: [fiworker11]
-
-TASK [kill_sidekiq_with_prejudice : kill_sidekiq_with_prejudice] ***************
-changed: [fiworker5]
-changed: [fiworker6]
-changed: [fiworker3]
-changed: [fiworker4]
-changed: [fiworkerbig]
-changed: [fiworker7]
-changed: [fiworker9]
-changed: [fiworker8]
-changed: [fiworker10]
-changed: [fiworker11]
-
-PLAY RECAP *********************************************************************
-fiworker10                 : ok=2    changed=1    unreachable=0    failed=0
-fiworker11                 : ok=2    changed=1    unreachable=0    failed=0
-fiworker3                  : ok=2    changed=1    unreachable=0    failed=0
-fiworker4                  : ok=2    changed=1    unreachable=0    failed=0
-fiworker5                  : ok=2    changed=1    unreachable=0    failed=0
-fiworker6                  : ok=2    changed=1    unreachable=0    failed=0
-fiworker7                  : ok=2    changed=1    unreachable=0    failed=0
-fiworker8                  : ok=2    changed=1    unreachable=0    failed=0
-fiworker9                  : ok=2    changed=1    unreachable=0    failed=0
-fiworkerbig                : ok=2    changed=1    unreachable=0    failed=0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Given my &lt;a href=&quot;https://fuzzygroup.github.io/blog/unix/2016/11/23/pkill-rocks.html&quot;&gt;previous praise of pkill&lt;/a&gt;, readers may be wondering why I used the old xargs trick.  Simply put I couldn’t make pkill work.  There are google posts on the topic but I didn’t have time to dig into it – I &lt;strong&gt;knew&lt;/strong&gt; that xargs had to work so I went with it.  Honestly I dont understand why Ansible doesn’t have a process module – it just seems so absolutely needed.&lt;/p&gt;
-
-&lt;p&gt;As with my previous example if there is interest, on Monday, I’ll publish examples showing the dynamic inventory version of this.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 02 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/12/02/killing-sidekiq-on-aws-with-ansible.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/12/02/killing-sidekiq-on-aws-with-ansible.html</guid>
-        
-        <category>aws</category>
-        
-        <category>ansible</category>
-        
-        <category>sidekiq</category>
-        
-        <category>rails</category>
-        
-        
-        <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>Clearing Rails Log Files on AWS with Ansible</title>
-        <description>&lt;p&gt;If you are reading this and you’ve read more than a few things I’ve written then you know that I’m, well, a &lt;em&gt;wordy son of a bitch&lt;/em&gt;.  I mean come on – did you see the post on &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws/2016/11/26/fear-and-loathing-in-awsville-or-adventures-in-partition-resizing.html&quot;&gt;AWS Partition Resizing&lt;/a&gt;?  I took like 7800 words to say “can’t do it” – apologies.&lt;/p&gt;
-
-&lt;p&gt;Anyway the digression into wordiness is because like me, Rails log files are wordy son’s of bitches – the number of times in my career that I’ve had to log into a box and do the log dance:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle exec rake log:clear
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;has to be measured in the hundreds if not thousands.  This morning I finally got mad enough to automate it with Ansible.  Here’s how:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;playbook: playbook_logs_clear_rails_logs.yml
-
-#
-# MONDAY ansible-playbook -i ec2.py playbook_logs_clear_rails_logs.yml
-# ansible-playbook -i inventories/production2 playbook_logs_clear_rails_logs.yml
-#
----
-  
-- hosts: worker
-  become: yes
-  remote_user: ubuntu
-  gather_facts: true
-  vars: 
-    - app_path: /var/www/apps/banks/current
-  roles:
-    - { role: logs_clear_rails_logs, tags: logs}
-
-role: 
-folder: logs_clear_rails_logs
-file: tasks/main.yml
-
----
-- name: logs_clear_rails_logs
-  shell: &quot;cd  &amp;amp;&amp;amp; bundle exec rake log:clear&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Here are the results:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i inventories/production2 playbook_logs_clear_rails_logs.yml
-
-PLAY [worker] ******************************************************************
-
-TASK [setup] *******************************************************************
-ok: [fiworkerbig]
-ok: [fiworker5]
-ok: [fiworker3]
-ok: [fiworker6]
-ok: [fiworker4]
-ok: [fiworker9]
-ok: [fiworker8]
-ok: [fiworker11]
-ok: [fiworker10]
-ok: [fiworker7]
-
-TASK [logs_clear_rails_logs : logs_clear_rails_logs] ***************************
-changed: [fiworker3]
-changed: [fiworker6]
-changed: [fiworker5]
-changed: [fiworker4]
-changed: [fiworkerbig]
-changed: [fiworker7]
-changed: [fiworker8]
-changed: [fiworker9]
-changed: [fiworker10]
-changed: [fiworker11]
-
-PLAY RECAP *********************************************************************
-fiworker10                 : ok=2    changed=1    unreachable=0    failed=0
-fiworker11                 : ok=2    changed=1    unreachable=0    failed=0
-fiworker3                  : ok=2    changed=1    unreachable=0    failed=0
-fiworker4                  : ok=2    changed=1    unreachable=0    failed=0
-fiworker5                  : ok=2    changed=1    unreachable=0    failed=0
-fiworker6                  : ok=2    changed=1    unreachable=0    failed=0
-fiworker7                  : ok=2    changed=1    unreachable=0    failed=0
-fiworker8                  : ok=2    changed=1    unreachable=0    failed=0
-fiworker9                  : ok=2    changed=1    unreachable=0    failed=0
-fiworkerbig                : ok=2    changed=1    unreachable=0    failed=0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Right now this is working with a static inventory file.  If anyone expresses interest, on Monday, I’ll publish a revised version which uses the python boto module to clear log files based on all boxes on EC2 dynamically matching a criteria like a name tag.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 02 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/12/02/clearing-rails-log-files-on-aws-with-ansible.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/12/02/clearing-rails-log-files-on-aws-with-ansible.html</guid>
-        
-        <category>aws</category>
-        
-        <category>ansible</category>
-        
-        <category>logs</category>
-        
-        
-        <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>On Donner, On Blitzen, On Martians, On Pebbles, On FitBits, On AppleWatches</title>
-        <description>
-</description>
-        <pubDate>Thu, 01 Dec 2016 15:44:09 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/gadget/2016/12/01/on-donner-on-blitzen-on-martians-on-pebbles-on-fitbits-on-applewatches.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/gadget/2016/12/01/on-donner-on-blitzen-on-martians-on-pebbles-on-fitbits-on-applewatches.html</guid>
-        
-        <category>gadget</category>
-        
-        <category>smartwatch</category>
-        
-        <category>pebble</category>
-        
-        <category>martian</category>
-        
-        <category>fitbit</category>
-        
-        <category>apple_watch</category>
-        
-        
-        <category>gadget</category>
-        
-      </item>
-    
-      <item>
-        <title>Debugging Christmas Lights</title>
-        <description>&lt;p&gt;In any family, over time, you specialize in your roles.  This is similar to a work environment where one person gets good at an aspect of the code base and then that person gets tasked with it on a regular basis.  In an ideal world everyone would always be 100% capable at all aspects of the code but we all know that’s generally not the case.  In our family, Dad (me) puts up the Christmas lights.  Part of it is that I don’t mind heights terribly, not the same as saying I like them but you get it but the other part of it is that &lt;em&gt;debugging crap that doesn’t work&lt;/em&gt; is really my very job definition.  And, a few days ago I wanted this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/debugging_xmas_lights.jpg&quot; alt=&quot;debugging_xmas_lights.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;but after 10 minutes or so I got this instead:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/debugging_xmas_lights2.jpg&quot; alt=&quot;debugging_xmas_lights2.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;And while I was initially reminded of the Bob Rivers / Twisted Christmas album - “I plug in one light and THEY ALL #$#(&lt;em&gt;$&lt;/em&gt;#) go OUT”, that wasn’t this.  Everything worked perfectly – until it all stopped.  Sigh.&lt;/p&gt;
-
-&lt;p&gt;The very essence of debugging is the quest for understanding and your key tool is &lt;em&gt;persistence&lt;/em&gt;.  I’ve worked with a lot of smart people in my life, many of them dramatically smarter than I am but I haven’t worked with many people who are as persistent.  Whether you are debugging software, hardware or even christmas lights, &lt;em&gt;persistence&lt;/em&gt; is what you want.  If you just think of yourself as a dog with a bone, that’s the right image.&lt;/p&gt;
-
-&lt;p&gt;Ok then.  The first step was to get out the tools.  Happily I recently bought a &lt;a href=&quot;https://www.amazon.com/gp/product/B019EJXUJU/ref=oh_aui_search_detailpage?ie=UTF8&amp;amp;psc=1&quot;&gt;non-contact AC voltage tester from Amazon&lt;/a&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/non_contact_tester.jpg&quot; alt=&quot;debugging_xmas_lights2.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;What this does is essentially &lt;em&gt;sniff&lt;/em&gt; electricity.  I’m not enough of a hardware guy to really understand it but I tried it and it works!  Given that I was doing this on a rainy day, not having to manipulate two test leads or a digital volt ohm meter was a huge, huge win.  This little gadget is actually sensitive enough that you can touch it to the end of a lightning cable and it will detect the voltage there so, apparently, it does both DC and AC.  Oh and did I mention it has an LED pen light built into it?  This thing rocks!&lt;/p&gt;
-
-&lt;p&gt;Whenever you have something, related to electricity, that happens after a period of latency, the natural suspect is somehow thermal or load related.  But here was the aggregate load:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;1 power strip&lt;/li&gt;
-  &lt;li&gt;4 strings of relatively low voltage lights&lt;/li&gt;
-  &lt;li&gt;1 &lt;a href=&quot;https://www.amazon.com/gp/product/B01JBTO16E/ref=oh_aui_search_detailpage?ie=UTF8&amp;amp;psc=1&quot;&gt;Christmas Laser Projector&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Two of the strings and the projector were all plugged into a contractor grade, 20 amp, thick as hell extension cord coming from a GFCI outlet.  Call this one Big Green.  The remaining two strings were plugged into a separate contractor grade cord but one that was only 15 amp.  And call this Little Orange.  Both of these have served me thru tree house building, home remodeling, etc.&lt;/p&gt;
-
-&lt;p&gt;This isn’t sufficient load to trip a breaker.  I grew up doing AC wiring stuff so I have no issues stating that as a fact.&lt;/p&gt;
-
-&lt;p&gt;So if we think of this in terms of debugging here are the different components at hand:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;power strip&lt;/li&gt;
-  &lt;li&gt;light string 1&lt;/li&gt;
-  &lt;li&gt;light string 2&lt;/li&gt;
-  &lt;li&gt;light string 3&lt;/li&gt;
-  &lt;li&gt;light string 4&lt;/li&gt;
-  &lt;li&gt;extension cord 1 - Big Green&lt;/li&gt;
-  &lt;li&gt;extension cord 2 - Little Orange&lt;/li&gt;
-  &lt;li&gt;GFCI outlet&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Any one of these, or any combination of these, could be leading to this problem.  And since it only happened after 10 minutes, I knew that at a worst case I was looking at N * 10 minutes in terms of potential maximum time that I’d be trouble shooting this where N was the number of components, 8.  So this was potentially at least a 90 minute plus exercise.  Given that the amount of time involved was now known to be non trivial, it was time to start by eliminating things outright.&lt;/p&gt;
-
-&lt;p&gt;Note: My worst case estimate was actually incorrect.  If the problem was combinatorial in nature like string 1 interacting with string 3 and causing the outage, well, I’m glad I didn’t realize this – its a lot more options.&lt;/p&gt;
-
-&lt;p&gt;My first task was to remove the power strip.  My wife had wanted to add more lasers to the mix so that was there to support the end goal – but we don’t have them yet so it was a case of over-engineering.  So, remove powerstrip, rejigger wires, try again.  &lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;My next step was to look at this in terms of overall complexity.  The most complex component is generally the one most likely to fail.  That meant that I should pull the laser projector from the mix.  Even though it was brand, stinking new, it is definitely more complex than christmas lights so out it goes.  And, once again, &lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;The lights are only a year old but they are very poorly made.  Even though they are a name brand, Sylvania, they seem to epitomize the term &lt;em&gt;shite quality&lt;/em&gt;.  Some of the time just screwing a bulb in blows out the bulb due to poor socket quality.  But my wife loves the visual so the chances of my being able to route these strands of lights to /dev/null approximates zero.  Given that I have issues with the light quality, the next step is to alternately remove each string of lights in turn:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;em&gt;Grumble&lt;/em&gt;.  Ok then so what’s left.  At this point we’re down to two extensions cords.  Little Orange isn’t as robust as big green so let’s take that out of the loop - &lt;strong&gt;10 minute and darkness!&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Hm… The message seems clear – we’re down to Big Green so let’s un plug it and substitute another one:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;10 minute and LIGHT!&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;10 more minute and still LIGHT!&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;10 more minute and still LIGHT!&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;So we’re good now but what went wrong?  To some extent if you debug something and you don’t actually understand the failure cause at the end then you may have won the battle but you have perhaps lost the war as the real goal should always be understanding.&lt;/p&gt;
-
-&lt;p&gt;When I look a more detailed look at my Big Green extension cord I saw this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/big_green_big_culprit.jpg&quot; alt=&quot;big_green_big_culprit.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Apparently I’ve fixed this extension cord in the past – and then it all made sense.  If you remember I have this all going into a GFCI outlet and I also mentioned that I was doing all this in the rain.  And that was the vital clue.  GFCI stands for Ground Fault Circuit Interrupter and it is a way for an electrical outlet to automatically shut down in dangerous conditions.  Since a GFCI outlet is more expensive than a standard outlet you don’t see them everywhere but they are &lt;strong&gt;required&lt;/strong&gt; for use in commercial bathrooms due to the potential issues with respect to water and electricity.  And if your home builder was any good you likely have them in your home bathrooms for the same reason.&lt;/p&gt;
-
-&lt;p&gt;So what seems to have been happening was that moisture was slowly affecting the Big Green extension cord.  After about 10 minutes it caused a GFCI issue which led to a power shut down.  Strangely it seemed to clear itself up almost immediately.  Odder still is that when I checked the extension cord with a circuit tester designed to catch GFCI wiring errors it reported just fine.&lt;/p&gt;
-
-&lt;p&gt;The morals of the story seem to be:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Don’t fix your extension cord – just replace it&lt;/li&gt;
-  &lt;li&gt;Debugging is the same when its software, hardware or christmas mights – it call comes down to persistence&lt;/li&gt;
-  &lt;li&gt;Anything can be debugged, you just have to take it step by step, bit by bit&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Merry Christmas!&lt;/p&gt;
-</description>
-        <pubDate>Thu, 01 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/debugging/2016/12/01/debugging-christmas-lights.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/debugging/2016/12/01/debugging-christmas-lights.html</guid>
-        
-        <category>debugging</category>
-        
-        <category>christmas</category>
-        
-        <category>software_engineering</category>
-        
-        
-        <category>debugging</category>
-        
-      </item>
-    
-      <item>
-        <title>AWS, Ansible and Boto or Virtualization IS the Answer</title>
-        <description>&lt;p&gt;Historically I haven’t been a fan of virtualization whether its Docker, Vagrant or something else.  This whole let’s run a computer inside a computer trend, well, it feels lazy.  It feels like we have an excess of performance so let’s virtualize!  Today, however, I think I may have turned a corner and started to become a fan.&lt;/p&gt;
-
-&lt;p&gt;The situation in question was using Ansible to dynamically create EC2 instances.  &lt;a href=&quot;http://www.nickjanetakis.com/&quot;&gt;Nick&lt;/a&gt; and I have been hard at this for the past several days and we’re nearing the end – we can just about &lt;em&gt;taste&lt;/em&gt; it.  Well, we could taste it and then yesterday we hit this crap:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;TASK [ec2_create_appdata_proxy : create_instance] ******************************
-fatal: [54.244.41.180]: FAILED! =&amp;gt; {&quot;changed&quot;: false, &quot;failed&quot;: true, &quot;msg&quot;: &quot;boto required for this module&quot;}
-fatal: [54.218.52.37]: FAILED! =&amp;gt; {&quot;changed&quot;: false, &quot;failed&quot;: true, &quot;msg&quot;: &quot;boto required for this module&quot;}
-	to retry, use: --limit @/Users/sjohnson/Dropbox/appdatallc/ansible/playbook_appdata_proxy_create_instances.retry
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;This was on:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;a brand new MacBook Pro&lt;/li&gt;
-  &lt;li&gt;clean OS install of whatever damn name comes after Capitan - Yosemite maybe?&lt;/li&gt;
-  &lt;li&gt;fresh installs of everything&lt;/li&gt;
-  &lt;li&gt;all components installed thru Ansible itself via my MacBook Pro configuration script&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;And no matter what we did, neither of us could come up with a way around this including:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;all kinds of sudo manipulations&lt;/li&gt;
-  &lt;li&gt;installing python’s equivalent to rvm – mkvirtual&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;While I don’t know Nick’s age or industry experience, he’s a Docker expert, a Udemy star and smart.  My suspicion is that between the two of us we have an aggregate of 40 + industry years.  At least on the Ruby side alone we probably have close to 2 decades of experience.  And yet neither of us could get past an &lt;em&gt;install issue&lt;/em&gt;:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Boto was present&lt;/li&gt;
-  &lt;li&gt;Boto worked via the command line&lt;/li&gt;
-  &lt;li&gt;Python was present (Boto is a python thing)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Now I tend to have boxes that run for years and cruft does accumulate.  But this wasn’t that circumstance by any means.  This was a box that is so new that it is glorious to use.  And, even so, I’m hitting this crap.  So I know that cruft isn’t the issue.&lt;/p&gt;
-
-&lt;p&gt;Nick and I walked away from a morning of pair programming fairly pissed to be honest.  I took the position of “Well, let’s provision an instance on AWS and do all our Ansible execution from there.”  Nick took the position of “Let’s try using Vagrant as a way to run Ansible locally and create the EC2 resources we need” – and Nick was &lt;strong&gt;right&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-vagrant-file&quot;&gt;The Vagrant File&lt;/h1&gt;
-
-&lt;p&gt;Let’s start with the Vagrant file:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;VAGRANTFILE_API_VERSION = '2'
-
-$provision = &amp;lt;&amp;lt;SCRIPT
-sudo apt-get install -y software-properties-common
-sudo apt-add-repository -y ppa:ansible/ansible
-sudo apt-add-repository -y ppa:chris-lea/python-boto
-sudo apt-get update
-sudo apt-get install -y ansible python-boto python-apt curl git unzip
-curl &quot;https://s3.amazonaws.com/aws-cli/awscli-bundle.zip&quot; -o &quot;awscli-bundle.zip&quot;
-unzip awscli-bundle.zip
-yes | sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
-sudo rm -rf awscli*
-SCRIPT
-
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = 'ubuntu/trusty64'
-  config.ssh.insert_key = false
-
-  config.vm.provider :virtualbox do |vm|
-    vm.name = 'appdataansible'
-    vm.memory = 512
-    vm.cpus = 1
-    vm.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
-    vm.customize ['modifyvm', :id, '--ioapic', 'on']
-  end
-
-  config.vm.define :appdataansible
-  config.vm.hostname = 'appdataansible'
-
-  # When re-creating VMs, run ssh-keygen -R 192.168.88.2 to fix connect issues.
-  config.vm.network :private_network, ip: '192.168.88.2'
-
-  config.vm.provision 'shell', inline: $provision
-  config.vm.provision 'file', source: '~/.aws', destination: '~/.aws'
-  
-  # TODO: Copy in your pem file for appdata (I didn't know the file name)
-  config.vm.provision 'file', source: '/Users/sjohnson/.ssh/appdata_aws.pem', destination: '~/.ssh/appdata_aws.pem'
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;All I did was:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;create a text file called Vagrantfile in my ansible root directory (where all my playbooks reside)&lt;/li&gt;
-  &lt;li&gt;Ran the command: &lt;strong&gt;vagrant up&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;This started the virtual machine and it loaded in all my AWS credentials from ~/.aws/credentials.  Once this was running I had an Ubuntu 14.04 distro running locally i.e. “trusty” and I could use it to execute my playbooks as follows:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook  -i inventories/dummy playbook_appdata_proxy_create_elb.yml -vvv
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;That’s the exact syntax I would have used locally.  Even -vvv for extended output is fully available.&lt;/p&gt;
-
-&lt;p&gt;Commands I used successfully within vagrant:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;ssh -i ~/.ssh/appdata_aws.pem ubuntu@ec2-54-149-81-245.us-west-2.compute.amazonaws.com (for logging directly into a created instance)&lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;aws ec2  describe-instances&lt;/td&gt;
-          &lt;td&gt;grep PublicDnsName (for grabbing the DNS names from created instances)&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Commands I used to get vagrant going:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;vagrant up (to build it)&lt;/li&gt;
-  &lt;li&gt;vagrant halt (when I needed to stop it)&lt;/li&gt;
-  &lt;li&gt;vagrant ssh (to get into it)&lt;/li&gt;
-  &lt;li&gt;cd /vagrant (to get into my locally mounted filesystem within vagrant)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;End to end we spent less than 2 hours to get:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;vagrant running&lt;/li&gt;
-  &lt;li&gt;a considerable amount of Ansible development done&lt;/li&gt;
-  &lt;li&gt;something actually working&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Given how hard it can be at times to deal with virtual environments like rvm or its python equivalent and to deal with software troubleshooting this whole process really makes me wonder about whether I should be using Vagrant for other issues.  &lt;strong&gt;Recommended&lt;/strong&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 01 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/aws/2016/12/01/aws-ansible-and-boto-or-virtualization-is-the-answer.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/aws/2016/12/01/aws-ansible-and-boto-or-virtualization-is-the-answer.html</guid>
-        
-        <category>aws</category>
-        
-        <category>ansible</category>
-        
-        <category>boto</category>
-        
-        <category>virtualization</category>
-        
-        <category>vagrant</category>
         
         
         <category>aws</category>
