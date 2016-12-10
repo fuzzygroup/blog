@@ -6,9 +6,111 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 07 Dec 2016 05:31:24 -0500</pubDate>
-    <lastBuildDate>Wed, 07 Dec 2016 05:31:24 -0500</lastBuildDate>
+    <pubDate>Thu, 08 Dec 2016 09:58:33 -0500</pubDate>
+    <lastBuildDate>Thu, 08 Dec 2016 09:58:33 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>AWS Tutorial - Using Squid, EC2 and ELB to Defeat Crawling Blockages</title>
+        <description>&lt;p&gt;I write crawlers.  I have crawlers for years.  And I &lt;strong&gt;hate&lt;/strong&gt; beyond &lt;strong&gt;hate&lt;/strong&gt; when companies throw up roadblocks to defeat crawlers.  As a general rule of thumb the big Internet companies tend to be the worst at this – they, who shall be unnamed, love information to be “free” but they hate like hell to themselves be indexed.&lt;/p&gt;
+
+&lt;p&gt;Well, in the age of the cloud, crawling blockages can be really, really easy to defeat.  In this tutorial I’m going to show you how.&lt;/p&gt;
+
+&lt;h1 id=&quot;proxying&quot;&gt;Proxying&lt;/h1&gt;
+
+&lt;p&gt;The core technology to defeat blockages is simple – you use a proxy server.  Let’s say that you have a server on this ip address:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;24.36.48.19
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If someone wants to block your crawler all they need to do is place a block on that ip address by any number of means - code, router level, firewall level, etc and your code can’t actually access the data.  A proxy server sits in between your code and the data you want to access.  Here’s a ruby example using Mechanize:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;agent = Mechanize.new
+url = &quot;http://www.google.com/&quot;
+proxy_server_url = &quot;proxy.foo.com&quot;
+proxy_server_port = 3199    
+agent.set_proxy(proxy_server_url, proxy_server_port)
+page = agent.get(url)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;That will cause the request to be through the proxy server and NOT from your actual server.  Given that a proxy server can be blocked as easily as your actual server this may not seem all that significant – but think of this in terms of a cloud computing environment like AWS:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;In aws you can create instances trivially with tools like ansible&lt;/li&gt;
+  &lt;li&gt;In aws you can automatically / automagically install a full featured proxy server like squid with one command&lt;/li&gt;
+  &lt;li&gt;In aws you can front end a cluster of proxy server instances behind an elastic load balancer allowing your software to simply access the load balancer and then the proxy servers can be dynamically replaced either when they are blocked or perhaps proactively every single day&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;squid&quot;&gt;Squid&lt;/h1&gt;
+
+&lt;p&gt;Squid is the proxy server we’re going to be using.  Squid is an old school Internet tool – I remember experimenting with it back in maybe 2002 although that seems impossible but it actually isn’t since it is cited in papers going back to &lt;a href=&quot;https://en.wikipedia.org/wiki/Squid_(software)&quot;&gt;1995&lt;/a&gt;.  We’re going to need to use the 3.5 or later version of Squid since we need support for what is called ProxyPass which is what lets a proxy transaction travel through a load balancer.&lt;/p&gt;
+
+&lt;p&gt;If you’re uncertain about the installed version of Squid then run this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/sbin/squid -v
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Thanks to &lt;a href=&quot;http://mamchenkov.net/wordpress/2004/03/23/how-to-check-squid-proxy-server-version-on-a-linux-system/&quot;&gt;Mamchenkov&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Troubleshooting an ELB in Front of an EC2 Running Squid&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Create the proxy programmatically using proxy protocoal&lt;/li&gt;
+  &lt;li&gt;Squid has to be 3.5 or later&lt;/li&gt;
+  &lt;li&gt;Make sure that the ec2 has the proxy port open in its security group&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;ec2 has a sec group
+lb has a security group&lt;/p&gt;
+
+&lt;p&gt;make sure the ports are sync’d&lt;/p&gt;
+
+&lt;h1 id=&quot;architecture&quot;&gt;Architecture&lt;/h1&gt;
+
+&lt;p&gt;We’re going to need the following architecture bits:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;an elastic load balancer&lt;/li&gt;
+  &lt;li&gt;1 or more EC2 instances that run squid&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;ansibling-this-all-together&quot;&gt;Ansibling This All Together&lt;/h1&gt;
+
+&lt;h1 id=&quot;be-careful---bandwidth-bills-are-real&quot;&gt;Be Careful - Bandwidth Bills Are Real&lt;/h1&gt;
+</description>
+        <pubDate>Thu, 08 Dec 2016 09:58:32 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/12/08/aws-tutorial-using-squid-ec2-and-elb-to-defeat-crawling-blockages.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/08/aws-tutorial-using-squid-ec2-and-elb-to-defeat-crawling-blockages.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Rails Commando - Parachuting into a Rails Code Base and Adding Value from Day 1</title>
+        <description>&lt;p&gt;In 2009, 2 weeks before Christmas, with no notice, I and the rest of the eduFire startup were laid off with no notice, no severance and no benefits save, I believe, some small level of legally required COBRA.  My role was VP of Engineering and I held stock options on 10% of the company.  It was a mind-blowing level of &lt;strong&gt;suck&lt;/strong&gt; and one that I doubt I’ll ever forgive the &lt;a href=&quot;https://www.linkedin.com/in/jonbischke&quot;&gt;founder&lt;/a&gt; for – classless in every single way.  I think it was also the last time I’ve trusted an organization.&lt;/p&gt;
+
+&lt;p&gt;Now I’m a firm believer that there are good times and there are bad and while 2009 was the heights of suck, it launched me down the path of “make lots and lots of money from consulting” and that’s been fantastic for me.  In particular I’ve become more than a bit of what I refer to as a &lt;em&gt;rails commando&lt;/em&gt; – I can drop into a Rails code base and add value from Day 1.  This blog post talks about how I go about that.&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 07 Dec 2016 05:55:50 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/rails/2016/12/07/rails-commando-parachuting-into-a-rails-code-base-and-adding-value-from-day-1.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails/2016/12/07/rails-commando-parachuting-into-a-rails-code-base-and-adding-value-from-day-1.html</guid>
+        
+        <category>rails</category>
+        
+        <category>ruby</category>
+        
+        <category>software_engineering</category>
+        
+        <category>eduFire</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>The Incredible Smartness of Bezos or A New Revenue Stream for Amazon with Amazon Go</title>
@@ -228,71 +330,6 @@ flush privileges;
       </item>
     
       <item>
-        <title>AWS Tutorial - Using Squid, EC2 and ELB to Defeat Crawling Blockages</title>
-        <description>&lt;p&gt;I write crawlers.  I have crawlers for years.  And I &lt;strong&gt;hate&lt;/strong&gt; beyond &lt;strong&gt;hate&lt;/strong&gt; when companies throw up roadblocks to defeat crawlers.  As a general rule of thumb the big Internet companies tend to be the worst at this – they, who shall be unnamed, love information to be “free” but they hate like hell to themselves be indexed.&lt;/p&gt;
-
-&lt;p&gt;Well, in the age of the cloud, crawling blockages can be really, really easy to defeat.  In this tutorial I’m going to show you how.&lt;/p&gt;
-
-&lt;h1 id=&quot;proxying&quot;&gt;Proxying&lt;/h1&gt;
-
-&lt;p&gt;The core technology to defeat blockages is simple – you use a proxy server.  Let’s say that you have a server on this ip address:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;24.36.48.19
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;If someone wants to block your crawler all they need to do is place a block on that ip address by any number of means - code, router level, firewall level, etc and your code can’t actually access the data.  A proxy server sits in between your code and the data you want to access.  Here’s a ruby example using Mechanize:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;agent = Mechanize.new
-url = &quot;http://www.google.com/&quot;
-proxy_server_url = &quot;proxy.foo.com&quot;
-proxy_server_port = 3199    
-agent.set_proxy(proxy_server_url, proxy_server_port)
-page = agent.get(url)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;That will cause the request to be through the proxy server and NOT from your actual server.  Given that a proxy server can be blocked as easily as your actual server this may not seem all that significant – but think of this in terms of a cloud computing environment like AWS:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;In aws you can create instances trivially with tools like ansible&lt;/li&gt;
-  &lt;li&gt;In aws you can automatically / automagically install a full featured proxy server like squid with one command&lt;/li&gt;
-  &lt;li&gt;In aws you can front end a cluster of proxy server instances behind an elastic load balancer allowing your software to simply access the load balancer and then the proxy servers can be dynamically replaced either when they are blocked or perhaps proactively every single day&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;squid&quot;&gt;Squid&lt;/h1&gt;
-
-&lt;p&gt;Squid is the proxy server we’re going to be using.  Squid is an old school Internet tool – I remember experimenting with it back in maybe 2002 although that seems impossible but it actually isn’t since it is cited in papers going back to &lt;a href=&quot;https://en.wikipedia.org/wiki/Squid_(software)&quot;&gt;1995&lt;/a&gt;.  We’re going to need to use the 3.5 or later version of Squid since we need support for what is called ProxyPass which is what lets a proxy transaction travel through a load balancer.&lt;/p&gt;
-
-&lt;p&gt;If you’re uncertain about the installed version of Squid then run this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/sbin/squid -v
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Thanks to &lt;a href=&quot;http://mamchenkov.net/wordpress/2004/03/23/how-to-check-squid-proxy-server-version-on-a-linux-system/&quot;&gt;Mamchenkov&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;architecture&quot;&gt;Architecture&lt;/h1&gt;
-
-&lt;p&gt;We’re going to need the following architecture bits:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;an elastic load balancer&lt;/li&gt;
-  &lt;li&gt;1 or more EC2 instances that run squid&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;ansibling-this-all-together&quot;&gt;Ansibling This All Together&lt;/h1&gt;
-
-&lt;h1 id=&quot;be-careful---bandwidth-bills-are-real&quot;&gt;Be Careful - Bandwidth Bills Are Real&lt;/h1&gt;
-</description>
-        <pubDate>Mon, 05 Dec 2016 17:24:54 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/12/05/aws-tutorial-using-squid-ec2-and-elb-to-defeat-crawling-blockages.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/05/aws-tutorial-using-squid-ec2-and-elb-to-defeat-crawling-blockages.html</guid>
-        
-        
-      </item>
-    
-      <item>
         <title>Interviewing with the Big Tech Firms</title>
         <description>&lt;p&gt;I have never been a big company person.  My ideal company fits into a volkswagen and can generally be well fed with a single pizza.  My one big company experience was 450 people globally, 46 million in annual revenues, 25 locations – and that’s not actually big anymore – when even Twitter employs over 4,000 people.&lt;/p&gt;
 
@@ -455,17 +492,6 @@ page = agent.get(url)
         
         
         <category>remote</category>
-        
-      </item>
-    
-      <item>
-        <title>The Delays that Make Management Crazy</title>
-        <description>
-</description>
-        <pubDate>Sun, 04 Dec 2016 05:28:36 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/12/04/the-delays-that-make-management-crazy.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/04/the-delays-that-make-management-crazy.html</guid>
-        
         
       </item>
     
