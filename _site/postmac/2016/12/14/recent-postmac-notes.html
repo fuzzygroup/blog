@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>What Just Happened To Your Database In the Past 10 Minutes</title>
-  <meta name="description" content="So I’m rapidly coming to the conclusion that Christmas is the enemy of getting things done.  While I have come up with a lot of potential topics to write abo...">
+  <title>Recent PostMac Notes</title>
+  <meta name="description" content="Some recent things in the Post Mac category:">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/mysql/2016/12/14/what-just-happened-to-your-database-in-the-past-10-minutes.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/postmac/2016/12/14/recent-postmac-notes.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
   
   <script>
@@ -91,60 +91,22 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">What Just Happened To Your Database In the Past 10 Minutes</h1>
+    <h1 class="post-title" itemprop="name headline">Recent PostMac Notes</h1>
     <p class="I'll"><time datetime="2016-12-14T00:00:00-05:00" itemprop="datePublished">Dec 14, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>So I’m rapidly coming to the conclusion that Christmas is the enemy of getting things done.  While I have come up with a lot of potential topics to write about recently I don’t seem to be able to get anything actually finished due to:</p>
+    <p>Some recent things in the Post Mac category:</p>
 
 <ul>
-  <li>Present Shopping</li>
-  <li>Present Wrapping</li>
-  <li>Christmas Events (parties, choir concerts, etc)</li>
-  <li>Christmas Baking</li>
+  <li><a href="https://mondaynote.com/macbook-pro-launch-perplexing-b47003037b2e#.88txiffc1">Jean Louis Gassee returned his New MacBook Pro</a> and called the launch <strong>perplexing</strong>; <a href="https://news.ycombinator.com/item?id=13162310">Hacker News Discussion</a></li>
+  <li><a href="https://9to5mac.com/2016/12/13/why-apple-is-removing-time-remaining-battery-life-estimates-macbook-pro/">Apple is removing battery life estimates from the MacBook Pro</a></li>
+  <li><a href="https://www.theguardian.com/technology/2016/dec/12/apple-macbook-pro-review-the-best-computer-you-shouldnt-buy">The Guardian calls the next MacBook Pro the Best Computer You Shouldn’t Buy</a></li>
 </ul>
 
-<p>Alas – at least, as my old boss, <a href="https://twitter.com/rafer">Scott Rafer</a>, used to say – <em>these are high quality problems to have</em>!</p>
+<p><a href="https://hn.algolia.com/?query=macbook%20pro&amp;sort=byPopularity&amp;prefix&amp;page=0&amp;dateRange=pastWeek&amp;type=story">Hacker News search on recent MacBook articles</a>.</p>
 
-<p>A quick post today – looking at the state of your database.  Let’s say you have a table called posts and it has a field called created_at (the Rails standard way of tracking table changes) and you want to see how many things came into that table in the past 10 minutes.  Here’s the sql you need:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>SELECT COUNT(*) FROM posts WHERE created_at &gt; DATE_ADD(NOW(),INTERVAL - 10 MINUTE);
-</code></pre>
-</div>
-
-<p>Previously I’ve generally looked at tables and then tried to relate what’s going on to the current time and adjust in my head for the server time zone offset.  This is <strong>much, much</strong> better.</p>
-
-<p>A really nice side effect of this is that you can simply change the interval quickly and see if your performance is linear or non-linear.  Let’s say you change your interval to 5, 10 and 15 minutes and this was the result:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>MariaDB [foo_production]&gt; SELECT COUNT(*) FROM posts WHERE created_at &gt; DATE_ADD(NOW(),INTERVAL - 5 MINUTE);
-+----------+
-| COUNT(*) |
-+----------+
-|      468 |
-+----------+
-1 row in set (0.45 sec)
-
-MariaDB [foo_production]&gt; SELECT COUNT(*) FROM posts WHERE created_at &gt; DATE_ADD(NOW(),INTERVAL - 10 MINUTE);
-+----------+
-| COUNT(*) |
-+----------+
-|      512 |
-+----------+
-1 row in set (0.44 sec)
-
-MariaDB [foo_production]&gt; SELECT COUNT(*) FROM posts WHERE created_at &gt; DATE_ADD(NOW(),INTERVAL - 15 MINUTE);
-+----------+
-| COUNT(*) |
-+----------+
-|     1312 |
-+----------+
-1 row in set (0.45 sec)
-</code></pre>
-</div>
-
-<p>What this illustrates is that while performance was non linear in the 5 to 10 minute range, it became linear again (roughly) at the 15 minute mark.  This is a nice simple way to get a <em>feel</em> if performance is overall on track.</p>
-
+<p>I should note that I am basically happy with my MacBook Pro 13” but I bought the previous generation so it is much, much older than the current.  And my wife absolutely adores here brand new MacBook (but not the pro).  Her only real objection is having to use a dongle to print on our old Brother laser printer but she’s back in graduate school now and very, very happy with the weight and size of it.</p>
 
   </div>
   

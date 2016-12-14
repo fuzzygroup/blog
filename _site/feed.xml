@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 14 Dec 2016 03:36:19 -0500</pubDate>
-    <lastBuildDate>Wed, 14 Dec 2016 03:36:19 -0500</lastBuildDate>
+    <pubDate>Wed, 14 Dec 2016 04:38:49 -0500</pubDate>
+    <lastBuildDate>Wed, 14 Dec 2016 04:38:49 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -33,6 +33,34 @@
 
 &lt;p&gt;A really nice side effect of this is that you can simply change the interval quickly and see if your performance is linear or non-linear.  Let’s say you change your interval to 5, 10 and 15 minutes and this was the result:&lt;/p&gt;
 
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;MariaDB [foo_production]&amp;gt; SELECT COUNT(*) FROM posts WHERE created_at &amp;gt; DATE_ADD(NOW(),INTERVAL - 5 MINUTE);
++----------+
+| COUNT(*) |
++----------+
+|      468 |
++----------+
+1 row in set (0.45 sec)
+
+MariaDB [foo_production]&amp;gt; SELECT COUNT(*) FROM posts WHERE created_at &amp;gt; DATE_ADD(NOW(),INTERVAL - 10 MINUTE);
++----------+
+| COUNT(*) |
++----------+
+|      512 |
++----------+
+1 row in set (0.44 sec)
+
+MariaDB [foo_production]&amp;gt; SELECT COUNT(*) FROM posts WHERE created_at &amp;gt; DATE_ADD(NOW(),INTERVAL - 15 MINUTE);
++----------+
+| COUNT(*) |
++----------+
+|     1312 |
++----------+
+1 row in set (0.45 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;What this illustrates is that while performance was non linear in the 5 to 10 minute range, it became linear again (roughly) at the 15 minute mark.  This is a nice simple way to get a &lt;em&gt;feel&lt;/em&gt; if performance is overall on track.&lt;/p&gt;
+
 </description>
         <pubDate>Wed, 14 Dec 2016 00:00:00 -0500</pubDate>
         <link>https://fuzzygroup.github.io/blog/mysql/2016/12/14/what-just-happened-to-your-database-in-the-past-10-minutes.html</link>
@@ -46,6 +74,108 @@
         
         
         <category>mysql</category>
+        
+      </item>
+    
+      <item>
+        <title>The Silver Searcher</title>
+        <description>&lt;p&gt;I had a project die about two months ago and I’ve been involved in a bit of resurrection work recently.  This was related to my comments on &lt;a href=&quot;https://fuzzygroup.github.io/blog/rails/2016/12/06/code-rot-is-very-very-real.html&quot;&gt;code rot&lt;/a&gt;.  Happily, with the assistance of &lt;a href=&quot;http://dasari.me&quot;&gt;Dv&lt;/a&gt; and &lt;a href=&quot;http://www.nickjanetakis.com&quot;&gt;Nick&lt;/a&gt; for different aspects, we’re once again indexing and functioning correctly.  Today I’m going to talk about a basic search tool, &lt;a href=&quot;https://github.com/ggreer/the_silver_searcher&quot;&gt;The Silver Searcher&lt;/a&gt;, also known as ag and that’s how I’ll refer to it mostly.&lt;/p&gt;
+
+&lt;p&gt;This blog post is written as a basic, example based tutorial since that type of information seems to be entirely missing from &lt;a href=&quot;http://geoff.greer.fm/ag/&quot;&gt;ag’s home page&lt;/a&gt; and github page.  ag is a fantastic tool but its usage isn’t always apparent.&lt;/p&gt;
+
+&lt;p&gt;ag, the silver searcher’s command line invocation, is a search tool similar to grep or ack only:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;better&lt;/li&gt;
+  &lt;li&gt;faster&lt;/li&gt;
+  &lt;li&gt;able to leap tall buildings in a single bound! (just kidding but it feels that way)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ag is a fantastic tool and its strong enough that I’ve just added it to my standard ansible playbook for all my servers so I will always have it available.  Recommended&lt;/p&gt;
+
+&lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
+
+&lt;p&gt;ag can be installed on a mac using homebrew:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install the_silver_searcher
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Or on Ubuntu using:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt-get install silversearcher-ag
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;usage&quot;&gt;Usage&lt;/h1&gt;
+
+&lt;p&gt;ag operates by searching in the current directory and below using a very simple syntax:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ag WHAT_YOU_WANT_TO_FIND
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;replace WHAT_YOU_WANT_TO_FIND with, well, what you’re looking for.  Here’s an example&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ag NUM_THREADS=10
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In this case I was struggling to find documentation that I knew I had written down but I had changed boxes, re-organized directories and so on.  By simply opening a Terminal window to my home directory i.e. ~ and then typing ag NUM_THREADS=10 I was able to find all documents containing this.&lt;/p&gt;
+
+&lt;h2 id=&quot;understanding-how-ag-operates&quot;&gt;Understanding How ag Operates&lt;/h2&gt;
+
+&lt;p&gt;Search tools tend to be fiddly little beasts at the best of times and if you don’t understand how they work then this tends to rise up and bite you badly.  Here’s what I know about how ag operates and that I took the time to verify:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Searches by default are case insensitive; I got roughly the same results with ag num_threads=10 as I did with ag NUM_THREADS=10; no I don’t understand why I got 76 results with the lower case version and 77 with the upper case but the box I’m searching is a bit wonky so perhaps that’s it.&lt;/li&gt;
+  &lt;li&gt;Searches go across directories by default&lt;/li&gt;
+  &lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 14 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/search/2016/12/14/the-silver-searcher.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/search/2016/12/14/the-silver-searcher.html</guid>
+        
+        <category>search</category>
+        
+        <category>grep</category>
+        
+        <category>ack</category>
+        
+        <category>ag</category>
+        
+        <category>silver_searcher</category>
+        
+        
+        <category>search</category>
+        
+      </item>
+    
+      <item>
+        <title>Recent PostMac Notes</title>
+        <description>&lt;p&gt;Some recent things in the Post Mac category:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://mondaynote.com/macbook-pro-launch-perplexing-b47003037b2e#.88txiffc1&quot;&gt;Jean Louis Gassee returned his New MacBook Pro&lt;/a&gt; and called the launch &lt;strong&gt;perplexing&lt;/strong&gt;; &lt;a href=&quot;https://news.ycombinator.com/item?id=13162310&quot;&gt;Hacker News Discussion&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://9to5mac.com/2016/12/13/why-apple-is-removing-time-remaining-battery-life-estimates-macbook-pro/&quot;&gt;Apple is removing battery life estimates from the MacBook Pro&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.theguardian.com/technology/2016/dec/12/apple-macbook-pro-review-the-best-computer-you-shouldnt-buy&quot;&gt;The Guardian calls the next MacBook Pro the Best Computer You Shouldn’t Buy&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://hn.algolia.com/?query=macbook%20pro&amp;amp;sort=byPopularity&amp;amp;prefix&amp;amp;page=0&amp;amp;dateRange=pastWeek&amp;amp;type=story&quot;&gt;Hacker News search on recent MacBook articles&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I should note that I am basically happy with my MacBook Pro 13” but I bought the previous generation so it is much, much older than the current.  And my wife absolutely adores here brand new MacBook (but not the pro).  Her only real objection is having to use a dongle to print on our old Brother laser printer but she’s back in graduate school now and very, very happy with the weight and size of it.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 14 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/postmac/2016/12/14/recent-postmac-notes.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/postmac/2016/12/14/recent-postmac-notes.html</guid>
+        
+        <category>postmac</category>
+        
+        <category>osx</category>
+        
+        
+        <category>postmac</category>
         
       </item>
     
@@ -311,95 +441,6 @@ update: --no-rdoc --no-ri
         
         
         <category>ruby</category>
-        
-      </item>
-    
-      <item>
-        <title>Code Rot is Very, Very Real</title>
-        <description>&lt;p&gt;Today has been an unmitigated disaster.  In the process of reviving a &lt;a href=&quot;https://fuzzygroup.github.io/blog/osx/2016/12/06/bringing-an-old-macbook-pro-back-to-life.html&quot;&gt;MacBook Pro that was old&lt;/a&gt; I had to delete and re-install rvm, gemsets, etc and, &lt;strong&gt;damn&lt;/strong&gt;, has it ever sucked.  And I don’t mean “oh it sucked” – I mean this has sucked monkey balls.  I’ve been at it 12 hours and my conclusion is that I’m not sure that it will ever work.  And this brings us to &lt;strong&gt;code rot&lt;/strong&gt;.  Rot is what happens to a physical artifact when you don’t take care of it.  Now if you haven’t been at this for too long you’re thinking something like:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;These are perfect digital assets how can there possibly be rot; Scott is smoking the whacky weed.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Alas, no and I wish I was.  Even if your digital assets don’t decay, the supporting ecosystem that they are in actually does change.  As an example part of the Gemfile had a nokogiri 1.4.4 hard coded version number in it.  Now I might refer to Nokogiri as NokoVietnameGiri since I’m generally about as successful in installing Nokogiri as the U.S. was in winning Vietnam.  But today was far, far worse.  Finally I discovered that Nokogiri 1.4.x is now considered too old and things have changed too much and their recommendation is simple – &lt;strong&gt;upgrade&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;Note: No disrespect meant to anyone or their family involved in Vietnam.  Vietnam was a political war and soldiers were not allowed to win it.&lt;/p&gt;
-
-&lt;p&gt;And that’s what I mean by code rot – all executable code these days depends on a precarious web of dependencies.  If you’re not actively maintaining it then you are very, very much hosed should a sufficient amount of time pass and you need to re-install things.&lt;/p&gt;
-
-&lt;p&gt;In this case I have to go into a code base that has laid fallow for well over a year now.  And while it has run like a champ until recently, certain things have changed and I now need to actively make changes to the code, modify vendored gems, etc.  And that means I really, really need a workable code base.  And without the ability to run bundle install, well, I’ve got nothing.&lt;/p&gt;
-
-&lt;p&gt;Since I grew up in a family that made their living from, among other things, real estate, I’m going to make an analogy.  If you owned physical real estate, you wouldn’t dream of not touching it for more than a year – you’d expect to do small maintenance, plumbing,  paint, weatherstrip, whatever.  And if it was a revenue producing property, as this was a revenue producing bit of software, you would really never dream of letting it lie fallow for a year.&lt;/p&gt;
-
-&lt;p&gt;So code rot is real but I don’t think that it really is any different from physical artifacts.  The universe does, after all, trend from order to disorder, towards ever increasing entropy.&lt;/p&gt;
-
-&lt;p&gt;The bottom line here is that the next time someone tells you that its ok to let code just sit around and decay, perhaps you might advocate more strongly for doing at least some maintenance on it.  I strongly wish that I had done a better job of that.  &lt;em&gt;regrets&lt;/em&gt;&lt;/p&gt;
-</description>
-        <pubDate>Tue, 06 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/rails/2016/12/06/code-rot-is-very-very-real.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails/2016/12/06/code-rot-is-very-very-real.html</guid>
-        
-        <category>ruby</category>
-        
-        <category>rails</category>
-        
-        <category>software_engineering</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Bringing an Old MacBook Pro Back to Life</title>
-        <description>&lt;p&gt;This morning has been more than a tad frustrating – and let’s leave Tad out of this, shall we?  I’ve been engaged in bringing my 2011 MacBook Pro 15 back to life.  After a brief venture into Linux, I found that I really needed the data on this box back and despite my Time Machine woes I was able to restore most everything.  I’m now trying to make it actually a functional development tool since it is the only machine that generally seems to run this particular obsolete gem stack – although &lt;a href=&quot;http://www.dasari.me/&quot;&gt;Dv&lt;/a&gt; would argue I should just kill everything and run Vagrant – something I’m thinking about.&lt;/p&gt;
-
-&lt;p&gt;Here’s the process I’ve been thru:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;kill brew and reinstall it: &lt;strong&gt;ruby -e “$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)”&lt;/strong&gt; and then &lt;strong&gt;ruby -e “$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)”&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;kill rvm and re-install it: &lt;strong&gt;rvm implode&lt;/strong&gt; and then **\curl -sSL https://get.rvm.io&lt;/td&gt;
-          &lt;td&gt;bash** &lt;a href=&quot;https://richonrails.com/articles/uninstalling-rvm&quot;&gt;Docs&lt;/a&gt;&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;install cask room: &lt;strong&gt;brew cask install google-chrome&lt;/strong&gt; &lt;a href=&quot;https://caskroom.github.io/&quot;&gt;Docs&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;kill bundler and re-install it:  &lt;strong&gt;gem install bundler&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;kill gem and reinstall it: &lt;strong&gt;gem update –system ‘2.3.0’&lt;/strong&gt; &lt;a href=&quot;http://stackoverflow.com/questions/13626143/how-to-upgrade-rubygems&quot;&gt;SO&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I then updated my &lt;a href=&quot;https://github.com/fuzzygroup/ansible-macbook-pro&quot;&gt;Ansible MacBook Pro configuration routine&lt;/a&gt; and ran it against the box.  And then I hit a high degree of &lt;a href=&quot;https://fuzzygroup.github.io/blog/rails/2016/12/06/code-rot-is-very-very-real.html&quot;&gt;code rot&lt;/a&gt; that, well, totally ruined my day.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 06 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/osx/2016/12/06/bringing-an-old-macbook-pro-back-to-life.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/osx/2016/12/06/bringing-an-old-macbook-pro-back-to-life.html</guid>
-        
-        <category>osx</category>
-        
-        <category>mac</category>
-        
-        <category>rvm</category>
-        
-        <category>ruby</category>
-        
-        <category>bundler</category>
-        
-        <category>gem</category>
-        
-        <category>brew</category>
-        
-        <category>cask</category>
-        
-        <category>mysql</category>
-        
-        
-        <category>osx</category>
         
       </item>
     
