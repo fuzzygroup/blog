@@ -6,9 +6,20 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 14 Dec 2016 07:38:00 -0500</pubDate>
-    <lastBuildDate>Wed, 14 Dec 2016 07:38:00 -0500</lastBuildDate>
+    <pubDate>Wed, 14 Dec 2016 12:16:43 -0500</pubDate>
+    <lastBuildDate>Wed, 14 Dec 2016 12:16:43 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Why Freelancing Makes You A Better Engineer And You The Employeer Should Not Object</title>
+        <description>
+</description>
+        <pubDate>Wed, 14 Dec 2016 07:38:27 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/12/14/why-freelancing-makes-you-a-better-engineer-and-you-the-employeer-should-not-object.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/14/why-freelancing-makes-you-a-better-engineer-and-you-the-employeer-should-not-object.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>The Silver Searcher</title>
@@ -82,6 +93,26 @@
         
         
         <category>search</category>
+        
+      </item>
+    
+      <item>
+        <title>When Ruby bzip2 Won't Install</title>
+        <description>&lt;p&gt;I spent quite a bit of time today trying to get the bzip2 gem working.  Not even the fork worked.  Happily I found &lt;a href=&quot;https://github.com/koraktor/rbzip2&quot;&gt;rbzip2&lt;/a&gt; which worked brilliantly.  Not sure if it compresses or decompresses yet but I can deploy at least and that was today’s goal.&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 14 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/ruby/2016/12/14/when-ruby-bzip2-won-t-install.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ruby/2016/12/14/when-ruby-bzip2-won-t-install.html</guid>
+        
+        <category>ruby</category>
+        
+        <category>rails</category>
+        
+        <category>bzip</category>
+        
+        
+        <category>ruby</category>
         
       </item>
     
@@ -217,6 +248,17 @@ MariaDB [foo_production]&amp;gt; SELECT COUNT(*) FROM posts WHERE created_at &am
       </item>
     
       <item>
+        <title>Adhoc Ansible Example</title>
+        <description>&lt;p&gt;ansible -i inventories/appdata workers -m shell -a ‘python –version’&lt;/p&gt;
+</description>
+        <pubDate>Wed, 14 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/12/14/adhoc-ansible-example.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/14/adhoc-ansible-example.html</guid>
+        
+        
+      </item>
+    
+      <item>
         <title>Considering Phabricator</title>
         <description>&lt;p&gt;So I ran across &lt;a href=&quot;https://phacility.com/phabricator/&quot;&gt;phabricator&lt;/a&gt; from &lt;a href=&quot;https://phacility.com&quot;&gt;phacility&lt;/a&gt; recently and I’m intrigued.  I also had a horrific out of the box experience trying it out that I thought nicely illustrated a number of what I consider straight up fails.&lt;/p&gt;
 
@@ -275,180 +317,6 @@ MariaDB [foo_production]&amp;gt; SELECT COUNT(*) FROM posts WHERE created_at &am
         
         
         <category>postmac</category>
-        
-      </item>
-    
-      <item>
-        <title>AWS Tutorial - Using Squid, EC2 and ELB to Defeat Crawling Blockages</title>
-        <description>&lt;p&gt;I write crawlers.  I have crawlers for years.  And I &lt;strong&gt;hate&lt;/strong&gt; beyond &lt;strong&gt;hate&lt;/strong&gt; when companies throw up roadblocks to defeat crawlers.  As a general rule of thumb the big Internet companies tend to be the worst at this – they, who shall be unnamed, love information to be “free” but they hate like hell to themselves be indexed.&lt;/p&gt;
-
-&lt;p&gt;Well, in the age of the cloud, crawling blockages can be really, really easy to defeat.  In this tutorial I’m going to show you how.&lt;/p&gt;
-
-&lt;h1 id=&quot;proxying&quot;&gt;Proxying&lt;/h1&gt;
-
-&lt;p&gt;The core technology to defeat blockages is simple – you use a proxy server.  Let’s say that you have a server on this ip address:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;24.36.48.19
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;If someone wants to block your crawler all they need to do is place a block on that ip address by any number of means - code, router level, firewall level, etc and your code can’t actually access the data.  A proxy server sits in between your code and the data you want to access.  Here’s a ruby example using Mechanize:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;agent = Mechanize.new
-url = &quot;http://www.google.com/&quot;
-proxy_server_url = &quot;proxy.foo.com&quot;
-proxy_server_port = 3199    
-agent.set_proxy(proxy_server_url, proxy_server_port)
-page = agent.get(url)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;That will cause the request to be through the proxy server and NOT from your actual server.  Given that a proxy server can be blocked as easily as your actual server this may not seem all that significant – but think of this in terms of a cloud computing environment like AWS:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;In aws you can create instances trivially with tools like ansible&lt;/li&gt;
-  &lt;li&gt;In aws you can automatically / automagically install a full featured proxy server like squid with one command&lt;/li&gt;
-  &lt;li&gt;In aws you can front end a cluster of proxy server instances behind an elastic load balancer allowing your software to simply access the load balancer and then the proxy servers can be dynamically replaced either when they are blocked or perhaps proactively every single day&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;squid&quot;&gt;Squid&lt;/h1&gt;
-
-&lt;p&gt;Squid is the proxy server we’re going to be using.  Squid is an old school Internet tool – I remember experimenting with it back in maybe 2002 although that seems impossible but it actually isn’t since it is cited in papers going back to &lt;a href=&quot;https://en.wikipedia.org/wiki/Squid_(software)&quot;&gt;1995&lt;/a&gt;.  We’re going to need to use the 3.5 or later version of Squid since we need support for what is called ProxyPass which is what lets a proxy transaction travel through a load balancer.&lt;/p&gt;
-
-&lt;p&gt;If you’re uncertain about the installed version of Squid then run this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/sbin/squid -v
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Thanks to &lt;a href=&quot;http://mamchenkov.net/wordpress/2004/03/23/how-to-check-squid-proxy-server-version-on-a-linux-system/&quot;&gt;Mamchenkov&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Troubleshooting an ELB in Front of an EC2 Running Squid&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Create the proxy programmatically using proxy protocoal&lt;/li&gt;
-  &lt;li&gt;Squid has to be 3.5 or later&lt;/li&gt;
-  &lt;li&gt;Make sure that the ec2 has the proxy port open in its security group&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;ec2 has a sec group
-lb has a security group&lt;/p&gt;
-
-&lt;p&gt;make sure the ports are sync’d&lt;/p&gt;
-
-&lt;h1 id=&quot;architecture&quot;&gt;Architecture&lt;/h1&gt;
-
-&lt;p&gt;We’re going to need the following architecture bits:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;an elastic load balancer&lt;/li&gt;
-  &lt;li&gt;1 or more EC2 instances that run squid&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;ansibling-this-all-together&quot;&gt;Ansibling This All Together&lt;/h1&gt;
-
-&lt;h1 id=&quot;be-careful---bandwidth-bills-are-real&quot;&gt;Be Careful - Bandwidth Bills Are Real&lt;/h1&gt;
-</description>
-        <pubDate>Thu, 08 Dec 2016 09:58:32 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/12/08/aws-tutorial-using-squid-ec2-and-elb-to-defeat-crawling-blockages.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/08/aws-tutorial-using-squid-ec2-and-elb-to-defeat-crawling-blockages.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Rails Commando - Parachuting into a Rails Code Base and Adding Value from Day 1</title>
-        <description>&lt;p&gt;In 2009, 2 weeks before Christmas, with no notice, I and the rest of the eduFire startup were laid off with no notice, no severance and no benefits save, I believe, some small level of legally required COBRA.  My role was VP of Engineering and I held stock options on 10% of the company.  It was a mind-blowing level of &lt;strong&gt;suck&lt;/strong&gt; and one that I doubt I’ll ever forgive the &lt;a href=&quot;https://www.linkedin.com/in/jonbischke&quot;&gt;founder&lt;/a&gt; for – classless in every single way.  I think it was also the last time I’ve trusted an organization.&lt;/p&gt;
-
-&lt;p&gt;Now I’m a firm believer that there are good times and there are bad and while 2009 was the heights of suck, it launched me down the path of “make lots and lots of money from consulting” and that’s been fantastic for me.  In particular I’ve become more than a bit of what I refer to as a &lt;em&gt;rails commando&lt;/em&gt; – I can drop into a Rails code base and add value from Day 1.  This blog post talks about how I go about that.&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 07 Dec 2016 05:55:50 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/rails/2016/12/07/rails-commando-parachuting-into-a-rails-code-base-and-adding-value-from-day-1.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails/2016/12/07/rails-commando-parachuting-into-a-rails-code-base-and-adding-value-from-day-1.html</guid>
-        
-        <category>rails</category>
-        
-        <category>ruby</category>
-        
-        <category>software_engineering</category>
-        
-        <category>eduFire</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>The Incredible Smartness of Bezos or A New Revenue Stream for Amazon with Amazon Go</title>
-        <description>&lt;p&gt;Before I made a full commitment this past summer to AWS, I read &lt;a href=&quot;https://www.amazon.com/Everything-Store-Jeff-Bezos-Amazon/dp/0316219282/ref=sr_1_1?ie=UTF8&amp;amp;qid=1481104973&amp;amp;sr=8-1&amp;amp;keywords=The+Everything+Store&quot;&gt;The Everything Store&lt;/a&gt; which is a detailed analysis of how Amazon operates and Jeff Bezos personally.  As someone who has been an entrepreneur on many different occasions, I find this type of book particularly compelling and this particular book was no exception.  What I walked away from the book were these observations:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Jeff Bezos is at the essential core of Amazon’s success; yes there are many other talented executives but at its heart it is Jeff’s place.&lt;/li&gt;
-  &lt;li&gt;Jeff Bezos is a once in a century type businessman and if I don’t think of in the same light as Gates, Rockefeller and Carnegie then I’m making a massive mistake.&lt;/li&gt;
-  &lt;li&gt;It is far, far smarter for me to commit to AWS than it is for me to fight AWS.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;And that, dear reader, is why I went full scale with AWS.  Yes there were &lt;a href=&quot;https://fuzzygroup.github.io/blog/aws.html&quot;&gt;technical reasons&lt;/a&gt; as well but at its heart it was a bet on Bezos.&lt;/p&gt;
-
-&lt;h1 id=&quot;what-is-this-categorized-as-startup&quot;&gt;What is this Categorized as Startup&lt;/h1&gt;
-
-&lt;p&gt;Given that Amazon is literally a globe spanning entity with aggregate revenues north of 100 billion, you may find it odd that my primary category for this piece is startup.  Well Amazon, at least to me, just plain acts like a startup.  The level of innovation that the company consistently delivers is breath taking.  I mean what other big company launches new things at the pace that Amazon does?  Honestly Amazon is a startup at least in my mind.&lt;/p&gt;
-
-&lt;h1 id=&quot;amazon-go&quot;&gt;Amazon Go&lt;/h1&gt;
-
-&lt;p&gt;And now I come to yesterday’s announcement of &lt;a href=&quot;https://www.amazon.com/b?node=16008589011#&quot;&gt;Amazon Go&lt;/a&gt; - &lt;a href=&quot;https://news.ycombinator.com/item?id=13105689&quot;&gt;Hacker News Discussion&lt;/a&gt;, a complete re-thinking of grocery stores.  Amazon has announced that they will be building 2,000 local grocery stores which are basically a complete rethinking of the grocery store concept implemented along the lines of a convenience store.  Particularly interesting to me since I grew up working retail were these ideas:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;no cashier&lt;/li&gt;
-  &lt;li&gt;wave your phone when you enter to authenticate yourself&lt;/li&gt;
-  &lt;li&gt;shop by putting items in your basket; take whatever you want&lt;/li&gt;
-  &lt;li&gt;amazon figures out what you bought and automatically charges your credit card&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;If you think about all the various services that Amazon offers through AWS this is a clear implementation of those services applied to the physical world.  In specific I’d place a good bet that this will be powered by &lt;a href=&quot;https://aws.amazon.com/about-aws/whats-new/2016/09/introducing-amazon-ec2-p2-instances-the-largest-gpu-powered-virtual-machine-in-the-cloud/&quot;&gt;GPU instances&lt;/a&gt; using some kind of machine vision API that you’ll see announced next year at the next Amazon developer conference. And I’d be surprised if we don’t see the store proactively reaching out to people’s phones using the new &lt;a href=&quot;https://aws.amazon.com/lex/&quot;&gt;Amazon Lex&lt;/a&gt; ChatBot tool to say something like:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;I see that you picked up and put down three different types of red meat.  In case it helps make your buying decision we have a 10% instant coupon on any type of red meat you want.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;And this would be dynamically coupled with an &lt;a href=&quot;https://aws.amazon.com/redshift/&quot;&gt;Amazon Redshift&lt;/a&gt; warehouse analysis of inventory trends and if meat is going to spoil or not.  Amazon could entirely automate what a talented meat department manager does for a grocery store only better because the special is dynamically delivered to customers who are much more likely to buy.&lt;/p&gt;
-
-&lt;h1 id=&quot;a-new-revenue-stream-for-amazon&quot;&gt;A New Revenue Stream for Amazon&lt;/h1&gt;
-
-&lt;p&gt;The new revenue stream that I see coming out of this is consumer marketing data.  My strong guess is that Amazon will be able to roll up data from actions like pick up and put down on an individual consumer level and then see that type of analytics back to consumer goods firms.  Now I’m sure that Amazon already licenses some consumer marketing data to companies but I suspect this is going to be fairly unprecedented.  Let’s say that you are a consumer goods company that just rolled out a new label.  Here’s what I can envision happening:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;New label rolls out.&lt;/li&gt;
-  &lt;li&gt;Amazon is able to give you time adjusted comparisons of shopping experiences before and after along with being able to watch the consumers interact with the product.&lt;/li&gt;
-  &lt;li&gt;Think of this as a/b analytics for the real world.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;I doubt there’s a single person reading this who, whether or not they believe in a/b testing, doesn’t understand the power it offers.  Personally I’m not a fan but as a marketer I can see this being truly compelling.&lt;/p&gt;
-
-&lt;h1 id=&quot;my-wifes-reaction&quot;&gt;My Wife’s Reaction&lt;/h1&gt;
-
-&lt;p&gt;My wife isn’t part of the high tech world anymore but she had an interesting reaction:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;All restaurants are going to be Taco Bell!&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Props to her for an outstanding nerd culture reference, the 1993 &lt;a href=&quot;http://www.imdb.com/title/tt0106697/?ref_=nv_sr_1&quot;&gt;Demolition Man&lt;/a&gt; movie starring Stallone, Bullock and Snipes of a dystopian future where literally all restaurants are Taco Bell.  Perhaps all commerce will be Amazon…&lt;/p&gt;
-</description>
-        <pubDate>Wed, 07 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/startup/2016/12/07/the-incredible-smartness-of-bezos-or-a-new-revenue-stream-for-amazon-with-amazon-go.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/startup/2016/12/07/the-incredible-smartness-of-bezos-or-a-new-revenue-stream-for-amazon-with-amazon-go.html</guid>
-        
-        <category>amazon</category>
-        
-        <category>startup</category>
-        
-        <category>bezos</category>
-        
-        
-        <category>startup</category>
         
       </item>
     
