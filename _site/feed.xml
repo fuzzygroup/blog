@@ -6,9 +6,110 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 08 Dec 2016 09:58:33 -0500</pubDate>
-    <lastBuildDate>Thu, 08 Dec 2016 09:58:33 -0500</lastBuildDate>
+    <pubDate>Wed, 14 Dec 2016 03:36:19 -0500</pubDate>
+    <lastBuildDate>Wed, 14 Dec 2016 03:36:19 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>What Just Happened To Your Database In the Past 10 Minutes</title>
+        <description>&lt;p&gt;So I’m rapidly coming to the conclusion that Christmas is the enemy of getting things done.  While I have come up with a lot of potential topics to write about recently I don’t seem to be able to get anything actually finished due to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Present Shopping&lt;/li&gt;
+  &lt;li&gt;Present Wrapping&lt;/li&gt;
+  &lt;li&gt;Christmas Events (parties, choir concerts, etc)&lt;/li&gt;
+  &lt;li&gt;Christmas Baking&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Alas – at least, as my old boss, &lt;a href=&quot;https://twitter.com/rafer&quot;&gt;Scott Rafer&lt;/a&gt;, used to say – &lt;em&gt;these are high quality problems to have&lt;/em&gt;!&lt;/p&gt;
+
+&lt;p&gt;A quick post today – looking at the state of your database.  Let’s say you have a table called posts and it has a field called created_at (the Rails standard way of tracking table changes) and you want to see how many things came into that table in the past 10 minutes.  Here’s the sql you need:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SELECT COUNT(*) FROM posts WHERE created_at &amp;gt; DATE_ADD(NOW(),INTERVAL - 10 MINUTE);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Previously I’ve generally looked at tables and then tried to relate what’s going on to the current time and adjust in my head for the server time zone offset.  This is &lt;strong&gt;much, much&lt;/strong&gt; better.&lt;/p&gt;
+
+&lt;p&gt;A really nice side effect of this is that you can simply change the interval quickly and see if your performance is linear or non-linear.  Let’s say you change your interval to 5, 10 and 15 minutes and this was the result:&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 14 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/mysql/2016/12/14/what-just-happened-to-your-database-in-the-past-10-minutes.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/mysql/2016/12/14/what-just-happened-to-your-database-in-the-past-10-minutes.html</guid>
+        
+        <category>mysql</category>
+        
+        <category>rails</category>
+        
+        <category>sql</category>
+        
+        
+        <category>mysql</category>
+        
+      </item>
+    
+      <item>
+        <title>Considering Phabricator</title>
+        <description>&lt;p&gt;So I ran across &lt;a href=&quot;https://phacility.com/phabricator/&quot;&gt;phabricator&lt;/a&gt; from &lt;a href=&quot;https://phacility.com&quot;&gt;phacility&lt;/a&gt; recently and I’m intrigued.  I also had a horrific out of the box experience trying it out that I thought nicely illustrated a number of what I consider straight up fails.&lt;/p&gt;
+
+&lt;p&gt;Phabricator is a multi author code review and management tool that was originally built at Facebook and is now a hosted open source product.  They describe it as: &lt;em&gt;Discuss. Plan. Code. Review. Test. - Every application your project needs, all in one tool.&lt;/em&gt; and I think that’s a fairly solid overview.  They also have a hell of a great sense of humor and if you haven’t read this &lt;a href=&quot;https://phacility.com/phabricator/&quot;&gt;page&lt;/a&gt; then you should go there now and search for either intern or purple.  +10 for the sense of humor.&lt;/p&gt;
+
+&lt;p&gt;So I went to phacility and chose to set up a hosted instance in order to evaluate it.  Here’s my sad, short, less than sweet experience:&lt;/p&gt;
+
+&lt;p&gt;https://secure.phabricator.com/book/phabricator/article/diffusion_existing/&lt;/p&gt;
+</description>
+        <pubDate>Tue, 13 Dec 2016 15:50:22 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/phabricator/2016/12/13/considering-phabricator.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/phabricator/2016/12/13/considering-phabricator.html</guid>
+        
+        <category>phabricator</category>
+        
+        <category>software_engineering</category>
+        
+        <category>git</category>
+        
+        
+        <category>phabricator</category>
+        
+      </item>
+    
+      <item>
+        <title>Multi Cooking Is A Thing And Here's How To Do It</title>
+        <description>
+</description>
+        <pubDate>Sun, 11 Dec 2016 05:22:58 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/12/11/multi-cooking-is-a-thing-and-here-s-how-to-do-it.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/11/multi-cooking-is-a-thing-and-here-s-how-to-do-it.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Apple MacBook Pro Alternatives</title>
+        <description>&lt;p&gt;Well I’m certainly not the only one who is curious about life beyond the Macbook:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://medium.com/broken-window/my-search-for-a-macbook-pro-alternative-e549ea2b2dee#.j80auzeup&quot;&gt;Medium Article&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://news.ycombinator.com/item?id=13142754&quot;&gt;Hacker News Discussion&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Surprisingly he didn’t even mention &lt;a href=&quot;https://system76.com/&quot;&gt;System 76&lt;/a&gt; which makes native Ubuntu laptops.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 10 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/postmac/2016/12/10/apple-macbook-pro-alternatives.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/postmac/2016/12/10/apple-macbook-pro-alternatives.html</guid>
+        
+        <category>postmac</category>
+        
+        <category>apple</category>
+        
+        <category>mac</category>
+        
+        
+        <category>postmac</category>
+        
+      </item>
     
       <item>
         <title>AWS Tutorial - Using Squid, EC2 and ELB to Defeat Crawling Blockages</title>
@@ -299,199 +400,6 @@ update: --no-rdoc --no-ri
         
         
         <category>osx</category>
-        
-      </item>
-    
-      <item>
-        <title>Accessing MariaDB without sudo on Ubuntu</title>
-        <description>&lt;p&gt;So I’m finally able to get back to trying Rails development on my Ubuntu box and the first real error I found was when I tried to create a database – I couldn’t get into MariaDB unless I used sudo – very, very odd.  I found the solution on &lt;a href=&quot;https://ubuntuforums.org/showthread.php?t=2275033&quot;&gt;Ubuntu Forums&lt;/a&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo mysql -u root
-use mysql;
-update user set plugin='' where User='root';
-flush privileges;
-\q
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Honestly I have no idea what this is.  Sigh.  Oh well it works and it is documented at least.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 06 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/mariadb/2016/12/06/accessing-mariadb-without-sudo-on-ubuntu.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/mariadb/2016/12/06/accessing-mariadb-without-sudo-on-ubuntu.html</guid>
-        
-        <category>mariadb</category>
-        
-        <category>ubuntu</category>
-        
-        
-        <category>mariadb</category>
-        
-      </item>
-    
-      <item>
-        <title>Interviewing with the Big Tech Firms</title>
-        <description>&lt;p&gt;I have never been a big company person.  My ideal company fits into a volkswagen and can generally be well fed with a single pizza.  My one big company experience was 450 people globally, 46 million in annual revenues, 25 locations – and that’s not actually big anymore – when even Twitter employs over 4,000 people.&lt;/p&gt;
-
-&lt;p&gt;Now, all that said, I find the big tech companies absolutely fascinating:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;in terms of the scale at which they operate&lt;/li&gt;
-  &lt;li&gt;their hardware and data resources&lt;/li&gt;
-  &lt;li&gt;their very significant inconsistencies&lt;/li&gt;
-  &lt;li&gt;their management structures&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;You can’t exist in the high tech world and not find companies like Google, Facebook and Twitter fascinating.  Recently I’ve been doing a deep dive on their HR policies and specifically how they interview and I thought my findings were instructive.&lt;/p&gt;
-
-&lt;h1 id=&quot;tldr-no-need-to-read-further&quot;&gt;TLDR; No Need to Read Further&lt;/h1&gt;
-
-&lt;p&gt;The single most important thing to understand is that the overall interviewing system for all the big technical firms is currently&lt;/p&gt;
-
-&lt;h1 id=&quot;understanding-the-detailed-technical-interview-with-the-low-level-computer-science-questions&quot;&gt;Understanding the Detailed Technical Interview with the Low Level Computer Science Questions&lt;/h1&gt;
-
-&lt;p&gt;To my understanding all the big tech firms currently have problems recruiting senior technical staff.  My suspicion is that their very interview process is what keeps people out, let me explain.&lt;/p&gt;
-
-&lt;h1 id=&quot;google-is-not-harvard&quot;&gt;Google Is Not Harvard&lt;/h1&gt;
-
-&lt;p&gt;Goal is keep the wrong person OUT&lt;/p&gt;
-</description>
-        <pubDate>Mon, 05 Dec 2016 16:49:20 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/interview/2016/12/05/interviewing-with-the-big-tech-firms.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/interview/2016/12/05/interviewing-with-the-big-tech-firms.html</guid>
-        
-        <category>interview</category>
-        
-        <category>startup</category>
-        
-        <category>hiring</category>
-        
-        <category>hr</category>
-        
-        <category>google</category>
-        
-        <category>facebook</category>
-        
-        <category>twitter</category>
-        
-        
-        <category>interview</category>
-        
-      </item>
-    
-      <item>
-        <title>Signs of Systemic Organizational Failure</title>
-        <description>&lt;p&gt;[8:26 AM, 12/5/2016] Scott Johnson: rant for later today “We just have to be creative and figure out how to get more done — we’re behind every week”                      &lt;br /&gt;
-[8:27 AM, 12/5/2016] Wife: Wow.                      &lt;br /&gt;
-[8:28 AM, 12/5/2016] Scott Johnson: Because the way to make someone that regularly works more than 40 hours per week work harder is to diminish their efforts.  How about accepting that — AS YOU’VE BEEN TOLD — that you are under staffed and your problem is bigger than you initially understood.                      &lt;br /&gt;
-[8:28 AM, 12/5/2016] Scott Johnson: m o r o n s                      &lt;br /&gt;
-[8:28 AM, 12/5/2016] Wife: Seriously!                      &lt;br /&gt;
-[8:29 AM, 12/5/2016] Wife: What the hell do they expect from you?! Sheesh.                      &lt;br /&gt;
-[8:30 AM, 12/5/2016] Scott Johnson: Honestly they will never, ever be happy.  This is the kind of job where I could work 100 + hours per week and there’s still no way to succeed.  It is why I’m always so frustrated                      &lt;br /&gt;
-[8:30 AM, 12/5/2016] Scott Johnson: in reviewing the week’s work I had more than 10 top level “current” projects                      &lt;br /&gt;
-[8:30 AM, 12/5/2016] Scott Johnson: and no one other than me sees the flaw in that.                      &lt;br /&gt;
-[8:30 AM, 12/5/2016] Wife: They are not very smart                      &lt;br /&gt;
-[8:31 AM, 12/5/2016] Scott Johnson: Good at their domain but they know nothing about software engineering and they are too arrogant to ask&lt;/p&gt;
-</description>
-        <pubDate>Mon, 05 Dec 2016 09:04:48 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/12/05/signs-of-systemic-organizational-failure.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/05/signs-of-systemic-organizational-failure.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Finding Your Rhythm As a Remote Worker</title>
-        <description>&lt;p&gt;I have been, with one 9 month exception, a remote worker since 1999.  Heading into 2017 that puts me at almost 20 years of solid, day in and day out remote work and, I’ll admit, that I know a thing or two about remote work.  I’ve both been a remote worker, managed remote workers and I think all possible permutations.  This post attempts to summarize what works for &lt;strong&gt;me&lt;/strong&gt;.  What works for &lt;strong&gt;you&lt;/strong&gt; will almost certainly be different but I suspect the same meta principles will apply.&lt;/p&gt;
-
-&lt;h1 id=&quot;routine-routine-routine&quot;&gt;Routine, Routine, Routine&lt;/h1&gt;
-
-&lt;p&gt;Day in and day out my days look remarkably similar:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;roll out of bed around 3 am&lt;/li&gt;
-  &lt;li&gt;shower, shave, dress, etc.  Even tho the only people that ever see me are my wife, kids and cat I still dress like I was going into an office every day.&lt;/li&gt;
-  &lt;li&gt;hit &lt;a href=&quot;http://www.meh.com/&quot;&gt;meh&lt;/a&gt; while it hasn’t sold out and see if there is something cheap I can treat myself to&lt;/li&gt;
-  &lt;li&gt;hit the hardest code immediately and get my momentum going&lt;/li&gt;
-  &lt;li&gt;take advantage of the &lt;a href=&quot;https://fuzzygroup.github.io/blog/startup/2016/10/29/startup-learnings-i-do-all-my-coding-before-anyone-gets-to-work-or-what-ed-fisher-taught-me.html&quot;&gt;early morning, blessed quiet&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;continue until the end of the day&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I know that some remote workers are constantly changing location and fully embrace the digital nomad lifestyle (&lt;a href=&quot;http://wanderling.co/how-i-work-from-anywhere-in-the-world&quot;&gt;example&lt;/a&gt;).  And that is brilliant that they are able to do so but for myself I really appreciate consistency.  And I adore having a solid, fast connection like fiber – you don’t get that when you move regularly.&lt;/p&gt;
-
-&lt;h1 id=&quot;it-is-still-work&quot;&gt;It Is Still Work&lt;/h1&gt;
-
-&lt;p&gt;The single biggest mistake that everyone, and that has included me in the past, makes with remote work is not treating it as work.  Because you are the one at home it is all too easy for your spouse (or yourself) to assume “oh they can also do a load of laundry” or some other house hold task.  No.  You.  Can’t.  Work is work and home is home.  I find that my greatest productivity comes when my door is shut and I can concentrate.  Now your results might vary&lt;/p&gt;
-
-&lt;h1 id=&quot;you-dont-have-colleagues-so-figure-out-how-to-do-everything-alone&quot;&gt;You Don’t Have Colleagues So Figure Out How to Do Everything Alone&lt;/h1&gt;
-
-&lt;p&gt;When you are a remote worker you do have colleagues but when you are the odd man out in the remote wilderness you may find that, ahem, they aren’t always helpful.&lt;/p&gt;
-
-&lt;h1 id=&quot;gear---you-never-know&quot;&gt;Gear - You Never Know&lt;/h1&gt;
-
-&lt;p&gt;I almost never throw any computer gear out.  As a remote engineer there is no one to turn to in the next cubicle and say something like “I need a USB to firewire adapter to get some data off this old drive that might help me with my current code”.  Can I go to the computer store for that?  Sure.  I even have a Fry’s 20 minutes away but that 20 minute drive easily turns into:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;20 minutes there&lt;/li&gt;
-  &lt;li&gt;20 minutes back&lt;/li&gt;
-  &lt;li&gt;20 minutes shopping&lt;/li&gt;
-  &lt;li&gt;an hour plus getting my head back where it was before I left&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;If I stay in my cozy home environment, even if I’m rooting thru a cable bin for something I can keep my current context solid in my head.  But if I have to get into a car and engage the outside world then it is a given that I have lost it and it will usually take a solid hour to get my brain back to where it needs to be (if the problem is complex).&lt;/p&gt;
-
-&lt;p&gt;If you don’t keep a gear box where you toss old hard drives, cables, an odd network hub, etc then I strongly encourage you to do so.  Odds are that this pack rat tendency will drive your spouse mad but the productivity benefits are real.&lt;/p&gt;
-
-&lt;h1 id=&quot;know-when-to-have-distractions-and-not&quot;&gt;Know When to Have Distractions and Not&lt;/h1&gt;
-
-&lt;h1 id=&quot;engineer-invest-in-thyself&quot;&gt;Engineer Invest In Thyself&lt;/h1&gt;
-
-&lt;p&gt;I don’t thinK I’m wrong in saying that engineers are notoriously cheap.  We all look at technology and think to ourselves “I could build that” – even when it is normally untrue.  One of the very best decisions you can make is to invest in yourself.  There are three great purchases that I’ve made over the years that really, truly improved my productivity:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://fuzzygroup.github.io/blog/startup/2016/10/21/startup-learnings-what-francois-schiettecatte-taught-me.html&quot;&gt;an Aeron chair&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Bose Quiet Comfort Headphones&lt;/li&gt;
-  &lt;li&gt;Building My Own Computer Desk&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I’ll sit in the same chair for sometimes 14 to 16 hours per day.  I don’t ever have back pain and I never even notice my chair – an Aeron is just that good.  Similarly there are times when I’ve pair programmed for 10 hours straight and my ears don’t hurt.  I can wear Quiet Comfort headphones all damn day.  When I got them they were $350 which I thought at the time was absurd but all other pairs of headphones just didn’t cut it.  And if you buy two or three pairs of $60 headphones then you’re almost half way there anyway.&lt;/p&gt;
-
-&lt;p&gt;I haven’t spoken about my adventures earlier this year in building exactly the computer desk I’ve always wanted but I will someday.  A bad day in the office about a month ago sent me racing to the lumber yard and two days later I had ripped out the absolutely shite working surface I had and replaced it with this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/desk1.jpg&quot; alt=&quot;desk1&quot; /&gt; 
-(simple, flat, 8 foot span)
-&lt;img src=&quot;/blog/assets/desk2.jpg&quot; alt=&quot;desk2&quot; /&gt;
-(most of the computers in place; there are more now)
-&lt;img src=&quot;/blog/assets/desk3.jpg&quot; alt=&quot;desk3&quot; /&gt; 
-(Nice cut outs for cable transfer)
-&lt;img src=&quot;/blog/assets/desk4.jpg&quot; alt=&quot;desk4&quot; /&gt; 
-(why you make your own desk - the desire to NOT have a visual rats nest of all the cabling that modern computing &lt;strong&gt;requires&lt;/strong&gt;; there are 6 power strips under my desk and all are full; I’m about to add a seventh)&lt;/p&gt;
-
-&lt;p&gt;All total I spent less than 8 hours in rough carpentry from start to finish on this and I highly recommend it if you are a hands on person.  I’ve wanted to do this for more than a decade now and I’m tremendously happy that I did.&lt;/p&gt;
-
-&lt;p&gt;The only sad thing about making my own desk is that my wife recently got me &lt;a href=&quot;https://www.amazon.com/Good-Clean-Fun-Misadventures-Offerman/dp/1101984651/ref=sr_1_1?ie=UTF8&amp;amp;qid=1480930872&amp;amp;sr=8-1&amp;amp;keywords=nick+offerman&quot;&gt;Nick Offerman’s Good Clean Fun&lt;/a&gt; book and now I really want to make another one this time as a trestle table.  Sigh.  If you are a woodworker and you haven’t read Offerman yet then I highly recommend it.  You would never believe that an actor could teach you wood working but he does a credible job and spins a wonderful tale in the doing.&lt;/p&gt;
-
-&lt;h1 id=&quot;know-when-to-stop-and-move-off-the-keyboard&quot;&gt;Know When to Stop and Move Off the Keyboard&lt;/h1&gt;
-
-&lt;h1 id=&quot;embrace-punctuation&quot;&gt;Embrace Punctuation&lt;/h1&gt;
-
-&lt;p&gt;When you are a remote worker what you will find is that the normal social cues that cause you to &lt;em&gt;stop working&lt;/em&gt; are gone.  Things like going to the fridge for a soda or stopping by a co-worker’s cubicle have just up and disappeared from your life.&lt;/p&gt;
-
-&lt;h1 id=&quot;communicate&quot;&gt;Communicate&lt;/h1&gt;
-
-&lt;h1 id=&quot;backup-and-synchronization&quot;&gt;Backup and Synchronization&lt;/h1&gt;
-
-</description>
-        <pubDate>Mon, 05 Dec 2016 04:57:52 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/remote/2016/12/05/finding-your-rhythm-as-a-remote-worker.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/remote/2016/12/05/finding-your-rhythm-as-a-remote-worker.html</guid>
-        
-        <category>remote</category>
-        
-        <category>work_from_home</category>
-        
-        
-        <category>remote</category>
         
       </item>
     
