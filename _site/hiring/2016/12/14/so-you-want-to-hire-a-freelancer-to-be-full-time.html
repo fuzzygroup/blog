@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>The Silver Searcher</title>
-  <meta name="description" content="I had a project die about two months ago and I’ve been involved in a bit of resurrection work recently.  This was related to my comments on code rot.  Happil...">
+  <title>So You Want to Hire a Freelancer to Be Full Time</title>
+  <meta name="description" content="For most of the past 8 years I’ve been a professional freelancer and it all started with eduFire where I was VP of Engineering.  When eduFire dissolved in a ...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/search/2016/12/14/the-silver-searcher.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/hiring/2016/12/14/so-you-want-to-hire-a-freelancer-to-be-full-time.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
   
   <script>
@@ -91,64 +91,26 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">The Silver Searcher</h1>
-    <p class="I'll"><time datetime="2016-12-14T04:39:05-05:00" itemprop="datePublished">Dec 14, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">So You Want to Hire a Freelancer to Be Full Time</h1>
+    <p class="I'll"><time datetime="2016-12-14T00:00:00-05:00" itemprop="datePublished">Dec 14, 2016</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>I had a project die about two months ago and I’ve been involved in a bit of resurrection work recently.  This was related to my comments on <a href="https://fuzzygroup.github.io/blog/rails/2016/12/06/code-rot-is-very-very-real.html">code rot</a>.  Happily, with the assistance of <a href="http://dasari.me">Dv</a> and <a href="http://www.nickjanetakis.com">Nick</a> for different aspects, we’re once again indexing and functioning correctly.  Today I’m going to talk about a basic search tool, <a href="https://github.com/ggreer/the_silver_searcher">The Silver Searcher</a>, also known as ag and that’s how I’ll refer to it mostly.</p>
+    <p>For most of the past 8 years I’ve been a professional freelancer and it all started with <em>eduFire</em> where I was VP of Engineering.  When eduFire dissolved in a wash of founder level “oh crap we can’t raise our A round; what do we do; I know – I’ll just quit and start something else”(Note1) I made the choice to become a professional freelancer and I have really enjoyed that decision.  I’ve never made as much money or learned as much as I have since I’ve been a freelancer.  My skills now are better than they ever have been and it is largely from freelancing – more on that in a future post.</p>
 
-<p>This blog post is written as a basic, example based tutorial since that type of information seems to be entirely missing from <a href="http://geoff.greer.fm/ag/">ag’s home page</a> and github page.  ag is a fantastic tool but its usage isn’t always apparent.</p>
+<p>From time to time clients try, often hard, to hire you full time.  And if you want to hire a freelancer full time then I have one piece of advice for you:</p>
 
-<p>ag, the silver searcher’s command line invocation, is a search tool similar to grep or ack only:</p>
+<blockquote>
+  <p><strong>Pay the freelancer’s bills promptly</strong></p>
+</blockquote>
 
-<ul>
-  <li>better</li>
-  <li>faster</li>
-  <li>able to leap tall buildings in a single bound! (just kidding but it feels that way)</li>
-</ul>
+<p>When someone is a freelancer and they are resistant to taking a full time job, I’d argue that there has to be a reason for it since it is <strong>dramatically harder</strong> to be a freelancer than a full time employee.  We may all talk a lot about the <em>gig economy</em> but, in 2016 America, things are still structured against freelancers in every way – insurance, taxes, etc.</p>
 
-<p>ag is a fantastic tool and its strong enough that I’ve just added it to my standard ansible playbook for all my servers so I will always have it available.  Recommended</p>
+<p>In my case I have <strong>trust</strong> issues.  eduFire shut down 2 weeks before Christmas in 2009 with <em>no notice</em> and all of us were left high and dry and scrambling for what was next.  And since no one hires in December or even January it meant that everyone was faced at least 2 months of no salary.  I think we all landed on our feet - I certainly did.</p>
 
-<h1 id="installation">Installation</h1>
+<p>As long as a client is moderately rational or at least not insane the best impression you can give a freelancer is, well, if you <strong>pay your bills promptly</strong>.  As long as the freelancer is paid on time, well, we’re generally happy.  And if you want them to join you full time, well, pay your bills on time.  That goes a long, long way towards giving a freelancer the positive feelings you want them to have if you are going to name them a job offer.</p>
 
-<p>ag can be installed on a mac using homebrew:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>brew install the_silver_searcher
-</code></pre>
-</div>
-
-<p>Or on Ubuntu using:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>apt-get install silversearcher-ag
-</code></pre>
-</div>
-
-<h1 id="usage">Usage</h1>
-
-<p>ag operates by searching in the current directory and below using a very simple syntax:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>ag WHAT_YOU_WANT_TO_FIND
-</code></pre>
-</div>
-
-<p>replace WHAT_YOU_WANT_TO_FIND with, well, what you’re looking for.  Here’s an example</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>ag NUM_THREADS=10
-</code></pre>
-</div>
-
-<p>In this case I was struggling to find documentation that I knew I had written down but I had changed boxes, re-organized directories and so on.  By simply opening a Terminal window to my home directory i.e. ~ and then typing ag NUM_THREADS=10 I was able to find all documents containing this.</p>
-
-<h2 id="understanding-how-ag-operates">Understanding How ag Operates</h2>
-
-<p>Search tools tend to be fiddly little beasts at the best of times and if you don’t understand how they work then this tends to rise up and bite you badly.  Here’s what I know about how ag operates and that I took the time to verify:</p>
-
-<ul>
-  <li>Searches by default are case insensitive; I got roughly the same results with ag num_threads=10 as I did with ag NUM_THREADS=10; no I don’t understand why I got 76 results with the lower case version and 77 with the upper case but the box I’m searching is a bit wonky so perhaps that’s it.</li>
-  <li>Searches go across directories by default</li>
-  <li></li>
-</ul>
+<p>Note1: No eduFire wasn’t mine and yes that’s more than a little bit of much deserved bitterness.</p>
 
   </div>
   

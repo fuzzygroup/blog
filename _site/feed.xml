@@ -6,9 +6,84 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 14 Dec 2016 04:38:49 -0500</pubDate>
-    <lastBuildDate>Wed, 14 Dec 2016 04:38:49 -0500</lastBuildDate>
+    <pubDate>Wed, 14 Dec 2016 07:38:00 -0500</pubDate>
+    <lastBuildDate>Wed, 14 Dec 2016 07:38:00 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>The Silver Searcher</title>
+        <description>&lt;p&gt;I had a project die about two months ago and I’ve been involved in a bit of resurrection work recently.  This was related to my comments on &lt;a href=&quot;https://fuzzygroup.github.io/blog/rails/2016/12/06/code-rot-is-very-very-real.html&quot;&gt;code rot&lt;/a&gt;.  Happily, with the assistance of &lt;a href=&quot;http://dasari.me&quot;&gt;Dv&lt;/a&gt; and &lt;a href=&quot;http://www.nickjanetakis.com&quot;&gt;Nick&lt;/a&gt; for different aspects, we’re once again indexing and functioning correctly.  Today I’m going to talk about a basic search tool, &lt;a href=&quot;https://github.com/ggreer/the_silver_searcher&quot;&gt;The Silver Searcher&lt;/a&gt;, also known as ag and that’s how I’ll refer to it mostly.&lt;/p&gt;
+
+&lt;p&gt;This blog post is written as a basic, example based tutorial since that type of information seems to be entirely missing from &lt;a href=&quot;http://geoff.greer.fm/ag/&quot;&gt;ag’s home page&lt;/a&gt; and github page.  ag is a fantastic tool but its usage isn’t always apparent.&lt;/p&gt;
+
+&lt;p&gt;ag, the silver searcher’s command line invocation, is a search tool similar to grep or ack only:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;better&lt;/li&gt;
+  &lt;li&gt;faster&lt;/li&gt;
+  &lt;li&gt;able to leap tall buildings in a single bound! (just kidding but it feels that way)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ag is a fantastic tool and its strong enough that I’ve just added it to my standard ansible playbook for all my servers so I will always have it available.  Recommended&lt;/p&gt;
+
+&lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
+
+&lt;p&gt;ag can be installed on a mac using homebrew:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install the_silver_searcher
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Or on Ubuntu using:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt-get install silversearcher-ag
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;usage&quot;&gt;Usage&lt;/h1&gt;
+
+&lt;p&gt;ag operates by searching in the current directory and below using a very simple syntax:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ag WHAT_YOU_WANT_TO_FIND
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;replace WHAT_YOU_WANT_TO_FIND with, well, what you’re looking for.  Here’s an example&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ag NUM_THREADS=10
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In this case I was struggling to find documentation that I knew I had written down but I had changed boxes, re-organized directories and so on.  By simply opening a Terminal window to my home directory i.e. ~ and then typing ag NUM_THREADS=10 I was able to find all documents containing this.&lt;/p&gt;
+
+&lt;h2 id=&quot;understanding-how-ag-operates&quot;&gt;Understanding How ag Operates&lt;/h2&gt;
+
+&lt;p&gt;Search tools tend to be fiddly little beasts at the best of times and if you don’t understand how they work then this tends to rise up and bite you badly.  Here’s what I know about how ag operates and that I took the time to verify:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Searches by default are case insensitive; I got roughly the same results with ag num_threads=10 as I did with ag NUM_THREADS=10; no I don’t understand why I got 76 results with the lower case version and 77 with the upper case but the box I’m searching is a bit wonky so perhaps that’s it.&lt;/li&gt;
+  &lt;li&gt;Searches go across directories by default&lt;/li&gt;
+  &lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 14 Dec 2016 04:39:05 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/search/2016/12/14/the-silver-searcher.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/search/2016/12/14/the-silver-searcher.html</guid>
+        
+        <category>search</category>
+        
+        <category>grep</category>
+        
+        <category>ack</category>
+        
+        <category>ag</category>
+        
+        <category>silver_searcher</category>
+        
+        
+        <category>search</category>
+        
+      </item>
     
       <item>
         <title>What Just Happened To Your Database In the Past 10 Minutes</title>
@@ -78,77 +153,39 @@ MariaDB [foo_production]&amp;gt; SELECT COUNT(*) FROM posts WHERE created_at &am
       </item>
     
       <item>
-        <title>The Silver Searcher</title>
-        <description>&lt;p&gt;I had a project die about two months ago and I’ve been involved in a bit of resurrection work recently.  This was related to my comments on &lt;a href=&quot;https://fuzzygroup.github.io/blog/rails/2016/12/06/code-rot-is-very-very-real.html&quot;&gt;code rot&lt;/a&gt;.  Happily, with the assistance of &lt;a href=&quot;http://dasari.me&quot;&gt;Dv&lt;/a&gt; and &lt;a href=&quot;http://www.nickjanetakis.com&quot;&gt;Nick&lt;/a&gt; for different aspects, we’re once again indexing and functioning correctly.  Today I’m going to talk about a basic search tool, &lt;a href=&quot;https://github.com/ggreer/the_silver_searcher&quot;&gt;The Silver Searcher&lt;/a&gt;, also known as ag and that’s how I’ll refer to it mostly.&lt;/p&gt;
+        <title>So You Want to Hire a Freelancer to Be Full Time</title>
+        <description>&lt;p&gt;For most of the past 8 years I’ve been a professional freelancer and it all started with &lt;em&gt;eduFire&lt;/em&gt; where I was VP of Engineering.  When eduFire dissolved in a wash of founder level “oh crap we can’t raise our A round; what do we do; I know – I’ll just quit and start something else”(Note1) I made the choice to become a professional freelancer and I have really enjoyed that decision.  I’ve never made as much money or learned as much as I have since I’ve been a freelancer.  My skills now are better than they ever have been and it is largely from freelancing – more on that in a future post.&lt;/p&gt;
 
-&lt;p&gt;This blog post is written as a basic, example based tutorial since that type of information seems to be entirely missing from &lt;a href=&quot;http://geoff.greer.fm/ag/&quot;&gt;ag’s home page&lt;/a&gt; and github page.  ag is a fantastic tool but its usage isn’t always apparent.&lt;/p&gt;
+&lt;p&gt;From time to time clients try, often hard, to hire you full time.  And if you want to hire a freelancer full time then I have one piece of advice for you:&lt;/p&gt;
 
-&lt;p&gt;ag, the silver searcher’s command line invocation, is a search tool similar to grep or ack only:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Pay the freelancer’s bills promptly&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;better&lt;/li&gt;
-  &lt;li&gt;faster&lt;/li&gt;
-  &lt;li&gt;able to leap tall buildings in a single bound! (just kidding but it feels that way)&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;When someone is a freelancer and they are resistant to taking a full time job, I’d argue that there has to be a reason for it since it is &lt;strong&gt;dramatically harder&lt;/strong&gt; to be a freelancer than a full time employee.  We may all talk a lot about the &lt;em&gt;gig economy&lt;/em&gt; but, in 2016 America, things are still structured against freelancers in every way – insurance, taxes, etc.&lt;/p&gt;
 
-&lt;p&gt;ag is a fantastic tool and its strong enough that I’ve just added it to my standard ansible playbook for all my servers so I will always have it available.  Recommended&lt;/p&gt;
+&lt;p&gt;In my case I have &lt;strong&gt;trust&lt;/strong&gt; issues.  eduFire shut down 2 weeks before Christmas in 2009 with &lt;em&gt;no notice&lt;/em&gt; and all of us were left high and dry and scrambling for what was next.  And since no one hires in December or even January it meant that everyone was faced at least 2 months of no salary.  I think we all landed on our feet - I certainly did.&lt;/p&gt;
 
-&lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
+&lt;p&gt;As long as a client is moderately rational or at least not insane the best impression you can give a freelancer is, well, if you &lt;strong&gt;pay your bills promptly&lt;/strong&gt;.  As long as the freelancer is paid on time, well, we’re generally happy.  And if you want them to join you full time, well, pay your bills on time.  That goes a long, long way towards giving a freelancer the positive feelings you want them to have if you are going to name them a job offer.&lt;/p&gt;
 
-&lt;p&gt;ag can be installed on a mac using homebrew:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install the_silver_searcher
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Or on Ubuntu using:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apt-get install silversearcher-ag
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;usage&quot;&gt;Usage&lt;/h1&gt;
-
-&lt;p&gt;ag operates by searching in the current directory and below using a very simple syntax:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ag WHAT_YOU_WANT_TO_FIND
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;replace WHAT_YOU_WANT_TO_FIND with, well, what you’re looking for.  Here’s an example&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ag NUM_THREADS=10
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;In this case I was struggling to find documentation that I knew I had written down but I had changed boxes, re-organized directories and so on.  By simply opening a Terminal window to my home directory i.e. ~ and then typing ag NUM_THREADS=10 I was able to find all documents containing this.&lt;/p&gt;
-
-&lt;h2 id=&quot;understanding-how-ag-operates&quot;&gt;Understanding How ag Operates&lt;/h2&gt;
-
-&lt;p&gt;Search tools tend to be fiddly little beasts at the best of times and if you don’t understand how they work then this tends to rise up and bite you badly.  Here’s what I know about how ag operates and that I took the time to verify:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Searches by default are case insensitive; I got roughly the same results with ag num_threads=10 as I did with ag NUM_THREADS=10; no I don’t understand why I got 76 results with the lower case version and 77 with the upper case but the box I’m searching is a bit wonky so perhaps that’s it.&lt;/li&gt;
-  &lt;li&gt;Searches go across directories by default&lt;/li&gt;
-  &lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;Note1: No eduFire wasn’t mine and yes that’s more than a little bit of much deserved bitterness.&lt;/p&gt;
 </description>
         <pubDate>Wed, 14 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/search/2016/12/14/the-silver-searcher.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/search/2016/12/14/the-silver-searcher.html</guid>
+        <link>https://fuzzygroup.github.io/blog/hiring/2016/12/14/so-you-want-to-hire-a-freelancer-to-be-full-time.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/hiring/2016/12/14/so-you-want-to-hire-a-freelancer-to-be-full-time.html</guid>
         
-        <category>search</category>
+        <category>hr</category>
         
-        <category>grep</category>
+        <category>hiring</category>
         
-        <category>ack</category>
+        <category>software_engineering</category>
         
-        <category>ag</category>
+        <category>freelance</category>
         
-        <category>silver_searcher</category>
+        <category>gig</category>
         
         
-        <category>search</category>
+        <category>hiring</category>
         
       </item>
     
@@ -412,35 +449,6 @@ lb has a security group&lt;/p&gt;
         
         
         <category>startup</category>
-        
-      </item>
-    
-      <item>
-        <title>No Rdoc Once and For All</title>
-        <description>&lt;p&gt;After watching me swear like a sailor earlier today, &lt;a href=&quot;http://www.dasari.me/&quot;&gt;Dv&lt;/a&gt; provided this snippet:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cat ~/.gemrc
-install: --no-rdoc --no-ri
-update: --no-rdoc --no-ri
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Never again will I have to wait for rdoc to generate (which at times takes longer than the damn gem itself).  Huzzah!&lt;/p&gt;
-</description>
-        <pubDate>Tue, 06 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/ruby/2016/12/06/no-rdoc-once-and-for-all.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ruby/2016/12/06/no-rdoc-once-and-for-all.html</guid>
-        
-        <category>ruby</category>
-        
-        <category>rails</category>
-        
-        <category>gem</category>
-        
-        <category>rdoc</category>
-        
-        
-        <category>ruby</category>
         
       </item>
     
