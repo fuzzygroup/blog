@@ -6,15 +6,78 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 14 Dec 2016 12:16:43 -0500</pubDate>
-    <lastBuildDate>Wed, 14 Dec 2016 12:16:43 -0500</lastBuildDate>
+    <pubDate>Sat, 17 Dec 2016 04:50:17 -0600</pubDate>
+    <lastBuildDate>Sat, 17 Dec 2016 04:50:17 -0600</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Vacation Insomnia and the Hotel Business Office</title>
+        <description>&lt;p&gt;As a remote worker I’ve found that you tend to work more, there are fewer distractions, there are no co-workers to go out with, etc, so you just work more.  And when you always have a laptop with you then even vacation tends to flow into work.  One of the oddest things about being a remote worker is that you end up with recollections of work that are entirely cognitively dissonant with work itself.&lt;/p&gt;
+
+&lt;p&gt;Here are a few examples:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;When I first wrote the iOS version of AppData after fighting an internal battle &lt;strong&gt;hard&lt;/strong&gt; that iOS mattered (this was back in 2010 or 2011) I remember staying at a cheap Dallas hotel with bad wifi on vacation with my family when I first wrote that crawler&lt;/li&gt;
+  &lt;li&gt;I can’t tell even begin you how much code I wrote from Great Wolf Lodge on different family trips.  I suspect I’ve not only written code there but entire products there.&lt;/li&gt;
+  &lt;li&gt;The last time I was in Disney world I wrote an anti-spam algorithm to evaluate your Twitter followers for their &lt;em&gt;spamminess&lt;/em&gt; related to your content.  I guess that wasn’t for work tho – more for late night boredom.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So I’m once again on a short vacation and I find myself in the hotel business office working in wonderful, blessed quiet and darkness.  This time I’m in the hotel’s business office and it is &lt;em&gt;absolutely lovely&lt;/em&gt;.  After a night’s drive on the way to our destination and a late checkin I found myself up at the crack of 1 am.  And with three other people in the hotel room, what do you do?  Well, if you’re me, you shower, shave, grab your gear and find a place with wifi.&lt;/p&gt;
+
+&lt;p&gt;And this time around I’m rewriting the core crawl / recursive_crawl routines for our main HTML crawler.  This is a core loop which is the innermost guts of our crawler and it is ugly beyond belief.  I can say that because I’m one of its two core authors.  This is a routine which takes like 8 parameters and returns 7 (or the other way around; even I can’t tell).  So I’m in the middle of a massive refactor where it takes in one struct and returns another.  And I know it will be better but right now I suspect it resembles a butcher shop when a flood of carcasses has just arrived – there’s blood everywhere and bits of bone and gristle from the big band saws that a real butcher shop would actually use.  Even if you’re a self confessed carnivore like myself, you likely wouldn’t want to see it and that’s how I feel right now.  I want this refactor done desperately but, man, even I don’t want to do this work.&lt;/p&gt;
+
+&lt;p&gt;I’ve now gotten it to this stage:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;crawl_struct = UrlTool.get_mechanize_links_on_a_page_from_struct(OpenStruct.new(:site =&amp;gt; site))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;which returns this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;OpenStruct {
+           :num_pages =&amp;gt; 1,
+     :already_crawled =&amp;gt; [
+        [0] &quot;14b461cc3eecf248213c23999ca33236363d083f&quot;
+    ],
+    :page_body_hashes =&amp;gt; [],
+               :links =&amp;gt; [],
+      :mechanize_page =&amp;gt; nil,
+      :resolved_links =&amp;gt; []
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;which means that I’ve made a crawler which, now, does not crawl.  &lt;strong&gt;Groan&lt;/strong&gt;.  I wish I’d stayed in bed.  Happily that likely means that I’ve missed something basic like a conditional since at least my basic return structure is better.  And, while writing this, I just found it – I had omitted a conditional.&lt;/p&gt;
+
+&lt;p&gt;Now I suspect that a number of my readers are saying something along the lines of “Dude – &lt;strong&gt;it is vacation&lt;/strong&gt;; STOP CODING!” and I will.  And you are right but there are some mitigating factors&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;this is time sensitive work that needs to get done before year end&lt;/li&gt;
+  &lt;li&gt;I suffer from an over developed sense of personal responsibility on all fronts&lt;/li&gt;
+  &lt;li&gt;everyone else is sleeping which means no reading, no media to consume&lt;/li&gt;
+  &lt;li&gt;workaholic&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The strongest mitigating factor here tho is that I’ve found that when I’m forced to leave my home office it often &lt;strong&gt;spurs creativity&lt;/strong&gt; fairly dramatically.  Just as an example we normally compare crawl results to past crawls only on 2 dimensions, pages and links because the attributes for those versus past crawls are easily accessible.  What I just realized tho is that I can implement a simple JSON api and compare my new crawl against any of the dimensions by which we crawl - forms, iframes, etc.  And, in the process of writing this post, I actually implemented that JSON api.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 17 Dec 2016 00:00:00 -0600</pubDate>
+        <link>https://fuzzygroup.github.io/blog/remote_work/2016/12/17/vacation-insomnia-and-the-hotel-business-office.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/remote_work/2016/12/17/vacation-insomnia-and-the-hotel-business-office.html</guid>
+        
+        <category>vacation</category>
+        
+        <category>remote_work</category>
+        
+        
+        <category>remote_work</category>
+        
+      </item>
     
       <item>
         <title>Why Freelancing Makes You A Better Engineer And You The Employeer Should Not Object</title>
         <description>
 </description>
-        <pubDate>Wed, 14 Dec 2016 07:38:27 -0500</pubDate>
+        <pubDate>Wed, 14 Dec 2016 06:38:27 -0600</pubDate>
         <link>https://fuzzygroup.github.io/blog/2016/12/14/why-freelancing-makes-you-a-better-engineer-and-you-the-employeer-should-not-object.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/14/why-freelancing-makes-you-a-better-engineer-and-you-the-employeer-should-not-object.html</guid>
         
@@ -77,7 +140,7 @@
   &lt;li&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Wed, 14 Dec 2016 04:39:05 -0500</pubDate>
+        <pubDate>Wed, 14 Dec 2016 03:39:05 -0600</pubDate>
         <link>https://fuzzygroup.github.io/blog/search/2016/12/14/the-silver-searcher.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/search/2016/12/14/the-silver-searcher.html</guid>
         
@@ -101,7 +164,7 @@
         <description>&lt;p&gt;I spent quite a bit of time today trying to get the bzip2 gem working.  Not even the fork worked.  Happily I found &lt;a href=&quot;https://github.com/koraktor/rbzip2&quot;&gt;rbzip2&lt;/a&gt; which worked brilliantly.  Not sure if it compresses or decompresses yet but I can deploy at least and that was today’s goal.&lt;/p&gt;
 
 </description>
-        <pubDate>Wed, 14 Dec 2016 00:00:00 -0500</pubDate>
+        <pubDate>Wed, 14 Dec 2016 00:00:00 -0600</pubDate>
         <link>https://fuzzygroup.github.io/blog/ruby/2016/12/14/when-ruby-bzip2-won-t-install.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ruby/2016/12/14/when-ruby-bzip2-won-t-install.html</guid>
         
@@ -168,7 +231,7 @@ MariaDB [foo_production]&amp;gt; SELECT COUNT(*) FROM posts WHERE created_at &am
 &lt;p&gt;What this illustrates is that while performance was non linear in the 5 to 10 minute range, it became linear again (roughly) at the 15 minute mark.  This is a nice simple way to get a &lt;em&gt;feel&lt;/em&gt; if performance is overall on track.&lt;/p&gt;
 
 </description>
-        <pubDate>Wed, 14 Dec 2016 00:00:00 -0500</pubDate>
+        <pubDate>Wed, 14 Dec 2016 00:00:00 -0600</pubDate>
         <link>https://fuzzygroup.github.io/blog/mysql/2016/12/14/what-just-happened-to-your-database-in-the-past-10-minutes.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/mysql/2016/12/14/what-just-happened-to-your-database-in-the-past-10-minutes.html</guid>
         
@@ -201,7 +264,7 @@ MariaDB [foo_production]&amp;gt; SELECT COUNT(*) FROM posts WHERE created_at &am
 
 &lt;p&gt;Note1: No eduFire wasn’t mine and yes that’s more than a little bit of much deserved bitterness.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 14 Dec 2016 00:00:00 -0500</pubDate>
+        <pubDate>Wed, 14 Dec 2016 00:00:00 -0600</pubDate>
         <link>https://fuzzygroup.github.io/blog/hiring/2016/12/14/so-you-want-to-hire-a-freelancer-to-be-full-time.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/hiring/2016/12/14/so-you-want-to-hire-a-freelancer-to-be-full-time.html</guid>
         
@@ -234,7 +297,7 @@ MariaDB [foo_production]&amp;gt; SELECT COUNT(*) FROM posts WHERE created_at &am
 
 &lt;p&gt;I should note that I am basically happy with my MacBook Pro 13” but I bought the previous generation so it is much, much older than the current.  And my wife absolutely adores here brand new MacBook (but not the pro).  Her only real objection is having to use a dongle to print on our old Brother laser printer but she’s back in graduate school now and very, very happy with the weight and size of it.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 14 Dec 2016 00:00:00 -0500</pubDate>
+        <pubDate>Wed, 14 Dec 2016 00:00:00 -0600</pubDate>
         <link>https://fuzzygroup.github.io/blog/postmac/2016/12/14/recent-postmac-notes.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/postmac/2016/12/14/recent-postmac-notes.html</guid>
         
@@ -249,12 +312,22 @@ MariaDB [foo_production]&amp;gt; SELECT COUNT(*) FROM posts WHERE created_at &am
     
       <item>
         <title>Adhoc Ansible Example</title>
-        <description>&lt;p&gt;ansible -i inventories/appdata workers -m shell -a ‘python –version’&lt;/p&gt;
+        <description>&lt;p&gt;I’ve never been a fan of adhoc ansible – I’m more of a playbook and role kind of guy but this was pretty useful earlier today:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible -i inventories/machines workers -m shell -a 'python --version'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And that gave me the python version on roughly a dozen or so machines allowing me to focus in on the one box where it was was incorrect.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 14 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/12/14/adhoc-ansible-example.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/14/adhoc-ansible-example.html</guid>
+        <pubDate>Wed, 14 Dec 2016 00:00:00 -0600</pubDate>
+        <link>https://fuzzygroup.github.io/blog/ansible/2016/12/14/adhoc-ansible-example.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ansible/2016/12/14/adhoc-ansible-example.html</guid>
         
+        <category>ansible</category>
+        
+        
+        <category>ansible</category>
         
       </item>
     
@@ -268,7 +341,7 @@ MariaDB [foo_production]&amp;gt; SELECT COUNT(*) FROM posts WHERE created_at &am
 
 &lt;p&gt;https://secure.phabricator.com/book/phabricator/article/diffusion_existing/&lt;/p&gt;
 </description>
-        <pubDate>Tue, 13 Dec 2016 15:50:22 -0500</pubDate>
+        <pubDate>Tue, 13 Dec 2016 14:50:22 -0600</pubDate>
         <link>https://fuzzygroup.github.io/blog/phabricator/2016/12/13/considering-phabricator.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/phabricator/2016/12/13/considering-phabricator.html</guid>
         
@@ -287,36 +360,10 @@ MariaDB [foo_production]&amp;gt; SELECT COUNT(*) FROM posts WHERE created_at &am
         <title>Multi Cooking Is A Thing And Here's How To Do It</title>
         <description>
 </description>
-        <pubDate>Sun, 11 Dec 2016 05:22:58 -0500</pubDate>
+        <pubDate>Sun, 11 Dec 2016 04:22:58 -0600</pubDate>
         <link>https://fuzzygroup.github.io/blog/2016/12/11/multi-cooking-is-a-thing-and-here-s-how-to-do-it.html</link>
         <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/11/multi-cooking-is-a-thing-and-here-s-how-to-do-it.html</guid>
         
-        
-      </item>
-    
-      <item>
-        <title>Apple MacBook Pro Alternatives</title>
-        <description>&lt;p&gt;Well I’m certainly not the only one who is curious about life beyond the Macbook:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://medium.com/broken-window/my-search-for-a-macbook-pro-alternative-e549ea2b2dee#.j80auzeup&quot;&gt;Medium Article&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://news.ycombinator.com/item?id=13142754&quot;&gt;Hacker News Discussion&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Surprisingly he didn’t even mention &lt;a href=&quot;https://system76.com/&quot;&gt;System 76&lt;/a&gt; which makes native Ubuntu laptops.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 10 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/postmac/2016/12/10/apple-macbook-pro-alternatives.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/postmac/2016/12/10/apple-macbook-pro-alternatives.html</guid>
-        
-        <category>postmac</category>
-        
-        <category>apple</category>
-        
-        <category>mac</category>
-        
-        
-        <category>postmac</category>
         
       </item>
     
