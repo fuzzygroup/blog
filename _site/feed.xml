@@ -6,9 +6,175 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 18 Dec 2016 07:25:50 -0500</pubDate>
-    <lastBuildDate>Sun, 18 Dec 2016 07:25:50 -0500</lastBuildDate>
+    <pubDate>Mon, 19 Dec 2016 05:45:00 -0500</pubDate>
+    <lastBuildDate>Mon, 19 Dec 2016 05:45:00 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Rails Refactoring Tip - When You Remove a Database Column and You Are Still Trying to Use It</title>
+        <description>&lt;p&gt;I have to admit, up front, that this is a hacky, schlocky recommendation but it is also &lt;strong&gt;useful&lt;/strong&gt;.  As much as all of us would like to imagine that we refactor with grace, skill and perfection the reality is often far darker.&lt;/p&gt;
+
+&lt;p&gt;I recently had a refactor involving the removal of database columns &lt;strong&gt;fail&lt;/strong&gt; on me.  I attempted something quite ambitious and it just didn’t work out.  And, worse, it involved removal of database columns from a production database so reverting to the older code is now quite an issue.  When I run it my master exception handler gives me output look this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;EXCEPTION===========================================================================
+undefined method `crawl_id=' for #&amp;lt;Form2016Q4:0x007fa52c346128&amp;gt;
+Did you mean?  crawl=
+               crawl
+               crawl_url=
+               crawl_url (PAGE) /Users/sjohnson/Dropbox/appdatallc/banks_before_refactor/banks/lib/common_page.rb 157 new_and_create_for_external_links
+====================================================================================
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;What’s happening here is that I’ve removed the crawl_id attribute from the form2016_q4s table. And the older code doesn’t understand this.  At this point I’m still trying to get evaluate if the original problem I was trying to fix is fixed in the older code check out.  I don’t want to make major changes in this check out since I’m still at that “should I stay or should I go now” part of the evaluation (i.e. toss out my refactor or try and pull in from the older check out).&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Here’s how I got around this, &lt;em&gt;attr_accessor&lt;/em&gt;. &lt;a href=&quot;http://notes.jerzygangi.com/using-attr-accessor-in-rails-model-classes/&quot;&gt;Good Blog Post&lt;/a&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;a href=&quot;http://ruby-doc.org/core-2.0.0/Module.html#method-i-attr_accessor&quot;&gt;Actual Docs&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;attr_accessor is one of those bits of Ruby magic that you don’t use often when when you need it you really, really need it.  It generates reader and writer methods for an instance variable and it does so automagically behind the scenes.&lt;/p&gt;
+
+&lt;p&gt;Here’s the only change that I needed to make at the top of my class:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;attr_accessor :crawl_id
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Note that I put it at the top of my class by style preference; it could have gone anywhere after class and before protected or private.  I also used attr_accessor instead of attr_writer&lt;/p&gt;
+</description>
+        <pubDate>Mon, 19 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/rails/2016/12/19/rails-refactoring-tip-when-you-remove-a-database-column-and-you-are-still-trying-to-use-it.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails/2016/12/19/rails-refactoring-tip-when-you-remove-a-database-column-and-you-are-still-trying-to-use-it.html</guid>
+        
+        <category>rails</category>
+        
+        <category>refactor</category>
+        
+        <category>activerecord</category>
+        
+        <category>database</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Working with Lithium Technical Support</title>
+        <description>&lt;p&gt;Doing technical support is not a complicated thing.  Even doing technical support well is not complicated.  At its core technical support amounts to:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Listen to the customer’s needs.&lt;/li&gt;
+  &lt;li&gt;Help the customer with their problem.&lt;/li&gt;
+  &lt;li&gt;Be accessible.&lt;/li&gt;
+  &lt;li&gt;Don’t be a jerk&lt;/li&gt;
+  &lt;li&gt;Don’t make the customer feel stupid.&lt;/li&gt;
+  &lt;li&gt;Admit when you get it wrong.  When you support a complex product then, inevitably, you will get it wrong at some point.&lt;/li&gt;
+  &lt;li&gt;Have examples and things in writing to give to the customer when they really need it.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;During the course of the Interania project, Neal and I had the experience of interacting directly with both Lithium and MindTouch support and despite both companies supporting the same thing, SAML access to their product, the experiences could not have been more different:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Our experience with MindTouch was so overwhelmingly positive that I emailed our support technician’s boss and the subject line was “You Have an Outstanding Staffer in ScottG”&lt;/li&gt;
+  &lt;li&gt;In all my years in this industry, I have never had a more frustrating experience with support than Lithium.  After about half the interactions with Lithium, I’d get off the phone and curse a blue streak and be angry for about an hour or more.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;interacting-with-lithium&quot;&gt;Interacting with Lithium&lt;/h1&gt;
+
+&lt;p&gt;We had two points of contact with Lithium:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Colleen&lt;/li&gt;
+  &lt;li&gt;Vicky&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Colleen was the overall project manager and I’m going to leave the discussion of Colleen’s issues to Neal.  Suffice it to say that I am not a fan of hers.&lt;/p&gt;
+
+&lt;p&gt;Vicky was our technical contact and I believe his role was as implementation manager or implementation expert.  Here are the problems that we experienced with Vicky:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;No Adhoc Accessibility&lt;/strong&gt;.  Every single interaction with Vicky had to be scheduled and planned in advance.  He simply wasn’t someone would could be called for support.  Often times this would mean that we couldn’t interact with him for more than a day which makes debugging a complex system hard.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Don’t be a Jerk&lt;/strong&gt;.  At different points in my career I’ve had direct responsibility for managing customer support including hiring and training support technicians.  One of the thing things I always used to emphasize to them is that this is a customer service position and while you know more than the customer with respect to our product, you don’t actually know more than the customer in general.  In general I used to sum up how to interact with customer as “Don’t be a Jerk”.  This is not a lesson that anyone ever taught Vicky because now, even more than a month after I last interacted with him, I’m still angry at him (and Lithium).&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Don’t Make the Customer Feel Stupid&lt;/strong&gt;.  Going right along with don’t be a jerk is don’t make the customer feel stupid and this is one that Vicky violated with in spades.  Given that a support technician always knows more about the product then the customer, it is very easy for a support technician to act superior and Vicky certainly did that.  Having looked up Vicky’s credentials on LinkedIn, I can certainly attest to Vicky being a smart guy but there’s no need to bolster your own ego by making someone else feel like crap when they make a mistake.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;He Never Admitted When He Got It Wrong&lt;/strong&gt;. I am always the first person to admit when I get something wrong and there were times in this project when I did get things wrong.  This was a complex project and we had two vendors with the opposite approach to the same technology which always leads to problems.  Now in the course of interacting with Vicky when I got something wrong I handled it correctly and a) apologies and b) admitted it.  Now, if I had been the only person who got things completely wrong, that would have been fine but Vicky was also absolutely technically wrong on at least 2 if not three occasions.  These were cases where he told me to do X and it was entirely unambiguous.  On these occasions where he got it wrong thus wasting both my time, Neal’s time and the time that we were paying them for support, he failed to ever admit it, take responsibility for it or apologize.  Even when I specifically called him out on this he would just brush it aside and fail to address it.  I understand that no one wants to be wrong but when you are then &lt;em&gt;own it&lt;/em&gt; and &lt;em&gt;learn from it&lt;/em&gt;.  Vicky did not and would not.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Nothing in Writing&lt;/strong&gt;.  One of the things that I think affected our entire Lithium SSO implementation was that there wasn’t anything in writing after the initial presentation that Colleen gave us (and she did do a good job on that).  For example once we were ready to go live it was very unclear how that happened so I specifically asked Vicky for something in writing to guide us through the process.  It didn’t have to be much – even an email that enumerated the steps would have been fine.  Nothing was ever forth coming.  I suspect that Lithium themselves actually do not have a lot of SSO experience and this cannot really write this down in a cohesive fashion.  There were a number of very complex aspects to our integration that should have been clearly documented that were not.  Things like how data ownership works when you use SSO had to be figured out by trial and error.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;Working with Lithium was enormously frustrating and much of the blame goes straight back to Vicky.  He is technically very smart but he lacks the people skills that make working with a customer an experience where the customer doesn’t want to reach through the screen and throttle him. Overall Lithium needs to put a lot of work into the customer service portion of their business.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 18 Dec 2016 19:04:13 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/12/18/working-with-lithium-technical-support.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/18/working-with-lithium-technical-support.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>The Worst Business Decision I Ever Saw Disney Make</title>
+        <description>&lt;p&gt;My wife, kids and I are at DisneyWorld right now for a pre-Christmas vacation.  There are 4 of us stuffed into a single room since when we booked it the adjoining room wasn’t available.  The date was December 18th and we noticed early in the day that the room adjoining ours was actually empty.  And, at 5 pm, it was still empty so my wife and I went to the front desk and asked:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Is that room really empty?&lt;/li&gt;
+  &lt;li&gt;Can we rent it that room as well as ours?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This seems like a simple, straightforward request.  Unfortunately it took ten minutes of waiting and two phone calls for the person helping us to write a price down on a scrap of paper and show it to us.  The price for that unoccupied room was:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;$493 / night&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;She mouthed some sort of corporate line about how “when she rents it directly to the customer she &lt;strong&gt;has&lt;/strong&gt; to charge &lt;em&gt;rack rate&lt;/em&gt;.”  So for the four remaining nights of our trip adding this additional room would cost almost $2,000 or more than we are currently paying.&lt;/p&gt;
+
+&lt;p&gt;My only response here is: &lt;em&gt;balderdash&lt;/em&gt;, &lt;em&gt;poppycock&lt;/em&gt; and what a &lt;em&gt;load of hooey&lt;/em&gt;!  Let’s look at this from a business perspective.&lt;/p&gt;
+
+&lt;h1 id=&quot;trick-question-1--what-is-the-value-of-an-unsold-hotel-room&quot;&gt;Trick Question #1- What is the Value of an Unsold Hotel Room?&lt;/h1&gt;
+
+&lt;p&gt;This isn’t actually much of a trick question, it is a simple one - the value of an unsold hotel room is &lt;strong&gt;$0&lt;/strong&gt;.  Each hotel room is only available for rent for 365 nights a year.  A hotel room that isn’t rented for a night is simply &lt;strong&gt;lost revenue&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;trick-question-2---what-are-the-additional-costs-of-renting-it-to-us&quot;&gt;Trick Question #2 - What Are the Additional Costs of Renting It to Us?&lt;/h1&gt;
+
+&lt;p&gt;Now you could argue that by renting it to us, Disney incurs additional house keeping expenses but, at best, that’s an incorrect argument.  House keeping is already paid for since there is a person assigned to the floor anyway.  And, under normal circumstances, she would be planning on cleaning that room anyway.&lt;/p&gt;
+
+&lt;h1 id=&quot;a-business-decision-so-bad-it-makes-me-said&quot;&gt;A Business Decision So Bad It Makes Me Said&lt;/h1&gt;
+
+&lt;p&gt;The saddest thing of all in this case is that Disney actually knows who we are as customers.  My wife is a certified Disney nut and we have been to Disney an embarrassingly large number of times.  This would have been a fantastic opportunity to reward a loyal customer with something like “Normally I have to rent it out at rack rate which is $493 / night but since you are a regular customer I can rent it out for $300 / night”.  We’re here for 4 more nights and that would have guaranteed Disney an additional $1,200 in revenue.  Sure it wouldn’t have been the $2,000 they might want but the room isn’t sold and I’d bet that if a room isn’t pre-booked right before Christmas then it is very unlikely to be booked.  Now my business background isn’t in hotels and I could be wrong here – perhaps there is a large quantity of last minute, pre-Christmas Disney bookings but I think not.&lt;/p&gt;
+
+&lt;p&gt;Sad.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 18 Dec 2016 17:49:44 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/startup/2016/12/18/the-worst-business-decision-i-ever-saw-disney-make.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/startup/2016/12/18/the-worst-business-decision-i-ever-saw-disney-make.html</guid>
+        
+        <category>startup</category>
+        
+        <category>business</category>
+        
+        <category>disney</category>
+        
+        
+        <category>startup</category>
+        
+      </item>
+    
+      <item>
+        <title>Creating Week Day Only Events On Apple Calendar</title>
+        <description>&lt;p&gt;https://support.busymac.com/help/70596-repeating-events&lt;/p&gt;
+</description>
+        <pubDate>Sun, 18 Dec 2016 09:10:24 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/12/18/creating-week-day-only-events-on-apple-calendar.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/18/creating-week-day-only-events-on-apple-calendar.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>On the Big Tech Company Interview Process</title>
@@ -71,7 +237,7 @@
 
 &lt;p&gt;The hands on technical interview portion of the overall interview process is likely between 1 and 3 hours with the initial hour determining whether you advance to the next stage or you fail out.  At least that’s been my experience.  So given that I’ve argued that you spend more time thinking / researching / debugging code / reading code how do you evaluate those aspects?&lt;/p&gt;
 
-&lt;p&gt;Given that I basically regard my last bit of technical hiring as a failure of mine at the interview level I’ve spent a lot of time thinking about this and this is roughly my third time I’ve written all this down (the first 2 were abject failures; bytes fed into the bit bucket).  Here’s my conclusion:&lt;/p&gt;
+&lt;p&gt;Now I basically regard my last bit of technical hiring as a failure of mine at the interview level so I’ve spent a lot of time thinking about this and this is roughly my third time I’ve written all this down (the first 2 were abject failures; bytes fed into the bit bucket).  Here’s my conclusion:&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;An engineer needs to be evaluated along the lines of the work he is going to be doing.  And the best proxy for that is likely the work that &lt;strong&gt;you&lt;/strong&gt; are &lt;strong&gt;currently&lt;/strong&gt; doing.&lt;/p&gt;
@@ -84,7 +250,7 @@
   &lt;li&gt;by someone who isn’t on the same team as the person being hired and the same dev tools aren’t being used&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Let me illustrate this with an example.  And I will admit that for the next person I interview, this will be the interview process I use.&lt;/p&gt;
+&lt;p&gt;But if you can avoid the above two issues, let me illustrate this with an example.  And I will admit that for the next person I interview, this will be the interview process I use.&lt;/p&gt;
 
 &lt;h2 id=&quot;pre-requisite&quot;&gt;Pre-Requisite&lt;/h2&gt;
 
@@ -114,7 +280,9 @@
 
 &lt;h2 id=&quot;test-what-you-know-3---debugging&quot;&gt;Test What You Know 3 - Debugging&lt;/h2&gt;
 
-&lt;p&gt;This is my personal favorite in terms of interviewing tests.  Debugging for engineers is the equivalent for wood workers of &lt;em&gt;measure twice, cut once&lt;/em&gt;.  Debugging is the &lt;strong&gt;essential&lt;/strong&gt; skill that tells you how an engineer tackles a problem and watching how someone debugs something is always interesting.  My first business partner, Brian, was an absolute super hero at this.  You could hand Brian a code base with 3.5 million lines of C in it, describe the error and say “go” and he’d find it and fix it.  You might not always like the way he fixed it but he’d get it done and get it done in short order.  I’m not, yet, at that stage but I do quite well.  Once again my suggestion here is to give the interviewee a current problem you’re debugging and then watch his progress.  Yes he’s going to be missing the overall context you have but you’re looking for approach / technique here more than actual results.  And, once again, you yourself might learn something.&lt;/p&gt;
+&lt;p&gt;This is my personal favorite in terms of interviewing tests.  Debugging for engineers is the equivalent for wood workers of &lt;em&gt;measure twice, cut once&lt;/em&gt;.  Debugging is the &lt;strong&gt;essential&lt;/strong&gt; skill that tells you how an engineer tackles a problem and watching how someone debugs something is always interesting.&lt;/p&gt;
+
+&lt;p&gt;My first business partner, Brian Giedt, was an absolute super hero at this.  You could hand Brian a code base with 3.5 million lines of C in it, describe the error and say “go” and he’d find it and fix it.  You might not always like the way he fixed it but he’d get it done and get it done in short order.   I’m not, yet, at that stage but I do quite well.  Once again my suggestion here is to give the interviewee a current problem you’re debugging and then watch his progress.  Yes he’s going to be missing the overall context you have but you’re looking for approach / technique here more than actual results.  And, once again, you yourself might learn something.&lt;/p&gt;
 
 &lt;p&gt;Let me illustrate this with an example from my own pair programming history.  &lt;a href=&quot;http://www.dasari.me&quot;&gt;Dv&lt;/a&gt; used to work for me and we’d pair but not always as often as we should have.  One day he was watching my technique, I was using raise statements as my primary tool and he finally said “Let’s try the debugger”.  He dropped a few gems in my Gemfile and then added the debugger pragma at the offending spot in the code and we restarted.  And you know what?  My life has &lt;strong&gt;never been the same&lt;/strong&gt; since.  That’s not hyperbole by any means.  I write / debug ruby code 60+ hours per week or 3,120 hours per year and, based on my own premise, more of that is spend debugging than writing.  By teaching me how to use the debugger gem, my life was literally changed.&lt;/p&gt;
 
@@ -341,158 +509,6 @@
         
         
         <category>ruby</category>
-        
-      </item>
-    
-      <item>
-        <title>What Just Happened To Your Database In the Past 10 Minutes</title>
-        <description>&lt;p&gt;So I’m rapidly coming to the conclusion that Christmas is the enemy of getting things done.  While I have come up with a lot of potential topics to write about recently I don’t seem to be able to get anything actually finished due to:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Present Shopping&lt;/li&gt;
-  &lt;li&gt;Present Wrapping&lt;/li&gt;
-  &lt;li&gt;Christmas Events (parties, choir concerts, etc)&lt;/li&gt;
-  &lt;li&gt;Christmas Baking&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Alas – at least, as my old boss, &lt;a href=&quot;https://twitter.com/rafer&quot;&gt;Scott Rafer&lt;/a&gt;, used to say – &lt;em&gt;these are high quality problems to have&lt;/em&gt;!&lt;/p&gt;
-
-&lt;p&gt;A quick post today – looking at the state of your database.  Let’s say you have a table called posts and it has a field called created_at (the Rails standard way of tracking table changes) and you want to see how many things came into that table in the past 10 minutes.  Here’s the sql you need:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SELECT COUNT(*) FROM posts WHERE created_at &amp;gt; DATE_ADD(NOW(),INTERVAL - 10 MINUTE);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Previously I’ve generally looked at tables and then tried to relate what’s going on to the current time and adjust in my head for the server time zone offset.  This is &lt;strong&gt;much, much&lt;/strong&gt; better.&lt;/p&gt;
-
-&lt;p&gt;A really nice side effect of this is that you can simply change the interval quickly and see if your performance is linear or non-linear.  Let’s say you change your interval to 5, 10 and 15 minutes and this was the result:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;MariaDB [foo_production]&amp;gt; SELECT COUNT(*) FROM posts WHERE created_at &amp;gt; DATE_ADD(NOW(),INTERVAL - 5 MINUTE);
-+----------+
-| COUNT(*) |
-+----------+
-|      468 |
-+----------+
-1 row in set (0.45 sec)
-
-MariaDB [foo_production]&amp;gt; SELECT COUNT(*) FROM posts WHERE created_at &amp;gt; DATE_ADD(NOW(),INTERVAL - 10 MINUTE);
-+----------+
-| COUNT(*) |
-+----------+
-|      512 |
-+----------+
-1 row in set (0.44 sec)
-
-MariaDB [foo_production]&amp;gt; SELECT COUNT(*) FROM posts WHERE created_at &amp;gt; DATE_ADD(NOW(),INTERVAL - 15 MINUTE);
-+----------+
-| COUNT(*) |
-+----------+
-|     1312 |
-+----------+
-1 row in set (0.45 sec)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;What this illustrates is that while performance was non linear in the 5 to 10 minute range, it became linear again (roughly) at the 15 minute mark.  This is a nice simple way to get a &lt;em&gt;feel&lt;/em&gt; if performance is overall on track.&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 14 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/mysql/2016/12/14/what-just-happened-to-your-database-in-the-past-10-minutes.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/mysql/2016/12/14/what-just-happened-to-your-database-in-the-past-10-minutes.html</guid>
-        
-        <category>mysql</category>
-        
-        <category>rails</category>
-        
-        <category>sql</category>
-        
-        
-        <category>mysql</category>
-        
-      </item>
-    
-      <item>
-        <title>So You Want to Hire a Freelancer to Be Full Time</title>
-        <description>&lt;p&gt;For most of the past 8 years I’ve been a professional freelancer and it all started with &lt;em&gt;eduFire&lt;/em&gt; where I was VP of Engineering.  When eduFire dissolved in a wash of founder level “oh crap we can’t raise our A round; what do we do; I know – I’ll just quit and start something else”(Note1) I made the choice to become a professional freelancer and I have really enjoyed that decision.  I’ve never made as much money or learned as much as I have since I’ve been a freelancer.  My skills now are better than they ever have been and it is largely from freelancing – more on that in a future post.&lt;/p&gt;
-
-&lt;p&gt;From time to time clients try, often hard, to hire you full time.  And if you want to hire a freelancer full time then I have one piece of advice for you:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;Pay the freelancer’s bills promptly&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;When someone is a freelancer and they are resistant to taking a full time job, I’d argue that there has to be a reason for it since it is &lt;strong&gt;dramatically harder&lt;/strong&gt; to be a freelancer than a full time employee.  We may all talk a lot about the &lt;em&gt;gig economy&lt;/em&gt; but, in 2016 America, things are still structured against freelancers in every way – insurance, taxes, etc.&lt;/p&gt;
-
-&lt;p&gt;In my case I have &lt;strong&gt;trust&lt;/strong&gt; issues.  eduFire shut down 2 weeks before Christmas in 2009 with &lt;em&gt;no notice&lt;/em&gt; and all of us were left high and dry and scrambling for what was next.  And since no one hires in December or even January it meant that everyone was faced at least 2 months of no salary.  I think we all landed on our feet - I certainly did.&lt;/p&gt;
-
-&lt;p&gt;As long as a client is moderately rational or at least not insane the best impression you can give a freelancer is, well, if you &lt;strong&gt;pay your bills promptly&lt;/strong&gt;.  As long as the freelancer is paid on time, well, we’re generally happy.  And if you want them to join you full time, well, pay your bills on time.  That goes a long, long way towards giving a freelancer the positive feelings you want them to have if you are going to name them a job offer.&lt;/p&gt;
-
-&lt;p&gt;Note1: No eduFire wasn’t mine and yes that’s more than a little bit of much deserved bitterness.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 14 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/hiring/2016/12/14/so-you-want-to-hire-a-freelancer-to-be-full-time.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/hiring/2016/12/14/so-you-want-to-hire-a-freelancer-to-be-full-time.html</guid>
-        
-        <category>hr</category>
-        
-        <category>hiring</category>
-        
-        <category>software_engineering</category>
-        
-        <category>freelance</category>
-        
-        <category>gig</category>
-        
-        
-        <category>hiring</category>
-        
-      </item>
-    
-      <item>
-        <title>Recent PostMac Notes</title>
-        <description>&lt;p&gt;Some recent things in the Post Mac category:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://mondaynote.com/macbook-pro-launch-perplexing-b47003037b2e#.88txiffc1&quot;&gt;Jean Louis Gassee returned his New MacBook Pro&lt;/a&gt; and called the launch &lt;strong&gt;perplexing&lt;/strong&gt;; &lt;a href=&quot;https://news.ycombinator.com/item?id=13162310&quot;&gt;Hacker News Discussion&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://9to5mac.com/2016/12/13/why-apple-is-removing-time-remaining-battery-life-estimates-macbook-pro/&quot;&gt;Apple is removing battery life estimates from the MacBook Pro&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.theguardian.com/technology/2016/dec/12/apple-macbook-pro-review-the-best-computer-you-shouldnt-buy&quot;&gt;The Guardian calls the next MacBook Pro the Best Computer You Shouldn’t Buy&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://hn.algolia.com/?query=macbook%20pro&amp;amp;sort=byPopularity&amp;amp;prefix&amp;amp;page=0&amp;amp;dateRange=pastWeek&amp;amp;type=story&quot;&gt;Hacker News search on recent MacBook articles&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;I should note that I am basically happy with my MacBook Pro 13” but I bought the previous generation so it is much, much older than the current.  And my wife absolutely adores here brand new MacBook (but not the pro).  Her only real objection is having to use a dongle to print on our old Brother laser printer but she’s back in graduate school now and very, very happy with the weight and size of it.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 14 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/postmac/2016/12/14/recent-postmac-notes.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/postmac/2016/12/14/recent-postmac-notes.html</guid>
-        
-        <category>postmac</category>
-        
-        <category>osx</category>
-        
-        
-        <category>postmac</category>
-        
-      </item>
-    
-      <item>
-        <title>Adhoc Ansible Example</title>
-        <description>&lt;p&gt;I’ve never been a fan of adhoc ansible – I’m more of a playbook and role kind of guy but this was pretty useful earlier today:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible -i inventories/machines workers -m shell -a 'python --version'
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And that gave me the python version on roughly a dozen or so machines allowing me to focus in on the one box where it was was incorrect.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 14 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/ansible/2016/12/14/adhoc-ansible-example.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ansible/2016/12/14/adhoc-ansible-example.html</guid>
-        
-        <category>ansible</category>
-        
-        
-        <category>ansible</category>
         
       </item>
     

@@ -38,7 +38,7 @@ He's absolutely right on this and the simple truth of it, whether we want to adm
 
 The hands on technical interview portion of the overall interview process is likely between 1 and 3 hours with the initial hour determining whether you advance to the next stage or you fail out.  At least that's been my experience.  So given that I've argued that you spend more time thinking / researching / debugging code / reading code how do you evaluate those aspects?
 
-Given that I basically regard my last bit of technical hiring as a failure of mine at the interview level I've spent a lot of time thinking about this and this is roughly my third time I've written all this down (the first 2 were abject failures; bytes fed into the bit bucket).  Here's my conclusion:
+Now I basically regard my last bit of technical hiring as a failure of mine at the interview level so I've spent a lot of time thinking about this and this is roughly my third time I've written all this down (the first 2 were abject failures; bytes fed into the bit bucket).  Here's my conclusion:
 
 > An engineer needs to be evaluated along the lines of the work he is going to be doing.  And the best proxy for that is likely the work that **you** are **currently** doing.
 
@@ -47,7 +47,7 @@ Unfortunately, giving the secrecy fetish in most large companies, this doesn't w
 * a person is being interviewed by someone on the team but the current project can't be shared
 * by someone who isn't on the same team as the person being hired and the same dev tools aren't being used
  
-Let me illustrate this with an example.  And I will admit that for the next person I interview, this will be the interview process I use.
+But if you can avoid the above two issues, let me illustrate this with an example.  And I will admit that for the next person I interview, this will be the interview process I use.
 
 ## Pre-Requisite
 
@@ -73,7 +73,9 @@ The sad, sad truth of search today is that finding answers to hard questions oft
 
 ## Test What You Know 3 - Debugging
 
-This is my personal favorite in terms of interviewing tests.  Debugging for engineers is the equivalent for wood workers of *measure twice, cut once*.  Debugging is the **essential** skill that tells you how an engineer tackles a problem and watching how someone debugs something is always interesting.  My first business partner, Brian, was an absolute super hero at this.  You could hand Brian a code base with 3.5 million lines of C in it, describe the error and say "go" and he'd find it and fix it.  You might not always like the way he fixed it but he'd get it done and get it done in short order.  I'm not, yet, at that stage but I do quite well.  Once again my suggestion here is to give the interviewee a current problem you're debugging and then watch his progress.  Yes he's going to be missing the overall context you have but you're looking for approach / technique here more than actual results.  And, once again, you yourself might learn something.  
+This is my personal favorite in terms of interviewing tests.  Debugging for engineers is the equivalent for wood workers of *measure twice, cut once*.  Debugging is the **essential** skill that tells you how an engineer tackles a problem and watching how someone debugs something is always interesting.  
+
+My first business partner, Brian Giedt, was an absolute super hero at this.  You could hand Brian a code base with 3.5 million lines of C in it, describe the error and say "go" and he'd find it and fix it.  You might not always like the way he fixed it but he'd get it done and get it done in short order.   I'm not, yet, at that stage but I do quite well.  Once again my suggestion here is to give the interviewee a current problem you're debugging and then watch his progress.  Yes he's going to be missing the overall context you have but you're looking for approach / technique here more than actual results.  And, once again, you yourself might learn something.  
 
 Let me illustrate this with an example from my own pair programming history.  [Dv](http://www.dasari.me) used to work for me and we'd pair but not always as often as we should have.  One day he was watching my technique, I was using raise statements as my primary tool and he finally said "Let's try the debugger".  He dropped a few gems in my Gemfile and then added the debugger pragma at the offending spot in the code and we restarted.  And you know what?  My life has **never been the same** since.  That's not hyperbole by any means.  I write / debug ruby code 60+ hours per week or 3,120 hours per year and, based on my own premise, more of that is spend debugging than writing.  By teaching me how to use the debugger gem, my life was literally changed.  
 
