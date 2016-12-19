@@ -18,7 +18,7 @@ I recently had a refactor involving the removal of database columns **fail** on 
 
 What's happening here is that I've removed the crawl_id attribute from the form2016_q4s table. And the older code doesn't understand this.  At this point I'm still trying to get evaluate if the original problem I was trying to fix is fixed in the older code check out.  I don't want to make major changes in this check out since I'm still at that "should I stay or should I go now" part of the evaluation (i.e. toss out my refactor or try and pull in from the older check out).
 
-Here's how I got around this, *attr_accessor*. [Good Blog Post](http://notes.jerzygangi.com/using-attr-accessor-in-rails-model-classes/) | [Actual Docs](http://ruby-doc.org/core-2.0.0/Module.html#method-i-attr_accessor)
+Here's how I got around this, *attr_accessor*. [Good Blog Post](http://notes.jerzygangi.com/using-attr-accessor-in-rails-model-classes/) versus [Actual Docs](http://ruby-doc.org/core-2.0.0/Module.html#method-i-attr_accessor)
 
 attr_accessor is one of those bits of Ruby magic that you don't use often when when you need it you really, really need it.  It generates reader and writer methods for an instance variable and it does so automagically behind the scenes.
 

@@ -112,14 +112,7 @@ Did you mean?  crawl=
 
 <p>What’s happening here is that I’ve removed the crawl_id attribute from the form2016_q4s table. And the older code doesn’t understand this.  At this point I’m still trying to get evaluate if the original problem I was trying to fix is fixed in the older code check out.  I don’t want to make major changes in this check out since I’m still at that “should I stay or should I go now” part of the evaluation (i.e. toss out my refactor or try and pull in from the older check out).</p>
 
-<table>
-  <tbody>
-    <tr>
-      <td>Here’s how I got around this, <em>attr_accessor</em>. <a href="http://notes.jerzygangi.com/using-attr-accessor-in-rails-model-classes/">Good Blog Post</a></td>
-      <td><a href="http://ruby-doc.org/core-2.0.0/Module.html#method-i-attr_accessor">Actual Docs</a></td>
-    </tr>
-  </tbody>
-</table>
+<p>Here’s how I got around this, <em>attr_accessor</em>. <a href="http://notes.jerzygangi.com/using-attr-accessor-in-rails-model-classes/">Good Blog Post</a> versus <a href="http://ruby-doc.org/core-2.0.0/Module.html#method-i-attr_accessor">Actual Docs</a></p>
 
 <p>attr_accessor is one of those bits of Ruby magic that you don’t use often when when you need it you really, really need it.  It generates reader and writer methods for an instance variable and it does so automagically behind the scenes.</p>
 
@@ -129,7 +122,9 @@ Did you mean?  crawl=
 </code></pre>
 </div>
 
-<p>Note that I put it at the top of my class by style preference; it could have gone anywhere after class and before protected or private.  I also used attr_accessor instead of attr_writer</p>
+<p>Note 1: that I put it at the top of my class by style preference; it could have gone anywhere after class and before protected or private.  I also used attr_accessor instead of attr_writer I wanted support to enable reads in case I had any of those.</p>
+
+<p>Note 2: If you’re using a deleted column in an ActiveRecord where statement you’re still going to have issues; those I had to fix by hand.</p>
 
   </div>
   

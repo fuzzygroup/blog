@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Dec 2016 05:45:00 -0500</pubDate>
-    <lastBuildDate>Mon, 19 Dec 2016 05:45:00 -0500</lastBuildDate>
+    <pubDate>Mon, 19 Dec 2016 06:08:34 -0500</pubDate>
+    <lastBuildDate>Mon, 19 Dec 2016 06:08:34 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -28,14 +28,7 @@ Did you mean?  crawl=
 
 &lt;p&gt;What’s happening here is that I’ve removed the crawl_id attribute from the form2016_q4s table. And the older code doesn’t understand this.  At this point I’m still trying to get evaluate if the original problem I was trying to fix is fixed in the older code check out.  I don’t want to make major changes in this check out since I’m still at that “should I stay or should I go now” part of the evaluation (i.e. toss out my refactor or try and pull in from the older check out).&lt;/p&gt;
 
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Here’s how I got around this, &lt;em&gt;attr_accessor&lt;/em&gt;. &lt;a href=&quot;http://notes.jerzygangi.com/using-attr-accessor-in-rails-model-classes/&quot;&gt;Good Blog Post&lt;/a&gt;&lt;/td&gt;
-      &lt;td&gt;&lt;a href=&quot;http://ruby-doc.org/core-2.0.0/Module.html#method-i-attr_accessor&quot;&gt;Actual Docs&lt;/a&gt;&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
+&lt;p&gt;Here’s how I got around this, &lt;em&gt;attr_accessor&lt;/em&gt;. &lt;a href=&quot;http://notes.jerzygangi.com/using-attr-accessor-in-rails-model-classes/&quot;&gt;Good Blog Post&lt;/a&gt; versus &lt;a href=&quot;http://ruby-doc.org/core-2.0.0/Module.html#method-i-attr_accessor&quot;&gt;Actual Docs&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;attr_accessor is one of those bits of Ruby magic that you don’t use often when when you need it you really, really need it.  It generates reader and writer methods for an instance variable and it does so automagically behind the scenes.&lt;/p&gt;
 
@@ -45,7 +38,9 @@ Did you mean?  crawl=
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;Note that I put it at the top of my class by style preference; it could have gone anywhere after class and before protected or private.  I also used attr_accessor instead of attr_writer&lt;/p&gt;
+&lt;p&gt;Note 1: that I put it at the top of my class by style preference; it could have gone anywhere after class and before protected or private.  I also used attr_accessor instead of attr_writer I wanted support to enable reads in case I had any of those.&lt;/p&gt;
+
+&lt;p&gt;Note 2: If you’re using a deleted column in an ActiveRecord where statement you’re still going to have issues; those I had to fix by hand.&lt;/p&gt;
 </description>
         <pubDate>Mon, 19 Dec 2016 00:00:00 -0500</pubDate>
         <link>https://fuzzygroup.github.io/blog/rails/2016/12/19/rails-refactoring-tip-when-you-remove-a-database-column-and-you-are-still-trying-to-use-it.html</link>
