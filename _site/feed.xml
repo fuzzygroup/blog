@@ -6,9 +6,163 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 21 Dec 2016 17:05:16 -0500</pubDate>
-    <lastBuildDate>Wed, 21 Dec 2016 17:05:16 -0500</lastBuildDate>
+    <pubDate>Fri, 23 Dec 2016 05:02:10 -0500</pubDate>
+    <lastBuildDate>Fri, 23 Dec 2016 05:02:10 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>My Worst Git Commit Message Ever</title>
+        <description>&lt;p&gt;I was in the car with my wife talking to her as I worked and this was the bmessage:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; git commit -m &quot;misc:
+→ '''''''''''''''''''vvvvvvvvvvvvvvvvvvvvvvV 
+VVVVVVVVVVVVVV                                                               
+                          ///////// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+                          vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+                          vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+                          vvvvvvvvvvvvvvvvvvvvvvvvvvv
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I feel asleep while talking to her and coding.  I suspect drooling was also involved.  Too many late nights…&lt;/p&gt;
+</description>
+        <pubDate>Fri, 23 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/git/2016/12/23/my-worst-git-commit-message-ever.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/git/2016/12/23/my-worst-git-commit-message-ever.html</guid>
+        
+        <category>git</category>
+        
+        <category>humor</category>
+        
+        
+        <category>git</category>
+        
+      </item>
+    
+      <item>
+        <title>On Merging Files - Diff Alternatives on the Mac</title>
+        <description>&lt;p&gt;There are certain skills as a software developer that take, in my experience, a lifetime to master.  I have now been using version control since the mid 1990s and I still don’t consider myself, by any means, a master.  I’m good, don’t get me wrong, but I don’t feel that I have yet fully internalized all the benefits that version control offers.  So, when I have a chance to really take advantage of version control, I truly relish the opportunity.&lt;/p&gt;
+
+&lt;p&gt;I recently had a refactoring situtation where I was, shall we say, overly ambitious.  And, yes, that’s the positive version of what I’d refer to as “Humpty Dumpty” code syndrome where you have so thoroughly broken a critical bit of code that you just can’t put it back together.  Specifically:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I refactored a truly alway bit of two critical routines, one with 8 input variables that returned 6 variables&lt;/li&gt;
+  &lt;li&gt;No test coverage&lt;/li&gt;
+  &lt;li&gt;It would not, no matter what I did, do what it did before; specifically it would do the first pass of an N pass algorithm but I could never make it go beyond stage 1&lt;/li&gt;
+  &lt;li&gt;In the process of doing this I added new and highly desirable functionality everywhere and fixed about 30 critical code mistakes along the way&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So, well, &lt;strong&gt;crap&lt;/strong&gt;.  The fix was, in the immortal words of Doctor Who, to get all timey-whimey!  Specifically I needed to time travel back to &lt;em&gt;before&lt;/em&gt; I started and then:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;confirm that this code actually worked in the first place – maybe this problem existed before I &lt;em&gt;fixed&lt;/em&gt; it&lt;/li&gt;
+  &lt;li&gt;figure out how to travel back from the past while bringing with me a working version&lt;/li&gt;
+  &lt;li&gt;NOT lose any of the cool new features&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;One of the development practices I am absolutely adamant about is only ever having 1 checkout of the code based at a time.  I’m hardcore on this because I’ve seen what happens when you have multiple versions floating about – its very, very convenient but you tend to get confused and then you lose track of what’s the master and things get screwball.  But, in desparate times, you do what you must and so I went over to github and:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I found a commit from roughly before I started; I wasn’t real specific about this, I just remember “this debacle started last Thursday so goto Wednesday”&lt;/li&gt;
+  &lt;li&gt;I browsed the code base at that point&lt;/li&gt;
+  &lt;li&gt;I created a new directory where I wanted this&lt;/li&gt;
+  &lt;li&gt;I checked out the code; that put a fresh copy of master in place&lt;/li&gt;
+  &lt;li&gt;I did a git co HASH where HASH represented the commit hash for Wednesday&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This put me what’s called &lt;a href=&quot;http://stackoverflow.com/questions/3965676/why-did-my-git-repo-enter-a-detached-head-state&quot;&gt;&lt;em&gt;detached head&lt;/em&gt;&lt;/a&gt; mode and I was able to modify /run / test, etc.  I then had to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;port over my rake task which was doing my tests&lt;/li&gt;
+  &lt;li&gt;port over the individual changes, one by one, &lt;em&gt;carefully&lt;/em&gt; to let the old code run correctly&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;What I found was that the old code did, in fact, run better than the new code.  Sigh.  And after 2 days of fixing things all over the place I had the system back to running order with the exception that I now had 2 code bases that needed to be merged.  &lt;em&gt;Bigger Sigh&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;time-for-some-diff-magic&quot;&gt;Time for some Diff Magic&lt;/h1&gt;
+
+&lt;p&gt;So I now had two git checkouts with differences between them.  One of them was master, and did I mention that while this was all going on I got pulled off the project to fix something else and add yet more functionality to the code base for a day and half, and the other was my time travel branch.  When I did a git status in the time travel branch I got this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git status
+HEAD detached at 93bf221
+Changes not staged for commit:
+  (use &quot;git add &amp;lt;file&amp;gt;...&quot; to update what will be committed)
+  (use &quot;git checkout -- &amp;lt;file&amp;gt;...&quot; to discard changes in working directory)
+
+	modified:   app/models/form.rb
+	modified:   app/models/form2016_q4.rb
+	modified:   app/models/iframe2016_q4.rb
+	modified:   app/models/link.rb
+	modified:   app/models/link2016_q4.rb
+	modified:   app/models/page.rb
+	modified:   app/models/page2016_q4.rb
+	modified:   app/models/page_body.rb
+	modified:   app/models/page_body2016_q4.rb
+	modified:   app/models/site.rb
+	modified:   app/models/unique_url.rb
+	modified:   app/models/unique_url2016_q4.rb
+	modified:   app/models/url_resolver.rb
+	modified:   app/models/url_tool.rb
+	modified:   config/initializers/constants.rb
+	modified:   lib/common_link.rb
+	modified:   lib/common_page.rb
+
+Untracked files:
+  (use &quot;git add &amp;lt;file&amp;gt;...&quot; to include in what will be committed)
+
+	docs/snippets/create_mechanize_page_without_fetch.rb
+	lib/tasks/crawl2016_q4.rake
+
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;That’s a whole lot of changes.  The easiest approach was to start with the entirely new files and just copy them over to the original.&lt;/p&gt;
+
+&lt;p&gt;Now this is where I’m going to make a highly personal engineering choice here – I’m going to avoid an automated merge process of any type.  When it comes to complex code changes in an automated fashion I honestly don’t have a lot of faith.  I’ve seen automated merges go wrong time after time so I was looking for a tool to make this easier.  A quick bit of googling turned up:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;OpenDiff / FileMerge (part of X-Code)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://meldmerge.org/&quot;&gt;meld&lt;/a&gt; - a python tool with an unofficial brew install via &lt;em&gt;brew install homebrew/gui/meld&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;[Beyond Compare]http://www.scootersoftware.com/download.php from &lt;a href=&quot;http://www.scootersoftware.com/&quot;&gt;Scooter Software&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.sourcegear.com/diffmerge/&quot;&gt;Diff Merge&lt;/a&gt; from &lt;a href=&quot;http://www.sourcegear.com/&quot;&gt;SourceGear&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.kaleidoscopeapp.com/&quot;&gt;Kaleidoscope&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I ended up using Open Diff for my merge issues:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/open_diff.png&quot; alt=&quot;opendiff&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;diff_merge.png
+beyond_compare.png
+kaleidoscope.png&lt;/p&gt;
+
+&lt;p&gt;Good articles on merge tools:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.git-tower.com/blog/diff-tools-mac&quot;&gt;GitTower&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.outcoldman.com/en/archive/2014/05/12/git-dirdiff/&quot;&gt;outcoldman&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 22 Dec 2016 11:26:49 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/software_engineering/2016/12/22/on-merging-files-diff-alternatives-on-the-mac.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/software_engineering/2016/12/22/on-merging-files-diff-alternatives-on-the-mac.html</guid>
+        
+        <category>software_engineering</category>
+        
+        <category>version_control</category>
+        
+        <category>merge</category>
+        
+        <category>git</category>
+        
+        <category>diff</category>
+        
+        
+        <category>software_engineering</category>
+        
+      </item>
     
       <item>
         <title>PostMac Roundup</title>
@@ -354,70 +508,6 @@ Did you mean?  crawl=
         
         
         <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Working with Lithium Technical Support</title>
-        <description>&lt;p&gt;Doing technical support is not a complicated thing.  Even doing technical support well is not complicated.  At its core technical support amounts to:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Listen to the customer’s needs.&lt;/li&gt;
-  &lt;li&gt;Help the customer with their problem.&lt;/li&gt;
-  &lt;li&gt;Be accessible.&lt;/li&gt;
-  &lt;li&gt;Don’t be a jerk&lt;/li&gt;
-  &lt;li&gt;Don’t make the customer feel stupid.&lt;/li&gt;
-  &lt;li&gt;Admit when you get it wrong.  When you support a complex product then, inevitably, you will get it wrong at some point.&lt;/li&gt;
-  &lt;li&gt;Have examples and things in writing to give to the customer when they really need it.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;During the course of the Interania project, Neal and I had the experience of interacting directly with both Lithium and MindTouch support and despite both companies supporting the same thing, SAML access to their product, the experiences could not have been more different:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Our experience with MindTouch was so overwhelmingly positive that I emailed our support technician’s boss and the subject line was “You Have an Outstanding Staffer in ScottG”&lt;/li&gt;
-  &lt;li&gt;In all my years in this industry, I have never had a more frustrating experience with support than Lithium.  After about half the interactions with Lithium, I’d get off the phone and curse a blue streak and be angry for about an hour or more.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;interacting-with-lithium&quot;&gt;Interacting with Lithium&lt;/h1&gt;
-
-&lt;p&gt;We had two points of contact with Lithium:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Colleen&lt;/li&gt;
-  &lt;li&gt;Vicky&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Colleen was the overall project manager and I’m going to leave the discussion of Colleen’s issues to Neal.  Suffice it to say that I am not a fan of hers.&lt;/p&gt;
-
-&lt;p&gt;Vicky was our technical contact and I believe his role was as implementation manager or implementation expert.  Here are the problems that we experienced with Vicky:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;No Adhoc Accessibility&lt;/strong&gt;.  Every single interaction with Vicky had to be scheduled and planned in advance.  He simply wasn’t someone would could be called for support.  Often times this would mean that we couldn’t interact with him for more than a day which makes debugging a complex system hard.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Don’t be a Jerk&lt;/strong&gt;.  At different points in my career I’ve had direct responsibility for managing customer support including hiring and training support technicians.  One of the thing things I always used to emphasize to them is that this is a customer service position and while you know more than the customer with respect to our product, you don’t actually know more than the customer in general.  In general I used to sum up how to interact with customer as “Don’t be a Jerk”.  This is not a lesson that anyone ever taught Vicky because now, even more than a month after I last interacted with him, I’m still angry at him (and Lithium).&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Don’t Make the Customer Feel Stupid&lt;/strong&gt;.  Going right along with don’t be a jerk is don’t make the customer feel stupid and this is one that Vicky violated with in spades.  Given that a support technician always knows more about the product then the customer, it is very easy for a support technician to act superior and Vicky certainly did that.  Having looked up Vicky’s credentials on LinkedIn, I can certainly attest to Vicky being a smart guy but there’s no need to bolster your own ego by making someone else feel like crap when they make a mistake.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;He Never Admitted When He Got It Wrong&lt;/strong&gt;. I am always the first person to admit when I get something wrong and there were times in this project when I did get things wrong.  This was a complex project and we had two vendors with the opposite approach to the same technology which always leads to problems.  Now in the course of interacting with Vicky when I got something wrong I handled it correctly and a) apologies and b) admitted it.  Now, if I had been the only person who got things completely wrong, that would have been fine but Vicky was also absolutely technically wrong on at least 2 if not three occasions.  These were cases where he told me to do X and it was entirely unambiguous.  On these occasions where he got it wrong thus wasting both my time, Neal’s time and the time that we were paying them for support, he failed to ever admit it, take responsibility for it or apologize.  Even when I specifically called him out on this he would just brush it aside and fail to address it.  I understand that no one wants to be wrong but when you are then &lt;em&gt;own it&lt;/em&gt; and &lt;em&gt;learn from it&lt;/em&gt;.  Vicky did not and would not.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Nothing in Writing&lt;/strong&gt;.  One of the things that I think affected our entire Lithium SSO implementation was that there wasn’t anything in writing after the initial presentation that Colleen gave us (and she did do a good job on that).  For example once we were ready to go live it was very unclear how that happened so I specifically asked Vicky for something in writing to guide us through the process.  It didn’t have to be much – even an email that enumerated the steps would have been fine.  Nothing was ever forth coming.  I suspect that Lithium themselves actually do not have a lot of SSO experience and this cannot really write this down in a cohesive fashion.  There were a number of very complex aspects to our integration that should have been clearly documented that were not.  Things like how data ownership works when you use SSO had to be figured out by trial and error.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
-
-&lt;p&gt;Working with Lithium was enormously frustrating and much of the blame goes straight back to Vicky.  He is technically very smart but he lacks the people skills that make working with a customer an experience where the customer doesn’t want to reach through the screen and throttle him. Overall Lithium needs to put a lot of work into the customer service portion of their business.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 18 Dec 2016 19:04:13 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/12/18/working-with-lithium-technical-support.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/18/working-with-lithium-technical-support.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Creating Week Day Only Events On Apple Calendar</title>
-        <description>&lt;p&gt;https://support.busymac.com/help/70596-repeating-events&lt;/p&gt;
-</description>
-        <pubDate>Sun, 18 Dec 2016 09:10:24 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/12/18/creating-week-day-only-events-on-apple-calendar.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/18/creating-week-day-only-events-on-apple-calendar.html</guid>
-        
         
       </item>
     
