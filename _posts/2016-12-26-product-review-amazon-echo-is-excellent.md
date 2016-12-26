@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Christmas Present Review Amazon Echo Is Excellent
+title: Product Review Amazon Echo is Excellent
 category: amazon_echo
-tags: ["alexa", "echo", "music", "echo_dot"]
+tags: ["alexa", "echo", "music", "echo_dot", "review"]
 ---
 So my wife got me an Amazon Echo for Christmas and I powered it up today.  Overall I was absolutely delighted with it -- Amazon has a hell of a product here.  The ease of use that a conversational user interface brings is staggering:
 
