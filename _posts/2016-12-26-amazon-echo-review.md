@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Amazon Echo Review or When Alexa Won't Play Music
+title: Amazon Echo Review or When Alexa Will Not Play Music
 category: amazon_echo
 tags: ["alexa", "echo" "music", "echo_dot"]
 ---

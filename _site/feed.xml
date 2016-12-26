@@ -6,9 +6,57 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 23 Dec 2016 05:02:10 -0500</pubDate>
-    <lastBuildDate>Fri, 23 Dec 2016 05:02:10 -0500</lastBuildDate>
+    <pubDate>Mon, 26 Dec 2016 12:53:34 -0500</pubDate>
+    <lastBuildDate>Mon, 26 Dec 2016 12:53:34 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title></title>
+        <description>&lt;p&gt;So my wife got me an Amazon Echo for Christmas and I powered it up today.  Overall I was absolutely delighted with it – Amazon has a hell of a product here.  The ease of use that a conversational user interface brings is staggering:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Alexa play happy holiday music&lt;/li&gt;
+  &lt;li&gt;Alexa may the force be with you&lt;/li&gt;
+  &lt;li&gt;Alexa play pink&lt;/li&gt;
+  &lt;li&gt;Alexa what is the weather&lt;/li&gt;
+  &lt;li&gt;Alexa what is the temperature&lt;/li&gt;
+  &lt;li&gt;Alexa what is the news&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Those were a few of the commands that we came up with right away.  My wife gets the serious nerd fu credit for the force one; bless her.&lt;/p&gt;
+
+&lt;h1 id=&quot;amazon-echo-out-of-the-box-experience&quot;&gt;Amazon Echo Out of the Box Experience&lt;/h1&gt;
+
+&lt;p&gt;A few thoughts on the out of the box experience:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The out of the box experience is far, far rougher than I had expected.  You certainly get thru it but I didn’t find it clear.&lt;/li&gt;
+  &lt;li&gt;You do need to install the Amazon Echo app on your phone&lt;/li&gt;
+  &lt;li&gt;There’s a weird config step where the Echo presents a wifi network that you connect to so it can find the actual network that in your house; at the end of it your phone is left connected to the echo and its unclear if you change that or not (I would think so but who knows)&lt;/li&gt;
+  &lt;li&gt;The trend towards “no one reads the manual so let’s not even have one” is a suck ass trend.  There are those of us who do read the manual and we get very annoyed by the fact that there isn’t even comprehensive online documentation.  I can rationalize the lack of a printed manual due to rapid updates but sheesh.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;when-it-doesnt-play-music&quot;&gt;When It Doesn’t Play Music&lt;/h1&gt;
+
+&lt;p&gt;My biggest problem was that it wouldn’t play music initially.  Googling was relatively fruitless but it did reveal that lots of other people have this problem:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.echotalk.org/index.php?topic=322.0&quot;&gt;NTP ?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The answer, at least for me, turned out to be turn it off and then on and then wait.  And that did it. Sigh.  Given how important digital technology is to all of our lives the answer of power on / power off or as I refer to it “get out of the car and get back into the car” is a crappy answer at best.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;Well I’ve already tried to order the &lt;a href=&quot;https://www.amazon.com/dp/B01DFKC2SO/ref=ods_gw_b_h1_ha_justask_black?pf_rd_r=QMHK561Z7EWPEZQJ1BFX&amp;amp;pf_rd_p=68d26f18-1cf3-45a4-870c-87bf6bd9cee6&quot;&gt;hockey puck extension&lt;/a&gt; for the echo so I guess that says all you need to know about how much I like it. This is a fantastic product.  Here’s a &lt;a href=&quot;http://www.pocket-lint.com/news/136952-amazon-echo-vs-amazon-tap-vs-echo-dot-what-s-the-difference&quot;&gt;good article that clarifies the difference between the Echo and Echo Dot&lt;/a&gt;; much to my surprise the hockey puck isn’t an extension.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 26 Dec 2016 12:53:34 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2016/12/26/2016-12-26-amazon-echo-review.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/26/2016-12-26-amazon-echo-review.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>My Worst Git Commit Message Ever</title>
@@ -459,55 +507,6 @@ No crawling into the q3 data so good!&lt;/p&gt;
         
         
         <category>startup</category>
-        
-      </item>
-    
-      <item>
-        <title>Rails Refactoring Tip - When You Remove a Database Column and You Are Still Trying to Use It</title>
-        <description>&lt;p&gt;I have to admit, up front, that this is a hacky, schlocky recommendation but it is also &lt;strong&gt;useful&lt;/strong&gt;.  As much as all of us would like to imagine that we refactor with grace, skill and perfection the reality is often far darker.&lt;/p&gt;
-
-&lt;p&gt;I recently had a refactor involving the removal of database columns &lt;strong&gt;fail&lt;/strong&gt; on me.  I attempted something quite ambitious and it just didn’t work out.  And, worse, it involved removal of database columns from a production database so reverting to the older code is now quite an issue.  When I run it my master exception handler gives me output look this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;EXCEPTION===========================================================================
-undefined method `crawl_id=' for #&amp;lt;Form2016Q4:0x007fa52c346128&amp;gt;
-Did you mean?  crawl=
-               crawl
-               crawl_url=
-               crawl_url (PAGE) /Users/sjohnson/Dropbox/appdatallc/banks_before_refactor/banks/lib/common_page.rb 157 new_and_create_for_external_links
-====================================================================================
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;What’s happening here is that I’ve removed the crawl_id attribute from the form2016_q4s table. And the older code doesn’t understand this.  At this point I’m still trying to get evaluate if the original problem I was trying to fix is fixed in the older code check out.  I don’t want to make major changes in this check out since I’m still at that “should I stay or should I go now” part of the evaluation (i.e. toss out my refactor or try and pull in from the older check out).&lt;/p&gt;
-
-&lt;p&gt;Here’s how I got around this, &lt;em&gt;attr_accessor&lt;/em&gt;. &lt;a href=&quot;http://notes.jerzygangi.com/using-attr-accessor-in-rails-model-classes/&quot;&gt;Good Blog Post&lt;/a&gt; versus &lt;a href=&quot;http://ruby-doc.org/core-2.0.0/Module.html#method-i-attr_accessor&quot;&gt;Actual Docs&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;attr_accessor is one of those bits of Ruby magic that you don’t use often when when you need it you really, really need it.  It generates reader and writer methods for an instance variable and it does so automagically behind the scenes.&lt;/p&gt;
-
-&lt;p&gt;Here’s the only change that I needed to make at the top of my class:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;attr_accessor :crawl_id
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Note 1: that I put it at the top of my class by style preference; it could have gone anywhere after class and before protected or private.  I also used attr_accessor instead of attr_writer I wanted support to enable reads in case I had any of those.&lt;/p&gt;
-
-&lt;p&gt;Note 2: If you’re using a deleted column in an ActiveRecord where statement you’re still going to have issues; those I had to fix by hand.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 19 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/rails/2016/12/19/rails-refactoring-tip-when-you-remove-a-database-column-and-you-are-still-trying-to-use-it.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails/2016/12/19/rails-refactoring-tip-when-you-remove-a-database-column-and-you-are-still-trying-to-use-it.html</guid>
-        
-        <category>rails</category>
-        
-        <category>refactor</category>
-        
-        <category>activerecord</category>
-        
-        <category>database</category>
-        
-        
-        <category>rails</category>
         
       </item>
     
