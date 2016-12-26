@@ -1,8 +1,8 @@
----
+_posts/2016-12-26-test-post.md---
 layout: post
-title: Amazon Echo Review or When Alexa Will Not Play Music
-category: echo
-tags: ["alexa", "echo" "music", "echo_dot", "amazon_echo"]
+title: Christmas Present Review Amazon Echo Is Excellent
+category: amazon_echo
+tags: ["alexa", "echo", "music", "echo_dot"]
 ---
 So my wife got me an Amazon Echo for Christmas and I powered it up today.  Overall I was absolutely delighted with it -- Amazon has a hell of a product here.  The ease of use that a conversational user interface brings is staggering:
 
@@ -12,10 +12,9 @@ So my wife got me an Amazon Echo for Christmas and I powered it up today.  Overa
 * Alexa what is the weather
 * Alexa what is the temperature
 * Alexa what is the news
+* Alexa 5 minute timer
 
 Those were a few of the commands that we came up with right away.  My wife gets the serious nerd fu credit for the force one; bless her.  
-
-Normally I'm slow to adopt new products -- natural engineer conservatism but I found myself saying "amazon play pink" as I washed the dishes and it was far superior to fumbling around with my phone, drying my hands, etc.  
 
 # Amazon Echo Out of the Box Experience
 
@@ -37,4 +36,4 @@ The answer, at least for me, turned out to be turn it off and then on and then w
 
 # Conclusion
 
-Well I've already tried to order the [hockey puck extension](https://www.amazon.com/dp/B01DFKC2SO/ref=ods_gw_b_h1_ha_justask_black?pf_rd_r=QMHK561Z7EWPEZQJ1BFX&pf_rd_p=68d26f18-1cf3-45a4-870c-87bf6bd9cee6) for the echo so I guess that says all you need to know about how much I like it. This is a fantastic product.  Here's a [good article that clarifies the difference between the Echo and Echo Dot](http://www.pocket-lint.com/news/136952-amazon-echo-vs-amazon-tap-vs-echo-dot-what-s-the-difference); much to my surprise the hockey puck isn't an extension - its a standalone version of the echo with a smaller speaker so it can be cheaper but it doesn't require the echo at all.
+Well I've already tried to order the [hockey puck extension](https://www.amazon.com/dp/B01DFKC2SO/ref=ods_gw_b_h1_ha_justask_black?pf_rd_r=QMHK561Z7EWPEZQJ1BFX&pf_rd_p=68d26f18-1cf3-45a4-870c-87bf6bd9cee6) for the echo so I guess that says all you need to know about how much I like it. This is a fantastic product.  Here's a [good article that clarifies the difference between the Echo and Echo Dot](http://www.pocket-lint.com/news/136952-amazon-echo-vs-amazon-tap-vs-echo-dot-what-s-the-difference); much to my surprise the hockey puck isn't an extension - its a standalone version of the echo with a smaller speaker so it can be cheaper but it doesn't require the echo at all.  You can plug it into your own speakers for better output.
