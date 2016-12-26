@@ -1,4 +1,4 @@
-_posts/2016-12-26-test-post.md---
+---
 layout: post
 title: Christmas Present Review Amazon Echo Is Excellent
 category: amazon_echo
