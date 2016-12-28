@@ -4,7 +4,7 @@ title: How to Build Rails views with Markdown
 category: rails
 tags: ["rails", "markdown", "kramdown", "hyde"]
 ---
-So I'm starting prototyping on an all new thing and I want to be commercially successful out of the gate.  That's a bit different for me where I usually focus initially on the code.  This means thinking, from not just day 1 but hour 1, about how the customer sees things and for me that starts with two pages on the site:
+So I'm starting prototyping on an all new thing and I it want to be commercially successful out of the gate.  That's a bit different for me where I usually focus initially on the code.  This means thinking, from not just *day 1* but **hour 1**, about how the customer sees things and for me that starts with two pages on the site:
 
 * about
 * faq
