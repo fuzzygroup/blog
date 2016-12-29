@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Invalid route name, already in use: 'page'
+title: Invalid route name, already in use 'page'
 category: rails
 tags: ["rails", "pages", "authlogic", "bootstrap"]
 ---
