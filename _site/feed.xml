@@ -6,9 +6,131 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 28 Dec 2016 07:36:22 -0500</pubDate>
-    <lastBuildDate>Wed, 28 Dec 2016 07:36:22 -0500</lastBuildDate>
+    <pubDate>Thu, 29 Dec 2016 21:08:49 -0500</pubDate>
+    <lastBuildDate>Thu, 29 Dec 2016 21:08:49 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Invalid route name, already in use 'page'</title>
+        <description>&lt;p&gt;It seems that whenever you start a new Rails project you hit some kind of wackiness with respect to an error message that you’ve never seen before.  Yesterday I started a new project and I wanted to use Bootstrap for my layout.  Well I couldn’t make it work and then &lt;a href=&quot;http://dv.dasari.me&quot;&gt;Dv&lt;/a&gt; couldn’t make it work so I finally turned to the &lt;a href=&quot;https://github.com/RailsApps/&quot;&gt;RailsApps&lt;/a&gt; project and used their &lt;a href=&quot;https://github.com/RailsApps/rails-bootstrap/blob/master/config/routes.rb&quot;&gt;bootstrap template app&lt;/a&gt;.  And that worked so Huzzah! both for them and me.  Thanks Guys!&lt;/p&gt;
+
+&lt;p&gt;Note: Dv and I have both used bootstrap on I can’t tell you how many different sites and its always a pain in the neck to initially get going.  We were using the bootstrap gem and we had the scss stuff configured correctly at least by comparing to a reference site.&lt;/p&gt;
+
+&lt;p&gt;Today I integrated &lt;a href=&quot;https://github.com/binarylogic/authlogic&quot;&gt;authlogic&lt;/a&gt; for authentication based on a &lt;a href=&quot;https://www.sitepoint.com/rails-authentication-with-authlogic/&quot;&gt;SitePoint AuthLogic tutorial&lt;/a&gt;.  When I generated a Pages Controller and dropped a resources :pages into my routes file I got this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Invalid route name, already in use: 'page' 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;My routes file right now is like 5 lines so I was actually certain that I didn’t have pages in there already (embarrassingly though I did do a command+F anyway).  A bunch of googling turned up this &lt;a href=&quot;https://github.com/thoughtbot/high_voltage/issues/109&quot;&gt;answer&lt;/a&gt;.  Apparently the &lt;a href=&quot;https://github.com/thoughtbot/high_voltage&quot;&gt;High Voltage gem&lt;/a&gt; from &lt;a href=&quot;https://github.com/thoughtbot&quot;&gt;Thoughtbot&lt;/a&gt; automagically inserts its pages route into the routes file.  And I get the desire for simplicity but when it doesn’t even require a declaration in the Gemfile it makes tracking this kind of stuff down annoying.  Sigh.&lt;/p&gt;
+
+&lt;p&gt;Once that was removed then I was able to get my static pages working again so that’s nice.  And I like what the High Voltage gem is actually doing.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 29 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/rails/2016/12/29/invalid-route-name-already-in-use-page.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails/2016/12/29/invalid-route-name-already-in-use-page.html</guid>
+        
+        <category>rails</category>
+        
+        <category>pages</category>
+        
+        <category>authlogic</category>
+        
+        <category>bootstrap</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Getting Past SSH Errors in OSX Sierra</title>
+        <description>&lt;p&gt;If you are having problems with OSX Sierra and authenticating with github, the issue is that OSX Sierra doesn’t automatically add ssh keys by default.&lt;/p&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References:&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.reddit.com/r/osx/comments/52zn5r/difficulties_with_sshagent_in_macos_sierra/&quot;&gt;Reddit&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/jirsbek/SSH-keys-in-macOS-Sierra-keychain&quot;&gt;SSH Keys in MacOS Sierra&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://askubuntu.com/questions/363404/ssh-add-command-does-not-add-my-identity-to-ssh-agent&quot;&gt;Adding SSH Identities via Terminal&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://help.github.com/articles/error-permission-denied-publickey/&quot;&gt;Github SSH Add&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;One solution is to add the below lines to your .ssh/config file:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Host *
+  IdentityFile ~/.ssh/id_rsa
+  AddKeysToAgent yes
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Thu, 29 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/osx/2016/12/29/getting-past-ssh-errors-in-osx-sierra.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/osx/2016/12/29/getting-past-ssh-errors-in-osx-sierra.html</guid>
+        
+        <category>osx</category>
+        
+        <category>ssh</category>
+        
+        <category>sierra</category>
+        
+        <category>sshagent</category>
+        
+        
+        <category>osx</category>
+        
+      </item>
+    
+      <item>
+        <title>Fixing Sudo on OSX Sierra</title>
+        <description>&lt;p&gt;OSX Sierra makes a number of low level changes in how things operate.  Earlier I wrote about OSX and SSH errors.  If you’re having issues with sudo then you may want to add this to the sudoers file:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo visudo (this command gets)
+
+Defaults !tty_tickets
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://stackoverflow.com/questions/39474047/sudo-command-on-macos-sierra-does-not-respect-timestamp-timeout&quot;&gt;Stack Overflow Reference&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 29 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/osx/2016/12/29/fixing-sudo-on-osx-sierra.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/osx/2016/12/29/fixing-sudo-on-osx-sierra.html</guid>
+        
+        <category>osx</category>
+        
+        <category>sierra</category>
+        
+        <category>sudo</category>
+        
+        
+        <category>osx</category>
+        
+      </item>
+    
+      <item>
+        <title>Ansible Error Fixing ControlPath Too Long Error</title>
+        <description>&lt;p&gt;If you get the ansible error &lt;em&gt;ControlPath Too Long Error&lt;/em&gt; then all you need to do is create an ansible.cfg file in the directory where you run your playbook.  Please note that this is generally an OSX only error related to the length of the .  Then you need to add this line to it:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[ssh_connection]
+control_path = %(directory)s/%%h-%%r
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;There are other options that can go here as well.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 29 Dec 2016 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/ansible/2016/12/29/ansible-error-fixing-controlpath-too-long-error.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/ansible/2016/12/29/ansible-error-fixing-controlpath-too-long-error.html</guid>
+        
+        <category>ansible</category>
+        
+        <category>osx</category>
+        
+        
+        <category>ansible</category>
+        
+      </item>
     
       <item>
         <title>How to Build Rails views with Markdown</title>
@@ -347,165 +469,6 @@ kaleidoscope.png&lt;/p&gt;
         
         
         <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Apple - A Tale of Too Litle Storage</title>
-        <description>&lt;p&gt;http://daringfireball.net/linked/2016/12/15/speirs-icloud-storage&lt;/p&gt;
-
-&lt;p&gt;http://www.speirs.org/&lt;/p&gt;
-</description>
-        <pubDate>Tue, 20 Dec 2016 07:55:03 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/12/20/apple-a-tale-of-too-litle-storage.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/20/apple-a-tale-of-too-litle-storage.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>The Kindest Thing I Ever Saw Disney Do</title>
-        <description>
-</description>
-        <pubDate>Tue, 20 Dec 2016 07:02:48 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/12/20/the-kindest-thing-i-ever-saw-disney-do.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/20/the-kindest-thing-i-ever-saw-disney-do.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>David Rovics Community Supported Art or a Tale of PayWoe and UI / UX Failures for Startups to Learn From</title>
-        <description>&lt;p&gt;Tales on the Internet of problems with PayPal are damn near epic in their size.  Everyone, always, seems to have issues with PayPal and I am no exception.  Part of this is the nature of PayPal:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;a long running Internet service - I remember the first time I used PayPal and that was three houses ago (not three rented houses; three owned houses); if I measure PayPal in terms of places I have lived then the number is 8.&lt;/li&gt;
-  &lt;li&gt;focus on a single persistent personal address; I have been using the same email address since the early days of gMail. It is how PayPal knows me but that means there is “contact cruft” attached to it in the form of dead address; dead cell phone numbers&lt;/li&gt;
-  &lt;li&gt;it is constantly under attack.  I read &lt;a href=&quot;https://www.amazon.com/PayPal-Wars-Battles-Media-Planet/dp/1936488590&quot;&gt;The PayPal Wars&lt;/a&gt; back when I worked with &lt;a href=&quot;https://medium.com/@kareem.m?source=false---------0&quot;&gt;Kareem&lt;/a&gt; and I’ve fought spam wars in both email and blog so I understand how being under constant attack changes how you build and design products.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;One of the people I grew up with is &lt;a href=&quot;http://www.davidrovics.com&quot;&gt;David Rovics&lt;/a&gt; and consider a friend albeit one I haven’t seen since 1985.  I remember trading comic books with him at his parent’s house back in the late 1970s.  Our political leanings couldn’t be more different - he’s a card carrying anarchist / socialist / musican who writes beautiful songs that honestly bring tears to my eyes.  Songs of social significance is how he describes them and he isn’t wrong.  Me?  I may live in Indiana but I’m deeply tied to tech entrepreneurialism and the open source world.  We could not be more different along ideological lines but I have damn near infinite respect for him.&lt;/p&gt;
-
-&lt;p&gt;David is also a writer / blogger and his piece about the &lt;a href=&quot;http://songwritersnotebook.blogspot.com/2016/03/rejected-by-america.html&quot;&gt;differences between America and Europe&lt;/a&gt; is illuminating.  I don’t agree entirely with his conclusions but I also don’t argue with the facts.  If you like folk music / songs with meaning then his stuff, all freely available on &lt;a href=&quot;https://davidrovics.bandcamp.com/&quot;&gt;BandCamp&lt;/a&gt; is fascinating.  Personally I’d highly recommend the &lt;a href=&quot;https://www.youtube.com/watch?v=Z_rCdNdkb_g&quot;&gt;Battle of Blair Mountain&lt;/a&gt; which tells a dark tale of American labor relations that you don’t learn in school – certainly not Wilton High School where David and I attended.&lt;/p&gt;
-
-&lt;p&gt;So what does that very long introduction have to do with PayPal?  Well David is an artist which means that he sells CDs, tours, etc and he recently introduced his CSA or Community Supported Art program where you can sign up as a member for $50 / year (other options available as well).  And I tried, back in September, to signup only to be thwarted by PayPal issues.  And then, sadly, I got busy and lost it amongst the weeks of AWS, Ansible, server migrations, code migrations, learning elixir, etc.  But you should never forget your friends.  Yesterday I noticed that David’s main site was down so I dropped him an email and that inspired me to finally fix my PayPal account.  In the process I noticed a few UI issues that I found surprising in a site of PayPal’s scale.&lt;/p&gt;
-
-&lt;p&gt;You would think that a company like PayPal would have a finely tuned UI / UX team around the issues of common problems. Somehow, given what I just experienced, I don’t think so.  And therein lies the tale.&lt;/p&gt;
-
-&lt;h1 id=&quot;problem-the-first---login-and-verification&quot;&gt;Problem the First - Login and Verification&lt;/h1&gt;
-
-&lt;p&gt;This happened yesterday morning and I did not capture any screenshots because, well, my bad.  Given that PayPal had old contact info for all my cell phones user verification was tricky but I got past it.  To be entirely honest tho I was actually kind of happy that verification was tricky - that means accounts cannot be compromised.&lt;/p&gt;
-
-&lt;h1 id=&quot;problem-2---expired-card&quot;&gt;Problem 2 - Expired Card&lt;/h1&gt;
-
-&lt;p&gt;When I went to purchase from a link from David’s site, I got this screen:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/paypal_link_to_add_new_card_is_where.png&quot; alt=&quot;paypal_link_to_add_new_card_is_where.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If you notice there is no way to add a new card here and the card that they had on file for me was easily 5 years old.  Now I do get that the designers might have been worried about breaking the payment flow by allowing a link to add a new card.  But given that I’m not a UI guy and I can easily think of at least one way around that, should’t they been able to?  I have to think that adding a new credit card is a fairly common thing if you are PayPal.  And if the card is as old as I had then shouldn’t a link be presented at least in that case if not every case?&lt;/p&gt;
-
-&lt;h1 id=&quot;problem-3---the-no-no-no-screen&quot;&gt;Problem 3 - The No No No Screen&lt;/h1&gt;
-
-&lt;p&gt;So I navigated thru the PayPal ui and finally found where to add a new card – the correctly named “Wallet”.  So I copied and pasted my details from &lt;a href=&quot;https://fuzzygroup.github.io/blog/software_worth_purchasing/2016/09/15/software-worth-purchasing-02-enpass.html&quot;&gt;Enpass&lt;/a&gt; (highly recommended btw) and I got what I think of as the No No No screen:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/paypal_no_no_no.png&quot; alt=&quot;paypal_no_no_no.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Yeah I get it.  My wife has our main credit card attached to her PayPal account but she’s sleeping.  Time to dig out the wallet and find some other card.  But, again, shouldn’t there have been a link here to use a different card instead?  The web is, inherently, a hyper linked medium – didn’t the PayPal designers ever get the memo?&lt;/p&gt;
-
-&lt;p&gt;So I navigated backwards thru the UI and found the place to add a different credit card and then went back to my friends site and completed my purchase.  Huzzah!&lt;/p&gt;
-
-&lt;h1 id=&quot;good-things&quot;&gt;Good Things&lt;/h1&gt;
-
-&lt;p&gt;There are a few good things that PayPal has done that in all fairness I should point out:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The list of security questions has been substantially revised.  My older security questions where last 4 of social and mother’s maiden name.  Now it is things like “name of first pet” / “name of favorite childhood stuffed toy”.  That isn’t as good as write your own question but it is much, much harder to find that type of personal trivia online.&lt;/li&gt;
-  &lt;li&gt;I was able to add a credit card, pay for something and then delete the credit card even tho the transaction might not have been processed yet.  That is a wonderful design decision and very much pro user.  Kudos!&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;how-to-fix-core-usability-if-you-are-a-startup&quot;&gt;How to Fix Core Usability if You Are a Startup&lt;/h1&gt;
-
-&lt;p&gt;The take away here and the reason that I tagged this as startup is that even well established, mature companies get common UI / UX issues wrong all the time.  I don’t think I’m wrong to think that adding a credit card is a common use case for PayPal and that it should have been a 1 step action from payment.  Instead I spent about 15 minutes to do nothing more than complete one purchase.  If it wasn’t for my friend then there’s a very good chance that I would have dropped out – as I did once before.&lt;/p&gt;
-
-&lt;p&gt;The single best way to avoid this type of UI disaster is to simply watch your users use your product, take notes and then iterate on your product until that issue is addressed.  Then you go back to a different user and watch them try and do the same thing and see if you made it better or worse.  And repeat until this whatever that issue is is fixed.  I learned this lesson a number of times over the years but most recently from &lt;a href=&quot;https://twitter.com/kouriskalligas&quot;&gt;Kouris&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/Dave_Sifry&quot;&gt;Dave&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;People, particularly “UX specialists”, want to make a big deal out of usability but it really isn’t all that hard or even all that expensive.  All you need to do, if you want to solve these type of core usability issues, is have &lt;strong&gt;the will to do it&lt;/strong&gt;.  You have to take responsibility for the problem, focus on it and then set an agenda like “this week we’re going to improve login”.  It can be absolutely exhausting since you’re iterating on the same, often tiny details, over and over but that’s part of the game.  A software engineer, particularly someone like myself, generally won’t take ownership of that kind of problem since our focus is internals but someone on the management or product side absolutely can do this.  Sometimes the improvements are absolutely tiny – perhaps better messaging is needed or even just a link.  As an example, messaging in one case and a link in both cases would have addressed all of my issues above.&lt;/p&gt;
-
-&lt;p&gt;In closing, given the size of PayPal I can actually sort of understand why getting this fixed is hard – I suspect that there are a lot of organizational boundaries to cross and people to deal with.  A startup shouldn’t have that problem.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: Kudos to &lt;a href=&quot;https://fuzzygroup.github.io/blog/software_worth_purchasing/2016/09/11/software-worth-purchasing-01-acorn.html&quot;&gt;Acorn&lt;/a&gt; for being easy enough to use that even I, a thumb fingered, graphically challenged engineer, could get it right.  Recommended.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 20 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/rant/2016/12/20/david-rovics-community-supported-art-or-a-tale-of-paywoe.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rant/2016/12/20/david-rovics-community-supported-art-or-a-tale-of-paywoe.html</guid>
-        
-        <category>startup</category>
-        
-        <category>paypal</category>
-        
-        <category>paywoe</category>
-        
-        <category>rant</category>
-        
-        <category>art</category>
-        
-        <category>rovics</category>
-        
-        <category>ui</category>
-        
-        <category>ux</category>
-        
-        <category>usability</category>
-        
-        
-        <category>rant</category>
-        
-      </item>
-    
-      <item>
-        <title>Make Testing Easy</title>
-        <description>&lt;p&gt;bundle exec rake crawl2016_q4:test_crawl –trace&lt;/p&gt;
-
-&lt;p&gt;After crawling site: 457, domain: lowrystate.com there were:
-      pages_count: 43 | 46 (prior)
-      links_count: 1337 | 1333 (prior)
-page_bodies_count: 43 | 46 (prior)
-      forms_count: 0 | 3 (prior)
-    iframes_count: 1 | 0 (prior)
-unique_urls_count: 152 | 73 (prior)
-Total crawl time: 79.70658148999792 | seconds_per_page: 1.8536414299999515&lt;/p&gt;
-
-&lt;p&gt;Tests for writing to the WRONG table – In the q3 data set there are:
-        q3_pages: 0
-        q3_links: 0
-        q3_forms: 0
-      q3_iframes: 0
-  q3_unique_urls: 74
-  q3_page_bodies: 0
-MAJOR ERROR - The q3 calls above should be 0&lt;/p&gt;
-
-&lt;p&gt;After crawling site: 457, domain: lowrystate.com there were:
-      pages_count: 43 | 46 (prior)
-      links_count: 1337 | 1333 (prior)
-page_bodies_count: 43 | 46 (prior)
-      forms_count: 0 | 3 (prior)
-    iframes_count: 1 | 0 (prior)
-unique_urls_count: 74 | 73 (prior)
-Total crawl time: 119.04229378001764 | seconds_per_page: 2.768425436744596&lt;/p&gt;
-
-&lt;p&gt;Tests for writing to the WRONG table – In the q3 data set there are:
-        q3_pages: 0
-        q3_links: 0
-        q3_forms: 0
-      q3_iframes: 0
-  q3_unique_urls: 0
-  q3_page_bodies: 0
-No crawling into the q3 data so good!&lt;/p&gt;
-</description>
-        <pubDate>Mon, 19 Dec 2016 06:57:24 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/2016/12/19/make-testing-easy.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2016/12/19/make-testing-easy.html</guid>
-        
         
       </item>
     
