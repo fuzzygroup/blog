@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Processing Large Datasets On AWS Using Ruby, Rails and SideKiq</title>
+  <meta name="description" content="Two days ago I did a data processing task which previously took me a week – overnight.  I did this using the following technology stack:">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/rails/2017/01/03/processing-large-datasets-on-aws-using-ruby-rails-and-sidekiq.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Processing Large Datasets On AWS Using Ruby, Rails and SideKiq</h1>
+    <p class="I'll"><time datetime="2017-01-03T00:00:00-05:00" itemprop="datePublished">Jan 3, 2017</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>Two days ago I did a data processing task which previously took me a week – overnight.  I did this using the following technology stack:</p>
+
+<ul>
+  <li>Ruby</li>
+  <li>Rails</li>
+  <li>AWS</li>
+  <li>Sidekiq</li>
+</ul>
+
+<p>My platform was a “cluster” of 40 m3.large AWS ec2 instances.  We all see a lot about cloud computing and using AWS / Azure / Google Cloud to do these types of large jobs but you rarely see what I think of as the hard details:</p>
+
+<ul>
+  <li>How do you get code deployed?</li>
+  <li>How do you fix bugs?</li>
+  <li>How do you deal with Capistrano failures when a box isn’t available and Capistrano doesn’t give you good feedback?</li>
+  <li>How do you get things coordinated?</li>
+  <li>How do you kick off the overall job?</li>
+  <li>How do you know when it is done?</li>
+</ul>
+
+<p>In this blog post I’m going to illustrate how I managed these things.  I’m not saying that what I did was the only way to do this.  I’m not even saying that what I did was the best way to do this.  What I am saying is that this is a practical approach to ad hoc large data processing jobs using a ruby / rails / sidekiq approach.  And I’m going to describe how I did this without using cloud formation or another large, complicated AWS or third party API.  The only external tool I used was Ansible and even that was optional.</p>
+
+<p>For obvious reasons of company confidentiality I can’t go into the details of what the job was.  Suffice it to say:</p>
+
+<ul>
+  <li>a “lot” of data had to be “processed”</li>
+  <li>the actions were time consuming including deliberate sleep calls to avoid being blocked on the remote end</li>
+  <li>about 35,000 discrete data items needed to be processed.  With sleep calls at a randomized 10 to 15 seconds between each call that’s 350,000 to 525,000 seconds in aggregate compute time (less if threaded but too many threads and we get blocked)</li>
+</ul>
+
+<p>So, with that said, here’s how I went about this:</p>
+
+<ul>
+  <li>build an ec2 instance as a template</li>
+  <li>deploy the current code onto it</li>
+  <li>test</li>
+  <li>make an image</li>
+  <li>launch the job on the template box</li>
+  <li>launch more copies of the image</li>
+</ul>
+
+<p>Each of these is described below.</p>
+
+<p>My thanks go out to <a href="http://www.nickjanetakis.com/">Nick</a> who was a consultant on this and paired on it throughout the process.  I also have to say thank you to <a href="http://www.mikeperham.com">Mike Perham</a> who built <a href="http://www.sidekiq.org">Sidekiq</a> which is at the heart of this.</p>
+
+<h1 id="step-1---build-an-ec2-template-instance">Step 1 - Build an EC2 “Template” Instance</h1>
+
+<p>The first step is that like with everything AWS you need an instance.  Picking the right instance type isn’t a topic that I’m going to cover here.  I did know that I needed a reduced thread count so I wasn’t terribly worried about memory.  We had already arranged with Amazon for up to 200 m3.large instances so that’s what I went with.  I didn’t worry terribly about whether not not I had the perfect instance type – I just used what was available.</p>
+
+<p>A m3.large is 7.5 gb of RAM and 8 gigs of storage so that’s perfectly fine for a Rails app of even large size.</p>
+
+<p>After I created the box I provisioned to run my Rails app as <a href="https://fuzzygroup.github.io/blog/category.html#ansible">per all the things I’ve written about using Ansible</a>.</p>
+
+<p>Once we get this machine built out we’re going to be using it as a template for making more machines later hence my referring to this as a “template” instance.</p>
+
+<h1 id="step-2---deploy-the-current-code-base-with-capistrano">Step 2 - Deploy the Current Code Base with Capistrano</h1>
+
+<p>The next step was to get my code base onto the box using Capistrano.  I just added this box to my ~/.ssh/config file and then dropped the hostname into my config/deploy/production.rb file and did a normal deploy.</p>
+
+<h1 id="step-3---test-test-test">Step 3 - Test, Test, Test</h1>
+
+<p>At this point we have a single instance running our rails application.  We need to make very, very sure that this is working correctly because our next step is to make an <strong>image</strong> of this instance and then use AWS to launch N copies of the image.  Here’s what you want to test:</p>
+
+<ul>
+  <li>connectivity to your database</li>
+  <li>connectivity to your redis</li>
+  <li>that the job process code works</li>
+  <li>that sidekiq works</li>
+  <li>that your thread count is tuned properly</li>
+  <li>that sidekiq starts on boot</li>
+</ul>
+
+<p>This last point, that sidekiq starts on boot, is the key thing that you need to ascertain.  Since sidekiq is what’s going to run our jobs and we don’t want to manually ssh into each machine, we need a way for the job to start.  If sidekiq starts on boot then job processing begins automatically when the machine starts up.</p>
+
+<p>The only real way to verify this is:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>/sbin/reboot
+log back into machine
+ps auwwx | grep side
+</code></pre>
+</div>
+
+<p>If you see sidekiq running then you have things configured correctly and sidekiq is starting on boot.</p>
+
+<h1 id="step-4---make-an-image">Step 4 - Make an Image</h1>
+
+<p>At this point you know that things work and you might be thinking - “Ok I now create a bunch more boxes; provision them and deploy with capistrano.”  That’s absolutely correct from a classical hosting perspective and absolutely wrong in a cloud environment.  The far easier, far faster approach is to make an <em>image</em>. An image is simply a full disk copy of the instance that you can use to replicate the machine.  If you’re an old school PC guy then think of this as ghosting the machine.  Where installing things from scratch or even provisioning from ansible takes hours or minutes, cloning takes only a few minutes and then AWS can launch your instance in parallel so 40 machines might come up in just a minute or two.</p>
+
+<p>On your EC2 instance list select the instance and then on the Actions menu select Image, Create Image.  You’ll need to give it a name and the more descriptive, the better  It will take a minute or two but Amazon will make it just fine.</p>
+
+<p>Note: Making an instance shuts down the machine fully to make sure that any open files are backed up.  Keep this in mind since you’ll need to re-login to the machine for Step 5.</p>
+
+<h1 id="step-5---launch-the-job-using-sidekiq-and-re-test-to-be-sure">Step 5 - Launch the Job Using Sidekiq and Re-test to be Sure</h1>
+
+<p>At this point you’re ready to actually launch the job using sidekiq and start processing on one instance.  You can do this with the Rails console or a Rake task.  I prefer a rake task. Here’s what my rake task looked like:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>task :some_large_job =&gt; :environment do
+  search_urls = MiscClass.large_urls_collection
+  search_urls.each do |search_url|
+    MiscCkassWorker.perform_async(search_url)
+  end
+end
+</code></pre>
+</div>
+
+<p>That built a redis queue and gave each method to sidekiq as an asynchronous call to be processed.  Check your sidekiq log file to make sure that things are going ok.</p>
+
+<p><strong>NOTE:</strong> If You find that there are changes you need to make then you’ll need to re-create the image as per Step 4.</p>
+
+<p>As long as things are looking fine then it is time for Step 6 – launching more copies of the image.</p>
+
+<h1 id="step-6---launch-n-more-copies-of-the-image">Step 6 - Launch N More Copies of the Image</h1>
+
+<p>The final step is to launch more copies of the image.  Because the job is already queued into redis and running, as soon as you launch any more instances the copy of sidekiq which runs on boot will start pulling jobs and processing them.</p>
+
+<p>Launch an instance the way you create any instance, only this time you’ll select that you want to make the instance from “My AMIs”] and then pick the image that you created in Step 4.  You can then tell AWS how many copies of the image you want made.  I specified 40 and then it is the normal AWS instance creation options like security groups and such.  Sadly all of these options aren’t defined solely in the instance itself.</p>
+
+<p>Note: The AWS command line tools or ansible code can be used to automate this further.</p>
+
+<h1 id="step-7---make-your-wife-a-margarita">Step 7 - Make Your Wife a Margarita</h1>
+
+<p>Well you can celebrate how you want but that’s what I did.  I checked the sidekiq queue the next morning and it was at 0.  I checked the database and we had generated 2,500 new records which was about what I expected.</p>
+
+<h1 id="epiphany---realize-youre-making-an-appliance">Epiphany - Realize You’re Making an Appliance!</h1>
+
+<p>I’m writing this blog post now having done this a dozen times or more. What finally made all this click in my head is the realization that what I’m doing here is making an <em>appliance</em> or actually a <em>farm</em> of appliances. An appliance is a tool which does one thing and does it well.  If you think about what we’ve done here is that we’ve made a ruby appliance in the form of an AWS image which eats data and (presumably) excretes some type of database record.</p>
+
+<h1 id="circling-back-to-the-hard-questions-mentioned-earlier">Circling Back to The Hard Questions Mentioned Earlier</h1>
+
+<p>At the start of this piece I mentioned a number of hard questions like deployment, bug fixing, etc.  Each of these is addressed below.</p>
+
+<ul>
+  <li>How do you get code deployed?  Capistrano is currently our tool for code deployment.  If we need to get a code fix onto the boxes we built off the template we add the ec2 host name into our SSH config and then just do a deploy.  We are currently writing a simple deployer in Ansible to make deploy easier and more integral with the entire process.  Hopefully I’ll be able to open source that at some point.  Yes we looked at <a href="https://github.com/ansistrano/deploy">Anistrano</a> but Anistrano lacks critical rails features like bundle install which I find to be an absolute show stopper on using it.</li>
+  <li>How do you fix bugs?  We try very hard to test up front to avoid having to fix bugs on a long running job.  We streamlined our testing and focused hard on it before the jobs began deliberately to minimize bugs.</li>
+  <li>How do you deal with Capistrano failures when a box isn’t available and Capistrano doesn’t give you good feedback?  This remains an issue.  When Capistrano fails on a multiple box deploy it often isn’t clear why and Capistrano is specifically designed to stop when a single box in a deploy fails.  This contrasts nicely with Ansible which is specifically designed to continue despite failing.</li>
+  <li>How do you get things coordinated?  Coordination is always, always hard.  I have some interesting ideas on management tools for pulling this together but it isn’t time yet to implement them.</li>
+  <li>How do you kick off the overall job?  We use a Rake task which is my default for automation and is documented above.</li>
+  <li>How do you know when it is done? We don’t have a great answer yet on this.   Again I have some interesting ideas but we’re not yet at the implementation stage yet.</li>
+</ul>
+
+
+  </div>
+  
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
