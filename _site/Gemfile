@@ -22,6 +22,7 @@ group :jekyll_plugins do
   gem 'jekyll-lunr-js-search'
   gem 'jekyll-tagging'
   gem 'jekyll-import'
+  gem 'jekyll-sitemap'
   gem 'jekyll-galleries'
   gem 'rmagick'
   gem 'exifr'

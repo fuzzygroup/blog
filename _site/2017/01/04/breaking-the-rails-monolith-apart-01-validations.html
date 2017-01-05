@@ -1,0 +1,17 @@
+<p>rake task for copying in validations</p>
+
+<p>http://stackoverflow.com/questions/11372484/rails-put-validation-in-a-module-mixin</p>
+
+<p>require ‘api_key_validations’
+  include ApiKeyValidations</p>
+
+<p>module ApiKeyValidations
+  extend ActiveSupport::Concern</p>
+
+<p>included do
+    validates_presence_of :name
+    validates_presence_of :user
+    #validates :name, :length =&gt; { :minimum =&gt; 2 }, :presence =&gt; true, :uniqueness =&gt; true
+    #validates :name_seo, :length =&gt; { :minimum =&gt; 2 }, :presence =&gt; true, :uniqueness =&gt; true
+  end
+end</p>

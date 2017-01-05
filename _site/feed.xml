@@ -6,9 +6,140 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 03 Jan 2017 13:17:52 -0500</pubDate>
-    <lastBuildDate>Tue, 03 Jan 2017 13:17:52 -0500</lastBuildDate>
+    <pubDate>Wed, 04 Jan 2017 19:42:56 -0500</pubDate>
+    <lastBuildDate>Wed, 04 Jan 2017 19:42:56 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title></title>
+        <description>&lt;p&gt;rake task for copying in validations&lt;/p&gt;
+
+&lt;p&gt;http://stackoverflow.com/questions/11372484/rails-put-validation-in-a-module-mixin&lt;/p&gt;
+
+&lt;p&gt;require ‘api_key_validations’
+  include ApiKeyValidations&lt;/p&gt;
+
+&lt;p&gt;module ApiKeyValidations
+  extend ActiveSupport::Concern&lt;/p&gt;
+
+&lt;p&gt;included do
+    validates_presence_of :name
+    validates_presence_of :user
+    #validates :name, :length =&amp;gt; { :minimum =&amp;gt; 2 }, :presence =&amp;gt; true, :uniqueness =&amp;gt; true
+    #validates :name_seo, :length =&amp;gt; { :minimum =&amp;gt; 2 }, :presence =&amp;gt; true, :uniqueness =&amp;gt; true
+  end
+end&lt;/p&gt;
+</description>
+        <pubDate>Wed, 04 Jan 2017 08:43:11 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2017/01/04/breaking-the-rails-monolith-apart-01-validations.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2017/01/04/breaking-the-rails-monolith-apart-01-validations.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Getting Started with MongoDB and Rails</title>
+        <description>&lt;p&gt;I am a well known MySQL fan if not fanatic.  I’ve used MySQL since 1999 and while I’ve had the occasional issue here and there, I’ve been immensely happy with it overall.  But times change and now I find myself using Mongo in the context of a Rails app and, well, I’m a bit lost.  This post writes down what I’ve learned – mostly about the operational side of Mongo and getting started.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Assumptions&lt;/strong&gt;: Rails 5 / Ruby 2.3 / Mongo 3.4 / OSX; currently building a rails application called &lt;strong&gt;api&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;the-error-message&quot;&gt;The Error Message&lt;/h1&gt;
+
+&lt;p&gt;What drove me into writing all of this down was I kept hitting this error message:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Mongoid::Errors::NoClientConfig: message:   No configuration could be found for a client named 'default'.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;useful-reading&quot;&gt;Useful Reading:&lt;/h1&gt;
+
+&lt;p&gt;I read a number of things including:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://gorails.com/guides/setting-up-rails-4-with-mongodb-and-mongoid&quot;&gt;GoRails&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tutorialspoint.com/mongodb/mongodb_create_database.htm&quot;&gt;TutorialsPoint&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/15354936/rails-engine-mongoid-no-configuration-could-be-found-for-a-session-named-def&quot;&gt;StackOverflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
+
+&lt;p&gt;I used HomeBrew to install Mongo:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install mongodb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;getting-into-the-shell&quot;&gt;Getting into the Shell&lt;/h1&gt;
+
+&lt;p&gt;After Mongo is installed you can get into the Mongo shell with the command:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mongo
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;creating-your-first-database&quot;&gt;Creating Your First Database&lt;/h1&gt;
+
+&lt;p&gt;Oddly the use command creates the database.  If the database doesn’t exist then it is automatically created:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;use api_development ENTER
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;making-mongo-work-under-rails&quot;&gt;Making Mongo Work Under Rails&lt;/h1&gt;
+
+&lt;p&gt;Getting to this stage wasn’t all that hard.  The problem here is that I’ve never setup a new rails app from scratch with Mongo.  I’ve worked on Mongo stuff in the past but this was an entirely new thing. Here were the steps I followed.&lt;/p&gt;
+
+&lt;h2 id=&quot;getting-rid-of-activerecord-in-your-application&quot;&gt;Getting Rid of ActiveRecord in Your Application&lt;/h2&gt;
+
+&lt;p&gt;When you create your rails app, you need to add the –skip-active-record flag to turn off ActiveRecord entirely:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rails new api --skip-active-record --api
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Note: This is an api mode Rails application so I’m passing in –api.&lt;/p&gt;
+
+&lt;h2 id=&quot;creating-the-mongoidyml-file&quot;&gt;Creating the mongoid.yml File&lt;/h2&gt;
+
+&lt;p&gt;rails g mongoid:config&lt;/p&gt;
+
+&lt;h2 id=&quot;getting-mongoidyml-loaded&quot;&gt;Getting mongoid.yml Loaded&lt;/h2&gt;
+
+&lt;p&gt;touch config/initializers/mongo.yml&lt;/p&gt;
+</description>
+        <pubDate>Wed, 04 Jan 2017 06:44:54 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/rails/2017/01/04/getting-started-with-mongodb-and-rails.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails/2017/01/04/getting-started-with-mongodb-and-rails.html</guid>
+        
+        <category>rails</category>
+        
+        <category>mongo</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Capistrano Failure - Asset Manifest Not Created</title>
+        <description>&lt;p&gt;I setup a new Rails application using Capistrano earlier today and hit a fair number of odder than normal &lt;a href=&quot;http://capistranorb.com/&quot;&gt;Capistrano&lt;/a&gt; issues.  The biggest issue was around the asset pipeline and the asset manifest not being created.  The error message revolved around “cannot stat (pathname) manifest file”.&lt;/p&gt;
+
+&lt;p&gt;Digging into the issue with Google revealed that it actually is a problem with Capistrano itself.  Here’s the &lt;a href=&quot;https://github.com/capistrano/rails/issues/111&quot;&gt;thread&lt;/a&gt;.  Upgrading to at least Capistrano&lt;/p&gt;
+</description>
+        <pubDate>Wed, 04 Jan 2017 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/rails/2017/01/04/capistrano-failure-asset-manifest-not-created.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails/2017/01/04/capistrano-failure-asset-manifest-not-created.html</guid>
+        
+        <category>rails</category>
+        
+        <category>capistrano</category>
+        
+        <category>asset_pipeline</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>Tutorial How To Upgrade Your PS4 to 2 Terabytes of Storage</title>
@@ -59,7 +190,7 @@
   &lt;li&gt;&lt;a href=&quot;https://chuqui.com/2017/01/apples-2016-in-review/&quot;&gt;Apple 2016 in Review&lt;/a&gt; &lt;a href=&quot;https://news.ycombinator.com/item?id=13307040&quot;&gt;HN Commentary&lt;/a&gt;  His point on Apple relying on data too much is likely correct.&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://news.ycombinator.com/item?id=13307648&quot;&gt;Regular Restarts on OSX&lt;/a&gt;  Yep.  Right there with you.  Even my brand new box had to be restarted today after only 10 days of uptime.&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://medium.com/@searls/warm-takes-on-microsofts-surface-pro-4-580f77634d2c#.7ix3536dx&quot;&gt;Warm Takes on Microsoft’s Surface Pro 4&lt;/a&gt;  All I can say here is that I have an equivalent setup to my OSX box on Linux for my daily work and I’ve had a far easier time than he has.  Overall a fantastic read.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://news.ycombinator.com/item?id=13299585&quot;&gt;Using a ThinkPad for Development under Linux&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://news.ycombinator.com/item?id=13299585&quot;&gt;Using a ThinkPad for Development under Linux&lt;/a&gt; (good discussion of gear and options here and also on the &lt;a href=&quot;https://news.ycombinator.com/item?id=13286150&quot;&gt;X1 Carbon article&lt;/a&gt;)&lt;/li&gt;
 &lt;/ul&gt;
 
 </description>
@@ -359,136 +490,6 @@ control_path = %(directory)s/%%h-%%r
         
         
         <category>ansible</category>
-        
-      </item>
-    
-      <item>
-        <title>How to Build Rails views with Markdown</title>
-        <description>&lt;p&gt;So I’m starting prototyping on an all new thing and I it want to be commercially successful out of the gate.  That’s a bit different for me where I usually focus initially on the code.  This means thinking, from not just &lt;em&gt;day 1&lt;/em&gt; but &lt;strong&gt;hour 1&lt;/strong&gt;, about how the customer sees things and for me that starts with two pages on the site:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;about&lt;/li&gt;
-  &lt;li&gt;faq&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I would argue that for any web thing, an about page and a faq are at the core of your marketing.  And since both of these are content, I can’t see the point of using straight erb or haml views when MarkDown is so damn easy.  I wouldn’t use markdown for a page where there were forms or UI elements but for content?  Hell yes!&lt;/p&gt;
-
-&lt;h1 id=&quot;how-to-use-markdown-for-rails-views&quot;&gt;How to Use Markdown for Rails Views&lt;/h1&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;In your Gemfile you need to call the &lt;a href=&quot;https://github.com/chrisroberts/kramdown-rails&quot;&gt;kramdown-rails gem&lt;/a&gt;: gem ‘kramdown-rails’&lt;/li&gt;
-  &lt;li&gt;Do the bundle install happy dance&lt;/li&gt;
-  &lt;li&gt;In your app/views/controller_name directory create your views with a .md extension&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The kramdown-rails gem is a light wrapper around the core &lt;a href=&quot;https://github.com/gettalong/kramdown&quot;&gt;kramdown gem&lt;/a&gt; which does the markdown to html translation and supports using it in an Rails view context.&lt;/p&gt;
-
-&lt;p&gt;Just to be a good internet citizen I added the content of this answer to &lt;a href=&quot;http://stackoverflow.com/questions/36957097/rails-4-how-i-use-the-contents-of-a-markdown-file-in-a-view/41362259#41362259&quot;&gt;StackOverflow on Rails Markdown&lt;/a&gt;.  If you have the time and like this then I’d appreciate an upvote.  Thanks!&lt;/p&gt;
-</description>
-        <pubDate>Wed, 28 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/rails/2016/12/28/how-to-build-rails-views-with-markdown.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails/2016/12/28/how-to-build-rails-views-with-markdown.html</guid>
-        
-        <category>rails</category>
-        
-        <category>markdown</category>
-        
-        <category>kramdown</category>
-        
-        <category>hyde</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Product Review Amazon Echo is Excellent</title>
-        <description>&lt;p&gt;So my wife got me an Amazon Echo for Christmas and I powered it up today.  Overall I was absolutely delighted with it – Amazon has a hell of a product here.  The ease of use that a conversational user interface brings is staggering:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Alexa play happy holiday music&lt;/li&gt;
-  &lt;li&gt;Alexa may the force be with you&lt;/li&gt;
-  &lt;li&gt;Alexa play pink&lt;/li&gt;
-  &lt;li&gt;Alexa what is the weather&lt;/li&gt;
-  &lt;li&gt;Alexa what is the temperature&lt;/li&gt;
-  &lt;li&gt;Alexa what is the news&lt;/li&gt;
-  &lt;li&gt;Alexa 5 minute timer&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Those were a few of the commands that we came up with right away.  My wife gets the serious nerd fu credit for the force one; bless her.&lt;/p&gt;
-
-&lt;h1 id=&quot;amazon-echo-out-of-the-box-experience&quot;&gt;Amazon Echo Out of the Box Experience&lt;/h1&gt;
-
-&lt;p&gt;A few thoughts on the out of the box experience:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The out of the box experience is far, far rougher than I had expected.  You certainly get thru it but I didn’t find it clear.&lt;/li&gt;
-  &lt;li&gt;You do need to install the Amazon Echo app on your phone&lt;/li&gt;
-  &lt;li&gt;There’s a weird config step where the Echo presents a wifi network that you connect to so it can find the actual network that in your house; at the end of it your phone is left connected to the echo and its unclear if you change that or not (I would think so but who knows)&lt;/li&gt;
-  &lt;li&gt;The trend towards “no one reads the manual so let’s not even have one” is a suck ass trend.  There are those of us who do read the manual and we get very annoyed by the fact that there isn’t even comprehensive online documentation.  I can rationalize the lack of a printed manual due to rapid updates but sheesh.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;when-it-doesnt-play-music&quot;&gt;When It Doesn’t Play Music&lt;/h1&gt;
-
-&lt;p&gt;My biggest problem was that it wouldn’t play music initially.  Googling was relatively fruitless but it did reveal that lots of other people have this problem:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.google.com/search?q=amazon+echo+won%27t+play+music&amp;amp;oq=amazon+echo+won%27t+&amp;amp;aqs=chrome.3.0j69i57j0l4.5987j0j7&amp;amp;sourceid=chrome&amp;amp;ie=UTF-8&quot;&gt;Google Search - 3.42 million results&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.echotalk.org/index.php?topic=322.0&quot;&gt;NTP Related&lt;/a&gt;; best theory I saw&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The answer, at least for me, turned out to be turn it off and then on and then wait.  And that did it. Sigh.  Given how important digital technology is to all of our lives the answer of power on / power off or as I refer to it “get out of the car and get back into the car” is a crappy answer at best.&lt;/p&gt;
-
-&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
-
-&lt;p&gt;Well I’ve already tried to order the &lt;a href=&quot;https://www.amazon.com/dp/B01DFKC2SO/ref=ods_gw_b_h1_ha_justask_black?pf_rd_r=QMHK561Z7EWPEZQJ1BFX&amp;amp;pf_rd_p=68d26f18-1cf3-45a4-870c-87bf6bd9cee6&quot;&gt;hockey puck extension&lt;/a&gt; for the echo so I guess that says all you need to know about how much I like it. This is a fantastic product.  Here’s a &lt;a href=&quot;http://www.pocket-lint.com/news/136952-amazon-echo-vs-amazon-tap-vs-echo-dot-what-s-the-difference&quot;&gt;good article that clarifies the difference between the Echo and Echo Dot&lt;/a&gt;; much to my surprise the hockey puck isn’t an extension - its a standalone version of the echo with a smaller speaker so it can be cheaper but it doesn’t require the echo at all.  You can plug it into your own speakers for better output.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 26 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/amazon_echo/2016/12/26/product-review-amazon-echo-is-excellent.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/amazon_echo/2016/12/26/product-review-amazon-echo-is-excellent.html</guid>
-        
-        <category>alexa</category>
-        
-        <category>echo</category>
-        
-        <category>music</category>
-        
-        <category>echo_dot</category>
-        
-        <category>review</category>
-        
-        
-        <category>amazon_echo</category>
-        
-      </item>
-    
-      <item>
-        <title>My Worst Git Commit Message Ever</title>
-        <description>&lt;p&gt;I was in the car with my wife talking to her as I worked and this was the bmessage:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; git commit -m &quot;misc:
-→ '''''''''''''''''''vvvvvvvvvvvvvvvvvvvvvvV 
-VVVVVVVVVVVVVV                                                               
-                          ///////// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-                          vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-                          vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-                          vvvvvvvvvvvvvvvvvvvvvvvvvvv
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I feel asleep while talking to her and coding.  I suspect drooling was also involved.  Too many late nights…&lt;/p&gt;
-</description>
-        <pubDate>Fri, 23 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/git/2016/12/23/my-worst-git-commit-message-ever.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/git/2016/12/23/my-worst-git-commit-message-ever.html</guid>
-        
-        <category>git</category>
-        
-        <category>humor</category>
-        
-        
-        <category>git</category>
         
       </item>
     

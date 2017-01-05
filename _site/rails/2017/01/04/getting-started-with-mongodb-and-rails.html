@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Recent PostMac Round Up</title>
-  <meta name="description" content="Well a new year and people are still unhappy about the state of the Mac.  Here are some interesting links worth following:">
+  <title>Getting Started with MongoDB and Rails</title>
+  <meta name="description" content="I am a well known MySQL fan if not fanatic.  I’ve used MySQL since 1999 and while I’ve had the occasional issue here and there, I’ve been immensely happy wit...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/postmac/2017/01/03/recent-postmac-round-up.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/rails/2017/01/04/getting-started-with-mongodb-and-rails.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
   
   <script>
@@ -91,20 +91,78 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Recent PostMac Round Up</h1>
-    <p class="I'll"><time datetime="2017-01-03T00:00:00-05:00" itemprop="datePublished">Jan 3, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">Getting Started with MongoDB and Rails</h1>
+    <p class="I'll"><time datetime="2017-01-04T06:44:54-05:00" itemprop="datePublished">Jan 4, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>Well a new year and people are still unhappy about the state of the Mac.  Here are some interesting links worth following:</p>
+    <p>I am a well known MySQL fan if not fanatic.  I’ve used MySQL since 1999 and while I’ve had the occasional issue here and there, I’ve been immensely happy with it overall.  But times change and now I find myself using Mongo in the context of a Rails app and, well, I’m a bit lost.  This post writes down what I’ve learned – mostly about the operational side of Mongo and getting started.</p>
+
+<p><strong>Assumptions</strong>: Rails 5 / Ruby 2.3 / Mongo 3.4 / OSX; currently building a rails application called <strong>api</strong></p>
+
+<h1 id="the-error-message">The Error Message</h1>
+
+<p>What drove me into writing all of this down was I kept hitting this error message:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Mongoid::Errors::NoClientConfig: message:   No configuration could be found for a client named 'default'.
+</code></pre>
+</div>
+
+<h1 id="useful-reading">Useful Reading:</h1>
+
+<p>I read a number of things including:</p>
 
 <ul>
-  <li><a href="https://chuqui.com/2017/01/apples-2016-in-review/">Apple 2016 in Review</a> <a href="https://news.ycombinator.com/item?id=13307040">HN Commentary</a>  His point on Apple relying on data too much is likely correct.</li>
-  <li><a href="https://news.ycombinator.com/item?id=13307648">Regular Restarts on OSX</a>  Yep.  Right there with you.  Even my brand new box had to be restarted today after only 10 days of uptime.</li>
-  <li><a href="https://medium.com/@searls/warm-takes-on-microsofts-surface-pro-4-580f77634d2c#.7ix3536dx">Warm Takes on Microsoft’s Surface Pro 4</a>  All I can say here is that I have an equivalent setup to my OSX box on Linux for my daily work and I’ve had a far easier time than he has.  Overall a fantastic read.</li>
-  <li><a href="https://news.ycombinator.com/item?id=13299585">Using a ThinkPad for Development under Linux</a> (good discussion of gear and options here and also on the <a href="https://news.ycombinator.com/item?id=13286150">X1 Carbon article</a>)</li>
+  <li><a href="https://gorails.com/guides/setting-up-rails-4-with-mongodb-and-mongoid">GoRails</a></li>
+  <li><a href="https://www.tutorialspoint.com/mongodb/mongodb_create_database.htm">TutorialsPoint</a></li>
+  <li><a href="http://stackoverflow.com/questions/15354936/rails-engine-mongoid-no-configuration-could-be-found-for-a-session-named-def">StackOverflow</a></li>
 </ul>
 
+<h1 id="installation">Installation</h1>
+
+<p>I used HomeBrew to install Mongo:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>brew install mongodb
+</code></pre>
+</div>
+
+<h1 id="getting-into-the-shell">Getting into the Shell</h1>
+
+<p>After Mongo is installed you can get into the Mongo shell with the command:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>mongo
+</code></pre>
+</div>
+
+<h1 id="creating-your-first-database">Creating Your First Database</h1>
+
+<p>Oddly the use command creates the database.  If the database doesn’t exist then it is automatically created:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>use api_development ENTER
+</code></pre>
+</div>
+
+<h1 id="making-mongo-work-under-rails">Making Mongo Work Under Rails</h1>
+
+<p>Getting to this stage wasn’t all that hard.  The problem here is that I’ve never setup a new rails app from scratch with Mongo.  I’ve worked on Mongo stuff in the past but this was an entirely new thing. Here were the steps I followed.</p>
+
+<h2 id="getting-rid-of-activerecord-in-your-application">Getting Rid of ActiveRecord in Your Application</h2>
+
+<p>When you create your rails app, you need to add the –skip-active-record flag to turn off ActiveRecord entirely:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>rails new api --skip-active-record --api
+</code></pre>
+</div>
+
+<p>Note: This is an api mode Rails application so I’m passing in –api.</p>
+
+<h2 id="creating-the-mongoidyml-file">Creating the mongoid.yml File</h2>
+
+<p>rails g mongoid:config</p>
+
+<h2 id="getting-mongoidyml-loaded">Getting mongoid.yml Loaded</h2>
+
+<p>touch config/initializers/mongo.yml</p>
 
   </div>
   
