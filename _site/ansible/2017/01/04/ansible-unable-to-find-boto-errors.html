@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Capistrano Failure - Asset Manifest Not Created</title>
-  <meta name="description" content="I setup a new Rails application using Capistrano earlier today and hit a fair number of odder than normal Capistrano issues.  The biggest issue was around th...">
+  <title>Ansible Unable to Find Boto Errors</title>
+  <meta name="description" content="Over the past several days I have been doing quite a bit of work with the ansible EC2 and AMI modules for dynamically creating instances and AMIs on AWS.  An...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/rails/2017/01/04/capistrano-failure-asset-manifest-not-created.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/ansible/2017/01/04/ansible-unable-to-find-boto-errors.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
   
   <script>
@@ -91,14 +91,69 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Capistrano Failure - Asset Manifest Not Created</h1>
+    <h1 class="post-title" itemprop="name headline">Ansible Unable to Find Boto Errors</h1>
     <p class="I'll"><time datetime="2017-01-04T00:00:00-05:00" itemprop="datePublished">Jan 4, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>I setup a new Rails application using Capistrano earlier today and hit a fair number of odder than normal <a href="http://capistranorb.com/">Capistrano</a> issues.  The biggest issue was around the asset pipeline and the asset manifest not being created.  The error message revolved around “cannot stat (pathname) manifest file”.</p>
+    <p>Over the past several days I have been doing quite a bit of work with the ansible <a href="http://docs.ansible.com/ansible/ec2_module.html">EC2</a> and <a href="http://docs.ansible.com/ansible/ec2_ami_module.html">AMI</a> modules for dynamically creating instances and AMIs on AWS.  Ansible, however, doesn’t actually talk directly to AWS; it talks to AWS thru a python module named <a href="https://github.com/boto/boto"><strong>boto</strong></a>.</p>
 
-<p>Digging into the issue with Google revealed that it actually is a problem with Capistrano itself.  Here’s the <a href="https://github.com/capistrano/rails/issues/111">thread</a>.  Upgrading to at least Capistrano 1.1.8 fixes this problem.</p>
+<p>There are a number of common problems that you might find when you the error “boto required for this module” or “unable to find boto”:</p>
+
+<ul>
+  <li>Make sure boto is installed: <em>sudo pip install boto</em></li>
+  <li>Uninstall ansible entirely and then install it via Python: <em>sudo pip install ansible</em></li>
+  <li>Run your playbook using sudo to ensure that the version of python is the one that comes from sudo</li>
+  <li>Eliminate <em>connection: local</em> at the playbook level and move it to the task level</li>
+</ul>
+
+<p>The last one of these, eliminating connection: local, requires a bit of explaining.  Details can be found <a href="https://github.com/ansible/ansible/issues/15019">here</a>.  When I first encountered this problem, my playbook looked like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>- hosts: "fi_app_metadata_monthly"
+  become: yes
+  remote_user: ubuntu
+  connection: local
+  vars:
+    - redis_ami_id: "ami-XXXX"
+    - redis_security_group_id: "sg-YYY"
+    - redis_instance_type: "t2.micro"
+    - redis_tag_name: "dynamic_redis_fi_app_metadata_update"
+    - redis_instance_count: 1
+    - template_instance_id: "i-UUUUUUUU" # in future this comes in from command line
+    - number_of_instances: 3                      
+    - instance_type: "m3.large"                   
+    - region: "us-west-2"
+    - vpc_subnet_id: "subnet-IIIIII"
+    - vpc_id: "vpc-RRRR"
+    - group_id: "sg-YYYY"
+    - aws_access_key: "ERRERERE"
+    - key_name: "appdata_aws"
+    - aws_secret_key: "ERERERE"
+    - farm_job_name: "monthly_fi_app_metadata_update_2017-01"
+    - farmer_address: "ec2-9-9-9-9.us-west-2.compute.amazonaws.com"
+    - tag_name: "fi_app_metadata"
+    - rake_task: "bundle exec rake fi_farm_work:fi_app_metadata_update --trace"
+  roles:
+    - { role: ec2_make_redis_instance_from_ami, tags: ec2_make_redis_instance_from_ami}
+</code></pre>
+</div>
+
+<p>When the above playbook was run, it resulted in boto not being found errors.  The solution was to remove the line <em>connection: local</em> from the playbook and move it to the task level:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>- name: make the redis instance from the ami
+  # note - you used to be able to do this at the role level; now it has to be at the task level
+  # note - think of this as you are setting the connection context for the task being executed
+  connection: local
+  ec2:
+    aws_access_key: ""
+    aws_secret_key: ""
+    region: ""
+    image: ""
+    ...
+</code></pre>
+</div>
+
+<p>This is one of those code errors that, honestly, I just don’t understand.  From talking with another Ansible buddy, [Nick], he confirmed that it used to work at the playbook level.  Perhaps this is just one of those perplexing changes that results from other other architectural work going on at the project level.</p>
 
   </div>
   
