@@ -6,9 +6,58 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 05 Jan 2017 06:36:26 -0500</pubDate>
-    <lastBuildDate>Thu, 05 Jan 2017 06:36:26 -0500</lastBuildDate>
+    <pubDate>Thu, 05 Jan 2017 08:39:03 -0500</pubDate>
+    <lastBuildDate>Thu, 05 Jan 2017 08:39:03 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Scott's Rule of API Development</title>
+        <description>&lt;p&gt;So on Tuesday I wrote a new api that allows an &lt;a href=&quot;https://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt; playbook to register an AWS instance with an internal service I’m writing.  This is for the purpose of monitoring large jobs (think tens if not hundreds of lightweight EC2 instances) so that they can be shut down programmatically when they are done.&lt;/p&gt;
+
+&lt;p&gt;In some kind of alternate universe I’d just do all this with &lt;a href=&quot;https://aws.amazon.com/lambda/&quot;&gt;AWS Lambda&lt;/a&gt; but I’m working in a monolithic rails code base so I used my &lt;a href=&quot;https://fuzzygroup.github.io/blog/rails/2017/01/03/processing-large-datasets-on-aws-using-ruby-rails-and-sidekiq.html&quot;&gt;Large Datasets approach&lt;/a&gt; I documented earlier this week.&lt;/p&gt;
+
+&lt;p&gt;My ansible playbook creates the EC2 instances, binds the whole process together and initiates everything – I can literally run one playbook and have 40 workers (or really N workers) created and an entire data set start processing along with getting an internal record of all the instances and the job so that I can do proper cost accounting, dynamic instance shut down and the whole nine yards.  This is a big step for me.  I am getting close to a technical goal that I’ve been working towards either for six months or about 7 years depending on how you measure it.&lt;/p&gt;
+
+&lt;p&gt;So &lt;a href=&quot;http://nickjanetaks.com/&quot;&gt;Nick&lt;/a&gt; and I did all this fancy, fancy EC2 automation – AMI creation, instance creation, job launching – and the thing that &lt;strong&gt;&lt;em&gt;failed&lt;/em&gt;&lt;/strong&gt; was a simple &lt;em&gt;http post API&lt;/em&gt; call using the &lt;a href=&quot;http://docs.ansible.com/ansible/uri_module.html&quot;&gt;Ansible URI module&lt;/a&gt;.  Like everyone else in the industry I’ve written a post API, I don’t know – 50 times? 100 times? — and they always fail the first time.  And this brings me to what I’m going to immodestly call Scott’s Rule of API Development:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Scott’s Rule of API Development&lt;/strong&gt;.  Always, always, always test your APIs with &lt;a href=&quot;https://curl.haxx.se/&quot;&gt;curl&lt;/a&gt; from an external box before you actually try and use them.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Seriously – I hit this problem six months ago at &lt;a href=&quot;http://www.therachat.io&quot;&gt;TheraChat&lt;/a&gt; when I wrote their MVP.  I hit it yesterday.  I seemingly hit it every single damn time I make an API.  Hence Scott’s Rule of API Development.  Now, that said, what does using curl to test an api actually mean / how do you do it:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Create your API.&lt;/li&gt;
+  &lt;li&gt;Write your curl statement. Here’s a sample which I used once upon a time for an authorization API (the -d tells curl to post it): &lt;em&gt;curl -i -d “api_key=forceawakens13928534aY&amp;amp;&amp;amp;mobile_number=317-531-4853&amp;amp;password=BLAH” “http://app.foo.com/api/authorize”&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;Test it locally against your development system.  Fix any bugs.  Lather / Rinse / Repeat.&lt;/li&gt;
+  &lt;li&gt;Deploy your code.&lt;/li&gt;
+  &lt;li&gt;Run it on another box that isn’t your actual API to make sure that there are no security glitches / remote code issues / etc.&lt;/li&gt;
+  &lt;li&gt;If this API is part of a full stack Rails app then don’t forget to disable forgery protection in Application Controller with &lt;em&gt;protect_from_forgery with: :null_session&lt;/em&gt;.&lt;/li&gt;
+  &lt;li&gt;For bonus points store the curl commands that exercise your API as part of your code base and always try them before a release.  APIs can be tricky little buggers and they are both difficult to get and seem to break easily.  Regularly testing with curl prevents that and makes users of your API much, much happier.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Yes test coverage should prevent what’s described in #7 but I’d strongly recommend belt and suspenders on this one.  When the people who rely on your API have issues you can always give them a curl statement and say “Well this works for me – what about you”.  You can’t do that we test coverage as APIs are often used from a variety of languages and environments but curl is absolutely &lt;strong&gt;universal&lt;/strong&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 05 Jan 2017 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/software_engineering/2017/01/05/scott-s-rule-of-api-development.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/software_engineering/2017/01/05/scott-s-rule-of-api-development.html</guid>
+        
+        <category>software_engineering</category>
+        
+        <category>api</category>
+        
+        <category>curl</category>
+        
+        <category>ansible</category>
+        
+        <category>aws</category>
+        
+        <category>rails</category>
+        
+        
+        <category>software_engineering</category>
+        
+      </item>
     
       <item>
         <title>Returning to RSS Programming After 14 Years</title>
@@ -544,39 +593,6 @@ end
         <category>sidekiq</category>
         
         <category>aws</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Invalid route name, already in use 'page'</title>
-        <description>&lt;p&gt;It seems that whenever you start a new Rails project you hit some kind of wackiness with respect to an error message that you’ve never seen before.  Yesterday I started a new project and I wanted to use Bootstrap for my layout.  Well I couldn’t make it work and then &lt;a href=&quot;http://dv.dasari.me&quot;&gt;Dv&lt;/a&gt; couldn’t make it work so I finally turned to the &lt;a href=&quot;https://github.com/RailsApps/&quot;&gt;RailsApps&lt;/a&gt; project and used their &lt;a href=&quot;https://github.com/RailsApps/rails-bootstrap/blob/master/config/routes.rb&quot;&gt;bootstrap template app&lt;/a&gt;.  And that worked so Huzzah! both for them and me.  Thanks Guys!&lt;/p&gt;
-
-&lt;p&gt;Note: Dv and I have both used bootstrap on I can’t tell you how many different sites and its always a pain in the neck to initially get going.  We were using the bootstrap gem and we had the scss stuff configured correctly at least by comparing to a reference site.&lt;/p&gt;
-
-&lt;p&gt;Today I integrated &lt;a href=&quot;https://github.com/binarylogic/authlogic&quot;&gt;authlogic&lt;/a&gt; for authentication based on a &lt;a href=&quot;https://www.sitepoint.com/rails-authentication-with-authlogic/&quot;&gt;SitePoint AuthLogic tutorial&lt;/a&gt;.  When I generated a Pages Controller and dropped a resources :pages into my routes file I got this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Invalid route name, already in use: 'page' 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;My routes file right now is like 5 lines so I was actually certain that I didn’t have pages in there already (embarrassingly though I did do a command+F anyway).  A bunch of googling turned up this &lt;a href=&quot;https://github.com/thoughtbot/high_voltage/issues/109&quot;&gt;answer&lt;/a&gt;.  Apparently the &lt;a href=&quot;https://github.com/thoughtbot/high_voltage&quot;&gt;High Voltage gem&lt;/a&gt; from &lt;a href=&quot;https://github.com/thoughtbot&quot;&gt;Thoughtbot&lt;/a&gt; automagically inserts its pages route into the routes file.  And I get the desire for simplicity but when it doesn’t even require a declaration in the Gemfile it makes tracking this kind of stuff down annoying.  Sigh.&lt;/p&gt;
-
-&lt;p&gt;Once that was removed then I was able to get my static pages working again so that’s nice.  And I like what the High Voltage gem is actually doing.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 29 Dec 2016 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/rails/2016/12/29/invalid-route-name-already-in-use-page.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails/2016/12/29/invalid-route-name-already-in-use-page.html</guid>
-        
-        <category>rails</category>
-        
-        <category>pages</category>
-        
-        <category>authlogic</category>
-        
-        <category>bootstrap</category>
         
         
         <category>rails</category>
