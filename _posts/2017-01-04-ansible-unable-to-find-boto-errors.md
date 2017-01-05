@@ -13,7 +13,7 @@ There are a number of common problems that you might find when you the error "bo
 * Run your playbook using sudo to ensure that the version of python is the one that comes from sudo
 * Eliminate *connection: local* at the playbook level and move it to the task level
 
-**Note**: If you uninstall Ansible using HomeBrew or apt-get, you may find that your Galaxy roles have been uninstalled.  This can very badly impact your playbook execution so be careful.  
+**Note**: If you uninstall Ansible using HomeBrew or apt-get, you may find that your Galaxy roles have been uninstalled.  This can very badly impact your playbook execution so be careful.  If you want to avoid this then use the -p option when you install a role to specify that the role goes into a local directory of your choosing; [Stack Overflow Explanation](http://stackoverflow.com/questions/22201306/ansible-galaxy-roles-install-in-to-a-specific-directory).  
 
 The last one of these, eliminating connection: local, requires a bit of explaining.  Details can be found [here](https://github.com/ansible/ansible/issues/15019).  When I first encountered this problem, my playbook looked like this:
 

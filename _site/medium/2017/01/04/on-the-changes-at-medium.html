@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Ansible Unable to Find Boto Errors</title>
-  <meta name="description" content="Over the past several days I have been doing quite a bit of work with the ansible EC2 and AMI modules for dynamically creating instances and AMIs on AWS.  An...">
+  <title>On the Changes at Medium</title>
+  <meta name="description" content="So Ev has just announced major layoffs at Medium:">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzygroup.github.io/blog/ansible/2017/01/04/ansible-unable-to-find-boto-errors.html">
+  <link rel="canonical" href="https://fuzzygroup.github.io/blog/medium/2017/01/04/on-the-changes-at-medium.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzygroup.github.io/blog/feed.xml">
   
   <script>
@@ -91,71 +91,32 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Ansible Unable to Find Boto Errors</h1>
-    <p class="I'll"><time datetime="2017-01-04T00:00:00-05:00" itemprop="datePublished">Jan 4, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">On the Changes at Medium</h1>
+    <p class="I'll"><time datetime="2017-01-04T22:03:59-05:00" itemprop="datePublished">Jan 4, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>Over the past several days I have been doing quite a bit of work with the ansible <a href="http://docs.ansible.com/ansible/ec2_module.html">EC2</a> and <a href="http://docs.ansible.com/ansible/ec2_ami_module.html">AMI</a> modules for dynamically creating instances and AMIs on AWS.  Ansible, however, doesn’t actually talk directly to AWS; it talks to AWS thru a python module named <a href="https://github.com/boto/boto"><strong>boto</strong></a>.</p>
+    <p>So Ev has just announced major layoffs at Medium:</p>
 
-<p>There are a number of common problems that you might find when you the error “boto required for this module” or “unable to find boto”:</p>
+<blockquote>
+  <p>I’ll start with the hard part: As of today, we are reducing our team by about one third — eliminating 50 jobs, mostly in sales, support, and other business functions. We are also changing our business model to more directly drive the mission we set out on originally. <a href="https://blog.medium.com/renewing-mediums-focus-98f374a960be#.kh7coodv8">Renewing Medium</a></p>
+</blockquote>
 
-<ul>
-  <li>Make sure boto is installed: <em>sudo pip install boto</em></li>
-  <li>Uninstall ansible entirely and then install it via Python: <em>sudo pip install ansible</em></li>
-  <li>Run your playbook using sudo to ensure that the version of python is the one that comes from sudo</li>
-  <li>Eliminate <em>connection: local</em> at the playbook level and move it to the task level</li>
-</ul>
+<p>As someone who, on a vastly smaller scale, has been through this type of thing, I have nothing but sympathy for Ev.  Even when you are as monstrously successful as Ev (Blogger, Odeo, Twitter), layoffs always hurt.  You never hire people thinking that you are going to have to fire them.  You always hope that the people you hire will hire more people and so on.</p>
 
-<p><strong>Note</strong>: If you uninstall Ansible using HomeBrew or apt-get, you may find that your Galaxy roles have been uninstalled.  This can very badly impact your playbook execution so be careful.  If you want to avoid this then use the -p option when you install a role to specify that the role goes into a local directory of your choosing; <a href="http://stackoverflow.com/questions/22201306/ansible-galaxy-roles-install-in-to-a-specific-directory">Stack Overflow Explanation</a>.</p>
+<p>The <a href="https://news.ycombinator.com/item?id=13321322">Hacker News discussion</a> on it has the normal nay sayers and people saying “But it is just a blogging platform”.  And, yes, Medium is a blogging platform but it is operating on a scale which is very, very hard to achieve.  The really interesting there is from the post by MG Siegler:</p>
 
-<p>The last one of these, eliminating connection: local, requires a bit of explaining.  Details can be found <a href="https://github.com/ansible/ansible/issues/15019">here</a>.  When I first encountered this problem, my playbook looked like this:</p>
+<blockquote>
+  <p>The numbers speak for themselves. 2 billion words written on Medium in the last year. 7.5 million posts during that time. 60 million monthly readers now.  <a href="https://500ish.com/long-medium-b9ddfe2c3a0a#.wh8tzerfo">Long Medium</a></p>
+</blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- hosts: "fi_app_metadata_monthly"
-  become: yes
-  remote_user: ubuntu
-  connection: local
-  vars:
-    - redis_ami_id: "ami-XXXX"
-    - redis_security_group_id: "sg-YYY"
-    - redis_instance_type: "t2.micro"
-    - redis_tag_name: "dynamic_redis_fi_app_metadata_update"
-    - redis_instance_count: 1
-    - template_instance_id: "i-UUUUUUUU" # in future this comes in from command line
-    - number_of_instances: 3                      
-    - instance_type: "m3.large"                   
-    - region: "us-west-2"
-    - vpc_subnet_id: "subnet-IIIIII"
-    - vpc_id: "vpc-RRRR"
-    - group_id: "sg-YYYY"
-    - aws_access_key: "ERRERERE"
-    - key_name: "appdata_aws"
-    - aws_secret_key: "ERERERE"
-    - farm_job_name: "monthly_fi_app_metadata_update_2017-01"
-    - farmer_address: "ec2-9-9-9-9.us-west-2.compute.amazonaws.com"
-    - tag_name: "fi_app_metadata"
-    - rake_task: "bundle exec rake fi_farm_work:fi_app_metadata_update --trace"
-  roles:
-    - { role: ec2_make_redis_instance_from_ami, tags: ec2_make_redis_instance_from_ami}
-</code></pre>
-</div>
+<p>Wow.  I had no idea that Medium was on that type of growth curve.  That is flat out astonishing.  When you consider the scaling issues at that type of size with the rich user interface that Medium offers and the integrated analytics, aggregation and notification, yes, I can see why they raised the amount of funding that they have.</p>
 
-<p>When the above playbook was run, it resulted in boto not being found errors.  The solution was to remove the line <em>connection: local</em> from the playbook and move it to the task level:</p>
+<p>Now, that said, it does seem that they overstaffed at the business level.  And it seems that those are the positions being scrapped.  Interestingly at least some of the staff seem to be dealing with this well:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- name: make the redis instance from the ami
-  # note - you used to be able to do this at the role level; now it has to be at the task level
-  # note - think of this as you are setting the connection context for the task being executed
-  connection: local
-  ec2:
-    aws_access_key: ""
-    aws_secret_key: ""
-    region: ""
-    image: ""
-    ...
-</code></pre>
-</div>
-
-<p>This is one of those code errors that, honestly, I just don’t understand.  From talking with another Ansible buddy, <a href="https://nickjanetakis.com/">Nick</a>, he confirmed that it used to work at the playbook level.  Perhaps this is just one of those perplexing changes that results from other other architectural work going on at the project level.</p>
+<blockquote>
+  <p>Newly ex-Median here. This was not a huge surprise. On the surface, this is a change in product strategy. The underlying story is the company positioning itself so it can survive an adverse environment if it needs to. It’s hard to fault managers for dealing with that potential (and its hard to deny that the next 2-4 years could be really bad). Hopefully not, but it would be malpractice not to prepare. So better to focus resources now than be walking dead in a year or so, jettison unnecessary products/projects, and hope for the best. It’s a great product, and with time and luck, they’ll sort out a good business model, but like the rest of the publishing world, they’re still sorting things out. Despite being one of those made redundant, I enjoyed being there, and wish them the best. On that note, you should ask yourself if you are prepared for winter, because winter is coming. <a href="https://news.ycombinator.com/item?id=13322380">Permalink</a></p>
+</blockquote>
 
   </div>
   
