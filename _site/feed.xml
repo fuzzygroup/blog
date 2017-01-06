@@ -6,9 +6,117 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 05 Jan 2017 08:39:03 -0500</pubDate>
-    <lastBuildDate>Thu, 05 Jan 2017 08:39:03 -0500</lastBuildDate>
+    <pubDate>Fri, 06 Jan 2017 06:15:14 -0500</pubDate>
+    <lastBuildDate>Fri, 06 Jan 2017 06:15:14 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Hyde Feature Overview 01 - Check for Broken Links aka The Nick Feature</title>
+        <description>&lt;p&gt;I’m currently programming what in my head will always be known as &lt;em&gt;The Nick Feature&lt;/em&gt;.  &lt;a href=&quot;http://nickjanetkis.com&quot;&gt;Nick&lt;/a&gt; is a buddy of mine and a regular pair programming partner. Together he and I have wrestled to the ground a number of Ansible powered dragons, dynamically build tens upon tens of AWS instances and other various and sundry nerd tasks.&lt;/p&gt;
+
+&lt;p&gt;In the way that nerds often do, we chat about things as we go about the day and one day he asked me about programmatically checking his blog for broken links.  As questions like this always do, it made me think.  Several hours later I spun up a small test project and starting playing with that in the context of both his blog and mine.&lt;/p&gt;
+
+&lt;p&gt;Broken links share a particular fascination for me because in my first hypertext authoring tool, Black Magic, we didn’t allow them.  Our underlying engine made it very, very hard for dangling links to exist.  You could do it but you did it by moving a file outside the environment.  It wasn’t until the world wide web came along that I ran into the problem of broken links in the wild.  And like everyone else in the web tools 1.0 world I solved this problem with perl scripts and other first generation automation tools.  But I haven’t ever forgotten the elegant architecture for broken links that my first partner, Brian Giedt, created.&lt;/p&gt;
+
+&lt;p&gt;As I looked at Nick’s blog and then my own I realized that broken links actually are only really a problem in a certain context. Given that the Internet is constantly changing, broken links are just an inevitability – they will happen.  And, honestly, trying to fix them after a certain point in time is likely not possible.  Additionally things like server side mod_rewrite rules mean that links may break and proper 404s may never be returned to you. Finally just knowing the original destination of a link often is enough.  There is, after all, &lt;a href=&quot;http://www.archive.org&quot;&gt;archive.org&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So if there are contexts where you don’t worry about broken links, is there a context where you &lt;strong&gt;do&lt;/strong&gt; worry about them.  The answer is absolutely YES – you worry about broken links when the content item is newly created.  And that’s why one of the very first features I’ve written into Hyde is just that – it takes a newly created post and makes sure that all of the links in it actually exist.  It is executed every time a post changes.&lt;/p&gt;
+
+&lt;p&gt;Thanks Nick!&lt;/p&gt;
+
+&lt;h1 id=&quot;technical-notes&quot;&gt;Technical Notes&lt;/h1&gt;
+
+&lt;p&gt;Given that Nick, a very experienced software engineer, was asking me how to tackle this I thought it might be worth discussing how to implement something like this.&lt;/p&gt;
+
+&lt;p&gt;result = HTTPClient.head(“http://www.scripting.com/fooddfdfdfdfd”)
+ =&amp;gt; #&amp;lt;HTTP::Message:0x007feaf8454558 @http_header=#&amp;lt;HTTP::Message::Headers:0x007feaf8454508 @http_version=”1.1”, @body_size=0, @chunked=false, @request_method=”HEAD”, @request_uri=#&amp;lt;Addressable::URI:0x3ff57c22aa90 URI:http://www.scripting.com/fooddfdfdfdfd&amp;gt;, @request_query=nil, @request_absolute_uri=nil, @status_code=301, @reason_phrase=”Moved Permanently”, @body_type=nil, @body_charset=nil, @body_date=nil, @body_encoding=nil, @is_request=false, @header_item=[[“x-amz-id-2”, “GzHUJzCkS3rqbqEBuWdGD2V9cApmMZX7SKUV8Xc9WT/ECKz9glwtBpK6x65rnDdsyjqrP1ITrv4=”], [“x-amz-request-id”, “00986197CE6075E4”], [“Date”, “Fri, 06 Jan 2017 09:08:05 GMT”], [“Location”, “http://scripting.com/fooddfdfdfdfd”], [“Content-Length”, “0”], [“Server”, “AmazonS3”]], @dumped=false&amp;gt;, @peer_cert=nil, @http_body=#&amp;lt;HTTP::Message::Body:0x007feaf8454490 @body=””, @size=0, @positions=nil, @chunk_size=nil&amp;gt;, @previous=nil&amp;gt;
+2.3.1 :007 &amp;gt; result = HTTPClient.head(“http://www.google.com/fooddfdfdfdfd”)
+ =&amp;gt; #&amp;lt;HTTP::Message:0x007feaf842e5b0 @http_header=#&amp;lt;HTTP::Message::Headers:0x007feaf842e560 @http_version=”1.1”, @body_size=0, @chunked=false, @request_method=”HEAD”, @request_uri=#&amp;lt;Addressable::URI:0x3ff57c217bd4 URI:http://www.google.com/fooddfdfdfdfd&amp;gt;, @request_query=nil, @request_absolute_uri=nil, @status_code=404, @reason_phrase=”Not Found”, @body_type=nil, @body_charset=nil, @body_date=nil, @body_encoding=#&lt;Encoding:UTF-8&gt;, @is_request=false, @header_item=[[&quot;Content-Type&quot;, &quot;text/html; charset=UTF-8&quot;], [&quot;Content-Length&quot;, &quot;1574&quot;], [&quot;Date&quot;, &quot;Fri, 06 Jan 2017 09:08:22 GMT&quot;]], @dumped=false&amp;gt;, @peer_cert=nil, @http_body=#&amp;lt;HTTP::Message::Body:0x007feaf842e420 @body=&quot;&quot;, @size=0, @positions=nil, @chunk_size=nil&amp;gt;, @previous=nil&amp;gt;&lt;/Encoding:UTF-8&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 06 Jan 2017 04:10:32 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2017/01/06/hyde-feature-overview-01-check-for-broken-links-aka-the-nick-feature.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2017/01/06/hyde-feature-overview-01-check-for-broken-links-aka-the-nick-feature.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>How Tech Companies Can Easily Create Jobs</title>
+        <description>&lt;p&gt;A few days ago Ross Mayfield wrote an absolutely compelling piece about jobs, tech companies and the original &lt;a href=&quot;https://en.wikipedia.org/wiki/Luddite&quot;&gt;Luddite movement&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;50% of the jobs will be gone in ~20 years. Not from the great sucking sound of jobs to Mexico that can be stopped with a wall. Not from moving offshore to China. From automation that is moving quickly from blue collar manufacturing to white collar information work. Second only to climate change, this is the greatest disruption of our time, and I don’t mean that word in a good way. &lt;a href=&quot;https://shift.newco.co/the-coming-tech-backlash-82b22e0c1198&quot;&gt;Link&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Years and years ago I actually knew Ross on a fairly good level and Ross is &lt;strong&gt;smart&lt;/strong&gt;.  He’s also not wrong about what tech companies are doing to the economy.  While I don’t think the trends are as dire as he says, there is a real wild card and that’s self driving technology that actually works.&lt;/p&gt;
+
+&lt;p&gt;If self driving technology works then we can easily see things like:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Massive disruption of the trucking industry; &lt;a href=&quot;http://www.marketwatch.com/story/keep-on-truckin-in-a-majority-of-states-its-the-most-popular-job-2015-02-09&quot;&gt;America’s Number One Job&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;A move away from personal vehicle ownership towards transportation as a service and that in turn will nuke the car dealership and car repair industries, car detailing, etc.&lt;/li&gt;
+  &lt;li&gt;This will absolutely devalue the car that you own today so it affects you in &lt;strong&gt;your&lt;/strong&gt; pocketbook.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;But self driving technology is a wild card and I’m less certain about it getting to the fully automated level than a lot of analysts.  We’ve all heard the statement that the last 5% of an engineering project can be as hard as the rest and we’re not even at the 95% level yet.  So while self driving technology will get here, it is very unclear to me if it is 2020 or 2040.&lt;/p&gt;
+
+&lt;p&gt;Now, that said, I don’t think that most people would dispute that we have a jobs issue at present.  There are definitely ways that tech companies can actually create jobs and do it fairly easily:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Actually hire support workers&lt;/li&gt;
+  &lt;li&gt;Avoid big acquisitions&lt;/li&gt;
+  &lt;li&gt;Reduce hours&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Each of these is covered below.  None of these will be popular with tech companies because they do affect the bottom line.  But if we don’t affect our own bottom line then the government or the people will do it for us – and that’s always worse.&lt;/p&gt;
+
+&lt;h1 id=&quot;actually-hire-support-workers&quot;&gt;Actually Hire Support Workers&lt;/h1&gt;
+
+&lt;p&gt;I do not think that I am the only person who has realized that it is utterly unacceptable that you can never reach technical support at most of the leading tech companies – Google, Facebook, PayPal, etc.  There is always some kind of problem that only a human can resolve.  The high tech industry used to understand this and understand it well.  I came of age in this field when &lt;a href=&quot;https://en.wikipedia.org/wiki/WordPerfect&quot;&gt;WordPerfect&lt;/a&gt; still ruled the desktop for word processing and WordPerfect had a near legendary approach to support that actually helped build its business.&lt;/p&gt;
+
+&lt;p&gt;It certainly feels to me like the big tech companies could actually afford to hire support workers; none of these companies lack for profits.  And the world isn’t the 1980s anymore.  You don’t even have to staff a giant call center with full time workers – this could all be done with a distributed work force that works from home on a part time basis to avoid the health care costs.  And perhaps these aren’t great jobs but they are still jobs and that’s what we are currently lacking.&lt;/p&gt;
+
+&lt;h1 id=&quot;avoid-big-acquisitions&quot;&gt;Avoid Big Acquisitions&lt;/h1&gt;
+
+&lt;p&gt;Big acquisitions are often predicated on the concept that if you put two companies together you can increase profits by reducing common overhead.  For example you don’t actually need two accounting departments.  And while not everyone in one of the accounting departments is let go, a substantial portion of them generally are.  Multiply that across the span of acquisition activity that seems to happen across the high tech industry in general and you have a lot of lost jobs.&lt;/p&gt;
+
+&lt;p&gt;Please note that I do actually recognize that this is a simplistic argument and there are lots and lots of reasons for acquisitions but large acquisitions generally seem to lead to net job losses.&lt;/p&gt;
+
+&lt;h1 id=&quot;reduce-hours&quot;&gt;Reduce Hours&lt;/h1&gt;
+
+&lt;p&gt;The concept of the 8 hour work day, 40 hour work week is fairly engrained in our culture but things weren’t always this way.  The 8 hour work day originated as a political movement globally against employer abuses of workers and then became, in the U.S., part of the &lt;a href=&quot;https://en.wikipedia.org/wiki/Eight-hour_day#North_America&quot;&gt;Fair Labor Standards Act under Roosevelt’s New Deal&lt;/a&gt;. But is an 8 hour work day the only way that work can be done?  Could, for example, a company move to a 6 hour work day?  Or perhaps just move away from people working the 10 to 14 hour days that are oh so common to the high tech world?&lt;/p&gt;
+
+&lt;p&gt;I’d be really, really curious to know if a company formally moving to a six hour day resulted in hiring more staff or people simply being more efficient so they could enjoy those two extra hours they get back to their own life.&lt;/p&gt;
+
+&lt;p&gt;There’s substantial economic research that people lose effectiveness beyond the 8 hour day anyway.  Some of those studies can be found &lt;a href=&quot;https://hn.algolia.com/?query=8%20hour%20day&amp;amp;sort=byPopularity&amp;amp;prefix&amp;amp;page=0&amp;amp;dateRange=all&amp;amp;type=story&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Side Thought&lt;/strong&gt;: Given all the problems that we see in tech recruiting, I wonder what the impact would be on a company if they announced “We actually work a six hour day”.  Might that be a compelling pitch to job candidates?&lt;/p&gt;
+</description>
+        <pubDate>Fri, 06 Jan 2017 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/startup/2017/01/06/how-tech-companies-can-easily-create-jobs.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/startup/2017/01/06/how-tech-companies-can-easily-create-jobs.html</guid>
+        
+        <category>jobs</category>
+        
+        <category>economy</category>
+        
+        
+        <category>startup</category>
+        
+      </item>
+    
+      <item>
+        <title>When RSpec Just Won't Install</title>
+        <description>&lt;p&gt;git commit -m “Myriad gyrations to do nothing more than get rspec installed; curse you bundler”&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 05 Jan 2017 10:13:51 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/2017/01/05/when-rspec-just-won-t-install.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/2017/01/05/when-rspec-just-won-t-install.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Scott's Rule of API Development</title>
@@ -366,236 +474,6 @@ end&lt;/p&gt;
         
         
         <category>ansible</category>
-        
-      </item>
-    
-      <item>
-        <title>Tutorial How To Upgrade Your PS4 to 2 Terabytes of Storage</title>
-        <description>&lt;p&gt;There are times when it seems like we live in a weird world of storage capacity imbalance.  We see this in two places:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;phones&lt;/li&gt;
-  &lt;li&gt;gaming consoles&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;For phones we see this when a 12 megapixel camera shoots 4K video but the manufacturer sells it with only 32 gigs of ram.  And for gaming consoles we see this when a manufacturer ships a device with only a 500 gb drive but every single game you play might be 10+ gigs or more in size – and every game requires a full install + a multiple gig update.&lt;/p&gt;
-
-&lt;p&gt;My kids have a PS4 – ok its actually mine but I’ve barely played it – and having gotten them the new PSVR for Christmas, we are officially out of space.  I had to delete some installed games just to make enough space to get things installed.  Clearly this is madness.&lt;/p&gt;
-
-&lt;p&gt;My oldest son is an Xbox One gamer mostly and he has an external drive where he can just install all his extra games and it it works &lt;em&gt;beautifully&lt;/em&gt;.  Unfortunately the PS4 &lt;strong&gt;cannot&lt;/strong&gt; play games from an external drive and while this sucks green monkey chunks, it isn’t as bad as you might think because Sony made upgrading the hard drive in a PS4 brilliantly simple.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;You need a new 9 millimeter hard drive of at least bigger than your current.  I went with 2 tb.  Here’s the &lt;a href=&quot;https://www.amazon.com/gp/product/B00FRHTSK4/ref=oh_aui_detailpage_o01_s00?ie=UTF8&amp;amp;psc=1&quot;&gt;amazon link&lt;/a&gt; for about $80.  This is in a case so you can reuse the old drive in case you want to.  You also need a backup drive so you don’t lose anything.&lt;/li&gt;
-  &lt;li&gt;Here are two youtube videos to watch: &lt;a href=&quot;https://www.youtube.com/watch?v=fkIyCXbiGZs&quot;&gt;Better&lt;/a&gt; and &lt;a href=&quot;https://www.youtube.com/watch?v=YDQL0qvt3Qk&quot;&gt;ok&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;Take a blank, USB FAT, FAT32 or EXFAT drive of at least the same size as the drive in your PS4 (this should be either 500 gigs or 1 tb).  Connect the drive to the PS4.&lt;/li&gt;
-  &lt;li&gt;Go into the PS4 settings and turn off all power down options so the PS4 stays on no matter what.&lt;/li&gt;
-  &lt;li&gt;Go into each PS4 account and sync all trophies with the PlayStation Network.&lt;/li&gt;
-  &lt;li&gt;Go into the PS4 settings and do a full backup.  This will take hours and hours.  For me it was like 6 hours.&lt;/li&gt;
-  &lt;li&gt;Open the case which is done by powering down the system and disconnecting all cables.  Slide the case open per the video above.  Unscrew the hard drive and add a new one.  Any 9 millimeter USB 3 hard drive should do.&lt;/li&gt;
-  &lt;li&gt;After you try and power the device on you’ll get a message on screen about “ps4 update file for reinstallation” which basically means &lt;em&gt;you have no operating system so go download one&lt;/em&gt; from Sony.&lt;/li&gt;
-  &lt;li&gt;Take a USB stick with at least 1.5 gigs of free space on it and create a directory PS4 and then a directory PS4/UPDATE and place the PS4UPDATE.PUP file on it which you get from this [Sony PS4 download page]https://www.playstation.com/en-us/support/system-updates/ps4/.  Insert this into the PS4 and then power it on per their instructions holding down the power button for 7 seconds and it will prompt you to re-install the OS.&lt;/li&gt;
-  &lt;li&gt;Once the PS4 is actually running again then go back into settings and select backup / restore and now choose restore and the backup drive will be loaded back onto your PS4 and all games, achievements, trophies, etc will be available to you.&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Tue, 03 Jan 2017 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/gaming/2017/01/03/tutorial-how-to-upgrade-your-ps4-to-2-terabytes-of-storage.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/gaming/2017/01/03/tutorial-how-to-upgrade-your-ps4-to-2-terabytes-of-storage.html</guid>
-        
-        <category>tutorial</category>
-        
-        <category>ps4</category>
-        
-        
-        <category>gaming</category>
-        
-      </item>
-    
-      <item>
-        <title>Recent PostMac Round Up</title>
-        <description>&lt;p&gt;Well a new year and people are still unhappy about the state of the Mac.  Here are some interesting links worth following:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://chuqui.com/2017/01/apples-2016-in-review/&quot;&gt;Apple 2016 in Review&lt;/a&gt; &lt;a href=&quot;https://news.ycombinator.com/item?id=13307040&quot;&gt;HN Commentary&lt;/a&gt;  His point on Apple relying on data too much is likely correct.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://news.ycombinator.com/item?id=13307648&quot;&gt;Regular Restarts on OSX&lt;/a&gt;  Yep.  Right there with you.  Even my brand new box had to be restarted today after only 10 days of uptime.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://medium.com/@searls/warm-takes-on-microsofts-surface-pro-4-580f77634d2c#.7ix3536dx&quot;&gt;Warm Takes on Microsoft’s Surface Pro 4&lt;/a&gt;  All I can say here is that I have an equivalent setup to my OSX box on Linux for my daily work and I’ve had a far easier time than he has.  Overall a fantastic read.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://news.ycombinator.com/item?id=13299585&quot;&gt;Using a ThinkPad for Development under Linux&lt;/a&gt; (good discussion of gear and options here and also on the &lt;a href=&quot;https://news.ycombinator.com/item?id=13286150&quot;&gt;X1 Carbon article&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Tue, 03 Jan 2017 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/postmac/2017/01/03/recent-postmac-round-up.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/postmac/2017/01/03/recent-postmac-round-up.html</guid>
-        
-        <category>apple</category>
-        
-        <category>osx</category>
-        
-        <category>postmac</category>
-        
-        <category>windows</category>
-        
-        
-        <category>postmac</category>
-        
-      </item>
-    
-      <item>
-        <title>Processing Large Datasets On AWS Using Ruby, Rails and SideKiq</title>
-        <description>&lt;p&gt;Two days ago I did a data processing task which previously took me a week – overnight.  I did this using the following technology stack:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Ruby&lt;/li&gt;
-  &lt;li&gt;Rails&lt;/li&gt;
-  &lt;li&gt;AWS&lt;/li&gt;
-  &lt;li&gt;Sidekiq&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;My platform was a “cluster” of 40 m3.large AWS ec2 instances.  We all see a lot about cloud computing and using AWS / Azure / Google Cloud to do these types of large jobs but you rarely see what I think of as the hard details:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;How do you get code deployed?&lt;/li&gt;
-  &lt;li&gt;How do you fix bugs?&lt;/li&gt;
-  &lt;li&gt;How do you deal with Capistrano failures when a box isn’t available and Capistrano doesn’t give you good feedback?&lt;/li&gt;
-  &lt;li&gt;How do you get things coordinated?&lt;/li&gt;
-  &lt;li&gt;How do you kick off the overall job?&lt;/li&gt;
-  &lt;li&gt;How do you know when it is done?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In this blog post I’m going to illustrate how I managed these things.  I’m not saying that what I did was the only way to do this.  I’m not even saying that what I did was the best way to do this.  What I am saying is that this is a practical approach to ad hoc large data processing jobs using a ruby / rails / sidekiq approach.  And I’m going to describe how I did this without using cloud formation or another large, complicated AWS or third party API.  The only external tool I used was Ansible and even that was optional.&lt;/p&gt;
-
-&lt;p&gt;For obvious reasons of company confidentiality I can’t go into the details of what the job was.  Suffice it to say:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;a “lot” of data had to be “processed”&lt;/li&gt;
-  &lt;li&gt;the actions were time consuming including deliberate sleep calls to avoid being blocked on the remote end&lt;/li&gt;
-  &lt;li&gt;about 35,000 discrete data items needed to be processed.  With sleep calls at a randomized 10 to 15 seconds between each call that’s 350,000 to 525,000 seconds in aggregate compute time (less if threaded but too many threads and we get blocked)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;So, with that said, here’s how I went about this:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;build an ec2 instance as a template&lt;/li&gt;
-  &lt;li&gt;deploy the current code onto it&lt;/li&gt;
-  &lt;li&gt;test&lt;/li&gt;
-  &lt;li&gt;make an image&lt;/li&gt;
-  &lt;li&gt;launch the job on the template box&lt;/li&gt;
-  &lt;li&gt;launch more copies of the image&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Each of these is described below.&lt;/p&gt;
-
-&lt;p&gt;My thanks go out to &lt;a href=&quot;http://www.nickjanetakis.com/&quot;&gt;Nick&lt;/a&gt; who was a consultant on this and paired on it throughout the process.  I also have to say thank you to &lt;a href=&quot;http://www.mikeperham.com&quot;&gt;Mike Perham&lt;/a&gt; who built &lt;a href=&quot;http://www.sidekiq.org&quot;&gt;Sidekiq&lt;/a&gt; which is at the heart of this.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-1---build-an-ec2-template-instance&quot;&gt;Step 1 - Build an EC2 “Template” Instance&lt;/h1&gt;
-
-&lt;p&gt;The first step is that like with everything AWS you need an instance.  Picking the right instance type isn’t a topic that I’m going to cover here.  I did know that I needed a reduced thread count so I wasn’t terribly worried about memory.  We had already arranged with Amazon for up to 200 m3.large instances so that’s what I went with.  I didn’t worry terribly about whether not not I had the perfect instance type – I just used what was available.&lt;/p&gt;
-
-&lt;p&gt;A m3.large is 7.5 gb of RAM and 8 gigs of storage so that’s perfectly fine for a Rails app of even large size.&lt;/p&gt;
-
-&lt;p&gt;After I created the box I provisioned to run my Rails app as &lt;a href=&quot;https://fuzzygroup.github.io/blog/category.html#ansible&quot;&gt;per all the things I’ve written about using Ansible&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Once we get this machine built out we’re going to be using it as a template for making more machines later hence my referring to this as a “template” instance.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-2---deploy-the-current-code-base-with-capistrano&quot;&gt;Step 2 - Deploy the Current Code Base with Capistrano&lt;/h1&gt;
-
-&lt;p&gt;The next step was to get my code base onto the box using Capistrano.  I just added this box to my ~/.ssh/config file and then dropped the hostname into my config/deploy/production.rb file and did a normal deploy.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-3---test-test-test&quot;&gt;Step 3 - Test, Test, Test&lt;/h1&gt;
-
-&lt;p&gt;At this point we have a single instance running our rails application.  We need to make very, very sure that this is working correctly because our next step is to make an &lt;strong&gt;image&lt;/strong&gt; of this instance and then use AWS to launch N copies of the image.  Here’s what you want to test:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;connectivity to your database&lt;/li&gt;
-  &lt;li&gt;connectivity to your redis&lt;/li&gt;
-  &lt;li&gt;that the job process code works&lt;/li&gt;
-  &lt;li&gt;that sidekiq works&lt;/li&gt;
-  &lt;li&gt;that your thread count is tuned properly&lt;/li&gt;
-  &lt;li&gt;that sidekiq starts on boot&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;This last point, that sidekiq starts on boot, is the key thing that you need to ascertain.  Since sidekiq is what’s going to run our jobs and we don’t want to manually ssh into each machine, we need a way for the job to start.  If sidekiq starts on boot then job processing begins automatically when the machine starts up.&lt;/p&gt;
-
-&lt;p&gt;The only real way to verify this is:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/sbin/reboot
-log back into machine
-ps auwwx | grep side
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;If you see sidekiq running then you have things configured correctly and sidekiq is starting on boot.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-4---make-an-image&quot;&gt;Step 4 - Make an Image&lt;/h1&gt;
-
-&lt;p&gt;At this point you know that things work and you might be thinking - “Ok I now create a bunch more boxes; provision them and deploy with capistrano.”  That’s absolutely correct from a classical hosting perspective and absolutely wrong in a cloud environment.  The far easier, far faster approach is to make an &lt;em&gt;image&lt;/em&gt;. An image is simply a full disk copy of the instance that you can use to replicate the machine.  If you’re an old school PC guy then think of this as ghosting the machine.  Where installing things from scratch or even provisioning from ansible takes hours or minutes, cloning takes only a few minutes and then AWS can launch your instance in parallel so 40 machines might come up in just a minute or two.&lt;/p&gt;
-
-&lt;p&gt;On your EC2 instance list select the instance and then on the Actions menu select Image, Create Image.  You’ll need to give it a name and the more descriptive, the better  It will take a minute or two but Amazon will make it just fine.&lt;/p&gt;
-
-&lt;p&gt;Note: Making an instance shuts down the machine fully to make sure that any open files are backed up.  Keep this in mind since you’ll need to re-login to the machine for Step 5.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-5---launch-the-job-using-sidekiq-and-re-test-to-be-sure&quot;&gt;Step 5 - Launch the Job Using Sidekiq and Re-test to be Sure&lt;/h1&gt;
-
-&lt;p&gt;At this point you’re ready to actually launch the job using sidekiq and start processing on one instance.  You can do this with the Rails console or a Rake task.  I prefer a rake task. Here’s what my rake task looked like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;task :some_large_job =&amp;gt; :environment do
-  search_urls = MiscClass.large_urls_collection
-  search_urls.each do |search_url|
-    MiscCkassWorker.perform_async(search_url)
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;That built a redis queue and gave each method to sidekiq as an asynchronous call to be processed.  Check your sidekiq log file to make sure that things are going ok.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; If You find that there are changes you need to make then you’ll need to re-create the image as per Step 4.&lt;/p&gt;
-
-&lt;p&gt;As long as things are looking fine then it is time for Step 6 – launching more copies of the image.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-6---launch-n-more-copies-of-the-image&quot;&gt;Step 6 - Launch N More Copies of the Image&lt;/h1&gt;
-
-&lt;p&gt;The final step is to launch more copies of the image.  Because the job is already queued into redis and running, as soon as you launch any more instances the copy of sidekiq which runs on boot will start pulling jobs and processing them.&lt;/p&gt;
-
-&lt;p&gt;Launch an instance the way you create any instance, only this time you’ll select that you want to make the instance from “My AMIs”] and then pick the image that you created in Step 4.  You can then tell AWS how many copies of the image you want made.  I specified 40 and then it is the normal AWS instance creation options like security groups and such.  Sadly all of these options aren’t defined solely in the instance itself.&lt;/p&gt;
-
-&lt;p&gt;Note: The AWS command line tools or ansible code can be used to automate this further.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-7---make-your-wife-a-margarita&quot;&gt;Step 7 - Make Your Wife a Margarita&lt;/h1&gt;
-
-&lt;p&gt;Well you can celebrate how you want but that’s what I did.  I checked the sidekiq queue the next morning and it was at 0.  I checked the database and we had generated 2,500 new records which was about what I expected.&lt;/p&gt;
-
-&lt;h1 id=&quot;epiphany---realize-youre-making-an-appliance&quot;&gt;Epiphany - Realize You’re Making an Appliance!&lt;/h1&gt;
-
-&lt;p&gt;I’m writing this blog post now having done this a dozen times or more. What finally made all this click in my head is the realization that what I’m doing here is making an &lt;em&gt;appliance&lt;/em&gt; or actually a &lt;em&gt;farm&lt;/em&gt; of appliances. An appliance is a tool which does one thing and does it well.  If you think about what we’ve done here is that we’ve made a ruby appliance in the form of an AWS image which eats data and (presumably) excretes some type of database record.&lt;/p&gt;
-
-&lt;h1 id=&quot;circling-back-to-the-hard-questions-mentioned-earlier&quot;&gt;Circling Back to The Hard Questions Mentioned Earlier&lt;/h1&gt;
-
-&lt;p&gt;At the start of this piece I mentioned a number of hard questions like deployment, bug fixing, etc.  Each of these is addressed below.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;How do you get code deployed?  Capistrano is currently our tool for code deployment.  If we need to get a code fix onto the boxes we built off the template we add the ec2 host name into our SSH config and then just do a deploy.  We are currently writing a simple deployer in Ansible to make deploy easier and more integral with the entire process.  Hopefully I’ll be able to open source that at some point.  Yes we looked at &lt;a href=&quot;https://github.com/ansistrano/deploy&quot;&gt;Anistrano&lt;/a&gt; but Anistrano lacks critical rails features like bundle install which I find to be an absolute show stopper on using it.&lt;/li&gt;
-  &lt;li&gt;How do you fix bugs?  We try very hard to test up front to avoid having to fix bugs on a long running job.  We streamlined our testing and focused hard on it before the jobs began deliberately to minimize bugs.&lt;/li&gt;
-  &lt;li&gt;How do you deal with Capistrano failures when a box isn’t available and Capistrano doesn’t give you good feedback?  This remains an issue.  When Capistrano fails on a multiple box deploy it often isn’t clear why and Capistrano is specifically designed to stop when a single box in a deploy fails.  This contrasts nicely with Ansible which is specifically designed to continue despite failing.&lt;/li&gt;
-  &lt;li&gt;How do you get things coordinated?  Coordination is always, always hard.  I have some interesting ideas on management tools for pulling this together but it isn’t time yet to implement them.&lt;/li&gt;
-  &lt;li&gt;How do you kick off the overall job?  We use a Rake task which is my default for automation and is documented above.&lt;/li&gt;
-  &lt;li&gt;How do you know when it is done? We don’t have a great answer yet on this.   Again I have some interesting ideas but we’re not yet at the implementation stage yet.&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Tue, 03 Jan 2017 00:00:00 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/rails/2017/01/03/processing-large-datasets-on-aws-using-ruby-rails-and-sidekiq.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails/2017/01/03/processing-large-datasets-on-aws-using-ruby-rails-and-sidekiq.html</guid>
-        
-        <category>ruby</category>
-        
-        <category>rails</category>
-        
-        <category>sidekiq</category>
-        
-        <category>aws</category>
-        
-        
-        <category>rails</category>
         
       </item>
     
