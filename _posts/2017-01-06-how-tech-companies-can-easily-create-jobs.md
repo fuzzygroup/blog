@@ -18,6 +18,8 @@ If self driving technology works then we can easily see things like:
 
 But self driving technology is a wild card and I'm less certain about it getting to the fully automated level than a lot of analysts.  We've all heard the statement that the last 5% of an engineering project can be as hard as the rest and we're not even at the 95% level yet.  So while self driving technology will get here, it is very unclear to me if it is 2020 or 2040.
 
+> **Sidebar**: Ross cites a number of frightening statistics from different research reports such as  *[50% of occupations today](http://www.cbre.com/research-and-reports/future-of-work) will be gone by 2020*.  The one thing to always understand about statistics from research reports is that large numbers **sell** research reports.  No one buys a research report that forecasts something low; low is boring.  I learned this the hard way back in 1988 when one of the leading firms, either Gartner or DataQuest, forecast that hypertext tools would be a $50 million business in 1990.  I was in the industry at the time and I knew everyone.  My own guess was that hypertext tools in 1990 was probably less than a $5 million business and that's probably generous.  So research firms can be wildly off and still make a ton of money on a research report
+
 Now, that said, I don't think that most people would dispute that we have a jobs issue at present.  There are definitely ways that tech companies can actually create jobs and do it fairly easily:
 
 1.  Actually hire support workers
@@ -28,7 +30,7 @@ Each of these is covered below.  None of these will be popular with tech compani
 
 # Actually Hire Support Workers
 
-I do not think that I am the only person who has realized that it is utterly unacceptable that you can never reach technical support at most of the leading tech companies -- Google, Facebook, PayPal, etc.  There is always some kind of problem that only a human can resolve.  The high tech industry used to understand this and understand it well.  I came of age in this field when [WordPerfect](https://en.wikipedia.org/wiki/WordPerfect) still ruled the desktop for word processing and WordPerfect had a near legendary approach to support that actually helped build its business.
+I do not think that I am the only person who feels that it is utterly unacceptable that you can never reach technical support at most of the leading tech companies -- Google, Facebook, PayPal, etc.  There is always some kind of problem that only a human can resolve.  The high tech industry used to understand this and understand it well.  I came of age in this field when [WordPerfect](https://en.wikipedia.org/wiki/WordPerfect) still ruled the desktop for word processing and WordPerfect had a near legendary approach to support that actually helped build its business.  Great support can truly build your brand in a way that a web page never will.
 
 It certainly feels to me like the big tech companies could actually afford to hire support workers; none of these companies lack for profits.  And the world isn't the 1980s anymore.  You don't even have to staff a giant call center with full time workers -- this could all be done with a distributed work force that works from home on a part time basis to avoid the health care costs.  And perhaps these aren't great jobs but they are still jobs and that's what we are currently lacking.
 
