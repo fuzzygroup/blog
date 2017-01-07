@@ -18,7 +18,7 @@ I started thinking about this as something I could build but it occurred to me t
 
 This is a tiny plastic box with a base with two metal plates exposed.  Here's an [Amazon link](https://www.amazon.com/gp/product/B000JOK11K/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1) if you want to purchase.  If water bridges the two contacts then a connection is established and it goes off at 110 db -- loud enough that you should be able to hear it and take action.  Will it text me?  Nope.  Will it email me?  Nope.  But it costs about $12 on Amazon and has a battery rated for 5 years.  Additionally the base plate pulls out if you need to place it somewhere but you can't fit it.  And, because of those wires, if your fridge is very tall, like mine, you can extend the wires and locate it in a cabinet over the fridge like I did here:
 
-![My Fridge with Alarm and Custom Wiring](https://fuzzyblog.github.io/blog/assets/my_fridge.jpg)
+![My Fridge with Alarm and Custom Wiring](https://fuzzygroup.github.io/blog/assets/my_fridge.jpg)
 
 The arrow is pointing to the sensor box.  The long wiring harness is behind the fridge thru a 1/4" hole I drilled in the cabinet.  If I had tried to drop this device behind the fridge itself it would have push the fridge out by about 1" to 1 1/2".
 
