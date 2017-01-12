@@ -6,9 +6,75 @@
 </description>
     <link>https://fuzzygroup.github.io/blog/</link>
     <atom:link href="https://fuzzygroup.github.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 11 Jan 2017 07:47:31 -0500</pubDate>
-    <lastBuildDate>Wed, 11 Jan 2017 07:47:31 -0500</lastBuildDate>
+    <pubDate>Thu, 12 Jan 2017 06:53:49 -0500</pubDate>
+    <lastBuildDate>Thu, 12 Jan 2017 06:53:49 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>When rails g won't generate a Model</title>
+        <description>&lt;p&gt;I just saw about an hour of precious, early morning development time disappear because this failed:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle exec rails g model TextCommon    
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;All that would happen was I’d get a cryptic:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Running via Spring preloader in process 19539&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;And then nothing.  No model file was generated, no spec file was generated.&lt;/p&gt;
+
+&lt;p&gt;This was a newly created Rails 5 api application and I had already used rails g to create my first controller.   So I knew it was working – I knew it.  Here was my trouble shooting process:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I started my troubleshooting by stopping my Tmux session and trying without it – &lt;strong&gt;NOPE&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;Being a cranky programmer who is often distrustful of newer things, I figured that spring might be the problem so I did a ps auwwx&lt;/td&gt;
+          &lt;td&gt;grep hyde_api_ruby and found a truly disturbing number of processes.  I went through a number of p*kill -f hyde_api_ruby * gyrations (more on &lt;a href=&quot;https://fuzzygroup.github.io/blog/unix/2016/11/23/pkill-rocks.html&quot;&gt;pkill&lt;/a&gt;) and still no luck.&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Next up was to try this on an El Capitan machine because I’ve had enough issues with Sierra to, well, think it sucks monkey chunks.  Nope.  Same issues.&lt;/li&gt;
+  &lt;li&gt;My next thought was to revert to my spring theory and disable spring and listen at the Gemfile level.  Apparently you can’t do that because if you don’t have listen then the rails command dies with an exception.&lt;/li&gt;
+  &lt;li&gt;So I added back listen but not spring and got another version of the same error.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;At this point I thought to myself – &lt;strong&gt;wait&lt;/strong&gt; – you generated this app with &lt;strong&gt;–skip-active-record.&lt;/strong&gt;  Is that why model generation is failing?  So I tried rails g controller Foo as a test and that worked just fine.&lt;/p&gt;
+
+&lt;p&gt;The bottom line is that if you don’t have persistent storage configured at the Rails level, rails g model just won’t work.  That’s a pity because:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;PORO (plain old ruby objects) are really, really nice&lt;/li&gt;
+  &lt;li&gt;Storing them in app/models gives you the benefits of reload!&lt;/li&gt;
+  &lt;li&gt;The rails g process ensures that a spec file is generated correctly&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I added this to the Spring issues tracker &lt;a href=&quot;https://github.com/rails/spring/issues/486&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 12 Jan 2017 00:00:00 -0500</pubDate>
+        <link>https://fuzzygroup.github.io/blog/rails/2017/01/12/when-rails-g-won-t-generate-a-model.html</link>
+        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/rails/2017/01/12/when-rails-g-won-t-generate-a-model.html</guid>
+        
+        <category>rails</category>
+        
+        <category>model</category>
+        
+        <category>spring</category>
+        
+        <category>listen</category>
+        
+        <category>hyde</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>App Review - Zero by Kevin Rose</title>
@@ -255,45 +321,6 @@ solve(x^2+2x=5, x);
         
         
         <category>maxima</category>
-        
-      </item>
-    
-      <item>
-        <title>Startup Learnings What Piloting Palm Taught Me or Examples of Equity Splits</title>
-        <description>&lt;p&gt;In the age of the iPhone, it is really, really hard to imagine just how significant Palm used to be.  Here are some examples:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Palm used to sell over a billion dollars worth of organizers annually&lt;/li&gt;
-  &lt;li&gt;There were multiple compatible versions of the Palm from different companies&lt;/li&gt;
-  &lt;li&gt;Both Palm and Handspring, a compatible, went public with multi billion dollar valuations&lt;/li&gt;
-  &lt;li&gt;As late as 2010, HP acquired Palm for 1.2 billion &lt;a href=&quot;https://en.wikipedia.org/wiki/Palm_(PDA)&quot;&gt;WikiPedia&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I recently read the book Piloting Palm: The Inside Story of Palm, Handspring and the Birth of the Billion-Dollar Handheld Industry:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;![https://images-na.ssl-images-amazon.com/images/I/51yPty1M7oL._SX311_BO1,204,203,200_.jpg](https://images-na.ssl-images-amazon.com/images/I/51yPty1M7oL._SX311_BO1,204,203,200_.jpg)&quot;&gt;https://www.amazon.com/Piloting-Palm-Handspring-Billion-Dollar-Handheld/dp/0471089656&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;At its heart this book is the story of Jeff Hawkins, the inventor of Palm and Donna Dubinsky, the first CEO of Palm.  As Palm grew more successful and Hawkins and Dubinsky’s ambitions grew, they ultimately left and founded the Palm compatible company, Handspring.  If you’ve ever read a startup case study then I doubt this book will surprise you&lt;/p&gt;
-
-&lt;p&gt;The single best part of this book was that it gave metrics for the equity splits that are common for early stage management positions in startups.  This is something that is always hard to judge so having comparables is really useful:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;The CEO of a spun out company from a larger entity would likely own no more than 1 percent of the company.&lt;/li&gt;
-  &lt;li&gt;The CEO of an independent startup would generally have 5 percent or more.&lt;/li&gt;
-  &lt;li&gt;When the former CEO of Palm, Donna Dubinsky, set up a new company, HandSpring, with Jeff Hawkins, the equity split should be 2:1.  The reason was that Dubinsky felt that Hawkins skills to the new company were more essential than her own i.e. Jeff Hawkins couldn’t be replaced but she could be.&lt;/li&gt;
-  &lt;li&gt;When Ed Colligan let Palm to join Handspring as VP of Marketing, he received the percentage of company ownership that a startup’s CEO would get rather than the far smaller amount that a VP normally owns.  Given that we know from #2 that a CEO would get 5% then we can guess that a VP of Marketing might get 1% (far smaller).  This is backed up by this result from &lt;a href=&quot;https://blog.hubspot.com/opinion/how-much-equity-cmo&quot;&gt;the Hubspot blog&lt;/a&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Sun, 08 Jan 2017 07:58:42 -0500</pubDate>
-        <link>https://fuzzygroup.github.io/blog/startup/2017/01/08/startup-learnings-what-piloting-palm-taught-me-or-examples-of-equity-splits.html</link>
-        <guid isPermaLink="true">https://fuzzygroup.github.io/blog/startup/2017/01/08/startup-learnings-what-piloting-palm-taught-me-or-examples-of-equity-splits.html</guid>
-        
-        <category>startup</category>
-        
-        <category>equity</category>
-        
-        
-        <category>startup</category>
         
       </item>
     
