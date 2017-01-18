@@ -2,7 +2,7 @@
 layout: post
 title: Work Life Balance - When Did This Become Acceptable?
 category: work
-tags: ["feels_slimy", "work_life_balance"]
+tags: ["feels_slimy", "work_life_balance  "]
 ---
 Once upon a time, not so long ago, I had to say to someone who reports to me this:
 

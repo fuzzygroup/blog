@@ -49,3 +49,10 @@ Learnings:
 https://aws.amazon.com/ec2/pricing/on-demand/
 
 https://aws.amazon.com/rds/pricing/
+
+
+[1/17/17, 10:58:23 AM] J. Scott Johnson: we need about 3.3 tb of storage to do this and even with a bare bones instance on RDS - 717 / month | $718 on our own instance.
+[1/17/17, 11:05:25 AM] J. Scott Johnson: It is actually $365 per month if we put up our own DB server just to host 3.3 tb of databases
+[1/17/17, 11:06:25 AM] J. Scott Johnson: Given that there is no backups / no redundancy w/ our own server RDS is likely a better choice; just wondering if it is worth it at all.
+[1/17/17, 11:08:45 AM] J. Scott Johnson: $77.61 / month if we just leave 3.3 TB of data in the S3 folders.  Cheapest thing would be to backup the data to S3, load it to RDS to confirm the validity fo the backups and hten discard the RDS instance.
+[1/17/17, 11:13:13 AM] J. Scott Johnson: $45 / month if S3 access is “infrequent”  no clue what that means or how to do it.
