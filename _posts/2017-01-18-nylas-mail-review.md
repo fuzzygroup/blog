@@ -8,7 +8,7 @@ image: http://fuzzyblog.io/blog/assets/nylas.png
 ---
 Nylas N1 is a new email client that has just been released as free and open source.  And, as a piece of software, it is also actually **good**.  Among people that know me in the real world, I am notorious for handling personal email poorly if at all and I actually used it for quite a while last night.  Now that's a great sign for a new app.
 
-![nylas.png](blog/assets/nylas.png)
+![nylas.png](/blog/assets/nylas.png)
 
 # Overall
 
