@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Git Tip - Resetting Master to A Previous Commit</title>
-  <meta name="description" content="I would argue that most of our git usage is pretty straight forward:">
+  <title>Startup Learnings - What Hong Lai Taught Me</title>
+  <meta name="description" content="/blog/assets/hong_lai.png">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="https://fuzzyblog.io//blog/git/2016/11/06/git-tip-resetting-master-to-a-previous-commit.html">
+  <link rel="canonical" href="https://fuzzyblog.io//blog/2017/01/18/startup-learnings-what-hong-lai-taught-me.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="https://fuzzyblog.io//blog/feed.xml">
   
   <!-- twitter specific head tags -->
@@ -18,24 +18,12 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Git Tip - Resetting Master to A Previous Commit">
+  <meta name="twitter:title" content="Startup Learnings - What Hong Lai Taught Me">
 
   
     <meta name="twitter:description"
-      content="I would argue that most of our git usage is pretty straight forward:
-
-
-  git add
-  git commit
-  git push
-  git branch
-  git co
-  git merge
-  git log
-  git diff
-
-
-That covers literally 99% of what I...">
+      content="/blog/assets/hong_lai.png
+">
   
 
   
@@ -125,44 +113,12 @@ That covers literally 99% of what I...">
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Git Tip - Resetting Master to A Previous Commit</h1>
-    <p class="I'll"><time datetime="2016-11-06T00:00:00-04:00" itemprop="datePublished">Nov 6, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">Startup Learnings - What Hong Lai Taught Me</h1>
+    <p class="I'll"><time datetime="2017-01-18T12:04:38-05:00" itemprop="datePublished">Jan 18, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>I would argue that most of our git usage is pretty straight forward:</p>
-
-<ul>
-  <li>git add</li>
-  <li>git commit</li>
-  <li>git push</li>
-  <li>git branch</li>
-  <li>git co</li>
-  <li>git merge</li>
-  <li>git log</li>
-  <li>git diff</li>
-</ul>
-
-<p>That covers literally 99% of what I have to do with git on a daily basis.  So when you need to do something more complex it can be a bit disconcerting.  Today I had to revert to a previous git hash and make that commit, from 2 days ago, master.  Here’s the process:</p>
-
-<p>Note 1: If you want to preserve your previous master then do a git checkout from the pushed repo into a separate directory on your machine.  Without this the git repo actually loses all the changes between the start and end of the hash you reverted to.</p>
-
-<ol>
-  <li>Use github to find the commit you want to revert to.  This will be referred to as COMMIT_HASH</li>
-  <li>Commit everything currently in progress so you don’t get any error messages about it.  Or delete everything (I have a git trash alias which does checkout -f).</li>
-  <li>Change back to master with <strong>git co master</strong></li>
-  <li>Use this command: <strong>git reset –hard COMMIT_HASH</strong></li>
-  <li>Verify your changes are there with <strong>git log</strong></li>
-  <li>This makes COMMIT_HASH your local master.  However you will NOT be able to push because you have “time traveled” to the past.  The secret here is to do a -f push so your changes are forced to the serve.  Use this command: <strong>git push -f origin master</strong></li>
-</ol>
-
-<p>Note 2: In this case I didn’t even try to preserve the changes made within that 2 day period.  That’s possible but definitely harder.</p>
-
-<p>Note 3: The -f overwrites what’s on the server since COMMIT_HASH so it will never be available.  <strong>Please understand this well before doing this.</strong></p>
-
-<p>Note 4: My pairing buddy, <a href="http://www.dasari.me">Dv</a>, helped out with this.  Thanks man!</p>
-
-<p>Note 5: <a href="http://stackoverflow.com/questions/10298291/cannot-push-to-github-keeps-saying-need-merge">Stack Overflow on git push -f</a></p>
+    <p>/blog/assets/hong_lai.png</p>
 
   </div>
   
