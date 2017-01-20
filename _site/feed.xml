@@ -4,19 +4,144 @@
     <title>FuzzyBlog</title>
     <description>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
 </description>
-    <link>https://fuzzyblog.io//blog/</link>
-    <atom:link href="https://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 18 Jan 2017 13:10:30 -0500</pubDate>
-    <lastBuildDate>Wed, 18 Jan 2017 13:10:30 -0500</lastBuildDate>
+    <link>http://fuzzyblog.io//blog/</link>
+    <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Fri, 20 Jan 2017 04:44:49 -0500</pubDate>
+    <lastBuildDate>Fri, 20 Jan 2017 04:44:49 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>My Piggy</title>
+        <description>&lt;p&gt;https://killerc.com/&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 20 Jan 2017 04:00:32 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/01/20/my-piggy.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/01/20/my-piggy.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Hyde Tutorial - Adding Twitter Card Support to Your Jekyll Blog</title>
+        <description>&lt;p&gt;https://cards-dev.twitter.com/validator&lt;/p&gt;
+
+&lt;p&gt;ngrok&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 20 Jan 2017 03:59:08 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/01/20/hyde-tutorial-adding-twitter-card-support-to-your-jekyll-blog.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/01/20/hyde-tutorial-adding-twitter-card-support-to-your-jekyll-blog.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Tmux Mouse Mode Problems Under Linux</title>
+        <description>&lt;p&gt;I am in the process of decommissioning a data center I set up about 2 years ago.  This was done in my pre-ansible days when I used Chef to bootstrap all the servers and it only functioned about 90% of the way leaving the final configuration of each server entirely manual.  This has meant that rather than each server being identical to every other server, each one is a unique “snowflake”.  And snowflake servers can really be the bane of your existence at times.&lt;/p&gt;
+
+&lt;p&gt;One box, for example, when you run a Tmux session it mysteriously trashes the mouse and you can’t actually copy some bit of text for pasting it later.  This doesn’t sound all that significant until you are trying to remember a mysqldump statement that is, with all options, about 220 characters long, it is 3:07 am and you find yourself saying “Man this is just the #U$I#U$#I balls”.&lt;/p&gt;
+
+&lt;p&gt;And that’s when you realize that even if you are turning these boxes off in the next 15 minutes it would still be worth fixing immediately.&lt;/p&gt;
+
+&lt;p&gt;The problem was in the file ~/.tmux.conf and it was the presence of these lines:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;setw -g mode-mouse on
+set -g mouse-select-pane off
+set -g mouse-resize-pane off
+set -g mouse-select-window off
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To be honest this is a problem that I likely introduced myself - I vaguely remember noodling on this configuration file about 18 months ago and then something blew up.  A quick :wq in VIM and I was off to the next disaster.  And since I didn’t restart tmux entirely (configuration is loaded only on startup), it wasn’t until the box was physically rebooted, long after I had forgotten this particular hell, that the mouse died and I was left scratching my head.  Sigh.&lt;/p&gt;
+
+&lt;p&gt;Had I read it at the time, this &lt;a href=&quot;http://tangledhelix.com/blog/2012/07/16/tmux-and-mouse-mode/&quot;&gt;blog post&lt;/a&gt; might have been useful.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 20 Jan 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/tmux/2017/01/20/tmux-mouse-mode-problems-under-linux.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/tmux/2017/01/20/tmux-mouse-mode-problems-under-linux.html</guid>
+        
+        <category>tmux</category>
+        
+        <category>linux</category>
+        
+        <category>sys_admin</category>
+        
+        
+        <category>tmux</category>
+        
+      </item>
+    
+      <item>
+        <title>Building a Real Parser in Ruby Using Parslet</title>
+        <description>&lt;p&gt;I deal with “parsing” all the time and I generally do it with one or more regular expressions.  And while I know that JWZ is famous for this statement:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Some people, when confronted with a problem, think “I know, I’ll use regular expressions.” Now they have two problems.  alt.religion.emacs (lost; recovered) &lt;a href=&quot;https://en.wikiquote.org/wiki/Jamie_Zawinski&quot;&gt;JWZ&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Regular expressions provide a uniquely powerful way to deal with day.  What the don’t do well though is handle problems when you arbitrary complexity / recursion in your structure.  Let’s say you are trying to parse:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;“name like ‘%Warning%’”&lt;/li&gt;
+  &lt;li&gt;“name like ‘%Warning%’ AND name not like ‘%noob%’”&lt;/li&gt;
+  &lt;li&gt;“name like ‘%Warning%’ AND name not like ‘%blah%’ AND name like ‘%bar%’”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You see where this is going – I have an arbitrary SQL like syntax and while I could craft a specialized regex which tried to deal with the max cases and then back off, at best that would be a hack.  At worst it would be code that I’d be ashamed to show Mother Johnson and that would be sad.  This calls for – wait for it – a real &lt;strong&gt;parser&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;And, yes, I am talking about the stuff we all learned in compilers class aka &lt;a href=&quot;https://www.amazon.com/Compilers-Principles-Techniques-Tools-2nd/dp/0321486811&quot;&gt;The Dragon Book&lt;/a&gt;.  If, like me, you didn’t actually take a compilers class then let me explain.  The Dragon Book, for as long as &lt;a href=&quot;https://en.wikipedia.org/wiki/Dragon_Book&quot;&gt;I can remember&lt;/a&gt;, has been the source of how you write compilers, parsers, etc.  Wikipedia cites it back to 1977 and that’s what I mean by “as long as I can remember”.  I know my first startup partner, Brian, used it in college circa 1988 and it has been in constant use, well, forever.&lt;/p&gt;
+
+&lt;p&gt;The stuff taught in the Dragon Book are techniques that either you use constantly because they neatly correspond to how you think or they are things you trot out once a decade or so when the problem is that severe.  In my case I last did this stuff in 1996 when I used it to write an HTML parser in Visual Basic.  That time I did it with a Lex / Yacc / Bison grammar using this &lt;a href=&quot;https://www.amazon.com/lex-yacc-Doug-Brown-ebook/dp/B009THDEBC&quot;&gt;O’Reilly book&lt;/a&gt; to assist me.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://kschiess.github.io/parslet/images/parsley_logo.png&quot; alt=&quot;http://kschiess.github.io/parslet/images/parsley_logo.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;One of the beautiful things about computers as a profession is that if you’ve ever done something then there’s a near certainty that it will loop back on you.  This time around I am tackling it with Ruby and the &lt;a href=&quot;https://github.com/kschiess/parslet&quot;&gt;Parslet&lt;/a&gt; gem.  I’ve been following Parslet on the mailing list since at least 2014 because I know just how important parsing is and &lt;a href=&quot;https://github.com/kschiess&quot;&gt;Kaspar Schiess&lt;/a&gt; has done fantastic work on it over the years.&lt;/p&gt;
+
+&lt;p&gt;Developing a parser with a tool like Parslet is not something you can just sit down and hack out.  This isn’t that kind of gem – I know, I tried it that way.  This is a:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;roll up your sleeves&lt;/li&gt;
+  &lt;li&gt;watch a video&lt;/li&gt;
+  &lt;li&gt;work thru an example&lt;/li&gt;
+  &lt;li&gt;scratch your head&lt;/li&gt;
+  &lt;li&gt;drink coffee&lt;/li&gt;
+  &lt;li&gt;re-watch the video&lt;/li&gt;
+  &lt;li&gt;finally get it&lt;/li&gt;
+  &lt;li&gt;extend the example&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;type of thing.  And that honestly is the exact process I used.  &lt;a href=&quot;http://www.dasari.me&quot;&gt;Dv&lt;/a&gt; and I worked thru it together and we couldn’t make any progress until we sat down and did it this way.  Yes we were able to cobble together a simple grammar but we just couldn’t put all the pieces together without this level of understanding.  But, I can promise you this, once you do actually understand how a tool like Parslet works then it is fundamentally transformative for you.&lt;/p&gt;
+
+&lt;p&gt;In our case we started with Calle Erlandson’s Recursive Descent Parsers talk available on &lt;a href=&quot;https://youtu.be/_F-eh66zw90&quot;&gt;YouTube&lt;/a&gt; and &lt;a href=&quot;https://github.com/calleerlandsson/recursive-descent-parsers-talk&quot;&gt;github&lt;/a&gt;.  This is a fantastic video where he walks you through the development of an infix parser for a calculator i.e. “3 + 4 * 2” should be give a result if 11 (8 + 3) because you have to evaluate it mathematically not left to right.  Here is my repository where Dv and I extended Calle’s example to include &lt;a href=&quot;https://github.com/fuzzygroup/recursive-descent-parsers-talk&quot;&gt;division&lt;/a&gt;.  Yes I even sent a pull request over to him to perhaps get division into the master.&lt;/p&gt;
+
+&lt;p&gt;I know I wrote a lot of words and didn’t even talk about parsing SQL like expressions.  That’s because priorities got shifted and, just after getting ourselves ready to tackle the real project, it was a case of “And now please do this instead”.  Sigh.  I’m sure I’ll come back to this topic but really do watch the video – it is fantastic.&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 20 Jan 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/ruby/2017/01/20/building-a-real-parser-in-ruby-using-parslet.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/ruby/2017/01/20/building-a-real-parser-in-ruby-using-parslet.html</guid>
+        
+        <category>ruby</category>
+        
+        <category>parsing</category>
+        
+        <category>software_engineering</category>
+        
+        <category>parslet</category>
+        
+        
+        <category>ruby</category>
+        
+      </item>
     
       <item>
         <title>Startup Learnings - What Hong Lai Taught Me</title>
         <description>&lt;p&gt;/blog/assets/hong_lai.png&lt;/p&gt;
 </description>
         <pubDate>Wed, 18 Jan 2017 12:04:38 -0500</pubDate>
-        <link>https://fuzzyblog.io//blog/2017/01/18/startup-learnings-what-hong-lai-taught-me.html</link>
-        <guid isPermaLink="true">https://fuzzyblog.io//blog/2017/01/18/startup-learnings-what-hong-lai-taught-me.html</guid>
+        <link>http://fuzzyblog.io//blog/2017/01/18/startup-learnings-what-hong-lai-taught-me.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/01/18/startup-learnings-what-hong-lai-taught-me.html</guid>
         
         
       </item>
@@ -26,8 +151,8 @@
         <description>&lt;p&gt;https://alligator.io/jekyll/twitter-cards/&lt;/p&gt;
 </description>
         <pubDate>Wed, 18 Jan 2017 11:44:54 -0500</pubDate>
-        <link>https://fuzzyblog.io//blog/2017/01/18/building-hyde-01-understanding-twitter-tags.html</link>
-        <guid isPermaLink="true">https://fuzzyblog.io//blog/2017/01/18/building-hyde-01-understanding-twitter-tags.html</guid>
+        <link>http://fuzzyblog.io//blog/2017/01/18/building-hyde-01-understanding-twitter-tags.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/01/18/building-hyde-01-understanding-twitter-tags.html</guid>
         
         
       </item>
@@ -70,8 +195,8 @@
 
 </description>
         <pubDate>Wed, 18 Jan 2017 00:00:00 -0500</pubDate>
-        <link>https://fuzzyblog.io//blog/rails/2017/01/18/why-i-didn-t-look-at-phusion-s-union-station-but-you-should.html</link>
-        <guid isPermaLink="true">https://fuzzyblog.io//blog/rails/2017/01/18/why-i-didn-t-look-at-phusion-s-union-station-but-you-should.html</guid>
+        <link>http://fuzzyblog.io//blog/rails/2017/01/18/why-i-didn-t-look-at-phusion-s-union-station-but-you-should.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/01/18/why-i-didn-t-look-at-phusion-s-union-station-but-you-should.html</guid>
         
         <category>rails</category>
         
@@ -151,8 +276,8 @@
 
 </description>
         <pubDate>Wed, 18 Jan 2017 00:00:00 -0500</pubDate>
-        <link>https://fuzzyblog.io//blog/email/2017/01/18/nylas-mail-review.html</link>
-        <guid isPermaLink="true">https://fuzzyblog.io//blog/email/2017/01/18/nylas-mail-review.html</guid>
+        <link>http://fuzzyblog.io//blog/email/2017/01/18/nylas-mail-review.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/email/2017/01/18/nylas-mail-review.html</guid>
         
         <category>email</category>
         
@@ -178,8 +303,8 @@
 &lt;p&gt;I cannot remember the last time I’ve felt as morally dirty and compromised as I did in that moment.  As a full time employee, which this person was, he is expected to work 40 hours per week.  If a new skill is &lt;strong&gt;required&lt;/strong&gt; for his job then shouldn’t he get to pick it up on the job?  Sheesh.&lt;/p&gt;
 </description>
         <pubDate>Tue, 17 Jan 2017 17:04:28 -0500</pubDate>
-        <link>https://fuzzyblog.io//blog/work/2017/01/17/work-life-balance-when-did-this-become-acceptable.html</link>
-        <guid isPermaLink="true">https://fuzzyblog.io//blog/work/2017/01/17/work-life-balance-when-did-this-become-acceptable.html</guid>
+        <link>http://fuzzyblog.io//blog/work/2017/01/17/work-life-balance-when-did-this-become-acceptable.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/work/2017/01/17/work-life-balance-when-did-this-become-acceptable.html</guid>
         
         <category>feels_slimy</category>
         
@@ -205,174 +330,13 @@
 &lt;p&gt;Here’s a good tutorial on &lt;a href=&quot;http://www.grymoire.com/Unix/Sed.html&quot;&gt;sed&lt;/a&gt;.  Recommended.  Thanks Nick!&lt;/p&gt;
 </description>
         <pubDate>Tue, 17 Jan 2017 16:24:23 -0500</pubDate>
-        <link>https://fuzzyblog.io//blog/text_processing/2017/01/17/sed-example-the-swiss-army-chainsaw-of-text-changes.html</link>
-        <guid isPermaLink="true">https://fuzzyblog.io//blog/text_processing/2017/01/17/sed-example-the-swiss-army-chainsaw-of-text-changes.html</guid>
+        <link>http://fuzzyblog.io//blog/text_processing/2017/01/17/sed-example-the-swiss-army-chainsaw-of-text-changes.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/text_processing/2017/01/17/sed-example-the-swiss-army-chainsaw-of-text-changes.html</guid>
         
         <category>sed</category>
         
         
         <category>text_processing</category>
-        
-      </item>
-    
-      <item>
-        <title>Porting Your MySQL Database to Amazon AWS - RDS or Your Own Db Server</title>
-        <description>&lt;p&gt;Amazon RDS Aurora - db.t2.medium - aurora: $0.082 - 1.968 - 718.32 / year (THIS OMITS STORAGE)
-Amazon RDS MariaDB - db.t2.micro - micro maria $0.017 - 0.408 - 148.92 / year
-Amazon Your Own Instance -&lt;/p&gt;
-
-&lt;p&gt;$717.03 / MONTH for 3.3 tb of t2.medium aurora at 5% utilization&lt;/p&gt;
-
-&lt;p&gt;PageDataPro - 573G
-gPlusData - 115G
-AppDataPro - 2.5T&lt;/p&gt;
-
-&lt;p&gt;RDS Storage costs for 3.3T&lt;/p&gt;
-
-&lt;p&gt;$328 for Maria DB for 3.3TB
-$390 for RDS Aurora for 3.3 TB&lt;/p&gt;
-
-&lt;p&gt;Usage doesn’t make that much difference - 1 hour per day usage takes the price from 390 down to 332&lt;/p&gt;
-
-&lt;p&gt;http://calculator.s3.amazonaws.com/index.html&lt;/p&gt;
-
-&lt;p&gt;More expensive to leave it in S3 then put it in a functional db server&lt;/p&gt;
-
-&lt;p&gt;It is actually $365 per month if we put up our own DB server just to host 3.3 tb of databases&lt;/p&gt;
-
-&lt;p&gt;https://blog.cloudability.com/aws-s3-understanding-cloud-storage-costs-to-save/&lt;/p&gt;
-
-&lt;p&gt;here is a Reset All button in the upper left of the calculator.  $77.61 for 3.3 tb of data in S3
-sounds about right, i got $75.9 with a calculator based on their latest pricing docs
-and $13.2 for glacier
-cool.  thx.
-infrequence is about half of the standard price
-*nt
-still a lot cheaper over time do the HD unless you do glacier, then $150ish for a year isn’t too bad&lt;/p&gt;
-
-&lt;p&gt;327 to have it in a 5% utilization db 
-328.74 to have 3.3 TB of mysql storage in a t2.medium&lt;/p&gt;
-
-&lt;p&gt;Learnings:
-* the instance type doesn’t matter that much for RDS at least at the low end
-* storage is very expensive
-* utilization doesn’t matter much&lt;/p&gt;
-
-&lt;p&gt;https://aws.amazon.com/ec2/pricing/on-demand/&lt;/p&gt;
-
-&lt;p&gt;https://aws.amazon.com/rds/pricing/&lt;/p&gt;
-
-&lt;p&gt;[1/17/17, 10:58:23 AM] J. Scott Johnson: we need about 3.3 tb of storage to do this and even with a bare bones instance on RDS - 717 / month | $718 on our own instance.
-[1/17/17, 11:05:25 AM] J. Scott Johnson: It is actually $365 per month if we put up our own DB server just to host 3.3 tb of databases
-[1/17/17, 11:06:25 AM] J. Scott Johnson: Given that there is no backups / no redundancy w/ our own server RDS is likely a better choice; just wondering if it is worth it at all.
-[1/17/17, 11:08:45 AM] J. Scott Johnson: $77.61 / month if we just leave 3.3 TB of data in the S3 folders.  Cheapest thing would be to backup the data to S3, load it to RDS to confirm the validity fo the backups and hten discard the RDS instance.
-[1/17/17, 11:13:13 AM] J. Scott Johnson: $45 / month if S3 access is “infrequent”  no clue what that means or how to do it.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 17 Jan 2017 14:17:18 -0500</pubDate>
-        <link>https://fuzzyblog.io//blog/2017/01/17/porting-your-mysql-database-to-amazon-aws-rds-or-your-own-db-server.html</link>
-        <guid isPermaLink="true">https://fuzzyblog.io//blog/2017/01/17/porting-your-mysql-database-to-amazon-aws-rds-or-your-own-db-server.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Rails Tutorial - Making Awesome Print Work Everywhere</title>
-        <description>&lt;p&gt;I know that Pry is the new hotness for command line Ruby work in a repl – but I’ve never felt comfortable with it.  I stick with the tried and true AwesomePrint.  I recently bootstrapped up two new boxes and I found that I’ve been using AwesomePrint so long that I don’t actually remember how to make it work.  And that, dear reader, is how I write a post – if I can’t rememeber it then I need to write it down.  Here are the steps:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;You need awesome_print in your Gemfile so add **gem ‘awesome_print’ **.  I put it into development and test groups only generally but it is awful convenient in production (but you need to follow step 3 server side on ALL servers which sucks).&lt;/li&gt;
-  &lt;li&gt;Do the bundle install dance&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Create a file ~/.irbrc and add the following two lines:&lt;/p&gt;
-
-    &lt;p&gt;require “awesome_print”
-AwesomePrint.irb!&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;For more information of AwesomePrint, I’ve been going to &lt;a href=&quot;http://www.rubyinside.com/awesome_print-a-new-pretty-printer-for-your-ruby-objects-3208.html&quot;&gt;this web page&lt;/a&gt; for years now.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 17 Jan 2017 00:00:00 -0500</pubDate>
-        <link>https://fuzzyblog.io//blog/rails/2017/01/17/rails-tutorial-making-awesome-print-work-everywhere.html</link>
-        <guid isPermaLink="true">https://fuzzyblog.io//blog/rails/2017/01/17/rails-tutorial-making-awesome-print-work-everywhere.html</guid>
-        
-        <category>rails</category>
-        
-        <category>ruby</category>
-        
-        <category>awesome_print</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Blog Standards - It Is the Big Boy's World - We Just Play In It</title>
-        <description>
-</description>
-        <pubDate>Mon, 16 Jan 2017 12:37:43 -0500</pubDate>
-        <link>https://fuzzyblog.io//blog/2017/01/16/blog-standards-it-is-the-big-boy-s-world-we-just-play-in-it.html</link>
-        <guid isPermaLink="true">https://fuzzyblog.io//blog/2017/01/16/blog-standards-it-is-the-big-boy-s-world-we-just-play-in-it.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Rails Tutorial - Making Font Awesome Work with Rails 5</title>
-        <description>&lt;p&gt;Like a lot of back end folks I suspect I’m not alone when I look at a project like Font Awesome and go “Great Work; damn if I know how to actually use that.”  I’d normally toss it over the wall to a front end guy like my buddy &lt;a href=&quot;http://dv2.dasari.me&quot;&gt;Dv&lt;/a&gt; but this is for my side project so I’m all alone on this one.  Since I really, really don’t feel that I understand the world of front end work and CSS / SCSS very well I thought I’d write it all down for you (and myself).&lt;/p&gt;
-
-&lt;h1 id=&quot;heres-what-not-to-do&quot;&gt;Here’s what not to do&lt;/h1&gt;
-
-&lt;p&gt;I took a number of wrong steps:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;I watched this &lt;a href=&quot;https://www.youtube.com/watch?v=RC_jIGABW-E&quot;&gt;video&lt;/a&gt; and it is really good – except for the specific steps he gave me didn’t work.  I really don’t understand why and it might have been me.&lt;/li&gt;
-  &lt;li&gt;I used the &lt;a href=&quot;https://github.com/FortAwesome/font-awesome-sass&quot;&gt;font-awesome-sass gem&lt;/a&gt; and it too failed me hard.&lt;/li&gt;
-  &lt;li&gt;Don’t follow the Stack Overflow post &lt;a href=&quot;http://stackoverflow.com/questions/37581599/rails-assets-is-having-issues-with-my-fonts&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In all of the above cases I got the error &lt;strong&gt;No route matches [GET] “/assets/fontawesome-webfont.ttf”&lt;/strong&gt; and I just couldn’t get past it.  The Stack Overflow post might have ultimately gotten me there but it did take me to a different gem – font-awesome-rails discussed in the next section.&lt;/p&gt;
-
-&lt;p&gt;You should note that I don’t meant to malign any fo the urls in above – I’m not a css / front end guy by any means.  All I did was some simple googles and the processes I was taken through ultimately didn’t work and I blew over an hour of development time to find that out.&lt;/p&gt;
-
-&lt;h1 id=&quot;heres-what-to-do&quot;&gt;Here’s What To Do&lt;/h1&gt;
-
-&lt;p&gt;What you actually need is to do the following:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Install the &lt;a href=&quot;https://github.com/bokmann/font-awesome-rails&quot;&gt;font-awesome-rails&lt;/a&gt; gem.  Just add &lt;strong&gt;gem “font-awesome-rails”&lt;/strong&gt; to your Gemfile and then do the bundle install dance.&lt;/li&gt;
-  &lt;li&gt;In your application.css.scss file add the line: &lt;strong&gt;@import “font-awesome”;&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;Stop and start your rails server.&lt;/li&gt;
-  &lt;li&gt;Add to a test .html.erb view file this line**: fa_icon “camera-retro” ** (you’ll probably need to enclose that in output tags using %= and angle braces)&lt;/li&gt;
-  &lt;li&gt;Render that test .html.erb view file in your browser and you should see a camera icon.  What this is doing behind the scenes is outputting this html: &lt;i class=&quot;fa fa-camera-retro&quot;&gt;&lt;/i&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;useful-resources&quot;&gt;Useful Resources&lt;/h1&gt;
-
-&lt;p&gt;Here are some important urls:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/&quot;&gt;Font Awesome Home Page&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/bokmann/font-awesome-rails&quot;&gt;Font Awesome Rails Gem&lt;/a&gt; -&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/FortAwesome/Font-Awesome&quot;&gt;The Font Awesome Github Project&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/icons/&quot;&gt;The Icon Search Page for Font Awesome&lt;/a&gt; - Use this to search for the icon you need&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/cheatsheet/&quot;&gt;The Cheat Sheet&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/12468359/using-font-awesome-icon-for-bullet-points-with-a-single-list-item-element&quot;&gt;Useful Example of Font Awesome at the HTML Level&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Mon, 16 Jan 2017 01:49:19 -0500</pubDate>
-        <link>https://fuzzyblog.io//blog/rails/2017/01/16/rails-tutorial-making-font-awesome-work-with-rails-5.html</link>
-        <guid isPermaLink="true">https://fuzzyblog.io//blog/rails/2017/01/16/rails-tutorial-making-font-awesome-work-with-rails-5.html</guid>
-        
-        <category>tutorial</category>
-        
-        <category>font_awesome</category>
-        
-        <category>hyde</category>
-        
-        
-        <category>rails</category>
         
       </item>
     
