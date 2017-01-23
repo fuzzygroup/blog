@@ -6,9 +6,253 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 20 Jan 2017 04:44:49 -0500</pubDate>
-    <lastBuildDate>Fri, 20 Jan 2017 04:44:49 -0500</lastBuildDate>
+    <pubDate>Mon, 23 Jan 2017 09:03:11 -0500</pubDate>
+    <lastBuildDate>Mon, 23 Jan 2017 09:03:11 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>So You Want to Build a SAAS App - The User Account Page</title>
+        <description>&lt;p&gt;So once again I find myself designing a SAAS (software as a service) Account page.  This is the page that represents the user’s account.  Conceptually this should be a pretty simple page – it might have options for updating their billing credentials or changing aspects of their user profile.&lt;/p&gt;
+
+&lt;p&gt;This isn’t my first time at this particular rodeo – a SAAS app.  I’ve done this at least twice before.  The last subscription billing system I implemented processed over 13,000 payments and collected over 3.5 million dollars using BrainTree’s API.  And if I was going to follow how I designed this in the past, it would be a piece of cake – I’d implement a simple page that let’s you update your billing credentials and be done with it.&lt;/p&gt;
+
+&lt;p&gt;But we’re now in 2017.  The billing system I referenced above I first built in 2010 and &lt;strong&gt;times have changed&lt;/strong&gt;.  In specific we now have a much, much better understanding of  the importance of preventing user cancellations.  Users that cancel their accounts wreak havoc on your overall SAAS profitability because you never, ever want to lose a customer.  So if a customer is going to cancel then you at least want to try and address it up front by illustrating the value of your SAAS product to them.&lt;/p&gt;
+
+&lt;p&gt;So my initial thinking on this is that you want your Account page to have highlighted at the top an indicator of the value that you are delivering to the user.  And I suspect that if you can actually measure the economic value of what you do then you actually might want to do that:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;You have used XYZ N times and it has prevented 15 serious errors, 4 minor errors and generated 12 blah for you.  Each of these errors generally takes 3 minutes to resolve so we have saved you over &lt;strong&gt;1 hour&lt;/strong&gt; of your very, valuable time.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;You might also display some metrics about how much data the user has used / stored with your SAAS product.&lt;/p&gt;
+
+&lt;p&gt;Given that pretty much all of us use some type of SAAS product these days I thought it might be illustrative to look at the account page for two products: &lt;a href=&quot;https://pinboard.in/&quot;&gt;PinBoard&lt;/a&gt; and &lt;a href=&quot;https://gorails.com/&quot;&gt;Go Rails&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I am an absolutely unabashed &lt;strong&gt;fan&lt;/strong&gt; of both of these products.  PinBoard is a bookmarking service that is actually worth paying for – it rose to prominence when Yahoo decided to shut down Delicious and I’ve been a paying subscriber for the past year.  The founder, Maciej, has an absolutely delightful &lt;a href=&quot;https://blog.pinboard.in/&quot;&gt;blog&lt;/a&gt; and he is ridiculously open about &lt;a href=&quot;https://blog.pinboard.in/2014/11/new_pricing_policy/&quot;&gt;everything&lt;/a&gt;.  GoRails is the philosophical success to Ryan Bates’ RailsCasts and Chris Oliver does a really, really stellar job.  I don’t use it every day but when I need to learn something I hit the &lt;a href=&quot;https://gorails.com/episodes&quot;&gt;episodes&lt;/a&gt; link and it always teaches me something.  Honestly I learned how to work with the Stripe API for this project from Chris.&lt;/p&gt;
+
+&lt;p&gt;Here is a picture of the PinBoard account page:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/saas_product_account_page_pinboard.png&quot; alt=&quot;pinboard account page&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I think Maciej did a great, great job on this page.  Every time I look at it I’m reminded of how valuable pinboard can be.  I’m sure there are subtle improvements that could be made but this is greate.&lt;/p&gt;
+
+&lt;p&gt;Here are pictures of the GoRails account page.  I had to break it into top and bottom sections since it was higher than the actual screen size.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/saas_product_account_page_gorails_top.png&quot; alt=&quot;gorails account page top&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/saas_product_account_page_gorails_bottom.png&quot; alt=&quot;gorails account page bottom&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Even tho this page doesn’t emphasize how valuable GoRails can be, I think that Chris did a great job here.  I specifically like how this page was clearly intentionally designed to minimize support requests for receipts.  I’m going to steal that idea.  When you are running a solo SAAS business, everything needs to be designed to minimize customer support and being able to just say “Click the account link and download any receipt you want” is a nice bit of text to easily send in an email.&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 23 Jan 2017 05:54:40 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/startup/2017/01/23/so-you-want-to-build-a-saas-app-the-user-account-page.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/startup/2017/01/23/so-you-want-to-build-a-saas-app-the-user-account-page.html</guid>
+        
+        <category>startup</category>
+        
+        <category>saas</category>
+        
+        <category>hyde</category>
+        
+        
+        <category>startup</category>
+        
+      </item>
+    
+      <item>
+        <title>Rails Tutorial - Making Font Awesome Work with Rails 5</title>
+        <description>&lt;p&gt;Like a lot of back end folks I suspect I’m not alone when I look at a project like Font Awesome and go “Great Work; damn if I know how to actually use that.”  I’d normally toss it over the wall to a front end guy like my buddy &lt;a href=&quot;http://dv2.dasari.me&quot;&gt;Dv&lt;/a&gt; but this is for my side project so I’m all alone on this one.  Since I really, really don’t feel that I understand the world of front end work and CSS / SCSS very well I thought I’d write it all down for you (and myself).&lt;/p&gt;
+
+&lt;h1 id=&quot;heres-what-not-to-do&quot;&gt;Here’s what not to do&lt;/h1&gt;
+
+&lt;p&gt;I took a number of wrong steps:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I watched this &lt;a href=&quot;https://www.youtube.com/watch?v=RC_jIGABW-E&quot;&gt;video&lt;/a&gt; and it is really good – except for the specific steps he gave me didn’t work.  I really don’t understand why and it might have been me.&lt;/li&gt;
+  &lt;li&gt;I used the &lt;a href=&quot;https://github.com/FortAwesome/font-awesome-sass&quot;&gt;font-awesome-sass gem&lt;/a&gt; and it too failed me hard.&lt;/li&gt;
+  &lt;li&gt;Don’t follow the Stack Overflow post &lt;a href=&quot;http://stackoverflow.com/questions/37581599/rails-assets-is-having-issues-with-my-fonts&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In all of the above cases I got the error &lt;strong&gt;No route matches [GET] “/assets/fontawesome-webfont.ttf”&lt;/strong&gt; and I just couldn’t get past it.  The Stack Overflow post might have ultimately gotten me there but it did take me to a different gem – font-awesome-rails discussed in the next section.&lt;/p&gt;
+
+&lt;p&gt;You should note that I don’t meant to malign any fo the urls in above – I’m not a css / front end guy by any means.  All I did was some simple googles and the processes I was taken through ultimately didn’t work and I blew over an hour of development time to find that out.&lt;/p&gt;
+
+&lt;h1 id=&quot;heres-what-to-do&quot;&gt;Here’s What To Do&lt;/h1&gt;
+
+&lt;p&gt;What you actually need is to do the following:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Install the &lt;a href=&quot;https://github.com/bokmann/font-awesome-rails&quot;&gt;font-awesome-rails&lt;/a&gt; gem.  Just add &lt;strong&gt;gem “font-awesome-rails”&lt;/strong&gt; to your Gemfile and then do the bundle install dance.&lt;/li&gt;
+  &lt;li&gt;In your application.css.scss file add the line: &lt;strong&gt;@import “font-awesome”;&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Stop and start your rails server.&lt;/li&gt;
+  &lt;li&gt;Add to a test .html.erb view file this line**: fa_icon “camera-retro” ** (you’ll probably need to enclose that in output tags using %= and angle braces)&lt;/li&gt;
+  &lt;li&gt;Render that test .html.erb view file in your browser and you should see a camera icon.  What this is doing behind the scenes is outputting this html: &lt;i class=&quot;fa fa-camera-retro&quot;&gt;&lt;/i&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;useful-resources&quot;&gt;Useful Resources&lt;/h1&gt;
+
+&lt;p&gt;Here are some important urls:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/icons/&quot;&gt;The Icon Search Page for Font Awesome&lt;/a&gt; - Use this to search for the icon you need.  This is the most useful page on their site.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/&quot;&gt;Font Awesome Home Page&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/bokmann/font-awesome-rails&quot;&gt;Font Awesome Rails Gem&lt;/a&gt; -&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/FortAwesome/Font-Awesome&quot;&gt;The Font Awesome Github Project&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/cheatsheet/&quot;&gt;The Cheat Sheet&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/12468359/using-font-awesome-icon-for-bullet-points-with-a-single-list-item-element&quot;&gt;Useful Example of Font Awesome at the HTML Level&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/icon/search/&quot;&gt;Example of Using the Search Icon&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/examples/&quot;&gt;The General Examples Page&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/get-started/&quot;&gt;The Getting Started Page&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 23 Jan 2017 01:30:31 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/01/23/rails-tutorial-making-font-awesome-work-with-rails-5.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/01/23/rails-tutorial-making-font-awesome-work-with-rails-5.html</guid>
+        
+        <category>tutorial</category>
+        
+        <category>font_awesome</category>
+        
+        <category>hyde</category>
+        
+        <category>rails</category>
+        
+        <category>css</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>If I Was a Traveling Musician</title>
+        <description>&lt;p&gt;My friend David Rovics, on his blog and email newsletter, &lt;a href=&quot;http://songwritersnotebook.blogspot.com/2017/01/why-do-they-keep-begging.html&quot;&gt;laments the loss of CDs as a revenue stream for the traveling musician&lt;/a&gt;.  I’m not a traveling musician but I suspect that he is absolutely right.  As I gaze across my desk of computing hardware:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/my_desk.jpg&quot; alt=&quot;my_desk.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;there is only 1 device capable of playing CDs and it is a 2010 era MacBook Pro (it is actually in a stand behind everything so even tho it can play CDs, I can’t reach the slot easily).&lt;/p&gt;
+
+&lt;p&gt;If you’re at all interested in the indie music scene / folk music / songs of protest then &lt;a href=&quot;http://songwritersnotebook.blogspot.com/&quot;&gt;David&lt;/a&gt; is a fascinating read.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Disclaimer&lt;/strong&gt;: David is a friend and he and I grew up together.  We don’t share a wit of political ideology - he is as far left as it gets and I’m a staunch startup / technology believer but America was built on people being allowed to disagree and it all making us stronger.  If I want to be able to believe what I hold dear then he &lt;strong&gt;has&lt;/strong&gt; to be able to believe as he chooses.  In these divisive times it feels like this has been forgotten.&lt;/p&gt;
+
+&lt;p&gt;Anyway, David is making the point that CDs don’t sell like they used to and that makes his touring much, much harder since a key revenue source has diminished.  He terms it a post-CD reality and, yep – that makes sense.  People aren’t buying the discs, I suspect, because outside of the car they don’t have a way to play them.  Why should you buy them if you can’t play them?  And I know the feeling because I belong to &lt;a href=&quot;http://www.davidrovics.com/subscribe/&quot;&gt;David’s Community Supported Art (CSA)&lt;/a&gt; program and I just got a batch of CDs recently.  And I know that I put them right in the car.  But even there, they &lt;strong&gt;may not&lt;/strong&gt; get played - most of my music in the car comes from either a USB stick or XM Radio.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: I think that a touring musician offering a physical artifact like a CD for sale is a great thing.  People do spend money for physical artifacts to support an artist but I suspect that they won’t spend money when they flat out can’t use it at all.  Just for example, there’s only 1 other CD player in our whole house.&lt;/p&gt;
+
+&lt;h1 id=&quot;sidebar-the-miracle-of-things-being-10x-easier&quot;&gt;Sidebar: The Miracle of Things Being 10x Easier&lt;/h1&gt;
+
+&lt;p&gt;One of the tenets of the technology world that I’ve always believed is that when you make something literally &lt;em&gt;10x easier to use&lt;/em&gt; then it is a f&lt;em&gt;undamentally different&lt;/em&gt; thing.  As an example, I’ve recently been experimenting quite a bit with the &lt;a href=&quot;https://www.amazon.com/Amazon-Echo-Bluetooth-Speaker-with-WiFi-Alexa/dp/B00X4WHP5E&quot;&gt;Amazon Echo&lt;/a&gt; / Alexa service.  My test case for it is actually playing music and even though I’m not really a music person, with Alexa, the simple fact that:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I don’t have to mess with my phone&lt;/li&gt;
+  &lt;li&gt;I don’t have to fight with BlueTooth pairing&lt;/li&gt;
+  &lt;li&gt;I don’t have to screw with iTunes&lt;/li&gt;
+  &lt;li&gt;I don’t have to plug in a cable&lt;/li&gt;
+  &lt;li&gt;I don’t have to pick from a library of thousands of tracks&lt;/li&gt;
+  &lt;li&gt;I can say “Alexa play the doors”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;makes a music playing experience that is literally &lt;strong&gt;10x easier than a CD&lt;/strong&gt; (CDs get lost, damaged, don’t always have metadata, need to be imported into iTunes, etc).&lt;/p&gt;
+
+&lt;h1 id=&quot;so-what-is-easier-than-a-cd&quot;&gt;So What is Easier than a CD?&lt;/h1&gt;
+
+&lt;p&gt;The answer here to my mind is simple – &lt;strong&gt;a USB stick&lt;/strong&gt; dramatically improves on the listening experience:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It works in almost any computer out of the box (with new Macintoshes it needs a dongle)&lt;/li&gt;
+  &lt;li&gt;Even a cheap 4 gig USB stick can hold tons of music&lt;/li&gt;
+  &lt;li&gt;There is an advertising / promotion opportunity to lower your costs by allowing other artists music to be on there&lt;/li&gt;
+  &lt;li&gt;Songs can be easily dragged into iTunes&lt;/li&gt;
+  &lt;li&gt;Metadata and album art could actually be correct&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The problem with a USB stick is that it is &lt;strong&gt;static&lt;/strong&gt; and indie musicians are constantly making new music – even I know that’s part of the attraction.  A low volume artist like David doesn’t want to invest in say 100 usb sticks and then find that they are out of date.&lt;/p&gt;
+
+&lt;p&gt;And that brings us to the next section, My Proposal.&lt;/p&gt;
+
+&lt;h1 id=&quot;my-proposal-for-touring-musicians&quot;&gt;My Proposal for Touring Musicians&lt;/h1&gt;
+
+&lt;p&gt;I think what touring musicians should sell is a USB stick which has the following features:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A Small Music Archive like a Best of David Rovics album&lt;/li&gt;
+  &lt;li&gt;A program which updates the USB stick from the Internet&lt;/li&gt;
+  &lt;li&gt;A readme file that basically amounts to “Run the update program”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The update program would be a small executable that connects to a source on the Internet and downloads a full archive complete with album art and metadata.  People could the plug that into their computer, take that to their car, etc.&lt;/p&gt;
+
+&lt;p&gt;You could call this &lt;em&gt;USB Stick as Platform&lt;/em&gt; perhaps.  The software could easily be written in JavaScript using the &lt;a href=&quot;http://electron.atom.io/&quot;&gt;Electron&lt;/a&gt; toolkit.  If &lt;a href=&quot;https://slack.com/downloads/&quot;&gt;Slack&lt;/a&gt; can ship versions of their app for OSX, Windows and Linux off the same code base and &lt;a href=&quot;http://www.atom.io&quot;&gt;Atom&lt;/a&gt; can do the same then there should be no problem developing a pretty simple downloader.  All it has to do is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Read a config file which determines the source url to read from&lt;/li&gt;
+  &lt;li&gt;Start downloading songs&lt;/li&gt;
+  &lt;li&gt;Store the songs in a rational file hierarchy&lt;/li&gt;
+  &lt;li&gt;Display a progress bar&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you wanted to you could get fancy like embed an encrypted token in the config file that limits how many downloads but I wouldn’t recommend it.  I think Simple is better here.  I would allow for it pulling down some advertising style content since that would give a musician the ability to promote an upcoming concert, cross promote another artist, etc.&lt;/p&gt;
+
+&lt;p&gt;The end result of this is that the musician could give to a manufacturer like &lt;a href=&quot;http://www.flashbay.com/usb-music-distribution&quot;&gt;FlashBay&lt;/a&gt; a master USB stick and get back say 100.  I don’t know the prices on them but if you promoted it properly like “David Rovics USB Library” and it could perpetually update itself then you’d have something that actually might have  dramatically higher price than a single CD.  You’d need to test pricing but my gut says that a USB stick of this nature could easily fetch $20 or more.&lt;/p&gt;
+
+&lt;h1 id=&quot;a-final-note&quot;&gt;A Final Note&lt;/h1&gt;
+
+&lt;p&gt;In my last &lt;a href=&quot;http://fuzzyblog.io/blog/rant/2016/12/20/david-rovics-community-supported-art-or-a-tale-of-paywoe.html&quot;&gt;post&lt;/a&gt; that referenced David, I failed to define some terms:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;UI - user interface – the look, feel and interactions a user has with a product&lt;/li&gt;
+  &lt;li&gt;UX - user experience – the overall experience that a user has with a given product&lt;/li&gt;
+  &lt;li&gt;UI/UX - the fusion of the two&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;My apologies for leaving these out.  As a card carrying member of the technology tribe, I do exist in a world of acronyms and I sometimes don’t realize that they are not clear to others.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 23 Jan 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/music/2017/01/23/if-i-was-a-traveling-musician.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/music/2017/01/23/if-i-was-a-traveling-musician.html</guid>
+        
+        <category>music</category>
+        
+        <category>random</category>
+        
+        <category>echo</category>
+        
+        <category>alexa</category>
+        
+        <category>10x</category>
+        
+        
+        <category>music</category>
+        
+      </item>
+    
+      <item>
+        <title>Quick Reference Low Level Unix Disk Commands You Often Use for AWS Volumes</title>
+        <description>&lt;p&gt;I recently had a bizarre failing disk problem and these were all the commands I used:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;fsck -M -fy /dev/sdb1 – check a file system; change /dev/sdb1 to your device &lt;a href=&quot;http://askubuntu.com/q/552039/621300&quot;&gt;Stack Overflow&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;dmesg – lets you see low level hardware errors&lt;/li&gt;
+  &lt;li&gt;df -T&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Common Error Messages&lt;/p&gt;
+
+&lt;p&gt;When you get &lt;em&gt;“Input/output error” when accessing a directory&lt;/em&gt; then:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Input/Output errors during filesystem access attempts generally mean hardware issues. 
+Type dmesg and check the last few lines of output. If the disc or the connection to it is failing, it’ll be noted there. &lt;a href=&quot;http://unix.stackexchange.com/a/39908&quot;&gt;Stack Overflow&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Fri, 20 Jan 2017 08:08:55 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/01/20/quick-reference-low-level-unix-disk-commands-you-often-use-for-aws-volumes.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/01/20/quick-reference-low-level-unix-disk-commands-you-often-use-for-aws-volumes.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>My Piggy</title>
@@ -40,7 +284,7 @@
         <title>Tmux Mouse Mode Problems Under Linux</title>
         <description>&lt;p&gt;I am in the process of decommissioning a data center I set up about 2 years ago.  This was done in my pre-ansible days when I used Chef to bootstrap all the servers and it only functioned about 90% of the way leaving the final configuration of each server entirely manual.  This has meant that rather than each server being identical to every other server, each one is a unique “snowflake”.  And snowflake servers can really be the bane of your existence at times.&lt;/p&gt;
 
-&lt;p&gt;One box, for example, when you run a Tmux session it mysteriously trashes the mouse and you can’t actually copy some bit of text for pasting it later.  This doesn’t sound all that significant until you are trying to remember a mysqldump statement that is, with all options, about 220 characters long, it is 3:07 am and you find yourself saying “Man this is just the #U$I#U$#I balls”.&lt;/p&gt;
+&lt;p&gt;One box, for example, when you run a &lt;a href=&quot;https://tmux.github.io/&quot;&gt;Tmux&lt;/a&gt; session it mysteriously trashes the mouse and you can’t actually copy some bit of text for pasting it later.  This doesn’t sound all that significant until you are trying to remember a mysqldump statement that is, with all options, about 220 characters long, it is 3:07 am and you find yourself saying “Man this is just the #U$I#U$#I balls”.&lt;/p&gt;
 
 &lt;p&gt;And that’s when you realize that even if you are turning these boxes off in the next 15 minutes it would still be worth fixing immediately.&lt;/p&gt;
 
@@ -154,189 +398,6 @@ set -g mouse-select-window off
         <link>http://fuzzyblog.io//blog/2017/01/18/building-hyde-01-understanding-twitter-tags.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/01/18/building-hyde-01-understanding-twitter-tags.html</guid>
         
-        
-      </item>
-    
-      <item>
-        <title>Why I Didn't Look at Phusion's Union Station But You Should</title>
-        <description>&lt;p&gt;Of all the companies that populate the Ruby and Rails world, I think my absolute favorite is &lt;a href=&quot;http://www.phusion.nl&quot;&gt;Phusion&lt;/a&gt;.  I was early into the Rails space – 2007 so I date back to the days of Mongrel based rails installations and when &lt;a href=&quot;https://www.phusionpassenger.com/&quot;&gt;Passenger&lt;/a&gt; from Phusion came out, it was a revelation.  Running a rails application went from a “How the F do I do this” to “I’ll use Passenger and it will just work”.  And Hong Lai is to me a stellar example of how to support an Open Source product.  I cannot say how many times I’ve been researching something and, damn, there’s Hong Lai answering stuff.  The man is a damn machine and I mean that in the very best of ways.  Once upon a time I was a Ruby Enterprise Edition customer for Passenger and other times I’ve been a paid support customer.  And it is all because of the quality of Passenger and the tireless work of Hong Lai.  Every single time I go to deploy a Rails app, I reach for Passenger – it is just that good.&lt;/p&gt;
-
-&lt;p&gt;Phusion has a new product, &lt;a href=&quot;https://www.unionstationapp.com/&quot;&gt;Union Station&lt;/a&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://www.unionstationapp.com/images/dashboard.png&quot; alt=&quot;https://www.unionstationapp.com/images/dashboard.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;(Stock image; I never got it running for my apps; alas.)&lt;/p&gt;
-
-&lt;p&gt;And it is squarely in my sweet spot of tools:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;For ruby / rails&lt;/li&gt;
-  &lt;li&gt;Deals with performance / scalability&lt;/li&gt;
-  &lt;li&gt;Is NOT New Relic&lt;/li&gt;
-  &lt;li&gt;Is priced reasonably / rationally&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Unfortunately I am unlikely to look at Union Station and there is a lesson here about &lt;strong&gt;software marketing&lt;/strong&gt; that I think is illustrative.  The first thing to understand is that the person handling my account, &lt;strong&gt;Tinco&lt;/strong&gt;, has been absolutely excellent - he has been helpful, timely and I can’t say anything bad about him as a sales person – which rare for me.  The problem here is that Phusion wants me to make a decision with only 1 to 2 weeks of time.  This is a product that I’m going to need to evaluate at a pretty deep level to make a buying decision and I refuse to rush that kind of thing.  Even just understanding performance tools is hard and takes quite a bit of time.  What happened to me is:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;I requested the evaluation when I had free time to deal with it&lt;/li&gt;
-  &lt;li&gt;There was some kind of glitch where my account wouldn’t activate&lt;/li&gt;
-  &lt;li&gt;By the time my account was fixed, there was some other higher priority problem that I had to deal with&lt;/li&gt;
-  &lt;li&gt;Now that I have the time, my account is expired&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;My problem is with time limited evaluations in general – people these days are &lt;strong&gt;busy&lt;/strong&gt;.  And time limited evaluations, particularly for complex products, are hard to get around to.  This is particularly true for a product where real data needs to be gathered and you might not have an immediate use case for it.  In our case we do intensive processing under Passenger only about once per month.  So with a week long evaluation period, the timing just didn’t work out.&lt;/p&gt;
-
-&lt;p&gt;Yes I can ask for more time and I’m sure that Tinco would grant it; that’s not the point.  This is a general problem with selling complex products to busy people with limited time; I don’t think I’m alone in this.&lt;/p&gt;
-
-&lt;p&gt;Now, with all that said, companies do need to close sales leads – I get that.  I don’t know if there is a solution to this problem.  My personal preference would be usage based or capacity based i.e. I’d like to be able to install Union Station and use it for say 100 times in order to make a decision but that, while good for me, is directly against their interests.&lt;/p&gt;
-
-&lt;p&gt;Overall I’m impressed with Union Station and I suspect if you’re in the Rails space you should look at it.  The pricing model looks particularly rational which, having been burned by New Relic in years past, appeals to me.  Personally I’m going to wait until I have a more pressing front end project in mind but that’s coming up soon for me.&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 18 Jan 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2017/01/18/why-i-didn-t-look-at-phusion-s-union-station-but-you-should.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/01/18/why-i-didn-t-look-at-phusion-s-union-station-but-you-should.html</guid>
-        
-        <category>rails</category>
-        
-        <category>ruby</category>
-        
-        <category>startup</category>
-        
-        <category>marketing</category>
-        
-        <category>oobe</category>
-        
-        <category>hyde</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Nylas Mail Review</title>
-        <description>&lt;p&gt;Nylas N1 is a new email client that has just been released as free and open source.  And, as a piece of software, it is also actually &lt;strong&gt;good&lt;/strong&gt;.  Among people that know me in the real world, I am notorious for handling personal email poorly if at all and I actually used it for quite a while last night.  Now that’s a great sign for a new app.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/nylas.png&quot; alt=&quot;nylas.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;overall&quot;&gt;Overall&lt;/h1&gt;
-
-&lt;p&gt;I actually &lt;strong&gt;really like&lt;/strong&gt; this application and I’m intending to use it to see if perhaps, in 2017, I can put on my big boy pants and deal with email as a professional (i.e. daily). The fact that it works for OSX, Windows and Linux is a huge, huge win.  The UI is impressively good and they’ve open sourced it which means that it has potential to get better – fast.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: I just tried to install it under Linux and its apparently not fully read yet.  Alas, sigh.&lt;/p&gt;
-
-&lt;p&gt;There is some impressively good thinking here&lt;/p&gt;
-
-&lt;p&gt;Now, that said, I’m still impressed.  I’ll be even more impressed when I can run it on my wide screen Linux desktop with 32 gigs of memory.&lt;/p&gt;
-
-&lt;p&gt;Kudos to the good folks at Nylas and &lt;strong&gt;&lt;em&gt;Thank You&lt;/em&gt;&lt;/strong&gt; – you just made not only the personal computing world a little bit richer but also the open source world.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-bad---memory-usage&quot;&gt;The Bad - Memory Usage&lt;/h1&gt;
-
-&lt;p&gt;Nylas is an Electron app and that means that memory consumption is going to be an issue.  Now I’m old school – &lt;a href=&quot;https://en.wikipedia.org/wiki/TRS-80&quot;&gt;my first computer&lt;/a&gt; had 4K in it and I’ve known people who owned things like the &lt;a href=&quot;https://en.wikipedia.org/wiki/KIM-1&quot;&gt;KIM-1&lt;/a&gt;.  Sure I moved it to 48K as soon as I could but I started small.  That’s why when I see an application like Nylas and how it uses memory it makes me want to &lt;a href=&quot;https://www.youtube.com/watch?v=SZGEiz2cpEw&quot;&gt;weep and then die&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Here’s the memory usage after I had used it for about a half hour, 979 megs:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/nylas_memory_12_hours_earlier.png&quot; alt=&quot;nylas_memory_12_hours_earlier.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;As an additional test I left Nylas running all night long and the next morning it had eaten another 100 megs of RAM:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/nylas_memory_12_hours_earlier.png&quot; alt=&quot;nylas_memory_12_hours_earlier.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;It is important to understand that this isn’t all that different from Slack which clocked in at 1.68 gigs.  Here’s my Slack memory usage after multiple days up and running:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/slack_after_multiple_days.png&quot; alt=&quot;slack_after_multiple_days.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;performance&quot;&gt;Performance&lt;/h1&gt;
-
-&lt;p&gt;As I write this, I’m seeing very bad performance which is surprising because last night it was actually pretty peppy.  My guess is that with a release yesterday the backend servers which drive Nylas are likely under heavy load right now so even thought my second time experience isn’t all that great, I’m going to give Nylas a pass on performance right now.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-bad---ui-glitches&quot;&gt;The Bad - UI Glitches&lt;/h1&gt;
-
-&lt;p&gt;Note: I mostly reviewed Nylas using the two panel theme.  Some of the problems I experienced you might not see at all if you use the one panel theme.&lt;/p&gt;
-
-&lt;p&gt;I did notice a few screen related UI rendering glitches around selection of non-contiguous mails in a list view.  Here’s an example (5 selected but only 2 shown as selected).&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/nylas_selection_problems.png&quot; alt=&quot;nylas_selection_problems.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;One of the key Nylas features is the ability to display contextual information related to the emailer and that’s excellent but the app really calls for a very portait style, wide screen monitor.  I’ve seen it get to point where the contextual information was clipping off the right hand side of the message.  Here’s a screenshot that shows this experience but not the clipping:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/nylas_clipping.png&quot; alt=&quot;nylas_clipping.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;One very real concern that I have is that the Send button is way at the bottom of the screen so if you have a long email there’s a lot of scrolling just to say “Ok” or “Can we reschedule?”.&lt;/p&gt;
-
-&lt;p&gt;Some smaller things:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;I have Choosy installed on OSX which is supposed to intercept calls to Safari and let you pick which browser to open links in.  Nylas somehow gets around this and launches Safari even though I have 3 other browsers open.  Sigh.&lt;/li&gt;
-  &lt;li&gt;I have scroll bars set to always be displayed and Nylas doesn’t respect that.  So I have to click into a content region just to get a scroll bar to scroll.&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Wed, 18 Jan 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/email/2017/01/18/nylas-mail-review.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/email/2017/01/18/nylas-mail-review.html</guid>
-        
-        <category>email</category>
-        
-        <category>nylas</category>
-        
-        <category>slack</category>
-        
-        
-        <category>email</category>
-        
-      </item>
-    
-      <item>
-        <title>Work Life Balance - When Did This Become Acceptable?</title>
-        <description>&lt;p&gt;Once upon a time, not so long ago, I had to say to someone who reports to me this:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Hey.  Bob (my manager) asked me to tell you that you should start reading up on Ansible in your off hours.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;What.  The.  Hell.  When did our work life balance get so out of whack that our managers now don’t see anything wrong with telling us WHAT TO READ WHEN WE AREN’T AT WORK???&lt;/p&gt;
-
-&lt;p&gt;I cannot remember the last time I’ve felt as morally dirty and compromised as I did in that moment.  As a full time employee, which this person was, he is expected to work 40 hours per week.  If a new skill is &lt;strong&gt;required&lt;/strong&gt; for his job then shouldn’t he get to pick it up on the job?  Sheesh.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 17 Jan 2017 17:04:28 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/work/2017/01/17/work-life-balance-when-did-this-become-acceptable.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/work/2017/01/17/work-life-balance-when-did-this-become-acceptable.html</guid>
-        
-        <category>feels_slimy</category>
-        
-        <category>work_life_balance  </category>
-        
-        
-        <category>work</category>
-        
-      </item>
-    
-      <item>
-        <title>SED Example - The Swiss Army Chainsaw of Text Changes</title>
-        <description>&lt;p&gt;The unix command line tool sed is one of those things that you don’t know you need – until you need it worse than anything in the whole damn world and then nothing else does what sed does.  sed which I’m pretty sure is short for streaming editor is a tool which does an edit on a file via regular expressions without actually opening the file in an interactive fashion.  This means that you can edit, oh say a 100 meg file, and do it &lt;strong&gt;fast&lt;/strong&gt;.  In years past I used sed for surgery on large MySQL dump files but I haven’t touched it since 2003 when I lived in Newton, Massachusetts back the old blogging days.&lt;/p&gt;
-
-&lt;p&gt;My buddy &lt;a href=&quot;http://www.nickjanetakis.com/&quot;&gt;Nick&lt;/a&gt; and I were pairing today and we had to update a Sphinx Search config file.  I stumbled over the vim search and replace syntax and he was like here:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sed -ie 's/old/new/g' hello.txt
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;and with that one example I knocked it out in nothing flat.  What this example does is search for the regex &lt;em&gt;old&lt;/em&gt; and replace it with &lt;em&gt;new&lt;/em&gt; and do it globally in the file hello.txt.&lt;/p&gt;
-
-&lt;p&gt;Here’s a good tutorial on &lt;a href=&quot;http://www.grymoire.com/Unix/Sed.html&quot;&gt;sed&lt;/a&gt;.  Recommended.  Thanks Nick!&lt;/p&gt;
-</description>
-        <pubDate>Tue, 17 Jan 2017 16:24:23 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/text_processing/2017/01/17/sed-example-the-swiss-army-chainsaw-of-text-changes.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/text_processing/2017/01/17/sed-example-the-swiss-army-chainsaw-of-text-changes.html</guid>
-        
-        <category>sed</category>
-        
-        
-        <category>text_processing</category>
         
       </item>
     

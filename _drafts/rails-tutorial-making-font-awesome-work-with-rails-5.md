@@ -2,7 +2,7 @@
 layout: post
 title: Rails Tutorial - Making Font Awesome Work with Rails 5
 category: rails
-tags: ["tutorial", "font_awesome", "hyde"]
+tags: ["tutorial", "font_awesome", "hyde", "rails", "css"]
 ---
 Like a lot of back end folks I suspect I'm not alone when I look at a project like Font Awesome and go "Great Work; damn if I know how to actually use that."  I'd normally toss it over the wall to a front end guy like my buddy [Dv](http://dv2.dasari.me) but this is for my side project so I'm all alone on this one.  Since I really, really don't feel that I understand the world of front end work and CSS / SCSS very well I thought I'd write it all down for you (and myself).
 
@@ -32,9 +32,12 @@ What you actually need is to do the following:
 
 Here are some important urls:
 
+* [The Icon Search Page for Font Awesome](http://fontawesome.io/icons/) - Use this to search for the icon you need.  This is the most useful page on their site.
 * [Font Awesome Home Page](http://fontawesome.io/)
 * [Font Awesome Rails Gem](https://github.com/bokmann/font-awesome-rails) - 
 * [The Font Awesome Github Project](https://github.com/FortAwesome/Font-Awesome)
-* [The Icon Search Page for Font Awesome](http://fontawesome.io/icons/) - Use this to search for the icon you need
 * [The Cheat Sheet](http://fontawesome.io/cheatsheet/)
 * [Useful Example of Font Awesome at the HTML Level](http://stackoverflow.com/questions/12468359/using-font-awesome-icon-for-bullet-points-with-a-single-list-item-element)
+* [Example of Using the Search Icon](http://fontawesome.io/icon/search/)
+* [The General Examples Page](http://fontawesome.io/examples/)
+* [The Getting Started Page](http://fontawesome.io/get-started/)
