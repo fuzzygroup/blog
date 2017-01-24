@@ -6,9 +6,22 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 24 Jan 2017 05:22:40 -0500</pubDate>
-    <lastBuildDate>Tue, 24 Jan 2017 05:22:40 -0500</lastBuildDate>
+    <pubDate>Tue, 24 Jan 2017 07:05:00 -0500</pubDate>
+    <lastBuildDate>Tue, 24 Jan 2017 07:05:00 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>So you want to develop a json API</title>
+        <description>&lt;p&gt;http://json.org/example.html&lt;/p&gt;
+
+&lt;p&gt;http://jsonlint.com/&lt;/p&gt;
+</description>
+        <pubDate>Tue, 24 Jan 2017 06:18:46 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/01/24/so-you-want-to-develop-a-json-api.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/01/24/so-you-want-to-develop-a-json-api.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Decommissioning a Data Center</title>
@@ -23,6 +36,219 @@
         <link>http://fuzzyblog.io//blog/2017/01/24/decommissioning-a-data-center.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/01/24/decommissioning-a-data-center.html</guid>
         
+        
+      </item>
+    
+      <item>
+        <title>Rails Tutorial - Making Font Awesome Work with Rails 5</title>
+        <description>&lt;p&gt;Like a lot of back end folks I suspect I’m not alone when I look at a project like Font Awesome and go “Great Work; damn if I know how to actually use that.”  I’d normally toss it over the wall to a front end guy like my buddy &lt;a href=&quot;http://dv2.dasari.me&quot;&gt;Dv&lt;/a&gt; but this is for my side project so I’m all alone on this one.  Since I really, really don’t feel that I understand the world of front end work and CSS / SCSS very well I thought I’d write it all down for you (and myself).&lt;/p&gt;
+
+&lt;h1 id=&quot;heres-what-not-to-do&quot;&gt;Here’s what not to do&lt;/h1&gt;
+
+&lt;p&gt;I took a number of wrong steps:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I watched this &lt;a href=&quot;https://www.youtube.com/watch?v=RC_jIGABW-E&quot;&gt;video&lt;/a&gt; and it is really good – except for the specific steps he gave me didn’t work.  I really don’t understand why and it might have been me.&lt;/li&gt;
+  &lt;li&gt;I used the &lt;a href=&quot;https://github.com/FortAwesome/font-awesome-sass&quot;&gt;font-awesome-sass gem&lt;/a&gt; and it too failed me hard.&lt;/li&gt;
+  &lt;li&gt;Don’t follow the Stack Overflow post &lt;a href=&quot;http://stackoverflow.com/questions/37581599/rails-assets-is-having-issues-with-my-fonts&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In all of the above cases I got the error &lt;strong&gt;No route matches [GET] “/assets/fontawesome-webfont.ttf”&lt;/strong&gt; and I just couldn’t get past it.  The Stack Overflow post might have ultimately gotten me there but it did take me to a different gem – font-awesome-rails discussed in the next section.&lt;/p&gt;
+
+&lt;p&gt;You should note that I don’t meant to malign any fo the urls in above – I’m not a css / front end guy by any means.  All I did was some simple googles and the processes I was taken through ultimately didn’t work and I blew over an hour of development time to find that out.&lt;/p&gt;
+
+&lt;h1 id=&quot;heres-what-to-do&quot;&gt;Here’s What To Do&lt;/h1&gt;
+
+&lt;p&gt;What you actually need is to do the following:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Install the &lt;a href=&quot;https://github.com/bokmann/font-awesome-rails&quot;&gt;font-awesome-rails&lt;/a&gt; gem.  Just add &lt;strong&gt;gem “font-awesome-rails”&lt;/strong&gt; to your Gemfile and then do the bundle install dance.&lt;/li&gt;
+  &lt;li&gt;In your application.css.scss file add the line: &lt;strong&gt;@import “font-awesome”;&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Stop and start your rails server.&lt;/li&gt;
+  &lt;li&gt;Add to a test .html.erb view file this line**: fa_icon “camera-retro” ** (you’ll probably need to enclose that in output tags using %= and angle braces)&lt;/li&gt;
+  &lt;li&gt;Render that test .html.erb view file in your browser and you should see a camera icon.  What this is doing behind the scenes is outputting this html: &lt;i class=&quot;fa fa-camera-retro&quot;&gt;&lt;/i&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;useful-resources&quot;&gt;Useful Resources&lt;/h1&gt;
+
+&lt;p&gt;Here are some important urls:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/icons/&quot;&gt;The Icon Search Page for Font Awesome&lt;/a&gt; - Use this to search for the icon you need.  This is the most useful page on their site.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/&quot;&gt;Font Awesome Home Page&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/bokmann/font-awesome-rails&quot;&gt;Font Awesome Rails Gem&lt;/a&gt; -&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/FortAwesome/Font-Awesome&quot;&gt;The Font Awesome Github Project&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/cheatsheet/&quot;&gt;The Cheat Sheet&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/12468359/using-font-awesome-icon-for-bullet-points-with-a-single-list-item-element&quot;&gt;Useful Example of Font Awesome at the HTML Level&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/icon/search/&quot;&gt;Example of Using the Search Icon&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/examples/&quot;&gt;The General Examples Page&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/get-started/&quot;&gt;The Getting Started Page&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://glyphsearch.com/?query=x&quot;&gt;Another Way to Search for an Icon&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 24 Jan 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/01/24/rails-tutorial-making-font-awesome-work-with-rails-5.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/01/24/rails-tutorial-making-font-awesome-work-with-rails-5.html</guid>
+        
+        <category>tutorial</category>
+        
+        <category>font_awesome</category>
+        
+        <category>hyde</category>
+        
+        <category>rails</category>
+        
+        <category>css</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>How to Handle Your Personal Taxes when You Are Startup Folk</title>
+        <description>&lt;p&gt;Please note the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;This is a U.S. centric post; I don’t know how taxes work anywhere but here&lt;/li&gt;
+  &lt;li&gt;This post assumes that you have an accountant to help you&lt;/li&gt;
+  &lt;li&gt;This post documents what I personally had to go through on 1/23/17 to get my personal deductions together and I wrote it, honestly, because next year I’ll have to go thru the same process and this is the first time since 1987 that I feel good about the process I used.&lt;/li&gt;
+  &lt;li&gt;I am not an account and you should really talk to your own accountant.  This is the process that I have followed for years and since this year I actually did it well, I thought it was worth sharing.  Taking tax advice from a stranger on the Internet, well, your mileage may vary (YMMV).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;When you fall into that vague category of &lt;em&gt;startup folk&lt;/em&gt; – entrepreneurs, founding engineers, etc – organizing your personal taxes is a bloody disaster.  I spend money all year long that should generally fall into the category of business deductions.  Normally I don’t pay all that much attention and just treat it as a loss.  This year I’ve got some additional tax concerns so I actually got serious and really &lt;strong&gt;itemized hard&lt;/strong&gt;.  Here’s how I did it.&lt;/p&gt;
+
+&lt;h1 id=&quot;what-you-need&quot;&gt;What You Need&lt;/h1&gt;
+
+&lt;p&gt;Here is what you need:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Access to every single email account that you used where a receipt might accumulate&lt;/li&gt;
+  &lt;li&gt;Access to all the online services that don’t always send receipts&lt;/li&gt;
+  &lt;li&gt;File folders&lt;/li&gt;
+  &lt;li&gt;Paper&lt;/li&gt;
+  &lt;li&gt;Pen&lt;/li&gt;
+  &lt;li&gt;Time&lt;/li&gt;
+  &lt;li&gt;Willpower; this is an incredibly draining process&lt;/li&gt;
+  &lt;li&gt;A printer&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;reminder---use-the-gmail-and-amazon-print-view&quot;&gt;Reminder - Use the gmail and Amazon Print View&lt;/h1&gt;
+
+&lt;p&gt;When you are printing stuff from gmail you should use the printer icon to get a print view.  This renders much better when it is available and uses less paper.  There is also a specific print view for Amazon orders that is better than the default.&lt;/p&gt;
+
+&lt;h1 id=&quot;a-brief-tax-rant&quot;&gt;A Brief Tax Rant&lt;/h1&gt;
+
+&lt;p&gt;Taxes are my least favorite thing in the whole wide world.  I find the U.S. tax code byzantine in its complexity and entirely unfair.  As I see it, the core principles of taxation are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Everyone should contribute&lt;/li&gt;
+  &lt;li&gt;Taxes should be understandable by everyone since they are imposed on everyone&lt;/li&gt;
+  &lt;li&gt;Every dollar should flow through the tax mill once and only once&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The U.S. tax code violates every one of these core taxation concepts.  Now, that said, it is important to note that while I don’t like it, I also believe in being 100% honest and I never want to be audited so the trick here is meticulous documentation.  There is nothing wrong with a $2.31 AWS bill being deductible – but you have to document it.  That’s why #8 above is a printer – I made physical paper copies of every single expense.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-1-create-a-physical-artifact-for-each-expense-category&quot;&gt;Step 1: Create a Physical Artifact For Each Expense Category&lt;/h1&gt;
+
+&lt;p&gt;Taxes are important because if you screw them up, the tax man can make your life a living hell.  My father has been audited, every year, for over a decade.  And nothing ever happens to him but, to my mind, that’s flying far too close to the sun.  And when something is as important as taxes then you handle it with a physical artifact because physical artifacts last.&lt;/p&gt;
+
+&lt;p&gt;My first step was to create a representation of each category.  In my case that was a single sheet of white printer paper with the category name on it.  So I had a stack of pages like this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Hardware&lt;/li&gt;
+  &lt;li&gt;Software&lt;/li&gt;
+  &lt;li&gt;Office Supplies&lt;/li&gt;
+  &lt;li&gt;Online Services&lt;/li&gt;
+  &lt;li&gt;Conferences&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;step-2-write-down-what-you-remember&quot;&gt;Step 2: Write Down What You Remember&lt;/h1&gt;
+
+&lt;p&gt;The next step is that you want to write down on each representation what you remember as big ticket items.  So, for example, I wrote down these:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Hardware&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Intel NUC&lt;/li&gt;
+      &lt;li&gt;MacBook Pro&lt;/li&gt;
+      &lt;li&gt;Dell Widescreen Monitor&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Software&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Ruby Motion&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Conferences&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Elixir Con&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I suspect that these few expenses covered maybe 70% of my year.  And by writing them down I’m at least guaranteeing that I’ll look for them.  When you’re a member of the startup tribe, well, life is fast paced and it is easy to forget about things.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-3-start-with-email&quot;&gt;Step 3: Start with Email&lt;/h1&gt;
+
+&lt;p&gt;Take your first email account and run a search for the keyword &lt;strong&gt;receipt&lt;/strong&gt;.  You might also, if you use gmail, want to look at your purchases label that Google sets up for you.  You will find that this process is exhausting because you are likely going to look at hundreds of different emails.  As you find each receipt then:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Print it out&lt;/li&gt;
+  &lt;li&gt;Put it in the right category&lt;/li&gt;
+  &lt;li&gt;Add it to a tally sheet or a spreadsheet&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Here is the key idea – &lt;strong&gt;nothing is too small&lt;/strong&gt;.  If you bought a $10 USB stick and it was actually for business yes, well, then you should deduct it.&lt;/p&gt;
+
+&lt;p&gt;You need to do this for every single email account.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-4-access-every-ongoing-online-service&quot;&gt;Step 4: Access Every Ongoing Online Service&lt;/h1&gt;
+
+&lt;p&gt;In the era of cloud services, we all have a frightening amount of monthly fees.  What you want to do here is log into each one and get a print out of either each receipt or the main receipt index.  Here’s an example from the outstandingly good GoRails site:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/go_rails_invoicing.png&quot; alt=&quot;go_rails_invoicing.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;On your Online Services page you want to add a entry for “Go Rails” (or whatever) and then a total ($51) and a date (2016).  You need to do this for every single online service.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-5-review-every-single-thing-from-amazon&quot;&gt;Step 5: Review Every Single Thing from Amazon&lt;/h1&gt;
+
+&lt;p&gt;This is the big, hard one.  Amazon does a brilliant job of making your order information available to you and that is excellent but you still have to go thru it yourself and remember “Ok that hard drive – was that for my kid’s Xbox or is it on my desk?”.  But, if you are anything like me, you’ll find that there are a lot of small business purchases lumped in with your personal purchases.&lt;/p&gt;
+
+&lt;p&gt;If you use Amazon a lot then you’ll find that you have a large number of orders to sort thru.  I had &lt;strong&gt;41&lt;/strong&gt; pages of orders to sort through for the year of 2016.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-6-aws&quot;&gt;Step 6: AWS&lt;/h1&gt;
+
+&lt;p&gt;I didn’t find many, if any, receipts for AWS in my email so I logged into my AWS console separately and went thru that manually.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-7-think-hard-and-iterate-again&quot;&gt;Step 7: Think Hard and Iterate Again&lt;/h1&gt;
+
+&lt;p&gt;The final step here is actually the hardest – you need to think and think hard about what you did over an entire year and what might actually be tax deductible.  It is almost certain that you will have forgotten something so think long and hard.  If you come up with something then follow the process above.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-8-the-result&quot;&gt;Step 8: The Result!&lt;/h1&gt;
+
+&lt;p&gt;At the end of the process here’s what the floor of my office looked like:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/tax_hell.jpg&quot; alt=&quot;tax_hell.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;All I have to do now is summarize the tally sheet on top and give it to my accountant.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 24 Jan 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/startup/2017/01/24/how-to-handle-your-personal-taxes-when-you-are-startup-folk.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/startup/2017/01/24/how-to-handle-your-personal-taxes-when-you-are-startup-folk.html</guid>
+        
+        <category>startup</category>
+        
+        <category>taxes</category>
+        
+        
+        <category>startup</category>
         
       </item>
     
@@ -73,71 +299,6 @@
         
         
         <category>startup</category>
-        
-      </item>
-    
-      <item>
-        <title>Rails Tutorial - Making Font Awesome Work with Rails 5</title>
-        <description>&lt;p&gt;Like a lot of back end folks I suspect I’m not alone when I look at a project like Font Awesome and go “Great Work; damn if I know how to actually use that.”  I’d normally toss it over the wall to a front end guy like my buddy &lt;a href=&quot;http://dv2.dasari.me&quot;&gt;Dv&lt;/a&gt; but this is for my side project so I’m all alone on this one.  Since I really, really don’t feel that I understand the world of front end work and CSS / SCSS very well I thought I’d write it all down for you (and myself).&lt;/p&gt;
-
-&lt;h1 id=&quot;heres-what-not-to-do&quot;&gt;Here’s what not to do&lt;/h1&gt;
-
-&lt;p&gt;I took a number of wrong steps:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;I watched this &lt;a href=&quot;https://www.youtube.com/watch?v=RC_jIGABW-E&quot;&gt;video&lt;/a&gt; and it is really good – except for the specific steps he gave me didn’t work.  I really don’t understand why and it might have been me.&lt;/li&gt;
-  &lt;li&gt;I used the &lt;a href=&quot;https://github.com/FortAwesome/font-awesome-sass&quot;&gt;font-awesome-sass gem&lt;/a&gt; and it too failed me hard.&lt;/li&gt;
-  &lt;li&gt;Don’t follow the Stack Overflow post &lt;a href=&quot;http://stackoverflow.com/questions/37581599/rails-assets-is-having-issues-with-my-fonts&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In all of the above cases I got the error &lt;strong&gt;No route matches [GET] “/assets/fontawesome-webfont.ttf”&lt;/strong&gt; and I just couldn’t get past it.  The Stack Overflow post might have ultimately gotten me there but it did take me to a different gem – font-awesome-rails discussed in the next section.&lt;/p&gt;
-
-&lt;p&gt;You should note that I don’t meant to malign any fo the urls in above – I’m not a css / front end guy by any means.  All I did was some simple googles and the processes I was taken through ultimately didn’t work and I blew over an hour of development time to find that out.&lt;/p&gt;
-
-&lt;h1 id=&quot;heres-what-to-do&quot;&gt;Here’s What To Do&lt;/h1&gt;
-
-&lt;p&gt;What you actually need is to do the following:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Install the &lt;a href=&quot;https://github.com/bokmann/font-awesome-rails&quot;&gt;font-awesome-rails&lt;/a&gt; gem.  Just add &lt;strong&gt;gem “font-awesome-rails”&lt;/strong&gt; to your Gemfile and then do the bundle install dance.&lt;/li&gt;
-  &lt;li&gt;In your application.css.scss file add the line: &lt;strong&gt;@import “font-awesome”;&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;Stop and start your rails server.&lt;/li&gt;
-  &lt;li&gt;Add to a test .html.erb view file this line**: fa_icon “camera-retro” ** (you’ll probably need to enclose that in output tags using %= and angle braces)&lt;/li&gt;
-  &lt;li&gt;Render that test .html.erb view file in your browser and you should see a camera icon.  What this is doing behind the scenes is outputting this html: &lt;i class=&quot;fa fa-camera-retro&quot;&gt;&lt;/i&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;useful-resources&quot;&gt;Useful Resources&lt;/h1&gt;
-
-&lt;p&gt;Here are some important urls:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/icons/&quot;&gt;The Icon Search Page for Font Awesome&lt;/a&gt; - Use this to search for the icon you need.  This is the most useful page on their site.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/&quot;&gt;Font Awesome Home Page&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/bokmann/font-awesome-rails&quot;&gt;Font Awesome Rails Gem&lt;/a&gt; -&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/FortAwesome/Font-Awesome&quot;&gt;The Font Awesome Github Project&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/cheatsheet/&quot;&gt;The Cheat Sheet&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/12468359/using-font-awesome-icon-for-bullet-points-with-a-single-list-item-element&quot;&gt;Useful Example of Font Awesome at the HTML Level&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/icon/search/&quot;&gt;Example of Using the Search Icon&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/examples/&quot;&gt;The General Examples Page&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://fontawesome.io/get-started/&quot;&gt;The Getting Started Page&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Mon, 23 Jan 2017 01:30:31 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2017/01/23/rails-tutorial-making-font-awesome-work-with-rails-5.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/01/23/rails-tutorial-making-font-awesome-work-with-rails-5.html</guid>
-        
-        <category>tutorial</category>
-        
-        <category>font_awesome</category>
-        
-        <category>hyde</category>
-        
-        <category>rails</category>
-        
-        <category>css</category>
-        
-        
-        <category>rails</category>
         
       </item>
     
@@ -329,80 +490,6 @@ set -g mouse-select-window off
         
         
         <category>tmux</category>
-        
-      </item>
-    
-      <item>
-        <title>Building a Real Parser in Ruby Using Parslet</title>
-        <description>&lt;p&gt;I deal with “parsing” all the time and I generally do it with one or more regular expressions.  And while I know that JWZ is famous for this statement:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Some people, when confronted with a problem, think “I know, I’ll use regular expressions.” Now they have two problems.  alt.religion.emacs (lost; recovered) &lt;a href=&quot;https://en.wikiquote.org/wiki/Jamie_Zawinski&quot;&gt;JWZ&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Regular expressions provide a uniquely powerful way to deal with day.  What the don’t do well though is handle problems when you arbitrary complexity / recursion in your structure.  Let’s say you are trying to parse:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;“name like ‘%Warning%’”&lt;/li&gt;
-  &lt;li&gt;“name like ‘%Warning%’ AND name not like ‘%noob%’”&lt;/li&gt;
-  &lt;li&gt;“name like ‘%Warning%’ AND name not like ‘%blah%’ AND name like ‘%bar%’”&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;You see where this is going – I have an arbitrary SQL like syntax and while I could craft a specialized regex which tried to deal with the max cases and then back off, at best that would be a hack.  At worst it would be code that I’d be ashamed to show Mother Johnson and that would be sad.  This calls for – wait for it – a real &lt;strong&gt;parser&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;And, yes, I am talking about the stuff we all learned in compilers class aka &lt;a href=&quot;https://www.amazon.com/Compilers-Principles-Techniques-Tools-2nd/dp/0321486811&quot;&gt;The Dragon Book&lt;/a&gt;.  If, like me, you didn’t actually take a compilers class then let me explain.  The Dragon Book, for as long as &lt;a href=&quot;https://en.wikipedia.org/wiki/Dragon_Book&quot;&gt;I can remember&lt;/a&gt;, has been the source of how you write compilers, parsers, etc.  Wikipedia cites it back to 1977 and that’s what I mean by “as long as I can remember”.  I know my first startup partner, Brian, used it in college circa 1988 and it has been in constant use, well, forever.&lt;/p&gt;
-
-&lt;p&gt;The stuff taught in the Dragon Book are techniques that either you use constantly because they neatly correspond to how you think or they are things you trot out once a decade or so when the problem is that severe.  In my case I last did this stuff in 1996 when I used it to write an HTML parser in Visual Basic.  That time I did it with a Lex / Yacc / Bison grammar using this &lt;a href=&quot;https://www.amazon.com/lex-yacc-Doug-Brown-ebook/dp/B009THDEBC&quot;&gt;O’Reilly book&lt;/a&gt; to assist me.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://kschiess.github.io/parslet/images/parsley_logo.png&quot; alt=&quot;http://kschiess.github.io/parslet/images/parsley_logo.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;One of the beautiful things about computers as a profession is that if you’ve ever done something then there’s a near certainty that it will loop back on you.  This time around I am tackling it with Ruby and the &lt;a href=&quot;https://github.com/kschiess/parslet&quot;&gt;Parslet&lt;/a&gt; gem.  I’ve been following Parslet on the mailing list since at least 2014 because I know just how important parsing is and &lt;a href=&quot;https://github.com/kschiess&quot;&gt;Kaspar Schiess&lt;/a&gt; has done fantastic work on it over the years.&lt;/p&gt;
-
-&lt;p&gt;Developing a parser with a tool like Parslet is not something you can just sit down and hack out.  This isn’t that kind of gem – I know, I tried it that way.  This is a:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;roll up your sleeves&lt;/li&gt;
-  &lt;li&gt;watch a video&lt;/li&gt;
-  &lt;li&gt;work thru an example&lt;/li&gt;
-  &lt;li&gt;scratch your head&lt;/li&gt;
-  &lt;li&gt;drink coffee&lt;/li&gt;
-  &lt;li&gt;re-watch the video&lt;/li&gt;
-  &lt;li&gt;finally get it&lt;/li&gt;
-  &lt;li&gt;extend the example&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;type of thing.  And that honestly is the exact process I used.  &lt;a href=&quot;http://www.dasari.me&quot;&gt;Dv&lt;/a&gt; and I worked thru it together and we couldn’t make any progress until we sat down and did it this way.  Yes we were able to cobble together a simple grammar but we just couldn’t put all the pieces together without this level of understanding.  But, I can promise you this, once you do actually understand how a tool like Parslet works then it is fundamentally transformative for you.&lt;/p&gt;
-
-&lt;p&gt;In our case we started with Calle Erlandson’s Recursive Descent Parsers talk available on &lt;a href=&quot;https://youtu.be/_F-eh66zw90&quot;&gt;YouTube&lt;/a&gt; and &lt;a href=&quot;https://github.com/calleerlandsson/recursive-descent-parsers-talk&quot;&gt;github&lt;/a&gt;.  This is a fantastic video where he walks you through the development of an infix parser for a calculator i.e. “3 + 4 * 2” should be give a result if 11 (8 + 3) because you have to evaluate it mathematically not left to right.  Here is my repository where Dv and I extended Calle’s example to include &lt;a href=&quot;https://github.com/fuzzygroup/recursive-descent-parsers-talk&quot;&gt;division&lt;/a&gt;.  Yes I even sent a pull request over to him to perhaps get division into the master.&lt;/p&gt;
-
-&lt;p&gt;I know I wrote a lot of words and didn’t even talk about parsing SQL like expressions.  That’s because priorities got shifted and, just after getting ourselves ready to tackle the real project, it was a case of “And now please do this instead”.  Sigh.  I’m sure I’ll come back to this topic but really do watch the video – it is fantastic.&lt;/p&gt;
-
-</description>
-        <pubDate>Fri, 20 Jan 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/ruby/2017/01/20/building-a-real-parser-in-ruby-using-parslet.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/ruby/2017/01/20/building-a-real-parser-in-ruby-using-parslet.html</guid>
-        
-        <category>ruby</category>
-        
-        <category>parsing</category>
-        
-        <category>software_engineering</category>
-        
-        <category>parslet</category>
-        
-        
-        <category>ruby</category>
-        
-      </item>
-    
-      <item>
-        <title>Startup Learnings - What Hong Lai Taught Me</title>
-        <description>&lt;p&gt;/blog/assets/hong_lai.png&lt;/p&gt;
-</description>
-        <pubDate>Wed, 18 Jan 2017 12:04:38 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/01/18/startup-learnings-what-hong-lai-taught-me.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/01/18/startup-learnings-what-hong-lai-taught-me.html</guid>
-        
         
       </item>
     

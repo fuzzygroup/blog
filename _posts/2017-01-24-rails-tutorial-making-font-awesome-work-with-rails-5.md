@@ -41,3 +41,4 @@ Here are some important urls:
 * [Example of Using the Search Icon](http://fontawesome.io/icon/search/)
 * [The General Examples Page](http://fontawesome.io/examples/)
 * [The Getting Started Page](http://fontawesome.io/get-started/)
+* [Another Way to Search for an Icon](http://glyphsearch.com/?query=x)
