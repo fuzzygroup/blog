@@ -3,6 +3,8 @@ layout: post
 title: Rails Tutorial - Making Font Awesome Work with Rails 5
 category: rails
 tags: ["tutorial", "font_awesome", "hyde", "rails", "css"]
+description: Font Awesome is a great toolkit for improving the look and feel of your app but can be tricky to use.  This tutorial shows you how.
+image: http://fuzzyblog.io/blog/assets/font-awesome.png
 ---
 Like a lot of back end folks I suspect I'm not alone when I look at a project like Font Awesome and go "Great Work; damn if I know how to actually use that."  I'd normally toss it over the wall to a front end guy like my buddy [Dv](http://dv2.dasari.me) but this is for my side project so I'm all alone on this one.  Since I really, really don't feel that I understand the world of front end work and CSS / SCSS very well I thought I'd write it all down for you (and myself).
 
