@@ -18,7 +18,7 @@ I took a number of wrong steps:
 
 In all of the above cases I got the error **No route matches [GET] "/assets/fontawesome-webfont.ttf"** and I just couldn't get past it.  The Stack Overflow post might have ultimately gotten me there but it did take me to a different gem -- font-awesome-rails discussed in the next section.
 
-You should note that I don't meant to malign any fo the urls in above -- I'm not a css / front end guy by any means.  All I did was some simple googles and the processes I was taken through ultimately didn't work and I blew over an hour of development time to find that out.
+You should note that I don't meant to malign any of the urls in the above material -- I'm not a css / front end guy by any means.  All I did was some simple googles and the processes I was taken through ultimately didn't work and I blew over an hour of development time to find that out.
 
 # Here's What To Do
 
