@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Rails Tutorial - Making Font Awesome Work with Rails 5</title>
-  <meta name="description" content="Like a lot of back end folks I suspect I’m not alone when I look at a project like Font Awesome and go “Great Work; damn if I know how to actually use that.”...">
+  <title>S3 Ruby Api Programming Tip</title>
+  <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/rails/2017/01/24/rails-tutorial-making-font-awesome-work-with-rails-5.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/aws/2017/01/26/s3-ruby-api-programming-tip.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- twitter specific head tags -->
@@ -18,16 +18,16 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Rails Tutorial - Making Font Awesome Work with Rails 5">
+  <meta name="twitter:title" content="S3 Ruby Api Programming Tip">
 
   
     <meta name="twitter:description"
-      content="Font Awesome is a great toolkit for improving the look and feel of your app but can be tricky to use.  This tutorial shows you how.">
+      content="Here's a quick tip on programming to the AWS S3 api with Ruby and the aws-sdk gem.">
   
 
   
     <meta name="twitter:image"
-      content="http://fuzzyblog.io/blog/assets/font-awesome.png">
+      content="http://fuzzyblog.io/blog/assets/ruby_aws_s3.png">
   
   
   
@@ -112,55 +112,59 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Rails Tutorial - Making Font Awesome Work with Rails 5</h1>
-    <p class="I'll"><time datetime="2017-01-24T00:00:00-05:00" itemprop="datePublished">Jan 24, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">S3 Ruby Api Programming Tip</h1>
+    <p class="I'll"><time datetime="2017-01-26T00:00:00-05:00" itemprop="datePublished">Jan 26, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>Like a lot of back end folks I suspect I’m not alone when I look at a project like Font Awesome and go “Great Work; damn if I know how to actually use that.”  I’d normally toss it over the wall to a front end guy like my buddy <a href="http://dv2.dasari.me">Dv</a> but this is for my side project so I’m all alone on this one.  Since I really, really don’t feel that I understand the world of front end work and CSS / SCSS very well I thought I’d write it all down for you (and myself).</p>
+    <p><img src="/blog/assets/ruby_aws_s3.png" alt="ruby_aws_s3.png" /></p>
 
-<h1 id="heres-what-not-to-do">Here’s what not to do</h1>
+<p>So I find myself dealing with a backup to a data center that I am decommissioning and while the ultimate backup solution is going to involve hard drives onto which about 6 terabytes of MySQL tables are stored, I want to get at least a sizable portion of this into the cloud as soon as possible.</p>
 
-<p>I took a number of wrong steps:</p>
+<p>Given my <a href="http://fuzzyblog.io/blog/aws.html">public advocacy position</a> in favor of AWS, S3 is clearly the cloud storage that I’m going to use.  I’ve spent the better part of the past two weeks writing a backup tool, with Nick’s able assistance, that can:</p>
 
 <ul>
-  <li>I watched this <a href="https://www.youtube.com/watch?v=RC_jIGABW-E">video</a> and it is really good – except for the specific steps he gave me didn’t work.  I really don’t understand why and it might have been me.</li>
-  <li>I used the <a href="https://github.com/FortAwesome/font-awesome-sass">font-awesome-sass gem</a> and it too failed me hard.</li>
-  <li>Don’t follow the Stack Overflow post <a href="http://stackoverflow.com/questions/37581599/rails-assets-is-having-issues-with-my-fonts">here</a>.</li>
+  <li>take a large database</li>
+  <li>decompose it into tables</li>
+  <li>dump each table</li>
+  <li>split the tables into manageable size using split</li>
+  <li>gzip those split files</li>
+  <li>move those split files up to s3</li>
+  <li>delete its working data as it goes since we only have a fraction of the disc space needed to do this in large (about 10% of the 3 tb for our largest database)</li>
 </ul>
 
-<p>In all of the above cases I got the error <strong>No route matches [GET] “/assets/fontawesome-webfont.ttf”</strong> and I just couldn’t get past it.  The Stack Overflow post might have ultimately gotten me there but it did take me to a different gem – font-awesome-rails discussed in the next section.</p>
+<p>Its currently standing at 570 lines of moderately elegant ruby code and its been an interesting exercise in really getting to know how to use the aws-sdk gem and its S3 functionality.</p>
 
-<p>You should note that I don’t meant to malign any of the urls in the above material – I’m not a css / front end guy by any means.  All I did was some simple googles and the processes I was taken through ultimately didn’t work and I blew over an hour of development time to find that out.</p>
-
-<h1 id="heres-what-to-do">Here’s What To Do</h1>
-
-<p>What you actually need is to do the following:</p>
+<p>Here’s a quick overview of the steps in using the S3 gem with Ruby under Linux. You should note that all of this has been done in the context of a command line tool under straight ruby.  I suspect its directly portable to Rails but I haven’t tested that.</p>
 
 <ol>
-  <li>Install the <a href="https://github.com/bokmann/font-awesome-rails">font-awesome-rails</a> gem.  Just add <strong>gem “font-awesome-rails”</strong> to your Gemfile and then do the bundle install dance.</li>
-  <li>In your application.css.scss file add the line: <strong>@import “font-awesome”;</strong></li>
-  <li>Stop and start your rails server.</li>
-  <li>Add to a test .html.erb view file this line**: fa_icon “camera-retro” ** (you’ll probably need to enclose that in output tags using %= and angle braces)</li>
-  <li>Render that test .html.erb view file in your browser and you should see a camera icon.  What this is doing behind the scenes is outputting this html: <i class="fa fa-camera-retro"></i></li>
+  <li>Start by installing the AWS cli with: <strong>sudo apt-get install awscli</strong></li>
+  <li>Configure your credentials with: <strong>aws configure</strong>.  This writes a ~/.aws/credentials file that the ruby gem knows how to read.  And that’s brilliant because the credentials then are NOT stored in your code and can’t be leaked through a repo becoming public.</li>
+  <li>Since you’re missing Rails and the dynamic include structure, you have to do load the gem with these two statements: **gem ‘aws-sdk’; require ‘aws-sdk’; **</li>
+  <li>You have to create an s3 instance with a command like this: <strong>@s3 = Aws::S3::Resource.new(region:’us-west-2’)</strong></li>
 </ol>
 
-<h1 id="useful-resources">Useful Resources</h1>
+<p>Here is the official documentation on the <a href="http://docs.aws.amazon.com/sdkforruby/api/Aws/S3/Object.html">s3 instance</a>.</p>
 
-<p>Here are some important urls:</p>
+<p>After that you can call methods like this:</p>
 
-<ul>
-  <li><a href="http://fontawesome.io/icons/">The Icon Search Page for Font Awesome</a> - Use this to search for the icon you need.  This is the most useful page on their site.</li>
-  <li><a href="http://fontawesome.io/">Font Awesome Home Page</a></li>
-  <li><a href="https://github.com/bokmann/font-awesome-rails">Font Awesome Rails Gem</a> -</li>
-  <li><a href="https://github.com/FortAwesome/Font-Awesome">The Font Awesome Github Project</a></li>
-  <li><a href="http://fontawesome.io/cheatsheet/">The Cheat Sheet</a></li>
-  <li><a href="http://stackoverflow.com/questions/12468359/using-font-awesome-icon-for-bullet-points-with-a-single-list-item-element">Useful Example of Font Awesome at the HTML Level</a></li>
-  <li><a href="http://fontawesome.io/icon/search/">Example of Using the Search Icon</a></li>
-  <li><a href="http://fontawesome.io/examples/">The General Examples Page</a></li>
-  <li><a href="http://fontawesome.io/get-started/">The Getting Started Page</a></li>
-  <li><a href="http://glyphsearch.com/?query=x">Another Way to Search for an Icon</a></li>
-</ul>
+<blockquote>
+  <p>obj = @s3.bucket(bucket).object(name_in_s3)</p>
+</blockquote>
+
+<p>As long as the variables bucket and name_in_s3 are set this will return back to you an instance that you can work with.  The mistake that I made was trying to get the size of an object with .content_length when the underlying data had not yet been transferred up to S3.  I was testing the existence of the object with:</p>
+
+<blockquote>
+  <p>if obj</p>
+</blockquote>
+
+<p>after I had created the object and I assumed that it was ensuring that the object already existed.  In fact what I needed to do was this:</p>
+
+<blockquote>
+  <p>remote_size = obj.content_length if obj.exists?</p>
+</blockquote>
+
+<p>The reason for this is apparent if you <em>think</em> about it.  You have to build the object in order to transfer data to it so you’re going to have an actual object before you even transfer the data.  This reminds me so, very very vividly of <a href="https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/">Spolsky on Leaky Abstractions</a> and his 2002 rant on why you don’t abstract long running network operations and try and make them be exactly the same as fast running local operations.</p>
 
   </div>
   

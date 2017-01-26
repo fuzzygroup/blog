@@ -6,9 +6,75 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 24 Jan 2017 17:40:54 -0500</pubDate>
-    <lastBuildDate>Tue, 24 Jan 2017 17:40:54 -0500</lastBuildDate>
+    <pubDate>Thu, 26 Jan 2017 04:17:53 -0500</pubDate>
+    <lastBuildDate>Thu, 26 Jan 2017 04:17:53 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>S3 Ruby Api Programming Tip</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/blog/assets/ruby_aws_s3.png&quot; alt=&quot;ruby_aws_s3.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So I find myself dealing with a backup to a data center that I am decommissioning and while the ultimate backup solution is going to involve hard drives onto which about 6 terabytes of MySQL tables are stored, I want to get at least a sizable portion of this into the cloud as soon as possible.&lt;/p&gt;
+
+&lt;p&gt;Given my &lt;a href=&quot;http://fuzzyblog.io/blog/aws.html&quot;&gt;public advocacy position&lt;/a&gt; in favor of AWS, S3 is clearly the cloud storage that I’m going to use.  I’ve spent the better part of the past two weeks writing a backup tool, with Nick’s able assistance, that can:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;take a large database&lt;/li&gt;
+  &lt;li&gt;decompose it into tables&lt;/li&gt;
+  &lt;li&gt;dump each table&lt;/li&gt;
+  &lt;li&gt;split the tables into manageable size using split&lt;/li&gt;
+  &lt;li&gt;gzip those split files&lt;/li&gt;
+  &lt;li&gt;move those split files up to s3&lt;/li&gt;
+  &lt;li&gt;delete its working data as it goes since we only have a fraction of the disc space needed to do this in large (about 10% of the 3 tb for our largest database)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Its currently standing at 570 lines of moderately elegant ruby code and its been an interesting exercise in really getting to know how to use the aws-sdk gem and its S3 functionality.&lt;/p&gt;
+
+&lt;p&gt;Here’s a quick overview of the steps in using the S3 gem with Ruby under Linux. You should note that all of this has been done in the context of a command line tool under straight ruby.  I suspect its directly portable to Rails but I haven’t tested that.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Start by installing the AWS cli with: &lt;strong&gt;sudo apt-get install awscli&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Configure your credentials with: &lt;strong&gt;aws configure&lt;/strong&gt;.  This writes a ~/.aws/credentials file that the ruby gem knows how to read.  And that’s brilliant because the credentials then are NOT stored in your code and can’t be leaked through a repo becoming public.&lt;/li&gt;
+  &lt;li&gt;Since you’re missing Rails and the dynamic include structure, you have to do load the gem with these two statements: **gem ‘aws-sdk’; require ‘aws-sdk’; **&lt;/li&gt;
+  &lt;li&gt;You have to create an s3 instance with a command like this: &lt;strong&gt;@s3 = Aws::S3::Resource.new(region:’us-west-2’)&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Here is the official documentation on the &lt;a href=&quot;http://docs.aws.amazon.com/sdkforruby/api/Aws/S3/Object.html&quot;&gt;s3 instance&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;After that you can call methods like this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;obj = @s3.bucket(bucket).object(name_in_s3)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;As long as the variables bucket and name_in_s3 are set this will return back to you an instance that you can work with.  The mistake that I made was trying to get the size of an object with .content_length when the underlying data had not yet been transferred up to S3.  I was testing the existence of the object with:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;if obj&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;after I had created the object and I assumed that it was ensuring that the object already existed.  In fact what I needed to do was this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;remote_size = obj.content_length if obj.exists?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The reason for this is apparent if you &lt;em&gt;think&lt;/em&gt; about it.  You have to build the object in order to transfer data to it so you’re going to have an actual object before you even transfer the data.  This reminds me so, very very vividly of &lt;a href=&quot;https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/&quot;&gt;Spolsky on Leaky Abstractions&lt;/a&gt; and his 2002 rant on why you don’t abstract long running network operations and try and make them be exactly the same as fast running local operations.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 26 Jan 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/aws/2017/01/26/s3-ruby-api-programming-tip.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/aws/2017/01/26/s3-ruby-api-programming-tip.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ruby</category>
+        
+        <category>s3</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
     
       <item>
         <title>So you want to develop a json API</title>
@@ -55,7 +121,7 @@
 
 &lt;p&gt;In all of the above cases I got the error &lt;strong&gt;No route matches [GET] “/assets/fontawesome-webfont.ttf”&lt;/strong&gt; and I just couldn’t get past it.  The Stack Overflow post might have ultimately gotten me there but it did take me to a different gem – font-awesome-rails discussed in the next section.&lt;/p&gt;
 
-&lt;p&gt;You should note that I don’t meant to malign any fo the urls in above – I’m not a css / front end guy by any means.  All I did was some simple googles and the processes I was taken through ultimately didn’t work and I blew over an hour of development time to find that out.&lt;/p&gt;
+&lt;p&gt;You should note that I don’t meant to malign any of the urls in the above material – I’m not a css / front end guy by any means.  All I did was some simple googles and the processes I was taken through ultimately didn’t work and I blew over an hour of development time to find that out.&lt;/p&gt;
 
 &lt;h1 id=&quot;heres-what-to-do&quot;&gt;Here’s What To Do&lt;/h1&gt;
 
@@ -454,42 +520,6 @@ Type dmesg and check the last few lines of output. If the disc or the connection
         <link>http://fuzzyblog.io//blog/2017/01/20/hyde-tutorial-adding-twitter-card-support-to-your-jekyll-blog.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/01/20/hyde-tutorial-adding-twitter-card-support-to-your-jekyll-blog.html</guid>
         
-        
-      </item>
-    
-      <item>
-        <title>Tmux Mouse Mode Problems Under Linux</title>
-        <description>&lt;p&gt;I am in the process of decommissioning a data center I set up about 2 years ago.  This was done in my pre-ansible days when I used Chef to bootstrap all the servers and it only functioned about 90% of the way leaving the final configuration of each server entirely manual.  This has meant that rather than each server being identical to every other server, each one is a unique “snowflake”.  And snowflake servers can really be the bane of your existence at times.&lt;/p&gt;
-
-&lt;p&gt;One box, for example, when you run a &lt;a href=&quot;https://tmux.github.io/&quot;&gt;Tmux&lt;/a&gt; session it mysteriously trashes the mouse and you can’t actually copy some bit of text for pasting it later.  This doesn’t sound all that significant until you are trying to remember a mysqldump statement that is, with all options, about 220 characters long, it is 3:07 am and you find yourself saying “Man this is just the #U$I#U$#I balls”.&lt;/p&gt;
-
-&lt;p&gt;And that’s when you realize that even if you are turning these boxes off in the next 15 minutes it would still be worth fixing immediately.&lt;/p&gt;
-
-&lt;p&gt;The problem was in the file ~/.tmux.conf and it was the presence of these lines:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;setw -g mode-mouse on
-set -g mouse-select-pane off
-set -g mouse-resize-pane off
-set -g mouse-select-window off
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;To be honest this is a problem that I likely introduced myself - I vaguely remember noodling on this configuration file about 18 months ago and then something blew up.  A quick :wq in VIM and I was off to the next disaster.  And since I didn’t restart tmux entirely (configuration is loaded only on startup), it wasn’t until the box was physically rebooted, long after I had forgotten this particular hell, that the mouse died and I was left scratching my head.  Sigh.&lt;/p&gt;
-
-&lt;p&gt;Had I read it at the time, this &lt;a href=&quot;http://tangledhelix.com/blog/2012/07/16/tmux-and-mouse-mode/&quot;&gt;blog post&lt;/a&gt; might have been useful.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 20 Jan 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/tmux/2017/01/20/tmux-mouse-mode-problems-under-linux.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/tmux/2017/01/20/tmux-mouse-mode-problems-under-linux.html</guid>
-        
-        <category>tmux</category>
-        
-        <category>linux</category>
-        
-        <category>sys_admin</category>
-        
-        
-        <category>tmux</category>
         
       </item>
     
