@@ -20,9 +20,11 @@ The inotifywait utility takes a few command line parameters and then tells you a
 
 This tells inotifywait to run on the ~ or home directory and monitor it forever (the m flag) and r tells it to monitor recursively on all directories below the current.
 
-Here's an example of its output:
+Here's an example of its output once I set it monitoring in one shell window on a server after I logged into the same box in a different shell window and then touched the file foo.txt:
 
 ![inotifywait.png](/blog/assets/inotifywait.png)
+
+The really interesting here is that while I sort of know that the bash prompt initialization pattern is .profile and then  .bashrc but I've never **seen** it before.  I have a feeling that I'll understand this better from now on.
 
 Not only is this useful for sysadmin / devops work but I can see it being highly useful for application developers. Sometimes the files you are touching or your io access patterns are not always apparent.  Using inotifywait makes them obvious.
 

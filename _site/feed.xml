@@ -6,9 +6,77 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 31 Jan 2017 01:12:24 -0500</pubDate>
-    <lastBuildDate>Tue, 31 Jan 2017 01:12:24 -0500</lastBuildDate>
+    <pubDate>Tue, 31 Jan 2017 01:20:50 -0500</pubDate>
+    <lastBuildDate>Tue, 31 Jan 2017 01:20:50 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Linux Tip of the Day inotifywait</title>
+        <description>&lt;p&gt;My podcast listening, which has always been on the nerdy side, has recently taken a trip down the far, far nerdier rabbit hole.  Whereas I used to listen to things with at least some connection to pop culture such as &lt;a href=&quot;http://majorspoilers.com/category/podcast/&quot;&gt;Major Spoilers&lt;/a&gt;, I now find myself listening to the &lt;a href=&quot;http://ubuntupodcast.org/&quot;&gt;Ubuntu Podcast&lt;/a&gt;, a British podcast covering the Ubuntu community.  It was there that I learned about inotifywait and I had a feeling it was brilliant.  I tried it out and it is brilliant!&lt;/p&gt;
+
+&lt;p&gt;To install on Linux, use:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;sudo apt-get install inotify-tools&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Since inotify is a Linux api this doesn’t exist for OSX but you can use an open source tool called notifywait available &lt;a href=&quot;https://github.com/ggreer/fsevents-tools&quot;&gt;here&lt;/a&gt;.  Alternatively there is fswatch which can be easily installed with &lt;strong&gt;brew fswatch&lt;/strong&gt;.  Please note that I didn’t try either.&lt;/p&gt;
+
+&lt;p&gt;The inotifywait utility takes a few command line parameters and then tells you all file accesses that go on in that directory.  This sounds a bit obscure but here’s how I tested it last night:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;inotifywait ~ -mr&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This tells inotifywait to run on the ~ or home directory and monitor it forever (the m flag) and r tells it to monitor recursively on all directories below the current.&lt;/p&gt;
+
+&lt;p&gt;Here’s an example of its output once I set it monitoring in one shell window on a server after I logged into the same box in a different shell window and then touched the file foo.txt:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/inotifywait.png&quot; alt=&quot;inotifywait.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The really interesting here is intellectually I know that the bash prompt initialization pattern is .profile =&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;Not only is this useful for sysadmin / devops work but I can see it being highly useful for application developers. Sometimes the files you are touching or your io access patterns are not always apparent.  Using inotifywait makes them obvious.&lt;/p&gt;
+
+&lt;p&gt;Different events can even be monitored with the –e flag.  Here’s what you can monitor for:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Events:
+	access		file or directory contents were read
+	modify		file or directory contents were written
+	attrib		file or directory attributes changed
+	close_write	file or directory closed, after being opened in
+	           	writable mode
+	close_nowrite	file or directory closed, after being opened in
+	           	read-only mode
+	close		file or directory closed, regardless of read/write mode
+	open		file or directory opened
+	moved_to	file or directory moved to watched directory
+	moved_from	file or directory moved from watched directory
+	move		file or directory moved to or from watched directory
+	create		file or directory created within watched directory
+	delete		file or directory deleted within watched directory
+	delete_self	file or directory was deleted
+	unmount		file system containing file or directory unmounted
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Tue, 31 Jan 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/linux/2017/01/31/linux-tip-of-the-day-inotifywait.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/linux/2017/01/31/linux-tip-of-the-day-inotifywait.html</guid>
+        
+        <category>linux_tip_of_the_day</category>
+        
+        <category>linux</category>
+        
+        <category>git</category>
+        
+        <category>sys_admin</category>
+        
+        
+        <category>linux</category>
+        
+      </item>
     
       <item>
         <title>Rails New with .</title>
@@ -303,94 +371,6 @@
         
         
         <category>linux</category>
-        
-      </item>
-    
-      <item>
-        <title>Choosing Account Software For Your Freelance Life</title>
-        <description>&lt;p&gt;I’m in the process of gearing up for a return to the freelance lifestyle.  One thing I’ve never done, since I started as a real freelancer, is actually use accounting software.  I know, I know, I know – bad decision.  Well accounting and taxes are among my least favorite things in life so that’s why I’ve justified it but that’s kind of being a child about it.  Ignoring something does not make it better so one of my 2017 resolutions was “Deal with Accounting / Taxes”.&lt;/p&gt;
-
-&lt;h1 id=&quot;requirements&quot;&gt;Requirements&lt;/h1&gt;
-
-&lt;p&gt;Here are my requirements for an accounting tool for freelancers in 2017:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;cloud based / hosted&lt;/li&gt;
-  &lt;li&gt;ability to bill clients&lt;/li&gt;
-  &lt;li&gt;ability to record an invoice but NOT actually send it (I don’t necessarily want to lost X% to credit card processing)&lt;/li&gt;
-  &lt;li&gt;mobile app (ios)&lt;/li&gt;
-  &lt;li&gt;ability to make an invoice&lt;/li&gt;
-  &lt;li&gt;ability to record a client&lt;/li&gt;
-  &lt;li&gt;time tracking is possibly desirable but unclear&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;options&quot;&gt;Options&lt;/h1&gt;
-
-&lt;p&gt;I looked at three options:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Quicken&lt;/li&gt;
-  &lt;li&gt;Hurdlr&lt;/li&gt;
-  &lt;li&gt;FreshBooks&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://fuzzyblog.io/blog/assets/accounting_software.png&quot; alt=&quot;accounting_software.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;quickbooks&quot;&gt;QuickBooks&lt;/h2&gt;
-
-&lt;p&gt;Like, I suspect every other entrepreneur, I’ve used Quick Books in the past so it was my first stop along this path.  Sadly, for what should be such a strong product, I rejected it almost immediately.  The version I was examining was the very low end, $10 / month version, &lt;a href=&quot;https://quickbooks.intuit.com/var/pricing/&quot;&gt;Quick Books Self Employed&lt;/a&gt; - left most option.  Here’s what I found wrong with it:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;As a web product it is incredibly slow (to amuse myself, I tried holding my breath during page refreshes; sometimes I wasn’t able to)&lt;/li&gt;
-  &lt;li&gt;It is very, very limited. For example there wasn’t a way to cleanly track clients.&lt;/li&gt;
-  &lt;li&gt;It felt like it had been designed poorly at best.  My guess is that the product manager has never been a freelancer him or herself and it really, really shows.&lt;/li&gt;
-  &lt;li&gt;Just the fact that googling for QuickBooks self employed takes me to a &lt;a href=&quot;https://search2.quickbooks.com/get-quickbooks?gclid=Cj0KEQiAwrbEBRDqxqzMsrTGmogBEiQAeSE6ZQUoreXe38AFn6v2IcG49NYFmZBf527SNNUwB5lqGRsaAo5t8P8HAQ&amp;amp;s_kwcid=AL!2419!3!147086503826!p!!g!!quicken&amp;amp;ef_id=WIkw5QAABM0ZEIG4:20170129112821:s&quot;&gt;page where it isn’t even listed&lt;/a&gt; tells me that my business isn’t a priority for Intuit&lt;/li&gt;
-  &lt;li&gt;It is strong on the traditional tax side of things and that’s a plus but account software should help me run my business not just my taxes.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;hurdlr&quot;&gt;Hurdlr&lt;/h2&gt;
-
-&lt;p&gt;I found &lt;a href=&quot;https://hurdlr.com/&quot;&gt;Hurdlr&lt;/a&gt; somewhere and I’m intrigued by the promise and absolutely terrified by the reality.  This is a brand new app / website seemingly and they’re not even charging yet.  Sure I can use it for free – and what happens when they fail?  Can I get my data back?  Can I trust them with passwords to my bank account?  Will they stay in business?  They do a good job of talking the talk but I’m not going thru this selection process again.  I hate to not risk my efforts on a startup given my predilections for startups but this is just too risky.&lt;/p&gt;
-
-&lt;h2 id=&quot;freshbooks&quot;&gt;FreshBooks&lt;/h2&gt;
-
-&lt;p&gt;Surprisingly to me I ended up picking &lt;a href=&quot;https://www.freshbooks.com/&quot;&gt;FreshBooks&lt;/a&gt; as my choice.  Here’s how it matched up against my criteria:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;cloud based / hosted - &lt;strong&gt;YES&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;ability to bill clients - &lt;strong&gt;YES&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;ability to record an invoice but NOT actually send it - &lt;strong&gt;YES&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;mobile app (ios) - &lt;strong&gt;YES&lt;/strong&gt;.  Please note that you want the Cloud Accounting app.&lt;/li&gt;
-  &lt;li&gt;ability to make an invoice - &lt;strong&gt;YES&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;ability to record a client - &lt;strong&gt;YES&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;time tracking is possibly desirable but unclear - &lt;strong&gt;YES&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I’ve had one problem so far - expense import brought in far more than I wanted but Support helped me out and did a great job.&lt;/p&gt;
-
-&lt;p&gt;I have the app on my phone; my wife has it on her phone and for the first time since I’ve been a freelancer, I have a heads up view as to the money that’s coming in.  Honestly it feels fantastic.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/freshbooks_dashboard.png&quot; alt=&quot;freshbooks_dashboard.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Note: Actual number above removed.&lt;/p&gt;
-
-&lt;h1 id=&quot;further-reading&quot;&gt;Further Reading&lt;/h1&gt;
-
-&lt;p&gt;While FreshBooks was right for me, you may need more information.  I found very good info on the &lt;a href=&quot;http://www.carefulcents.com/&quot;&gt;CarefulCents.com&lt;/a&gt; site.&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 29 Jan 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/freelance/2017/01/29/choosing-account-software-for-your-freelance-life.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/freelance/2017/01/29/choosing-account-software-for-your-freelance-life.html</guid>
-        
-        <category>startup</category>
-        
-        <category>freelance</category>
-        
-        <category>accounting</category>
-        
-        
-        <category>freelance</category>
         
       </item>
     
