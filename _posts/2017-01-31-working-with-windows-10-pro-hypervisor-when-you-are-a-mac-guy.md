@@ -2,7 +2,7 @@
 layout: post
 title: Working with Windows 10 Pro HyperVisor When You Are a Mac Guy
 category: devops
-tags; ["devops", "sysadmin", "windows"]
+tags: ["devops", "sysadmin", "windows"]
 description: Ever need to backup machines using a virtual machine as the mechanism?  Here's how.
 image: http://fuzzyblog.io/blog/assets/hyperv_manager.jpg
 ---
