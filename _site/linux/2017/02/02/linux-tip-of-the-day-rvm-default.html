@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>_drafts/gitlab-and-the-danger-of-short-names.md</title>
-  <meta name="description" content="">
+  <title>Linux Tip of the Day rvm --default</title>
+  <meta name="description" content="I normally don’t intersect Ruby and Linux Tip of the Day but I just used this and it is really, really useful. The rvm or Ruby Version Manager tool manages y...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/2017/02/02/drafts-gitlab-and-the-danger-of-short-names-md.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/linux/2017/02/02/linux-tip-of-the-day-rvm-default.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- twitter specific head tags -->
@@ -19,12 +19,11 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="_drafts/gitlab-and-the-danger-of-short-names.md">
+  <meta name="twitter:title" content="Linux Tip of the Day rvm --default">
 
   
     <meta name="twitter:description"
-      content="
-">
+      content="I normally don’t intersect Ruby and Linux Tip of the Day but I just used this and it is really, really useful. The rvm or Ruby Version Manager tool manages your installed rubies makes ruby developm...">
   
 
   
@@ -114,12 +113,34 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">_drafts/gitlab-and-the-danger-of-short-names.md</h1>
+    <h1 class="post-title" itemprop="name headline">Linux Tip of the Day rvm --default</h1>
     <p class="I'll"><time datetime="2017-02-02T00:00:00-05:00" itemprop="datePublished">Feb 2, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    
+    <p>I normally don’t intersect Ruby and Linux Tip of the Day but I just used this and it is really, really useful. The rvm or Ruby Version Manager tool manages your installed rubies makes ruby development, well, just plain easier.</p>
+
+<p>To install rvm on Linux, use:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+sudo \curl -sSL https://get.rvm.io | bash -s stable --ruby
+</code></pre>
+</div>
+
+<p>A real problem though is you often don’t know what Ruby you’re going to get when you start a new terminal window.  You can solve this with:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>rvm --default use 2.3.1
+</code></pre>
+</div>
+
+<p>You can find your available rubies with:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>rvm list rubies
+</code></pre>
+</div>
+
+<p>And then use one of the installed rubies as the argument to rvm –default use.</p>
+
 
   </div>
   
