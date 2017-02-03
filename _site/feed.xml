@@ -6,8 +6,8 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 03 Feb 2017 16:52:33 -0500</pubDate>
-    <lastBuildDate>Fri, 03 Feb 2017 16:52:33 -0500</lastBuildDate>
+    <pubDate>Fri, 03 Feb 2017 16:55:16 -0500</pubDate>
+    <lastBuildDate>Fri, 03 Feb 2017 16:55:16 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -140,6 +140,65 @@ Saving to: 'index.html.12'
       </item>
     
       <item>
+        <title>Linux Tip Of The Day - Using rsync for Backup</title>
+        <description>&lt;p&gt;Once upon a time when I had complex file copying to handle, I used xcopy.  It has been a lot of years since DOS and xcopy and as of late, I reach for rsync.  Yesterday I had the situation where I wanted to make a command line which would take the contents of two drives and backup from drive A to drive B – full copy.  It was enough files that, well, I just wouldn’t trust any gui operation with it (hundreds of gigs if not a terabyte).&lt;/p&gt;
+
+&lt;p&gt;This is a problem that I’ve tried before and actually failed at so I grabbed &lt;a href=&quot;http://www.nickjanetakis.com/blog/&quot;&gt;Nick&lt;/a&gt; via &lt;a href=&quot;http://hangouts.google.com/&quot;&gt;Google Hangouts&lt;/a&gt; and he and I whipped it together easily.  We started with:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;rsync –help&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;And then we went thru the options one by one.  I’ve given the example with the long form versions of the arguments so it is a little bit more understandable:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;rsync –archive –recursive –inplace –progress /Volumes/Plex/ /Volumes/PlexBackup&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I normally don’t intersect Ruby and Linux Tip of the Day but I just used this and it is really, really useful. The rvm or Ruby Version Manager tool manages your installed rubies makes ruby development, well, just plain easier.&lt;/p&gt;
+
+&lt;p&gt;To install rvm on Linux, use:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+sudo \curl -sSL https://get.rvm.io | bash -s stable --ruby
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To install on OSX, you can use the commands above but generally omit the sudo (depending on your system).&lt;/p&gt;
+
+&lt;p&gt;A real problem with RVM is you often don’t know what Ruby you’re going to get when you start a new terminal window.  You can solve this with:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rvm --default use 2.3.1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You can find your available rubies with:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rvm list rubies
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And then use one of the installed rubies as the argument to rvm –default use.&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 03 Feb 2017 12:13:17 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/linux/2017/02/03/linux-tip-of-the-day-using-rsync-for-backup.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/linux/2017/02/03/linux-tip-of-the-day-using-rsync-for-backup.html</guid>
+        
+        <category>linux</category>
+        
+        <category>sysadmin</category>
+        
+        <category>devops</category>
+        
+        <category>backup</category>
+        
+        
+        <category>linux</category>
+        
+      </item>
+    
+      <item>
         <title>Redirecting HTTP to HTTPS with AWS and ELB</title>
         <description>&lt;p style=&quot;text-align:center&quot;&gt;-or- A Tale of Four Redirects&lt;/p&gt;
 
@@ -222,65 +281,6 @@ RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
         
         
         <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>Linux Tip Of The Day - Using rsync for Backup</title>
-        <description>&lt;p&gt;Once upon a time when I had complex file copying to handle, I used xcopy.  It has been a lot of years since DOS and xcopy and as of late, I reach for rsync.  Yesterday I had the situation where I wanted to make a command line which would take the contents of two drives and backup from drive A to drive B – full copy.  It was enough files that, well, I just wouldn’t trust any gui operation with it (hundreds of gigs if not a terabyte).&lt;/p&gt;
-
-&lt;p&gt;This is a problem that I’ve tried before and actually failed at so I grabbed &lt;a href=&quot;http://www.nickjanetakis.com/blog/&quot;&gt;Nick&lt;/a&gt; via &lt;a href=&quot;http://hangouts.google.com/&quot;&gt;Google Hangouts&lt;/a&gt; and he and I whipped it together easily.  We started with:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;rsync –help&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;And then we went thru the options one by one.  I’ve given the example with the long form versions of the arguments so it is a little bit more understandable:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;rsync –archive –recursive –inplace –progress /Volumes/Plex/ /Volumes/PlexBackup&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;I normally don’t intersect Ruby and Linux Tip of the Day but I just used this and it is really, really useful. The rvm or Ruby Version Manager tool manages your installed rubies makes ruby development, well, just plain easier.&lt;/p&gt;
-
-&lt;p&gt;To install rvm on Linux, use:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-sudo \curl -sSL https://get.rvm.io | bash -s stable --ruby
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;To install on OSX, you can use the commands above but generally omit the sudo (depending on your system).&lt;/p&gt;
-
-&lt;p&gt;A real problem with RVM is you often don’t know what Ruby you’re going to get when you start a new terminal window.  You can solve this with:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rvm --default use 2.3.1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;You can find your available rubies with:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rvm list rubies
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And then use one of the installed rubies as the argument to rvm –default use.&lt;/p&gt;
-
-</description>
-        <pubDate>Fri, 03 Feb 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/linux/2017/02/03/linux-tip-of-the-day-using-rsync-for-backup.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/linux/2017/02/03/linux-tip-of-the-day-using-rsync-for-backup.html</guid>
-        
-        <category>linux</category>
-        
-        <category>sysadmin</category>
-        
-        <category>devops</category>
-        
-        <category>backup</category>
-        
-        
-        <category>linux</category>
         
       </item>
     
