@@ -22,7 +22,7 @@ Here was my first attempt:
     RewriteCond %{HTTPS} off
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI}
     
-This would actually work but our Apache isn't actually serving https at all.  When you use an AWS ELB (Elastic Load Balancer) in conjunction with the ACM (AWS Certificate Manager) then your web server talks http on port 80 and the ELB acts as an intermediary translating it to and from https.  If you're lucky with this redirect then your site may, possibly work.  If you're unlucky then you'll get stuck in an infinite loop of http to https to http and so on.  
+This would actually work but our Apache isn't actually serving https at all.  When you use an AWS ELB (Elastic Load Balancer) in conjunction with the ACM (AWS Certificate Manager) then your web server talks http on port 80 and the ELB acts as an intermediary translating it to and from https.  If you're lucky with this redirect then your site may, possibly work.  If you're unlucky then you'll get stuck in an infinite loop of http to https to http and so on.  [Source](http://stackoverflow.com/questions/16200501/http-to-https-apache-redirection)
 
 # Redirect 2
 
