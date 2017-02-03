@@ -4,7 +4,7 @@ title: Redirecting HTTP to HTTPS with AWS and ELB
 category: aws
 tags: ["aws", "apache", "elb", "http", "https"]
 ---
-<p style="text-align:center">-or- A Tale of Four Redirects</p>
+<p style="text-align:center">A Tale of Four Redirects</p>
 
 Every technologist worth his or her salt has an internal list of "most hated technologies".  These are the things that no matter what they do always, always give them trouble.  Whether its because the technology in question is actually hard, a mental block or just plain 'ol bad luck, we all have them.  For me it is always, always [mod_rewrite](http://httpd.apache.org/docs/current/mod/mod_rewrite.html).  [Apache's](http://httpd.apache.org/) mod_rewrite is just plain magic -- when it works (and it can always be made to work), it does in place url transformations that let you change your entire technology stack but let Google keep on serving those old urls.  It really is outstanding.  But Great Ghu does it ever give me trouble at times.
 
