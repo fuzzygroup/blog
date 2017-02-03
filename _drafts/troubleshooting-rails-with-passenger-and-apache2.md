@@ -17,3 +17,9 @@ https://www.phusionpassenger.com/library/walkthroughs/deploy/ruby/aws/apache/oss
 I'm going to make a pretty strong, very general statement about Passenger based on using it for almost a decade:
 
 > If you find something wrong, it is generally you, not Passenger.  
+
+
+https://www.phusionpassenger.com/library/admin/apache/overall_status_report.html
+https://www.phusionpassenger.com/library/admin/apache/overall_status_report.html
+https://www.phusionpassenger.com/library/walkthroughs/deploy/ruby/aws/apache/oss/deploy_updates.html
+https://www.phusionpassenger.com/library/config/apache/optimization/

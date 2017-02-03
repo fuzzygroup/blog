@@ -8,7 +8,7 @@ tags: ["aws", "apache", "elb", "http", "https"]
 
 Every technologist worth his or her salt has an internal list of "most hated technologies".  These are the things that no matter what they do always, always give them trouble.  Whether its because the technology in question is actually hard, a mental block or just plain 'ol bad luck, we all have them.  For me it is always, always [mod_rewrite](http://httpd.apache.org/docs/current/mod/mod_rewrite.html).  [Apache's](http://httpd.apache.org/) mod_rewrite is just plain magic -- when it works (and it can always be made to work), it does in place url transformations that let you change your entire technology stack but let Google keep on serving those old urls.  It really is outstanding.  But Great Ghu does it ever give me trouble at times.
 
-Note: For a basic tutorial on mod_rewrite, please see this [blog post](http://fuzzyblog.io/blog/2017-02-03-apache2-and-mod-rewrite.html).
+Note: For a basic tutorial on mod_rewrite, please see this [blog post](http://fuzzyblog.io/blog/apache/2017/02/03/apache2-and-mod-rewrite.html).
 
 The situation in question was that I had a client with Rails being served by Apache / [Passenger](https://www.phusionpassenger.com/) (my very **favorite** Rails deployment tool) and the client wanted, correctly, to convert all http based url requests to https.  Here's the transition of the redirects one by one.
 
