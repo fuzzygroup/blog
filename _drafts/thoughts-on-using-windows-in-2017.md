@@ -11,3 +11,8 @@ It's nice that they've moved devs out of the ghetto and I admire the work people
 https://news.ycombinator.com/item?id=13517288
 
 https://news.ycombinator.com/item?id=13515962
+
+http://www.economist.com/news/science-and-technology/21715831-why-so-many-pc-users-are-refusing-upgrade-windows-10-woes-windows-10
+
+It used to be that only free software came with advertising; users paid a fee, if they chose to do so, to get the software free of advertising. Microsoft charges top dollar for Windows 10 ($120 or $200, depending on the edition) and now wants to bombard users with sales pitches to boot—without so much as by your leave, let alone the option to turn the nuisance off. Despite their idiosyncrasies, Macintosh and Linux have never looked so attractive.
+
