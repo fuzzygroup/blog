@@ -197,6 +197,180 @@ I run two machines side by side, an early 2014 MacBook Air running El Capitan an
 
 What the hell Apple?  I mean seriously -- Mail is the damn issue?  I'm going to go ahead and pull Apple Mail from the Dock so I'm not tempted to use it anymore.  I can revert back to browser based gmail I suppose but come on -- I've never thought that Sierra was a good release ever since I burned half a man day helping [Dv](http;//dasari.me) just get Rails development back on track after his upgrade to Sierra but this is ridiculous.
 
+And here's another one only 10 days later:
+
+    Anonymous UUID:       0BED44E4-EF15-166F-0516-B0506E8AF4A8
+
+    Sun Feb  5 05:28:55 2017
+
+    *** Panic Report ***
+    Machine-check capabilities: 0x0000000001000c07
+     family: 6 model: 61 stepping: 4 microcode: 33
+     signature: 0x306d4
+     Intel(R) Core(TM) i7-5557U CPU @ 3.10GHz
+     7 error-reporting banks
+    Processor 0: IA32_MCG_STATUS: 0x0000000000000005
+     IA32_MC1_STATUS(0x405): 0xbf80000000000114
+     IA32_MC1_ADDR(0x406):   0x00000003ac1c3b40
+     IA32_MC1_MISC(0x407):   0x0000000000000086
+    Processor 1: IA32_MCG_STATUS: 0x0000000000000005
+     IA32_MC1_STATUS(0x405): 0xbf80000000000114
+     IA32_MC1_ADDR(0x406):   0x00000003ac1c3b40
+     IA32_MC1_MISC(0x407):   0x0000000000000086
+    panic(cpu 3 caller 0xffffff8017e06a25): "Machine Check at 0x0000000109c46e9b, registers:\n" "CR0: 0x0000000080010033, CR2: 0x00007fc690552000, CR3: 0x000000031cbca1d8, CR4: 0x00000000003627e0\n" "RAX: 0x0000000000000000, RBX: 0x0000000000000000, RCX: 0x000000000000006f, RDX: 0x00007f818af12c40\n" "RSP: 0x000070000811a0e0, RBP: 0x000070000811a140, RSI: 0x0000000109ea8a00, RDI: 0x0000000109913000\n" "R8:  0x0000000000000006, R9:  0x000000000000012c, R10: 0x00007f818af00000, R11: 0x0000000000000000\n" "R12: 0x0000000109ea8a00, R13: 0x0000000000000000, R14: 0x0000000109913000, R15: 0x00007f818af00000\n" "RFL: 0x0000000000000206, RIP: 0x0000000109c46e9b, CS:  0x000000000000002b, SS:  0x0000000000000023\n" "Error code: 0x0000000000000000\n"@/Library/Caches/com.apple.xbs/Sources/xnu/xnu-3789.41.3/osfmk/i386/trap_native.c:168
+    Backtrace (CPU 3), Frame : Return Address
+    0xffffff922c4abdd0 : 0xffffff8017cf210c 
+    0xffffff922c4abe50 : 0xffffff8017e06a25 
+    0xffffff922c4abfb0 : 0xffffff8017ca3fdf 
+
+    BSD process name corresponding to current thread: ruby
+
+    Mac OS version:
+    16D32
+
+    Kernel version:
+    Darwin Kernel Version 16.4.0: Thu Dec 22 22:53:21 PST 2016; root:xnu-3789.41.3~3/RELEASE_X86_64
+    Kernel UUID: C67A8D03-DEAC-35B8-8F68-06FF7B687215
+    Kernel slide:     0x0000000017a00000
+    Kernel text base: 0xffffff8017c00000
+    __HIB  text base: 0xffffff8017b00000
+    System model name: MacBookPro12,1 (Mac-E43C1C25D4880AD6)
+
+    System uptime in nanoseconds: 114880533399128
+    last loaded kext at 105071645685855: com.apple.iokit.IOBluetoothUSBDFU	5.0.3f1 (addr 0xffffff7f9adb5000, size 12288)
+    last unloaded kext at 105463848849163: com.apple.driver.usb.AppleUSBHostCompositeDevice	1.1 (addr 0xffffff7f9ad5b000, size 28672)
+    loaded kexts:
+    org.virtualbox.kext.VBoxNetAdp	5.1.8
+    org.virtualbox.kext.VBoxNetFlt	5.1.8
+    org.virtualbox.kext.VBoxUSB	5.1.8
+    org.virtualbox.kext.VBoxDrv	5.1.8
+    com.apple.iokit.AppleBCM5701Ethernet	10.2.7
+    com.apple.filesystems.smbfs	3.1.1
+    com.apple.iokit.BroadcomBluetoothHostControllerUSBTransport	5.0.3f1
+    com.apple.filesystems.autofs	3.0
+    com.apple.driver.AudioAUUC	1.70
+    com.apple.driver.ApplePlatformEnabler	2.7.0d0
+    com.apple.driver.AGPM	110.23.14
+    com.apple.driver.X86PlatformShim	1.0.0
+    com.apple.driver.pmtelemetry	1
+    com.apple.iokit.IOUserEthernet	1.0.1
+    com.apple.iokit.IOBluetoothSerialManager	5.0.3f1
+    com.apple.Dont_Steal_Mac_OS_X	7.0.0
+    com.apple.driver.AppleOSXWatchdog	1
+    com.apple.driver.AppleGraphicsDevicePolicy	3.13.79
+    com.apple.driver.AppleUpstreamUserClient	3.6.4
+    com.apple.driver.AppleHDA	278.56
+    com.apple.driver.AppleIntelBDWGraphics	10.2.2
+    com.apple.driver.AppleLPC	3.1
+    com.apple.driver.AppleHV	1
+    com.apple.driver.AppleThunderboltIP	3.0.8
+    com.apple.driver.AppleCameraInterface	5.57.0
+    com.apple.driver.AppleSMCLMU	208
+    com.apple.driver.AppleIntelSlowAdaptiveClocking	4.0.0
+    com.apple.driver.AppleIntelBDWGraphicsFramebuffer	10.2.2
+    com.apple.driver.AppleBacklight	170.9.10
+    com.apple.driver.AppleMCCSControl	1.2.15
+    com.apple.driver.AppleUSBCardReader	404.30.1
+    com.apple.AppleFSCompression.AppleFSCompressionTypeDataless	1.0.0d1
+    com.apple.AppleFSCompression.AppleFSCompressionTypeZlib	1.0.0
+    com.apple.BootCache	40
+    com.apple.filesystems.hfs.kext	366.30.3
+    com.apple.iokit.IOAHCIBlockStorage	295.20.1
+    com.apple.driver.AppleAHCIPort	326
+    com.apple.driver.AppleTopCaseHIDEventDriver	104
+    com.apple.driver.AirPort.Brcm4360	1130.3.1a5
+    com.apple.driver.AppleSmartBatteryManager	161.0.0
+    com.apple.driver.AppleACPIButtons	5.0
+    com.apple.driver.AppleRTC	2.0
+    com.apple.driver.AppleHPET	1.8
+    com.apple.driver.AppleSMBIOS	2.1
+    com.apple.driver.AppleACPIEC	5.0
+    com.apple.driver.AppleAPIC	1.7
+    com.apple.nke.applicationfirewall	172
+    com.apple.security.quarantine	3
+    com.apple.security.TMSafetyNet	8
+    com.apple.iokit.IOEthernetAVBController	1.0.3b4
+    com.apple.driver.AppleThunderboltPCIUpAdapter	2.1.1
+    com.apple.iokit.IOBluetoothHostControllerUSBTransport	5.0.3f1
+    com.apple.iokit.IOBluetoothHostControllerTransport	5.0.3f1
+    com.apple.iokit.IOUSBUserClient	900.4.1
+    com.apple.kext.triggers	1.0
+    com.apple.iokit.IOBluetoothFamily	5.0.3f1
+    com.apple.driver.AppleSSE	1.0
+    com.apple.driver.DspFuncLib	278.56
+    com.apple.kext.OSvKernDSPLib	525
+    com.apple.iokit.IOSurface	153.3
+    com.apple.driver.AppleHDAController	278.56
+    com.apple.iokit.IOHDAFamily	278.56
+    com.apple.iokit.IOAudioFamily	205.12
+    com.apple.vecLib.kext	1.2.0
+    com.apple.driver.AppleGraphicsControl	3.13.79
+    com.apple.iokit.IOSerialFamily	11
+    com.apple.driver.X86PlatformPlugin	1.0.0
+    com.apple.driver.IOPlatformPluginFamily	6.0.0d8
+    com.apple.iokit.IOSlowAdaptiveClockingFamily	1.0.0
+    com.apple.AppleGraphicsDeviceControl	3.13.79
+    com.apple.iokit.IOAcceleratorFamily2	289.32
+    com.apple.driver.AppleBacklightExpert	1.1.0
+    com.apple.iokit.IONDRVSupport	513.1
+    com.apple.driver.AppleSMC	3.1.9
+    com.apple.driver.AppleSMBusController	1.0.14d1
+    com.apple.iokit.IOGraphicsFamily	513.1
+    com.apple.iokit.IOSCSIBlockCommandsDevice	394.30.2
+    com.apple.iokit.IOUSBMassStorageDriver	131.1.1
+    com.apple.iokit.IOSCSIArchitectureModelFamily	394.30.2
+    com.apple.driver.usb.networking	5.0.0
+    com.apple.driver.AppleThunderboltDPInAdapter	4.6.1
+    com.apple.driver.AppleThunderboltDPAdapterFamily	4.6.1
+    com.apple.driver.AppleThunderboltPCIDownAdapter	2.1.1
+    com.apple.driver.CoreStorage	540.30.1
+    com.apple.filesystems.hfs.encodings.kext	1
+    com.apple.iokit.IOAHCIFamily	288
+    com.apple.driver.AppleHIDKeyboard	197
+    com.apple.driver.AppleMultitouchDriver	368.7
+    com.apple.driver.AppleInputDeviceSupport	76.4
+    com.apple.driver.AppleHSSPIHIDDriver	49
+    com.apple.driver.AppleThunderboltNHI	4.1.8
+    com.apple.iokit.IOThunderboltFamily	6.3.3
+    com.apple.iokit.IO80211Family	1200.12.2
+    com.apple.driver.mDNSOffloadUserClient	1.0.1b8
+    com.apple.iokit.IONetworkingFamily	3.2
+    com.apple.driver.corecapture	1.0.4
+    com.apple.driver.AppleHSSPISupport	49
+    com.apple.driver.AppleIntelLpssSpiController	3.0.60
+    com.apple.driver.AppleIntelLpssGspi	3.0.60
+    com.apple.driver.AppleIntelLpssDmac	3.0.60
+    com.apple.driver.usb.AppleUSBXHCIPCI	1.1
+    com.apple.driver.usb.AppleUSBXHCI	1.1
+    com.apple.driver.usb.AppleUSBHostPacketFilter	1.0
+    com.apple.iokit.IOUSBFamily	900.4.1
+    com.apple.driver.AppleUSBHostMergeProperties	1.1
+    com.apple.driver.AppleEFINVRAM	2.1
+    com.apple.driver.AppleEFIRuntime	2.0
+    com.apple.iokit.IOHIDFamily	2.0.0
+    com.apple.iokit.IOSMBusFamily	1.1
+    com.apple.security.sandbox	300.0
+    com.apple.kext.AppleMatch	1.0.0d1
+    com.apple.driver.AppleKeyStore	2
+    com.apple.driver.AppleMobileFileIntegrity	1.0.5
+    com.apple.driver.AppleCredentialManager	1.0
+    com.apple.driver.KernelRelayHost	1
+    com.apple.iokit.IOUSBHostFamily	1.1
+    com.apple.driver.AppleBusPowerController	1.0
+    com.apple.driver.DiskImages	444.41.1
+    com.apple.iokit.IOStorageFamily	2.1
+    com.apple.iokit.IOReportFamily	31
+    com.apple.driver.AppleFDEKeyStore	28.30
+    com.apple.driver.AppleACPIPlatform	5.0
+    com.apple.iokit.IOPCIFamily	2.9
+    com.apple.iokit.IOACPIFamily	1.4
+    com.apple.kec.Libm	1
+    com.apple.kec.pthread	1
+    com.apple.kec.corecrypto	1.0
+    
+
 **Sidebar**: I just tried to look up pricing on a new iPad for one of my kids home schooling and I got "An error occurred tring to fulfill your request.  Please try again later."  Software quality really seems to be an overall problem for Apple at this point.
 
 I've now officially stopped recommending Apple hardware to people and if getting rid of mail doesn't resolve this then I'm going to seriously go down the Dell XPS running Ubuntu Mate route.
+
+And since stopping my mail client didn't get rid of this, perhaps it is time to try actually living full time with Ubuntu Mate on my NUC and see if  I can love it enough to use daily.
