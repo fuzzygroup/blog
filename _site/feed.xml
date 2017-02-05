@@ -6,9 +6,441 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 03 Feb 2017 22:41:30 -0500</pubDate>
-    <lastBuildDate>Fri, 03 Feb 2017 22:41:30 -0500</lastBuildDate>
+    <pubDate>Sun, 05 Feb 2017 05:57:40 -0500</pubDate>
+    <lastBuildDate>Sun, 05 Feb 2017 05:57:40 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Ruby Regex Performance - Scan versus Match</title>
+        <description>&lt;p&gt;I got my start with text processing using a custom version of &lt;a href=&quot;https://en.wikipedia.org/wiki/AWK&quot;&gt;Awk&lt;/a&gt;, HyperAwk, that my first company, NTERGAID, built.  What made HyperAwk unique was its ability to read not just ASCII but Word, WordPerfect, Ami and other binary structures and render them into a generic parseable format where you could look for document structures like bold facing, heading tags and the like.  We used it constantly from roughly 90 to 96 for things like “Transform every issue of &lt;a href=&quot;http://www.drdobbs.com/&quot;&gt;Dr. Dobb’s Journal&lt;/a&gt; from source file to hypertext”.  I even got a &lt;a href=&quot;http://www.drdobbs.com/web-development/the-ddj-hypertext-project/201800824?queryText=%2522Scott%2BJohnson%2522%2Bhypertext&quot;&gt;cover story&lt;/a&gt; out of it which was a huge personal win.  The engineer on the project, &lt;a href=&quot;http://gene-callahan.blogspot.com/2011/06/reference-management-software.html&quot;&gt;Gene Callahan&lt;/a&gt;, was a Unix guy surrounded by a bunch of DOS heads and he recognized that as our document recognition tasks got harder, what started as a tool, became a language.&lt;/p&gt;
+
+&lt;p&gt;Because I started with text processing from an Awk perspective, I’m a &lt;em&gt;regex kind of guy&lt;/em&gt;.  Yes I know Nokogiri and, yes, I know xpath but for simple data extraction, my goto is always a regex. And when I’m in Ruby I tend to use .scan.  It is easy, convenient and I know it cold.  But is it fast?  I don’t think I’ve ever even thought about it.  I’ve always known that there are different things like .match but I never ventured there – until now.&lt;/p&gt;
+
+&lt;p&gt;What I just found out is that .match is dramatically faster.  Here’s an example:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;tpp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;parse&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+              &lt;span class=&quot;ss&quot;&gt;:blaahs_count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;324&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+           &lt;span class=&quot;ss&quot;&gt;:blaaaargs_count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;281&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+           &lt;span class=&quot;ss&quot;&gt;:followers_count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;139&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+             &lt;span class=&quot;ss&quot;&gt;:match_seconds&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;841700000455603&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+              &lt;span class=&quot;ss&quot;&gt;:scan_seconds&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;030331000016303733&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;043&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tpp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;parse&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+              &lt;span class=&quot;ss&quot;&gt;:blaahs_count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;253&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+           &lt;span class=&quot;ss&quot;&gt;:blaaaargs_count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;66&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+             &lt;span class=&quot;ss&quot;&gt;:match_seconds&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;006&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;857000000309199&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+              &lt;span class=&quot;ss&quot;&gt;:scan_seconds&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;022454&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;99999844469&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If you do the math that’s between &lt;em&gt;3.2&lt;/em&gt; and &lt;em&gt;3.6&lt;/em&gt; times faster.  On other tests I found about a 3 fold increase in speed.  As my old friend Pete Jenney would have said &lt;strong&gt;Great Googlely Moogley!&lt;/strong&gt;  I should point out that he was saying that in 1996 long before Google even existed.&lt;/p&gt;
+
+&lt;p&gt;As with any benchmark, your results will definitely vary.  I’m working here with pretty big strings (web pages; this is a simple data extractor).&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 05 Feb 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/ruby/2017/02/05/ruby-regex-performance-scan-versus-match.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/ruby/2017/02/05/ruby-regex-performance-scan-versus-match.html</guid>
+        
+        <category>ruby</category>
+        
+        <category>regex</category>
+        
+        <category>performance</category>
+        
+        <category>ntergaid</category>
+        
+        <category>hyper_awk</category>
+        
+        <category>gene_callahan</category>
+        
+        <category>pete_jenney</category>
+        
+        
+        <category>ruby</category>
+        
+      </item>
+    
+      <item>
+        <title>Good Developer Podcasts to Listen To</title>
+        <description>&lt;p&gt;aws podcast&lt;/p&gt;
+</description>
+        <pubDate>Sat, 04 Feb 2017 15:02:26 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/02/04/good-developer-podcasts-to-listen-to.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/04/good-developer-podcasts-to-listen-to.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Understanding the Modern Bittorrent Scene</title>
+        <description>&lt;p&gt;The modern bittorent / media piracy scene is absolutely astounding.  If you’re nerdy enough, well, you don’t ever have to pay for media again and you can get a vastly better selection of media far more easily than you would expect.  In particular you don’t ever have to see a commercial again and that’s particularly wonderful.  Finally you can have full control over what your kids watch which, as a parent, is something I find invaluable.&lt;/p&gt;
+
+&lt;p&gt;Note: This document is being shared with you because you’re a friend.  Please don’t re-share.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-hardware&quot;&gt;The Hardware&lt;/h1&gt;
+
+&lt;p&gt;Here’s my recommended hardware configuration:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Modern computer; if you want a dedicated computer for this then I’m a fan of the Intel NUC - small, fast and silent with more than enough power to download and serve media&lt;/li&gt;
+  &lt;li&gt;Two hard drives (large media drives tend to fail; use rsync to synchronize all data from a master drive to a slave drive and then throw out the master when it fails, promote the slave to master and buy a new slave)&lt;/li&gt;
+  &lt;li&gt;Large screen TV&lt;/li&gt;
+  &lt;li&gt;Roku box for interfacing to your shared content and watching it on screen; you can go for the new 4K roku but I personally favor the older &lt;a href=&quot;https://www.amazon.com/Roku-Streaming-Player-Certified-Refurbished/dp/B016LBZVN2/ref=sr_1_1?s=tv&amp;amp;ie=UTF8&amp;amp;qid=1486204785&amp;amp;sr=1-1-spons&amp;amp;keywords=roku+3&amp;amp;psc=1&amp;amp;smid=A334XHS1C5Y12J&quot;&gt;Roku 3&lt;/a&gt; You should note that there are lots and lots of Roku like devices.  What you really want is one that is Plex compatible.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I favor a dedicated computer for this because a VPN can get in the way of normal computer activity.  If, for example, your VPN is locked down to say Sweden then that’s where Google perceives you to be which can cause search issues, gmail problems and more.  The computer also handles the transcoding (or at least that’s what the log messages say).  .  You can also run Plex on top of a NAS device but I have no particular experience with that.&lt;/p&gt;
+
+&lt;p&gt;If you find that you only have a limited number of HDMI ports then a &lt;a href=&quot;https://www.amazon.com/Fosmon-HD1831-3-Port-Switch-Pigtail/dp/B008GVOVK0/ref=pd_lpo_23_bs_t_2?_encoding=UTF8&amp;amp;psc=1&amp;amp;refRID=03FFEM9AM3VZYZC0016B&quot;&gt;$11 HDMI splitter&lt;/a&gt; from Amazon makes it all better.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-software&quot;&gt;The Software&lt;/h1&gt;
+
+&lt;p&gt;I’m a huge, huge fan of &lt;a href=&quot;http://www.plex.tv&quot;&gt;Plex.tv&lt;/a&gt;.  Plex is, well, iTunes for All Media with the difference that you don’t consume content in Plex on your PC – you use a TV with a box like Roku or a mobile app on your phone.  What Plex does is take in a file system hierarchy that you specify and serve it out to your devices.  If you are very sophisticated then you can even watch your Plex content when away from home thru a subscription that Plex.tv offers.&lt;/p&gt;
+
+&lt;p&gt;Plex is just a media server.  You still need to acquire media somehow.  This can be done with any of a number of tools including:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Bittorrent Client Software&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://nzbget.net/&quot;&gt;NZBGet&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://sickrage.github.io/&quot;&gt;SickRage&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://couchpota.to/&quot;&gt;CouchPotato&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/CouchPotato/CouchPotatoServer&quot;&gt;CouchPotatoServer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Additionally there area  raft of tools and utilities that make the overall process easier:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;https://github.com/seedbox/deploy&lt;/li&gt;
+  &lt;li&gt;https://github.com/seedbox/sync&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.filebot.net/&quot;&gt;FileBot&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The open source community has been impressive in its support for media consumption.  The links above have barely touched the surface.&lt;/p&gt;
+
+&lt;h1 id=&quot;avoiding-detection---vpn-or-seedbox&quot;&gt;Avoiding Detection - VPN or Seedbox&lt;/h1&gt;
+
+&lt;p&gt;There are two basic approaches to avoiding detection:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;VPN&lt;/li&gt;
+  &lt;li&gt;Seedbox&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A VPN is just that - a virtual private network - that routes your traffic away from your host so that where you go on the Internet can’t be monitored. If you are running a local bittorent client then a VPN is absolutely essential.  Be careful though - if your VPN fails then your bittorent traffic can be exposed to your ISP and you’ll likely get a cease and desist letter.  If you use a dedicated computer for media then you really, really want a VPN that:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;starts on boot&lt;/li&gt;
+  &lt;li&gt;shuts down your Internet connection if the VPN fails&lt;/li&gt;
+  &lt;li&gt;requires NO manual action on startup (MullVad, on OSX, requires you to always enter a sudo password and this stops it from launching automatically)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A seedbox is a dedicated Internet host who generally provides a VPN, web based torrenting software (ruTorrent normally) and an instance where your content can be torrented.  In this case the torrenting happens NOT on your computer but on an instance in the cloud, often in a non-US jurisdiction.  Then, after the files have been pulled into your cloud instance, you can FTP them down to your computer (or watch them from the cloud but I’ve never done that).  &lt;a href=&quot;http://https://torrentfreak.com/&quot;&gt;Seedboxes.cc&lt;/a&gt; has worked great for me but choose one according to your needs.&lt;/p&gt;
+
+&lt;p&gt;Seedboxes are astonishingly fast.  The days of bittorrent taking hours are long gone – a modern 700 meg movie download might take as little as 5 minutes.&lt;/p&gt;
+
+&lt;p&gt;For information on choosing seedboxes, see the [Reddit SeedBox thread](https://www.reddit.com/r/seedboxes/.&lt;/p&gt;
+
+&lt;h1 id=&quot;media-sources&quot;&gt;Media Sources&lt;/h1&gt;
+
+&lt;p&gt;There are a number of ways that media can be acquired:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Bittorrent in which case ThePirateBay is still a huge factor&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Usenet; Here’s a &lt;a href=&quot;https://www.codecguide.com/usenet_tutorial.htm&quot;&gt;general usenet tutorial&lt;/a&gt;  Usenet vendors include:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;http://www.supernews.com/&quot;&gt;SuperNews&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;http://www.giganews.com/&quot;&gt;GigaNews&lt;/a&gt; (includes VPN)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A general tutorial on downloading with Usenet is &lt;a href=&quot;https://paulstamatiou.com/how-to-download-with-newsgroups/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://torrentfreak.com/&quot;&gt;News on Torrenting&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Sat, 04 Feb 2017 10:31:10 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/02/04/understanding-the-modern-bittorrent-scene.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/04/understanding-the-modern-bittorrent-scene.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>How to Succeed at a Side Project</title>
+        <description>&lt;p&gt;I have started, by my own metrics, well over 20 side projects since I entered the Rails world.  That’s at least 2 a year, sometimes more.  I’ve just launched Hyde in its first, albeit free, MVP stage.  I’ve been working on this, every single day, since December 27, 2016 when I decided to get serious.  Here’s how I did it.&lt;/p&gt;
+
+&lt;h1 id=&quot;realize-that-your-paying-job-is-only-40-hours--week&quot;&gt;Realize that Your Paying Job is Only 40 Hours / Week&lt;/h1&gt;
+
+&lt;p&gt;This was the critical epiphany for me.  I wrote my side project so far while I had a full time gig.  But as my wife helpfully pointed out to me - “You want to do this and you’re spending more time than you are actually paid for on someone else’s thing – work your 40 hours and spend all your other time on the side project”.  She was right and I have.&lt;/p&gt;
+
+&lt;p&gt;Work culture, at least in America, has gotten so bizarre where people now define themselves entirely by their job and they think nothing of working around the clock.  There’s no need for that.  As a full time employee you are paid for 40 hours / week (generally).  If you’re working more than 40 hours per week then you’re effectively lowering your hourly rate and giving your employer &lt;strong&gt;free money&lt;/strong&gt;.  Given that most employers don’t see fit to giving you free money, well, think about it.&lt;/p&gt;
+
+&lt;h1 id=&quot;establish-a-schedule-give-side-project-your-best-time&quot;&gt;Establish a Schedule; Give Side Project Your Best Time&lt;/h1&gt;
+
+&lt;p&gt;I think most software engineers have natural rhythms.  For me my best time is the quiet hours at the beginning of the day.  From the moment I wake up until my actual (paid) work day starts, I work on side project.  So I normally rise around 3 am which gets me anywhere from 1 to 4 hours on side project every single day.  Your schedule will likely vary – hopefully you’re not up pre dawn like I am – but figure out a repeatable schedule where you can give your best time to your side project.&lt;/p&gt;
+
+&lt;h1 id=&quot;write-code-every-single-day&quot;&gt;Write Code Every Single Day&lt;/h1&gt;
+
+&lt;p&gt;I’ve written code every single day since I started on this.  On days where I’m blocked I write something.  There’s a lot of infrastructure if I’m going to write this side project in a scalable way without killing myself down the road so I think I’ve actually spent more time there than I have on the features.  That’s ok – personally the real technical challenge here is in the infrastructure.&lt;/p&gt;
+
+&lt;p&gt;And, if you don’t like coding enough to write code for a side project every single day, well, a side project isn’t for you.  I’m sorry if that’s harsh but I think that’s the reality.&lt;/p&gt;
+
+&lt;h1 id=&quot;take-a-laptop-everywhere&quot;&gt;Take a Laptop Everywhere&lt;/h1&gt;
+
+&lt;p&gt;If you’re doing a side project then its really important to take advantage of what I have always referred to as interstitial time – the time between times.  For example I wrote UrlCommon.is_valid? which validates whether or not the user entered a valid url while watching my son play basketball at an Indianapolis Pacers Junior training thing.  Doubt me?  Here’s the YouTube video!&lt;/p&gt;
+
+&lt;p&gt;Any modern laptop should be small enough and light enough to go with you always.  I have a go bag with everything I need to code successfully whether in the car while waiting for the kid to come home from the bus, taking my wife to the store, etc.  Every minute counts.&lt;/p&gt;
+
+&lt;h1 id=&quot;minimize-costs-ruthlessly&quot;&gt;Minimize Costs Ruthlessly&lt;/h1&gt;
+
+&lt;p&gt;Like a lot of us, when we work for a funded startup, I use all kind of services.  For a side project, &lt;strong&gt;Nope&lt;/strong&gt;!  Every dollar counts so the only “service” I use is my $7 / month paid github account.  Not airbrake / hoptoad / dockerhub / etc.&lt;/p&gt;
+
+&lt;h1 id=&quot;take-a-paper-notebook-everywhere&quot;&gt;Take a Paper Notebook Everywhere&lt;/h1&gt;
+
+&lt;p&gt;The best tool I’ve had in developing this has been this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/spidey_notebook.png&quot; alt=&quot;spidey_notebook.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Paper and pen is a superior thinking tool than just about anything else.  This notebook has gone everywhere with me and the pages are filled with scrawls about features, marketing, naming, architecture diagrams, plans how to minimize cloud hosting costs, etc.  It is small enough that it fits into the pockets on most of the cargo shorts I wear everywhere (yes, even in March as I write this, I’m still in shorts).&lt;/p&gt;
+
+&lt;p&gt;If you don’t write it down, at some point, you’re going to forget it.  Don’t make that mistake.  I wrote more about &lt;a href=&quot;http://fuzzyblog.io/blog/software_engineering/2016/11/19/the-engineer-s-design-notebook-or-what-s-in-the-notebook-scott.html&quot;&gt;Design Notebooks&lt;/a&gt; back in November.&lt;/p&gt;
+
+&lt;h1 id=&quot;recognize-your-own-failings&quot;&gt;Recognize Your Own Failings&lt;/h1&gt;
+
+&lt;p&gt;Like most people I have serious failings.  From a technical perspective I tend to not treat data validity as a significant enough issue.  From a business perspective I pay more attention to the product than the revenues and the costs.  Neither of these is acceptable and I strongly believe that a side project should make you better at what you do so use your side project as a way of addressing your own failings.  Here’s an example of one of the first bits of Hyde that I implemented – I call it Revenues &amp;amp; Costs:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/hyde_revenues_and_costs.png&quot; alt=&quot;hyde_revenues_and_costs.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Yep - I wrote an accounting dashboard.  Why?  Well I’m going to pay a lot more attention to revenues and costs if I like / understand the tool which tracks them.&lt;/p&gt;
+
+&lt;h1 id=&quot;recognize-that-writing-content-is-part-of-it&quot;&gt;Recognize that Writing Content is Part of It&lt;/h1&gt;
+
+&lt;p&gt;There have been days where I did nothing but write the contact page and the about page.  And about 20 other pages that aren’t yet visible (sorry; the cat isn’t fully out of the bag yet).  Any side project isn’t just the code – its &lt;strong&gt;everything&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;give-something-back&quot;&gt;Give Something Back&lt;/h1&gt;
+
+&lt;p&gt;At this stage Hyde is a non revenue producing side project with only a free MVP released.  But, even so, I’ve already released something as &lt;a href=&quot;http://github.com/fuzzygroup/sync-dot-rake&quot;&gt;open source&lt;/a&gt;.  I could talk about karma, how we’re all reliant on open source and should morally give somethign back or some other drivel.  Here’s a simple fact - giving stuff back gets you attention.  Getting attention to a side project is hard and giving something back is easy.  Think of giving something back as &lt;strong&gt;marketing&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;recognize-when-youre-in-the-weeds&quot;&gt;Recognize When You’re in the Weeds&lt;/h1&gt;
+
+&lt;p&gt;I cook quite a bit and one term I’ve adopted from the professional cooking world is “being in the weeds”.  This refers to when you’re swamped with orders and can’t see the forest for the trees.  This is all too common in technology.  A few weeks ago I had the brilliant idea – write my own Rails generators to create some specific types of classes that I use a lot.  Well, an hour later, I was &lt;strong&gt;nowhere&lt;/strong&gt;.  I’ve even done this before but Rails 5 has changed things and I was just plain stuck.  I made the realization that either my only goal for today was going to be “make some progress on a generator” or I should &lt;strong&gt;stop cold&lt;/strong&gt; and go back to features.&lt;/p&gt;
+
+&lt;h1 id=&quot;treat-it-professionally&quot;&gt;Treat it Professionally&lt;/h1&gt;
+
+&lt;p&gt;I have a side project which has only barely launched.  A month and five days into it there were 122 issues in Github and 3 milestones.  Just because its a side project doesn’t mean that you don’t track bugs, do project planning, etc.  All of those things that your Product Manager normally does for you?  Guess what – you get to do them now!&lt;/p&gt;
+
+&lt;h1 id=&quot;dont-stress-about-domain-name-product-name-marketing&quot;&gt;Don’t Stress About Domain Name, Product Name, Marketing&lt;/h1&gt;
+
+&lt;p&gt;Here’s the sad truth about side projects:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Most don’t amount to anything&lt;/li&gt;
+  &lt;li&gt;Most never get finished&lt;/li&gt;
+  &lt;li&gt;Few even get launched&lt;/li&gt;
+  &lt;li&gt;Of the few that get launched, even fewer actually ever produce a dime in revenue&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So why, oh dear lord, why are you even worrying about domain name, product name, marketing, etc.  &lt;strong&gt;JUST WRITE CODE / GET IT DONE !&lt;/strong&gt;  If you write code then maybe you’ll be lucky enough to get to this stage.  Domain names can be changed, product names can be changed, marketing can be figured out.  If you want to product yourself from the impact of a name change then store the product name in an internal constant and always reference it from the contant.  Hell I have a whole file of marketing related constants since I &lt;strong&gt;hate&lt;/strong&gt; rewriting stuff.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; A side project might be code.  Or it might be an online course.  Or even a blog post.  That’s why I added “GET IT DONE” above next to “JUST WRITE CODE”.&lt;/p&gt;
+
+&lt;h1 id=&quot;find-an-accountability-partner&quot;&gt;Find an Accountability Partner&lt;/h1&gt;
+
+&lt;p&gt;I’m writing this at 5:10 am and I’ve been up and at my desk since 2:33 am – when you’re trying to establish a new habit, a useful technique is to find an accountability partner.  I have one friend who is also trying to get something new going and so every day, at 5 pm, I text him “Here’s what I got done on my side project today: …”.  Its usually a bulleted list.  Sometimes there is one item. Sometimes there are 10+ items.  Your spouse might be your accountability partner – or not.  In my case, I prefer not use my spouse since if I do something glaringly wrong in the code, she’s not in a position to challenge me on it whereas this friend is.&lt;/p&gt;
+
+&lt;h1 id=&quot;find-a-helper-where-you-are-weak&quot;&gt;Find a Helper Where You Are Weak&lt;/h1&gt;
+
+&lt;p&gt;All of us technology folk, even the “full stack” folks, have one or more areas where we are weak.  In my case, my internal understanding of HTML basically stopped with HTML table tags.  I’m not proud of it but there it is.  So what I’ve done is arranged an informal learning swap with my buddy Dv where if I have issues with front end HTML / CSS / JavaScript, he’s willing to pitch in and I’m always available to help him with any back end stuff he needs.  Its not a formal arrangement by any means – we’re both busy so sometimes it might be a few days before he’s available to pitch in but that’s ok.  There’s always something to work on in a side project and there really shouldn’t ever be a block at least in the early, pre-release stage.&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 04 Feb 2017 05:24:18 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/side_project/2017/02/04/how-to-succeed-at-a-side-project.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/side_project/2017/02/04/how-to-succeed-at-a-side-project.html</guid>
+        
+        <category>side_project</category>
+        
+        <category>startup</category>
+        
+        
+        <category>side_project</category>
+        
+      </item>
+    
+      <item>
+        <title>Linux Tip of the Day - git-standup</title>
+        <description>&lt;p&gt;Over on Twitter, &lt;a href=&quot;https://twitter.com/kamranahmedse&quot;&gt;@kamranahmedse&lt;/a&gt; pointed out to me that git-standup does similar things to &lt;a href=&quot;http://fuzzyblog.io/blog/linux/2017/01/30/linux-tip-of-the-day-git-recall.html&quot;&gt;git-recall&lt;/a&gt; which I recently talked about – and more.  First off – thank you!  Based on his &lt;a href=&quot;https://github.com/kamranahmedse/git-standup&quot;&gt;github account&lt;/a&gt;, I’d assume that git-standup is his project and he’s done really nice work here.&lt;/p&gt;
+
+&lt;p&gt;In case you missed the previous post on git-recall, git-standup helps you to understand what’s been going on with a codebase by looking at commits either during the same day or a given range of days.&lt;/p&gt;
+
+&lt;p&gt;Install on Linux as follows:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;table&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;curl -L https://raw.githubusercontent.com/kamranahmedse/git-standup/master/installer.sh&lt;/td&gt;
+        &lt;td&gt;sudo sh&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;or you can use npm:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;npm install -g git-standup&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;or if you are on OSX then you can use brew:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;brew install git-standup&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Here are the &lt;strong&gt;very useful&lt;/strong&gt; options that git-standup supports:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;git standup &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-a &amp;lt;author name&amp;gt;] 
+              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-w &amp;lt;weekstart-weekend&amp;gt;] 
+              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-m &amp;lt;max-dir-depth&amp;gt;]
+              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-f]
+              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-L]
+              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-d &amp;lt;days-ago&amp;gt;]
+              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-D &amp;lt;date-format&amp;gt;] 
+              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-g] 
+              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-h]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After you change into a directory where you’re working on something git, do this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;git-standup&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;and you’ll get a view of what happened over the past day.  Where git-standup shines over git recall is in its use of command line options to expand beyond the previous day.  And here’s an example of looking back over the past 5 days:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/git-standup.png&quot; alt=&quot;git-standup.png&quot; /&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 04 Feb 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/linux/2017/02/04/linux-tip-of-the-day-git-standup.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/linux/2017/02/04/linux-tip-of-the-day-git-standup.html</guid>
+        
+        <category>linux_tip_of_the_day</category>
+        
+        <category>linux</category>
+        
+        <category>git</category>
+        
+        
+        <category>linux</category>
+        
+      </item>
+    
+      <item>
+        <title>Thoughts on Using Windows in 2017</title>
+        <description>&lt;p&gt;I use Windows daily in my job. It has come a long way from the consumer/business driven PITA it was years ago. The issues are pretty simple: I don’t trust Microsoft to not screw me over a few years down the line, and I don’t like the in your face consumerism of every aspect of the OS.
+I literally had to spend an hour removing every POS adware app installed by the OEM, then I still have to put up with notices from M$ asking me to buy their stuff, even though I don’t use their software for anything. And there’s the virus software, which are all installed by two or three different people and all of which are asking me everyday to buy their stuff.
+It’s nice that they’ve moved devs out of the ghetto and I admire the work people have put in to make sure we have nice things again. But I still will be at best lukewarm to anything from M$.&lt;/p&gt;
+
+&lt;p&gt;https://news.ycombinator.com/item?id=13517288&lt;/p&gt;
+
+&lt;p&gt;https://news.ycombinator.com/item?id=13515962&lt;/p&gt;
+
+&lt;p&gt;http://www.economist.com/news/science-and-technology/21715831-why-so-many-pc-users-are-refusing-upgrade-windows-10-woes-windows-10&lt;/p&gt;
+
+&lt;p&gt;It used to be that only free software came with advertising; users paid a fee, if they chose to do so, to get the software free of advertising. Microsoft charges top dollar for Windows 10 ($120 or $200, depending on the edition) and now wants to bombard users with sales pitches to boot—without so much as by your leave, let alone the option to turn the nuisance off. Despite their idiosyncrasies, Macintosh and Linux have never looked so attractive.&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 03 Feb 2017 22:25:03 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/02/03/thoughts-on-using-windows-in-2017.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/03/thoughts-on-using-windows-in-2017.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Ruby One Liner Examples</title>
+        <description>&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;farm_instances.each {&lt;/td&gt;
+      &lt;td&gt;fi&lt;/td&gt;
+      &lt;td&gt;fi.update_attribute(:ended_at, dt) }&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+</description>
+        <pubDate>Fri, 03 Feb 2017 18:09:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/02/03/ruby-one-liner-examples.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/03/ruby-one-liner-examples.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Troubleshooting Rails with Passenger and Apache2</title>
+        <description>&lt;p&gt;passenger-status&lt;/p&gt;
+
+&lt;p&gt;passenger-status –show=requests&lt;/p&gt;
+
+&lt;p&gt;passenger-memory-stats&lt;/p&gt;
+
+&lt;p&gt;sudo apt-get update&lt;/p&gt;
+
+&lt;p&gt;sudo apt-get upgrade&lt;/p&gt;
+
+&lt;p&gt;https://www.phusionpassenger.com/library/walkthroughs/deploy/ruby/aws/apache/oss/trusty/install_passenger.html&lt;/p&gt;
+
+&lt;p&gt;I’m going to make a pretty strong, very general statement about Passenger based on using it for almost a decade:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;If you find something wrong, it is generally you, not Passenger.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;https://www.phusionpassenger.com/library/admin/apache/overall_status_report.html
+https://www.phusionpassenger.com/library/admin/apache/overall_status_report.html
+https://www.phusionpassenger.com/library/walkthroughs/deploy/ruby/aws/apache/oss/deploy_updates.html
+https://www.phusionpassenger.com/library/config/apache/optimization/&lt;/p&gt;
+</description>
+        <pubDate>Fri, 03 Feb 2017 17:24:05 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/02/03/troubleshooting-rails-with-passenger-and-apache2.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/03/troubleshooting-rails-with-passenger-and-apache2.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Ten Tips to Surviving the Whole 30</title>
+        <description>&lt;ol&gt;
+  &lt;li&gt;Cocktail Replacement&lt;/li&gt;
+  &lt;li&gt;Better Quality Proteins&lt;/li&gt;
+  &lt;li&gt;Be Adventurus&lt;/li&gt;
+  &lt;li&gt;Crunch Means Tera Chip Time!&lt;/li&gt;
+  &lt;li&gt;Eat Your Own Meal Before the Pizza Arrives&lt;/li&gt;
+  &lt;li&gt;Come Up With Sweets That Work for You&lt;/li&gt;
+  &lt;li&gt;Consider Pairing it with Zero&lt;/li&gt;
+  &lt;li&gt;Their Recipes Don’t Always Work&lt;/li&gt;
+  &lt;li&gt;&lt;/li&gt;
+  &lt;li&gt;Bear In Mind Its a Diet Not a Religion&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Fri, 03 Feb 2017 16:32:36 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/02/03/surviving-the-whole-30.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/03/surviving-the-whole-30.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Redirecting HTTP to HTTPS with AWS and ELB</title>
@@ -95,513 +527,6 @@ RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
         
         
         <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>Linux Tip Of The Day - Using rsync for Backup</title>
-        <description>&lt;p&gt;Once upon a time when I had complex file copying to handle, I used &lt;strong&gt;xcopy&lt;/strong&gt;.  It has been a lot of years since DOS and xcopy and as of late, I reach for rsync.  Yesterday I had the situation where I wanted to make a command line which would take the contents of two drives and backup from drive A to drive B – full copy.  It was enough files that, well, I just wouldn’t trust any gui operation with it (hundreds of gigs if not a terabyte).&lt;/p&gt;
-
-&lt;p&gt;This is a problem that I’ve tried before to tackle and actually failed at so I grabbed &lt;a href=&quot;http://www.nickjanetakis.com/blog/&quot;&gt;Nick&lt;/a&gt; via &lt;a href=&quot;http://hangouts.google.com/&quot;&gt;Google Hangouts&lt;/a&gt; and he and I whipped it together easily.  We started with:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;rsync –help&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;And then we went thru the options one by one.  I’ve given the example with the long form versions of the arguments so it is a little bit more understandable:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;rsync –archive –recursive –inplace –progress SRC DEST&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;So when you replace SRC with the actual source of the files and DEST with the destination you get this command line:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;rsync –archive –recursive –inplace –progress /Volumes/Plex/ /Volumes/PlexBackup&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;There are an absolutely enormous set of rsync options, too many to go into here but if you have to move lots and lots of files around, rsync can generally do it.&lt;/p&gt;
-
-&lt;p&gt;The rsync tool is powerful enough that there is a whole company devoted to supporting and extending it – &lt;a href=&quot;http://www.rsync.net&quot;&gt;rsync.net&lt;/a&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 03 Feb 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/linux/2017/02/03/linux-tip-of-the-day-using-rsync-for-backup.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/linux/2017/02/03/linux-tip-of-the-day-using-rsync-for-backup.html</guid>
-        
-        <category>linux</category>
-        
-        <category>sysadmin</category>
-        
-        <category>devops</category>
-        
-        <category>backup</category>
-        
-        
-        <category>linux</category>
-        
-      </item>
-    
-      <item>
-        <title>Apache2 and Mod Rewrite and Automatic Redirect to https</title>
-        <description>&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; If you’re using AWS and an Elastic Load Balancer (ELB) this is actually tricky and will not work.  I documented that process in my &lt;a href=&quot;http://fuzzyblog.io/blog/aws/2017/02/03/redirecting-http-to-https-with-aws-and-elb.html&quot;&gt;AWS Redirection&lt;/a&gt; post.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; You’ll need to use sudo for almost all the commands here.  Keep that in mind.&lt;/p&gt;
-
-&lt;p&gt;With Lets Encrypt making https actually free for the first time, there is a greater desire to use SSL than there used to be.  This blog post explains how to enable / disable the mod_rewrite aspect of Apache and also defines a simple rule for transforming all inbound requests to https from http:&lt;/p&gt;
-
-&lt;p&gt;To enable mod_rewrite:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;a2enmod rewrite&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Here’s a &lt;a href=&quot;http://stackoverflow.com/questions/869092/how-to-enable-mod-rewrite-for-apache-2-2&quot;&gt;Stack Overflow on enabling mod_rewrite&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;To disable mod_rewrite:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;a2dismod rewrite&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The a2dismod is something I’ve never seen before.  Thanks to &lt;a href=&quot;http://james.lin.net.nz/2010/07/28/ubuntu-apache-enabledisable-modrewrite/&quot;&gt;James Lin&lt;/a&gt; who wrote about it on his blog.&lt;/p&gt;
-
-&lt;p&gt;A simple rule to transform http to https:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Here’s the &lt;a href=&quot;http://stackoverflow.com/questions/16200501/http-to-https-apache-redirection&quot;&gt;Stack Overflow&lt;/a&gt; where I got this redirect from.&lt;/p&gt;
-
-&lt;p&gt;That needs to go into your vhost configuration.  After that you need to restart apache:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;service apache2 restart&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; I can’t stress this enough. The Apache directive AllowOverride all means that redirects will not work. Honestly I don’t even understand what AllowOverride all even does but I did confirm, experimentally, that if you have this, redirects simply will not work. So make sure that you’ve got this turned off.&lt;/p&gt;
-
-&lt;p&gt;To test your side after, assuming url foo.bar.com:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;wget https://foo.bar.com/&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;-or-&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;curl -v http://foo.bar.com&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Here’s a &lt;a href=&quot;http://stackoverflow.com/questions/3252851/how-to-display-request-headers-with-command-line-curl&quot;&gt;Stack Overflow&lt;/a&gt; on curl and request headers that was helpful.&lt;/p&gt;
-
-&lt;p&gt;I always &lt;strong&gt;strongly recommend&lt;/strong&gt; testing this kind of change with wget or curl because then you actually see the http header values.  Here’s an example showing the http to https auto redirect with wget:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wget http://foo.bar.com/
---2017-02-03 15:06:25--  http://foo.bar.com/
-Resolving foo.bar.com... 23.23.164.47, 54.225.218.129, 2406:da00:ff00::36e1:da81, ...
-Connecting to foo.bar.com|23.23.164.47|:80... connected.
-HTTP request sent, awaiting response... 301 Moved Permanently
-**Location: https://foo.bar.com/ [following]**
---2017-02-03 15:06:25--  https://foo.bar.com/
-Connecting to foo.bar.com|23.23.164.47|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 2083 (2.0K) [text/html]
-Saving to: 'index.html.12'
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Fri, 03 Feb 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/apache/2017/02/03/apache2-and-mod-rewrite.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/apache/2017/02/03/apache2-and-mod-rewrite.html</guid>
-        
-        <category>apache</category>
-        
-        <category>mod_rewrite</category>
-        
-        
-        <category>apache</category>
-        
-      </item>
-    
-      <item>
-        <title>Linux Tip of the Day rvm --default</title>
-        <description>&lt;p&gt;I normally don’t intersect Ruby and Linux Tip of the Day but I just used this and it is really, really useful. The rvm or Ruby Version Manager tool manages your installed rubies makes ruby development, well, just plain easier.&lt;/p&gt;
-
-&lt;p&gt;To install rvm on Linux, use:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-sudo \curl -sSL https://get.rvm.io | bash -s stable --ruby
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;To install on OSX, you can use the commands above but generally omit the sudo (depending on your system).&lt;/p&gt;
-
-&lt;p&gt;A real problem with RVM is you often don’t know what Ruby you’re going to get when you start a new terminal window.  You can solve this with:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rvm --default use 2.3.1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;You can find your available rubies with:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rvm list rubies
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And then use one of the installed rubies as the argument to rvm –default use.&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 02 Feb 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/linux/2017/02/02/linux-tip-of-the-day-rvm-default.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/linux/2017/02/02/linux-tip-of-the-day-rvm-default.html</guid>
-        
-        <category>ruby</category>
-        
-        <category>rails</category>
-        
-        <category>linux</category>
-        
-        <category>rvm</category>
-        
-        
-        <category>linux</category>
-        
-      </item>
-    
-      <item>
-        <title>Gitlab and The Danger of Short Names</title>
-        <description>&lt;p&gt;So the other day we had the gitlab disaster.  As my friend Nick described it to me via chat:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;did you hear about gitlab?&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;an ops guy did rm -rf on a production db with 300GB of data by accident, and they lost 295GB of data – luckily it was only on a backup, but they are expecting 6h of data loss for production data &lt;a href=&quot;http://nickjanetakis.com&quot;&gt;Nick&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Or as Robin might say in a grim and gritty version: &lt;strong&gt;Holy F’ing Hell Batman!&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Apparently they were using short names like db1.foo.com and db2.foo.com.  Nick’s comment on Hacker News was to the effect of their &lt;a href=&quot;https://news.ycombinator.com/item?id=13539876&quot;&gt;naming structure was wrong&lt;/a&gt; and that a name like dbproduction might have saved the day.&lt;/p&gt;
-
-&lt;p&gt;Perhaps but I’ve seen a lot of this kind of stuff over the years.  Happily I’ve only ever had one such incident - I actually dropped a table once during a group pairing session with &lt;a href=&quot;http://dasari.com&quot;&gt;Dv&lt;/a&gt; and &lt;a href=&quot;http://www.alloycode.com/&quot;&gt;Jared&lt;/a&gt; due to getting confused between production and development.&lt;/p&gt;
-
-&lt;p&gt;The thing that I’ve wanted most of all to address this is &lt;strong&gt;color&lt;/strong&gt;.  If you look at the structure of the brain we have an inordinate amount of our cortex devoted to visual processing – why not approach that to preventing stupid terminal mistakes?  What I’ve wanted for years upon years is really simple - I want my terminal window to change color when I log into a remote server.  If its a staging server or a back up server give me a light gray background.  If its a production web or api server then give me a green background and if its a production database server then give me a BRIGHT RED BACKGROUND.&lt;/p&gt;
-
-&lt;p&gt;The iTerm2 badging feature can do a bit of this but its not in your face enough to really protect you.  I suspect that with sufficient console trickery this is possible but neither I or Dv ever managed to accomplish it.  Personally I think its important enough that I’d name it the GitLab feature and built it into iTerm but that’s not my core skill set.  Still I’m putting it out there.  Thoughts?&lt;/p&gt;
-
-&lt;p&gt;Cross Links:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.google.com/document/d/1GCK53YDcBWQveod9kfzW-VCxIABGiryG7_z_6jHdVik/pub&quot;&gt;Official Incident Report&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://news.ycombinator.com/item?id=13537052&quot;&gt;Hacker News Thread&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Thu, 02 Feb 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/sysadmin/2017/02/02/gitlab-and-the-danger-of-short-names.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/sysadmin/2017/02/02/gitlab-and-the-danger-of-short-names.html</guid>
-        
-        <category>sysadmin</category>
-        
-        <category>devops</category>
-        
-        <category>gitlab</category>
-        
-        <category>iterm</category>
-        
-        
-        <category>sysadmin</category>
-        
-      </item>
-    
-      <item>
-        <title>Startup Learnings The Smartest Thing I've Ever Seen PayPal Do</title>
-        <description>&lt;p&gt;PayPal is one of those companies that we all love to hate.  They work with money so we all feel about PayPal the way we sort of naturally feel about banks – mildly distrustful.  Also the tales of PayPal woes are legendary.  And then there are the login / password issues that seem to surround PayPal like a cloud of flies.  All of that has always made me think that PayPal got to where it is now by luck but I’m really starting to reconsider that.  In fact my current thinking is that we should all realize that PayPal is &lt;strong&gt;smart&lt;/strong&gt;. And when I say smart, I am starting to think that PayPal is &lt;em&gt;Amazon Smart&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;In order to explain this I have to disclose a personal preference of mine – if I have a choice as to a software engineer’s nationality, I always tend to lean British.  I’ve had remarkable success over the years in hiring British software engineers and, more than any other nationalities, the results have skewed dramatically positive.  I’m not sure whether it is the educational system, the way they refer to computers as ‘kit’, extensive reading of Dick Pountain when I was young causing me bias, the fact that all the engineers my age learned on either a Sinclair or a BBC Micro (systems so limited that they forced you to be good to survive) or something else but something about the U.K. seems to produce great software engineers.&lt;/p&gt;
-
-&lt;p&gt;And because I tend to lean British in my software engineer hiring, I tend to favor British Linux magazines.  Even though I live in the U.S. and the subscriptions are frightfully expensive, I still get print subscriptions to &lt;a href=&quot;https://www.linuxformat.com/&quot;&gt;Linux Format&lt;/a&gt; and &lt;a href=&quot;http://www.filesilo.co.uk/LinuxUser/&quot;&gt;Linux User&lt;/a&gt;.  These magazines are &lt;strong&gt;fantastic&lt;/strong&gt; – they remind me of Byte Magazine back in its early 1980s hey day when every issue taught you something new.&lt;/p&gt;
-
-&lt;p&gt;Earlier this morning I had to set up a new subscription to Linux User and when my credit card failed due to some U.S. / U.K. thing, I opted to use PayPal instead and I got this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/paypal_is_smart.png&quot; alt=&quot;paypal_is_smart.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Note: This was new to me but perhaps PayPal has been doing it for years and I just never knew.  For some reason, however, this felt to me to be a new feature.&lt;/p&gt;
-
-&lt;p&gt;What PayPal is doing here is recognizing that non local currency transactions are a combination of &lt;strong&gt;hard&lt;/strong&gt; and &lt;strong&gt;scary&lt;/strong&gt; for people.  Most of us, at least Americans for certain, never really have a clue about a foreign currency transaction except we sometimes know “Ok a Euro or a pound is roughly about a dollar”.  And when prices are in something truly foreign like Yen, well, don’t even ask us.  What PayPal is brilliantly doing here is recognizing this and saying to the user:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;I know this is hard for you so here’s the actual transaction value and I’m going to actually charge you for the privilege of my doing a teeny, tiny bit of math (and taking some risk).&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The fact that I can look at 80 pounds and be told that it is $103.58 gives me much more confidence in the transaction.  Even though I can read the screen and &lt;strong&gt;know&lt;/strong&gt; that I’m being charged (quite a bit actually) for just knowing this, well, it certainly made me feel good.  And, yes, I took them up on it.  PayPal has seriously removed an impediment to commerce here.&lt;/p&gt;
-
-&lt;p&gt;You should note that if you’re not American, I suspect you’re thinking something like “Dude – it is just an exchange rate, deal with it!”.  And that is certainly true but Americans don’t have to deal with exchange rates anywhere near as often as non-Americans.  America’s geography is so vast that you can spend decades here without leaving America whereas most Europeans that I know think nothing of crossing national borders even over a weekend.&lt;/p&gt;
-
-&lt;p&gt;The lesson here for startups is that you can always make money by making hard or scary things easier for people.  The simple fact that right after buying this I have to file an expense for it means that I don’t want to wait for a credit card statement.  By paying PayPal that additional 2.5%, I know exactly what I spent and I can file my expense report immediately.&lt;/p&gt;
-
-&lt;p&gt;Once again I’m going to repeat it: &lt;strong&gt;PayPal is smart&lt;/strong&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 01 Feb 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/startup/2017/02/01/startup-learnings-the-smartest-thing-i-ve-ever-seen-paypal-do.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/startup/2017/02/01/startup-learnings-the-smartest-thing-i-ve-ever-seen-paypal-do.html</guid>
-        
-        <category>startup</category>
-        
-        <category>learnings</category>
-        
-        
-        <category>startup</category>
-        
-      </item>
-    
-      <item>
-        <title>Linux Tip Of The Day - lsblk</title>
-        <description>&lt;p&gt;I suspect a lot of these tips are going to end up being about storage – even today storage is such a pain point.  The lsblk command shows you what block storage devices are hooked up to your Linux system.  This is really useful for when you attach a new device and need to write a mount statement for /etc/fstab.  Personally I use this a lot when I’m using different AWS volumes for organizing my storage.&lt;/p&gt;
-
-&lt;p&gt;There’s nothing to install – lsblk appears to be a standard command for most *nix systems.&lt;/p&gt;
-
-&lt;p&gt;Here’s an example of lsblk without any options:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://fuzzyblog.io/blog/assets/lsblk.png&quot; alt=&quot;http://fuzzyblog.io/blog/assets/lsblk.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Personally I find the -l option most useful:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://fuzzyblog.io/blog/assets/lsblk-l.png&quot; alt=&quot;http://fuzzyblog.io/blog/assets/lsblk-l.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Also useful is the -m option which shows permissions:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://fuzzyblog.io/blog/assets/lsblk-m.png&quot; alt=&quot;http://fuzzyblog.io/blog/assets/lsblk-m.png&quot; /&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 01 Feb 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/linux/2017/02/01/linux-tip-of-the-day-lsblk.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/linux/2017/02/01/linux-tip-of-the-day-lsblk.html</guid>
-        
-        <category>linux_tip_of_the_day</category>
-        
-        <category>linux</category>
-        
-        <category>sys_admin</category>
-        
-        <category>aws</category>
-        
-        
-        <category>linux</category>
-        
-      </item>
-    
-      <item>
-        <title>Working with Windows 10 Pro HyperVisor When You Are a Mac Guy</title>
-        <description>&lt;p&gt;So that &lt;a href=&quot;http://fuzzyblog.io/blog/aws/2017/01/26/s3-ruby-api-programming-tip.html&quot;&gt;data center migration&lt;/a&gt; that I mentioned recently has turned into not, well a disaster, but a bit of challenge.  The problem at hand was how to get data off three large MySQL databases, about 4 terabytes in size and then capture whatever else was desired and do it all in about 10 days to avoid getting hit with another $5 K data center monthly fee.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: If you want a hilarious tale of how this data actually got to the data center in the first place then I highly recommend &lt;a href=&quot;http://fuzzyblog.io/blog/humor/2014/08/21/anatomy-of-a-business-trip-gone-horribly-wrong.html&quot;&gt;Anatomy of a Business Trip Gone Horribly Wrong&lt;/a&gt;.  It was awful at the time but it is funny as hell now.  It is also the last time I was in New York, pretty close to where the person who helped me on this actually lives.  Small, small world.&lt;/p&gt;
-
-&lt;p&gt;All of this data was in Ubuntu virtual machines apparently hosted under Windows Server Hyper-V.  Why any hosting company worth their salt would ever opt to run a *nix based operating system under the Windows Hyper-V, well, I don’t understand.  Sigh.  I’ll come back to this if I have the mental energy to engage in a rant.&lt;/p&gt;
-
-&lt;p&gt;My initial approach was to roll a custom backup solution which took a prioritized list of databases and tables and them dumped the data using mysqldump, split the data with the unix split tool and then gzipped each split file.  Finally it uploaded it to S3, deleting its in process work files as it goes.  Yes this sounds awfully convoluted but rolling your own means that you actually understand what it is in and isn’t doing – something critical when you are know the original hardware is going away forever.  And since I didn’t have much in the way of free disc space, this could not be done all at once.&lt;/p&gt;
-
-&lt;p&gt;Using this approach we transferred over 400 gigs of data to S3.  Given that this was gzip compressed data without the MySQL index overhead, which takes up a huge amount of the raw disc space, we got a sizable percentage of the data.  And, yes, that’s why I blogged about &lt;a href=&quot;http://fuzzyblog.io/blog/linux/2017/01/29/linux-tip-of-the-day-use-bmon-for-bandwidth-monitoring.html&quot;&gt;bmon&lt;/a&gt; recently – I was monitoring these transfers.&lt;/p&gt;
-
-&lt;p&gt;Naturally, by the power of Murphy’s Law, I wasn’t able to get it all.  So this called for mechanism #2 – hard drives.  I delivered to the data center several three terabyte drives with instructions to the effect of “Get these mounted and I’ll do the rest”.  My plan was to just use ansible to recursively copy the directory structures onto the hard drives, get the drives back and then go on my merry way.  Remember – all I wanted was the data.&lt;/p&gt;
-
-&lt;p&gt;Sadly the hosting company was never able to get these hard drives to show up in the Ubuntu virtual machine that is running under the Windows Hyper-V.  I don’t understand why but since I wasn’t physically in the data center, I couldn’t do much about it.  With time running out the hosting company suggested “Why don’t we just copy the virtual machines onto the hard drives and then you can have your exact environment and do what you want”.&lt;/p&gt;
-
-&lt;p&gt;That sounds great, doesn’t it?  I mean who wouldn’t want their old servers back, right?  Well, &lt;strong&gt;me&lt;/strong&gt; actually.  Once again, what I wanted was &lt;strong&gt;my data&lt;/strong&gt;.  I didn’t want the virtual machines but since I have them, here’s how I went about using them.&lt;/p&gt;
-
-&lt;p&gt;My thanks go out to &lt;a href=&quot;http://www.nickjanetakis.com/blog/&quot;&gt;Nick&lt;/a&gt; who walked me thru large parts of this and edited this documentation.  I’m a *nix guy who last used Windows XP in 2004.  The experience was, well, illuminating to say the least.  I’m sure that I will return to this in a future blog post.&lt;/p&gt;
-
-&lt;p&gt;Here were the initial steps that I had to follow to get ready to use these virtual machines.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;Buy a Windows laptop&lt;/strong&gt;.  This was the first step.  I took a trip to the local &lt;a href=&quot;http://www.frys.com/&quot;&gt;Frys&lt;/a&gt; and managed to find a refurbished HP laptop for only $500.  The key thing here is that you need Windows 10 Pro.  If you don’t have Windows 10 Pro you don’t have the Hyper-V tools.  And since Windows 10 Pro is about $200, well, it really is cheaper to buy it installed.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Set the BIOS Options to Enable Virtualization&lt;/strong&gt;.  Every BIOS is different so I can’t tell you where / how to do this.  I had to press F10 during the boot process and navigate thru all the options until I found the virtualization options and turned them on.  If you don’t do this then the HyperVisor itself won’t start and you won’t be able to run virtual machines.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Install the HyperV Manager in Windows&lt;/strong&gt;.   We enabled hyper-v by searching for “windows features” and then turned it on.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Connect the USB Drive / Drives&lt;/strong&gt;.  This was just a plug and play operation so piece of cake.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Label the Physical Drives&lt;/strong&gt;.  This is optional but since I have 26 virtual machines spread across three physical hard drives so I used my label maker to indicate which virtual machines are on which hard drive.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Once I had the hard drives attached, the next step was to actually deal with the virtual machines.  Even though I had actual .vhdx virtual machine files, for some bizarre reason, I was unable to use them directly.  Instead I had to recreate the virtual machine from scratch, yes, 26 times, and then attach the .vhdx file as a drive.  This process was something like this:&lt;/p&gt;
-
-&lt;p&gt;Note: I say “something like this” because I’m writing this from memory after a long, long day.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;In the HyperVisor Manager, start by creating a virtual network interface.  This needs to be your very &lt;strong&gt;first&lt;/strong&gt; step because without it you can’t attach the .vhdx files – you wil die on errors like “Hyper-V encountered an error while configuring the network on New Virtual Machine”.  This should be called NIC#1 or at least this is what I needed.&lt;/li&gt;
-  &lt;li&gt;Create a new virtual machine and walk thru the steps and in the last step browse to the .vhdx file and select it.&lt;/li&gt;
-  &lt;li&gt;But if your vhdx file is actually in two parts then you don’t want to browse to the .vhdx file at all.  Instead create the virtual machine and then edit its settings after the fact and attach the multiple .vhdx files at that stage.&lt;/li&gt;
-  &lt;li&gt;Once your .vhdx files are attached as per #2 or #3 then you can actually make use of them.  Remember that these really are virtual machines and, well, you still have some hoops to jump through.  The first step is to turn on the virtual machine.&lt;/li&gt;
-  &lt;li&gt;After the virtual machine is running you then need to connect to it.  And this, dear reader, is where you will be confronted by a login prompt – and you will realize that you’ve been using SSH keys to login for over two years now and you have &lt;strong&gt;no idea&lt;/strong&gt; what the password is.&lt;/li&gt;
-  &lt;li&gt;A quick email back to the data center staff will elicit information like “well it might be this username and this password or it might be this other username and this other password”.&lt;/li&gt;
-  &lt;li&gt;Here’s where I’m going to argue against rational security practices and say use your label maker again and attach the different username / password combos physically to each backup hard drive.  Trust me – when I need this data for real sometime in the next six months I’m going to be wondering where the heck that text message with the details disappeared to.&lt;/li&gt;
-  &lt;li&gt;Once you’ve resolved the username and password info you can actually get into a database server virtual machine and verify that, well, it appears to be actual data.  I mean the directories appear to be there and the data appears to be real.  Huzzah!&lt;/li&gt;
-  &lt;li&gt;You &lt;strong&gt;sudo su&lt;/strong&gt; to root and the do a &lt;strong&gt;passwd actual_username&lt;/strong&gt; and reset that password to something insecure but easy (again these are virtual machines on hard drives on a development laptop; its ok).&lt;/li&gt;
-  &lt;li&gt;And then the grim spectre of reality strikes – you go and start MySQL and you get this wonderful kick to the nuts: “The partition with /var/lib/mysql is too full”.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;And that’s where I stopped.  As best I can tell I actually have the data and the virtual machines but I don’t know if the data is actually valid.  My guess is that verifying this is likely about a full week of repetitive, manual, unscriptable work.&lt;/p&gt;
-
-&lt;p&gt;Here are some screenshots I captured along with way.  And yes, because I don’t have the equivalent of command+shift+4 on OSX, I used my phone.  Alas.&lt;/p&gt;
-
-&lt;h2 id=&quot;windows-hardware-on-my-desk&quot;&gt;Windows Hardware On My Desk&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/hyperv_hardware.jpg&quot; alt=&quot;hyperv_hardware.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;the-error-when-you-dont-have-a-virtual-network-adapter&quot;&gt;The Error when You Don’t have a Virtual Network Adapter&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/hyperv_error.jpg&quot; alt=&quot;hyperv_error.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;the-hyperv-manager&quot;&gt;The HyperV Manager&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/hyperv_manager.jpg&quot; alt=&quot;hyperv_manager.jpg&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;an-ubuntu-virtual-machine-running-under-hyperv&quot;&gt;An Ubuntu Virtual Machine Running Under HyperV&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/hyperv_mounted_filesystem.jpg&quot; alt=&quot;hyperv_mounted_filesystem.jpg&quot; /&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 31 Jan 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/devops/2017/01/31/working-with-windows-10-pro-hypervisor-when-you-are-a-mac-guy.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/devops/2017/01/31/working-with-windows-10-pro-hypervisor-when-you-are-a-mac-guy.html</guid>
-        
-        <category>devops</category>
-        
-        <category>sysadmin</category>
-        
-        <category>windows</category>
-        
-        
-        <category>devops</category>
-        
-      </item>
-    
-      <item>
-        <title>Linux Tip of the Day inotifywait</title>
-        <description>&lt;p&gt;My podcast listening, which has always been on the nerdy side, has recently taken a trip down the far, far nerdier rabbit hole.  Whereas I used to listen to things with at least some connection to pop culture such as &lt;a href=&quot;http://majorspoilers.com/category/podcast/&quot;&gt;Major Spoilers&lt;/a&gt;, I now find myself listening to the &lt;a href=&quot;http://ubuntupodcast.org/&quot;&gt;Ubuntu Podcast&lt;/a&gt;, a British podcast covering the Ubuntu community.  It was there that I learned about inotifywait and I had a feeling it was brilliant.  I tried it out and it is brilliant!&lt;/p&gt;
-
-&lt;p&gt;To install on Linux, use:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;sudo apt-get install inotify-tools&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Since inotify is a Linux api this doesn’t exist for OSX but you can use an open source tool called notifywait available &lt;a href=&quot;https://github.com/ggreer/fsevents-tools&quot;&gt;here&lt;/a&gt;.  Alternatively there is fswatch which can be easily installed with &lt;strong&gt;brew fswatch&lt;/strong&gt;.  Please note that I didn’t try either.&lt;/p&gt;
-
-&lt;p&gt;The inotifywait utility takes a few command line parameters and then tells you all file accesses that go on in that directory.  This sounds a bit obscure but here’s how I tested it last night:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;inotifywait ~ -mr&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;This tells inotifywait to run on the ~ or home directory and monitor it forever (the m flag) and r tells it to monitor recursively on all directories below the current.&lt;/p&gt;
-
-&lt;p&gt;Here’s an example of its output once I set it monitoring in one shell window on a server after I logged into the same box in a different shell window and then touched the file foo.txt:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/inotifywait.png&quot; alt=&quot;inotifywait.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The really interesting here is that while I sort of know that the bash prompt initialization pattern is .profile and then  .bashrc but I’ve never &lt;strong&gt;seen&lt;/strong&gt; it before.  I have a feeling that I’ll understand this better from now on.&lt;/p&gt;
-
-&lt;p&gt;Not only is this useful for sysadmin / devops work but I can see it being highly useful for application developers. Sometimes the files you are touching or your io access patterns are not always apparent.  Using inotifywait makes them obvious.&lt;/p&gt;
-
-&lt;p&gt;Different events can even be monitored with the –e flag.  Here’s what you can monitor for:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Events:
-	access		file or directory contents were read
-	modify		file or directory contents were written
-	attrib		file or directory attributes changed
-	close_write	file or directory closed, after being opened in
-	           	writable mode
-	close_nowrite	file or directory closed, after being opened in
-	           	read-only mode
-	close		file or directory closed, regardless of read/write mode
-	open		file or directory opened
-	moved_to	file or directory moved to watched directory
-	moved_from	file or directory moved from watched directory
-	move		file or directory moved to or from watched directory
-	create		file or directory created within watched directory
-	delete		file or directory deleted within watched directory
-	delete_self	file or directory was deleted
-	unmount		file system containing file or directory unmounted
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Tue, 31 Jan 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/linux/2017/01/31/linux-tip-of-the-day-inotifywait.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/linux/2017/01/31/linux-tip-of-the-day-inotifywait.html</guid>
-        
-        <category>linux_tip_of_the_day</category>
-        
-        <category>linux</category>
-        
-        <category>git</category>
-        
-        <category>sys_admin</category>
-        
-        
-        <category>linux</category>
-        
-      </item>
-    
-      <item>
-        <title>Linux Tip of the Day - git recall</title>
-        <description>&lt;p&gt;Every so often your boss asks you what you’ve been working on and if you have been all over a code base it can actually be hard to break it down.  The new git recall command actually makes this pretty easy.  This is a new Linux tool I just learned about - &lt;a href=&quot;https://github.com/Fakerr/git-recall&quot;&gt;Docs&lt;/a&gt; / &lt;a href=&quot;https://news.ycombinator.com/item?id=13517486&quot;&gt;Hacker News Discussion&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Install it on Linux as follows:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;npm install –global git-recall&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Install it on OSX as follows:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;brew install less&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;-or- you might need to do:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;brew install homebrew/dupes/less&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: I know you already have less installed on your system.  You need lesskey which git recall relies on but Apple, unhelpfully, &lt;a href=&quot;http://apple.stackexchange.com/questions/27269/is-less1-missing-lesskey-functionality&quot;&gt;did not include&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Once you have lesskey then you need to install git recall itself:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;npm install –global git-recall&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;After you change into a directory where you’re working on something git, do this:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;git recall&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The initial view shows you your commits in a recent time frame:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/git_recall1.png&quot; alt=&quot;git_recall_.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;You can go up and down the list and select a commit that you’re interested in with the arrow keys and enter or j/k and enter.  I had issues with the arrow keys so keep j/k in mind.  Then you’ll see the commit details:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/git_recall2.png&quot; alt=&quot;git_recall_.png&quot; /&gt;&lt;/p&gt;
-</description>
-        <pubDate>Mon, 30 Jan 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/linux/2017/01/30/linux-tip-of-the-day-git-recall.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/linux/2017/01/30/linux-tip-of-the-day-git-recall.html</guid>
-        
-        <category>linux_tip_of_the_day</category>
-        
-        <category>linux</category>
-        
-        <category>git</category>
-        
-        
-        <category>linux</category>
         
       </item>
     

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>An AWS SAAS Architecture to Minimize Hosting Costs</title>
+  <meta name="description" content="My last AWS bill was well over $6,000 – per month.  I’ve managed to cut it down pretty dramatically by being, well, less stupid and in the process I’ve learn...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/aws/2017/01/15/a-saas-architecture-to-minimize-hosting-costs.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="An AWS SAAS Architecture to Minimize Hosting Costs">
+
+  
+    <meta name="twitter:description"
+      content="My last AWS bill was well over $6,000 – per month.  I’ve managed to cut it down pretty dramatically by being, well, less stupid and in the process I’ve learned quite a bit:
+
+
+  Even a t2.micro is a...">
+  
+
+  
+    <meta name="twitter:image"
+      content="https://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">An AWS SAAS Architecture to Minimize Hosting Costs</h1>
+    <p class="I'll"><time datetime="2017-01-15T07:29:04-05:00" itemprop="datePublished">Jan 15, 2017</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>My last AWS bill was well over $6,000 – per <strong>month</strong>.  I’ve managed to cut it down pretty dramatically by being, well, <strong>less stupid</strong> and in the process I’ve learned quite a bit:</p>
+
+<ul>
+  <li>Even a t2.micro is actually expensive when its a full time dynamic instance – $105.12 / year roughly (0.012 per hour)</li>
+  <li>The bigger the instance the more you are charged</li>
+  <li>The more storage volumes you happen to have lying around the more you are charged</li>
+</ul>
+
+<p>None of these are rocket science observations – as I said I mostly reduced my costs by being less stupid.</p>
+
+<p>Now that bill mentioned above is for a large legacy app which was originally built for a classical data center and then was brute force pushed onto AWS – no rethink, no rewrite, etc.</p>
+
+<p>I’m in the conceptual design stage of a side project – it might not amount to anything or it might be mildly successful (I was going to type <em>wildly</em> but I think that’s unlikely).  But it occurs to me that since I have a clean slate structure in front of me, I can actually <em>design</em> to minimize costs.  So here are my constraints for building a SAAS app in 2017 based on what I care about:</p>
+
+<ul>
+  <li><strong>AWS</strong>.  I remain firmly committed to AWS as a platform.  At this point in my life AWS is approaching the status of a constant.  I know there are cheaper solutions but there aren’t better solutions.</li>
+  <li><strong>Minimal Hosting Costs</strong>.  I don’t ever – in my life – want to see a hosting bill that approaches a more than comfortable living wage in America.</li>
+  <li><strong>Instance Isolation</strong>.  I’m so damn sick of security issues that it makes me want to llama.  I’d really like very customer running in an isolated stack / server / container / whatever.</li>
+  <li><strong>Data Isolation</strong>.  Same.  I don’t ever want to have to bother with “this migration will take 24 hours to run so I’m not going to bother with it”; I want the ability to have each customer’s data separate from every other customer’s data.  I learned this lesson from <a href="https://fuzzygroup.github.io/blog/startup/2016/09/01/what-matt-mullenweg-taught-me.html">Matt</a>.  I learned this less from Chris O’Meara at <a href="http://www.streamsend.com/">StreamSend</a> where I worked on large scale email marketing tools.  Time to apply it here.</li>
+  <li><strong>Database Backups</strong>.  I have systems that I have run for years that I haven’t backed up – ever.  I know that’s heretical but it can be done.  Still it makes me feel <em>dirty</em>.  I should probably avoid that this time.</li>
+  <li><strong>No Idling Boxes</strong>.  The history of Internet development has generally been one of idled resources - you can’t anticipate load well so you over build.  Not only is that dumb but it is both costly and energy inefficient.  Not doing it this time around.</li>
+  <li><strong>Debuggability</strong>.  I am so, so, so tired of debugging problems where the log data for user 1 is interleaved with the log data for users 2 thru 1000.  Wouldn’t it be absolutely delightful to have all of a user’s data in one damn place?</li>
+</ul>
+
+<p>I know some people out there are thinking: <strong>Lambda</strong>.  Not a chance – I’m a full stack Ruby / Rails / Elixir / Phoenix guy and that isn’t going to change.  I suspect I’d leave the industry before I tried a significant server side development project with JavaScript in an asynchronous fashion.</p>
+
+<h1 id="saas-economics-101-when-you-are-a-solo-entrepreneur">SAAS Economics 101 When You are a Solo Entrepreneur</h1>
+
+<p>I am, once again, a solo entrepreneur – I don’t have any intentions of taking funding, seeking funding, walking the alleys of <a href="https://en.wikipedia.org/wiki/Sand_Hill_Road">Sand Hill Road</a>, darkening the halls of silicon valley’s various and sundry funding sources.  Now don’t get me wrong, I was treated very well by capital sources the last time I did this but times are different now:</p>
+
+<ul>
+  <li>Infrastructure costs are markedly less than they used to be.  Even AWS which is the most expensive of the cloud hosting options is still incredibly affordable.</li>
+  <li>My technical skills are much, much better.  I don’t or hopefully don’t need technical assistance; time will tell.  My big weakness has always been devops and clearly my <a href="https://fuzzygroup.github.io/blog/category.html#ansible">Ansible</a> / <a href="https://fuzzygroup.github.io/blog/aws.html">AWS</a> work has addressed that.  I’ve been very deliberately addressing this technical deficiency for some time now.</li>
+  <li>This is a paid service from day 1.  Even my personal account will be paid to force development of the recurring billing front end.  It will almost certainly be <a href="https://stripe.com/">Stripe</a> rather than <a href="https://www.braintreepayments.com/">BrainTree</a> this time around but that’s ok.</li>
+</ul>
+
+<p><strong>Note</strong>: I understand that one of the very real reasons for taking on capital is marketing / business building.  This time around I am building a service that I personally want.  Hopefully people other than myself feel the same way; I think they will.</p>
+
+<p>So what is the very essence of SAAS Economics when you are a solo entrepreneur?  Well, in my mind, it is very, very simple:</p>
+
+<blockquote>
+  <p>Everything you spend comes out of <strong>your own pocket</strong>.  An inefficient architecture? Well that is $$$ out of your kids college fund (remember them?).  Watch every dime, every nickel, every penny.</p>
+</blockquote>
+
+<p>This time around I intend to be so damn cheap that I bloody well squeak.  In particular I want to make a profit on <strong>every single account</strong> from <strong>Day 1</strong>.  Here’s what that means:</p>
+
+<ol>
+  <li>If a t2.micro is the minimum instance I want to use (and, yes, I’m aware of the CPU issues on the whole t2 class of instances) then that means that if the instance is <em>continually running</em> I need to charge more than 105.12 per year for an account.</li>
+  <li>There will be overhead that needs to get allocated across all accounts so that $105.12 isn’t actually the minimum.</li>
+  <li>Use of the standard set of services that startups use like MailChimp, New Relic, Exception Monitoring, etc all raise the cost I’d need to charge particularly when there are only a few signups as things always are at the beginning.  If I need a particular service then I’m going to have to build it myself or find it from the Open Source world and run it myself.</li>
+</ol>
+
+<p>You’ll notice that I emphasized <em>continually running</em> in point #1 above and that’s at the heart of the internal infrastructure I’m building.  I’m looking at SAAS apps and a dynamically provisioned architecture where a node that a paying user needs is built <strong>on demand</strong> from an image.  Deploy will basically consist of creating an instance, deploying code onto it, imaging it and then shutting it down.  The next user in will get a new instance created from that image.  As long as the user’s persistent data is stored separately from this and their database connection is generated dynamically then that 0.012 / hour cost metric above should apply.  So if a user uses the service for 10 hours per month then the cost is 10 * 0.012 + the fixed overhead.</p>
+
+<h2 id="what-is-the-fixed-overhead">What is the Fixed Overhead?</h2>
+
+<p>So the fixed overhead essentially boils down to three things:</p>
+
+<ul>
+  <li>A persistent web presence aka a web site.  This is going to be written in Rails; actually it is a key part of the architecture so it is already written.  Initially this can be a t2.micro instance.</li>
+  <li>Data storage.  This is going to be a MySQL / MariaDB server.  If I properly define the storage as an external volume in AWS I could run the db server on the same instance as the web site.  This box isn’t ever going down anyway.</li>
+  <li>A worker box.  For this product there will be a need for on going job execution.  I suspect I’ll be using <a href="http://www.sidekiq.org">Sidekiq</a> at least initially</li>
+</ul>
+
+<p>I’m a very, very, very strong believer that you run one and only one Ruby code base per instance.  <a href="http://www.railsmachine.com">Rails Machine</a> taught me this back in the day and I detoured for a long time into the dreadful world of server side RVM.  I’ve thankfully recovered from that and now I’ll never, ever do it again.  Without server side RVM then I’m limited to one Ruby code base per server so we now have fixed overhead costs of:</p>
+
+<ul>
+  <li>Web Presence - 105.12</li>
+  <li>Worker - 105.12</li>
+  <li>Storage Volume; Hard to compute</li>
+</ul>
+
+<p>For now let’s call the fixed overhead cost of the business say $250 per year.  That should likely cover storage, Route 53 DNS and some level of traffic.</p>
+
+<h2 id="but-ruby-is-slow">But Ruby is Slow</h2>
+
+<p>You are so, so damn right about this.  In nearly 30 years of computing Ruby is the first <em>language</em> that I actually fell in love with; I am now going into my second decade in this long term relationship and I still love it.  And that’s why I’m prototyping this in Ruby / Rails.  But I have a pretty clearly defined api that I can substitute Elixir in for when the intersection between gems I need (<a href="http://rmagick.rubyforge.org/">RMagick</a>) and <a href="http://elixir-lang.org/">Elixir</a> and my personal Elixir skills intersect.  I hope to be attending the Elixir conference circuit this year to help address my skills.</p>
+
+<h1 id="a-challenge-for-those-reading">A Challenge for Those Reading</h1>
+
+<p>So let me place a challenge out there – if you’re planning a 2016 side project then have you thought and thought hard about how <strong>cheaply</strong> you can run it?  If you are cutting an all new code base in 2017 then you are likely in a position to not make your traditional assumptions about cost and heavy weight architecture.  Once I posed the question in my head: <em>How cheaply can I do this?</em> then it absolutely crystalized my thinking along the right lines.</p>
+
+<p>For me I think the right cost assumptions are:</p>
+
+<ul>
+  <li>Eliminate expensive instance costs</li>
+  <li>Eliminate continuously running instances</li>
+  <li>Minimize overhead</li>
+</ul>
+
+<p>For whatever you are planning to build in 2017 then I suspect these will be different for you but there is likely a sweet spot for cost reduction.</p>
+
+  </div>
+  
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
