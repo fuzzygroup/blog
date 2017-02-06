@@ -6,9 +6,103 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 05 Feb 2017 06:09:08 -0500</pubDate>
-    <lastBuildDate>Sun, 05 Feb 2017 06:09:08 -0500</lastBuildDate>
+    <pubDate>Mon, 06 Feb 2017 04:39:56 -0500</pubDate>
+    <lastBuildDate>Mon, 06 Feb 2017 04:39:56 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Linux Tip of the Day - jq</title>
+        <description>&lt;p&gt;I made either the happy decision to do some late night Hacker News reading last night and I found a really interesting bash script – &lt;strong&gt;&lt;a href=&quot;https://github.com/jgrahamc/hncomments/blob/master/hncomments&quot;&gt;hncomments&lt;/a&gt;&lt;/strong&gt;.  This is a tool which looks at a data feed from HackerNews, through the algolia search engine, and emails you when comments matching what you are interested in appear.  My interest in it stemmed from its author - &lt;a href=&quot;http://www.jgc.org/&quot;&gt;John Graham Cumming (jgrahamc)&lt;/a&gt;.  He’s one of those programmers who I’ve always admired purely from an intellectual basis.  Anyone who can write books with the intellectual breadth of &lt;a href=&quot;https://www.amazon.com/gp/product/0596523203?ie=UTF8&amp;amp;tag=jgcorg-20&amp;amp;linkCode=as2&amp;amp;camp=1789&amp;amp;creative=390957&amp;amp;creativeASIN=0596523203&quot;&gt;Geek Atlas&lt;/a&gt;, &lt;a href=&quot;https://www.nostarch.com/gnumake&quot;&gt;Gnu Make&lt;/a&gt; and &lt;a href=&quot;http://shop.oreilly.com/product/0636920035305.do&quot;&gt;Introduction to Go&lt;/a&gt; has to be worth admiring.&lt;/p&gt;
+
+&lt;p&gt;Anyway I went to get this running and realized that it requires dependencies of jq, recode, sed and curl – and I didn’t even know what jq was so my thought was &lt;em&gt;this is a series of Linux Tips of the Day!&lt;/em&gt;.  For the next few days I’ll be talking about each of these starting with jq.  So, John, thank you for the idea and here’s a tip on JQ.  After I write tips for each of these, I’ll follow through with getting this whole thing running.&lt;/p&gt;
+
+&lt;p&gt;The Linux tool jq is a command line JSON processor designed to use JSON as part of a Unix pipeline.  In the case of the hncomments bash script, jq takes input from the the &lt;a href=&quot;http://www.algolia.com&quot;&gt;algolia&lt;/a&gt; output as called by curl.&lt;/p&gt;
+
+&lt;p&gt;To install jq on Linux, use:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;sudo apt-get install jq&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;But you might not have to – it was already installed for me even on servers I control which have pretty limited tools so this feels like it might be a standard tool.&lt;/p&gt;
+
+&lt;p&gt;To install jq on OSX, use:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;brew install jq&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Help is available, as it always should be (but often isn’t), with –help.  Here’s an example:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sjohnson@FuzzygroupMacbookAir ~ &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;jq --help
+jq - commandline JSON processor &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;version 1.5]
+Usage: jq &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;options] &amp;lt;jq filter&amp;gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;file...]
+
+	jq is a tool &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;processing JSON inputs, applying the
+	given filter to its JSON text inputs and producing the
+	filter&lt;span class=&quot;s1&quot;&gt;'s results as JSON on standard output.
+	The simplest filter is ., which is the identity filter,
+	copying jq'&lt;/span&gt;s input to its output unmodified &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;except &lt;span class=&quot;k&quot;&gt;for
+	&lt;/span&gt;formatting&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.
+	For more advanced filters see the jq&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; manpage &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;man jq&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	and/or https://stedolan.github.io/jq
+
+	Some of the options include:
+	 -c		compact instead of pretty-printed output;
+	 -n		use &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;null&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; as the single input value;
+	 -e		&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;the &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;status code based on the output;
+	 -s		&lt;span class=&quot;nb&quot;&gt;read&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;slurp&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; all inputs into an array; apply filter to it;
+	 -r		output raw strings, not JSON texts;
+	 -R		&lt;span class=&quot;nb&quot;&gt;read &lt;/span&gt;raw strings, not JSON texts;
+	 -C		colorize JSON;
+	 -M		monochrome &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;don&lt;span class=&quot;s1&quot;&gt;'t colorize JSON);
+	 -S		sort keys of objects on output;
+	 --tab	use tabs for indentation;
+	 --arg a v	set variable $a to value &amp;lt;v&amp;gt;;
+	 --argjson a v	set variable $a to JSON value &amp;lt;v&amp;gt;;
+	 --slurpfile a f	set variable $a to an array of JSON texts read from &amp;lt;f&amp;gt;;
+	See the manpage for more options.
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Because this is designed to be used as part of a pipeline and you have to data in JSON format for it to work, I’m going to illustrate its use by stealing from the &lt;strong&gt;hncomments&lt;/strong&gt; bash script (thank you John!):&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;curl -s &lt;span class=&quot;s2&quot;&gt;&quot;https://hn.algolia.com/api/v1/search_by_date?query=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$q&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;amp;tags=comment&amp;amp;numericFilters=created_at_i&amp;gt;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$l&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$j&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; ; &lt;span class=&quot;k&quot;&gt;then
+  &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
+&lt;span class=&quot;k&quot;&gt;fi
+
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;jq &lt;span class=&quot;s1&quot;&gt;'.hits | .[] | .created_at_i'&lt;/span&gt; &amp;lt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | sort -nr | head -n 1&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; 
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; ; &lt;span class=&quot;k&quot;&gt;then
+  &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
+&lt;span class=&quot;k&quot;&gt;fi
+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$n&lt;/span&gt; &amp;gt; &lt;span class=&quot;nv&quot;&gt;$f&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;For purposes of illustration, let’s assume that $q is &lt;strong&gt;docker&lt;/strong&gt;.  This means that the curl statement is executing the url at hn.algolia.com and returning it as $j.  The jq tool is then filtering down the json by looking for the hash key “hits” in the json output.  Here’s an example of what the start of that output looks like:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;{“hits”:[{“created_at”:”2017-02-06T08:29:47.000Z”,”title”:null,”url”:null,”author”:”schappim”,”points”:null,”story_text”:null,”comment_text”:”Function as a service (like AWS Lambda, Google Cloud Functions and Azure Functions) for Ruby.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;More on all of this tomorrow when I look into recode.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 06 Feb 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/linux/2017/02/06/linux-tip-of-the-day-jq.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/linux/2017/02/06/linux-tip-of-the-day-jq.html</guid>
+        
+        <category>linux_tip_of_the_day</category>
+        
+        <category>linux</category>
+        
+        <category>jq</category>
+        
+        
+        <category>linux</category>
+        
+      </item>
     
       <item>
         <title>Apple Sierra - Not Developer Grade</title>
@@ -427,6 +521,8 @@ com.apple.kec.corecrypto	1.0
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
+&lt;p&gt;Note: All benchmarking tests were down with a Benchmark.realtime do block wrapping the code in question.  Only the core matching operations were benchmarked; not the underlying network io.&lt;/p&gt;
+
 &lt;p&gt;If you do the math that’s between &lt;em&gt;3.2&lt;/em&gt; and &lt;em&gt;3.6&lt;/em&gt; times faster.  On other tests I found about a 3 fold increase in speed.  As my old friend Pete Jenney would have said &lt;strong&gt;Great Googlely Moogley!&lt;/strong&gt;  I should point out that he was saying that in 1996 long before Google even existed.&lt;/p&gt;
 
 &lt;p&gt;As with any benchmark, your results will definitely vary.  I’m working here with pretty big strings (web pages; this is a simple data extractor).&lt;/p&gt;
@@ -807,28 +903,6 @@ https://www.phusionpassenger.com/library/config/apache/optimization/&lt;/p&gt;
         <pubDate>Fri, 03 Feb 2017 17:24:05 -0500</pubDate>
         <link>http://fuzzyblog.io//blog/2017/02/03/troubleshooting-rails-with-passenger-and-apache2.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/03/troubleshooting-rails-with-passenger-and-apache2.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Ten Tips to Surviving the Whole 30</title>
-        <description>&lt;ol&gt;
-  &lt;li&gt;Cocktail Replacement&lt;/li&gt;
-  &lt;li&gt;Better Quality Proteins&lt;/li&gt;
-  &lt;li&gt;Be Adventurus&lt;/li&gt;
-  &lt;li&gt;Crunch Means Tera Chip Time!&lt;/li&gt;
-  &lt;li&gt;Eat Your Own Meal Before the Pizza Arrives&lt;/li&gt;
-  &lt;li&gt;Come Up With Sweets That Work for You&lt;/li&gt;
-  &lt;li&gt;Consider Pairing it with Zero&lt;/li&gt;
-  &lt;li&gt;Their Recipes Don’t Always Work&lt;/li&gt;
-  &lt;li&gt;&lt;/li&gt;
-  &lt;li&gt;Bear In Mind Its a Diet Not a Religion&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Fri, 03 Feb 2017 16:32:36 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/02/03/surviving-the-whole-30.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/03/surviving-the-whole-30.html</guid>
         
         
       </item>

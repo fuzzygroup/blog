@@ -23,12 +23,12 @@
 
   
     <meta name="twitter:description"
-      content="I got my start with text processing using a custom version of Awk, HyperAwk, that my first company, NTERGAID, built.  What made HyperAwk unique was its ability to read not just ASCII but Word, Word...">
+      content="It is really, really easy to fall into usage patterns once you learn a method of coding and never consider the 10 other ways you might do something.  Here I look at match versus scan in Ruby with a short benchmark.">
   
 
   
     <meta name="twitter:image"
-      content="https://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+      content="http://fuzzyblog.io/blog/assets/ruby.png">
   
   
   
@@ -141,6 +141,8 @@
 <span class="p">}</span>
 </code></pre>
 </div>
+
+<p>Note: All benchmarking tests were down with a Benchmark.realtime do block wrapping the code in question.  Only the core matching operations were benchmarked; not the underlying network io.</p>
 
 <p>If you do the math that’s between <em>3.2</em> and <em>3.6</em> times faster.  On other tests I found about a 3 fold increase in speed.  As my old friend Pete Jenney would have said <strong>Great Googlely Moogley!</strong>  I should point out that he was saying that in 1996 long before Google even existed.</p>
 
