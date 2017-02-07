@@ -4,7 +4,7 @@ title: Linux Tip Of The Day - recode
 category: linux
 tags: ["linux_tip_of_the_day", "linux", "jq"]
 description: Linux Tip of the Day - Use jq for command line JSON processing.
-image: http://fuzzyblog.io/blog/assets/jq.png
+image: http://fuzzyblog.io/blog/assets/recode.png
 ---
 As I discussed [yesterday](http://fuzzyblog.io/blog/linux/2017/02/06/linux-tip-of-the-day-jq.html), I'm currently talking about the dependencies in John Graham Cummings, [hncomments](https://github.com/jgrahamc/hncomments/blob/master/hncomments) bash script.  At the end of this I'm hoping that I have all the pieces that I can actually run this myself.  
 

@@ -2,7 +2,7 @@
 layout: post
 title: Linux Tip of the Day - git recall
 category: linux
-tags: ["linux_tip_of_the_day", "linux", "git"]
+tags: ["linux_tip_of_the_day", "linux", "git", "linux_tip_of_the_day"]
 description: Linux Tip of the Day - Use git recall to see what you did recently
 image: http://fuzzyblog.io/blog/assets/git_recall1.png
 ---

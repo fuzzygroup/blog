@@ -3,6 +3,9 @@ layout: post
 title: On Merging Files - Diff Alternatives on the Mac
 tags: ["software_engineering", "version_control", "merge", "git", "diff"]
 category: software_engineering
+description: When you really, really break the code base, you need tools to put it back together.  Here I look at diff tools.
+image: http://fuzzyblog.io/blog/assets/open_diff.png
+
 ---
 There are certain skills as a software developer that take, in my experience, a lifetime to master.  I have now been using version control since the mid 1990s and I still don't consider myself, by any means, a master.  I'm good, don't get me wrong, but I don't feel that I have yet fully internalized all the benefits that version control offers.  So, when I have a chance to really take advantage of version control, I truly relish the opportunity.  
 
@@ -19,7 +22,7 @@ So, well, **crap**.  The fix was, in the immortal words of Doctor Who, to get al
 * figure out how to travel back from the past while bringing with me a working version
 * NOT lose any of the cool new features
 
-One of the development practices I am absolutely adamant about is only ever having 1 checkout of the code based at a time.  I'm hardcore on this because I've seen what happens when you have multiple versions floating about -- its very, very convenient but you tend to get confused and then you lose track of what's the master and things get screwball.  But, in desparate times, you do what you must and so I went over to github and:
+One of the development practices I am absolutely **adamant** about is only ever having 1 checkout of the code based at a time.  I'm hardcore on this because I've seen what happens when you have multiple versions floating about -- its very, very convenient but you tend to get confused and then you lose track of what's the master and things get screwball.  But, in desparate times, you do what you must and so I went over to github and:
 
 * I found a commit from roughly before I started; I wasn't real specific about this, I just remember "this debacle started last Thursday so goto Wednesday"
 * I browsed the code base at that point
@@ -38,6 +41,7 @@ What I found was that the old code did, in fact, run better than the new code.  
 
 So I now had two git checkouts with differences between them.  One of them was master, and did I mention that while this was all going on I got pulled off the project to fix something else and add yet more functionality to the code base for a day and half, and the other was my time travel branch.  When I did a git status in the time travel branch I got this:
 
+```bash
     git status
     HEAD detached at 93bf221
     Changes not staged for commit:
@@ -69,6 +73,7 @@ So I now had two git checkouts with differences between them.  One of them was m
     	lib/tasks/crawl2016_q4.rake
 
     no changes added to commit (use "git add" and/or "git commit -a")
+```
     
 That's a whole lot of changes.  The easiest approach was to start with the entirely new files and just copy them over to the original.  
 
@@ -84,12 +89,24 @@ I ended up using Open Diff for my merge issues:
 
 ![opendiff](/blog/assets/open_diff.png)
 
-diff_merge.png
-beyond_compare.png
-kaleidoscope.png
+Here are screenshots from some of the other tools I looked at:
 
-Good articles on merge tools:
+## Diff Merge
+
+![diff_merge](/blog/assets/diff_merge.png)
+
+## Beyond Compare
+
+![beyond_compare](/blog/assets/beyond_compare.png)
+
+## Kaleidoscope
+
+![kaleidoscope](/blog/assets/kaleidoscope.png)
+
+
+## More Reading
+
+Here are a few good articles on merge tools:
 
 * [GitTower](https://www.git-tower.com/blog/diff-tools-mac)
 * [outcoldman](https://www.outcoldman.com/en/archive/2014/05/12/git-dirdiff/)
-* 

@@ -2,7 +2,7 @@
 layout: post
 title: Linux Tip Of The Day - lsblk
 category: linux
-tags: ["linux_tip_of_the_day", "linux", "sys_admin", "aws"]
+tags: ["linux_tip_of_the_day", "linux", "sys_admin", "aws", "linux_tip_of_the_day"]
 description: Linux Tip of the Day - Use lsblk to view all the block storage devices attached to your system
 image: http://fuzzyblog.io/blog/assets/lsblk.png
 ---

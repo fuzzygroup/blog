@@ -10,7 +10,7 @@
   <meta name="description" content="There are certain skills as a software developer that take, in my experience, a lifetime to master.  I have now been using version control since the mid 1990...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/software_engineering/2016/12/22/on-merging-files-diff-alternatives-on-the-mac.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/software_engineering/2017/02/07/on-merging-files-diff-alternatives-on-the-mac.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- twitter specific head tags -->
@@ -114,7 +114,7 @@
 
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">On Merging Files - Diff Alternatives on the Mac</h1>
-    <p class="I'll"><time datetime="2016-12-22T11:26:49-05:00" itemprop="datePublished">Dec 22, 2016</time></p>
+    <p class="I'll"><time datetime="2017-02-07T00:00:00-05:00" itemprop="datePublished">Feb 7, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
@@ -137,7 +137,7 @@
   <li>NOT lose any of the cool new features</li>
 </ul>
 
-<p>One of the development practices I am absolutely adamant about is only ever having 1 checkout of the code based at a time.  I’m hardcore on this because I’ve seen what happens when you have multiple versions floating about – its very, very convenient but you tend to get confused and then you lose track of what’s the master and things get screwball.  But, in desparate times, you do what you must and so I went over to github and:</p>
+<p>One of the development practices I am absolutely <strong>adamant</strong> about is only ever having 1 checkout of the code based at a time.  I’m hardcore on this because I’ve seen what happens when you have multiple versions floating about – its very, very convenient but you tend to get confused and then you lose track of what’s the master and things get screwball.  But, in desparate times, you do what you must and so I went over to github and:</p>
 
 <ul>
   <li>I found a commit from roughly before I started; I wasn’t real specific about this, I just remember “this debacle started last Thursday so goto Wednesday”</li>
@@ -160,37 +160,37 @@
 
 <p>So I now had two git checkouts with differences between them.  One of them was master, and did I mention that while this was all going on I got pulled off the project to fix something else and add yet more functionality to the code base for a day and half, and the other was my time travel branch.  When I did a git status in the time travel branch I got this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git status
-HEAD detached at 93bf221
-Changes not staged for commit:
-  (use "git add &lt;file&gt;..." to update what will be committed)
-  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>    git status
+    HEAD detached at 93bf221
+    Changes not staged <span class="k">for </span>commit:
+      <span class="o">(</span>use <span class="s2">"git add &lt;file&gt;..."</span> to update what will be committed<span class="o">)</span>
+      <span class="o">(</span>use <span class="s2">"git checkout -- &lt;file&gt;..."</span> to discard changes <span class="k">in </span>working directory<span class="o">)</span>
 
-	modified:   app/models/form.rb
-	modified:   app/models/form2016_q4.rb
-	modified:   app/models/iframe2016_q4.rb
-	modified:   app/models/link.rb
-	modified:   app/models/link2016_q4.rb
-	modified:   app/models/page.rb
-	modified:   app/models/page2016_q4.rb
-	modified:   app/models/page_body.rb
-	modified:   app/models/page_body2016_q4.rb
-	modified:   app/models/site.rb
-	modified:   app/models/unique_url.rb
-	modified:   app/models/unique_url2016_q4.rb
-	modified:   app/models/url_resolver.rb
-	modified:   app/models/url_tool.rb
-	modified:   config/initializers/constants.rb
-	modified:   lib/common_link.rb
-	modified:   lib/common_page.rb
+    	modified:   app/models/form.rb
+    	modified:   app/models/form2016_q4.rb
+    	modified:   app/models/iframe2016_q4.rb
+    	modified:   app/models/link.rb
+    	modified:   app/models/link2016_q4.rb
+    	modified:   app/models/page.rb
+    	modified:   app/models/page2016_q4.rb
+    	modified:   app/models/page_body.rb
+    	modified:   app/models/page_body2016_q4.rb
+    	modified:   app/models/site.rb
+    	modified:   app/models/unique_url.rb
+    	modified:   app/models/unique_url2016_q4.rb
+    	modified:   app/models/url_resolver.rb
+    	modified:   app/models/url_tool.rb
+    	modified:   config/initializers/constants.rb
+    	modified:   lib/common_link.rb
+    	modified:   lib/common_page.rb
 
-Untracked files:
-  (use "git add &lt;file&gt;..." to include in what will be committed)
+    Untracked files:
+      <span class="o">(</span>use <span class="s2">"git add &lt;file&gt;..."</span> to include <span class="k">in </span>what will be committed<span class="o">)</span>
 
-	docs/snippets/create_mechanize_page_without_fetch.rb
-	lib/tasks/crawl2016_q4.rake
+    	docs/snippets/create_mechanize_page_without_fetch.rb
+    	lib/tasks/crawl2016_q4.rake
 
-no changes added to commit (use "git add" and/or "git commit -a")
+    no changes added to commit <span class="o">(</span>use <span class="s2">"git add"</span> and/or <span class="s2">"git commit -a"</span><span class="o">)</span>
 </code></pre>
 </div>
 
@@ -210,16 +210,27 @@ no changes added to commit (use "git add" and/or "git commit -a")
 
 <p><img src="/blog/assets/open_diff.png" alt="opendiff" /></p>
 
-<p>diff_merge.png
-beyond_compare.png
-kaleidoscope.png</p>
+<p>Here are screenshots from some of the other tools I looked at:</p>
 
-<p>Good articles on merge tools:</p>
+<h2 id="diff-merge">Diff Merge</h2>
+
+<p><img src="/blog/assets/diff_merge.png" alt="diff_merge" /></p>
+
+<h2 id="beyond-compare">Beyond Compare</h2>
+
+<p><img src="/blog/assets/beyond_compare.png" alt="beyond_compare" /></p>
+
+<h2 id="kaleidoscope">Kaleidoscope</h2>
+
+<p><img src="/blog/assets/kaleidoscope.png" alt="kaleidoscope" /></p>
+
+<h2 id="more-reading">More Reading</h2>
+
+<p>Here are a few good articles on merge tools:</p>
 
 <ul>
   <li><a href="https://www.git-tower.com/blog/diff-tools-mac">GitTower</a></li>
   <li><a href="https://www.outcoldman.com/en/archive/2014/05/12/git-dirdiff/">outcoldman</a></li>
-  <li></li>
 </ul>
 
   </div>
