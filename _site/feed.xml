@@ -6,9 +6,112 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 06 Feb 2017 04:40:30 -0500</pubDate>
-    <lastBuildDate>Mon, 06 Feb 2017 04:40:30 -0500</lastBuildDate>
+    <pubDate>Tue, 07 Feb 2017 06:32:17 -0500</pubDate>
+    <lastBuildDate>Tue, 07 Feb 2017 06:32:17 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Linux Tip Of The Day - mount</title>
+        <description>&lt;p&gt;mount -a  http://chrisschuld.com/2007/08/reload-fstab-etcfstab/&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 07 Feb 2017 06:22:17 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/02/07/linux-tip-of-the-day-mount.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/07/linux-tip-of-the-day-mount.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Linux Tip Of The Day - recode</title>
+        <description>&lt;p&gt;As I discussed &lt;a href=&quot;http://fuzzyblog.io/blog/linux/2017/02/06/linux-tip-of-the-day-jq.html&quot;&gt;yesterday&lt;/a&gt;, I’m currently talking about the dependencies in John Graham Cummings, &lt;a href=&quot;https://github.com/jgrahamc/hncomments/blob/master/hncomments&quot;&gt;hncomments&lt;/a&gt; bash script.  At the end of this I’m hoping that I have all the pieces that I can actually run this myself.&lt;/p&gt;
+
+&lt;p&gt;The recode tool, a utility I had never even heard of, converts files between various character sets.  Given all the troubles I’ve had over the years with crawling the different app stores and encodings, I’m glad to learn about this.&lt;/p&gt;
+
+&lt;p&gt;If you’re on Linux then you can install recode with:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;sudo apt-get install recode&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;If you’re on OSX then install recode with:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;brew install recode&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Use recode –help to get assistance (this is only a subset of the help):&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;recode --help
+Free &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;recode&lt;span class=&quot;s1&quot;&gt;' converts files between various character sets and surfaces.
+
+Usage: recode [OPTION]... [ [CHARSET] | REQUEST [FILE]... ]
+
+If a long option shows an argument as mandatory, then it is mandatory
+for the equivalent short option also.  Similarly for optional arguments.
+
+Listings:
+  -l, --list[=FORMAT]        list one or all known charsets and aliases
+  -k, --known=PAIRS          restrict charsets according to known PAIRS list
+  -h, --header[=[LN/]NAME]   write table NAME on stdout using LN, then exit
+  -F, --freeze-tables        write out a C module holding all tables
+  -T, --find-subsets         report all charsets being subset of others
+  -C, --copyright            display Copyright and copying conditions
+      --help                 display this help and exit
+      --version              output version information and exit
+
+Operation modes:
+  -v, --verbose           explain sequence of steps and report progress
+  -q, --quiet, --silent   inhibit messages about irreversible recodings
+  -f, --force             force recodings even when not reversible
+  -t, --touch             touch the recoded files after replacement
+  -i, --sequence=files    use intermediate files for sequencing passes
+      --sequence=memory   use memory buffers for sequencing passes
+  -p, --sequence=pipe     use pipe machinery for sequencing passes
+
+Fine tuning:
+  -s, --strict           use strict mappings, even loose characters
+  -d, --diacritics       convert only diacritics or alike for HTML/LaTeX
+  -S, --source[=LN]      limit recoding to strings and comments as for LN
+  -c, --colons           use colons instead of double quotes for diaeresis
+  -g, --graphics         approximate IBMPC rulers by ASCII graphics
+  -x, --ignore=CHARSET   ignore CHARSET while choosing a recoding path
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If we go back to the source on hncomments then we can see how recode fits in:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;table&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;jq -r ‘.hits&lt;/td&gt;
+        &lt;td&gt;.[]&lt;/td&gt;
+        &lt;td&gt;.author + “\nhttps://news.ycombinator.com/item?id=” + .objectID + “\n\n” + .comment_text + “\n\n—\n\n”’ &amp;lt;(echo $j)&lt;/td&gt;
+        &lt;td&gt;sed -e ‘s/&amp;lt;[^&amp;gt;]*&amp;gt;/ /g;’&lt;/td&gt;
+        &lt;td&gt;&lt;strong&gt;recode&lt;/strong&gt; -f html..ascii&lt;/td&gt;
+        &lt;td&gt;mail -s “Latest $q HN comments” $e&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Here recode is taking the output from set and&lt;/p&gt;
+</description>
+        <pubDate>Tue, 07 Feb 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/linux/2017/02/07/linux-tip-of-the-day-recode.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/linux/2017/02/07/linux-tip-of-the-day-recode.html</guid>
+        
+        <category>linux_tip_of_the_day</category>
+        
+        <category>linux</category>
+        
+        <category>jq</category>
+        
+        
+        <category>linux</category>
+        
+      </item>
     
       <item>
         <title>Linux Tip of the Day - jq</title>
@@ -852,57 +955,6 @@ It’s nice that they’ve moved devs out of the ghetto and I admire the work pe
         <pubDate>Fri, 03 Feb 2017 22:25:03 -0500</pubDate>
         <link>http://fuzzyblog.io//blog/2017/02/03/thoughts-on-using-windows-in-2017.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/03/thoughts-on-using-windows-in-2017.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Ruby One Liner Examples</title>
-        <description>&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;farm_instances.each {&lt;/td&gt;
-      &lt;td&gt;fi&lt;/td&gt;
-      &lt;td&gt;fi.update_attribute(:ended_at, dt) }&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-</description>
-        <pubDate>Fri, 03 Feb 2017 18:09:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/02/03/ruby-one-liner-examples.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/03/ruby-one-liner-examples.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Troubleshooting Rails with Passenger and Apache2</title>
-        <description>&lt;p&gt;passenger-status&lt;/p&gt;
-
-&lt;p&gt;passenger-status –show=requests&lt;/p&gt;
-
-&lt;p&gt;passenger-memory-stats&lt;/p&gt;
-
-&lt;p&gt;sudo apt-get update&lt;/p&gt;
-
-&lt;p&gt;sudo apt-get upgrade&lt;/p&gt;
-
-&lt;p&gt;https://www.phusionpassenger.com/library/walkthroughs/deploy/ruby/aws/apache/oss/trusty/install_passenger.html&lt;/p&gt;
-
-&lt;p&gt;I’m going to make a pretty strong, very general statement about Passenger based on using it for almost a decade:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;If you find something wrong, it is generally you, not Passenger.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;https://www.phusionpassenger.com/library/admin/apache/overall_status_report.html
-https://www.phusionpassenger.com/library/admin/apache/overall_status_report.html
-https://www.phusionpassenger.com/library/walkthroughs/deploy/ruby/aws/apache/oss/deploy_updates.html
-https://www.phusionpassenger.com/library/config/apache/optimization/&lt;/p&gt;
-</description>
-        <pubDate>Fri, 03 Feb 2017 17:24:05 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/02/03/troubleshooting-rails-with-passenger-and-apache2.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/03/troubleshooting-rails-with-passenger-and-apache2.html</guid>
         
         
       </item>
