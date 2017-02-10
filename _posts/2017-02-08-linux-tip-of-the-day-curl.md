@@ -62,6 +62,7 @@ If you're looking for help with curl then try the [Online Curl tool](https://cur
 Here are some more references:
 
 * [Me on Using Curl to Test APIs](http://fuzzyblog.io/blog/software_engineering/2017/01/05/scott-s-rule-of-api-development.html)
+* [Haxx](https://curl.haxx.se/docs/httpscripting.html#HEAD)
 * [GeekFlare on Curl](https://geekflare.com/curl-command-usage-with-example/)
 * [Linux.com on Curl](https://www.linux.com/blog/5-basic-curl-command-examples-you-can-run-your-linux-server)
 * [Rose Hosting on Curl](https://www.rosehosting.com/blog/curl-command-examples/)
