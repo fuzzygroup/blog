@@ -6,9 +6,85 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 07 Feb 2017 06:47:48 -0500</pubDate>
-    <lastBuildDate>Tue, 07 Feb 2017 06:47:48 -0500</lastBuildDate>
+    <pubDate>Thu, 09 Feb 2017 21:14:36 -0500</pubDate>
+    <lastBuildDate>Thu, 09 Feb 2017 21:14:36 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Linux Tip of the Day - curl</title>
+        <description>&lt;p&gt;While I try hard to write things described as “* of the day” regularly there are times when life throws you a curve ball.  Yesterday’s curve ball was the intersection of sick child, snow and a failed sewage lift pump led to, well, personal hell at home.  After a very busy work day I spent the evening that I had allocated to writing, well, playing clean up man before the real plumber showed up.  Anyway … on to curl!&lt;/p&gt;
+
+&lt;p&gt;The standard Linux tool curl seems to always be present on Linux / OSX systems so I can skip over the installation issues and I suspect most of us know the basics i.e.:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;curl http://foo.com/bar.html&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;will fetch the file bar.html from the foo.com website and place it in the current directory.  Given that our goal here was to discuss how curl was used in John Graham Cummings &lt;a href=&quot;https://github.com/jgrahamc/hncomments/blob/master/hncomments&quot;&gt;hncomments&lt;/a&gt; bash script and that’s all we need, I could stop here but let’s go for the gusto and give some examples of advanced usage of curl.&lt;/p&gt;
+
+&lt;h1 id=&quot;output-redirection-with-curl&quot;&gt;Output Redirection with curl&lt;/h1&gt;
+
+&lt;p&gt;Normally the output of curl is written to the same filename that was used on the server.  You can use the &amp;gt; character to redirect output to a new file as showing here:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;curl yoururl.com &amp;gt; yoururl.html&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://geekflare.com/curl-command-usage-with-example/&quot;&gt;More&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;send-a-custom-header-with-curl&quot;&gt;Send a Custom Header with curl&lt;/h1&gt;
+
+&lt;p&gt;If you want to send a custom header with curl then you can inject it with –header:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;curl –header ‘Content-Type: application/json’ http://yoururl.com&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://geekflare.com/curl-command-usage-with-example/&quot;&gt;More&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;get-headers-with-curl&quot;&gt;Get Headers with curl&lt;/h1&gt;
+
+&lt;p&gt;You can get a feel for the Internet http headers with –head:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;curl –head http://fuzzyblog.io&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl --head http://fuzzyblog.io
+HTTP/1.1 200 OK
+Server: GitHub.com
+Date: Fri, 10 Feb 2017 02:00:34 GMT
+Content-Type: text/html; &lt;span class=&quot;nv&quot;&gt;charset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;utf-8
+Content-Length: 1125
+Last-Modified: Mon, 16 Jan 2017 18:12:56 GMT
+Access-Control-Allow-Origin: &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+Expires: Fri, 10 Feb 2017 02:10:34 GMT
+Cache-Control: max-age&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;600
+Accept-Ranges: bytes
+X-GitHub-Request-Id: EA7C:71BB:11DF3A8:1883A50:589D1EC2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This is particularly useful if you build tools like crawlers / indexers because you can use the intersection of Last-Modified and Control-Length to make a hash key that you use for determining if you should index something.  HTTP head operations are very cheap because only the header is transferred.  &lt;a href=&quot;https://curl.haxx.se/docs/httpscripting.html#HEAD&quot;&gt;More on Head&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;testing-advanced-options&quot;&gt;Testing Advanced Options&lt;/h1&gt;
+
+&lt;p&gt;If you’re looking for help with curl then try the &lt;a href=&quot;https://curlbuilder.com/&quot;&gt;Online Curl tool&lt;/a&gt; which gives you a user interface that has generates a curl command as its output.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 08 Feb 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/linux/2017/02/08/linux-tip-of-the-day-curl.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/linux/2017/02/08/linux-tip-of-the-day-curl.html</guid>
+        
+        <category>linux_tip_of_the_day</category>
+        
+        <category>linux</category>
+        
+        <category>curl</category>
+        
+        
+        <category>linux</category>
+        
+      </item>
     
       <item>
         <title>Linux Tip Of The Day - mount</title>
@@ -999,77 +1075,6 @@ com.apple.kec.corecrypto	1.0
         
         
         <category>side_project</category>
-        
-      </item>
-    
-      <item>
-        <title>Linux Tip of the Day - git-standup</title>
-        <description>&lt;p&gt;Over on Twitter, &lt;a href=&quot;https://twitter.com/kamranahmedse&quot;&gt;@kamranahmedse&lt;/a&gt; pointed out to me that git-standup does similar things to &lt;a href=&quot;http://fuzzyblog.io/blog/linux/2017/01/30/linux-tip-of-the-day-git-recall.html&quot;&gt;git-recall&lt;/a&gt; which I recently talked about – and more.  First off – thank you!  Based on his &lt;a href=&quot;https://github.com/kamranahmedse/git-standup&quot;&gt;github account&lt;/a&gt;, I’d assume that git-standup is his project and he’s done really nice work here.&lt;/p&gt;
-
-&lt;p&gt;In case you missed the previous post on git-recall, git-standup helps you to understand what’s been going on with a codebase by looking at commits either during the same day or a given range of days.&lt;/p&gt;
-
-&lt;p&gt;Install on Linux as follows:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;table&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;curl -L https://raw.githubusercontent.com/kamranahmedse/git-standup/master/installer.sh&lt;/td&gt;
-        &lt;td&gt;sudo sh&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;or you can use npm:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;npm install -g git-standup&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;or if you are on OSX then you can use brew:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;brew install git-standup&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Here are the &lt;strong&gt;very useful&lt;/strong&gt; options that git-standup supports:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;git standup &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-a &amp;lt;author name&amp;gt;] 
-              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-w &amp;lt;weekstart-weekend&amp;gt;] 
-              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-m &amp;lt;max-dir-depth&amp;gt;]
-              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-f]
-              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-L]
-              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-d &amp;lt;days-ago&amp;gt;]
-              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-D &amp;lt;date-format&amp;gt;] 
-              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-g] 
-              &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-h]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;After you change into a directory where you’re working on something git, do this:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;git-standup&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;and you’ll get a view of what happened over the past day.  Where git-standup shines over git recall is in its use of command line options to expand beyond the previous day.  And here’s an example of looking back over the past 5 days:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/git-standup.png&quot; alt=&quot;git-standup.png&quot; /&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 04 Feb 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/linux/2017/02/04/linux-tip-of-the-day-git-standup.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/linux/2017/02/04/linux-tip-of-the-day-git-standup.html</guid>
-        
-        <category>linux_tip_of_the_day</category>
-        
-        <category>linux</category>
-        
-        <category>git</category>
-        
-        
-        <category>linux</category>
         
       </item>
     
