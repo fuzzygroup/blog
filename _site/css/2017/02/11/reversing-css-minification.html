@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Linux Tip of the Day - curl</title>
-  <meta name="description" content="While I try hard to write things described as “* of the day” regularly there are times when life throws you a curve ball.  Yesterday’s curve ball was the int...">
+  <title>Reversing CSS Minification</title>
+  <meta name="description" content="For the first time in a very, very long time, I find myself actually writing a somewhat “modern” web app.  By which I mean that it has to use CSS and use it ...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/linux/2017/02/08/linux-tip-of-the-day-curl.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/css/2017/02/11/reversing-css-minification.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- twitter specific head tags -->
@@ -19,16 +19,16 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Linux Tip of the Day - curl">
+  <meta name="twitter:title" content="Reversing CSS Minification">
 
   
     <meta name="twitter:description"
-      content="Linux Tip of the Day - Use curl to fetch urls all kinds of different ways">
+      content="Use a CSS reverse minifier to make understanding someone else's CSS actually possible.">
   
 
   
     <meta name="twitter:image"
-      content="http://fuzzyblog.io/blog/assets/curl.png">
+      content="http://fuzzyblog/io/blog/assets/css_reverse_minifier.png">
   
   
   
@@ -113,83 +113,29 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Linux Tip of the Day - curl</h1>
-    <p class="I'll"><time datetime="2017-02-08T00:00:00-05:00" itemprop="datePublished">Feb 8, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">Reversing CSS Minification</h1>
+    <p class="I'll"><time datetime="2017-02-11T18:09:55-05:00" itemprop="datePublished">Feb 11, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>While I try hard to write things described as “* of the day” regularly there are times when life throws you a curve ball.  Yesterday’s curve ball was the intersection of sick child, snow and a failed sewage lift pump led to, well, personal hell at home.  After a very busy work day I spent the evening that I had allocated to writing, well, playing clean up man before the real plumber showed up.  Anyway … on to curl!</p>
+    <p>For the first time in a very, very long time, I find myself actually writing a somewhat “modern” web app.  By which I mean that it has to use CSS and use it both well and effectively.  I am essentially a back end developer wandering around a series of increasingly complex front end tasks.  As with all web development one of the keys is looking at the source i.e. <em>Use the source Luke</em>.  The problem with looking at the CSS source is that generally CSS content is minified which means that all line breaks, extra spacing and such are removed rendering it hard, hard, hard to understand.</p>
 
-<p>The standard Linux tool curl seems to always be present on Linux / OSX systems so I can skip over the installation issues and I suspect most of us know the basics i.e.:</p>
-
-<blockquote>
-  <p>curl http://foo.com/bar.html</p>
-</blockquote>
-
-<p>will fetch the file bar.html from the foo.com website and place it in the current directory.  Given that our goal here was to discuss how curl was used in John Graham Cummings <a href="https://github.com/jgrahamc/hncomments/blob/master/hncomments">hncomments</a> bash script and that’s all we need, I could stop here but let’s go for the gusto and give some examples of advanced usage of curl.</p>
-
-<h1 id="output-redirection-with-curl">Output Redirection with curl</h1>
-
-<p>Normally the output of curl is written to the same filename that was used on the server.  You can use the &gt; character to redirect output to a new file as showing here:</p>
-
-<blockquote>
-  <p>curl yoururl.com &gt; yoururl.html</p>
-</blockquote>
-
-<p><a href="https://geekflare.com/curl-command-usage-with-example/">More</a></p>
-
-<h1 id="send-a-custom-header-with-curl">Send a Custom Header with curl</h1>
-
-<p>If you want to send a custom header with curl then you can inject it with –header:</p>
-
-<blockquote>
-  <p>curl –header ‘Content-Type: application/json’ http://yoururl.com</p>
-</blockquote>
-
-<p><a href="https://geekflare.com/curl-command-usage-with-example/">More</a></p>
-
-<h1 id="get-headers-with-curl">Get Headers with curl</h1>
-
-<p>You can get a feel for the Internet http headers with –head:</p>
-
-<blockquote>
-  <p>curl –head http://fuzzyblog.io</p>
-</blockquote>
-
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>curl --head http://fuzzyblog.io
-HTTP/1.1 200 OK
-Server: GitHub.com
-Date: Fri, 10 Feb 2017 02:00:34 GMT
-Content-Type: text/html; <span class="nv">charset</span><span class="o">=</span>utf-8
-Content-Length: 1125
-Last-Modified: Mon, 16 Jan 2017 18:12:56 GMT
-Access-Control-Allow-Origin: <span class="k">*</span>
-Expires: Fri, 10 Feb 2017 02:10:34 GMT
-Cache-Control: max-age<span class="o">=</span>600
-Accept-Ranges: bytes
-X-GitHub-Request-Id: EA7C:71BB:11DF3A8:1883A50:589D1EC2
-</code></pre>
-</div>
-
-<p>This is particularly useful if you build tools like crawlers / indexers because you can use the intersection of Last-Modified and Control-Length to make a hash key that you use for determining if you should index something.  HTTP head operations are very cheap because only the header is transferred.  <a href="https://curl.haxx.se/docs/httpscripting.html#HEAD">More on Head</a></p>
-
-<h1 id="testing-advanced-options">Testing Advanced Options</h1>
-
-<p>If you’re looking for help with curl then try the <a href="https://curlbuilder.com/">Online Curl tool</a> which gives you a user interface that has generates a curl command as its output.</p>
-
-<h1 id="references">References</h1>
-
-<p>Here are some more references:</p>
+<p>The trick here is to reverse the minification.  Here are a few tools:</p>
 
 <ul>
-  <li><a href="http://fuzzyblog.io/blog/software_engineering/2017/01/05/scott-s-rule-of-api-development.html">Me on Using Curl to Test APIs</a></li>
-  <li><a href="https://curl.haxx.se/docs/httpscripting.html#HEAD">Haxx</a></li>
-  <li><a href="https://geekflare.com/curl-command-usage-with-example/">GeekFlare on Curl</a></li>
-  <li><a href="https://www.linux.com/blog/5-basic-curl-command-examples-you-can-run-your-linux-server">Linux.com on Curl</a></li>
-  <li><a href="https://www.rosehosting.com/blog/curl-command-examples/">Rose Hosting on Curl</a></li>
-  <li><a href="http://www.thegeekstuff.com/2012/04/curl-examples/?utm_source=feedburner">The Geek Stuff on Curl</a></li>
-  <li><a href="https://sendgrid.com/docs/Classroom/Send/v3_Mail_Send/curl_examples.html">Curl and SendGrid</a> - This is particularly good since it has examples of http post operations.</li>
+  <li><a href="http://mrcoles.com/blog/css-unminify/">Web Based Reverse Minifier</a></li>
+  <li><a href="https://marketplace.visualstudio.com/items?itemName=HookyQR.beautify">Visual Studio Code Plugin</a></li>
 </ul>
+
+<p>The easiest one to use is the web based tool for Mr. Coles.  Just paste your CSS into a text box on the web page and click a form button.  Here’s a screenshot:</p>
+
+<p><img src="/blog/assets/css_reverse_minifier.png" alt="css_reverse_minifier.png" /></p>
+
+<p>A virtual hat tip to <a href="http://nickjanetakis.com/blog/">Nick</a> who found these for me.  Thanks man!</p>
+
+<p>One general note about reverse engineering CSS is that its actually pretty <strong>hard</strong>.  I was looking for examples of good looking page footers and the one I found was, well, mind bending in its complexity.  I then simply googled for <a href="https://www.google.com/search?tbs=li:1&amp;q=bootstrap+footer">bootstrap footer</a> and found <a href="http://www.bootsnipp.com/">bootsnipp.com</a> where I found this <a href="http://bootsnipp.com/snippets/1KEEq">footer</a> which was perfectly designed for use as a template.</p>
+
+<p>I still think reversing CSS minification is useful but finding things designed to be used as templates is perhaps more useful.</p>
 
   </div>
   
