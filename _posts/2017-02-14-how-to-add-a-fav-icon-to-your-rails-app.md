@@ -2,7 +2,7 @@
 layout: post
 title: Rails in 10 Minutes - How to Add a Fav Icon to Your Rails App
 category: rails
-tags: ["rails", "hyde", "design", "user_interface", "ui"]
+tags: ["rails", "hyde", "design", "user_interface", "ui", "rails_in_10_minutes"]
 description: Adding a favicon to your Rails app means that people can use a link to your app by an easy to remember icon not just a name when they add it to their browser link bar.
 image: http://fuzzyblog.io/blog/assets/browser_link_bar.png
 ---
@@ -31,7 +31,9 @@ or
 
 Do *add* / *commit* / *push* / *deploy* dance and check in production
 
-**Note:** Once upon a time you had to always name these favicon.ico but that's no longer necessary as your html tells the browser what to look for.
+**Note 1:** Once upon a time you had to always name these favicon.ico but that's no longer necessary as your html tells the browser what to look for.
+
+**Note 2:** [Helpful Stack Overflow post I cribbed from](http://stackoverflow.com/questions/13827325/correct-mime-type-for-favicon-ico).
 
     
 
