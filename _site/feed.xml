@@ -6,9 +6,188 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 14 Feb 2017 05:35:49 -0500</pubDate>
-    <lastBuildDate>Tue, 14 Feb 2017 05:35:49 -0500</lastBuildDate>
+    <pubDate>Wed, 15 Feb 2017 06:05:29 -0500</pubDate>
+    <lastBuildDate>Wed, 15 Feb 2017 06:05:29 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Linux Tip of the Day - Counting Lines of Code Across Directories</title>
+        <description>&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;find . -name ‘*.yml’&lt;/td&gt;
+      &lt;td&gt;xargs wc -l&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;wc -l &lt;code class=&quot;highlighter-rouge&quot;&gt;tree -if --noreport | grep -e'\.php$'&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;http://stackoverflow.com/questions/1358540/how-to-count-all-the-lines-of-code-in-a-directory-recursively&lt;/p&gt;
+
+&lt;p&gt;brew install sloccount&lt;/p&gt;
+</description>
+        <pubDate>Wed, 15 Feb 2017 05:49:01 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/02/15/linux-tip-of-the-day-counting-lines-of-code-across-directories.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/15/linux-tip-of-the-day-counting-lines-of-code-across-directories.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Visual Studio Code for a Rails Guy</title>
+        <description>&lt;p&gt;Editors are among the stickiest of software tools for a developer.  Want to get me to change editors – good luck!  I’ve been using TextMate since 2006 now and only switched off the long obsolete TextMate 1 to TextMate 2 about a year ago.  Editors are just that sticky.  Here are some of the things I’ve tried and rejected since the point I realized that I’m stuck in legacy land:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Sublime (didn’t feel right)&lt;/li&gt;
+  &lt;li&gt;Atom (too slow)&lt;/li&gt;
+  &lt;li&gt;VIM (been there; done that; got the t-shirt; ;wore the t-shirt until it was threadbare; wrote several hundred k lines of code in it from 2002 to 2005; no thanks; only server side from now on)&lt;/li&gt;
+  &lt;li&gt;MacVIM (didn’t feel right)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Again and again I walk away from TextMate but I keep coming back.  However, recently, Nick has convinced me to try Visual Studio Code and I’m &lt;strong&gt;intrigued&lt;/strong&gt;.  As someone who literally came of computing age with Borland and Microsoft IDEs, I never expected myself to once again be in a Microsoft produced editor and I would have bet money that that editor would NOT run on Linux – I would be wrong, 1000% wrong.  Visual Studio Code:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Feels Great&lt;/li&gt;
+  &lt;li&gt;Runs on Linux&lt;/li&gt;
+  &lt;li&gt;Performs Pretty Well&lt;/li&gt;
+  &lt;li&gt;Has An Enormous Plugin Library&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;installation-on-osx-and-linux&quot;&gt;Installation on OSX and Linux&lt;/h1&gt;
+
+&lt;p&gt;Start with the installation instructions &lt;a href=&quot;http://code.visualstudio.com/docs/setup/setup-overview&quot;&gt;here&lt;/a&gt;.  Here are the Mac and Linux downloads:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://code.visualstudio.com/docs/setup/mac&quot;&gt;Mac&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://code.visualstudio.com/docs/setup/linux&quot;&gt;Linux&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;installation-on-linux&quot;&gt;Installation on Linux&lt;/h1&gt;
+</description>
+        <pubDate>Wed, 15 Feb 2017 04:27:19 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/02/15/visual-studio-code-for-a-rails-guy.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/02/15/visual-studio-code-for-a-rails-guy.html</guid>
+        
+        <category>rails</category>
+        
+        <category>hyde</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Reversing CSS Minification</title>
+        <description>&lt;p&gt;For the first time in a very, very long time, I find myself actually writing a somewhat “modern” web app.  By which I mean that it has to use CSS and use it both well and effectively.  I am essentially a back end developer wandering around a series of increasingly complex front end tasks.  As with all web development one of the keys is looking at the source i.e. &lt;em&gt;Use the source Luke&lt;/em&gt;.  The problem with looking at the CSS source is that generally CSS content is minified which means that all line breaks, extra spacing and such are removed rendering it hard, hard, hard to understand.&lt;/p&gt;
+
+&lt;p&gt;The trick here is to reverse the minification.  Here are a few tools:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://mrcoles.com/blog/css-unminify/&quot;&gt;Web Based Reverse Minifier&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://marketplace.visualstudio.com/items?itemName=HookyQR.beautify&quot;&gt;Visual Studio Code Plugin&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The easiest one to use is the web based tool for Mr. Coles.  Just paste your CSS into a text box on the web page and click a form button.  Here’s a screenshot:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/css_reverse_minifier.png&quot; alt=&quot;css_reverse_minifier.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;A virtual hat tip to &lt;a href=&quot;http://nickjanetakis.com/blog/&quot;&gt;Nick&lt;/a&gt; who found these for me.  Thanks man!&lt;/p&gt;
+
+&lt;p&gt;One general note about reverse engineering CSS is that its actually pretty &lt;strong&gt;hard&lt;/strong&gt;.  I was looking for examples of good looking page footers and the one I found was, well, mind bending in its complexity.  I then simply googled for &lt;a href=&quot;https://www.google.com/search?tbs=li:1&amp;amp;q=bootstrap+footer&quot;&gt;bootstrap footer&lt;/a&gt; and found &lt;a href=&quot;http://www.bootsnipp.com/&quot;&gt;bootsnipp.com&lt;/a&gt; where I found this &lt;a href=&quot;http://bootsnipp.com/snippets/1KEEq&quot;&gt;footer&lt;/a&gt; which was perfectly designed for use as a template.&lt;/p&gt;
+
+&lt;p&gt;I still think reversing CSS minification is useful but finding things designed to be used as templates is perhaps more useful.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 15 Feb 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/css/2017/02/15/reversing-css-minification.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/css/2017/02/15/reversing-css-minification.html</guid>
+        
+        <category>css</category>
+        
+        <category>hyde</category>
+        
+        
+        <category>css</category>
+        
+      </item>
+    
+      <item>
+        <title>Bash on OSX versus Bash on Ubuntu and Upgrading Your Bash</title>
+        <description>&lt;p&gt;Bash is one of those things that you just don’t think about all that much – until you want something that is apparently new.  In my case I was looking to use the ** syntax which, mysteriously, I found doesn’t work at all on OSX (even if you turn it on).  This let me to use bash –version.&lt;/p&gt;
+
+&lt;p&gt;Here’s the result for Linux:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash --version
+GNU bash, version 4.3.11&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;-release &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x86_64-pc-linux-gnu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2013 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later &amp;lt;http://gnu.org/licenses/gpl.html&amp;gt;
+
+This is free software; you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here’s the result for OSX:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash --version
+GNU bash, version 3.2.57&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;-release &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;x86_64-apple-darwin15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2007 Free Software Foundation, Inc.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Intellectually I’ve always known that OSX lagged behind on Open Source tooling but 6 years behind???  Really???  Apparently this is a GPL v3 issue so I get it but &lt;strong&gt;sigh&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;upgrading-bash-on-osx&quot;&gt;Upgrading Bash on OSX&lt;/h1&gt;
+
+&lt;p&gt;I will admit that I am absolutely terrified to try upgrading Bash on OSX since I eat, sleep and breathe in the terminal.  The research I’ve done shows me that you can upgrade your Bash to a version 4 series with just this brew command:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install bash
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And HomeBrew is awesome so I suspect it works; I’m just chicken.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;More on Upgrading Bash: &lt;a href=&quot;http://clubmate.fi/upgrade-to-bash-4-in-mac-os-x/&quot;&gt;ClubMate&lt;/a&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;a href=&quot;http://apple.stackexchange.com/questions/193411/update-bash-to-version-4-0-on-osx&quot;&gt;Stack Overflow&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&quot;sidebar-the--syntax-explained&quot;&gt;Sidebar: The ** Syntax Explained&lt;/h1&gt;
+
+&lt;p&gt;The ** syntax allows the file globbing to operate recursively with a single command.  For example:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;wc -l &lt;span class=&quot;k&quot;&gt;**&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.rb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;would count all the lines of ruby code across all subdirectories.  If you haven’t enabled ** then you can do this with:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;shopt&lt;/span&gt; -s globstar
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I first the ** syntax on Stack Overflow &lt;a href=&quot;http://stackoverflow.com/posts/14689618/revisions&quot;&gt;here&lt;/a&gt;. Thank you &lt;a href=&quot;http://stackoverflow.com/users/159834/michael-wild&quot;&gt;Michael Wild&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 15 Feb 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/osx/2017/02/15/bash-on-osx-versus-bash-on-ubuntu.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/osx/2017/02/15/bash-on-osx-versus-bash-on-ubuntu.html</guid>
+        
+        <category>osx</category>
+        
+        <category>linux</category>
+        
+        <category>bash</category>
+        
+        
+        <category>OSX</category>
+        
+      </item>
     
       <item>
         <title>Rails in 10 Minutes - How to Add a Fav Icon to Your Rails App</title>
@@ -171,86 +350,6 @@ mate index.html
         <pubDate>Mon, 13 Feb 2017 05:28:32 -0500</pubDate>
         <link>http://fuzzyblog.io//blog/2017/02/13/a-tip-for-writing-screen-scrapers.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/13/a-tip-for-writing-screen-scrapers.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Linux Tip of the Day - a2ensite</title>
-        <description>
-</description>
-        <pubDate>Mon, 13 Feb 2017 03:05:11 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/02/13/linux-tip-of-the-day-a2ensite.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/13/linux-tip-of-the-day-a2ensite.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>How to Make a Side Project Interesting</title>
-        <description>&lt;p&gt;Taking a quick look at the different development directories on the various hard discs that I use for code related stuff shows that I’ve started over 20 different side projects since 2006.  Generally speaking that averages out to about 2 a year.  My current side project, while not at release stage yet, has now sustained over 45 days of continuous coding – at least 2+ hours every day.  This morning, after making sure my wife was up, I had an mild epiphany as I walked back to my basement office.  The reason that I’ve been able to keep working is that I’ve been &lt;strong&gt;interested&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;Sure building projects is interesting but that’s actually not what I mean.  A very big reason that I’ve been able to keep working on this so consistently is that I’ve looked at the what bothers the crap out of me about building data intensive SAAS apps (which this is) and I’ve figured out how to &lt;strong&gt;minimize&lt;/strong&gt; those bad things.  I know exactly what was technically wrong with the &lt;a href=&quot;http://www.appdata.com&quot;&gt;last SAAS app&lt;/a&gt; I built and I don’t want that to hit me again.  When I built my last SAAS app, I looked at it after the day I launched it and I thought to myself, “Whelp - I can spend the next decade of my life actually managing it” and here it is 3/4 of a decade later and, until recently, I was tied to it by a ball and chain.&lt;/p&gt;
-
-&lt;p&gt;I don’t want to go into exactly what bothered the crap out of me – it is going to be different for everyone.  Your crap isn’t my crap and vice versa.  But if you want to make side projects interesting then figure out what technically bothered you in prior projects and address it.  Now the trick here is to avoid what is referred to as &lt;a href=&quot;https://en.wikipedia.org/wiki/The_Mythical_Man-Month#The_second-system_effect&quot;&gt;The Second System Effect&lt;/a&gt;.  This is the situation where you get so involved in fixing the crap that you over engineer.  And, lest you think that second system effect is just engineering lore, I can absolutely attest to it.  On at least one startup, I spent so much time at the framework layer that I never really got to the product.&lt;/p&gt;
-
-&lt;p&gt;In my case, since the crap that bothered me, was at the data layer, that was a serious risk.  What I did though was to tackle it with simple, common sense techniques that I know for a fact &lt;a href=&quot;http://fuzzyblog.io/blog/startup/2016/09/01/what-matt-mullenweg-taught-me.html&quot;&gt;scale and scale brilliantly&lt;/a&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 12 Feb 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/side_project/2017/02/12/how-to-make-a-side-project-interesting.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/side_project/2017/02/12/how-to-make-a-side-project-interesting.html</guid>
-        
-        <category>side_project</category>
-        
-        <category>hyde</category>
-        
-        
-        <category>side_project</category>
-        
-      </item>
-    
-      <item>
-        <title>Reversing CSS Minification</title>
-        <description>&lt;p&gt;For the first time in a very, very long time, I find myself actually writing a somewhat “modern” web app.  By which I mean that it has to use CSS and use it both well and effectively.  I am essentially a back end developer wandering around a series of increasingly complex front end tasks.  As with all web development one of the keys is looking at the source i.e. &lt;em&gt;Use the source Luke&lt;/em&gt;.  The problem with looking at the CSS source is that generally CSS content is minified which means that all line breaks, extra spacing and such are removed rendering it hard, hard, hard to understand.&lt;/p&gt;
-
-&lt;p&gt;The trick here is to reverse the minification.  Here are a few tools:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://mrcoles.com/blog/css-unminify/&quot;&gt;Web Based Reverse Minifier&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://marketplace.visualstudio.com/items?itemName=HookyQR.beautify&quot;&gt;Visual Studio Code Plugin&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The easiest one to use is the web based tool for Mr. Coles.  Just paste your CSS into a text box on the web page and click a form button.  Here’s a screenshot:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/css_reverse_minifier.png&quot; alt=&quot;css_reverse_minifier.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;A virtual hat tip to &lt;a href=&quot;http://nickjanetakis.com/blog/&quot;&gt;Nick&lt;/a&gt; who found these for me.  Thanks man!&lt;/p&gt;
-
-&lt;p&gt;One general note about reverse engineering CSS is that its actually pretty &lt;strong&gt;hard&lt;/strong&gt;.  I was looking for examples of good looking page footers and the one I found was, well, mind bending in its complexity.  I then simply googled for &lt;a href=&quot;https://www.google.com/search?tbs=li:1&amp;amp;q=bootstrap+footer&quot;&gt;bootstrap footer&lt;/a&gt; and found &lt;a href=&quot;http://www.bootsnipp.com/&quot;&gt;bootsnipp.com&lt;/a&gt; where I found this &lt;a href=&quot;http://bootsnipp.com/snippets/1KEEq&quot;&gt;footer&lt;/a&gt; which was perfectly designed for use as a template.&lt;/p&gt;
-
-&lt;p&gt;I still think reversing CSS minification is useful but finding things designed to be used as templates is perhaps more useful.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 11 Feb 2017 18:09:55 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/css/2017/02/11/reversing-css-minification.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/css/2017/02/11/reversing-css-minification.html</guid>
-        
-        <category>css</category>
-        
-        <category>hyde</category>
-        
-        
-        <category>css</category>
-        
-      </item>
-    
-      <item>
-        <title>Linux Tip of the Day logrotate</title>
-        <description>&lt;p&gt;https://gorails.com/guides/rotating-rails-production-logs-with-logrotate&lt;/p&gt;
-
-</description>
-        <pubDate>Fri, 10 Feb 2017 04:18:49 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/02/10/linux-tip-of-the-day-logrotate.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/10/linux-tip-of-the-day-logrotate.html</guid>
         
         
       </item>
