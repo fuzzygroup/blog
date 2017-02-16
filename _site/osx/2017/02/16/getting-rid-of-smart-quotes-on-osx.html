@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Bash on OSX versus Bash on Ubuntu and Upgrading Your Bash</title>
-  <meta name="description" content="Bash is one of those things that you just don’t think about all that much – until you want something that is apparently new.  In my case I was looking to use...">
+  <title>Getting Rid of Smart Quotes on OSX</title>
+  <meta name="description" content="I don’t know about any other developer but I bloody well hate smart quotes.  I’m sorry but if I type in a “foo” mark then I expect it to remain “foo” not som...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/osx/2017/02/15/bash-on-osx-versus-bash-on-ubuntu.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/osx/2017/02/16/getting-rid-of-smart-quotes-on-osx.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- twitter specific head tags -->
@@ -19,16 +19,16 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Bash on OSX versus Bash on Ubuntu and Upgrading Your Bash">
+  <meta name="twitter:title" content="Getting Rid of Smart Quotes on OSX">
 
   
     <meta name="twitter:description"
-      content="Your version of Bash can differ dramatically on OSX versus any modern Linux.  Here's how to understand the difference and upgrade to the current version.">
+      content="If you're a programmer, having your quotes and double dashes converted to smart quotes and em dashes can break code compiling, ruin examples and more.  Use OSX System Preferences to prevent this.">
   
 
   
     <meta name="twitter:image"
-      content="https://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+      content="http://fuzzyblog.io/blog/assets/curly_quotes_begone_05.png">
   
   
   
@@ -113,70 +113,37 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Bash on OSX versus Bash on Ubuntu and Upgrading Your Bash</h1>
-    <p class="I'll"><time datetime="2017-02-15T00:00:00-05:00" itemprop="datePublished">Feb 15, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">Getting Rid of Smart Quotes on OSX</h1>
+    <p class="I'll"><time datetime="2017-02-16T00:00:00-05:00" itemprop="datePublished">Feb 16, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>Bash is one of those things that you just don’t think about all that much – until you want something that is apparently new.  In my case I was looking to use the ** syntax which, mysteriously, I found doesn’t work at all on OSX (even if you turn it on).  This let me to use bash –version.</p>
+    <p>I don’t know about any other developer but I bloody well hate smart quotes.  I’m sorry but if I type in a “foo” mark then I expect it to remain “foo” not some bastardized quote version that is going to get messed up into curly quotes when I copy and pasted.  I have long that this was either application behavior or behind the scenes OSX behavior that I was doomed to forever have to cope with.</p>
 
-<p>Here’s the result for Linux:</p>
+<p>In reading a <a href="https://news.ycombinator.com/item?id=13641301">Hacker News thread on Amazon Chime</a>, I found out that wasn’t true:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>bash --version
-GNU bash, version 4.3.11<span class="o">(</span>1<span class="o">)</span>-release <span class="o">(</span>x86_64-pc-linux-gnu<span class="o">)</span>
-Copyright <span class="o">(</span>C<span class="o">)</span> 2013 Free Software Foundation, Inc.
-License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;
+<blockquote>
+  <p>If you are on OSX, that is a feature of OSX, not Slack. You can turn it off in Keyboard settings IIRC. <a href="https://news.ycombinator.com/item?id=13644973">Hacker News</a></p>
+</blockquote>
 
-This is free software; you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.
-</code></pre>
-</div>
+<p>When I went to do this myself though I couldn’t find it initially so here’s the whole flow:</p>
 
-<p>Here’s the result for OSX:</p>
+<h1 id="start-at-the-apple-menu">Start at the Apple Menu</h1>
+<p><img src="/blog/assets/curly_quotes_begone_01.png" alt="curly_quotes_begone_01.png" /></p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>bash --version
-GNU bash, version 3.2.57<span class="o">(</span>1<span class="o">)</span>-release <span class="o">(</span>x86_64-apple-darwin15<span class="o">)</span>
-Copyright <span class="o">(</span>C<span class="o">)</span> 2007 Free Software Foundation, Inc.
-</code></pre>
-</div>
+<h1 id="now-youre-at-system-preferences">Now You’re At System Preferences</h1>
+<p><img src="/blog/assets/curly_quotes_begone_02.png" alt="curly_quotes_begone_01.png" /></p>
 
-<p>Intellectually I’ve always known that OSX lagged behind on Open Source tooling but 6 years behind???  Really???  Apparently this is a GPL v3 issue so I get it but <strong>sigh</strong>.</p>
+<h1 id="now-youre-at-keyboard">Now You’re At Keyboard</h1>
+<p><img src="/blog/assets/curly_quotes_begone_03.png" alt="curly_quotes_begone_01.png" /></p>
 
-<h1 id="upgrading-bash-on-osx">Upgrading Bash on OSX</h1>
+<h1 id="now-you-select-text">Now You Select Text</h1>
+<p><img src="/blog/assets/curly_quotes_begone_04.png" alt="curly_quotes_begone_01.png" /></p>
 
-<p>I will admit that I am absolutely terrified to try upgrading Bash on OSX since I eat, sleep and breathe in the terminal.  The research I’ve done shows me that you can upgrade your Bash to a version 4 series with just this brew command:</p>
+<h1 id="now-you-turn-off-the-use-smart-quotes-and-dashes-checkbox">Now You Turn off the Use Smart Quotes and Dashes Checkbox</h1>
+<p><img src="/blog/assets/curly_quotes_begone_05.png" alt="curly_quotes_begone_01.png" /></p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>brew install bash
-</code></pre>
-</div>
-
-<p>And <a href="https://brew.sh/">HomeBrew</a> is awesome so I suspect it works; I’m just chicken.</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>More on Upgrading Bash: <a href="http://clubmate.fi/upgrade-to-bash-4-in-mac-os-x/">ClubMate</a></td>
-      <td><a href="http://apple.stackexchange.com/questions/193411/update-bash-to-version-4-0-on-osx">Stack Overflow</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<h1 id="sidebar-the--syntax-explained">Sidebar: The ** Syntax Explained</h1>
-
-<p>The ** syntax allows the file globbing to operate recursively with a single command.  For example:</p>
-
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>wc -l <span class="k">**</span>/<span class="k">*</span>.rb
-</code></pre>
-</div>
-
-<p>would count all the lines of ruby code across all subdirectories.  If you haven’t enabled ** then you can do this with:</p>
-
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="nb">shopt</span> -s globstar
-</code></pre>
-</div>
-
-<p>I first the ** syntax on Stack Overflow <a href="http://stackoverflow.com/posts/14689618/revisions">here</a>. Thank you <a href="http://stackoverflow.com/users/159834/michael-wild">Michael Wild</a>.</p>
-
+<p>And the final step is to close out of System Preferences which should automatically save your settings</p>
 
   </div>
   
