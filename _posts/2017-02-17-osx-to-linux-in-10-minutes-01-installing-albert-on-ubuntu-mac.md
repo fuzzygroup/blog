@@ -6,7 +6,7 @@ tags: ["osx_to_linux", "osx", "postmac", "linux", "ubuntu"]
 description: Albert is an Open Source version of the OSX utility Alfred.  It is a simple launcher and file finder that makes using your desktop Linux system faster, easier and more pleasant.  
 image: https://raw.githubusercontent.com/ManuelSchneid3r/albert/master/v0.8.11.gif
 ---
-One of the most pleasant aspects of OSX is the tool Alfred.  Alfred is a simple launcher that you can toggle with CTRL+SPACE and the best way I can describe it is that it makes the god awful OSX search engine (Spotlight) actually usable.  Honestly I've used Alfred so long now that I don't even know if it is its own search engine or a Spotlight front end or what.  What I do know is that I absolutely love it.
+One of the most pleasant aspects of OSX is the tool [Alfred](https://www.alfredapp.com/).  Alfred is a simple launcher that you can toggle with CTRL+SPACE and the best way I can describe it is that it makes the god awful OSX search engine (Spotlight) actually usable.  Honestly I've used Alfred so long now that I don't even know if it is its own search engine or a Spotlight front end or what.  What I do know is that I absolutely love it.
 
 I started the day with the realization that I need to work more on my desktop Linux box.  Honestly I have a 32 gig Intel NUC running a Dell Ultra Widescreen monitor and I don't use it since I'm in an OSX rut.  So I turned it on and: 
 
