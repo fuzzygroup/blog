@@ -13,7 +13,7 @@ My secret weapon for this was actually MarkDown.  Here's what I did:
 * Write in your programming editor
 * Present with DeskSet or MARP (MARP doesn't really have a presentation mode but it works kind of ok and is cross platform)
 * Use [ScreenFlow](http://www.telestream.net/screenflow/overview.htm) to record your screen
-* Pray hard that you have a brilliant friend like [Nick Janetakis](https://nickjanetakis.com/) who knows how to set your audio options correctly so your voice doesn't sound horrible and then thank him profusely for listening to 4 different versions of audio until it was just right.  Or you could just buy his Docker courses(https://nickjanetakis.com/products/); I did and they are awesome.
+* Pray hard that you have a brilliant friend like [Nick Janetakis](https://nickjanetakis.com/) who knows how to set your audio options correctly so your voice doesn't sound horrible and then thank him profusely for listening to 4 different versions of audio until it was just right while he tells you exactly what you need to adjust.  Or you could just buy his Docker courses(https://nickjanetakis.com/products/); I did and they are awesome.
 
 Seriously - 265 slides in 48 hours.  There is no way I could have done that with PowerPoint.  Being able to work in my code editor and focus on pure content made all the difference.
 
