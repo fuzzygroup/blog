@@ -3,7 +3,7 @@ layout: post
 title: Advice on Complex Caching Schemes
 category: software_engineering
 tags: ["software_engineering", "caching", "aws"]
-description: Complex caching schemes always seem to be problematic.  Here I profile a client's conversation with me down to 458 words.
+description: Complex caching schemes always seem to be problematic.  Here I profile a client's conversation with me about AWS caching strategies down to 458 words of simple advice.
 image: http://fuzzyblog.io/blog/assets/elasticache.png
 ---
 It is reputed to have been said:
