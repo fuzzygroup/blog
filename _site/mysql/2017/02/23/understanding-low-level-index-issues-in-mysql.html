@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Understanding Low Level Index Issues in MySQL</title>
+  <meta name="description" content="The Problem -">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/mysql/2017/02/23/understanding-low-level-index-issues-in-mysql.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="Understanding Low Level Index Issues in MySQL">
+
+  
+    <meta name="twitter:description"
+      content="The Problem -
+
+I had a weird thing recently – a table with 313 million rows with 30+ second queries on a unique index – that’s way, way too long.  Here’s how I went about troubleshooting this.  A s...">
+  
+
+  
+    <meta name="twitter:image"
+      content="https://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Understanding Low Level Index Issues in MySQL</h1>
+    <p class="I'll"><time datetime="2017-02-23T16:50:46-05:00" itemprop="datePublished">Feb 23, 2017</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h1 id="the-problem--">The Problem -</h1>
+
+<p>I had a weird thing recently – a table with 313 million rows with 30+ second queries on a unique index – that’s way, way too long.  Here’s how I went about troubleshooting this.  A shout out of thanks to <a href="https://github.com/itsgg">Ganesh</a> and to <a href="https://github.com/wakproductions">Winston</a> who both helped out.  Notable mention to Ganesh who actually figured out the core issue; I’m really just the scribe here.</p>
+
+<h1 id="viewing-mysql-indexes">Viewing MySQL Indexes</h1>
+
+<p>Any performance problem always starts with an explain on the query:</p>
+
+<pre><code class="language-BASH">explain select * from ffiec_line_items where financial_institution_id=37 and mdrm = 'RCON2170' and period = '2008-12-31'\G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: ffiec_line_items
+         type: ALL
+possible_keys: NULL
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: 314459869
+        Extra: Using where
+</code></pre>
+
+<p>Given that I <strong>know</strong> that there’s an index I found this puzzling.  The next step was to use a FORCE INDEX syntax on the query to ensure that this isn’t an optimizer issue:</p>
+
+<blockquote>
+  <p>select * from ffiec_line_items FORCE INDEX (index_ffiec_line_items_fin_mdrm_period) where financial_institution_id=37 and mdrm = ‘RCON2170’ and period = ‘2008-12-31’</p>
+</blockquote>
+
+<p>And that gave the same disappointing performance.  Pity.</p>
+
+<p>This is where Ganesh rose to the challenge and recommended using SHOW INDEXES FROM table_name.  Here’s what that gave us:</p>
+
+<blockquote>
+  <p>SHOW INDEX FROM ffiec_line_items\G</p>
+</blockquote>
+
+<pre><code class="language-BASH">
+MariaDB [regdata_production]&gt; SHOW INDEX FROM ffiec_line_items\G
+*************************** 1. row ***************************
+        Table: ffiec_line_items
+   Non_unique: 0
+     Key_name: PRIMARY
+ Seq_in_index: 1
+  Column_name: id
+    Collation: A
+  Cardinality: 313591995
+     Sub_part: NULL
+       Packed: NULL
+         Null:
+   Index_type: BTREE
+      Comment:
+Index_comment:
+*************************** 2. row ***************************
+        Table: ffiec_line_items
+   Non_unique: 0
+     Key_name: index_ffiec_line_items_fin_mdrm_period
+ Seq_in_index: 1
+  Column_name: financial_institution_id
+    Collation: A
+  Cardinality: 200
+     Sub_part: NULL
+       Packed: NULL
+         Null: YES
+   Index_type: BTREE
+      Comment:
+Index_comment:
+*************************** 3. row ***************************
+        Table: ffiec_line_items
+   Non_unique: 0
+     Key_name: index_ffiec_line_items_fin_mdrm_period
+ Seq_in_index: 2
+  Column_name: mdrm
+    Collation: A
+  Cardinality: 200
+     Sub_part: NULL
+       Packed: NULL
+         Null: YES
+   Index_type: BTREE
+      Comment:
+Index_comment:
+*************************** 4. row ***************************
+        Table: ffiec_line_items
+   Non_unique: 0
+     Key_name: index_ffiec_line_items_fin_mdrm_period
+ Seq_in_index: 3
+  Column_name: period
+    Collation: A
+  Cardinality: 200
+     Sub_part: NULL
+       Packed: NULL
+         Null: YES
+   Index_type: BTREE
+      Comment:
+Index_comment:
+4 rows in set (0.01 sec)
+
+</code></pre>
+
+<p>The very, very curious thing is that we see <strong>4 copies</strong> of the index!  And you may notice that the cardinality of the index is incredibly low – 200 versus the 313591995 cardinality of the primary key index.</p>
+
+<p>Cardinality is one of those key database concepts that most of us never have to worry about – essentially it is a measure of uniqueness in the index.  Indices perform better when they are unique and this is way, way, way too low – particularly for a unique index which incorporates 3 columns.  The actual cardinality here should approach (or equal) that of the primary key index.  From a purely technical perspective it should be equal but, sometimes, these things don’t work out exactly.</p>
+
+<h1 id="understanding-how-indexes-get-corrupted">Understanding How Indexes Get Corrupted</h1>
+
+<p>This is the kind of thing that should NEVER happen so what went wrong?  We had this running on a 100GB partition where the database was roughly 54 gb and, yes, most of that space was dedicated to this one table.  So my personal theory as to what went wrong is an ALTER TABLE (via a Rails migration) started the index creation and then it failed part way through due to a lack of disc space.  And since it likely took a long time to run the ALTER TABLE, the timestamp for the migration was NEVER inserted into the schema_migrations table.  This meant the next time that a deploy happened, the ALTER TABLE was run again.  And again.  And again until the timestamp finally made it into the schema_migrations table (even though technically the index was never created).</p>
+
+<h1 id="fixing-all-this">Fixing All This</h1>
+
+<p>The solution to fixing this was actually pretty simple and had four parts:</p>
+
+<ol>
+  <li>Run an alter table statement which <strong>deleted</strong> the original bad migration: <strong>ALTER TABLE ffiec_line_items DROP INDEX index_ffiec_line_items_fin_mdrm_period;</strong>.</li>
+  <li>Delete the time stamp for the migration from the table schema_versions: <strong>DELETE FROM schema_migrations WHERE version=20161115210810;</strong>.</li>
+  <li>Do a full deploy which will cause the migration to run again.  Given that this is a multi hour migration, the chance of your SSH connectivity staying up long enough to complete is slim.  Just know that and accept that.</li>
+  <li>Manually insert the timestamp back into the schema_migrations table: <strong>INSERT INTO schema_migrations (version) VALUES (20161115210810);</strong>.</li>
+</ol>
+
+<p><strong>Note:</strong> A better way to do this is to NOT do this as a deploy but instead manually scp the migration to the server (actually it should be there) and then run db:migrate directly on the server.  This would avoid step 4 entirely.</p>
+
+<p>20161115210810_add_index_institution_id_period_mdrm_to_ffiec_line_item</p>
+
+<p>class AddIndexInstitutionIdPeriodMDRMToFFIECLineItem &lt; ActiveRecord::Migration[5.0]
+  def change
+    add_index :ffiec_line_items,
+              [:financial_institution_id, :mdrm, :period],
+              unique: true,
+              name: :index_ffiec_line_items_fin_mdrm_period
+  end
+end</p>
+
+
+  </div>
+  
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
