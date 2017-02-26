@@ -6,9 +6,129 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 24 Feb 2017 03:40:26 -0500</pubDate>
-    <lastBuildDate>Fri, 24 Feb 2017 03:40:26 -0500</lastBuildDate>
+    <pubDate>Sun, 26 Feb 2017 08:25:25 -0500</pubDate>
+    <lastBuildDate>Sun, 26 Feb 2017 08:25:25 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Headphones for Programmers - Bose QC-35 Blue Tooth Over Ear Noise Cancelling Headphones</title>
+        <description>&lt;p&gt;Anyone who has ever worked with me since 2007 or so knows that I’m an unabashed fan of pair programming.  While the quantity of pairing I do varies from project to project, I’ve had 12 hour pairing days from time to time and one job that was almost &lt;strong&gt;exclusively pairing&lt;/strong&gt; over a 2 year period.&lt;/p&gt;
+
+&lt;p&gt;There are four types of gear that matter for pairing:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Screen Sharing Software w/ Voice Communications&lt;/li&gt;
+  &lt;li&gt;Similar or Matched Screen Resolutions&lt;/li&gt;
+  &lt;li&gt;Decent Connectivity&lt;/li&gt;
+  &lt;li&gt;Headphones&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Today I’m going to talk about headphones and specifically about Bose Quiet Comfort Headphones.  My wife, after an awful week, surprised me with a pair of Bose QC-35s.  She knew I wanted them and it had been an absolute shite show of a week so this was a wonderful surprise.&lt;/p&gt;
+
+&lt;p&gt;I’ve been wearing wired Bose Quiet Comfort headphones now for almost a decade and I &lt;strong&gt;adore&lt;/strong&gt; them.  I don’t use the word adore oftem with respect to hardware / software.  Yes I adore my wife and, generally, my kids – but headphones?  Well Bose headphones are just that good.  I can wear my wired Bose head phones for 12 hours at a stretch without pain and that’s astonishing.&lt;/p&gt;
+
+&lt;p&gt;I’m not at all an audiophile&lt;/p&gt;
+
+&lt;p&gt;Now while I have long resisted blue tooth for serious audio, I&lt;/p&gt;
+</description>
+        <pubDate>Sun, 26 Feb 2017 02:09:15 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/gear/2017/02/26/headphones-for-programmers-bose-qc-35-blue-tooth-over-ear-noise-cancelling-headphones.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/gear/2017/02/26/headphones-for-programmers-bose-qc-35-blue-tooth-over-ear-noise-cancelling-headphones.html</guid>
+        
+        <category>gear</category>
+        
+        <category>headphones</category>
+        
+        <category>pair_programming</category>
+        
+        
+        <category>gear</category>
+        
+      </item>
+    
+      <item>
+        <title>Setting Up Rails with Rspec From the Start</title>
+        <description>&lt;p&gt;So this morning I was working ony my side project and I realized that one aspect of it alone is now 26 plus PORO (plain old ruby objects) models and growing rapidly.  Given that I’m building this along the lines of a service oriented architeture where I want to be able to replace components prototyped in Ruby down the road with Elixir this would make sense so it was time to isolate it into a standalone http service as a separate Rails API stack.&lt;/p&gt;
+
+&lt;p&gt;And this brings up the need to generate a stack with RSpec from the start.  Here’s how to do this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;rails new hyde_page_parser -T –skip-active-record –skip-action-cable –skip-spring –api&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I want this to &lt;strong&gt;NOT&lt;/strong&gt; include:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;test_unit so -T gets rid of that&lt;/li&gt;
+  &lt;li&gt;ActiveRecord so –skip-active-refactor&lt;/li&gt;
+  &lt;li&gt;ActionCable so –skip-action-cable&lt;/li&gt;
+  &lt;li&gt;Spring so –skip-spring&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;That gets me a baseline project to which I can add RSpec.  Using &lt;a href=&quot;http://nrakochy.github.io/rspec/rails/2015/05/27/How-To-Setup-Rspec-Instead-Of-Test-Unit-Rails/&quot;&gt;Nrakochy’s&lt;/a&gt; instructions, all you need to do is:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Add gem ‘rspec-rails’ to a development, test group in Gemfile&lt;/li&gt;
+  &lt;li&gt;Run bundle install&lt;/li&gt;
+  &lt;li&gt;Run bundle exec rails g rspec:install&lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+        <pubDate>Sun, 26 Feb 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/02/26/setting-up-rails-with-rspec-from-the-start.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/02/26/setting-up-rails-with-rspec-from-the-start.html</guid>
+        
+        <category>rails</category>
+        
+        <category>rspec</category>
+        
+        <category>hyde</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Multi Line Comments in Ruby - Finally</title>
+        <description>&lt;p&gt;I’ve wanted multi line comments in Ruby forever and I just, thanks to &lt;a href=&quot;http://stackoverflow.com/questions/2989762/multi-line-comments-in-ruby&quot;&gt;this Stack Overflow post&lt;/a&gt;, found out that they exist thanks to =begin and =end:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;=begin
+
+A long comment
+that spans two
+lines
+
+=end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here’s a practical example where I’m keeping an example of how to run an instance method on a class in an easy to use copy and paste fashion (copy it and just drop it in Rails console).&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;=begin
+
+url = &quot;https://www.etsy.com/listing/253953555/tacos-tshirt-perfect-for-tacos-lover?ref=finds_l&quot;
+parser = Page.new(url)
+parser.parse
+
+=end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I’m a fan of keeping code snippets around for easy copy and paste so you can get back to stuff quickly and multi-line comments make that so, so much easier.  Sure, I’d prefer /* and */, but, honestly, this will make me happy.  Matz made a choice to not have multi-line comments and while I don’t personally agree, long ago, I tied my&lt;/p&gt;
+</description>
+        <pubDate>Sun, 26 Feb 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/ruby/2017/02/26/multi-line-comments-in-ruby-finally.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/ruby/2017/02/26/multi-line-comments-in-ruby-finally.html</guid>
+        
+        <category>ruby</category>
+        
+        <category>rails</category>
+        
+        
+        <category>ruby</category>
+        
+      </item>
     
       <item>
         <title>Understanding Low Level Index Issues in MySQL and Rails</title>
@@ -166,6 +286,93 @@ Index_comment:
       </item>
     
       <item>
+        <title>Leveling Up as a Developer</title>
+        <description>&lt;p&gt;I have spent the past week handing off about 450,00 lines of ruby / ansible code (as measured by rake stats) that are an interface to about 6 terabytes of MySQL data handled by n AWS instances where n varies between 15 and several hundred to a &lt;strong&gt;single&lt;/strong&gt; developer – who happened to be more junior I was.  He’s not a bad guy by any means but, at times, it felt like I had hit him with an intellectual anvil.  We had only one week for the transition.&lt;/p&gt;
+
+&lt;p&gt;Given how hard transitions and taking on a whole new code base can be, I thought I’d write out some recommendations for &lt;em&gt;Leveling Up as a Developer&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;its-all-about-immersion&quot;&gt;Its All About Immersion&lt;/h1&gt;
+
+&lt;p&gt;About 9 months ago, I realized that the future of computing lay, imho, in AWS.  After having resisted cloud hosting for years, I finally buckled down and immersed myself in it. During the first six months of that 9 month period, well, I pretty much read constantly about little else but AWS.  There aren’t lots of great AWS books from what I can tell so I read blog post after blog post after blog post.  And then when I learned something I’d try it and then &lt;a href=&quot;http://fuzzyblog.io/blog/category.html#aws&quot;&gt;write it down&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;you-need-to-write-it-down&quot;&gt;You Need to Write It Down&lt;/h1&gt;
+
+&lt;p&gt;The way I got good at learning things came back in 2002 when I learned to blog.  By writing things down in such a way that I could understand them, I taught them to myself.  Personally my writing preference has always been blogging since it gives something back to the public commons and, if I do write it well, I always, always, always learn something new from the writing process itself.  See Notes 1, 2 and 3 at the bottom of &lt;a href=&quot;http://fuzzyblog.io/blog/rails/2017/02/24/understanding-low-level-index-issues-in-mysql.html&quot;&gt;this post&lt;/a&gt; as an example.  Writing it down helped me come up with those three important points.&lt;/p&gt;
+
+&lt;h1 id=&quot;you-need-a-side-project&quot;&gt;You Need a Side Project&lt;/h1&gt;
+
+&lt;p&gt;I think every single developer out there needs a side project.  It doesn’t have to be grandiose in nature or even make money but your day job doesn’t always allow you to learn the things that you need.  A side project is &lt;strong&gt;yours&lt;/strong&gt;.  Want to play with backbone?  Then write a backbone front end to it.  Need to experiment with Elixir after you spent your own cash on the conference and the training and your boss denied it as too risky?  Just use it on your side project.&lt;/p&gt;
+
+&lt;h1 id=&quot;you-need-to-write-code-every-single-day&quot;&gt;You Need to Write Code Every Single Day&lt;/h1&gt;
+
+&lt;p&gt;I’m a big believer in incrementalism and the fact that you get better bit by bit.  On my current side project I have a commitment to myself that I put in at least one hard core hour per day every single day and I’ve been sustaining that since December 27th when I got serious about it.  If you want to level up then coding isn’t just a 9 to 5 thing; its an every day thing.&lt;/p&gt;
+
+&lt;h1 id=&quot;read-read-read&quot;&gt;Read, Read, Read&lt;/h1&gt;
+
+&lt;p&gt;You need to read until you’re sick of it and then you need to read some more.  This tends to go beyond immersion.  Immersion is when you’re picking up something entirely new.  Reading is part of taking software development seriously as your craft.&lt;/p&gt;
+
+&lt;h1 id=&quot;realize-this-basic-fact&quot;&gt;Realize This Basic Fact&lt;/h1&gt;
+
+&lt;p&gt;I’ve now been working in software development since ‘87 and it took me years and years to learn this basic fact:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Any software engineer increases their skills in direct proportion to the &lt;strong&gt;number&lt;/strong&gt; of &lt;strong&gt;different&lt;/strong&gt; codebases that they work on.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The problem here is that when you’re an employee the number of different codebases you’re generally exposed to is, well, &lt;strong&gt;one&lt;/strong&gt;.  The single best thing I ever did for my engineering skills was to move to being a freelancer.  I can cite which experience, since 2010, the start of my focus on freelancing, taught me what:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;AppData - Large scale data &lt;em&gt;everything&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;HowAboutWe - ActiveRecord optimization&lt;/li&gt;
+  &lt;li&gt;StreamSend - Alternative ActiveRecord sharding architecures for decreasing hosting costs&lt;/li&gt;
+  &lt;li&gt;LiveText - How to take a code base without any tests and grandfather them in without breaking things&lt;/li&gt;
+  &lt;li&gt;FI Navigator - Devops&lt;/li&gt;
+  &lt;li&gt;Interana - SAML&lt;/li&gt;
+  &lt;li&gt;SigStr - MongoDB i.e. the world is not entirely MySQL&lt;/li&gt;
+  &lt;li&gt;AddApp - Primary market research and ideation&lt;/li&gt;
+  &lt;li&gt;Inside Network - How to write a billing system end to end that scales to millions of dollars and operates with zero downtime over a multiyear period&lt;/li&gt;
+  &lt;li&gt;MDDX - Complex mathemetical workflows in Ruby&lt;/li&gt;
+  &lt;li&gt;LinkedIn - Low level optimizations for an intensive Ruby workload&lt;/li&gt;
+  &lt;li&gt;Trazzler - Geopositioning&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Had I been stuck in 1 or even maybe 3 different jobs since 2010, I’m absolutely certain that I would never have picked up all these things.&lt;/p&gt;
+
+&lt;h1 id=&quot;learning-is-multi-medium-these-days&quot;&gt;Learning is Multi-Medium These Days&lt;/h1&gt;
+
+&lt;p&gt;I’m an admitted book nerd:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/book_nerd.jpg&quot; alt=&quot;book_nerd&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You should know that these book shelves &lt;em&gt;now&lt;/em&gt; go floor to ceiling and this is mostly computer science / high tech industry case studies with a bunch of cook books.  But even I have to admit that there are now very high bandwidth learning tools including:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;YouTube.  Ignore the cat videos and search for conference proceedings.&lt;/li&gt;
+  &lt;li&gt;Podcasts.  I highly, highly recommend &lt;a href=&quot;https://softwareengineeringdaily.com/&quot;&gt;Software Engineering Daily&lt;/a&gt;.  It is a fantastic learning tool for staying up to date on things.&lt;/li&gt;
+  &lt;li&gt;Udemy Courses.  I’ve learned a ton from Udemy but I got the best computer science basics from &lt;a href=&quot;https://www.udemy.com/break-away-coding-interviews-1/learn/v4/t/lecture/3948990?start=0&quot;&gt;this course on Interviewing&lt;/a&gt;.  Also see my buddy Nick’s stuff on &lt;a href=&quot;https://www.udemy.com/the-docker-for-devops-course-from-development-to-production/&quot;&gt;Docker&lt;/a&gt;.  Outstanding.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;apply-it-for-yourself&quot;&gt;Apply It For Yourself&lt;/h1&gt;
+
+&lt;p&gt;Seemingly any technology you want to get good at these days there’s a way to apply it for your personal use. Let’s say for example that you want to learn Ansible.  Here are two personal applications that would teach you quite a bit:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I now configure my MacBook using &lt;a href=&quot;https://github.com/fuzzygroup/ansible-macbook-pro&quot;&gt;Ansible&lt;/a&gt; - the link is to my repo for this.&lt;/li&gt;
+  &lt;li&gt;I know other people who configure their &lt;a href=&quot;https://github.com/Phunky/ansible-plexmediaserver&quot;&gt;Plex servers using Ansible&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Fri, 24 Feb 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/software_engineering/2017/02/24/leveling-up-as-a-developer.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/software_engineering/2017/02/24/leveling-up-as-a-developer.html</guid>
+        
+        <category>software_engineering</category>
+        
+        
+        <category>software_engineering</category>
+        
+      </item>
+    
+      <item>
         <title>Advice on Complex Caching Schemes</title>
         <description>&lt;p&gt;It is reputed to have been said:&lt;/p&gt;
 
@@ -309,269 +516,6 @@ indian - follow the rules&lt;/p&gt;
         <link>http://fuzzyblog.io//blog/2017/02/21/linux-tip-of-the-day-using-a-for-loop-in-bash.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/21/linux-tip-of-the-day-using-a-for-loop-in-bash.html</guid>
         
-        
-      </item>
-    
-      <item>
-        <title>Rails Humor The Sound of Crickets when rails g Is Used</title>
-        <description>&lt;p&gt;So I’m starting work on a new project that promises to be interesting.  This is pure green field development – one of my very, very favorite things.  I did a skeleton application generation like this:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;rails&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exploder&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;skip&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;active&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;skip&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;skip&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spring&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;api&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Then I did the normal repository initialization dance:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git init
-git add .
-git commit -m &quot;First commit&quot;
-git remote add origin git@github.com:fuzzygroup/exploder.git
-git push -u origin/master
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;No surprises so far.  Time for the first model:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rails g model TextCommon
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And I got … nothing. Hm… Here’s app/models:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ls -l app/models/
-total 0
-drwxr-xr-x@ 3 sjohnson  staff   102B Feb 20 08:32 concerns/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;em&gt;blink&lt;/em&gt;  Oh right – skip-active-record.  This is going to be purely an API and one that processes a lot of text.  But, in an amazing lack of foresight, apparently there’s no such thing as a model generator when you don’t have ActiveRecord installed.  Sheesh.&lt;/p&gt;
-
-&lt;p&gt;I’ll say this much though – it did make me laugh out loud when I really, really needed it.  Off to write a poro (plain old ruby objects) model generator so test files get properly set up and such…&lt;/p&gt;
-</description>
-        <pubDate>Mon, 20 Feb 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2017/02/20/rails-humor-the-sound-of-crickets-when-rails-g-is-used.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/02/20/rails-humor-the-sound-of-crickets-when-rails-g-is-used.html</guid>
-        
-        <category>rails</category>
-        
-        <category>humor</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Recording Usable Audio for Screencasting - Tips from a Master</title>
-        <description>&lt;p&gt;btw, random recording tips of the day: 1) disable all popup notficications / sounds , 2) cell phone in airplane mode , 3) close as much as you can on your machine to ensure you get a clean audio stream (nothing worse than getting a bunch of random hiccups and pops due to your system being overloaded at points)&lt;/p&gt;
-
-&lt;p&gt;what you got yesterday was around 3 weeks of hardcore audio research and testing in 5 minutesx`&lt;/p&gt;
-
-&lt;p&gt;there’s a lot of other reasons too, but they tend to produce other artifacts like pops and clicks
-and if you thought debugging code was hard, debugging this shit is really difficult
-i downloaded some tools to diagnosis these things on my computer
-having one of your devices create a spike of usb usage for a few milliseconds at the wrong time could completely ruin your audio source at that moment&lt;/p&gt;
-
-&lt;p&gt;yeah maybe
-i once talked to a low level audio guy, the type of guy who writes audio drivers
-and he said random noises like that are almost always due to random interference – either at the cable level or wireless freqs&lt;/p&gt;
-
-&lt;p&gt;his could be line noise on the usb cable itself, or an artifact related to wireless interference
-i’ve seen it happen on my end with cell phones
-when recording for real, keep your phone in a different room
-if you blog about this, definitely take a 10 second sample from the worst “before” to the next iteration (1-2 millimeters of more gain)’s “after” 10s&lt;/p&gt;
-
-&lt;p&gt;utting the drives in a trunk?
-nope, there’s no more room noise at all now
-it’s dead silent except for your voice
-but it’s worth raising the gain knob up a millimeter or 2, because your levels are just a tiny bit below where they need to be
-2:49 to 2:51 has a weird inserted high pitch frequency
-it happens again at 2:56 for half a second&lt;/p&gt;
-
-&lt;p&gt;ok, i listened to various points of the view
-*video
-you have a lot of room noise in the audio
-Ok. I bet that’s my hard drive array
-I have a trunk I could seal that in
-i feel like that blind guy on the movie Contact
-just listening carefully
-i can’t make out what it is, but it’s really loud – i don’t think udemy would even accept the video in its current form
-but the fix is pretty easy with noise cancellation tactics
-both pre-recording and post-editing
-Ok. Will work on and share other videos w you
-Thx
-How to Remove Background Noise on Screenflow
-How to Remove Background Noise on Screenflow
-https://www.youtube.com/watch?v=pfvBmzxldnc
-might want to play with that
-Thx. I can’t wait for ssd s to hit the cheap terabyte leve
-Level
-yours does sound like a combination of fans and loud HDs
-i just set up a sample for you
-of my own recording, so you can test your headphones
-https://drive.google.com/open?id=0BzL8S6Xe9kCWUWhlbElleWgtaTQ
-The bulk of the noise is the MacBook fan.  Killed firefox and almost every other process and will record a short clip to send you later and see if the background noise is still present.  I also added a towel under the mic.
-I think part of the problem is I literally don’t hear it myself.  Probably an issue with low frequencies I’ve heard so long that they just don’t register
-All the audio options are actually grayed out in screenflow so
-Got it
-if you can’t hear a massive difference in my audio you may need to change headphones
-there’s a very apparent “hsssssssssssssssss” sound in the background when the filter is turned off
-And actually you got the version with the internal mic.  I’m sending you a shorter one with the yeti mic and the noise reduction
-it doesn’t sound like a computer fan because the mic doesn’t pick up distant sounds as they are exact, but there’s definite audio distortion
-(no towel tho)
-oh
-the towel is to absorb your key presses?
-because i did notice they were loud, but that’s also with the internal mic
-The towel is under the mic but I can put one under the notebook
-Sent
-downloading it now
-this is worse imo
-the underlying quality of your voice is better, but there’s much more room noise
-those popping sounds at 4:31ish are deafening too
-i feel like a beaten dog when listening to this video, anticipating a whip on my back at any moment
-Ok. Next step is to put the hard drives and plex box into a trunk
-terrified of hearing those pops haha
-the gain on your mic must be way up
-Lol. Won’t give you anything until that’s done. Not sure about 4:31 but will figure it out
-My kid last used it so no clue
-ok, you need to adjust your yeti and then never touch it again
-here’s what you do
-on the back of your mic, there’s 2 knobs
-the bottom one adjusts the recording pattern of the mic
-since you’re effectively podcasting, you want to use the third icon, the one that looks like an upside down heart
-that’s the cardoid pattern, it’s aimed for recording 1 voice in a controlled environment
-the top knob is the gain, and i’m guessing yours is set way high
-try setting the gain to about 10% (no joke, mine is set to this)
-100% thanks to him
-and it was set to the round setting not cardoid
-changes made; cleaning garage and installing more storage; will podcast again later once I isolate the noisy box
-Thx so much
-round setting is the worst possible setting for  us
-that’s omnidirectional, it’ll pick up everything in your room at every angle
-Lol
-Alas
-cardoid just enables the mic pickups for directly in front of the mic
-your recording has a subtle reverb and almost sounds like you’re in a fish bowl
-but that’s 100% due to omnidirectional
-when you set it to cardoid, it will tighten up your voice a lot and remove a lot of the “wishy washy” reverb
-lowering the gain will really help to remove the keyboard thunder effect, but also it will drastically cut your volume out
-Got it
-right now your volume is clipping all over the place
-i couldn’t even listen to it with my audio player’s volume past 30% or i would have gone deaf
-your steps are: 1. set it to cardoid, 2. set the gain to maybe 5-10% , 3. record without making any physical changes, 4. send 1-2min sample to me
-1 - done.  2 - done.  3 - recorded 1st 6 minutes of a screencast for them. This will force me to learn to edit with the timeline so bigger than you wanted but a start.
-Sent
-checking
-night and day difference
-you can up the gain ever so slightly if you wanted, we’re talking 2-3% here, a millimeter more
-if you went from a ton of room noise and in an echo chamber with a lot of distortion to a very reasonable recording, where this will pass udemy’s tests for sure
-Ok. Am I getting to udemy quality yet ?
-*you went from
-thx
-your key presses are a bit loud, but i would say the mic settings are good at this point
-Worth putting the drives in a trunk?`&lt;/p&gt;
-</description>
-        <pubDate>Sun, 19 Feb 2017 13:01:10 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/02/19/recording-usable-audio-for-screencasting-tips-from-a-master.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/19/recording-usable-audio-for-screencasting-tips-from-a-master.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>ASCII Rules; Binary Drools - Markdown Over PowerPoint FTW</title>
-        <description>&lt;p&gt;When an engineer leaves an organization there is a vital need to capture knowledge from that engineer.  In short that engineer needs to give a presentation or presentations.  And if they’ve been there a long time, say 7 years or so, capturing that amount of knowledge is damn near impossible.  Or so I would have thought.  Over the past 48 hours I have authored over 243 slides organized into 22 presentations outlining my knowledge on a project that I am transitioning out of.  Yeah – the 7 years is me.&lt;/p&gt;
-
-&lt;p&gt;My secret weapon for this was actually MarkDown.  Here’s what I did:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Buy a copy of &lt;a href=&quot;http://www.decksetapp.com/&quot;&gt;DeckSet&lt;/a&gt; or use &lt;a href=&quot;https://github.com/yhatt/marp&quot;&gt;MARP&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Write your slides in a limited subset of markdown where — delimits a slide and ## is a slide title&lt;/li&gt;
-  &lt;li&gt;Write in your programming editor&lt;/li&gt;
-  &lt;li&gt;Present with DeskSet or MARP (MARP doesn’t really have a presentation mode but it works kind of ok and is cross platform)&lt;/li&gt;
-  &lt;li&gt;Use &lt;a href=&quot;http://www.telestream.net/screenflow/overview.htm&quot;&gt;ScreenFlow&lt;/a&gt; to record your screen&lt;/li&gt;
-  &lt;li&gt;Pray hard that you have a brilliant friend like &lt;a href=&quot;https://nickjanetakis.com/&quot;&gt;Nick Janetakis&lt;/a&gt; who knows how to set your audio options correctly so your voice doesn’t sound horrible and then thank him profusely for listening to 4 different versions of audio until it was just right while he tells you exactly what you need to adjust.  Or you could just buy his Docker courses(https://nickjanetakis.com/products/); I did and they are awesome.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Seriously - 265 slides in 48 hours.  There is no way I could have done that with PowerPoint.  Being able to work in my code editor and focus on pure content made all the difference.&lt;/p&gt;
-
-&lt;p&gt;Note: I used to build corporate enterprise knowledge management systems back in the 90s and sold them to clients like the U.S. Navy, etc.  This, with about $130 of software, was a better knowledge capture solution than what we used to ship for about $250,000 / installation.  My how the world has changed.&lt;/p&gt;
-
-&lt;p&gt;Oh and when you are working in a pure ASCII medium you can manipulate your data in bulk like this script (below) which compiled a full table of contents and did a slide count.  Yeah its not elegant but I wrote it in about 10 minutes.&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;directories&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;glob&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;*&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;slide_ctr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;outline_entries&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;directories&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;directory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;directory&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=~&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/^[0-9]/&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;directory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;notes.md&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;exists?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;markdown_content&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;readlines&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;directory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;notes.md&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;outline_entries&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;markdown_content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;markdown&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;markdown&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=~&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/^##/&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;outline_entries&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;  &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;markdown&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;slide_ctr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slide_ctr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;outline_entries&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outline_entry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;outline_entry&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Total slides: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;slide_ctr&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Thank you &lt;a href=&quot;http://daringfireball.net/&quot;&gt;John Gruber&lt;/a&gt; for MarkDown.  Thank you, Thank you, Thank you, Thank you!&lt;/p&gt;
-</description>
-        <pubDate>Sun, 19 Feb 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/software_engineering/2017/02/19/ascii-rules-binary-drools-markdown-over-powerpoint-ftw.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/software_engineering/2017/02/19/ascii-rules-binary-drools-markdown-over-powerpoint-ftw.html</guid>
-        
-        <category>markdown</category>
-        
-        <category>writing</category>
-        
-        <category>udemy</category>
-        
-        <category>deckset</category>
-        
-        <category>software_engineering</category>
-        
-        <category>knowledge_capture</category>
-        
-        
-        <category>software_engineering</category>
-        
-      </item>
-    
-      <item>
-        <title>OSX to Linux in 10 Minutes 02 - Installing Visual Studio Code</title>
-        <description>&lt;p&gt;As I noted recn&lt;/p&gt;
-</description>
-        <pubDate>Fri, 17 Feb 2017 03:39:54 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/osx_to_linux/2017/02/17/osx-to-linux-in-10-minutes-02-installing-visual-studio-code.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/osx_to_linux/2017/02/17/osx-to-linux-in-10-minutes-02-installing-visual-studio-code.html</guid>
-        
-        <category>osx_to_linux</category>
-        
-        <category>osx</category>
-        
-        <category>postmac</category>
-        
-        <category>linux</category>
-        
-        <category>ubuntu</category>
-        
-        <category>visual_studio_code</category>
-        
-        
-        <category>osx_to_linux</category>
         
       </item>
     
