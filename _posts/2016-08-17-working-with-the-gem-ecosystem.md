@@ -5,6 +5,8 @@ category: ruby
 tags: ["ruby", "gem"]
 
 ---
+**Note:** There's now a [part two](http://fuzzyblog.io/blog/2017/02/27/working-with-the-gem-ecosystem-part-2.html) of this post!
+
 Gems are one of the more magical parts of the Ruby ecosystem.  By packaging software components as easily installable parts of Ruby / Rails, gems allow you to quickly extend your application.  In this blog post, I'm going to teach you how to make your own copy of a gem and then use it locally on your machine.  This isn't hard but it is the kind of thing that works correctly if you precisely follow the directions.  Enjoy!
 
 # Forking a Gem

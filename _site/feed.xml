@@ -6,9 +6,90 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 26 Feb 2017 08:25:25 -0500</pubDate>
-    <lastBuildDate>Sun, 26 Feb 2017 08:25:25 -0500</lastBuildDate>
+    <pubDate>Mon, 27 Feb 2017 19:48:30 -0500</pubDate>
+    <lastBuildDate>Mon, 27 Feb 2017 19:48:30 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Working with the Gem Ecosystem Part 2 - Updating Gems and Writing Generators</title>
+        <description>&lt;p&gt;In case you haven’t figured out yet that I write stuff here as much for myself as for anyone else, well, its true.  Almost every single day I find myself going back to my own blog as a reference tool.  Today I’m writing a part two to my &lt;a href=&quot;http://fuzzyblog.io/blog/ruby/2016/08/17/working-with-the-gem-ecosystem.html&quot;&gt;Working with the Gem Ecosystem&lt;/a&gt; post.&lt;/p&gt;
+
+&lt;p&gt;My thanks are extended to &lt;a href=&quot;http://www.nickjanetakis.com/blog/&quot;&gt;Nick&lt;/a&gt; who helped clarify the Gem update process and pointed out the need to embed the branch name in the Gemfile.  He picked this up from his work on the &lt;a href=&quot;https://github.com/nickjj/orats&quot;&gt;Orats gem&lt;/a&gt; which is very useful if you’re into Rails and Docker.&lt;/p&gt;
+
+&lt;h1 id=&quot;generators&quot;&gt;Generators&lt;/h1&gt;
+
+&lt;p&gt;I’m a big believer in custom generators and I’ve always found the process of writing them to be convoluted at best.  I recently found &lt;a href=&quot;https://github.com/sungwoncho/pattern_generator&quot;&gt;pattern_generator&lt;/a&gt; which makes writing generators drop dead easy.  I’m writing a project now where a major part of the process is writing custom data parsers for all kinds of web sites – udemy, leanpub, pluralsight, instagram, etc.  These are all PORO (plain old ruby objects) i.e. no ActiveRecord backed and I wanted a custom generator which:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;created my class&lt;/li&gt;
+  &lt;li&gt;created my template&lt;/li&gt;
+  &lt;li&gt;filled out the boilerplate structure&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Happily pattern_generator is just plain perfect. Here’s all I did&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;fork the gem&lt;/li&gt;
+  &lt;li&gt;clone it to my computer&lt;/li&gt;
+  &lt;li&gt;open it in an editor&lt;/li&gt;
+  &lt;li&gt;create a directory&lt;/li&gt;
+  &lt;li&gt;add my template class&lt;/li&gt;
+  &lt;li&gt;add my template spec&lt;/li&gt;
+  &lt;li&gt;replace the class name with erb style output tags&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And while this worked great, I ran into issues when I started making changes …&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; The issues I had here are mine and mine alone.  &lt;a href=&quot;https://github.com/sungwoncho&quot;&gt;Sung Won Cho&lt;/a&gt; did a great job on pattern_generator and I thank him for it.&lt;/p&gt;
+
+&lt;h1 id=&quot;and-now-back-to-gems&quot;&gt;And Now Back to Gems&lt;/h1&gt;
+
+&lt;p&gt;My problem came when I added my fork of pattern_generator to my project’s Gemfile and did a bundle install.  At first the gem came down perfectly but I noticed a few bugs.  I then updated my code and re-bundled and &lt;em&gt;nothing&lt;/em&gt;.  I didn’t get any of my changes.  Here’s how I had it in my Gemfile initially:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'pattern_generator'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:git&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'https://github.com/fuzzygroup/pattern_generator.git'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Naturally this was located in a development only section of the Gemfile since we don’t want the memory overhead of this in production.&lt;/p&gt;
+
+&lt;p&gt;My first thought was that this was tied to a bundle update versus bundle instlal so I did:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;bundle update&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;And, again, nothing.  Next I tried:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;bundle update –source=https://github.com/fuzzygroup/pattern_generator.git&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I would have expected a bundle update pattern_generator to work but I did not find that to be the case.  But even with specifying the source explicitly I still did not get the right version of my code.  Happily Nick and I were about to pair anyway so I asked him and he honed right in on the branch i.e. specify the branch in the Gemfile.  Here’s how that looks:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'pattern_generator'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:git&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'https://github.com/fuzzygroup/pattern_generator.git'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:branch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;master&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And that worked perfectly.  I wrote several new parsers today and then used my &lt;a href=&quot;https://github.com/fuzzygroup/sync-dot-rake&quot;&gt;SyncDotRake&lt;/a&gt; toolkit to merge the parsing code into a new Service Oriented API.  Overall it was a damn good day.  Thanks Nick!&lt;/p&gt;
+</description>
+        <pubDate>Mon, 27 Feb 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/ruby/2017/02/27/working-with-the-gem-ecosystem-part-2.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/ruby/2017/02/27/working-with-the-gem-ecosystem-part-2.html</guid>
+        
+        <category>ruby</category>
+        
+        <category>rails</category>
+        
+        <category>generators</category>
+        
+        <category>pattern_generator</category>
+        
+        <category>hyde</category>
+        
+        
+        <category>ruby</category>
+        
+      </item>
     
       <item>
         <title>Headphones for Programmers - Bose QC-35 Blue Tooth Over Ear Noise Cancelling Headphones</title>
@@ -488,33 +569,6 @@ indian - follow the rules&lt;/p&gt;
         <pubDate>Wed, 22 Feb 2017 08:38:32 -0500</pubDate>
         <link>http://fuzzyblog.io//blog/2017/02/22/understanding-the-culture-of-software-developers-and-how-it-affects-management.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/22/understanding-the-culture-of-software-developers-and-how-it-affects-management.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Linux Tip of the Day - Using a for loop in bash</title>
-        <description>&lt;p&gt;https://www.cyberciti.biz/faq/bash-for-loop/&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;1..5&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;do
-   &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Welcome &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; times&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;1 2 3 4 5
-&lt;span class=&quot;k&quot;&gt;do
-   &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Welcome &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; times&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Tue, 21 Feb 2017 04:11:53 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/02/21/linux-tip-of-the-day-using-a-for-loop-in-bash.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/02/21/linux-tip-of-the-day-using-a-for-loop-in-bash.html</guid>
         
         
       </item>
