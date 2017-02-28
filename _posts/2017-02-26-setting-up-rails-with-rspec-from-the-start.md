@@ -3,8 +3,9 @@ layout: post
 title: Setting Up Rails with Rspec From the Start
 category: rails
 tags: ["rails", "rspec", "hyde"]
+description: So you want to build a new Rails app from scratch using RSpec right from the start?  Here's how...
 ---
-So this morning I was working ony my side project and I realized that one aspect of it alone is now 26 plus PORO (plain old ruby objects) models and growing rapidly.  Given that I'm building this along the lines of a service oriented architeture where I want to be able to replace components prototyped in Ruby down the road with Elixir this would make sense so it was time to isolate it into a standalone http service as a separate Rails API stack.
+So this morning I was working on my side project and I realized that one aspect of it alone is now 26 plus PORO (plain old ruby objects) models and growing rapidly.  Given that I'm building this along the lines of a service oriented architeture where I want to be able to replace components prototyped in Ruby down the road with Elixir this would make sense so it was time to isolate it into a standalone http service as a separate Rails API stack.
 
 And this brings up the need to generate a stack with RSpec from the start.  Here's how to do this:
 
