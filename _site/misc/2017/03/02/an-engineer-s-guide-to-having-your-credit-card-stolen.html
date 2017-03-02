@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Working with the Gem Ecosystem Part 2 - Updating Gems and Writing Generators</title>
-  <meta name="description" content="In case you haven’t figured out yet that I write stuff here as much for myself as for anyone else, well, its true.  Almost every single day I find myself goi...">
+  <title>An Engineer&#39;s Guide To Having Your Credit Card Stolen</title>
+  <meta name="description" content="So the one credit card that my wife and I rely on was recently stolen.  Personally I put the blame on CloudFlare / CloudBleed since it occurred just after I ...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/ruby/2017/02/27/working-with-the-gem-ecosystem-part-2.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/misc/2017/03/02/an-engineer-s-guide-to-having-your-credit-card-stolen.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -40,11 +40,11 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Working with the Gem Ecosystem Part 2 - Updating Gems and Writing Generators">
+  <meta name="twitter:title" content="An Engineer's Guide To Having Your Credit Card Stolen">
 
   
     <meta name="twitter:description"
-      content="When you create your own gem it can sometimes be hard to get it to update in the Gemfile where you use it.">
+      content="So the one credit card that my wife and I rely on was recently stolen.  Personally I put the blame on CloudFlare / CloudBleed since it occurred just after I purchased the HumbleBundle for Arduino (...">
   
 
   
@@ -134,78 +134,39 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Working with the Gem Ecosystem Part 2 - Updating Gems and Writing Generators</h1>
-    <p class="I'll"><time datetime="2017-02-27T00:00:00-05:00" itemprop="datePublished">Feb 27, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">An Engineer's Guide To Having Your Credit Card Stolen</h1>
+    <p class="I'll"><time datetime="2017-03-02T00:00:00-05:00" itemprop="datePublished">Mar 2, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>In case you haven’t figured out yet that I write stuff here as much for myself as for anyone else, well, its true.  Almost every single day I find myself going back to my own blog as a reference tool.  Today I’m writing a part two to my <a href="http://fuzzyblog.io/blog/ruby/2016/08/17/working-with-the-gem-ecosystem.html">Working with the Gem Ecosystem</a> post.</p>
-
-<p>My thanks are extended to <a href="http://www.nickjanetakis.com/blog/">Nick</a> who helped clarify the Gem update process and pointed out the need to embed the branch name in the Gemfile.  He picked this up from his work on the <a href="https://github.com/nickjj/orats">Orats gem</a> which is very useful if you’re into Rails and Docker.</p>
-
-<h1 id="generators">Generators</h1>
-
-<p>I’m a big believer in custom generators and I’ve always found the process of writing them to be convoluted at best.  I recently found <a href="https://github.com/sungwoncho/pattern_generator">pattern_generator</a> which makes writing generators drop dead easy.  I’m writing a project now where a major part of the process is writing custom data parsers for all kinds of web sites – udemy, leanpub, pluralsight, instagram, etc.  These are all PORO (plain old ruby objects) i.e. no ActiveRecord backed and I wanted a custom generator which:</p>
+    <p>So the one credit card that my wife and I rely on was recently stolen.  Personally I put the blame on <a href="https://www.google.com/search?q=cloudbleed&amp;ie=utf-8&amp;oe=utf-8">CloudFlare / CloudBleed</a> since it occurred just after I purchased the HumbleBundle for Arduino (Feb 22nd) and that’s:</p>
 
 <ul>
-  <li>created my class</li>
-  <li>created my template</li>
-  <li>filled out the boilerplate structure</li>
+  <li>the only different credit card transaction done in the past few weeks</li>
+  <li>HumbleBundle was affected by CloudBleed</li>
 </ul>
 
-<p>Happily pattern_generator is just plain perfect. Here’s all I did</p>
+<p>But, that said, I don’t know to 100% certainty and this wasn’t Humble’s fault so I’ll still keep purchasing from them.  But I do feel pretty good in thinking that this was due to CloudFlare and I certain, after having reviewed more technical details, that CloudBleed is a lot worse than the <a href="http://www.cloudflare.com/">CloudFlare</a> company is admitting.  If you haven’t yet started the login change process you might want to think about it.  Even I am gearing up to change all my damn passwords.  Sigh.</p>
 
-<ul>
-  <li>fork the gem</li>
-  <li>clone it to my computer</li>
-  <li>open it in an editor</li>
-  <li>create a directory</li>
-  <li>add my template class</li>
-  <li>add my template spec</li>
-  <li>replace the class name with erb style output tags</li>
-</ul>
+<p>Now that we just received new credit cards, I thought outlining the process of what to do when you’re a developer might be interesting for someone out there.</p>
 
-<p>And while this worked great, I ran into issues when I started making changes …</p>
+<ol>
+  <li>If you’re not using a digital wallet to manage your secure crap (passwords / credit card data / pins) then I’d highly recommend it.  I’ve tried a bunch but the one I like best is <a href="https://www.enpass.io/">EnPass</a> which runs on iOS, OSX, Windows and Unix, uses DropBox for sync from a small company in India.  <strong>Recommended</strong>.</li>
+  <li><a href="http://www.github.com/settings/billing">Github</a>.  Github is keys to the kingdom so it is always my first stop.  Drop down the menu next to your profile picture and choose settings and then billing.  Then do the credit card credentials three step jig.</li>
+  <li><a href="http://gorails.com/users/edit">GoRails</a>.  <a href="http://gorails.com/">GoRails</a> is a screencast service about Rails.  I have a legacy account grandfathered in at $9 / month and I don’t want to lose it so it was my #2 stop.</li>
+  <li><a href="http://www.elixirsips.com">Elixir Sips</a>. ElixirSips is a screen cast service for Elixir and Josh Adams does a great job on it as it was my #3 stop.</li>
+  <li><a href="http://www.amazon.com/">Amazon</a>.  How can you not change the big A?  I suspect we all know how to do this by now.</li>
+  <li><a href="https://console.aws.amazon.com/billing/home/#paymentmethods">AWS</a>.  Your AWS card can be different from your Amazon card and mine had contact details that were 3 years out of date so make sure to check them.  This is also a great opportunity to shut down any AMIs, instances or snapshots you’re not actually using.  You should also check your Cost Explorer while you’re at it. I’m finding Route 53 Hosted Zones to be oddly pricey but more on that later…</li>
+  <li>VPN.  We don’t all use VPNs but if you are trying to crawl geographically different information like the Google Play store world wide, a VPN is an awesome testing tool.  Everyone’s usage here is different so YMMV.</li>
+  <li>Apple.  This can easily be done under iOS via Settings / Wallet &amp; Apple Pay.</li>
+  <li><a href="https://www.dropbox.com/account/profile">DropBox</a>.  I hate DropBox’s performance.  I despise how it runs my CPU at 99% constantly and turns my bloody MacBook Pro fan on but other than my code editor it is probably the one app I just can’t live without at this stage.  DropBox keeps all my files up to date across three MacBooks, a Linux desktop, an iPad and an iPhone.</li>
+  <li><a href="http://www.backblaze.com/">BackBlaze</a>.  I actually am no longer a current BackBlaze subscriber but I know lots and lots of us are so if you use BackBlaze or another cloud backup tool I’d update that.</li>
+  <li><a href="http://www.meh.com/account">Meh</a>.  If you’re reading this and you haven’t ever used Meh then you really, really should.  Its an outstanding Nerd resource.</li>
+  <li><a href="http://www.freshbooks.com/#/profile">Freshbooks</a>.  Since I’m going back to full time freelancing shortly, decent accounting software is called for an Freshbooks is pretty great.</li>
+  <li>Search your email for the word receipt and look at anything in the last 60 days and you’ll likely be ok.</li>
+</ol>
 
-<p><strong>Note:</strong> The issues I had here are mine and mine alone.  <a href="https://github.com/sungwoncho">Sung Won Cho</a> did a great job on pattern_generator and I thank him for it.</p>
-
-<h1 id="and-now-back-to-gems">And Now Back to Gems</h1>
-
-<p>My problem came when I added my fork of pattern_generator to my project’s Gemfile and did a bundle install.  At first the gem came down perfectly but I noticed a few bugs.  I then updated my code and re-bundled and <em>nothing</em>.  I didn’t get any of my changes.  Here’s how I had it in my Gemfile initially:</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">gem</span> <span class="s1">'pattern_generator'</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">'https://github.com/fuzzygroup/pattern_generator.git'</span>
-</code></pre>
-</div>
-
-<p>Naturally this was located in a development only section of the Gemfile since we don’t want the memory overhead of this in production.</p>
-
-<p>My first thought was that this was tied to a bundle update versus bundle instlal so I did:</p>
-
-<blockquote>
-  <p>bundle update</p>
-</blockquote>
-
-<p>And, again, nothing.  Next I tried:</p>
-
-<blockquote>
-  <p>bundle update –source=https://github.com/fuzzygroup/pattern_generator.git</p>
-</blockquote>
-
-<p>I would have expected a bundle update pattern_generator to work but I did not find that to be the case.  But even with specifying the source explicitly I still did not get the right version of my code.  Happily Nick and I were about to pair anyway so I asked him and he honed right in on the branch i.e. specify the branch in the Gemfile.  Here’s how that looks:</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">gem</span> <span class="s1">'pattern_generator'</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">'https://github.com/fuzzygroup/pattern_generator.git'</span><span class="p">,</span> <span class="ss">:branch</span> <span class="o">=&gt;</span> <span class="s2">"master"</span>
-</code></pre>
-</div>
-
-<p>And that worked perfectly.  I wrote several new parsers today and then used my <a href="https://github.com/fuzzygroup/sync-dot-rake">SyncDotRake</a> toolkit to merge the parsing code into a new Service Oriented API.  Overall it was a damn good day.  Thanks Nick!</p>
-
-<p><strong>Note:</strong> I next updated the gem on the following day and <strong>could not get</strong> it to update at all.  I finally tried:</p>
-
-<blockquote>
-  <p>bundle update pattern_generator</p>
-</blockquote>
-
-<p>and that actually seemed to work consistently and reliably.</p>
+<p>Now, print this out for your wife / significant other so they know where your card has been updated.</p>
 
   </div>
   

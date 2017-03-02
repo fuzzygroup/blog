@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Working with the Gem Ecosystem Part 2 - Updating Gems and Writing Generators</title>
-  <meta name="description" content="In case you haven’t figured out yet that I write stuff here as much for myself as for anyone else, well, its true.  Almost every single day I find myself goi...">
+  <title>Things Ganesh Taught Me</title>
+  <meta name="description" content="https://github.com/orkohunter/keep">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/ruby/2017/02/27/working-with-the-gem-ecosystem-part-2.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/2017/03/01/things-ganesh-taught-me.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -40,11 +40,21 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Working with the Gem Ecosystem Part 2 - Updating Gems and Writing Generators">
+  <meta name="twitter:title" content="Things Ganesh Taught Me">
 
   
     <meta name="twitter:description"
-      content="When you create your own gem it can sometimes be hard to get it to update in the Gemfile where you use it.">
+      content="https://github.com/orkohunter/keep
+
+https://github.com/orkohunter/ping-me
+
+http://www.araelium.com/screenflick
+
+http://www.araelium.com/querious
+
+http://www.araelium.com/rewind
+
+https://filmora.won...">
   
 
   
@@ -134,78 +144,28 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Working with the Gem Ecosystem Part 2 - Updating Gems and Writing Generators</h1>
-    <p class="I'll"><time datetime="2017-02-27T00:00:00-05:00" itemprop="datePublished">Feb 27, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">Things Ganesh Taught Me</h1>
+    <p class="I'll"><time datetime="2017-03-01T20:56:35-05:00" itemprop="datePublished">Mar 1, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>In case you haven’t figured out yet that I write stuff here as much for myself as for anyone else, well, its true.  Almost every single day I find myself going back to my own blog as a reference tool.  Today I’m writing a part two to my <a href="http://fuzzyblog.io/blog/ruby/2016/08/17/working-with-the-gem-ecosystem.html">Working with the Gem Ecosystem</a> post.</p>
+    <p>https://github.com/orkohunter/keep</p>
 
-<p>My thanks are extended to <a href="http://www.nickjanetakis.com/blog/">Nick</a> who helped clarify the Gem update process and pointed out the need to embed the branch name in the Gemfile.  He picked this up from his work on the <a href="https://github.com/nickjj/orats">Orats gem</a> which is very useful if you’re into Rails and Docker.</p>
+<p>https://github.com/orkohunter/ping-me</p>
 
-<h1 id="generators">Generators</h1>
+<p>http://www.araelium.com/screenflick</p>
 
-<p>I’m a big believer in custom generators and I’ve always found the process of writing them to be convoluted at best.  I recently found <a href="https://github.com/sungwoncho/pattern_generator">pattern_generator</a> which makes writing generators drop dead easy.  I’m writing a project now where a major part of the process is writing custom data parsers for all kinds of web sites – udemy, leanpub, pluralsight, instagram, etc.  These are all PORO (plain old ruby objects) i.e. no ActiveRecord backed and I wanted a custom generator which:</p>
+<p>http://www.araelium.com/querious</p>
 
-<ul>
-  <li>created my class</li>
-  <li>created my template</li>
-  <li>filled out the boilerplate structure</li>
-</ul>
+<p>http://www.araelium.com/rewind</p>
 
-<p>Happily pattern_generator is just plain perfect. Here’s all I did</p>
+<p>https://filmora.wondershare.com/mac-os-x-el-capitan/</p>
 
-<ul>
-  <li>fork the gem</li>
-  <li>clone it to my computer</li>
-  <li>open it in an editor</li>
-  <li>create a directory</li>
-  <li>add my template class</li>
-  <li>add my template spec</li>
-  <li>replace the class name with erb style output tags</li>
-</ul>
+<p>Looking at his system gave me a case of “prompt envy”:</p>
 
-<p>And while this worked great, I ran into issues when I started making changes …</p>
+<p>brew install bash-git-prompt</p>
 
-<p><strong>Note:</strong> The issues I had here are mine and mine alone.  <a href="https://github.com/sungwoncho">Sung Won Cho</a> did a great job on pattern_generator and I thank him for it.</p>
-
-<h1 id="and-now-back-to-gems">And Now Back to Gems</h1>
-
-<p>My problem came when I added my fork of pattern_generator to my project’s Gemfile and did a bundle install.  At first the gem came down perfectly but I noticed a few bugs.  I then updated my code and re-bundled and <em>nothing</em>.  I didn’t get any of my changes.  Here’s how I had it in my Gemfile initially:</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">gem</span> <span class="s1">'pattern_generator'</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">'https://github.com/fuzzygroup/pattern_generator.git'</span>
-</code></pre>
-</div>
-
-<p>Naturally this was located in a development only section of the Gemfile since we don’t want the memory overhead of this in production.</p>
-
-<p>My first thought was that this was tied to a bundle update versus bundle instlal so I did:</p>
-
-<blockquote>
-  <p>bundle update</p>
-</blockquote>
-
-<p>And, again, nothing.  Next I tried:</p>
-
-<blockquote>
-  <p>bundle update –source=https://github.com/fuzzygroup/pattern_generator.git</p>
-</blockquote>
-
-<p>I would have expected a bundle update pattern_generator to work but I did not find that to be the case.  But even with specifying the source explicitly I still did not get the right version of my code.  Happily Nick and I were about to pair anyway so I asked him and he honed right in on the branch i.e. specify the branch in the Gemfile.  Here’s how that looks:</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">gem</span> <span class="s1">'pattern_generator'</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">'https://github.com/fuzzygroup/pattern_generator.git'</span><span class="p">,</span> <span class="ss">:branch</span> <span class="o">=&gt;</span> <span class="s2">"master"</span>
-</code></pre>
-</div>
-
-<p>And that worked perfectly.  I wrote several new parsers today and then used my <a href="https://github.com/fuzzygroup/sync-dot-rake">SyncDotRake</a> toolkit to merge the parsing code into a new Service Oriented API.  Overall it was a damn good day.  Thanks Nick!</p>
-
-<p><strong>Note:</strong> I next updated the gem on the following day and <strong>could not get</strong> it to update at all.  I finally tried:</p>
-
-<blockquote>
-  <p>bundle update pattern_generator</p>
-</blockquote>
-
-<p>and that actually seemed to work consistently and reliably.</p>
+<p>https://gist.github.com/trey/2722934</p>
 
   </div>
   

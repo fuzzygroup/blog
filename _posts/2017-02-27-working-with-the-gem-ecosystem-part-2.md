@@ -56,3 +56,9 @@ gem 'pattern_generator', :git => 'https://github.com/fuzzygroup/pattern_generato
 ```
 
 And that worked perfectly.  I wrote several new parsers today and then used my [SyncDotRake](https://github.com/fuzzygroup/sync-dot-rake) toolkit to merge the parsing code into a new Service Oriented API.  Overall it was a damn good day.  Thanks Nick!
+
+**Note:** I next updated the gem on the following day and **could not get** it to update at all.  I finally tried:
+
+> bundle update pattern_generator
+
+and that actually seemed to work consistently and reliably.

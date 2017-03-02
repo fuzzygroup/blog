@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Working with the Gem Ecosystem Part 2 - Updating Gems and Writing Generators</title>
-  <meta name="description" content="In case you haven’t figured out yet that I write stuff here as much for myself as for anyone else, well, its true.  Almost every single day I find myself goi...">
+  <title>Using Pattern Generator to Make Custom Rails Generators</title>
+  <meta name="description" content="Welcome to the pattern_generator wiki!">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/ruby/2017/02/27/working-with-the-gem-ecosystem-part-2.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/2017/03/01/using-pattern-generator-to-make-custom-rails-generators.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -40,11 +40,13 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Working with the Gem Ecosystem Part 2 - Updating Gems and Writing Generators">
+  <meta name="twitter:title" content="Using Pattern Generator to Make Custom Rails Generators">
 
   
     <meta name="twitter:description"
-      content="When you create your own gem it can sometimes be hard to get it to update in the Gemfile where you use it.">
+      content="Welcome to the pattern_generator wiki!
+
+I’m a user of pattern_generator, not the author, so any mistakes here are mine and mine alone.  I’ve been very impressed by this gem so I thought I’d write s...">
   
 
   
@@ -134,78 +136,47 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Working with the Gem Ecosystem Part 2 - Updating Gems and Writing Generators</h1>
-    <p class="I'll"><time datetime="2017-02-27T00:00:00-05:00" itemprop="datePublished">Feb 27, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">Using Pattern Generator to Make Custom Rails Generators</h1>
+    <p class="I'll"><time datetime="2017-03-01T16:58:57-05:00" itemprop="datePublished">Mar 1, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>In case you haven’t figured out yet that I write stuff here as much for myself as for anyone else, well, its true.  Almost every single day I find myself going back to my own blog as a reference tool.  Today I’m writing a part two to my <a href="http://fuzzyblog.io/blog/ruby/2016/08/17/working-with-the-gem-ecosystem.html">Working with the Gem Ecosystem</a> post.</p>
+    <p>Welcome to the pattern_generator wiki!</p>
 
-<p>My thanks are extended to <a href="http://www.nickjanetakis.com/blog/">Nick</a> who helped clarify the Gem update process and pointed out the need to embed the branch name in the Gemfile.  He picked this up from his work on the <a href="https://github.com/nickjj/orats">Orats gem</a> which is very useful if you’re into Rails and Docker.</p>
+<p>I’m a user of pattern_generator, not the author, so any mistakes here are mine and mine alone.  I’ve been very impressed by this gem so I thought I’d write some documentation as a thank you.  Here’s how to use this for your own project and write your own generators.</p>
 
-<h1 id="generators">Generators</h1>
-
-<p>I’m a big believer in custom generators and I’ve always found the process of writing them to be convoluted at best.  I recently found <a href="https://github.com/sungwoncho/pattern_generator">pattern_generator</a> which makes writing generators drop dead easy.  I’m writing a project now where a major part of the process is writing custom data parsers for all kinds of web sites – udemy, leanpub, pluralsight, instagram, etc.  These are all PORO (plain old ruby objects) i.e. no ActiveRecord backed and I wanted a custom generator which:</p>
-
-<ul>
-  <li>created my class</li>
-  <li>created my template</li>
-  <li>filled out the boilerplate structure</li>
-</ul>
-
-<p>Happily pattern_generator is just plain perfect. Here’s all I did</p>
-
-<ul>
-  <li>fork the gem</li>
-  <li>clone it to my computer</li>
-  <li>open it in an editor</li>
-  <li>create a directory</li>
-  <li>add my template class</li>
-  <li>add my template spec</li>
-  <li>replace the class name with erb style output tags</li>
-</ul>
-
-<p>And while this worked great, I ran into issues when I started making changes …</p>
-
-<p><strong>Note:</strong> The issues I had here are mine and mine alone.  <a href="https://github.com/sungwoncho">Sung Won Cho</a> did a great job on pattern_generator and I thank him for it.</p>
-
-<h1 id="and-now-back-to-gems">And Now Back to Gems</h1>
-
-<p>My problem came when I added my fork of pattern_generator to my project’s Gemfile and did a bundle install.  At first the gem came down perfectly but I noticed a few bugs.  I then updated my code and re-bundled and <em>nothing</em>.  I didn’t get any of my changes.  Here’s how I had it in my Gemfile initially:</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">gem</span> <span class="s1">'pattern_generator'</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">'https://github.com/fuzzygroup/pattern_generator.git'</span>
-</code></pre>
-</div>
-
-<p>Naturally this was located in a development only section of the Gemfile since we don’t want the memory overhead of this in production.</p>
-
-<p>My first thought was that this was tied to a bundle update versus bundle instlal so I did:</p>
+<ol>
+  <li>
+    <p>Fork It.  Start by forking this to your own repo on github.</p>
+  </li>
+  <li>
+    <p>Clone It.  Clone your fork down to your local dev system.</p>
+  </li>
+  <li>
+    <p>Change It.  Follow the directions on this repo’s home page to create a custom generator.  Basically you’re going to write a template for a class and a template for a spec / test file.</p>
+  </li>
+  <li>
+    <p>Add It.  Add pattern_generator to your Gemfile in one of your development groups.  You need to call out the master branch specifically.  Here’s an example:</p>
+  </li>
+</ol>
 
 <blockquote>
-  <p>bundle update</p>
+  <p>gem ‘pattern_generator’, :git =&gt; ‘https://github.com/fuzzygroup/pattern_generator.git’, :branch =&gt; “master”</p>
 </blockquote>
 
-<p>And, again, nothing.  Next I tried:</p>
+<ol>
+  <li>
+    <p>Add / Commit / Push.  Get your changes into github.</p>
+  </li>
+  <li>
+    <p>Change Dir.  Change your working directory to the repo where you want to use your new generator and do a bundle update pattern_generator.</p>
+  </li>
+  <li>
+    <p>Use It.  Run your new generator with bundle exec rails g WHATEVER</p>
+  </li>
+</ol>
 
-<blockquote>
-  <p>bundle update –source=https://github.com/fuzzygroup/pattern_generator.git</p>
-</blockquote>
-
-<p>I would have expected a bundle update pattern_generator to work but I did not find that to be the case.  But even with specifying the source explicitly I still did not get the right version of my code.  Happily Nick and I were about to pair anyway so I asked him and he honed right in on the branch i.e. specify the branch in the Gemfile.  Here’s how that looks:</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">gem</span> <span class="s1">'pattern_generator'</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">'https://github.com/fuzzygroup/pattern_generator.git'</span><span class="p">,</span> <span class="ss">:branch</span> <span class="o">=&gt;</span> <span class="s2">"master"</span>
-</code></pre>
-</div>
-
-<p>And that worked perfectly.  I wrote several new parsers today and then used my <a href="https://github.com/fuzzygroup/sync-dot-rake">SyncDotRake</a> toolkit to merge the parsing code into a new Service Oriented API.  Overall it was a damn good day.  Thanks Nick!</p>
-
-<p><strong>Note:</strong> I next updated the gem on the following day and <strong>could not get</strong> it to update at all.  I finally tried:</p>
-
-<blockquote>
-  <p>bundle update pattern_generator</p>
-</blockquote>
-
-<p>and that actually seemed to work consistently and reliably.</p>
+<p>Enjoy!</p>
 
   </div>
   
