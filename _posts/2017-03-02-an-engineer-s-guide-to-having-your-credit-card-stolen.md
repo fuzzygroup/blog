@@ -3,6 +3,7 @@ layout: post
 title: An Engineer's Guide To Having Your Credit Card Stolen
 category: misc
 tags: ["misc", "credit_card", "cloudflare", "cloudbleed"]
+description: While having your credit card sucks monkey chunks, its actually not that bad to update all the sites a developer relies on.  Here's an example.
 ---
 So the one credit card that my wife and I rely on was recently stolen.  Personally I put the blame on [CloudFlare / CloudBleed](https://www.google.com/search?q=cloudbleed&ie=utf-8&oe=utf-8) since it occurred just after I purchased the HumbleBundle for Arduino (Feb 22nd) and that's:
 
