@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Things Winston Taught Me
+title: Things Winston Taught Me - Better Git Shortcuts
 category: git
 tags: ["git", "terminal"]
 description: Working with another developer always shows you new tricks.  Here Winston gave me a good set of git shortcuts for easing commits in the terminal.
@@ -46,4 +46,26 @@ Here's how Winston originally implemented this:
     
 Here is my version:
 
+    alias gundo='git reset --soft HEAD~1'
+    function gc() {
+      git commit -m "$*"
+    }
+    function ga() {
+      git add "$*"
+    }
+    alias gcurrentbranch='git rev-parse --abbrev-ref HEAD'
+    alias gaa='git add .'
+    alias gs='git status'
+    alias gl='git log --oneline'
+    alias gpc='git push origin $(gcurrentbranch)'
+    function ghelp() {
+      echo "ga (add one) gc (commit) gpc (push) gaa (add all) gs (status) gl (log) gcurrentbranch (show branch) gundo (be careful!)"
+    }
     
+The only changes I made were:
+
+* add a ga function which does a single file add
+* change the name of the previous ga, which added everything, to gaa (git add all)
+* add a ghelp function to tell me what's available
+
+Just using this for a few days has really streamlined my workflow.  Thanks Winston!
