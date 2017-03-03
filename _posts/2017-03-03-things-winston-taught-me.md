@@ -27,7 +27,7 @@ Winston showed me his process:
 * gc "a commit message"
 * gpc 
 
-These abbreviations are a heck of a lot shorter than what I've been typing so that's clearly a win.  My one objection to his approach is that ga adds EVERYTHING.  My preference is atomic commit messages so I really would prefer to have two aliases for add:
+These abbreviations are a heck of a lot shorter than what I've been typing so that's clearly a win.  My one objection to his approach is that ga adds EVERYTHING.  My preference is atomic commit messages where one commit = the changes to one file so I really would prefer to have two aliases for add:
 
 * ga some_file
 * gaa (adds everything)
