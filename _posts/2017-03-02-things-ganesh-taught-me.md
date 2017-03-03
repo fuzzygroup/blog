@@ -8,7 +8,7 @@ image: http://d2l5v8ibvnnoh9.cloudfront.net/assets/screenflick/darken-4a4f14e94a
 ---
 I am an engineer and I've worked with other engineers from all over the world.  People can talk about cultural differences all they want but the bottom line is that software engineering is a very binary profession -- either the code compiles or it doesn't.  And this simple truism generally tends to make engineers far more similar than they are different.  One of my favorite things about working with a new engineer is watching their tooling and then saying "Hey - what's that you just did / please show me how".  And if its any good, I try hard to incorporate it into my daily workflow.  
 
-Last week I had the privilege of pairing with [Ganesh from Imaginea](https://www.linkedin.com/in/itsgg/) all week long and I picked up some good tricks documented below.  Tomorrow or early next week, I'll document what I picked up from Winston.
+Last week I had the privilege of pairing with [Ganesh from Imaginea](https://www.linkedin.com/in/itsgg/) all week long and I picked up some good tricks documented below.  Tomorrow or early next week, I'll document what I picked up from [Winston](http://winstonkotzan.com/).
 
 # Keep
 
