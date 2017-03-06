@@ -3,6 +3,8 @@ layout: post
 title: Using Ansible as a Development Tool with Rails and AWS for Large Scale Data Processing Automation
 category: aws
 tags: ["ansible", "aws", "rails", "ruby" "shell", "bash", "sidekiq", "devops", "meta_programming"]
+description: We all think of Ansible as a devops tool but here I illustrate how Ansible can be a valuable application development environment.
+image: https://img.stackshare.io/service/663/ElOjna20.png
 ---
 Man it was a hell of a busy week last week.  Here's an illustration:
 
