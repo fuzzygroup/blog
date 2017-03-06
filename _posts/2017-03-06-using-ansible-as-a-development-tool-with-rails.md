@@ -2,7 +2,7 @@
 layout: post
 title: Using Ansible as a Development Tool with Rails and AWS for Large Scale Data Processing Automation
 category: aws
-tags: ["ansible", "aws", "rails", "ruby" "shell", "bash", "sidekiq", "devops", "meta_programming"]
+tags: ["ansible", "aws", "rails", "ruby", "shell", "bash", "sidekiq", "devops", "meta_programming"]
 description: We all think of Ansible as a devops tool but here I illustrate how Ansible can be a valuable application development environment.
 image: https://img.stackshare.io/service/663/ElOjna20.png
 ---
@@ -65,7 +65,8 @@ The ability to run this at any point in the process is hugely useful and here's 
 * Rake Task - the business logic of what to analyze
 
 ## Ansible Playbook
-    
+
+```ansible      
     - hosts: monthly-categorization
       become: yes
       remote_user: ubuntu
@@ -73,9 +74,11 @@ The ability to run this at any point in the process is hugely useful and here's 
         - rake_task: "monthly:echo_stats"
       roles:
         - { role: run_rake_task_and_show_output }
+```        
     
 ## Ansible Role
-    
+
+```ansible    
     - name: run a rake task on the target box
       shell: 
         chdir: /var/www/apps/rails_app/current
@@ -84,6 +87,7 @@ The ability to run this at any point in the process is hugely useful and here's 
 
     - debug:
         msg: "{{ result.stdout.split('\n') }}"
+```        
         
 My first pass on all this had the output being listed as a jumbled mess (typical to captured output by Ansible).  Winston correctly pointed out something to the effect of "Looks a bit like arse".  Well a quick google led to this [StackOverflow post](http://stackoverflow.com/questions/34188167/ansible-print-message-debug-msg-line1-n-var2-n-line3-with-var3) where this technique:
 
@@ -92,7 +96,8 @@ My first pass on all this had the output being listed as a jumbled mess (typical
 could be applied.  In our case we had it as result so it was just a matter of replacing msg with result.stdout.  And, almost magically, that jumbled mess came into razor sharp focus.  My thanks to Winston for recognizing that this was an issue.  I was so close to the problem that I didn't even perceive it.
     
 ## Rake task being called by Playbook:
-    
+
+```ruby    
     task :echo_stats => :environment do
       j = Job.current
       data_shard = ShardedData.shard_for_date("service", j.date)
@@ -102,9 +107,11 @@ could be applied.  In our case we had it as result so it was just a matter of re
       puts "Total categorization records from #{j.current.id} = #{data_shard.count}"    
       puts "Total distinct entity_ids in categorization from #{j.current.id} = #{distinct_entities}"    
     end
+```
     
 A more complex example of this based on Ruby meta-programming is shown below:
 
+```ruby
     task :echo_other_stats => :environment do
       tables = []
       tables << "rating_estimates"
@@ -121,6 +128,8 @@ A more complex example of this based on Ruby meta-programming is shown below:
         puts "Table: #{k} = #{v} for Processing Run #{ProcessingRun.current.id}"
       end
     end
+```
+
     
 This approach was based on some internal analysis logic where we had an array of table names that we used for generating some SQL code dynamically.  It took about 5 minutes to convert that list of tables into this.  The table.classify.constantize call takes the name of the table and first converts it to a model name (classify) and the converts that model name to a constant that represents the class itself.  Once you have a class that inherits from ActiveRecord you can then call a .where statement to get a count.  Finally you inject the original table name and the count back into a hash to store the results.
 

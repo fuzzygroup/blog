@@ -6,9 +6,230 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 03 Mar 2017 08:49:35 -0500</pubDate>
-    <lastBuildDate>Fri, 03 Mar 2017 08:49:35 -0500</lastBuildDate>
+    <pubDate>Mon, 06 Mar 2017 11:21:32 -0500</pubDate>
+    <lastBuildDate>Mon, 06 Mar 2017 11:21:32 -0500</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Using Ansible as a Development Tool with Rails and AWS for Large Scale Data Processing Automation</title>
+        <description>&lt;p&gt;Man it was a hell of a busy week last week.  Here’s an illustration:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~/me/appdatallc/ansible-clean [master|✚ 1…1]
+01:34 $ find . -name '*.yml' | xargs wc -l
+...
+283 total
+
+~/me/appdatallc/ansible_monthly [master|✔]
+find . -name '*.yml' | xargs wc -l
+...
+ 1066 total
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Yep.  Starting last week, from Monday morning to Friday afternoon, working with &lt;a href=&quot;http://winstonkotzan.com/&quot;&gt;Winston&lt;/a&gt; to teach him &lt;a href=&quot;https://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt;, I authored almost 1,300 lines of Ansible.&lt;/p&gt;
+
+&lt;p&gt;The really interesting part of this was using Ansible as a &lt;strong&gt;development tool&lt;/strong&gt; with Rails.  The use case in question was automating production of large scale data processing jobs.  Example what these jobs did is highly proprietary but they basically had a shared architecture like this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Execute on a developer’s workstation&lt;/li&gt;
+  &lt;li&gt;Verify state of the application by calling an API server side&lt;/li&gt;
+  &lt;li&gt;Change the thread count as needed for the right amount of concurrency&lt;/li&gt;
+  &lt;li&gt;Clear the rails log&lt;/li&gt;
+  &lt;li&gt;Set the right redis server to isolate sidekiq from other concurrently executing jobs&lt;/li&gt;
+  &lt;li&gt;Clear the Sidekiq log&lt;/li&gt;
+  &lt;li&gt;Make an AMI of the EC2 instance&lt;/li&gt;
+  &lt;li&gt;Launch N instances of the AMI to do the needed data processing&lt;/li&gt;
+  &lt;li&gt;Fill the Sidekiq queue&lt;/li&gt;
+  &lt;li&gt;Display the count of items in the Sidekiq queue&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There were a series of 8 different data processing jobs, 6 of which matched the above list and two of which were slightly different.  Each of the stages above was represented by a small Ansible playbook and the coordination between each of the playbooks was handled by a bash script which called each of the stages in succession.&lt;/p&gt;
+
+&lt;p&gt;Classically Ansible is a devops tool for provisioning boxes but last week really illustrated to me the power of &lt;strong&gt;Ansible as a development tool&lt;/strong&gt;.  Ansible’s idempotent, state based approach of modeling the world as a succession of yaml files can definitely be funky but the model works.&lt;/p&gt;
+
+&lt;h1 id=&quot;adding-status-tracking&quot;&gt;Adding Status Tracking&lt;/h1&gt;
+
+&lt;p&gt;Early Friday I realized that once these jobs were running, the developer running them would need to understand the status of the job on a highly discrete level.  Historically I’ve done this by directly querying the database and just &lt;em&gt;understanding&lt;/em&gt; the objects involved and the tables that represent them.  But that comes from a huge amount of internal domain knowlege that Winston didn’t have.&lt;/p&gt;
+
+&lt;p&gt;This status would need to include:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Amount of data left in the sidekiq queue&lt;/li&gt;
+  &lt;li&gt;Amount of records produced for each job&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Sure in an idealized world this would be a pretty, graphical dashboard available on the web to all people in the company.  Practically speaking, the following is sufficient:&lt;/p&gt;
+
+&lt;p&gt;TASK [run_rake_task_and_show_output : debug] &lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;*****
+ok: [monthly-categorization] =&amp;gt; {
+    “msg”: [
+        “in LoadError rescue statement”,
+        “Queue Size = 0”,
+        “Total categorization records = 271408”,
+        “Total distinct entities in categorization = 6783”
+    ]
+}&lt;/p&gt;
+
+&lt;p&gt;The ability to run this at any point in the process is hugely useful and here’s an example of how simple that code can be.  There are three key pieces:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ansible Playbook - a playbook which defined a Rake namespace and task to be executed&lt;/li&gt;
+  &lt;li&gt;Ansible Role - essentially a function which executes the Rake namespace and task, capturing its output and displaying it&lt;/li&gt;
+  &lt;li&gt;Rake Task - the business logic of what to analyze&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;ansible-playbook&quot;&gt;Ansible Playbook&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-ansible&quot;&gt;    - hosts: monthly-categorization
+      become: yes
+      remote_user: ubuntu
+      vars:
+        - rake_task: &quot;monthly:echo_stats&quot;
+      roles:
+        - { role: run_rake_task_and_show_output }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;ansible-role&quot;&gt;Ansible Role&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-ansible&quot;&gt;    - name: run a rake task on the target box
+      shell: 
+        chdir: /var/www/apps/rails_app/current
+        cmd:  RAILS_ENV=production bundle exec rake 
+      register: result
+
+    - debug:
+        msg: &quot;&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;My first pass on all this had the output being listed as a jumbled mess (typical to captured output by Ansible).  Winston correctly pointed out something to the effect of “Looks a bit like arse”.  Well a quick google led to this &lt;a href=&quot;http://stackoverflow.com/questions/34188167/ansible-print-message-debug-msg-line1-n-var2-n-line3-with-var3&quot;&gt;StackOverflow post&lt;/a&gt; where this technique:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;msg: “”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;could be applied.  In our case we had it as result so it was just a matter of replacing msg with result.stdout.  And, almost magically, that jumbled mess came into razor sharp focus.  My thanks to Winston for recognizing that this was an issue.  I was so close to the problem that I didn’t even perceive it.&lt;/p&gt;
+
+&lt;h2 id=&quot;rake-task-being-called-by-playbook&quot;&gt;Rake task being called by Playbook:&lt;/h2&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;n&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:echo_stats&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:environment&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Job&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;current&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;data_shard&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ShardedData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;shard_for_date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;service&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;distinct_entities&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data_shard&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;entity_id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;distinct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;count&lt;/span&gt;
+    
+      &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Queue Size = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Sidekiq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Queue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Total categorization records from &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;current&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data_shard&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;    
+      &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Total distinct entity_ids in categorization from &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;current&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;distinct_entities&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;    
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;A more complex example of this based on Ruby meta-programming is shown below:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;n&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:echo_other_stats&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:environment&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;tables&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;tables&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;rating_estimates&quot;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;tables&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;type_estimates&quot;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;tables&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;category_estimates&quot;&lt;/span&gt;
+    
+      &lt;span class=&quot;n&quot;&gt;stats&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+    
+      &lt;span class=&quot;n&quot;&gt;tables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;stats&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;classify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;constantize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:job_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Job&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;current&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;count&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    
+      &lt;span class=&quot;n&quot;&gt;stats&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Table: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; for Processing Run &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ProcessingRun&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;current&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This approach was based on some internal analysis logic where we had an array of table names that we used for generating some SQL code dynamically.  It took about 5 minutes to convert that list of tables into this.  The table.classify.constantize call takes the name of the table and first converts it to a model name (classify) and the converts that model name to a constant that represents the class itself.  Once you have a class that inherits from ActiveRecord you can then call a .where statement to get a count.  Finally you inject the original table name and the count back into a hash to store the results.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;I’ve been managing this job production process for almost two years now and most of my approaches to making it better have evolved around different rake tasks and some fairly bad internal documentation.  By pulling Ansible into this, for the first time, we actually have a solution which:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Goes end to end&lt;/li&gt;
+  &lt;li&gt;Automates tasks like AMI creation and instance launching historically done with the AWS developer console&lt;/li&gt;
+  &lt;li&gt;Allows use of N instances to process the data&lt;/li&gt;
+  &lt;li&gt;Fully uses our existing code base without change – I can’t emphasize this point enough&lt;/li&gt;
+  &lt;li&gt;Displays status on the running jobs at any point&lt;/li&gt;
+  &lt;li&gt;Is broken down into small, modular chunks – each of our playbooks are maybe 10 lines in total&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Ansible isn’t how I expected to solve this problem but its approach really, really worked – keep it in mind.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 06 Mar 2017 00:00:00 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/aws/2017/03/06/using-ansible-as-a-development-tool-with-rails.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/aws/2017/03/06/using-ansible-as-a-development-tool-with-rails.html</guid>
+        
+        <category>ansible</category>
+        
+        <category>aws</category>
+        
+        <category>rails</category>
+        
+        <category>ruby</category>
+        
+        <category>shell</category>
+        
+        <category>bash</category>
+        
+        <category>sidekiq</category>
+        
+        <category>devops</category>
+        
+        <category>meta_programming</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
+    
+      <item>
+        <title>CloudBleed Revisited</title>
+        <description>&lt;p&gt;If you’re reading this then you’re almost certainly a developer (or a friend; Hi Dave West) and if so I would urge you to listen to &lt;a href=&quot;https://softwareengineeringdaily.com/2017/03/04/cloudbleed-and-sha-1-collision-with-max-burkhardt/&quot;&gt;Software Engineering Daily podcast on CloudBleed&lt;/a&gt;.  Just follow the link and you can listen right from your browser.  You should really do this now whether or not you ever listen to podcasts.  As most developers I fall into the category of “security conscious but not really security knowledgeable” and this podcast does a fantastic job of making clear:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Exactly what happened&lt;/li&gt;
+  &lt;li&gt;Whether or not it was a big deal (personally I think its a bigger deal than they acknowledged)&lt;/li&gt;
+  &lt;li&gt;What passwords you should change (I changed my Medium and Uber passwords)&lt;/li&gt;
+  &lt;li&gt;Explaining the issues with SHA1&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I’d also like to absolutely commend Jeff from SE Daily for not doing this interview himself.  While I really, really enjoy Jeff’s style, security is hard&lt;/p&gt;
+</description>
+        <pubDate>Sun, 05 Mar 2017 04:44:04 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/cloud_bleed/2017/03/05/cloudbleed.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/cloud_bleed/2017/03/05/cloudbleed.html</guid>
+        
+        <category>cloud_bleed</category>
+        
+        <category>cloud_flare</category>
+        
+        <category>security</category>
+        
+        
+        <category>cloud_bleed</category>
+        
+      </item>
+    
+      <item>
+        <title>Create Custom Generators Using Pattern Generator</title>
+        <description>&lt;p&gt;I am strongly of the opinion that Rails generators are one of the unsung heros of the Rails world.  Certainly the fact that a Rails generator always creates the matching test stub has to have influenced the success of testing in the Rails world.  And while Rails generators are great, there aren’t a lot of easy options when you want a customized generator.  In the remainder of this post, I’ll discuss the gem Pattern Generator which lets you put together&lt;/p&gt;
+
+&lt;h1 id=&quot;caveats&quot;&gt;Caveats&lt;/h1&gt;
+
+&lt;p&gt;If you’re working with a fork of Pattern Generator you should be aware that your fork is inherently going to be publicly available on Github.  Keep that in mind if you view the model that you’ve generated is proprietary.  In that case you may need to break the fork and make it non-public.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 04 Mar 2017 11:34:20 -0500</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/03/04/create-custom-generators-using-pattern-generator.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/03/04/create-custom-generators-using-pattern-generator.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Despamming Your Twitter Following List</title>
@@ -187,256 +408,6 @@ function ghelp() {
         
         
         <category>git</category>
-        
-      </item>
-    
-      <item>
-        <title>Things Ganesh Taught Me</title>
-        <description>&lt;p&gt;I am an engineer and I’ve worked with other engineers from all over the world.  People can talk about cultural differences all they want but the bottom line is that software engineering is a very binary profession – either the code compiles or it doesn’t.  And this simple truism generally tends to make engineers far more similar than they are different.  One of my favorite things about working with a new engineer is watching their tooling and then saying “Hey - what’s that you just did / please show me how”.  And if its any good, I try hard to incorporate it into my daily workflow.&lt;/p&gt;
-
-&lt;p&gt;Last week I had the privilege of pairing with &lt;a href=&quot;https://www.linkedin.com/in/itsgg/&quot;&gt;Ganesh from Imaginea&lt;/a&gt; all week long and I picked up some good tricks documented below.  Tomorrow or early next week, I’ll document what I picked up from &lt;a href=&quot;http://winstonkotzan.com/&quot;&gt;Winston&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;keep&quot;&gt;Keep&lt;/h1&gt;
-
-&lt;p&gt;This is an interesting command line tool which lets you designate particular command line strings as things to be “kept”:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/OrkoHunter/keep/master/data/keep.gif&quot; alt=&quot;keep&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Install it with:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;pip install keep&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Save a command with:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;keep YOUR_COMMAND&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;List your saved commands with:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;keep list&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/orkohunter/keep&quot;&gt;More on Keep&lt;/a&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;screenflick&quot;&gt;ScreenFlick&lt;/h1&gt;
-
-&lt;p&gt;I was meeting with Ganesh as part of a transition plan so there was a lot of screen recording to capture knowledge.  While I have traditionally used ScreenFlow, he was using &lt;a href=&quot;http://www.araelium.com/screenflick&quot;&gt;ScreenFlick&lt;/a&gt; which:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Is only $29&lt;/li&gt;
-  &lt;li&gt;Works natively in MP4&lt;/li&gt;
-  &lt;li&gt;Has a cool remote feature so you can use your phone to pause a recording, make some changes and then get back to the recording&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I haven’t tried this yet so no clue about noise reduction or other key issues but this is &lt;em&gt;interesting&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://d2l5v8ibvnnoh9.cloudfront.net/assets/screenflick/darken-4a4f14e94a7bba4d3a51486e8bed54cb4b48ed56513ee89089cd41de29a3b4d4.png&quot; alt=&quot;ScreenFlick&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://www.araelium.com/&quot;&gt;Araelium&lt;/a&gt; the company offering ScreenFlick has a number of cool apps.  Definitely worth checking out.  Even I find their &lt;a href=&quot;http://www.araelium.com/querious&quot;&gt;MySQL Query tool&lt;/a&gt; interesting.&lt;/p&gt;
-
-&lt;p&gt;https://github.com/orkohunter/ping-me&lt;/p&gt;
-
-&lt;h1 id=&quot;filmora&quot;&gt;Filmora&lt;/h1&gt;
-
-&lt;p&gt;I can’t fully remember if I found &lt;a href=&quot;https://filmora.wondershare.com/mac-os-x-el-capitan/&quot;&gt;Filmora&lt;/a&gt; through Ganesh but it showed up on my box at that time so I think so.  I’m still digging into this one.&lt;/p&gt;
-
-&lt;h1 id=&quot;prompt-envy&quot;&gt;Prompt Envy&lt;/h1&gt;
-
-&lt;p&gt;I didn’t get this from Ganesh but looking at his bash prompt and seeing it show git commit status gave me a case of &lt;em&gt;prompt envy&lt;/em&gt;.  I’ve had this in and out over the years like 20 different times but it always breaks.  This time around I looked for someone else’s version and found it as a brew package:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;brew install bash-git-prompt&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://gist.github.com/trey/2722934&quot;&gt;Source&lt;/a&gt;.  And it is awesome!  I now have a prompt which shows me branch, status and number of files waiting to be committed.&lt;/p&gt;
-
-&lt;h1 id=&quot;color-coded-terminal-login&quot;&gt;Color Coded Terminal Login&lt;/h1&gt;
-
-&lt;p&gt;The best trick that Ganesh showed me was that his ssh logins to remote boxes actually change the background color of the terminal.  He’s doing it using AppleScript with the standard OSX Terminal.  Unfortunately I wasn’t able to pull off making that work with my preferred terminal client – iTerm.  But I’ve wanted this for so many years now that I’m going to keep at it until it works.&lt;/p&gt;
-
-&lt;h1 id=&quot;thanks&quot;&gt;Thanks!&lt;/h1&gt;
-
-&lt;p&gt;Thank you Ganesh!  Hugely appreciated.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 02 Mar 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/learning/2017/03/02/things-ganesh-taught-me.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/learning/2017/03/02/things-ganesh-taught-me.html</guid>
-        
-        <category>terminal</category>
-        
-        <category>podcasting</category>
-        
-        <category>screen_recording</category>
-        
-        
-        <category>learning</category>
-        
-      </item>
-    
-      <item>
-        <title>Increasing Linux Open File Limits</title>
-        <description>&lt;p&gt;So &lt;a href=&quot;http://winstonkotzan.com/&quot;&gt;Winston&lt;/a&gt; found this log message in our logs today:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2017-03-02T18:18:31.561Z 32313 TID-osjfdq3bg ERROR: !!! ERROR HANDLER THREW AN ERROR !!!
-2017-03-02T18:18:34.696Z 32313 TID-osjfdq3bg ERROR: Too many open files @ rb_sysopen - /proc/meminfo
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;We were running a large data processing job using sidekiq for running our queue and this was causing the queue to stop being processed.  As the resident *nix nerd, this one was on me.  A quick google on increasing open file limits gave me a tutorial from &lt;a href=&quot;https://easyengine.io/tutorials/linux/increase-open-files-limit/&quot;&gt;Easy Engine&lt;/a&gt; and the information was good but I think it could be documented better so here is the process I used.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-1-diagnosis&quot;&gt;Step 1: Diagnosis&lt;/h1&gt;
-
-&lt;p&gt;Figure out what your limits actually are.  Given that these can be set on a per user basis you want to first diagnose them.  I’m using the user ubuntu so here’s the command line you need:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;sudo su - ubuntu -c ‘ulimit -aHS’ -s ‘/bin/bash’&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Here’s the result:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo su - ubuntu -c 'ulimit -aHS' -s '/bin/bash'
-core file size          (blocks, -c) 0
-data seg size           (kbytes, -d) unlimited
-scheduling priority             (-e) 0
-file size               (blocks, -f) unlimited
-pending signals                 (-i) 122314
-max locked memory       (kbytes, -l) 64
-max memory size         (kbytes, -m) unlimited
-open files                      (-n) 1024
-pipe size            (512 bytes, -p) 8
-POSIX message queues     (bytes, -q) 819200
-real-time priority              (-r) 0
-stack size              (kbytes, -s) 8192
-cpu time               (seconds, -t) unlimited
-max user processes              (-u) 122314
-virtual memory          (kbytes, -v) unlimited
-file locks                      (-x) unlimited
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Clearly a limit of 1024 sounds low.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-2-fixing&quot;&gt;Step 2: Fixing&lt;/h1&gt;
-
-&lt;p&gt;The configuration file that you need to edit is: /etc/security/limits.conf.  Edit this with:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;sudo vi /etc/security/limits.conf&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Add to the end of this file the following content:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;*         hard    nofile      999999
-*         soft    nofile      999999
-root      hard    nofile      999999
-root      soft    nofile      999999
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Save the file and exit.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-3-log-out&quot;&gt;Step 3: Log Out&lt;/h1&gt;
-
-&lt;p&gt;For these changes to take effect you need to log out.  Do that now with &lt;strong&gt;exit&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-4-login-and-re-diagnose&quot;&gt;Step 4: Login and Re-Diagnose&lt;/h1&gt;
-
-&lt;p&gt;Log back into the server and run the diagnosis step again:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;sudo su - ubuntu -c ‘ulimit -aHS’ -s ‘/bin/bash’&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;This time you should see something like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;core file size          (blocks, -c) 0
-data seg size           (kbytes, -d) unlimited
-scheduling priority             (-e) 0
-file size               (blocks, -f) unlimited
-pending signals                 (-i) 122314
-max locked memory       (kbytes, -l) 64
-max memory size         (kbytes, -m) unlimited
-open files                      (-n) 999999
-pipe size            (512 bytes, -p) 8
-POSIX message queues     (bytes, -q) 819200
-real-time priority              (-r) 0
-stack size              (kbytes, -s) 8192
-cpu time               (seconds, -t) unlimited
-max user processes              (-u) 122314
-virtual memory          (kbytes, -v) unlimited
-file locks                      (-x) unlimited
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;step-5-ansible&quot;&gt;Step 5: Ansible&lt;/h1&gt;
-
-&lt;p&gt;Ideally this should be implemented using Ansible level so that any new boxes have these settings.  Unfortunately that is left as an exercise for the reader.&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 02 Mar 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/linux/2017/03/02/increasing-linux-open-file-limits.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/linux/2017/03/02/increasing-linux-open-file-limits.html</guid>
-        
-        <category>linux</category>
-        
-        <category>sys_admin</category>
-        
-        <category>sidekiq</category>
-        
-        
-        <category>linux</category>
-        
-      </item>
-    
-      <item>
-        <title>An Engineer's Guide To Having Your Credit Card Stolen</title>
-        <description>&lt;p&gt;So the one credit card that my wife and I rely on was recently stolen.  Personally I put the blame on &lt;a href=&quot;https://www.google.com/search?q=cloudbleed&amp;amp;ie=utf-8&amp;amp;oe=utf-8&quot;&gt;CloudFlare / CloudBleed&lt;/a&gt; since it occurred just after I purchased the HumbleBundle for Arduino (Feb 22nd) and that’s:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;the only different credit card transaction done in the past few weeks&lt;/li&gt;
-  &lt;li&gt;HumbleBundle was affected by CloudBleed&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;But, that said, I don’t know to 100% certainty and this wasn’t Humble’s fault so I’ll still keep purchasing from them.  But I do feel pretty good in thinking that this was due to CloudFlare and I certain, after having reviewed more technical details, that CloudBleed is a lot worse than the &lt;a href=&quot;http://www.cloudflare.com/&quot;&gt;CloudFlare&lt;/a&gt; company is admitting.  If you haven’t yet started the login change process you might want to think about it.  Even I am gearing up to change all my damn passwords.  Sigh.&lt;/p&gt;
-
-&lt;p&gt;Now that we just received new credit cards, I thought outlining the process of what to do when you’re a developer might be interesting for someone out there.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;If you’re not using a digital wallet to manage your secure crap (passwords / credit card data / pins) then I’d highly recommend it.  I’ve tried a bunch but the one I like best is &lt;a href=&quot;https://www.enpass.io/&quot;&gt;EnPass&lt;/a&gt; which runs on iOS, OSX, Windows and Unix, uses DropBox for sync from a small company in India.  &lt;strong&gt;Recommended&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.github.com/settings/billing&quot;&gt;Github&lt;/a&gt;.  Github is keys to the kingdom so it is always my first stop.  Drop down the menu next to your profile picture and choose settings and then billing.  Then do the credit card credentials three step jig.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://gorails.com/users/edit&quot;&gt;GoRails&lt;/a&gt;.  &lt;a href=&quot;http://gorails.com/&quot;&gt;GoRails&lt;/a&gt; is a screencast service about Rails.  I have a legacy account grandfathered in at $9 / month and I don’t want to lose it so it was my #2 stop.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.elixirsips.com&quot;&gt;Elixir Sips&lt;/a&gt;. ElixirSips is a screen cast service for Elixir and Josh Adams does a great job on it as it was my #3 stop.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.amazon.com/&quot;&gt;Amazon&lt;/a&gt;.  How can you not change the big A?  I suspect we all know how to do this by now.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://console.aws.amazon.com/billing/home/#paymentmethods&quot;&gt;AWS&lt;/a&gt;.  Your AWS card can be different from your Amazon card and mine had contact details that were 3 years out of date so make sure to check them.  This is also a great opportunity to shut down any AMIs, instances or snapshots you’re not actually using.  You should also check your Cost Explorer while you’re at it. I’m finding Route 53 Hosted Zones to be oddly pricey but more on that later…&lt;/li&gt;
-  &lt;li&gt;VPN.  We don’t all use VPNs but if you are trying to crawl geographically different information like the Google Play store world wide, a VPN is an awesome testing tool.  Everyone’s usage here is different so YMMV.&lt;/li&gt;
-  &lt;li&gt;Apple.  This can easily be done under iOS via Settings / Wallet &amp;amp; Apple Pay.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.dropbox.com/account/profile&quot;&gt;DropBox&lt;/a&gt;.  I hate DropBox’s performance.  I despise how it runs my CPU at 99% constantly and turns my bloody MacBook Pro fan on but other than my code editor it is probably the one app I just can’t live without at this stage.  DropBox keeps all my files up to date across three MacBooks, a Linux desktop, an iPad and an iPhone.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.backblaze.com/&quot;&gt;BackBlaze&lt;/a&gt;.  I actually am no longer a current BackBlaze subscriber but I know lots and lots of us are so if you use BackBlaze or another cloud backup tool I’d update that.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.meh.com/account&quot;&gt;Meh&lt;/a&gt;.  If you’re reading this and you haven’t ever used Meh then you really, really should.  Its an outstanding Nerd resource.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.freshbooks.com/#/profile&quot;&gt;Freshbooks&lt;/a&gt;.  Since I’m going back to full time freelancing shortly, decent accounting software is called for an Freshbooks is pretty great.&lt;/li&gt;
-  &lt;li&gt;Search your email for the word receipt and look at anything in the last 60 days and you’ll likely be ok.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Now, print this out for your wife / significant other so they know where your card has been updated.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 02 Mar 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/misc/2017/03/02/an-engineer-s-guide-to-having-your-credit-card-stolen.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/misc/2017/03/02/an-engineer-s-guide-to-having-your-credit-card-stolen.html</guid>
-        
-        <category>misc</category>
-        
-        <category>credit_card</category>
-        
-        <category>cloudflare</category>
-        
-        <category>cloudbleed</category>
-        
-        
-        <category>misc</category>
         
       </item>
     
