@@ -19,19 +19,19 @@ And I got crazy, crazy, crazy results -- my object would get about 10 lines into
 
 And, sure enough, when I removed the date by treating it as an internal constant, it worked perfectly.  Here's the workaround I came up with:
 
-    ```ruby
-    def compile(date=)
-      if date.is_a?(String)
-        date = Date.parse(date)
-      end
-    end
-    ```
+```ruby
+def compile(date=)
+  if date.is_a?(String)
+    date = Date.parse(date)
+  end
+end
+```
 
 And then I call it as 
 
-    ```ruby
-    CompileWorker.perform_async(id, date.to_s)
-    ```
+```ruby
+CompileWorker.perform_async(id, date.to_s)
+```
 
 This allows my internal use of the compile method where a date is passed in normally to function without issue but to work correctly when called in an asynchronous manner.
 
