@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>When Sidekiq Makes You Nuts Check Your Types</title>
-  <meta name="description" content="Much of what I do at the job I’m in the process of leaving is large scale data processing and it is all done through queues and Sidekiq.  I generally do it w...">
+  <title>There&#39;s Always A Reason</title>
+  <meta name="description" content="So the side project I’ve been referring to">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/rails/2017/03/08/when-sidekiq-makes-you-nuts-check-your-types.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/software_engineering/2017/03/09/there-s-always-a-reason.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -40,11 +40,13 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="When Sidekiq Makes You Nuts Check Your Types">
+  <meta name="twitter:title" content="There's Always A Reason">
 
   
     <meta name="twitter:description"
-      content="Sidekiq usually works great but when you get really weird errors, check to make sure you're not passing in something other than a primitive type as a method parameter.">
+      content="So the side project I’ve been referring to
+
+">
   
 
   
@@ -134,48 +136,13 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">When Sidekiq Makes You Nuts Check Your Types</h1>
-    <p class="I'll"><time datetime="2017-03-08T00:00:00-05:00" itemprop="datePublished">Mar 8, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">There's Always A Reason</h1>
+    <p class="I'll"><time datetime="2017-03-09T03:07:57-05:00" itemprop="datePublished">Mar 9, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>Much of what I do at the job I’m in the process of leaving is large scale data processing and it is all done through queues and <a href="http://www.sidekiq.org">Sidekiq</a>.  I generally do it with a method call that looks like this:</p>
+    <p>So the side project I’ve been referring to</p>
 
-<blockquote>
-  <p>CompileWorker.perform_async(id)</p>
-</blockquote>
-
-<p>Today though I had to do it and pass in a date to my method call so I had this:</p>
-
-<blockquote>
-  <p>CompileWorker.perform_async(id, date)</p>
-</blockquote>
-
-<p>And I got crazy, crazy, crazy results – my object would get about 10 lines into the call and then … nothing.  I’d test my method line by line in rails console on production and it would work perfectly.  I even went so far as to isolate it down to one Sidekiq thread and one redis server (on local host no less to make sure that no other sidekiq worker was messing with things).  And nothing made any difference.  Finally I realized that the crucial difference was actually that I was passing in a date.  Here’s the docs:</p>
-
-<blockquote>
-  <p>Don’t pass symbols, named parameters or complex Ruby objects (like Date or Time!) as those will not survive the dump/load round trip correctly. <a href="https://github.com/mperham/sidekiq/wiki/Best-Practices">More</a></p>
-</blockquote>
-
-<p>And, sure enough, when I removed the date by treating it as an internal constant, it worked perfectly.  Here’s the workaround I came up with:</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">compile</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="p">)</span>
-  <span class="k">if</span> <span class="n">date</span><span class="p">.</span><span class="nf">is_a?</span><span class="p">(</span><span class="no">String</span><span class="p">)</span>
-    <span class="n">date</span> <span class="o">=</span> <span class="no">Date</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre>
-</div>
-
-<p>And then I call it as</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">CompileWorker</span><span class="p">.</span><span class="nf">perform_async</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">date</span><span class="p">.</span><span class="nf">to_s</span><span class="p">)</span>
-</code></pre>
-</div>
-
-<p>This allows my internal use of the compile method where a date is passed in normally to function without issue but to work correctly when called in an asynchronous manner.</p>
-
-<p>I actually don’t have a problem with Sidekiq working in this fashion but it does bother me that while the Sidekiq documentation warns about this, there’s no error thrown or alert raised.  Now it might be impossible to pull off an error message but this is a damn easy mistake to make.  I knew about the ActiveRecord object limitation in Sidekiq but didn’t have a clue that it extended to a simple date.</p>
 
   </div>
   

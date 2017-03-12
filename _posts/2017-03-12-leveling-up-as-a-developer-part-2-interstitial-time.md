@@ -4,8 +4,9 @@ title: Leveling Up as a Developer Part 2 - Interstitial Time
 category: software_engineering
 tags: ["software_engineering", "learning"]
 description: Taking advantage of interstitial time, the time between times, is one of the best ways for you to level up your skills as a developer by learning while you do something else.
+image: https://softwareengineeringdaily.com/wp-content/uploads/2015/08/sed_logo_updated.png
 ---
-As a developer there are at least two very different types of learning that you have to do:
+I recently wrote about [Leveling Up as a Developer](http://fuzzyblog.io/blog/software_engineering/2017/02/24/leveling-up-as-a-developer.html).  Leveraging Interstitial Time is another approach to improve your skills.  As a developer there are at least two very different types of learning that you have to do:
 
 * **Deep, Focused Learning**.  The classic example here is the syntax of a language.  Some of us can do that by simply reading a book but most of us need the focused, "muscle memory" effort of actually doing it.  
 * **Awareness Learning**.  A huge part of the IT or Information Technology space is simply being aware that something exists.  Whether it is a tool, a particular library, an algorithm or merely a way to approach a problem, awareness is often all you need.
@@ -72,8 +73,10 @@ And that's pretty much it but let me finish up with a concrete example.
 
 I was recently listening to Software Engineering Daily, their podcast on [Heroku AutoScaling](https://softwareengineeringdaily.com/2017/02/28/heroku-autoscaling-with-andrew-gwozdziewycz/) and Andrew Gwozdziewycz gave their algorithm for determining when to auto scale.  He described it this way:
 
-> 
+> Time point: 35:40 Autoscaling like I said is a little bit more complicated.  The only data we use for auto scaling is your response time, the p95 response time, the number of requests that you're serving be it errors or successful requests and the number of dynos that you currently have.  And what we do is utilize Little's Law, this thing from queueing theory that basically  says (gives example of bank tellers and queues) - think of the arrival rate as through put and think of the latency as the time a teller takes to make a deposit or withdrawal.  These things are interrelated into this relationship -- Little's Law.  We look at the actual number of bank tellers versus the theoretical number if the latency is zero.  If you're app starts responding greater than that latency then we'll scale it up to get that latency down.  We put that into an exponential weighted moving average and we plot a regression line and the slope of that regression line gives us whether or not its ok to scale up or scale down.  (Time point: 38:50)
+
+**Note:** I may have munged the description a bit but if you start listening at minute 35 and go thru it once or twice, you'll pick it up.
 
 Just having heard that much, I can think of about a dozen different ways to apply that algorithm to my daily work as I'm sure you can.  
 
-And that's why I listen to podcasts so avidly -- trying to come up with something like this on your own is truly hard but just knowning that this exists often gives you the critical first step to solving this type of problem.
+And that's why I listen to podcasts so avidly -- trying to come up with something like this on your own is truly hard but just knowning that this exists often gives you the critical first step to solving this type of problem. 
