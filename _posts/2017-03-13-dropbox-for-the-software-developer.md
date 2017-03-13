@@ -3,6 +3,8 @@ layout: post
 title: Dropbox for the Software Developer
 category: dropbox
 tags: ["dropbox"]
+description: Dropbox provides an easy to use tool for making your data available across all your computing devices.
+image: http://fuzzyblog.io/blog/assets/Dropbox.png
 ---
 An old friend asked me a great question recently:
 
