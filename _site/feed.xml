@@ -6,9 +6,56 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 13 Mar 2017 10:13:29 -0400</pubDate>
-    <lastBuildDate>Mon, 13 Mar 2017 10:13:29 -0400</lastBuildDate>
+    <pubDate>Tue, 14 Mar 2017 11:20:30 -0400</pubDate>
+    <lastBuildDate>Tue, 14 Mar 2017 11:20:30 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Developer Employee Transitions When You're an AWS Shop</title>
+        <description>&lt;p&gt;So I find myself advising a former employer on how to lock out an employee with fairly pervasive access (and, yes, I am the employee).  Here was my advice:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The safest option would be to move to white listing &lt;strong&gt;all&lt;/strong&gt; ip addresses needed for SSH login.  That would be an absolute ban on any incoming SSH logins from the old employee and, while inconvenient, is a wonderful means to lock down a system.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair&quot;&gt;Re-issue a new SSH pem file&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Delete the old SSH pem file on your machine and then verify login to at least 2 systems with the new PEM file.  I’d make sure to verify access to the primary db server using the new PEM file but that’s just me.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/31912037/how-to-delete-deactivate-the-current-pem-file-and-create-new-one-in-aws&quot;&gt;De-authorize the old PEM file&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.aws.amazon.com/cli/latest/reference/apigateway/delete-api-key.html&quot;&gt;Delete the API keys that the employee had access to&lt;/a&gt;.  Make sure that you delete them in all regions where they were valid.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Tue, 14 Mar 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/03/14/developer-employee-transitions-when-you-re-an-aws-shop.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/03/14/developer-employee-transitions-when-you-re-an-aws-shop.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Ansible Error with AWS, AMI Creation and Encrypted</title>
+        <description>&lt;p&gt;Here is a bizarre Ansible / AWS error I just found:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;An exception occurred during task execution. To see the full traceback, use -vvv. The error was: TypeError: __init__() got an unexpected keyword argument 'encrypted'
+fatal: [localhost]: FAILED! =&amp;gt; {&quot;changed&quot;: false, &quot;failed&quot;: true, &quot;module_stderr&quot;: &quot;Traceback (most recent call last):\n  File \&quot;/tmp/ansible_prCPvG/ansible_module_ec2_ami.py\&quot;, line 560, in &amp;lt;module&amp;gt;\n    main()\n  File \&quot;/tmp/ansible_prCPvG/ansible_module_ec2_ami.py\&quot;, line 552, in main\n    create_image(module, ec2)\n  File \&quot;/tmp/ansible_prCPvG/ansible_module_ec2_ami.py\&quot;, line 381, in create_image\n    bd = BlockDeviceType(**device)\nTypeError: __init__() got an unexpected keyword argument 'encrypted'\n&quot;, &quot;module_stdout&quot;: &quot;&quot;, &quot;msg&quot;: &quot;MODULE FAILURE&quot;}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;A quick google revealed &lt;a href=&quot;https://github.com/ansible/ansible-modules-core/issues/1773&quot;&gt;this solution&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;pip install boto –upgrade&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;which I had to execute as:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;sudo pip install boto –upgrade&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Tue, 14 Mar 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/03/14/ansible-error-with-aws-ami-creation-and-encrypted.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/03/14/ansible-error-with-aws-ami-creation-and-encrypted.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Dropbox for the Software Developer</title>
@@ -460,49 +507,6 @@ ok: [monthly-categorization] =&amp;gt; {
         
         
         <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>CloudBleed Revisited</title>
-        <description>&lt;p&gt;If you’re reading this then you’re almost certainly a developer (or a friend; Hi Dave West) and if so I would urge you to listen to &lt;a href=&quot;https://softwareengineeringdaily.com/2017/03/04/cloudbleed-and-sha-1-collision-with-max-burkhardt/&quot;&gt;Software Engineering Daily podcast on CloudBleed&lt;/a&gt;.  Just follow the link and you can listen right from your browser.  You should really do this now whether or not you ever listen to podcasts.  As most developers I fall into the category of “security conscious but not really security knowledgeable” and this podcast does a fantastic job of making clear:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Exactly what happened&lt;/li&gt;
-  &lt;li&gt;Whether or not it was a big deal (personally I think its a bigger deal than they acknowledged)&lt;/li&gt;
-  &lt;li&gt;What passwords you should change (I changed my Medium and Uber passwords)&lt;/li&gt;
-  &lt;li&gt;Explaining the issues with SHA1&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I’d also like to absolutely commend Jeff from SE Daily for not doing this interview himself.  While I really, really enjoy Jeff’s style, security is hard&lt;/p&gt;
-</description>
-        <pubDate>Sun, 05 Mar 2017 04:44:04 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/cloud_bleed/2017/03/05/cloudbleed.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/cloud_bleed/2017/03/05/cloudbleed.html</guid>
-        
-        <category>cloud_bleed</category>
-        
-        <category>cloud_flare</category>
-        
-        <category>security</category>
-        
-        
-        <category>cloud_bleed</category>
-        
-      </item>
-    
-      <item>
-        <title>Create Custom Generators Using Pattern Generator</title>
-        <description>&lt;p&gt;I am strongly of the opinion that Rails generators are one of the unsung heros of the Rails world.  Certainly the fact that a Rails generator always creates the matching test stub has to have influenced the success of testing in the Rails world.  And while Rails generators are great, there aren’t a lot of easy options when you want a customized generator.  In the remainder of this post, I’ll discuss the gem Pattern Generator which lets you put together&lt;/p&gt;
-
-&lt;h1 id=&quot;caveats&quot;&gt;Caveats&lt;/h1&gt;
-
-&lt;p&gt;If you’re working with a fork of Pattern Generator you should be aware that your fork is inherently going to be publicly available on Github.  Keep that in mind if you view the model that you’ve generated is proprietary.  In that case you may need to break the fork and make it non-public.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 04 Mar 2017 11:34:20 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/03/04/create-custom-generators-using-pattern-generator.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/03/04/create-custom-generators-using-pattern-generator.html</guid>
-        
         
       </item>
     
