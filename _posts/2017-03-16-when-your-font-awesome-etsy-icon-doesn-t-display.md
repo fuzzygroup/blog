@@ -3,6 +3,7 @@ layout: post
 title: When Your Font Awesome Etsy Icon Doesn't Display
 category: css
 tags: ["css", "fontawesome"]
+description: If you are having problems with Font Awesome icons displaying then try replacing your Font Awesome Rails gem with the Font Awesome CDN.
 ---
 I'm a fan of [Font Awesome](http://fontawesome.io/) and I think enough of it that it was actually the **first** bit of software I purchased for use on my side project.  
 
