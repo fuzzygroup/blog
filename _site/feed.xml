@@ -6,9 +6,47 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 14 Mar 2017 11:20:30 -0400</pubDate>
-    <lastBuildDate>Tue, 14 Mar 2017 11:20:30 -0400</lastBuildDate>
+    <pubDate>Thu, 16 Mar 2017 17:30:15 -0400</pubDate>
+    <lastBuildDate>Thu, 16 Mar 2017 17:30:15 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>When Your Font Awesome Etsy Icon Doesn't Display</title>
+        <description>&lt;p&gt;I’m a fan of &lt;a href=&quot;http://fontawesome.io/&quot;&gt;Font Awesome&lt;/a&gt; and I think enough of it that it was actually the &lt;strong&gt;first&lt;/strong&gt; bit of software I purchased for use on my side project.&lt;/p&gt;
+
+&lt;p&gt;I recently had the situation where most of my Font Awesome icons would show up but a few wouldn’t.  I knew it wasn’t a layout problem because the code was all machine generated and the Amazon icon was showing up just a few lines earlier.  An example of an icon which wouldn’t show up is the Etsy icon.&lt;/p&gt;
+
+&lt;p&gt;As with almost all my crazy CSS / Bootstrap issues, I reached out to my buddy &lt;a href=&quot;http://dasari.me/&quot;&gt;Dv&lt;/a&gt; and a quick pairing session set it right.  The first solution we found was to add the following snippet to custom.scss in /app/assets/stylesheets:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.fa-etsy:before {
+  content: &quot;\0045&quot;
+  font-family: georgia, serif
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And that fixed the Etsy icon – but it was really a work around and the credit goes to &lt;a href=&quot;https://hayley.cc/2016/10/05/Font-Awesome-No-Etsy-icon-No-problem/&quot;&gt;Hayley.cc&lt;/a&gt; (brilliant but still a work around).  But only fixing the Etsy icon clearly wasn’t enough.&lt;/p&gt;
+
+&lt;p&gt;Dv did some digging and came up with the thesis that the font-awesome-rails gem wasn’t up to date and suggested I replace it with the CDN.  So by adding this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;link href=&quot;https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css&quot; rel=&quot;stylesheet&quot; integrity=&quot;sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN&quot; crossorigin=&quot;anonymous&quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The problem was entirely fixed.  Given the problems with CloudBleed, a month ago, I’m mildly paranoid with a CDN but this did simply and brilliantly fix the problem.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 16 Mar 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/css/2017/03/16/when-your-font-awesome-etsy-icon-doesn-t-display.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/css/2017/03/16/when-your-font-awesome-etsy-icon-doesn-t-display.html</guid>
+        
+        <category>css</category>
+        
+        <category>fontawesome</category>
+        
+        
+        <category>css</category>
+        
+      </item>
     
       <item>
         <title>Developer Employee Transitions When You're an AWS Shop</title>
@@ -329,184 +367,6 @@ fatal: [localhost]: FAILED! =&amp;gt; {&quot;changed&quot;: false, &quot;failed&
         <link>http://fuzzyblog.io//blog/2017/03/07/the-cartazzi-parser-dance.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/03/07/the-cartazzi-parser-dance.html</guid>
         
-        
-      </item>
-    
-      <item>
-        <title>Using Ansible as a Development Tool with Rails and AWS for Large Scale Data Processing Automation</title>
-        <description>&lt;p&gt;Man it was a hell of a busy week last week.  Here’s an illustration:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~/me/appdatallc/ansible-clean [master|✚ 1…1]
-01:34 $ find . -name '*.yml' | xargs wc -l
-...
-283 total
-
-~/me/appdatallc/ansible_monthly [master|✔]
-find . -name '*.yml' | xargs wc -l
-...
- 1066 total
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Yep.  Starting last week, from Monday morning to Friday afternoon, working with &lt;a href=&quot;http://winstonkotzan.com/&quot;&gt;Winston&lt;/a&gt; to teach him &lt;a href=&quot;https://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt;, I authored almost 1,300 lines of Ansible.&lt;/p&gt;
-
-&lt;p&gt;The really interesting part of this was using Ansible as a &lt;strong&gt;development tool&lt;/strong&gt; with Rails.  The use case in question was automating production of large scale data processing jobs.  Example what these jobs did is highly proprietary but they basically had a shared architecture like this:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Execute on a developer’s workstation&lt;/li&gt;
-  &lt;li&gt;Verify state of the application by calling an API server side&lt;/li&gt;
-  &lt;li&gt;Change the thread count as needed for the right amount of concurrency&lt;/li&gt;
-  &lt;li&gt;Clear the rails log&lt;/li&gt;
-  &lt;li&gt;Set the right redis server to isolate sidekiq from other concurrently executing jobs&lt;/li&gt;
-  &lt;li&gt;Clear the Sidekiq log&lt;/li&gt;
-  &lt;li&gt;Make an AMI of the EC2 instance&lt;/li&gt;
-  &lt;li&gt;Launch N instances of the AMI to do the needed data processing&lt;/li&gt;
-  &lt;li&gt;Fill the Sidekiq queue&lt;/li&gt;
-  &lt;li&gt;Display the count of items in the Sidekiq queue&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;There were a series of 8 different data processing jobs, 6 of which matched the above list and two of which were slightly different.  Each of the stages above was represented by a small Ansible playbook and the coordination between each of the playbooks was handled by a bash script which called each of the stages in succession.&lt;/p&gt;
-
-&lt;p&gt;Classically Ansible is a devops tool for provisioning boxes but last week really illustrated to me the power of &lt;strong&gt;Ansible as a development tool&lt;/strong&gt;.  Ansible’s idempotent, state based approach of modeling the world as a succession of yaml files can definitely be funky but the model works.&lt;/p&gt;
-
-&lt;h1 id=&quot;adding-status-tracking&quot;&gt;Adding Status Tracking&lt;/h1&gt;
-
-&lt;p&gt;Early Friday I realized that once these jobs were running, the developer running them would need to understand the status of the job on a highly discrete level.  Historically I’ve done this by directly querying the database and just &lt;em&gt;understanding&lt;/em&gt; the objects involved and the tables that represent them.  But that comes from a huge amount of internal domain knowlege that Winston didn’t have.&lt;/p&gt;
-
-&lt;p&gt;This status would need to include:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Amount of data left in the sidekiq queue&lt;/li&gt;
-  &lt;li&gt;Amount of records produced for each job&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Sure in an idealized world this would be a pretty, graphical dashboard available on the web to all people in the company.  Practically speaking, the following is sufficient:&lt;/p&gt;
-
-&lt;p&gt;TASK [run_rake_task_and_show_output : debug] &lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;*****
-ok: [monthly-categorization] =&amp;gt; {
-    “msg”: [
-        “in LoadError rescue statement”,
-        “Queue Size = 0”,
-        “Total categorization records = 271408”,
-        “Total distinct entities in categorization = 6783”
-    ]
-}&lt;/p&gt;
-
-&lt;p&gt;The ability to run this at any point in the process is hugely useful and here’s an example of how simple that code can be.  There are three key pieces:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Ansible Playbook - a playbook which defined a Rake namespace and task to be executed&lt;/li&gt;
-  &lt;li&gt;Ansible Role - essentially a function which executes the Rake namespace and task, capturing its output and displaying it&lt;/li&gt;
-  &lt;li&gt;Rake Task - the business logic of what to analyze&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;ansible-playbook&quot;&gt;Ansible Playbook&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-ansible&quot;&gt;    - hosts: monthly-categorization
-      become: yes
-      remote_user: ubuntu
-      vars:
-        - rake_task: &quot;monthly:echo_stats&quot;
-      roles:
-        - { role: run_rake_task_and_show_output }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&quot;ansible-role&quot;&gt;Ansible Role&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-ansible&quot;&gt;    - name: run a rake task on the target box
-      shell: 
-        chdir: /var/www/apps/rails_app/current
-        cmd:  RAILS_ENV=production bundle exec rake 
-      register: result
-
-    - debug:
-        msg: &quot;&quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;My first pass on all this had the output being listed as a jumbled mess (typical to captured output by Ansible).  Winston correctly pointed out something to the effect of “Looks a bit like arse”.  Well a quick google led to this &lt;a href=&quot;http://stackoverflow.com/questions/34188167/ansible-print-message-debug-msg-line1-n-var2-n-line3-with-var3&quot;&gt;StackOverflow post&lt;/a&gt; where this technique:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;msg: “”&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;could be applied.  In our case we had it as result so it was just a matter of replacing msg with result.stdout.  And, almost magically, that jumbled mess came into razor sharp focus.  My thanks to Winston for recognizing that this was an issue.  I was so close to the problem that I didn’t even perceive it.&lt;/p&gt;
-
-&lt;h2 id=&quot;rake-task-being-called-by-playbook&quot;&gt;Rake task being called by Playbook:&lt;/h2&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;n&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:echo_stats&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:environment&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Job&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;current&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;data_shard&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ShardedData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;shard_for_date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;service&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;distinct_entities&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data_shard&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;entity_id&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;distinct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;count&lt;/span&gt;
-    
-      &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Queue Size = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Sidekiq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Queue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Total categorization records from &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;current&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data_shard&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;    
-      &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Total distinct entity_ids in categorization from &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;current&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;distinct_entities&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;    
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;A more complex example of this based on Ruby meta-programming is shown below:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;n&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:echo_other_stats&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:environment&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;tables&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;tables&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;rating_estimates&quot;&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;tables&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;type_estimates&quot;&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;tables&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;category_estimates&quot;&lt;/span&gt;
-    
-      &lt;span class=&quot;n&quot;&gt;stats&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
-    
-      &lt;span class=&quot;n&quot;&gt;tables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;stats&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;classify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;constantize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:job_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Job&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;current&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;count&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-    
-      &lt;span class=&quot;n&quot;&gt;stats&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-        &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Table: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; for Processing Run &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ProcessingRun&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;current&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;This approach was based on some internal analysis logic where we had an array of table names that we used for generating some SQL code dynamically.  It took about 5 minutes to convert that list of tables into this.  The table.classify.constantize call takes the name of the table and first converts it to a model name (classify) and the converts that model name to a constant that represents the class itself.  Once you have a class that inherits from ActiveRecord you can then call a .where statement to get a count.  Finally you inject the original table name and the count back into a hash to store the results.&lt;/p&gt;
-
-&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
-
-&lt;p&gt;I’ve been managing this job production process for almost two years now and most of my approaches to making it better have evolved around different rake tasks and some fairly bad internal documentation.  By pulling Ansible into this, for the first time, we actually have a solution which:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Goes end to end&lt;/li&gt;
-  &lt;li&gt;Automates tasks like AMI creation and instance launching historically done with the AWS developer console&lt;/li&gt;
-  &lt;li&gt;Allows use of N instances to process the data&lt;/li&gt;
-  &lt;li&gt;Fully uses our existing code base without change – I can’t emphasize this point enough&lt;/li&gt;
-  &lt;li&gt;Displays status on the running jobs at any point&lt;/li&gt;
-  &lt;li&gt;Is broken down into small, modular chunks – each of our playbooks are maybe 10 lines in total&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Ansible isn’t how I expected to solve this problem but its approach really, really worked – keep it in mind.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 06 Mar 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/aws/2017/03/06/using-ansible-as-a-development-tool-with-rails.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/aws/2017/03/06/using-ansible-as-a-development-tool-with-rails.html</guid>
-        
-        <category>ansible</category>
-        
-        <category>aws</category>
-        
-        <category>rails</category>
-        
-        <category>ruby</category>
-        
-        <category>shell</category>
-        
-        <category>bash</category>
-        
-        <category>sidekiq</category>
-        
-        <category>devops</category>
-        
-        <category>meta_programming</category>
-        
-        
-        <category>aws</category>
         
       </item>
     
