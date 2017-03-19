@@ -6,9 +6,44 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 16 Mar 2017 17:34:02 -0400</pubDate>
-    <lastBuildDate>Thu, 16 Mar 2017 17:34:02 -0400</lastBuildDate>
+    <pubDate>Sun, 19 Mar 2017 06:42:35 -0400</pubDate>
+    <lastBuildDate>Sun, 19 Mar 2017 06:42:35 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Questioning the Nature of Gem'ified JavaScript</title>
+        <description>&lt;p&gt;In 2017 you can’t be doing web development and not at least be doing some JavaScript.  I bloody well hate JavaScript and even I’m dipping my toe into the JS water.  Way, way, way back in the mid 90s I got very badly burned by JavaScript compatibility issues and I’ve never looked back but it is time.  So I’ve been mucking about with d3 and it has been a hellish weekend indeed.  When I learn a new technology I like to start with the simplest possible example so I started with the &lt;a href=&quot;http://www.overfitted.com/blog/?p=302&quot;&gt;Overfitted Rails / D3 example&lt;/a&gt; because its only about 10 files total.  And this example works perfectly in Rails 4.2.  Kudos to the author.  Now while it works perfectly in Rails 4.2, it entirely fails to render the world’s simplest bar graph in &lt;a href=&quot;https://github.com/fuzzygroup/rails5_d3_seed&quot;&gt;Rails 5&lt;/a&gt; and nothing I do makes it work.  This has the feel of some type of “Rails Magic” that changes from 4 to 5 so something that was implicit is now explicit and Ghu only knows what the &lt;em&gt;censored&lt;/em&gt; it is.  I’ve put probably 3+ hours into making this example work and I’m now at the point of wanting to take a hammer to a Macbook – clearly time to move on.&lt;/p&gt;
+
+&lt;p&gt;The saddest part of all this is that the author of the overfitted example is clearly a bright, bright guy as based on his &lt;a href=&quot;http://stackoverflow.com/users/1583239/qwwqwwq&quot;&gt;Stack Overflow profile&lt;/a&gt; - top 12%, better than &lt;a href=&quot;http://stackoverflow.com/users/409644/fuzzygroup&quot;&gt;me&lt;/a&gt; certainly but there’s no obvious way to contact him and no comments on his blog so, sigh…&lt;/p&gt;
+
+&lt;p&gt;My next stopping point on this d3 quest was &lt;a href=&quot;http://gregpark.io/blog/live-d3-rails-plot/&quot;&gt;Greg Park’s Adding a Live D3 Visualization to Rails&lt;/a&gt;.  This is a lot more complex than Overfitted but all the bits are there and &lt;a href=&quot;https://github.com/gregoryjpark/live-d3-example&quot;&gt;there’s a full repo&lt;/a&gt;.  So the first step was a quick fork so I could remove the postgres dependency.  An install showed that everything worked in Rails 4.  The moment of truth was to try it in &lt;a href=&quot;https://github.com/fuzzygroup/live-d3-example&quot;&gt;Rails 5&lt;/a&gt; – and it worked brilliantly!  Thank you Greg!&lt;/p&gt;
+
+&lt;p&gt;I’m not a JS expert in any way – it would more more accurate to say “I’m a self professed JavaScript hater who feels he has no alternative but to try and use it (finally)” so my first thought was “Why not use the &lt;a href=&quot;https://github.com/iblue/d3-rails&quot;&gt;d3rails gem&lt;/a&gt;”.  Given that I had this in git, the path was clear:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;take my rails 5 exmaple&lt;/li&gt;
+  &lt;li&gt;make a branch&lt;/li&gt;
+  &lt;li&gt;delete the vendor/javascripts/d3.js file&lt;/li&gt;
+  &lt;li&gt;update gemfile and add d3-rails&lt;/li&gt;
+  &lt;li&gt;bundle install&lt;/li&gt;
+  &lt;li&gt;try the app and see if the graphs display&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Sun, 19 Mar 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/03/19/questioning-the-nature-of-gem-ified-javascript.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/03/19/questioning-the-nature-of-gem-ified-javascript.html</guid>
+        
+        <category>rails</category>
+        
+        <category>javascript</category>
+        
+        <category>d3</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>When Your Font Awesome Etsy Icon Doesn't Display</title>
@@ -355,20 +390,6 @@ fatal: [localhost]: FAILED! =&amp;gt; {&quot;changed&quot;: false, &quot;failed&
         
         
         <category>cartazzi</category>
-        
-      </item>
-    
-      <item>
-        <title>The Cartazzi Parser Dance</title>
-        <description>&lt;p&gt;wget the url&lt;/p&gt;
-
-&lt;p&gt;bundle exec rails g page_parser page_song_kick_artist&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 07 Mar 2017 03:49:42 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/03/07/the-cartazzi-parser-dance.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/03/07/the-cartazzi-parser-dance.html</guid>
-        
         
       </item>
     
