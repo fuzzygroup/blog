@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Questioning the Nature of Gem&#39;ified JavaScript</title>
-  <meta name="description" content="In 2017 you can’t be doing web development and not at least be doing some JavaScript.  I bloody well hate JavaScript and even I’m dipping my toe into the JS ...">
+  <title>Disabling Spring in Rails</title>
+  <meta name="description" content="I now have more than a decade at building Rails apps and, since most of that time was a consultant, I think its fair to say that I’ve seen, worked on and bui...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/rails/2017/03/19/questioning-the-nature-of-gem-ified-javascript.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/rails/2017/03/20/disabling-spring-in-rails.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -40,11 +40,11 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Questioning the Nature of Gem'ified JavaScript">
+  <meta name="twitter:title" content="Disabling Spring in Rails">
 
   
     <meta name="twitter:description"
-      content="Messing about with Rails and d3 makes me question the very nature of gems that wrap JavaScript libraries.">
+      content="The spring application pre-loader works find in a monolithic Rails app but far less so when you're not a monolith.  Here's how to disable it.">
   
 
   
@@ -134,29 +134,45 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Questioning the Nature of Gem'ified JavaScript</h1>
-    <p class="I'll"><time datetime="2017-03-19T00:00:00-04:00" itemprop="datePublished">Mar 19, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">Disabling Spring in Rails</h1>
+    <p class="I'll"><time datetime="2017-03-20T00:00:00-04:00" itemprop="datePublished">Mar 20, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>In 2017 you can’t be doing web development and not at least be doing some JavaScript.  I bloody well hate JavaScript and even I’m dipping my toe into the JS water.  Way, way, way back in the mid 90s I got very badly burned by JavaScript compatibility issues and I’ve never looked back but it is time.  So I’ve been mucking about with d3 and it has been a hellish weekend indeed.  When I learn a new technology I like to start with the simplest possible example so I started with the <a href="http://www.overfitted.com/blog/?p=302">Overfitted Rails / D3 example</a> because its only about 10 files total.  And this example works perfectly in Rails 4.2.  Kudos to the author.  Now while it works perfectly in Rails 4.2, it entirely fails to render the world’s simplest bar graph in <a href="https://github.com/fuzzygroup/rails5_d3_seed">Rails 5</a> and nothing I do makes it work.  This has the feel of some type of “Rails Magic” that changes from 4 to 5 so something that was implicit is now explicit and Ghu only knows what the <em>censored</em> it is.  I’ve put probably 3+ hours into making this example work and I’m now at the point of wanting to take a hammer to a Macbook – clearly time to move on.</p>
-
-<p>The saddest part of all this is that the author of the overfitted example is clearly a bright, bright guy as based on his <a href="http://stackoverflow.com/users/1583239/qwwqwwq">Stack Overflow profile</a> - top 12%, better than <a href="http://stackoverflow.com/users/409644/fuzzygroup">me</a> certainly but there’s no obvious way to contact him and no comments on his blog so, sigh…</p>
-
-<p>My next stopping point on this d3 quest was <a href="http://gregpark.io/blog/live-d3-rails-plot/">Greg Park’s Adding a Live D3 Visualization to Rails</a>.  This is a lot more complex than Overfitted but all the bits are there and <a href="https://github.com/gregoryjpark/live-d3-example">there’s a full repo</a>.  So the first step was a quick fork so I could remove the postgres dependency.  An install showed that everything worked in Rails 4.  The moment of truth was to try it in <a href="https://github.com/fuzzygroup/live-d3-example">Rails 5</a> – and it worked brilliantly!  Thank you Greg!</p>
-
-<p>I’m not a JS expert in any way – it would more more accurate to say “I’m a self professed JavaScript hater who feels he has no alternative but to try and use it (finally)” so my first thought was “Why not use the <a href="https://github.com/iblue/d3-rails">d3rails gem</a>”.  Given that I had this in git, the path was clear:</p>
+    <p>I now have more than a decade at building Rails apps and, since most of that time was a consultant, I think its fair to say that I’ve seen, worked on and built from scratch a lot of Rails applications.  My single least favorite part of Rails is the monolith application pattern.  While it can be incredibly productive to have every aspect of your source code in a single place, monoliths are an inherent anti-pattern:</p>
 
 <ul>
-  <li>take my rails 5 exmaple</li>
-  <li>make a branch</li>
-  <li>delete the vendor/javascripts/d3.js file</li>
-  <li>update gemfile and add d3-rails</li>
-  <li>bundle install</li>
-  <li>try the app and see if the graphs display</li>
+  <li>They are brittle</li>
+  <li>They are fragile</li>
+  <li>Gems can conflict with each other</li>
+  <li>Ruby is a dynamic, late bound, garbage collected language – the more lines of code you have the more likely you are to have some kind of conflict</li>
 </ul>
 
-<p>And, what do you know, the result was the same as my <a href="http://fuzzyblog.io/blog/css/2017/03/16/when-your-font-awesome-etsy-icon-doesn-t-display.html">Font Awesome issues recently</a> – the graphs didn’t display.  This is really making me question gems that wrap JavaScript libraries.  I would be certain that the problem here is that something changed in d3 and d3-rails isn’t current enough so something is broken.  But given that I’ve now hit this twice in the same week, it feels like either a CDN or vendor/assets/javascripts is the right approach for JavaScript inclusion.  Our historical method of wrapping JavaScript into gems for “inclusion” into the rails ecosystem is really feeling broken right now.  Thoughts?</p>
+<p>Monoliths seem to work great for building BaseCamp but I am immensely unhappy with them and I’ve spent the past several months going down a service oriented architecture (SOA) approach for my side project.</p>
+
+<p>Spring is an application pre-loader which loads a chunk of your Rails code into memory in order to speed up development.  By having things preloaded, for example, you can get into rails console faster, or run tests faster, etc.  And this works fine when you have a monolith application pattern.  In my case, however, I’m partitioning my data at the user level into individual databases and using an environment variable to specify the database at load time with this trick in database.yml:</p>
+
+<blockquote>
+  <p>database: cartazzi_web_app_&lt;%= ENV[‘CARTAZZI_USER_ID’] %&gt;_development</p>
+</blockquote>
+
+<p>And this works perfectly – until Spring rears its ugly head.  Since Spring has things cached, you can go into rails console and execute a User.first and find the wrong user.  It becomes even more confusing when you check the database with:</p>
+
+<blockquote>
+  <p>Rails.application.config.database_configuration[Rails.env][“database”]</p>
+</blockquote>
+
+<p>And it reports back a database that you <strong>know</strong> isn’t the one where the user you just found doesn’t exist.  What’s going on is that the Rails console is talking to its in memory configuration which reports back something from earlier, not your current configuration.  And then you scratch your head for quite a bit until you cobble together enough brain cells to recall “oh crap – SPRING!”.</p>
+
+<p>The solution is to disable Spring entirely.  Here’s how:</p>
+
+<ol>
+  <li>At the shell level, do this: <strong>pkill -f spring</strong></li>
+  <li>Edit your Gemfile and comment out all the spring references.</li>
+  <li>At the shell level, do this: <strong>bin/spring binstub –remove –all</strong>  <a href="http://stackoverflow.com/questions/30302021/rails-runner-without-spring">Stack Overflow Reference</a>.</li>
+</ol>
+
+<p>There are other ways around this including an environment variable which temporarily disables it but given the number of spring related processes I keep having to kill, I think getting it out entirely is better.</p>
 
   </div>
   
