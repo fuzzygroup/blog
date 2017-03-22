@@ -1,9 +1,10 @@
 ---
 layout: post
 title: Getting Started with Ansible when You Know Literally Nothing
-category: 
-tags: 
-description: 
+category: ansible
+tags: ["ansible"]
+description: While Ansible is a powerful devops tool, getting started with it can be challenging.  This post offers a case study on how to integrate Ansible with a conventional software development build process.
+image: https://avatars3.githubusercontent.com/u/1507452?v=3&s=200
 ---
 An old friend, let's call him GC, emailed me earier today about ansible:
 
@@ -34,6 +35,8 @@ An old friend, let's call him GC, emailed me earier today about ansible:
 > gc
 
 Ansible is the best devops tool I've ever used but its yaml based syntax and mixture of different concepts - playbooks, roles, tasks and inventories can make this hard so let's break this down bit by bit and construct a conceptual model for this.
+
+**Note:** If you want a set of introductory slides on Ansible, [here are a set of slides](http://fuzzyblog.io/blog/assets/ansible_basics.pdf) that I gave in Fall 2016 at an Elixir Meetup.
 
 # Definitions
 
