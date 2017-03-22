@@ -81,7 +81,7 @@ Local to Remote feels like the cleanest match for this problem given my limited 
 
 ## Starting with a Make File
 
-GC is a solid, low level software developer so his thinking of ansible as something you run directly from the makefile doesn't surprise me at all.  In an earlier life he implemented the HyperAwk programming language for me using Borland's Turbo Pascal (yes I've known him that long).  HyperAwk was a variant on the Awk programming language that read directly from binary word processing files (Word, WordPerfect, Ami Pro, Samna) and then constructed hypertext documents from them.  I miss HyperAwk but I digress.
+GC is an outstanding, low level software developer so his thinking of ansible as something you run directly from the makefile doesn't surprise me at all.  In an earlier life he implemented the HyperAwk programming language for me using Borland's Turbo Pascal (yes I've known him that long).  HyperAwk was a variant on the Awk programming language that read directly from binary word processing files (Word, WordPerfect, Ami Pro, Samna) and then constructed hypertext documents from them.  I miss HyperAwk but I digress.
 
 Let's start with a sample makefile.  Here's one from the [Gnu folks](https://www.gnu.org/software/make/manual/html_node/Simple-Makefile.html):
 
