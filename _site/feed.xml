@@ -6,9 +6,135 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 29 Mar 2017 10:32:41 -0400</pubDate>
-    <lastBuildDate>Wed, 29 Mar 2017 10:32:41 -0400</lastBuildDate>
+    <pubDate>Fri, 31 Mar 2017 11:50:35 -0400</pubDate>
+    <lastBuildDate>Fri, 31 Mar 2017 11:50:35 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Setting Up a Router LeveL VPN Take 2</title>
+        <description>&lt;p&gt;Three days ago &lt;a href=&quot;http://fuzzyblog.io/blog/vpn/2017/03/29/setting-up-a-router-level-vpn-to-secure-your-browsing.html&quot;&gt;I wrote up how to configure a Router level vpn&lt;/a&gt; to secure your Internet browsing so your ISP can’t know where you’re visiting and sell your Internet history.  That tutorial is still very relevant but the commercial VPN provider I used, &lt;a href=&quot;http://www.strongvpn.com/&quot;&gt;StrongVPN&lt;/a&gt;, prevented me from using Netflix.  My initial plan had been to turn the VPN on / off at the router level when we wanted to use Netflix but my kids apparently use Netflix very regularly when I’m at work so that’s kind of a non starter.  This meant that I needed a different VPN solution – one that I ran myself and not a commercial provider.&lt;/p&gt;
+
+&lt;p&gt;The reason that Netflix blocks VPN access is that they don’t want customers in other countries buying the US version of Netflix to get around country specific content licensing.  And since any VPN provider is an ongoing business with a persistent set of IP ranges, Netflix can easily block any centralized VPN provider just by noting “Ok - StrongVPN is using xxx.yyy.vvv.zzz” so using any commercial provider is always going to play cat and mouse.  The one I used, StrongVPN, had a history of being Netflix compliant but that’s apparently no longer the case.&lt;/p&gt;
+
+&lt;p&gt;The approach that I took is one that’s currently popular among networking folk that I know online:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Take a cheap cloud computing instance like an AWS t2.micro or a Digital Ocean droplet&lt;/li&gt;
+  &lt;li&gt;Configure an open source VPN tool on top of it&lt;/li&gt;
+  &lt;li&gt;Use that for all Internet access including router level access like I linked to above&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There are a number of these solutions now available and they generally operate using a provisioning engine like Ansible to spin up the cloud instance, install the VPN and create the needed infrastructure.  Here are the ones I looked at:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Hacker News Discussion Threads on this Topic: &lt;a href=&quot;https://news.ycombinator.com/item?id=13249523&quot;&gt;AutoVPN&lt;/a&gt;, &lt;a href=&quot;https://news.ycombinator.com/item?id=13998493&quot;&gt;Algo&lt;/a&gt;, &lt;a href=&quot;https://news.ycombinator.com/item?id=13996417&quot;&gt;Streisand&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Recommended&lt;/strong&gt; &lt;a href=&quot;http://github.com/trailofbits/algo&quot;&gt;Algo&lt;/a&gt;&lt;/td&gt;
+          &lt;td&gt;&lt;a href=&quot;http://blog.trailofbits.com/2016/12/12/meet-algo-the-vpn-that-works/&quot;&gt;Blog&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Recommended&lt;/strong&gt; &lt;a href=&quot;http://github.com/Nyr/openvpn-install&quot;&gt;openvpn-install&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/jlund/streisand&quot;&gt;Streisand&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://pritunl.com&quot;&gt;Pritunl&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.tinc-vpn.org&quot;&gt;Tinc&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Of the options above I tried three of them: Streisand, Algo and openvpn-install.  Streisand was very promising but it failed to install completely on either Google Cloud or AWS.  Worse it left a dangling cloud instance on AWS meaning that had I not been watchful, I’d have been paying for that until I noticed.  Algo did far, far better on installation but its post install documentation left me confused enough that I had to file a &lt;a href=&quot;https://github.com/trailofbits/algo/issues/320&quot;&gt;Github issue&lt;/a&gt; to find out what to do next (which someone answered almost immediately – thank you!).&lt;/p&gt;
+
+&lt;p&gt;Of the options above I ended up using Algo and openvpn-install.  This is likely confusing and, to a VPN expert, actually stupid but here’s why:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Algo handled provisioning the AWS instance and securing it perfectly.  It also generated VPN configurations specific to iOS devices which is useful since we’re an Apple household.&lt;/li&gt;
+  &lt;li&gt;Algo is a deliberately cut down VPN system focused solely on the IKEv2 spec.  Sadly while this works client side on OSX devices, my router only supports OpenVPN, PPTP and L2TP vpn protocols so I can’t use Algo at the router level.  Please be aware that this is a feature not a limitation – the real solution is for my router vendor, Asus, to support IKEv2.&lt;/li&gt;
+  &lt;li&gt;Once I had an AWS instance running, there is nothing stopping you from running openvpn-install directly on that AWS instance so you have an OpenVPN protocol that works on a router that only supports OpenVPN – and that’s what I did.&lt;/li&gt;
+  &lt;li&gt;And since this VPN is now running on my own box, not a commercial provider, it actually does support Netflix which makes my kids happy.&lt;/li&gt;
+  &lt;li&gt;This should end up being quite a bit cheaper than a commercial provider since a t2.micro not is pretty minimal but untiL i see a bill I won’t really know.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;process&quot;&gt;Process&lt;/h1&gt;
+
+&lt;p&gt;Here’s what to do.  Please bear in mind that this requires a full Ansible dev stack complete with Boto so if you’re not a Linux or OSX person who’s fairly technical, well, you’re likely out of luck.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Start by going to &lt;a href=&quot;http://github.com/trailofbits/algo&quot;&gt;Algo&lt;/a&gt; and downloading it per the instructions.&lt;/li&gt;
+  &lt;li&gt;Run the Algo setup process and answer all the questions.  You likely want to pick a data center for your VPN closest to you for best performance.  It will take a fair bit (roughly 20 minutes to run).  At the end you’ll get a nicely formatted although mildly unclear set of instructions.  If you don’t want to use openvpn-install also then you can stop here and just configure your local vpn.  Or you can continue to install openvpn-install.&lt;/li&gt;
+  &lt;li&gt;Ssh into the algo box:
+&amp;gt; ssh -i config/algos.pem ubuntu@xxx.yyy.vvv.zzz&lt;/li&gt;
+  &lt;li&gt;Become root:
+&amp;gt; sudo su -&lt;/li&gt;
+  &lt;li&gt;Run the openvpn-install process: 
+&amp;gt; wget https://git.io/vpn -O openvpn-install.sh &amp;amp;&amp;amp; bash openvpn-install.sh&lt;/li&gt;
+  &lt;li&gt;At the end your OpenVPN settings will be in /root/client.ovpn   Copy that file locally and then use it to configure a VPN connection at your router or client side.  See my earlier tutorial for details on setting up your router level connection.  Either way you should now have a VPN that supports Netflix.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;post-installation-steps&quot;&gt;Post Installation Steps&lt;/h1&gt;
+
+&lt;p&gt;After you install, you should goto &lt;a href=&quot;https://whoer.net&quot;&gt;whoer.net&lt;/a&gt; and check your params.  My local ISP is in Indiana but here’s my whoer report once my VPN was running on my router:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/whoer.png&quot; alt=&quot;/blog/assets/whoer.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see this reflects the location of my VPN which is located in Ohio.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 31 Mar 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/vpn/2017/03/31/setting-up-a-router-level-vpn-take-2.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/vpn/2017/03/31/setting-up-a-router-level-vpn-take-2.html</guid>
+        
+        <category>vpn</category>
+        
+        <category>privacy</category>
+        
+        <category>security</category>
+        
+        <category>router</category>
+        
+        
+        <category>vpn</category>
+        
+      </item>
+    
+      <item>
+        <title>Python and Boto Basics for the Ruby Developer</title>
+        <description>&lt;p&gt;What version of boto do I currently have?&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;python -c “import boto; print boto.Version”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;How to Install Pip Under Vagrant?&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;sudo apt-get install python-pip&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;How to Install Boto?&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;pip install boto&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;How to Upgrade Boto?&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;pip install boto –upgrade&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;http://cloudacadmey.com/blog/boto-python-automate-aws-services&lt;/p&gt;
+</description>
+        <pubDate>Thu, 30 Mar 2017 10:14:47 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/python/2017/03/30/python-basics-for-the-ruby-developer.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/python/2017/03/30/python-basics-for-the-ruby-developer.html</guid>
+        
+        <category>python</category>
+        
+        
+        <category>python</category>
+        
+      </item>
     
       <item>
         <title>Setting Up a Router Level VPN to Secure Your Browsing</title>
@@ -588,81 +714,6 @@ ansible_ssh_host=ec2-99-39-100-178.us-east-1.compute.amazonaws.com        ansibl
         <link>http://fuzzyblog.io//blog/2017/03/14/developer-employee-transitions-when-you-re-an-aws-shop.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/03/14/developer-employee-transitions-when-you-re-an-aws-shop.html</guid>
         
-        
-      </item>
-    
-      <item>
-        <title>Ansible Error with AWS, AMI Creation and Encrypted</title>
-        <description>&lt;p&gt;Here is a bizarre Ansible / AWS error I just found:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;An exception occurred during task execution. To see the full traceback, use -vvv. The error was: TypeError: __init__() got an unexpected keyword argument 'encrypted'
-fatal: [localhost]: FAILED! =&amp;gt; {&quot;changed&quot;: false, &quot;failed&quot;: true, &quot;module_stderr&quot;: &quot;Traceback (most recent call last):\n  File \&quot;/tmp/ansible_prCPvG/ansible_module_ec2_ami.py\&quot;, line 560, in &amp;lt;module&amp;gt;\n    main()\n  File \&quot;/tmp/ansible_prCPvG/ansible_module_ec2_ami.py\&quot;, line 552, in main\n    create_image(module, ec2)\n  File \&quot;/tmp/ansible_prCPvG/ansible_module_ec2_ami.py\&quot;, line 381, in create_image\n    bd = BlockDeviceType(**device)\nTypeError: __init__() got an unexpected keyword argument 'encrypted'\n&quot;, &quot;module_stdout&quot;: &quot;&quot;, &quot;msg&quot;: &quot;MODULE FAILURE&quot;}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;A quick google revealed &lt;a href=&quot;https://github.com/ansible/ansible-modules-core/issues/1773&quot;&gt;this solution&lt;/a&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;pip install boto –upgrade&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;which I had to execute as:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;sudo pip install boto –upgrade&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
-        <pubDate>Tue, 14 Mar 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/03/14/ansible-error-with-aws-ami-creation-and-encrypted.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/03/14/ansible-error-with-aws-ami-creation-and-encrypted.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Dropbox for the Software Developer</title>
-        <description>&lt;p&gt;An old friend asked me a great question recently:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;I saw you mentioning your use of Dropbox the other day. I’ve been using GitHub as my “cloud device”: when would I find Dropbox a better option?&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;One of the single best decisions that I made in 2016 was to adopt &lt;a href=&quot;http://www.dropbox.com/&quot;&gt;Dropbox&lt;/a&gt; as the key part of my personal computing environment.  I last talked about this back on &lt;a href=&quot;http://fuzzyblog.io/blog/postmac/2016/11/05/life-in-a-postmac-world.html&quot;&gt;November&lt;/a&gt;, see the section “Conclusion - A Synchronized Computing Environment For Me” but it really does bear further description.&lt;/p&gt;
-
-&lt;p&gt;My use for Dropbox is exactly what it is designed for – synchronization.  I’ve always had multiple machines but one has always been my “primary”” machine.  Since all my code was on Github, I could generally get to my code from any machine but what about my spreadsheets?  Or my documents?  Or just about any other file that I needed.  Here’s what I did:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Signup for a 1 Terabyte Dropbox account (roughly $50 / year so dirt cheap).&lt;/li&gt;
-  &lt;li&gt;Install Dropbox on all my machines including my ChromeBook, my Linux box, my iPhone and iPad.&lt;/li&gt;
-  &lt;li&gt;Symlink ~/Dropbox to ~/me so I have an easier path to type.&lt;/li&gt;
-  &lt;li&gt;Move all the files that matter to me into ~/me under a logical file structure related to my usage context - ~/me/blogging for all my blogs, ~/me/Documents for Documents, ~/me/consulting for consulting work, ~/me/fuzzygroup for anything I do online and so on.&lt;/li&gt;
-  &lt;li&gt;Move important things like SSH keys under ~/me and then use symlinks to insert them back into their correct location.&lt;/li&gt;
-  &lt;li&gt;Create a ~/me/transfer directory to copy transitory data from one machine to anther.&lt;/li&gt;
-  &lt;li&gt;Move all the git repos that matter underneath ~/me.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;My working set of data for Dropbox is about 40 gigabytes and I suspect that could be made smaller but I haven’t seen the need.  This approach has meant that literally no matter what computing device I am on, I always have access to the data that actually matters to me.  True I don’t have, for example, my iTunes music synchronized or my Photos but in terms of the data that I, as a software developer, actually rely on, this is about as perfect an environment as I could dream up.  The only objection I have is that on one of my machines, oddly the most powerful, Dropbox refuses to fully sync, always stalling out on two files that never complete.  Since there are no user facing logs on Dropbox for OSX, well, I have no idea what they are.  And, worse, it spikes my CPU past 100% always running up the fan and down the battery life.  But, other than that, I’m ridiculously happy with this as an approach.&lt;/p&gt;
-
-&lt;p&gt;I know that this was supposed to be what Apple was going to give us with iCloud but iCloud:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Doesn’t seem to work particularly well&lt;/li&gt;
-  &lt;li&gt;Removes local file storage of documents into the cloud solely thus absolutely screwing you over if you don’t have internet access&lt;/li&gt;
-  &lt;li&gt;Has no cross platform support – I really wanted all my data on my ChromeBook and my Linux box&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;It is astonishing to me that the cross machine synchronization environment that I’ve been searching for most of my professional life is nothing more than a simple Dropbox subscription but that’s all it took.&lt;/p&gt;
-
-&lt;p&gt;I still do full OS level backups periodically but I don’t generally worry about it terribly since the data that matters is always safe being mirrored across all my computing devices and into the Dropbox cloud.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 13 Mar 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/dropbox/2017/03/13/dropbox-for-the-software-developer.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/dropbox/2017/03/13/dropbox-for-the-software-developer.html</guid>
-        
-        <category>dropbox</category>
-        
-        
-        <category>dropbox</category>
         
       </item>
     
