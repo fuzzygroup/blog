@@ -6,9 +6,87 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 31 Mar 2017 11:50:35 -0400</pubDate>
-    <lastBuildDate>Fri, 31 Mar 2017 11:50:35 -0400</lastBuildDate>
+    <pubDate>Wed, 05 Apr 2017 13:06:11 -0400</pubDate>
+    <lastBuildDate>Wed, 05 Apr 2017 13:06:11 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Rails Tip - When Puma Doesn't Run on the Specified Port</title>
+        <description>&lt;p&gt;So I just noticed this particular oddness:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;12:12 $ bundle exec rails s -p4000
+=&amp;gt; Booting Puma
+=&amp;gt; Rails 5.0.1 application starting in development on http://localhost:4000
+=&amp;gt; Run `rails server -h` for more startup options
+Puma starting in single mode...
+* Version 3.7.0 (ruby 2.3.1-p112), codename: Snowy Sagebrush
+* Min threads: 5, max threads: 5
+* Environment: development
+* Listening on tcp://0.0.0.0:3000
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;As you can see Puma is being started with a port 4000 directive but it is actually listening on the default 3000 port.&lt;/p&gt;
+
+&lt;p&gt;A bit of googling led me to this bit of text in a &lt;a href=&quot;https://github.com/puma/puma/issues/1200&quot;&gt;Github issue&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;After updating the gem version and bundling: gem ‘puma’, ‘~&amp;gt; 3.6.2’ &lt;a href=&quot;https://github.com/puma/puma/issues/1200#issuecomment-278606118&quot;&gt;More…&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I edited my Gemfile and replaced:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;gem ‘puma’, ‘~&amp;gt; 3.0’&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;with:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;gem ‘puma’, ‘~&amp;gt; 3.6.2’&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;A quick bundle install and then another rails s -p4000 gives:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle exec rails s -p4000
+=&amp;gt; Booting Puma
+=&amp;gt; Rails 5.0.1 application starting in development on http://localhost:4000
+=&amp;gt; Run `rails server -h` for more startup options
+Puma starting in single mode...
+* Version 3.6.2 (ruby 2.3.1-p112), codename: Sleepy Sunday Serenity
+* Min threads: 5, max threads: 5
+* Environment: development
+* Listening on tcp://localhost:4000
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;As with all http testing, a curl -I is always handy for figuring out if things are working:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -I http://localhost:4000/
+HTTP/1.1 200 OK
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Content-Type: text/html; charset=utf-8
+ETag: W/&quot;c06ad854cb732d5ed93f13e0e4a601ac&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 85a07f99-f8b3-4692-aaa5-4f7c8327d901
+X-Runtime: 0.032369
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Wed, 05 Apr 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/04/05/rails-tip-when-puma-doesn-t-run-on-the-specified-port.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/04/05/rails-tip-when-puma-doesn-t-run-on-the-specified-port.html</guid>
+        
+        <category>rails</category>
+        
+        <category>puma</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>Setting Up a Router LeveL VPN Take 2</title>
@@ -69,7 +147,7 @@
 &amp;gt; sudo su -&lt;/li&gt;
   &lt;li&gt;Run the openvpn-install process: 
 &amp;gt; wget https://git.io/vpn -O openvpn-install.sh &amp;amp;&amp;amp; bash openvpn-install.sh&lt;/li&gt;
-  &lt;li&gt;At the end your OpenVPN settings will be in /root/client.ovpn   Copy that file locally and then use it to configure a VPN connection at your router or client side.  See my earlier tutorial for details on setting up your router level connection.  Either way you should now have a VPN that supports Netflix.&lt;/li&gt;
+  &lt;li&gt;At the end your OpenVPN settings will be in &lt;strong&gt;/root/client.ovpn&lt;/strong&gt;   Copy that file locally and then use it to configure a VPN connection at your router or client side.  See my &lt;a href=&quot;http://fuzzyblog.io/blog/vpn/2017/03/29/setting-up-a-router-level-vpn-to-secure-your-browsing.html&quot;&gt;earlier tutorial&lt;/a&gt; for details on setting up your router level connection.  Either way you should now have a VPN that supports Netflix.&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h1 id=&quot;post-installation-steps&quot;&gt;Post Installation Steps&lt;/h1&gt;
@@ -79,6 +157,17 @@
 &lt;p&gt;&lt;img src=&quot;/blog/assets/whoer.png&quot; alt=&quot;/blog/assets/whoer.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;As you can see this reflects the location of my VPN which is located in Ohio.&lt;/p&gt;
+
+&lt;h1 id=&quot;comments&quot;&gt;Comments&lt;/h1&gt;
+
+&lt;p&gt;Please bear in mind that this is a sub optimal approach – I’m running two separate VPN servers now (thought I could shut down the Algo one) but it supports my use case which boiled down to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Securing my family’s Internet browsing&lt;/li&gt;
+  &lt;li&gt;Fast and easy installation – I spent much more time writing these two blog posts than I did dealing with VPN configuration&lt;/li&gt;
+  &lt;li&gt;Worked router side with a router that didn’t support Algo’s protocols; ideally I’d have replaced my router with something that ran IKEv2 directly but I didn’t feel like that pain right now&lt;/li&gt;
+  &lt;li&gt;Supported Netflix which made my kids happy&lt;/li&gt;
+&lt;/ul&gt;
 </description>
         <pubDate>Fri, 31 Mar 2017 00:00:00 -0400</pubDate>
         <link>http://fuzzyblog.io//blog/vpn/2017/03/31/setting-up-a-router-level-vpn-take-2.html</link>
@@ -695,25 +784,6 @@ ansible_ssh_host=ec2-99-39-100-178.us-east-1.compute.amazonaws.com        ansibl
         
         
         <category>css</category>
-        
-      </item>
-    
-      <item>
-        <title>Developer Employee Transitions When You're an AWS Shop</title>
-        <description>&lt;p&gt;So I find myself advising a former employer on how to lock out an employee with fairly pervasive access (and, yes, I am the employee).  Here was my advice:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;The safest option would be to move to white listing &lt;strong&gt;all&lt;/strong&gt; ip addresses needed for SSH login.  That would be an absolute ban on any incoming SSH logins from the old employee and, while inconvenient, is a wonderful means to lock down a system.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair&quot;&gt;Re-issue a new SSH pem file&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;Delete the old SSH pem file on your machine and then verify login to at least 2 systems with the new PEM file.  I’d make sure to verify access to the primary db server using the new PEM file but that’s just me.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/31912037/how-to-delete-deactivate-the-current-pem-file-and-create-new-one-in-aws&quot;&gt;De-authorize the old PEM file&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.aws.amazon.com/cli/latest/reference/apigateway/delete-api-key.html&quot;&gt;Delete the API keys that the employee had access to&lt;/a&gt;.  Make sure that you delete them in all regions where they were valid.&lt;/li&gt;
-&lt;/ol&gt;
-</description>
-        <pubDate>Tue, 14 Mar 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/03/14/developer-employee-transitions-when-you-re-an-aws-shop.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/03/14/developer-employee-transitions-when-you-re-an-aws-shop.html</guid>
-        
         
       </item>
     
