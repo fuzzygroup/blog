@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Rails Tip - When Puma Doesn&#39;t Run on the Specified Port</title>
-  <meta name="description" content="So I just noticed this particular oddness:">
+  <title>Building Graphs with the chartjs-ror Gem</title>
+  <meta name="description" content="There a lot of times in 2017 when, as a Rails developer who’s mostly backend, it feels like the world has passed us by when it comes to something that is pur...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/rails/2017/04/05/rails-tip-when-puma-doesn-t-run-on-the-specified-port.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/rails/2017/04/07/building-graphs-with-the-chartjs-ror-gem.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -40,16 +40,16 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Rails Tip - When Puma Doesn't Run on the Specified Port">
+  <meta name="twitter:title" content="Building Graphs with the chartjs-ror Gem">
 
   
     <meta name="twitter:description"
-      content="When you find your Puma Rails server not running on the port you specify, try updating it your Puma gem.">
+      content="If you're not really a JavaScript guy then building a nice dashboard can really be an exercise in pain and futility.  Here I use the chartjs-ror gem to build a nice looking dashboard.">
   
 
   
     <meta name="twitter:image"
-      content="https://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+      content="http://fuzzyblog.io/blog/assets/sideproject01_cartazzi_.png">
   
   
   
@@ -134,73 +134,100 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Rails Tip - When Puma Doesn't Run on the Specified Port</h1>
-    <p class="I'll"><time datetime="2017-04-05T00:00:00-04:00" itemprop="datePublished">Apr 5, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">Building Graphs with the chartjs-ror Gem</h1>
+    <p class="I'll"><time datetime="2017-04-07T05:52:43-04:00" itemprop="datePublished">Apr 7, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>So I just noticed this particular oddness:</p>
+    <p>There a lot of times in 2017 when, as a Rails developer who’s mostly backend, it feels like the world has passed us by when it comes to something that is purely front end like, say, dashboards and graphs.  I’m building a side project right now that is graph heavy and I’ve looked at a lot of different graph technologies:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>12:12 $ bundle exec rails s -p4000
-=&gt; Booting Puma
-=&gt; Rails 5.0.1 application starting in development on http://localhost:4000
-=&gt; Run `rails server -h` for more startup options
-Puma starting in single mode...
-* Version 3.7.0 (ruby 2.3.1-p112), codename: Snowy Sagebrush
-* Min threads: 5, max threads: 5
-* Environment: development
-* Listening on tcp://0.0.0.0:3000
+<ul>
+  <li><a href="https://d3js.org/">d3.js</a> - which I really like but I don’t feel I have the javascript mojo to use</li>
+  <li><a href="http://www.highcharts.com/">highcharts</a> - which I’ve used in the past but is commercially licensed and this is a side project</li>
+  <li><a href="http://www.chartjs.org/">chartjs</a> - which I really, really like</li>
+</ul>
+
+<p>Overall I’ve had the best luck with chartjs in terms of the ratio between time invested and graphs produced i.e. I got farther with chartjs with less effort than anything else so that’s where I’ve been focused lately.</p>
+
+<p>The single best reference I’ve found to using chartjs with rails was buried at the bottom of a message board from a guy in New Zealand who uses chartjs and rails to graph has big races:</p>
+
+<blockquote>
+  Hi @glundgren,
+
+  Check out my full working example. Rather than mucking around with chartjs-ror, I have switched to using straight ChartJS.
+
+  The flow of events is:
+  1. My controller calls my model which produces the data in the correct format
+  2. My view defines a HTML canvas element with the data as HTML5 data attributes
+  3. Then the javascript comes along and uses native ChartJS (i.e. new Chart(element, options) to produce the chart. The values are read directly off the data attributes, (i.e. resultDurationCanvas.data('duration')). This is where I convert the number of seconds to hh:mm:ss format for the labels
+
+  I realise it's quite complicated but it allows me do the heavy lifting in ruby while giving me full power over the presentation of the labels etc without having to dance around with %= % in my erb.
+
+  This is just one of many possibilities, but it may help you think about options.
+
+  Let me know if you need any help with anything else!
+
+  Dave
+
+  [Source](https://www.bountysource.com/issues/7948443-graphing-times )(scroll down to the bottom).
+  
+  The full working example is here: [http://cycling.harris.org.nz/races/taupo-cycle-challenge](http://cycling.harris.org.nz/races/taupo-cycle-challenge) and his github for this is here: [https://github.com/daveharris/cycling.harris.org.nz](https://github.com/daveharris/cycling.harris.org.nz)
+</blockquote>
+
+<p>Given the importance of mastering JavaScript in 2017 I’ve been working natively with chartjs and the Rails asset facilities but I thought it might be interesting to dip back to a gem based approach and see how far I got with it.  This led me to the <a href="https://github.com/airblade/chartjs-ror">chartjs-ror</a> gem.</p>
+
+<p>Here is the quick tutorial for using it:</p>
+
+<ol>
+  <li>Add gem ‘chartjs-ror’ to your gemfile and bundle install.</li>
+  <li>Add //= require Chart.min to application.js</li>
+  <li>
+    <p>Add this example to a view:</p>
+
+    <p>&lt;%
+    data = {
+      labels: [“January”, “February”, “March”, “April”, “May”, “June”, “July”],
+      datasets: [
+        {
+            label: “My First dataset”,
+            background_color: “rgba(220,220,220,0.2)”,
+            border_color: “rgba(220,220,220,1)”,
+            data: [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+            label: “My Second dataset”,
+            background_color: “rgba(151,187,205,0.2)”,
+            border_color: “rgba(151,187,205,1)”,
+            data: [28, 48, 40, 19, 86, 27, 90]
+        }
+      ]
+    }
+ %&gt;</p>
+
+    <p>&lt;% options = {} &gt;  <br />
+&lt;%= line_chart data, options %&gt;</p>
+  </li>
+</ol>
+
+<p>That will work but it will generate a bloody enormous graph for you.  You need to set the options hash correctly to make it size to something resembling a correct web app by changing the options hash as follows:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;%# options = { :responsive =&gt; true, maintainAspectRatio: false } %&gt;   
 </code></pre>
 </div>
 
-<p>As you can see Puma is being started with a port 4000 directive but it is actually listening on the default 3000 port.</p>
+<p>I really don’t understand how maintainAspectRatio: false makes it smaller but that seems to be a chartjs thing since discovering that bit of magic made my other graphs using chartjs magically work also so I’m just going to treat it as a <em>magic incantation</em> that works and leave it at that.  Honestly its no different than N other bits of technical knowledge that I don’t understand but rely on (mysql tuning at times comes to mind; or apache configuration).</p>
 
-<p>A bit of googling led me to this bit of text in a <a href="https://github.com/puma/puma/issues/1200">Github issue</a>:</p>
+<h1 id="tying-this-in-with-activerecord">Tying this in with ActiveRecord</h1>
 
-<blockquote>
-  <p>After updating the gem version and bundling: gem ‘puma’, ‘~&gt; 3.6.2’ <a href="https://github.com/puma/puma/issues/1200#issuecomment-278606118">More…</a></p>
-</blockquote>
+<h1 id="common-errors">Common Errors</h1>
 
-<p>I edited my Gemfile and replaced:</p>
+<p>The first common error you might hit is this:</p>
 
 <blockquote>
-  <p>gem ‘puma’, ‘~&gt; 3.0’</p>
+  <p>(index):115 Uncaught ReferenceError: Chart is not defined   at initChart ((index):115)</p>
 </blockquote>
 
-<p>with:</p>
-
-<blockquote>
-  <p>gem ‘puma’, ‘~&gt; 3.6.2’</p>
-</blockquote>
-
-<p>A quick bundle install and then another rails s -p4000 gives:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rails s -p4000
-=&gt; Booting Puma
-=&gt; Rails 5.0.1 application starting in development on http://localhost:4000
-=&gt; Run `rails server -h` for more startup options
-Puma starting in single mode...
-* Version 3.6.2 (ruby 2.3.1-p112), codename: Sleepy Sunday Serenity
-* Min threads: 5, max threads: 5
-* Environment: development
-* Listening on tcp://localhost:4000
-</code></pre>
-</div>
-
-<p>As with all http testing, a curl -I is always handy for figuring out if things are working:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>curl -I http://localhost:4000/
-HTTP/1.1 200 OK
-X-Frame-Options: SAMEORIGIN
-X-XSS-Protection: 1; mode=block
-X-Content-Type-Options: nosniff
-Content-Type: text/html; charset=utf-8
-ETag: W/"c06ad854cb732d5ed93f13e0e4a601ac"
-Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 85a07f99-f8b3-4692-aaa5-4f7c8327d901
-X-Runtime: 0.032369
-</code></pre>
-</div>
+<p>That means “You need to add chartmin to application.js”</p>
 
   </div>
   

@@ -6,9 +6,742 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 05 Apr 2017 13:06:11 -0400</pubDate>
-    <lastBuildDate>Wed, 05 Apr 2017 13:06:11 -0400</lastBuildDate>
+    <pubDate>Tue, 11 Apr 2017 06:56:53 -0400</pubDate>
+    <lastBuildDate>Tue, 11 Apr 2017 06:56:53 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Color Palette Design Tools</title>
+        <description>&lt;p&gt;Well Google released their new color palette tool for &lt;a href=&quot;https://material.io/color/&quot;&gt;Material&lt;/a&gt; and I thought I should point out some of the other tools for this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.sankk.in/material-mixer/&quot;&gt;Sankk.in&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://flatuicolors.com/&quot;&gt;Flat UI Colors&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.materialpalette.com/&quot;&gt;MaterialPalette&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://color.adobe.com/create/color-wheel/&quot;&gt;Adobe Color Wheel&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://mdbootstrap.com/css/colors/&quot;&gt;Material Design Bootstrap&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.color-hex.com/color-palettes/&quot;&gt;Color-Hex&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Thanks to this &lt;a href=&quot;https://news.ycombinator.com/item?id=14085425&quot;&gt;Hacker News thread&lt;/a&gt; for surfacing some of these; the last two I found when I went looking for bootstrap versions.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 11 Apr 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/design/2017/04/11/color-palette-design-tools.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/design/2017/04/11/color-palette-design-tools.html</guid>
+        
+        <category>design</category>
+        
+        <category>color</category>
+        
+        
+        <category>design</category>
+        
+      </item>
+    
+      <item>
+        <title>When Is a Side Project Ready to Ship</title>
+        <description>
+</description>
+        <pubDate>Mon, 10 Apr 2017 09:01:53 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/04/10/when-is-a-side-project-ready-to-ship.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/10/when-is-a-side-project-ready-to-ship.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Reviewing Open Source Ruby Crawling Gems</title>
+        <description>&lt;p&gt;I recently needed to build a crawler based page archiver that I could aim at a site and archive all pages on the site on a daily basis.  Historically I would have written this from scratch but I recently left my full time position and lost access to the recursive descent html crawler that I had painstakingly written over a period of years.  So it was either write it from scratch or build on top of something else.  Crawlers are one of those things that you can write easily at the start but then discover that getting them write is actually the work of years so I figured “time to look for some open source”.  This blog post is a write up on what I learned about open source crawling gems / projects in Ruby.&lt;/p&gt;
+
+&lt;p&gt;I used a number of criteria to winnow down the set of possibilities including:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;dependencies&lt;/li&gt;
+  &lt;li&gt;
+    &lt;h1 id=&quot;of-issues&quot;&gt;of issues&lt;/h1&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;h1 id=&quot;of-commits&quot;&gt;of commits&lt;/h1&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;h1 id=&quot;of-contributors&quot;&gt;of contributors&lt;/h1&gt;
+  &lt;/li&gt;
+  &lt;li&gt;last commit&lt;/li&gt;
+  &lt;li&gt;scalability approach: threads / queue / single machine&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;My logic here is that while code is good, maintained code is &lt;strong&gt;better&lt;/strong&gt;.  Things like the # of issues, # of commits and last commit indicate that a project should be alive and being worked on.  This isn’t entirely true.  There are some excellent crawling projects which have 0 issues (I was actually the first issue creator on at least one) but its a place to start.&lt;/p&gt;
+
+&lt;p&gt;The last one, scalability approach, is important.  I know that the site I need to crawl has 118,000 urls according to Google.  This means that unless I have either &lt;strong&gt;consistent&lt;/strong&gt; subsecond per page speed or a decent approach to scalability, a single process approach just won’t work.  There are 86,400 seconds per day so I need a per page crawl time of at least 0.75 seconds per page to meet that 118,000 goal with some wiggle room.  Additionally Ruby is a garbage collected, dynamic language so things tend to get slower over time as the crawl process either loses memory due to underling technical problems (either at their own code or at the components that it uses) or slows down due to garbage collection.&lt;/p&gt;
+
+&lt;p&gt;I started with github search for the terms: &lt;strong&gt;ruby crawl&lt;/strong&gt;.  I didn’t use the term gem because some crawling projects implemented in Ruby:&lt;/p&gt;
+
+&lt;p&gt;https://github.com/search?o=desc&amp;amp;q=ruby+crawl&amp;amp;s=stars&amp;amp;type=Repositories&amp;amp;utf8=%E2%9C%93&lt;/p&gt;
+
+&lt;p&gt;I then continued with the terms: &lt;strong&gt;ruby crawl gem&lt;/strong&gt; because there were tools I didn’t see on my first search that I remembered from having done this research previously (when I failed to document it).&lt;/p&gt;
+
+&lt;p&gt;https://github.com/search?p=2&amp;amp;q=ruby+crawl+gem&amp;amp;type=Repositories&amp;amp;utf8=%E2%9C%93&lt;/p&gt;
+
+&lt;p&gt;I ended up with this ridiculous set of browser tabs spanning two separate chrome windows:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/search_tabs_not_so_bad.png&quot; alt=&quot;search_tabs_not_so_bad.png&quot; /&gt;
+&lt;img src=&quot;/blog/assets/search_tabs_utterly_ridiculous.png&quot; alt=&quot;search_tabs_utterly_ridiculous.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;On a side note, I don’t understand why the state of researching something on the Internet, 20+ years after the browser launched, is still such a damn disaster but that’s an entirely different rant.&lt;/p&gt;
+
+&lt;p&gt;This url was also useful in discovering crawlers: http://www.rubygemsearch.com/ruby-gems/search?q=web+crawling&lt;/p&gt;
+
+&lt;p&gt;My final search url was Ruby gems:&lt;/p&gt;
+
+&lt;p&gt;https://rubygems.org/search?query=crawl&amp;amp;utf8=%E2%9C%93&lt;/p&gt;
+
+&lt;h1 id=&quot;sidebar-why-ruby&quot;&gt;Sidebar: Why Ruby?&lt;/h1&gt;
+
+&lt;p&gt;Given the issues noted above about Ruby and my particular performance metrics, you may be wondering “why ruby?”.  Well I’ve spent the last decade plus in the Ruby world and I know ruby best among all the languages in my toolchest.  I’m 100% certain that no matter what codebase I find, I’m going to need to make changes – that’s the nature of any type of crawling project so better to do that in a language that, for all its warts and flaws, I know.&lt;/p&gt;
+
+&lt;h1 id=&quot;gems--codebases-found&quot;&gt;Gems / Codebases Found&lt;/h1&gt;
+
+&lt;p&gt;Here is a quick enumeration of the codebases / gems that I found.  What I’m going to do is give a list of everything and then cherry pick the promising ones and dig deeper into them.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/lxxxvi/bc_crawler&quot;&gt;Band Camp Crawler&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies:&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-0&quot;&gt;of issues: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-5&quot;&gt;of commits: 5&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-1&quot;&gt;of contributors: 1&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 2 years ago&lt;/li&gt;
+      &lt;li&gt;scalability approach: single machine&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/andreikoenig/ruby_web_crawler/blob/master/crawl_script.rb&quot;&gt;Ruby Web Crawler&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: anemone&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-0-1&quot;&gt;of issues: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-1&quot;&gt;of commits: 1&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-1-1&quot;&gt;of contributors: 1&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 2 years ago&lt;/li&gt;
+      &lt;li&gt;scalability approach: none / anemone&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/belsonheng/spidercrawl&quot;&gt;Spider Crawl&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies:&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-1&quot;&gt;of issues:&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-1&quot;&gt;of commits:&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-1&quot;&gt;of contributors:&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit:&lt;/li&gt;
+      &lt;li&gt;scalability approach: single machine&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/CalculatedContent/cloud-crawler&quot;&gt;Cloud Crawler&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: Unclear / aws&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-15&quot;&gt;of issues: 15&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-170&quot;&gt;of commits: 170&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-2&quot;&gt;of contributors: 2&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 3 years ago&lt;/li&gt;
+      &lt;li&gt;scalability approach: redis&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/bash0C7/cosmicrawler&quot;&gt;CosmiCrawler&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: EventMachine&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-0-2&quot;&gt;of issues: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-8&quot;&gt;of commits: 8&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-2-1&quot;&gt;of contributors: 2&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 4 years ago&lt;/li&gt;
+      &lt;li&gt;scalability approach: EventMachine&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/reneklacan/kabutops&quot;&gt;Kabutops&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: Unclear&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-0-3&quot;&gt;of issues: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-94&quot;&gt;of commits: 94&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-1-2&quot;&gt;of contributors: 1&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 1 year ago&lt;/li&gt;
+      &lt;li&gt;scalability approach: sidekiq&lt;/li&gt;
+      &lt;li&gt;other: support for javascript agent, support for debugging (brilliant)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/kdurski/crawler&quot;&gt;Crawler&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: unclear&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-0-4&quot;&gt;of issues: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-5-1&quot;&gt;of commits: 5&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-0&quot;&gt;of pull requests: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-1-3&quot;&gt;of contributors: 1&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 2 years ago&lt;/li&gt;
+      &lt;li&gt;scalability approach: threads&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/chriskite/anemone&quot;&gt;Anemone&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: mongo&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-0-5&quot;&gt;of issues: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-197&quot;&gt;of commits: 197&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-22&quot;&gt;of pull requests: 22&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-12&quot;&gt;of contributors: 12&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 5 years ago&lt;/li&gt;
+      &lt;li&gt;scalability approach: threads&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/endymion/link-checker&quot;&gt;Link Checker&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: unclear&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-15-1&quot;&gt;of issues: 15&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-105&quot;&gt;of commits: 105&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-6&quot;&gt;of pull requests: 6&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-2-2&quot;&gt;of contributors: 2&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 4 years ago&lt;/li&gt;
+      &lt;li&gt;scalability approach: threads&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/endymion/email_spider&quot;&gt;Email Spider&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: anemone&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-1&quot;&gt;of issues: 1&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-11&quot;&gt;of commits: 11&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-0-1&quot;&gt;of pull requests: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-1-4&quot;&gt;of contributors: 1&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 5 years ago&lt;/li&gt;
+      &lt;li&gt;scalability approach: anemone&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/versioneye/crawl_r&quot;&gt;crawler_r&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: docker, mongo&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-3&quot;&gt;of issues: 3&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-665&quot;&gt;of commits: 665&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-3&quot;&gt;of pull requests: 3&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-2-3&quot;&gt;of contributors: 2&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 1 month&lt;/li&gt;
+      &lt;li&gt;scalability approach: unclear&lt;/li&gt;
+      &lt;li&gt;app or gem: app&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/stewartmckee/cobweb&quot;&gt;Cobweb&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: unclear&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-9&quot;&gt;of issues: 9&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-481&quot;&gt;of commits: 481&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-2&quot;&gt;of pull requests: 2&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-13&quot;&gt;of contributors: 13&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 2 months ago&lt;/li&gt;
+      &lt;li&gt;scalability approach: resque / sidekiq&lt;/li&gt;
+      &lt;li&gt;app or gem: gem&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/joeyAghion/spidey&quot;&gt;Spidey&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies:&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-2&quot;&gt;of issues: 2&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-27&quot;&gt;of commits: 27&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-0-2&quot;&gt;of pull requests: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-3&quot;&gt;of contributors: 3&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 1 year ago&lt;/li&gt;
+      &lt;li&gt;scalability approach: none&lt;/li&gt;
+      &lt;li&gt;app or gem: app&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/bauerd/wayfarer/&quot;&gt;Wayfarer&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: unclear&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-2-i-created-both&quot;&gt;of issues: 2 (I created both)&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-1135&quot;&gt;of commits: 1,135&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-0-3&quot;&gt;of pull requests: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-1-5&quot;&gt;of contributors: 1&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 3 days ago&lt;/li&gt;
+      &lt;li&gt;scalability approach: ActiveJob / Threads&lt;/li&gt;
+      &lt;li&gt;app or gem: gem&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/alphasights/crawl&quot;&gt;Alpha Insights Crawl&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: Event Machine&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-0-6&quot;&gt;of issues: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-68&quot;&gt;of commits: 68&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-1&quot;&gt;of pull requests: 1&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-6&quot;&gt;of contributors: 6&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 4 months ago&lt;/li&gt;
+      &lt;li&gt;scalability approach: threads&lt;/li&gt;
+      &lt;li&gt;app or gem: app&lt;/li&gt;
+      &lt;li&gt;callback structure / extensibility approach: none&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/bm-sms/daimon_skycrawlers&quot;&gt;Daimon Skycrawlers&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: Docker&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-0-7&quot;&gt;of issues: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-665-1&quot;&gt;of commits: 665&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-0-4&quot;&gt;of pull requests: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-10&quot;&gt;of contributors: 10&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 2 months&lt;/li&gt;
+      &lt;li&gt;scalability approach: RabbitMQ&lt;/li&gt;
+      &lt;li&gt;app or gem: framework&lt;/li&gt;
+      &lt;li&gt;callback structure / extensibility approach:&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/felipecsl/wombat/&quot;&gt;Wombat&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: Unclear&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-11&quot;&gt;of issues: 11&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-242&quot;&gt;of commits: 242&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-3-1&quot;&gt;of pull requests: 3&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-16&quot;&gt;of contributors: 16&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 5 months&lt;/li&gt;
+      &lt;li&gt;scalability approach: Single machine&lt;/li&gt;
+      &lt;li&gt;app or gem: gem&lt;/li&gt;
+      &lt;li&gt;callback structure / extensibility approach: pass in code block&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/htaidirt/super_crawler&quot;&gt;SuperCrawler&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: Unclear&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-0-8&quot;&gt;of issues: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-15&quot;&gt;of commits: 15&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-0-5&quot;&gt;of pull requests: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-1-6&quot;&gt;of contributors: 1&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 9 months&lt;/li&gt;
+      &lt;li&gt;scalability approach: threads&lt;/li&gt;
+      &lt;li&gt;app or gem: gem / app&lt;/li&gt;
+      &lt;li&gt;callback structure / extensibility approach: unclear&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/slava-vishnyakov/grucrawler&quot;&gt;Gru Crawler&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: typhoeus&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-0-9&quot;&gt;of issues: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-18&quot;&gt;of commits: 18&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-0-6&quot;&gt;of pull requests: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-1-7&quot;&gt;of contributors: 1&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 2 years&lt;/li&gt;
+      &lt;li&gt;scalability approach: thread&lt;/li&gt;
+      &lt;li&gt;app or gem: gem&lt;/li&gt;
+      &lt;li&gt;callback structure / extensibility approach: callback&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/haqduong/news_crawler&quot;&gt;News Crawler&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies: typhoeus / celluloid&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-1-1&quot;&gt;of issues: 1&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-62&quot;&gt;of commits: 62&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-0-7&quot;&gt;of pull requests: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-1-8&quot;&gt;of contributors: 1&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit: 4 years&lt;/li&gt;
+      &lt;li&gt;scalability approach: celluloid&lt;/li&gt;
+      &lt;li&gt;app or gem: gem&lt;/li&gt;
+      &lt;li&gt;callback structure / extensibility approach: unclear&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;&quot;&gt;&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies:&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-2&quot;&gt;of issues:&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-2&quot;&gt;of commits:&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-0-8&quot;&gt;of pull requests: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-2&quot;&gt;of contributors:&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit:&lt;/li&gt;
+      &lt;li&gt;scalability approach:&lt;/li&gt;
+      &lt;li&gt;app or gem: app&lt;/li&gt;
+      &lt;li&gt;callback structure / extensibility approach:&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;&quot;&gt;&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies:&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-3&quot;&gt;of issues:&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-3&quot;&gt;of commits:&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-0-9&quot;&gt;of pull requests: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-3&quot;&gt;of contributors:&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit:&lt;/li&gt;
+      &lt;li&gt;scalability approach:&lt;/li&gt;
+      &lt;li&gt;app or gem: app&lt;/li&gt;
+      &lt;li&gt;callback structure / extensibility approach:&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;&quot;&gt;&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies:&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-4&quot;&gt;of issues:&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-4&quot;&gt;of commits:&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-0-10&quot;&gt;of pull requests: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-4&quot;&gt;of contributors:&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit:&lt;/li&gt;
+      &lt;li&gt;scalability approach:&lt;/li&gt;
+      &lt;li&gt;app or gem: app&lt;/li&gt;
+      &lt;li&gt;callback structure / extensibility approach:&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;&quot;&gt;&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;dependencies:&lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-issues-5&quot;&gt;of issues:&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-commits-5&quot;&gt;of commits:&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-pull-requests-0-11&quot;&gt;of pull requests: 0&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;h1 id=&quot;of-contributors-5&quot;&gt;of contributors:&lt;/h1&gt;
+      &lt;/li&gt;
+      &lt;li&gt;last commit:&lt;/li&gt;
+      &lt;li&gt;scalability approach:&lt;/li&gt;
+      &lt;li&gt;app or gem: app&lt;/li&gt;
+      &lt;li&gt;callback structure / extensibility approach:&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;commentary&quot;&gt;Commentary&lt;/h1&gt;
+
+&lt;p&gt;With this exhaustive a look at different crawlers, you’re probably wondering why I didn’t toss a lot of the candidates early on.  Well I’ve written a lot of crawlers over the years and this is a field where you can always learn from something.  A big part of why I looked at even some of the less promising candidates was that I wanted to learn from them.&lt;/p&gt;
+
+&lt;h1 id=&quot;crawlers-reviewed&quot;&gt;Crawlers Reviewed&lt;/h1&gt;
+
+&lt;p&gt;In no particular order, here are reviews of each of the crawlers.  Most of these, at least those I could make work, I attempted to actually using and build a simple page archiver with them.  This gave me a generic use case so that there was a similar evaluation for each.&lt;/p&gt;
+
+&lt;h2 id=&quot;spidr&quot;&gt;Spidr&lt;/h2&gt;
+
+&lt;p&gt;This was the first one I tried and probably the easiest to work with.  I had a sample crawler up and running with Spidr in probably less than 15 minutes which is stellar.  The one real problem is performance.  After about 300 pages were processed I started to see a 1.3 to 1.5 second per page response time.&lt;/p&gt;
+
+&lt;h2 id=&quot;anemone&quot;&gt;Anemone&lt;/h2&gt;
+
+&lt;p&gt;Anemone is an old school ruby project – I remember evaluating it back in 2014 the last time I  took a stab at this research.  And while I really wanted to look at it, the answers on this &lt;a href=&quot;http://stackoverflow.com/questions/18367170/getting-all-urls-using-anemone-gem-very-large-site&quot;&gt;Stack Overflow&lt;/a&gt; convinced me to take a pass.&lt;/p&gt;
+
+&lt;h2 id=&quot;cobweb&quot;&gt;Cobweb&lt;/h2&gt;
+
+&lt;p&gt;I really, really like Cobweb.  Sometimes you hit a codebase which just has a good feel and Cobweb is one of those.  It was very simple to integrate, quite fast and&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;statistics = CobwebCrawler.new(:cache =&amp;gt; 600, :thread_count =&amp;gt; 10, :valid_mime_types =&amp;gt; [&quot;text/html&quot;]).crawl(&quot;http://www.udemy.com&quot;) do |page|
+  puts &quot;Just crawled #{page[:url]} and got a status of #{page[:status_code]}.&quot;
+  if page[:mime_type] == &quot;text/html&quot;
+    page_ctr = page_ctr + 1
+    #puts page.title
+    #debugger
+    page_archive = PageArchive.find_or_create(page[:body], page[:url])
+    total_time = (Time.now - start_time) 
+    puts &quot;  Total time: #{total_time}&quot;
+    puts &quot;  Total pages: #{page_ctr}&quot;
+    puts &quot;  Time per page: #{total_time.to_f / page_ctr}&quot;
+  else
+    puts &quot;  Not text/html for: #{page[:url]}&quot;
+  end
+  
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;wayfarer&quot;&gt;Wayfarer&lt;/h1&gt;
+
+&lt;h2 id=&quot;alphasights-crawler&quot;&gt;AlphaSights Crawler&lt;/h2&gt;
+
+&lt;p&gt;This was actually pretty interesting.  Its a threaded crawler written in ruby and actually appears to be fairly fast.  It has zero callbacks / extension facilities as best I can tell but the underlying engine appears clean and determining the integration points where I’d need to insert my own code was pretty easy.&lt;/p&gt;
+
+&lt;h2 id=&quot;daimon-sky-framework&quot;&gt;Daimon Sky Framework&lt;/h2&gt;
+
+&lt;p&gt;This crawler was extremely promising and very, very disappointing.  Here were the issues:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The crawler assumes that you have a Postgres installation by default so you can’t even bundle install without it.  So I had to fork it and then change that to MySQL just to install it.&lt;/li&gt;
+  &lt;li&gt;This is a very rails like framework where you install the gem and then the gem generates an application which is Rails-esque.  Its actually pretty brilliant and even generates docker containers for all the dependencies which is &lt;strong&gt;sweet&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;The only real problem is simple – I couldn’t make it actually crawl.  All that happened was that it would start, process the home page and fail to populate the body and then stop.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There is definitely goodness here but when something fails at the very basic use case, it is hard to justify pushing farther.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 08 Apr 2017 16:42:30 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/04/08/reviewing-open-source-ruby-crawling-gems.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/08/reviewing-open-source-ruby-crawling-gems.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Building Graphs with the chartjs-ror Gem</title>
+        <description>&lt;p&gt;There a lot of times in 2017 when, as a Rails developer who’s mostly backend, it feels like the world has passed us by when it comes to something that is purely front end like, say, dashboards and graphs.  I’m building a side project right now that is graph heavy and I’ve looked at a lot of different graph technologies:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://d3js.org/&quot;&gt;d3.js&lt;/a&gt; - which I really like but I don’t feel I have the javascript mojo to use&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.highcharts.com/&quot;&gt;highcharts&lt;/a&gt; - which I’ve used in the past but is commercially licensed and this is a side project&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.chartjs.org/&quot;&gt;chartjs&lt;/a&gt; - which I really, really like&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Overall I’ve had the best luck with chartjs in terms of the ratio between time invested and graphs produced i.e. I got farther with chartjs with less effort than anything else so that’s where I’ve been focused lately.&lt;/p&gt;
+
+&lt;p&gt;The single best reference I’ve found to using chartjs with rails was buried at the bottom of a message board from a guy in New Zealand who uses chartjs and rails to graph has big races:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  Hi @glundgren,
+
+  Check out my full working example. Rather than mucking around with chartjs-ror, I have switched to using straight ChartJS.
+
+  The flow of events is:
+  1. My controller calls my model which produces the data in the correct format
+  2. My view defines a HTML canvas element with the data as HTML5 data attributes
+  3. Then the javascript comes along and uses native ChartJS (i.e. new Chart(element, options) to produce the chart. The values are read directly off the data attributes, (i.e. resultDurationCanvas.data('duration')). This is where I convert the number of seconds to hh:mm:ss format for the labels
+
+  I realise it's quite complicated but it allows me do the heavy lifting in ruby while giving me full power over the presentation of the labels etc without having to dance around with %= % in my erb.
+
+  This is just one of many possibilities, but it may help you think about options.
+
+  Let me know if you need any help with anything else!
+
+  Dave
+
+  [Source](https://www.bountysource.com/issues/7948443-graphing-times )(scroll down to the bottom).
+  
+  The full working example is here: [http://cycling.harris.org.nz/races/taupo-cycle-challenge](http://cycling.harris.org.nz/races/taupo-cycle-challenge) and his github for this is here: [https://github.com/daveharris/cycling.harris.org.nz](https://github.com/daveharris/cycling.harris.org.nz)
+&lt;/blockquote&gt;
+
+&lt;p&gt;Given the importance of mastering JavaScript in 2017 I’ve been working natively with chartjs and the Rails asset facilities but I thought it might be interesting to dip back to a gem based approach and see how far I got with it.  This led me to the &lt;a href=&quot;https://github.com/airblade/chartjs-ror&quot;&gt;chartjs-ror&lt;/a&gt; gem.&lt;/p&gt;
+
+&lt;p&gt;Here is the quick tutorial for using it:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Add gem ‘chartjs-ror’ to your gemfile and bundle install.&lt;/li&gt;
+  &lt;li&gt;Add //= require Chart.min to application.js&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Add this example to a view:&lt;/p&gt;
+
+    &lt;p&gt;&amp;lt;%
+    data = {
+      labels: [“January”, “February”, “March”, “April”, “May”, “June”, “July”],
+      datasets: [
+        {
+            label: “My First dataset”,
+            background_color: “rgba(220,220,220,0.2)”,
+            border_color: “rgba(220,220,220,1)”,
+            data: [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+            label: “My Second dataset”,
+            background_color: “rgba(151,187,205,0.2)”,
+            border_color: “rgba(151,187,205,1)”,
+            data: [28, 48, 40, 19, 86, 27, 90]
+        }
+      ]
+    }
+ %&amp;gt;&lt;/p&gt;
+
+    &lt;p&gt;&amp;lt;% options = {} &amp;gt;  &lt;br /&gt;
+&amp;lt;%= line_chart data, options %&amp;gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;That will work but it will generate a bloody enormous graph for you.  You need to set the options hash correctly to make it size to something resembling a correct web app by changing the options hash as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;%# options = { :responsive =&amp;gt; true, maintainAspectRatio: false } %&amp;gt;   
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I really don’t understand how maintainAspectRatio: false makes it smaller but that seems to be a chartjs thing since discovering that bit of magic made my other graphs using chartjs magically work also so I’m just going to treat it as a &lt;em&gt;magic incantation&lt;/em&gt; that works and leave it at that.  Honestly its no different than N other bits of technical knowledge that I don’t understand but rely on (mysql tuning at times comes to mind; or apache configuration).&lt;/p&gt;
+
+&lt;h1 id=&quot;tying-this-in-with-activerecord&quot;&gt;Tying this in with ActiveRecord&lt;/h1&gt;
+
+&lt;h1 id=&quot;common-errors&quot;&gt;Common Errors&lt;/h1&gt;
+
+&lt;p&gt;The first common error you might hit is this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;(index):115 Uncaught ReferenceError: Chart is not defined   at initChart ((index):115)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;That means “You need to add chartmin to application.js”&lt;/p&gt;
+</description>
+        <pubDate>Fri, 07 Apr 2017 05:52:43 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/04/07/building-graphs-with-the-chartjs-ror-gem.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/04/07/building-graphs-with-the-chartjs-ror-gem.html</guid>
+        
+        <category>rails</category>
+        
+        <category>graphs</category>
+        
+        <category>chartjs</category>
+        
+        <category>chartjs-ror</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>Rails Tip - When Puma Doesn't Run on the Specified Port</title>
@@ -85,6 +818,23 @@ X-Runtime: 0.032369
         
         
         <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Finding God in Books and Serendipity</title>
+        <description>&lt;p&gt;This post is something different from what I usually write and far more personal.  I am a christian and, nominally, a protestant although I care little about denominations.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 01 Apr 2017 09:09:37 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/personal/2017/04/01/finding-god-in-books-and-serendipity.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/personal/2017/04/01/finding-god-in-books-and-serendipity.html</guid>
+        
+        <category>personal</category>
+        
+        <category>god</category>
+        
+        
+        <category>personal</category>
         
       </item>
     
@@ -569,221 +1319,6 @@ ansible_ssh_host=ec2-99-39-100-178.us-east-1.compute.amazonaws.com        ansibl
         
         
         <category>ansible</category>
-        
-      </item>
-    
-      <item>
-        <title>Gluten Warning - Mushrooms May Not Actually Be Gluten Free</title>
-        <description>&lt;p&gt;&lt;img src=&quot;http://startcooking.com/public/IMG_0474.JPG&quot; alt=&quot;http://startcooking.com/public/IMG_0474.JPG&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I don’t often write about food issues here – I have a &lt;a href=&quot;http://fuzzyblog.io/recipes/&quot;&gt;recipe blog&lt;/a&gt; for that.  But sometimes I find something so egregious that I feel compelled to write something.  My wife suffers, quite badly, from &lt;a href=&quot;https://celiac.org/celiac-disease/understanding-celiac-disease-2/what-is-celiac-disease/&quot;&gt;Celiac disease&lt;/a&gt;.  And, as with any auto-immune condition, it is always a running battle where the symptoms change and you’re always in responsive mode.&lt;/p&gt;
-
-&lt;p&gt;Lately my wife has been having odd stomach issues and we finally managed to correlate it to mushrooms.  Our whole kitchen is gluten free and the few gluten based ingredients we do have are physically &lt;strong&gt;stored&lt;/strong&gt;, and &lt;strong&gt;used&lt;/strong&gt;, on a different &lt;strong&gt;floor&lt;/strong&gt; of the house.  So we knew it wasn’t a normal cross contamination issue.  We also hadn’t eaten out in weeks so that was off the table as well.  A bit of googling turned up this &lt;a href=&quot;https://www.verywell.com/are-mushrooms-gluten-free-562814&quot;&gt;Very Well post&lt;/a&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Answer: There’s no question that plain mushrooms ought to be gluten-free — after all, they’re a fresh vegetable, right? But lots of people report getting glutened after eating fresh mushrooms … enough people that it’s worth looking into how mushrooms are grown.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;In fact, once you learn how they’re grown, you’ll understand why many people react, especially those who are particularly sensitive to trace gluten.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;You see, mushroom spores are grown either directly on gluten grains, or on a medium that’s derived at least in part from gluten grains. Rye is used most commonly for this purpose, but growers also use wheat and occasionally on a combination of the two grains (barley, the third gluten grain, doesn’t seem to be in common use for growing mushrooms). And this cultivation method leads to gluten cross-contamination on the finished fungi.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;It should be noted that the article goes on to say that the presence of gluten in mushrooms is below the 20 ppm standard that defines gluten.  But my wife is admittedly very, very sensitive to ingredients and she can taste the presence of things that I can’t so it doesn’t surprise me that she has problems with mushrooms.  But, even so – what have things come to when a vegetable (ok a fungus) – in its “natural” state – contains gluten?&lt;/p&gt;
-
-&lt;p&gt;This only emphasizes to me just how &lt;strong&gt;very, very careful&lt;/strong&gt; you have to be when you have celiac or any food related issue – what you think you’re buying may not be exactly what you expect.&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 21 Mar 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/gluten_free/2017/03/21/gluten-warning-mushrooms-may-not-actually-be-gluten-free.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/gluten_free/2017/03/21/gluten-warning-mushrooms-may-not-actually-be-gluten-free.html</guid>
-        
-        <category>warning</category>
-        
-        <category>gluten_free</category>
-        
-        
-        <category>gluten_free</category>
-        
-      </item>
-    
-      <item>
-        <title>Getting Around OSX Bash Fork Issues</title>
-        <description>&lt;p&gt;If you’ve ever seen this error under OSX:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-bash: fork: Resource temporarily unavailable
--bash: fork: Resource temporarily unavailable
--bash: fork: Resource temporarily unavailable
--bash: fork: Resource temporarily unavailable
--bash: fork: Resource temporarily unavailable
--bash: fork: Resource temporarily unavailable
--bash: cannot make pipe for command substitution: Too many open files
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;then you know that it usually signals “Oh crap - restart the box”.  If you’re a Rails developer then you may be hitting this due to problems with the new &lt;a href=&quot;https://github.com/puma/puma-dev/issues/56&quot;&gt;Puma development server and the evented listener&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;The solution is to change the listener in config/environments/development.rb from:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;config.file_watcher = ActiveSupport::EventedFileUpdateChecker&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;to:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;config.file_watcher = ActiveSupport::FileUpdateChecker&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;You might also want to kill the listen gem as well (read the linked issue above).&lt;/p&gt;
-</description>
-        <pubDate>Mon, 20 Mar 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/osx/2017/03/20/getting-around-osx-bash-fork-issues.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/osx/2017/03/20/getting-around-osx-bash-fork-issues.html</guid>
-        
-        <category>osx</category>
-        
-        <category>bash</category>
-        
-        <category>rails</category>
-        
-        <category>fork</category>
-        
-        <category>mac</category>
-        
-        
-        <category>osx</category>
-        
-      </item>
-    
-      <item>
-        <title>Disabling Spring in Rails</title>
-        <description>&lt;p&gt;I now have more than a decade at building Rails apps and, since most of that time was a consultant, I think its fair to say that I’ve seen, worked on and built from scratch a lot of Rails applications.  My single least favorite part of Rails is the monolith application pattern.  While it can be incredibly productive to have every aspect of your source code in a single place, monoliths are an inherent anti-pattern:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;They are brittle&lt;/li&gt;
-  &lt;li&gt;They are fragile&lt;/li&gt;
-  &lt;li&gt;Gems can conflict with each other&lt;/li&gt;
-  &lt;li&gt;Ruby is a dynamic, late bound, garbage collected language – the more lines of code you have the more likely you are to have some kind of conflict&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Monoliths seem to work great for building BaseCamp but I am immensely unhappy with them and I’ve spent the past several months going down a service oriented architecture (SOA) approach for my side project.&lt;/p&gt;
-
-&lt;p&gt;Spring is an application pre-loader which loads a chunk of your Rails code into memory in order to speed up development.  By having things preloaded, for example, you can get into rails console faster, or run tests faster, etc.  And this works fine when you have a monolith application pattern.  In my case, however, I’m partitioning my data at the user level into individual databases and using an environment variable to specify the database at load time with this trick in database.yml:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;database: cartazzi_web_app_&amp;lt;%= ENV[‘CARTAZZI_USER_ID’] %&amp;gt;_development&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;And this works perfectly – until Spring rears its ugly head.  Since Spring has things cached, you can go into rails console and execute a User.first and find the wrong user.  It becomes even more confusing when you check the database with:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Rails.application.config.database_configuration[Rails.env][“database”]&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;And it reports back a database that you &lt;strong&gt;know&lt;/strong&gt; isn’t the one where the user you just found doesn’t exist.  What’s going on is that the Rails console is talking to its in memory configuration which reports back something from earlier, not your current configuration.  And then you scratch your head for quite a bit until you cobble together enough brain cells to recall “oh crap – SPRING!”.&lt;/p&gt;
-
-&lt;p&gt;The solution is to disable Spring entirely.  Here’s how:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;At the shell level, do this: &lt;strong&gt;pkill -f spring&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;Edit your Gemfile and comment out all the spring references.&lt;/li&gt;
-  &lt;li&gt;At the shell level, do this: &lt;strong&gt;bin/spring binstub –remove –all&lt;/strong&gt;  &lt;a href=&quot;http://stackoverflow.com/questions/30302021/rails-runner-without-spring&quot;&gt;Stack Overflow Reference&lt;/a&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;There are other ways around this including an environment variable which temporarily disables it but given the number of spring related processes I keep having to kill, I think getting it out entirely is better.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 20 Mar 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2017/03/20/disabling-spring-in-rails.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/03/20/disabling-spring-in-rails.html</guid>
-        
-        <category>rails</category>
-        
-        <category>monolith</category>
-        
-        <category>hyde</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Questioning the Nature of Gem'ified JavaScript</title>
-        <description>&lt;p&gt;In 2017 you can’t be doing web development and not at least be doing some JavaScript.  I bloody well hate JavaScript and even I’m dipping my toe into the JS water.  Way, way, way back in the mid 90s I got very badly burned by JavaScript compatibility issues and I’ve never looked back but it is time.  So I’ve been mucking about with d3 and it has been a hellish weekend indeed.  When I learn a new technology I like to start with the simplest possible example so I started with the &lt;a href=&quot;http://www.overfitted.com/blog/?p=302&quot;&gt;Overfitted Rails / D3 example&lt;/a&gt; because its only about 10 files total.  And this example works perfectly in Rails 4.2.  Kudos to the author.  Now while it works perfectly in Rails 4.2, it entirely fails to render the world’s simplest bar graph in &lt;a href=&quot;https://github.com/fuzzygroup/rails5_d3_seed&quot;&gt;Rails 5&lt;/a&gt; and nothing I do makes it work.  This has the feel of some type of “Rails Magic” that changes from 4 to 5 so something that was implicit is now explicit and Ghu only knows what the &lt;em&gt;censored&lt;/em&gt; it is.  I’ve put probably 3+ hours into making this example work and I’m now at the point of wanting to take a hammer to a Macbook – clearly time to move on.&lt;/p&gt;
-
-&lt;p&gt;The saddest part of all this is that the author of the overfitted example is clearly a bright, bright guy as based on his &lt;a href=&quot;http://stackoverflow.com/users/1583239/qwwqwwq&quot;&gt;Stack Overflow profile&lt;/a&gt; - top 12%, better than &lt;a href=&quot;http://stackoverflow.com/users/409644/fuzzygroup&quot;&gt;me&lt;/a&gt; certainly but there’s no obvious way to contact him and no comments on his blog so, sigh…&lt;/p&gt;
-
-&lt;p&gt;My next stopping point on this d3 quest was &lt;a href=&quot;http://gregpark.io/blog/live-d3-rails-plot/&quot;&gt;Greg Park’s Adding a Live D3 Visualization to Rails&lt;/a&gt;.  This is a lot more complex than Overfitted but all the bits are there and &lt;a href=&quot;https://github.com/gregoryjpark/live-d3-example&quot;&gt;there’s a full repo&lt;/a&gt;.  So the first step was a quick fork so I could remove the postgres dependency.  An install showed that everything worked in Rails 4.  The moment of truth was to try it in &lt;a href=&quot;https://github.com/fuzzygroup/live-d3-example&quot;&gt;Rails 5&lt;/a&gt; – and it worked brilliantly!  Thank you Greg!&lt;/p&gt;
-
-&lt;p&gt;I’m not a JS expert in any way – it would more more accurate to say “I’m a self professed JavaScript hater who feels he has no alternative but to try and use it (finally)” so my first thought was “Why not use the &lt;a href=&quot;https://github.com/iblue/d3-rails&quot;&gt;d3rails gem&lt;/a&gt;”.  Given that I had this in git, the path was clear:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;take my rails 5 exmaple&lt;/li&gt;
-  &lt;li&gt;make a branch&lt;/li&gt;
-  &lt;li&gt;delete the vendor/javascripts/d3.js file&lt;/li&gt;
-  &lt;li&gt;update gemfile and add d3-rails&lt;/li&gt;
-  &lt;li&gt;bundle install&lt;/li&gt;
-  &lt;li&gt;try the app and see if the graphs display&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;And, what do you know, the result was the same as my &lt;a href=&quot;http://fuzzyblog.io/blog/css/2017/03/16/when-your-font-awesome-etsy-icon-doesn-t-display.html&quot;&gt;Font Awesome issues recently&lt;/a&gt; – the graphs didn’t display.  This is really making me question gems that wrap JavaScript libraries.  I would be certain that the problem here is that something changed in d3 and d3-rails isn’t current enough so something is broken.  But given that I’ve now hit this twice in the same week, it feels like either a CDN or vendor/assets/javascripts is the right approach for JavaScript inclusion.  Our historical method of wrapping JavaScript into gems for “inclusion” into the rails ecosystem is really feeling broken right now.  Thoughts?&lt;/p&gt;
-</description>
-        <pubDate>Sun, 19 Mar 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2017/03/19/questioning-the-nature-of-gem-ified-javascript.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/03/19/questioning-the-nature-of-gem-ified-javascript.html</guid>
-        
-        <category>rails</category>
-        
-        <category>javascript</category>
-        
-        <category>d3</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>When Your Font Awesome Etsy Icon Doesn't Display</title>
-        <description>&lt;p&gt;I’m a fan of &lt;a href=&quot;http://fontawesome.io/&quot;&gt;Font Awesome&lt;/a&gt; and I think enough of it that it was actually the &lt;strong&gt;first&lt;/strong&gt; bit of software I purchased for use on my side project.&lt;/p&gt;
-
-&lt;p&gt;I recently had the situation where most of my Font Awesome icons would show up but a few wouldn’t.  I knew it wasn’t a layout problem because the code was all machine generated and the Amazon icon was showing up just a few lines earlier.  An example of an icon which wouldn’t show up is the Etsy icon.&lt;/p&gt;
-
-&lt;p&gt;As with almost all my crazy CSS / Bootstrap issues, I reached out to my buddy &lt;a href=&quot;http://dasari.me/&quot;&gt;Dv&lt;/a&gt; and a quick pairing session set it right.  The first solution we found was to add the following snippet to custom.scss in /app/assets/stylesheets:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.fa-etsy:before {
-  content: &quot;\0045&quot;
-  font-family: georgia, serif
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And that fixed the Etsy icon – but it was really a work around and the credit goes to &lt;a href=&quot;https://hayley.cc/2016/10/05/Font-Awesome-No-Etsy-icon-No-problem/&quot;&gt;Hayley.cc&lt;/a&gt; (brilliant but still a work around).  But only fixing the Etsy icon clearly wasn’t enough.&lt;/p&gt;
-
-&lt;p&gt;Dv did some digging and came up with the thesis that the &lt;a href=&quot;https://github.com/bokmann/font-awesome-rails&quot;&gt;font-awesome-rails gem&lt;/a&gt; wasn’t up to date and suggested I replace it with the CDN.  So by adding this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;link href=&quot;https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css&quot; rel=&quot;stylesheet&quot; integrity=&quot;sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN&quot; crossorigin=&quot;anonymous&quot;&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The problem was entirely fixed.  Given the problems with CloudBleed, a month ago, I’m mildly paranoid with a CDN but this did simply and brilliantly fix the problem.&lt;/p&gt;
-
-&lt;p&gt;Thank you Dv!&lt;/p&gt;
-</description>
-        <pubDate>Thu, 16 Mar 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/css/2017/03/16/when-your-font-awesome-etsy-icon-doesn-t-display.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/css/2017/03/16/when-your-font-awesome-etsy-icon-doesn-t-display.html</guid>
-        
-        <category>css</category>
-        
-        <category>fontawesome</category>
-        
-        
-        <category>css</category>
         
       </item>
     

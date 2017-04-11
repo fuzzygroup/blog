@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Rails Tip - When Puma Doesn&#39;t Run on the Specified Port</title>
-  <meta name="description" content="So I just noticed this particular oddness:">
+  <title>Finding God in Books and Serendipity</title>
+  <meta name="description" content="This post is something different from what I usually write and far more personal.  I am a christian and, nominally, a protestant although I care little about...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/rails/2017/04/05/rails-tip-when-puma-doesn-t-run-on-the-specified-port.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/personal/2017/04/01/finding-god-in-books-and-serendipity.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -40,11 +40,12 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Rails Tip - When Puma Doesn't Run on the Specified Port">
+  <meta name="twitter:title" content="Finding God in Books and Serendipity">
 
   
     <meta name="twitter:description"
-      content="When you find your Puma Rails server not running on the port you specify, try updating it your Puma gem.">
+      content="This post is something different from what I usually write and far more personal.  I am a christian and, nominally, a protestant although I care little about denominations.
+">
   
 
   
@@ -134,73 +135,12 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Rails Tip - When Puma Doesn't Run on the Specified Port</h1>
-    <p class="I'll"><time datetime="2017-04-05T00:00:00-04:00" itemprop="datePublished">Apr 5, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">Finding God in Books and Serendipity</h1>
+    <p class="I'll"><time datetime="2017-04-01T09:09:37-04:00" itemprop="datePublished">Apr 1, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>So I just noticed this particular oddness:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>12:12 $ bundle exec rails s -p4000
-=&gt; Booting Puma
-=&gt; Rails 5.0.1 application starting in development on http://localhost:4000
-=&gt; Run `rails server -h` for more startup options
-Puma starting in single mode...
-* Version 3.7.0 (ruby 2.3.1-p112), codename: Snowy Sagebrush
-* Min threads: 5, max threads: 5
-* Environment: development
-* Listening on tcp://0.0.0.0:3000
-</code></pre>
-</div>
-
-<p>As you can see Puma is being started with a port 4000 directive but it is actually listening on the default 3000 port.</p>
-
-<p>A bit of googling led me to this bit of text in a <a href="https://github.com/puma/puma/issues/1200">Github issue</a>:</p>
-
-<blockquote>
-  <p>After updating the gem version and bundling: gem ‘puma’, ‘~&gt; 3.6.2’ <a href="https://github.com/puma/puma/issues/1200#issuecomment-278606118">More…</a></p>
-</blockquote>
-
-<p>I edited my Gemfile and replaced:</p>
-
-<blockquote>
-  <p>gem ‘puma’, ‘~&gt; 3.0’</p>
-</blockquote>
-
-<p>with:</p>
-
-<blockquote>
-  <p>gem ‘puma’, ‘~&gt; 3.6.2’</p>
-</blockquote>
-
-<p>A quick bundle install and then another rails s -p4000 gives:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rails s -p4000
-=&gt; Booting Puma
-=&gt; Rails 5.0.1 application starting in development on http://localhost:4000
-=&gt; Run `rails server -h` for more startup options
-Puma starting in single mode...
-* Version 3.6.2 (ruby 2.3.1-p112), codename: Sleepy Sunday Serenity
-* Min threads: 5, max threads: 5
-* Environment: development
-* Listening on tcp://localhost:4000
-</code></pre>
-</div>
-
-<p>As with all http testing, a curl -I is always handy for figuring out if things are working:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>curl -I http://localhost:4000/
-HTTP/1.1 200 OK
-X-Frame-Options: SAMEORIGIN
-X-XSS-Protection: 1; mode=block
-X-Content-Type-Options: nosniff
-Content-Type: text/html; charset=utf-8
-ETag: W/"c06ad854cb732d5ed93f13e0e4a601ac"
-Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 85a07f99-f8b3-4692-aaa5-4f7c8327d901
-X-Runtime: 0.032369
-</code></pre>
-</div>
+    <p>This post is something different from what I usually write and far more personal.  I am a christian and, nominally, a protestant although I care little about denominations.</p>
 
   </div>
   
