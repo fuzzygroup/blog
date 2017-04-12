@@ -25,16 +25,18 @@ A decade plus in Rails and Ghu only knows how many controllers and I don't think
 
 This was when I put my keyboard down, went over to my editor and started doing some writing.  I knew in my gut that this was an oddball issue and what I really needed was another set of eyes.  And, an hour later, my buddy [Nick](http://www.nickjanetakis.com/blog/), gave me a hand over Google Hangouts pointing out that I had something wrong my strong params method:
 
-    ```ruby
-    def instructor_params
-      params.require[:instructor].permit(:url)
-    end
-    ```
+```ruby
+def instructor_params
+  params.require[:instructor].permit(:url)
+end
+```
     
 The above code is lexically correct and won't cause any errors but it will absolutely screw everything up and make params goto nil.  This should have been:
 
-    ```ruby
-    def instructor_params
-      params.require(:instructor).permit(:url)
-    end
-    ```
+```ruby
+def instructor_params
+  params.require(:instructor).permit(:url)
+end
+```
+
+The difference between [ ] and () is of course very, very real but it is subtle, particularly from a visual angle where you can easily mistake them.
