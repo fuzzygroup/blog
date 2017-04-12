@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Color Palette Design Tools</title>
-  <meta name="description" content="Well Google released their new color palette tool for Material and I thought I should point out some of the other tools for this:">
+  <title>Rails Idiocy - When Params In Your Controller Are Nil</title>
+  <meta name="description" content="So I got up early and got cracking on some code and then I hit an absolute wall – the kind of thing that just stops you cold.  I was debugging a controller i...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/design/2017/04/11/color-palette-design-tools.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/rails/2017/04/12/rails-idiocy-when-params-in-your-controller-are-nil.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -40,16 +40,16 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Color Palette Design Tools">
+  <meta name="twitter:title" content="Rails Idiocy - When Params In Your Controller Are Nil">
 
   
     <meta name="twitter:description"
-      content="Ever try and read dark gray text on a light gray background?  If more designers used color palette tools like these, maybe that wouldn't happen.">
+      content="If you find that params in your controller is nil then look at your params.require call in your strong_params routine.">
   
 
   
     <meta name="twitter:image"
-      content="http://fuzzyblog.io/blog/assets/color_palette_tool.png">
+      content="https://fuzzyblog.io/blog/assets/scott_johnson.jpg">
   
   
   
@@ -134,24 +134,50 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Color Palette Design Tools</h1>
-    <p class="I'll"><time datetime="2017-04-11T00:00:00-04:00" itemprop="datePublished">Apr 11, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">Rails Idiocy - When Params In Your Controller Are Nil</h1>
+    <p class="I'll"><time datetime="2017-04-12T00:00:00-04:00" itemprop="datePublished">Apr 12, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>Well Google released their new color palette tool for <a href="https://material.io/color/">Material</a> and I thought I should point out some of the other tools for this:</p>
+    <p>So I got up early and got cracking on some code and then I hit an absolute wall – the kind of thing that just stops you cold.  I was debugging a controller in my side project and I got a nil on accessing a member on the params hash.  And since this was something I’d done previously I thought it odd but added debugger to my controller and evaluated params:</p>
 
-<ul>
-  <li><a href="https://www.sankk.in/material-mixer/">Sankk.in</a></li>
-  <li><a href="http://flatuicolors.com/">Flat UI Colors</a></li>
-  <li><a href="https://www.materialpalette.com/">MaterialPalette</a></li>
-  <li><a href="https://color.adobe.com/create/color-wheel/">Adobe Color Wheel</a></li>
-  <li><a href="https://mdbootstrap.com/css/colors/">Material Design Bootstrap</a></li>
-  <li><a href="http://www.color-hex.com/color-palettes/">Color-Hex</a></li>
-</ul>
+<div class="highlighter-rouge"><pre class="highlight"><code>[12, 21] in /Users/sjohnson/Dropbox/fuzzygroup/hyde/seira_watch_web_app/app/controllers/instructors_controller.rb
+   12:   end
+   13:
+   14:   def create
+   15:     @instructor = Instructor.new# =&gt; (params[:instructor])
+   16:     debugger
+=&gt; 17:     if params[:instructor][:url] =~ /http/
+   18:     else
+   19:       flash[:error] = "Please specify a valid url"
+   20:       redirect_to edit_instructor_path(@instructor) and return
+   21:     end
+(byebug) params
+nil
+</code></pre>
+</div>
 
-<p>Thanks to this <a href="https://news.ycombinator.com/item?id=14085425">Hacker News thread</a> for surfacing some of these; the last two I found when I went looking for bootstrap versions.</p>
+<p>A decade plus in Rails and Ghu only knows how many controllers and I don’t think I’ve ever seen nil for params.  I mean params is effectively a god object that is always there.  How the hell does it become nil?</p>
 
+<p>This was when I put my keyboard down, went over to my editor and started doing some writing.  I knew in my gut that this was an oddball issue and what I really needed was another set of eyes.  And, an hour later, my buddy <a href="http://www.nickjanetakis.com/blog/">Nick</a>, gave me a hand over Google Hangouts pointing out that I had something wrong my strong params method:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>```ruby
+def instructor_params
+  params.require[:instructor].permit(:url)
+end
+```
+</code></pre>
+</div>
+
+<p>The above code is lexically correct and won’t cause any errors but it will absolutely screw everything up and make params goto nil.  This should have been:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>```ruby
+def instructor_params
+  params.require(:instructor).permit(:url)
+end
+```
+</code></pre>
+</div>
 
   </div>
   

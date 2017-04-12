@@ -6,9 +6,117 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 11 Apr 2017 07:49:19 -0400</pubDate>
-    <lastBuildDate>Tue, 11 Apr 2017 07:49:19 -0400</lastBuildDate>
+    <pubDate>Wed, 12 Apr 2017 08:58:26 -0400</pubDate>
+    <lastBuildDate>Wed, 12 Apr 2017 08:58:26 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Rails Idiocy - When Params In Your Controller Are Nil</title>
+        <description>&lt;p&gt;So I got up early and got cracking on some code and then I hit an absolute wall – the kind of thing that just stops you cold.  I was debugging a controller in my side project and I got a nil on accessing a member on the params hash.  And since this was something I’d done previously I thought it odd but added debugger to my controller and evaluated params:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[12, 21] in /Users/sjohnson/Dropbox/fuzzygroup/hyde/seira_watch_web_app/app/controllers/instructors_controller.rb
+   12:   end
+   13:
+   14:   def create
+   15:     @instructor = Instructor.new# =&amp;gt; (params[:instructor])
+   16:     debugger
+=&amp;gt; 17:     if params[:instructor][:url] =~ /http/
+   18:     else
+   19:       flash[:error] = &quot;Please specify a valid url&quot;
+   20:       redirect_to edit_instructor_path(@instructor) and return
+   21:     end
+(byebug) params
+nil
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;A decade plus in Rails and Ghu only knows how many controllers and I don’t think I’ve ever seen nil for params.  I mean params is effectively a god object that is always there.  How the hell does it become nil?&lt;/p&gt;
+
+&lt;p&gt;This was when I put my keyboard down, went over to my editor and started doing some writing.  I knew in my gut that this was an oddball issue and what I really needed was another set of eyes.  And, an hour later, my buddy &lt;a href=&quot;http://www.nickjanetakis.com/blog/&quot;&gt;Nick&lt;/a&gt;, gave me a hand over Google Hangouts pointing out that I had something wrong my strong params method:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;```ruby
+def instructor_params
+  params.require[:instructor].permit(:url)
+end
+```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The above code is lexically correct and won’t cause any errors but it will absolutely screw everything up and make params goto nil.  This should have been:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;```ruby
+def instructor_params
+  params.require(:instructor).permit(:url)
+end
+```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Wed, 12 Apr 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/04/12/rails-idiocy-when-params-in-your-controller-are-nil.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/04/12/rails-idiocy-when-params-in-your-controller-are-nil.html</guid>
+        
+        <category>rails</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>A Content Strategy For Your Online Business</title>
+        <description>&lt;p&gt;Need flow – a stream of visitors always coming&lt;/p&gt;
+
+&lt;p&gt;Two types of content - long form and short form&lt;/p&gt;
+
+&lt;p&gt;Lack of Focus&lt;/p&gt;
+
+&lt;p&gt;Lack of Flow&lt;/p&gt;
+
+&lt;p&gt;Lack of Short Form Content – bring in content Series&lt;/p&gt;
+
+&lt;p&gt;Docker Tip of the Day&lt;/p&gt;
+
+&lt;p&gt;Docker Hint&lt;/p&gt;
+
+&lt;p&gt;Ansible&lt;/p&gt;
+
+&lt;p&gt;Tweet + Short Form Blog Post&lt;/p&gt;
+
+&lt;p&gt;Write them a Week at a time - put 5 in the can - ignore saturdays and Sundays&lt;/p&gt;
+
+&lt;p&gt;right time to tweet&lt;/p&gt;
+
+&lt;p&gt;Weekly Email Blast – rollup of the content you wrote that week&lt;/p&gt;
+
+&lt;p&gt;a) Multiple Blog Solution&lt;/p&gt;
+
+&lt;p&gt;Multiple Blogs&lt;/p&gt;
+
+&lt;p&gt;Multiple Twitter Blogs&lt;/p&gt;
+
+&lt;p&gt;Why do people keep unscubscribing from my wtitter
+  * either focus change
+  * lack of updates -&amp;gt; tweet like 5x per day for a period&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 11 Apr 2017 13:02:48 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/04/11/a-content-strategy-for-your-online-business.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/11/a-content-strategy-for-your-online-business.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Linux Tip of the Day - ps -o</title>
+        <description>&lt;p&gt;https://til.hashrocket.com/posts/0edff85f2b-customizing-the-output-of-ps&lt;/p&gt;
+</description>
+        <pubDate>Tue, 11 Apr 2017 08:23:26 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/04/11/linux-tip-of-the-day-ps-o.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/11/linux-tip-of-the-day-ps-o.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Color Palette Design Tools</title>
@@ -933,392 +1041,6 @@ X-Runtime: 0.032369
         
         
         <category>vpn</category>
-        
-      </item>
-    
-      <item>
-        <title>Python and Boto Basics for the Ruby Developer</title>
-        <description>&lt;p&gt;What version of boto do I currently have?&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;python -c “import boto; print boto.Version”&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;How to Install Pip Under Vagrant?&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;sudo apt-get install python-pip&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;How to Install Boto?&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;pip install boto&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;How to Upgrade Boto?&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;pip install boto –upgrade&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;http://cloudacadmey.com/blog/boto-python-automate-aws-services&lt;/p&gt;
-</description>
-        <pubDate>Thu, 30 Mar 2017 10:14:47 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/python/2017/03/30/python-basics-for-the-ruby-developer.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/python/2017/03/30/python-basics-for-the-ruby-developer.html</guid>
-        
-        <category>python</category>
-        
-        
-        <category>python</category>
-        
-      </item>
-    
-      <item>
-        <title>Setting Up a Router Level VPN to Secure Your Browsing</title>
-        <description>&lt;p&gt;Well the fools in Congress really did it – they made it &lt;a href=&quot;https://arstechnica.com/tech-policy/2017/03/for-sale-your-private-browsing-history/&quot;&gt;legal for any ISP to sell your browsing habits&lt;/a&gt; - &lt;a href=&quot;https://news.ycombinator.com/item?id=13981184&quot;&gt;Hacker News Discussion&lt;/a&gt;.  If you think this isn’t a privacy issue then consider these examples:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Visiting babycenter.com?  Maybe you’re pregnant.&lt;/li&gt;
-  &lt;li&gt;Visiting cars.com?  Maybe you’re buying a new car.&lt;/li&gt;
-  &lt;li&gt;Visiting celiac.com?  Maybe you have medical issues around gluten.&lt;/li&gt;
-  &lt;li&gt;Visiting kink.com?  Maybe you’re a sexual deviant.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;how-to-setup-a-router-side-vpn&quot;&gt;How To Setup a Router Side VPN&lt;/h1&gt;
-
-&lt;p&gt;This is an &lt;strong&gt;abomination&lt;/strong&gt; of everyone’s privacy and the only even partial answer is to start using a VPN immediately.  Here’s how I did it.  I have an Internet connection from a local fiber ISP named &lt;a href=&quot;https://www.ninestarconnect.com/residential/residential-internet/&quot;&gt;NineStar&lt;/a&gt;.  They provided us with an ASUS RT-N66U router.  Here’s the step by step illustration of how to do this using this router.  I suspect that most current routers will now support this type of VPN setup but you need to check your router.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Sign up with a VPN provider. This usually costs between $5 and $10 per month.  I used &lt;a href=&quot;http://www.strongvpn.com/&quot;&gt;StrongVPN&lt;/a&gt; just now but I also looked at &lt;a href=&quot;http://www.mullvad.net&quot;&gt;Mullvad&lt;/a&gt; and &lt;a href=&quot;http://www.privateinternetaccess.com/&quot;&gt;Private Internet Access&lt;/a&gt;.  All of these are good; I’ve previously used Mullvad and they kept my browsing safe for years.  One of the reasons I went with StrongVPN was their wide support for mobile devices including &lt;a href=&quot;/blog/assets/vpn09.png&quot;&gt;iOS, Google Play and more&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;Go into your router’s control panel and find the VPN option:&lt;br /&gt;
-&lt;img src=&quot;/blog/assets/vpn01a.png&quot; alt=&quot;/blog/assets/vpn01.png&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Select the VPN client option:&lt;br /&gt;
-&lt;img src=&quot;/blog/assets/vpn02b.png&quot; alt=&quot;/blog/assets/vpn02.png&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Set the VPN client parameters:&lt;br /&gt;
-&lt;img src=&quot;/blog/assets/vpn03c.png&quot; alt=&quot;/blog/assets/vpn03.png&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;The parameters you really need to set are description (which VPN service you are using), VPN Server, User Name and Password.  You should also turn on Auto-Reconnection.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;disadvantages&quot;&gt;Disadvantages&lt;/h1&gt;
-
-&lt;p&gt;Using a VPN can be a really nerdy thing and there can be disadvantages.&lt;/p&gt;
-
-&lt;h2 id=&quot;turkey-anyone&quot;&gt;Turkey Anyone?&lt;/h2&gt;
-
-&lt;p&gt;For example I was initially assigned to a VPN server that was located in Istanbul, Turkey.  This had the amusing impact of Google thinking that I was Turkish and giving me results from google.tr:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/vpn04.png&quot; alt=&quot;/blog/assets/google_turkey.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The solution for me was to log into StrongVPN and then change my VPN server’s location to one in Atlanta.  Here’s that process:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Login to the &lt;a href=&quot;https://intranet.strongvpn.com/services/intranet&quot;&gt;Customer Area&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;Click on Change Server:
-&lt;img src=&quot;/blog/assets/vpn05.png&quot; alt=&quot;/blog/assets/vpn05.png&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;See what servers are available:
-&lt;img src=&quot;/blog/assets/vpn06.png&quot; alt=&quot;/blog/assets/vpn06.png&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Choose a country:
-&lt;img src=&quot;/blog/assets/vpn07.png&quot; alt=&quot;/blog/assets/vpn07.png&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Choose a server:
-&lt;img src=&quot;/blog/assets/vpn07.png&quot; alt=&quot;/blog/assets/vpn07.png&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Click the Change Server button:
-&lt;img src=&quot;/blog/assets/vpn08.png&quot; alt=&quot;/blog/assets/vpn08.png&quot; /&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;netflix-sigh&quot;&gt;Netflix, Sigh&lt;/h2&gt;
-
-&lt;p&gt;The biggest issue for most people with a VPN will be that it kills Netflix entirely.  If you google for &lt;a href=&quot;https://www.google.com/search?q=Netflix+VPN&amp;amp;oq=Netflix+VPN&amp;amp;aqs=chrome..69i57j0l5.419j0j7&amp;amp;sourceid=chrome&amp;amp;ie=UTF-8&quot;&gt;Netflix VPN&lt;/a&gt;, the 570,000 search results for that simple query should indicate that there’s something going on here.  The issue is that VPNs make content access look like it comes from a different location thus allowing a Netflix customer in say Thailand to get the U.S. version of Netflix.  And since this violates all kinds of content licensing, Netflix aggressively prevents the use of a VPN.  StrongVPN is supposed to work with Netflix (that’s one of the reasons I chose it) but, right now, at least for me, it seems to be failing.&lt;/p&gt;
-
-&lt;p&gt;For right now I’m going to go with the “Turn VPN on / off” when we want to use Netflix.  I’m sure there are better approaches and I’ll likely figure one out but for now this will work given that most of our media content is on a local &lt;a href=&quot;http://www.plex.tv&quot;&gt;Plex&lt;/a&gt; server and not on Netflix.&lt;/p&gt;
-
-&lt;p&gt;I know the Netflix problems absolutely suck but the privacy and security that this provides is absolutely worth it.&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 29 Mar 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/vpn/2017/03/29/setting-up-a-router-level-vpn-to-secure-your-browsing.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/vpn/2017/03/29/setting-up-a-router-level-vpn-to-secure-your-browsing.html</guid>
-        
-        <category>vpn</category>
-        
-        <category>privacy</category>
-        
-        <category>security</category>
-        
-        <category>router</category>
-        
-        
-        <category>vpn</category>
-        
-      </item>
-    
-      <item>
-        <title>Getting Started with Ansible when You Know Literally Nothing</title>
-        <description>&lt;p&gt;An old friend, let’s call him GC, emailed me earier today about ansible:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Hi Scott,&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;I’m trying out ansible… But I’m a little at a loss as to what I do next.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Goal: We have been working on an x86 assembly language interpreter available on the web, for student usage.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;We build and test it locally, push to GitHub… but then we have to remember to login to our pythonanywhere servers, do the appropriate pull, and restart the web server.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;This seems like exactly what ansible is for. But I’ve now installed it locally, and at pythonanywhere, and… well, I’m watching nice videos about the wonderful way ansible can automate this, and I can run ansible-console and see zillions of commands, and…&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Well, I &lt;em&gt;think&lt;/em&gt; I need a playbook, and I &lt;em&gt;guess&lt;/em&gt; I can invoke it from my makefile.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;On the remote, I need to:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Get to the proper directory.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Run git pull origin (dev or master)&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Restart the web server.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;I also think I need some sort of SSH key.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Any guidance you can offer on getting going with this would be greatly appreciated!&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;gc&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Ansible is the best devops tool I’ve ever used but its yaml based syntax and mixture of different concepts - playbooks, roles, tasks and inventories can make this hard so let’s break this down bit by bit and construct a conceptual model for this.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; If you want a set of introductory slides on Ansible, &lt;a href=&quot;http://fuzzyblog.io/blog/assets/ansible_basics.pdf&quot;&gt;here are a set of slides&lt;/a&gt; that I gave in Fall 2016 at an Elixir Meetup.&lt;/p&gt;
-
-&lt;h1 id=&quot;definitions&quot;&gt;Definitions&lt;/h1&gt;
-
-&lt;p&gt;Let’s start with some definitions:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Playbook - A collection of logical tasks that are designed to accomplish a purpose.  Think of a playbook as an executable of limited scope.  Playbooks execute roles.&lt;/li&gt;
-  &lt;li&gt;Role - A specific thing that you want the playbook to accomplish.  If you had a Playbook that had as its goal to install Ruby then it might have roles of: download source, compile source and then copy the final executable into pace.&lt;/li&gt;
-  &lt;li&gt;Tasks - A task is a collection of things that a role does.&lt;/li&gt;
-  &lt;li&gt;Inventory - an inventory is a collection of hosts that you want to execute a playbook on.  This is generally just an ASCII file formatted as a .ini file&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;what-actually-is-ansible&quot;&gt;What Actually Is Ansible?&lt;/h1&gt;
-
-&lt;p&gt;Part of what makes Ansible confusing is that its not an imperative, from start to finish scripting language.  Ansible is instead a &lt;em&gt;state description system&lt;/em&gt; where what you’re doing is describing the state of the system that you want to achieve, as a series of yaml documents, and then Ansible itself reconciles the target system with that state description until it matches.  If you ever did expert systems development then think of Ansible as a problem solving engine and that’s actually pretty close to the truth.&lt;/p&gt;
-
-&lt;h1 id=&quot;solving-our-problem&quot;&gt;Solving Our Problem&lt;/h1&gt;
-
-&lt;p&gt;There are at least three ways that we could solve this problem:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Local to Remote&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Remote to Remote&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;On Remote&lt;/strong&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The difference between these two is &lt;strong&gt;where&lt;/strong&gt; Ansible is executing and the reason that’s important is that Ansible operates via SSH automation at its core.  This means that the underlying concept of &lt;em&gt;connection&lt;/em&gt; is key to Ansible.  You can operate Ansible either via a connection from your local machine to a series of remote hosts (your inventory) or you can operate it on a remote host solely (the connection: local approach).  My suspicion is that either approach could be made to work so let’s explore both.&lt;/p&gt;
-
-&lt;h2 id=&quot;local-to-remote&quot;&gt;Local to Remote&lt;/h2&gt;
-
-&lt;p&gt;With a local to remote approach, the ansible code executes initially on your local machine but connects to each of the machines identified in your inventory.  This connection is done through SSH automation.  I know a lot of my readers are people from the Ruby community so perhaps this analogy might help – if you’re at all familiar with &lt;a href=&quot;http://capistranorb.com/&quot;&gt;Capistrano&lt;/a&gt; then think of this aspect of Ansible as a vastly more generalized Capistrano.&lt;/p&gt;
-
-&lt;h2 id=&quot;remote-to-remote&quot;&gt;Remote to Remote&lt;/h2&gt;
-
-&lt;p&gt;A Remote to Remote approach is actually very similar to local to remote.  The only real difference is that you use a dedicated ansible box on your network to handle running your Ansible code.  This can have some pretty dramatic performance improvements since your remote box is at the same “level” as your ansible code itself.&lt;/p&gt;
-
-&lt;h2 id=&quot;on-remote&quot;&gt;On Remote&lt;/h2&gt;
-
-&lt;p&gt;Another approach would be to run the ansible process solely on the remote machine directly.  I’ve done less of this but it should certainly be possible.&lt;/p&gt;
-
-&lt;h2 id=&quot;choosing-local-to-remote&quot;&gt;Choosing Local to Remote&lt;/h2&gt;
-
-&lt;p&gt;Local to Remote feels like the cleanest match for this problem given my limited knowledge – I know only what was in the email printed above (slight readability / formatting changes).&lt;/p&gt;
-
-&lt;h2 id=&quot;starting-with-a-make-file&quot;&gt;Starting with a Make File&lt;/h2&gt;
-
-&lt;p&gt;GC is an outstanding, low level software developer so his thinking of ansible as something you run directly from the makefile doesn’t surprise me at all.  In an earlier life he implemented the HyperAwk programming language for me using Borland’s Turbo Pascal (yes I’ve known him that long).  HyperAwk was a variant on the Awk programming language that read directly from binary word processing files (Word, WordPerfect, Ami Pro, Samna) and then constructed hypertext documents from them.  I miss HyperAwk but I digress.&lt;/p&gt;
-
-&lt;p&gt;Let’s start with a sample makefile.  Here’s one from the &lt;a href=&quot;https://www.gnu.org/software/make/manual/html_node/Simple-Makefile.html&quot;&gt;Gnu folks&lt;/a&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;edit : main.o kbd.o command.o display.o 
-
-main.o : main.c defs.h
-        cc -c main.c
-kbd.o : kbd.c defs.h command.h
-        cc -c kbd.c
-command.o : command.c defs.h command.h
-        cc -c command.c
-display.o : display.c defs.h buffer.h
-        cc -c display.c
-insert.o : insert.c defs.h buffer.h
-        cc -c insert.c
-search.o : search.c defs.h buffer.h
-        cc -c search.c
-files.o : files.c defs.h buffer.h command.h
-        cc -c files.c
-utils.o : utils.c defs.h
-        cc -c utils.c
-clean :
-        rm edit main.o kbd.o command.o display.o \
-           insert.o search.o files.o utils.o
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And while GC’s makefile is certainly different, conceptually it should be much the same - a series of steps which result in the production of a binary file.  In GC’s case that binary is checked into a version control system and that’s what our Ansible playbook will operate on.&lt;/p&gt;
-
-&lt;p&gt;What we’re going to need to do is invoke our Ansible playbook at the end of the clean: stage with a line something like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-playbook -i /Users/sjohnson/me/fuzzygroup/ansible/gc01/inventories/hosts /Users/sjohnson/me/fuzzygroup/ansible/gc01/playbook_deployer.yml
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;As I don’t know anything about the paths in GC’s build system, I’m specifying absolute paths to everything but there’s nothing stopping GC from embedding his ansible code into the build process itself – that’s a choice that he could certainly make.  Obviously he would change the /sjohnson/ to something on his local system.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-inventory-file&quot;&gt;The Inventory File&lt;/h2&gt;
-
-&lt;p&gt;The file /Users/sjohnson/me/fuzzygroup/ansible/gc01/inventories/hosts is just an ASCII file that might look something like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[production]
-ansible_ssh_host=ec2-99-39-100-178.us-east-1.compute.amazonaws.com        ansible_ssh_private_key_file=/Users/sjohnson/.ssh/aws.pem
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;If we wanted this to execute on say 10 different hosts then we’d simply enumerate all 10 hosts here.  And if our local machine’s SSH keys are setup to reach the remote box directly then we wouldn’t even have to specify a .pem file.  The example above shows how I generally configure ansible to talk to AWS since that’s a very, very common use case.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-roles-we-need&quot;&gt;The Roles We Need&lt;/h2&gt;
-
-&lt;p&gt;Here are the roles that we’re likely to need:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;git_pull&lt;/li&gt;
-  &lt;li&gt;web_server_restart&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Ansible like a lot of open source tools can be used in many different ways.  I’ve looked at a lot of Ansible code on the web and I’ve written probably close to 10K lines of Ansible by now and I have a pretty opinionated approach to Ansible development by this point.  I treat Ansible code just as if it was “real” source code and I use a very disciplined approach to the files and structure of an ansible “application” – don’t kid yourself, Ansible is a real application development tool even if it doesn’t seem like it.  If you have any doubts on Ansible as a development environment, please read &lt;a href=&quot;http://fuzzyblog.io/blog/aws/2017/03/06/using-ansible-as-a-development-tool-with-rails.html&quot;&gt;this post of mine&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Before we delve too deep into the specific ansible code, let’s look at the file structure that makes up what we need to do.  Here is tree’s output:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~/me/fuzzygroup/ansible/gc01
-20:19 $ tree
-.
-├── docs
-│   └── readme.txt
-├── inventories
-│   └── hosts
-└── roles
-    ├── git_pull
-    │   └── tasks
-    │       └── main.yml
-    └── web_server_restart
-        └── tasks
-            └── main.yml
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;the-playbook&quot;&gt;The Playbook&lt;/h2&gt;
-
-&lt;p&gt;Here is the playbook that we’ll need:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- hosts: production
-  become: yes
-  remote_user: ubuntu
-  vars:
-    - checkout_path: &quot;/home/gc/code&quot;
-    - repo: &quot;git://foosball.example.org/path/to/repo.git&quot;
-    - version: &quot;release-0.22&quot;
-  roles:
-    - { role: git_pull, tags: git}
-    - { role: web_server_restart, tags: web_server}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Each bit of this has the following purpose:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;hosts - identifies a group of hosts in the inventory file.&lt;/li&gt;
-  &lt;li&gt;become - tells Ansible to do its operations using sudo&lt;/li&gt;
-  &lt;li&gt;remote_user - tells ansible what user to run as on the remote host&lt;/li&gt;
-  &lt;li&gt;vars - defines a series of variables to be used inside roles&lt;/li&gt;
-  &lt;li&gt;roles - defines the roles to be called in order&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;the-checkout-role&quot;&gt;The Checkout Role&lt;/h2&gt;
-
-&lt;p&gt;Ansible uses what are called modules to interface with things and, happily, there is a &lt;a href=&quot;https://docs.ansible.com/ansible/git_module.html&quot;&gt;Git module&lt;/a&gt;.  We can use that to handle the checkout and that reduces the complexity down to just a few lines:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# https://docs.ansible.com/ansible/git_module.html
-- name: Check out from the Git Repo
-  git:
-    repo: &quot;&quot;
-    dest: &quot;&quot;
-    version: 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;the-web-server-restart&quot;&gt;The Web Server Restart&lt;/h2&gt;
-
-&lt;p&gt;Restarting the web server is a hard to define thing since web servers vary considerably so all I can do here is provide an example based on what I use for a web server – Apache:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# https://docs.ansible.com/ansible/shell_module.html
-- name: Restart web server
-  shell: 
-    cmd: &quot;apache2ctl restart&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;example-repo&quot;&gt;Example Repo&lt;/h1&gt;
-
-&lt;p&gt;All the code referenced above is located in this &lt;a href=&quot;https://github.com/fuzzygroup/ansible_gc&quot;&gt;git repo&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;learning-more&quot;&gt;Learning More&lt;/h1&gt;
-
-&lt;p&gt;This is barely touching the surface of Ansible.  Not only did I completely ignore Ansible’s idempotent nature but I also skipped a ton of other important things such as AWS automation, the &lt;em&gt;censored&lt;/em&gt; nature of Ansible Galaxy, python Boto support and more.  Here are some pointers:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://fuzzyblog.io/blog/category.html#ansible&quot;&gt;My Blog on Ansible&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.jeffgeerling.com/&quot;&gt;Jeff Geerling&lt;/a&gt; / &lt;a href=&quot;https://github.com/geerlingguy&quot;&gt;His Github&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://leanpub.com/ansible-for-devops&quot;&gt;Ansible for Devops&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://leanpub.com/ansible-for-aws&quot;&gt;Ansible for AWS&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The last two resources are ebooks and they are both excellent.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 22 Mar 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/ansible/2017/03/22/getting-started-with-ansible-when-you-know-literally-nothing.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/ansible/2017/03/22/getting-started-with-ansible-when-you-know-literally-nothing.html</guid>
-        
-        <category>ansible</category>
-        
-        
-        <category>ansible</category>
         
       </item>
     
