@@ -44,11 +44,7 @@
 
   
     <meta name="twitter:description"
-      content="I’m in the process of starting a new writing project and I wanted to make the process of getting metrics easier so I rolled together this bash script:
-
-#!/bin/bash
-echo &quot;Word Count:&quot;
-cat ...">
+      content="Stringing together cat, wc, xargs and expr gives a word count tool and a calculation of the printed pages.">
   
 
   
@@ -152,6 +148,8 @@ cat <span class="k">*</span>.md | wc -w
 cat <span class="k">*</span>.md | wc -w | xargs -I<span class="o">{}</span> expr <span class="o">{}</span> / 250
 </code></pre>
 </div>
+
+<p>If you’re looking to do this yourself then these commands all go into a single text file and a chmod +x command on the file makes it executable.</p>
 
 <p>The interesting tool here is <strong>expr</strong> which is a command line math tool.  The 250 is a metric that I use for the number of words per printed page.  I know in the modern era that a printed page is perhaps a bit of an anachronism but I find it very comforting to know that I wrote 15 pages today (which is what I actually turned out today).</p>
 
