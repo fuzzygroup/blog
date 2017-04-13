@@ -14,6 +14,14 @@ I'm in the process of starting a new writing project and I wanted to make the pr
     cat *.md | wc -w | xargs -I{} expr {} / 250
     
 If you're looking to do this yourself then these commands all go into a single text file and a chmod +x command on the file makes it executable.  
+
+Here's the output of this script:
+
+    ./wordcount
+    Word Count:
+        3827
+    Page Count:
+    15
     
 The interesting tool here is **expr** which is a command line math tool.  The 250 is a metric that I use for the number of words per printed page.  I know in the modern era that a printed page is perhaps a bit of an anachronism but I find it very comforting to know that I wrote 15 pages today (which is what I actually turned out today).
     
