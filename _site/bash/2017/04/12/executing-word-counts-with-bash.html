@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Rails Idiocy - When Params In Your Controller Are Nil</title>
-  <meta name="description" content="So I got up early and got cracking on some code and then I hit an absolute wall – the kind of thing that just stops you cold.  I was debugging a controller i...">
+  <title>Executing Word Counts with Bash</title>
+  <meta name="description" content="I’m in the process of starting a new writing project and I wanted to make the process of getting metrics easier so I rolled together this bash script:">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/rails/2017/04/12/rails-idiocy-when-params-in-your-controller-are-nil.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/bash/2017/04/12/executing-word-counts-with-bash.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -40,11 +40,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Rails Idiocy - When Params In Your Controller Are Nil">
+  <meta name="twitter:title" content="Executing Word Counts with Bash">
 
   
     <meta name="twitter:description"
-      content="If you find that params in your controller is nil then look at your params.require call in your strong_params routine.">
+      content="I’m in the process of starting a new writing project and I wanted to make the process of getting metrics easier so I rolled together this bash script:
+
+#!/bin/bash
+echo &quot;Word Count:&quot;
+cat ...">
   
 
   
@@ -134,48 +138,48 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Rails Idiocy - When Params In Your Controller Are Nil</h1>
+    <h1 class="post-title" itemprop="name headline">Executing Word Counts with Bash</h1>
     <p class="I'll"><time datetime="2017-04-12T00:00:00-04:00" itemprop="datePublished">Apr 12, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>So I got up early and got cracking on some code and then I hit an absolute wall – the kind of thing that just stops you cold.  I was debugging a controller in my side project and I got a nil on accessing a member on the params hash.  And since this was something I’d done previously I thought it odd but added debugger to my controller and evaluated params:</p>
+    <p>I’m in the process of starting a new writing project and I wanted to make the process of getting metrics easier so I rolled together this bash script:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[12, 21] in /Users/sjohnson/Dropbox/fuzzygroup/hyde/seira_watch_web_app/app/controllers/instructors_controller.rb
-   12:   end
-   13:
-   14:   def create
-   15:     @instructor = Instructor.new# =&gt; (params[:instructor])
-   16:     debugger
-=&gt; 17:     if params[:instructor][:url] =~ /http/
-   18:     else
-   19:       flash[:error] = "Please specify a valid url"
-   20:       redirect_to edit_instructor_path(@instructor) and return
-   21:     end
-(byebug) params
-nil
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="nb">echo</span> <span class="s2">"Word Count:"</span>
+cat <span class="k">*</span>.md | wc -w
+<span class="nb">echo</span> <span class="s2">"Page Count:"</span>
+cat <span class="k">*</span>.md | wc -w | xargs -I<span class="o">{}</span> expr <span class="o">{}</span> / 250
 </code></pre>
 </div>
 
-<p>A decade plus in Rails and Ghu only knows how many controllers and I don’t think I’ve ever seen nil for params.  I mean params is effectively a god object that is always there.  How the hell does it become nil?</p>
+<p>The interesting tool here is <strong>expr</strong> which is a command line math tool.  The 250 is a metric that I use for the number of words per printed page.  I know in the modern era that a printed page is perhaps a bit of an anachronism but I find it very comforting to know that I wrote 15 pages today (which is what I actually turned out today).</p>
 
-<p>This was when I put my keyboard down, went over to my editor and started doing some writing.  I knew in my gut that this was an oddball issue and what I really needed was another set of eyes.  And, an hour later, my buddy <a href="http://www.nickjanetakis.com/blog/">Nick</a>, gave me a hand over Google Hangouts pointing out that I had something wrong my strong params method:</p>
+<p>What this does is:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">instructor_params</span>
-  <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">[</span><span class="ss">:instructor</span><span class="p">].</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:url</span><span class="p">)</span>
-<span class="k">end</span>
-</code></pre>
-</div>
+<ul>
+  <li>take a collection of markdown files</li>
+  <li>count all the words in the collection of markdown files</li>
+  <li>count all the words in the markdown files and then feed that value into xargs which then feeds the value into expr and divides it by 250</li>
+</ul>
 
-<p>The above code is lexically correct and won’t cause any errors but it will absolutely screw everything up and make params goto nil.  This should have been:</p>
+<h1 id="cross-references">Cross References:</h1>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">instructor_params</span>
-  <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:instructor</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:url</span><span class="p">)</span>
-<span class="k">end</span>
-</code></pre>
-</div>
+<p>Here are the places where I sourced some of these techniques:</p>
 
-<p>The difference between [ ] and () is of course very, very real but it is subtle, particularly from a visual angle where you can easily mistake them.</p>
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[Executing word counts using cat and wc](cat <em>work</em></td>
+          <td>wc -w)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><a href="http://stackoverflow.com/questions/13182070/best-way-to-divide-in-bash-using-pipes">An example using using Xargs to feed into expr</a></li>
+</ul>
 
   </div>
   

@@ -6,8 +6,8 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 12 Apr 2017 11:37:04 -0400</pubDate>
-    <lastBuildDate>Wed, 12 Apr 2017 11:37:04 -0400</lastBuildDate>
+    <pubDate>Wed, 12 Apr 2017 21:24:03 -0400</pubDate>
+    <lastBuildDate>Wed, 12 Apr 2017 21:24:03 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -47,6 +47,8 @@ nil
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
+
+&lt;p&gt;The difference between [ ] and () is of course very, very real but it is subtle, particularly from a visual angle where you can easily mistake them.&lt;/p&gt;
 </description>
         <pubDate>Wed, 12 Apr 2017 00:00:00 -0400</pubDate>
         <link>http://fuzzyblog.io//blog/rails/2017/04/12/rails-idiocy-when-params-in-your-controller-are-nil.html</link>
@@ -56,6 +58,61 @@ nil
         
         
         <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Executing Word Counts with Bash</title>
+        <description>&lt;p&gt;I’m in the process of starting a new writing project and I wanted to make the process of getting metrics easier so I rolled together this bash script:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Word Count:&quot;&lt;/span&gt;
+cat &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.md | wc -w
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Page Count:&quot;&lt;/span&gt;
+cat &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.md | wc -w | xargs -I&lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt; expr &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt; / 250
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The interesting tool here is &lt;strong&gt;expr&lt;/strong&gt; which is a command line math tool.  The 250 is a metric that I use for the number of words per printed page.  I know in the modern era that a printed page is perhaps a bit of an anachronism but I find it very comforting to know that I wrote 15 pages today (which is what I actually turned out today).&lt;/p&gt;
+
+&lt;p&gt;What this does is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;take a collection of markdown files&lt;/li&gt;
+  &lt;li&gt;count all the words in the collection of markdown files&lt;/li&gt;
+  &lt;li&gt;count all the words in the markdown files and then feed that value into xargs which then feeds the value into expr and divides it by 250&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;cross-references&quot;&gt;Cross References:&lt;/h1&gt;
+
+&lt;p&gt;Here are the places where I sourced some of these techniques:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[Executing word counts using cat and wc](cat &lt;em&gt;work&lt;/em&gt;&lt;/td&gt;
+          &lt;td&gt;wc -w)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/13182070/best-way-to-divide-in-bash-using-pipes&quot;&gt;An example using using Xargs to feed into expr&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 12 Apr 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/bash/2017/04/12/executing-word-counts-with-bash.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/bash/2017/04/12/executing-word-counts-with-bash.html</guid>
+        
+        <category>bash</category>
+        
+        <category>linux</category>
+        
+        <category>shell</category>
+        
+        
+        <category>Bash</category>
         
       </item>
     
@@ -939,104 +996,6 @@ X-Runtime: 0.032369
         
         
         <category>personal</category>
-        
-      </item>
-    
-      <item>
-        <title>Setting Up a Router LeveL VPN Take 2</title>
-        <description>&lt;p&gt;Three days ago &lt;a href=&quot;http://fuzzyblog.io/blog/vpn/2017/03/29/setting-up-a-router-level-vpn-to-secure-your-browsing.html&quot;&gt;I wrote up how to configure a Router level vpn&lt;/a&gt; to secure your Internet browsing so your ISP can’t know where you’re visiting and sell your Internet history.  That tutorial is still very relevant but the commercial VPN provider I used, &lt;a href=&quot;http://www.strongvpn.com/&quot;&gt;StrongVPN&lt;/a&gt;, prevented me from using Netflix.  My initial plan had been to turn the VPN on / off at the router level when we wanted to use Netflix but my kids apparently use Netflix very regularly when I’m at work so that’s kind of a non starter.  This meant that I needed a different VPN solution – one that I ran myself and not a commercial provider.&lt;/p&gt;
-
-&lt;p&gt;The reason that Netflix blocks VPN access is that they don’t want customers in other countries buying the US version of Netflix to get around country specific content licensing.  And since any VPN provider is an ongoing business with a persistent set of IP ranges, Netflix can easily block any centralized VPN provider just by noting “Ok - StrongVPN is using xxx.yyy.vvv.zzz” so using any commercial provider is always going to play cat and mouse.  The one I used, StrongVPN, had a history of being Netflix compliant but that’s apparently no longer the case.&lt;/p&gt;
-
-&lt;p&gt;The approach that I took is one that’s currently popular among networking folk that I know online:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Take a cheap cloud computing instance like an AWS t2.micro or a Digital Ocean droplet&lt;/li&gt;
-  &lt;li&gt;Configure an open source VPN tool on top of it&lt;/li&gt;
-  &lt;li&gt;Use that for all Internet access including router level access like I linked to above&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;There are a number of these solutions now available and they generally operate using a provisioning engine like Ansible to spin up the cloud instance, install the VPN and create the needed infrastructure.  Here are the ones I looked at:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Hacker News Discussion Threads on this Topic: &lt;a href=&quot;https://news.ycombinator.com/item?id=13249523&quot;&gt;AutoVPN&lt;/a&gt;, &lt;a href=&quot;https://news.ycombinator.com/item?id=13998493&quot;&gt;Algo&lt;/a&gt;, &lt;a href=&quot;https://news.ycombinator.com/item?id=13996417&quot;&gt;Streisand&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Recommended&lt;/strong&gt; &lt;a href=&quot;http://github.com/trailofbits/algo&quot;&gt;Algo&lt;/a&gt;&lt;/td&gt;
-          &lt;td&gt;&lt;a href=&quot;http://blog.trailofbits.com/2016/12/12/meet-algo-the-vpn-that-works/&quot;&gt;Blog&lt;/a&gt;&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Recommended&lt;/strong&gt; &lt;a href=&quot;http://github.com/Nyr/openvpn-install&quot;&gt;openvpn-install&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/jlund/streisand&quot;&gt;Streisand&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://pritunl.com&quot;&gt;Pritunl&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.tinc-vpn.org&quot;&gt;Tinc&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Of the options above I tried three of them: Streisand, Algo and openvpn-install.  Streisand was very promising but it failed to install completely on either Google Cloud or AWS.  Worse it left a dangling cloud instance on AWS meaning that had I not been watchful, I’d have been paying for that until I noticed.  Algo did far, far better on installation but its post install documentation left me confused enough that I had to file a &lt;a href=&quot;https://github.com/trailofbits/algo/issues/320&quot;&gt;Github issue&lt;/a&gt; to find out what to do next (which someone answered almost immediately – thank you!).&lt;/p&gt;
-
-&lt;p&gt;Of the options above I ended up using Algo and openvpn-install.  This is likely confusing and, to a VPN expert, actually stupid but here’s why:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Algo handled provisioning the AWS instance and securing it perfectly.  It also generated VPN configurations specific to iOS devices which is useful since we’re an Apple household.&lt;/li&gt;
-  &lt;li&gt;Algo is a deliberately cut down VPN system focused solely on the IKEv2 spec.  Sadly while this works client side on OSX devices, my router only supports OpenVPN, PPTP and L2TP vpn protocols so I can’t use Algo at the router level.  Please be aware that this is a feature not a limitation – the real solution is for my router vendor, Asus, to support IKEv2.&lt;/li&gt;
-  &lt;li&gt;Once I had an AWS instance running, there is nothing stopping you from running openvpn-install directly on that AWS instance so you have an OpenVPN protocol that works on a router that only supports OpenVPN – and that’s what I did.&lt;/li&gt;
-  &lt;li&gt;And since this VPN is now running on my own box, not a commercial provider, it actually does support Netflix which makes my kids happy.&lt;/li&gt;
-  &lt;li&gt;This should end up being quite a bit cheaper than a commercial provider since a t2.micro not is pretty minimal but untiL i see a bill I won’t really know.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;process&quot;&gt;Process&lt;/h1&gt;
-
-&lt;p&gt;Here’s what to do.  Please bear in mind that this requires a full Ansible dev stack complete with Boto so if you’re not a Linux or OSX person who’s fairly technical, well, you’re likely out of luck.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Start by going to &lt;a href=&quot;http://github.com/trailofbits/algo&quot;&gt;Algo&lt;/a&gt; and downloading it per the instructions.&lt;/li&gt;
-  &lt;li&gt;Run the Algo setup process and answer all the questions.  You likely want to pick a data center for your VPN closest to you for best performance.  It will take a fair bit (roughly 20 minutes to run).  At the end you’ll get a nicely formatted although mildly unclear set of instructions.  If you don’t want to use openvpn-install also then you can stop here and just configure your local vpn.  Or you can continue to install openvpn-install.&lt;/li&gt;
-  &lt;li&gt;Ssh into the algo box:
-&amp;gt; ssh -i config/algos.pem ubuntu@xxx.yyy.vvv.zzz&lt;/li&gt;
-  &lt;li&gt;Become root:
-&amp;gt; sudo su -&lt;/li&gt;
-  &lt;li&gt;Run the openvpn-install process: 
-&amp;gt; wget https://git.io/vpn -O openvpn-install.sh &amp;amp;&amp;amp; bash openvpn-install.sh&lt;/li&gt;
-  &lt;li&gt;At the end your OpenVPN settings will be in &lt;strong&gt;/root/client.ovpn&lt;/strong&gt;   Copy that file locally and then use it to configure a VPN connection at your router or client side.  See my &lt;a href=&quot;http://fuzzyblog.io/blog/vpn/2017/03/29/setting-up-a-router-level-vpn-to-secure-your-browsing.html&quot;&gt;earlier tutorial&lt;/a&gt; for details on setting up your router level connection.  Either way you should now have a VPN that supports Netflix.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;post-installation-steps&quot;&gt;Post Installation Steps&lt;/h1&gt;
-
-&lt;p&gt;After you install, you should goto &lt;a href=&quot;https://whoer.net&quot;&gt;whoer.net&lt;/a&gt; and check your params.  My local ISP is in Indiana but here’s my whoer report once my VPN was running on my router:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/whoer.png&quot; alt=&quot;/blog/assets/whoer.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;As you can see this reflects the location of my VPN which is located in Ohio.&lt;/p&gt;
-
-&lt;h1 id=&quot;comments&quot;&gt;Comments&lt;/h1&gt;
-
-&lt;p&gt;Please bear in mind that this is a sub optimal approach – I’m running two separate VPN servers now (thought I could shut down the Algo one) but it supports my use case which boiled down to:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Securing my family’s Internet browsing&lt;/li&gt;
-  &lt;li&gt;Fast and easy installation – I spent much more time writing these two blog posts than I did dealing with VPN configuration&lt;/li&gt;
-  &lt;li&gt;Worked router side with a router that didn’t support Algo’s protocols; ideally I’d have replaced my router with something that ran IKEv2 directly but I didn’t feel like that pain right now&lt;/li&gt;
-  &lt;li&gt;Supported Netflix which made my kids happy&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Fri, 31 Mar 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/vpn/2017/03/31/setting-up-a-router-level-vpn-take-2.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/vpn/2017/03/31/setting-up-a-router-level-vpn-take-2.html</guid>
-        
-        <category>vpn</category>
-        
-        <category>privacy</category>
-        
-        <category>security</category>
-        
-        <category>router</category>
-        
-        
-        <category>vpn</category>
         
       </item>
     
