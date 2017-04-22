@@ -6,9 +6,69 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 12 Apr 2017 21:38:42 -0400</pubDate>
-    <lastBuildDate>Wed, 12 Apr 2017 21:38:42 -0400</lastBuildDate>
+    <pubDate>Tue, 18 Apr 2017 06:07:08 -0400</pubDate>
+    <lastBuildDate>Tue, 18 Apr 2017 06:07:08 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Returning to a Better Diff Tool</title>
+        <description>&lt;p&gt;So this morning I needed to diff some fairly complex html and see the differences. This is part of a page archiver I’m building and the command:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;diff 2094f14b81ddd5d6cf8eab7a487e97e4f34935c8.html 68e0f2de414da40d33a1728d6c5c592d12fc54ae.html&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;just didn’t give me anything really intelligible (or I’m too dumb to read raw diff output; its possible).  I’ve always maintained that the reason I write a blog is to capture my own knowledge so I turned to a &lt;a href=&quot;http://fuzzyblog.io/blog/software_engineering/2017/02/07/on-merging-files-diff-alternatives-on-the-mac.html&quot;&gt;post&lt;/a&gt; I wrote a few months ago on this very topic.&lt;/p&gt;
+
+&lt;p&gt;Ah Ha!  I need to use OpenDiff, a part of Xcode.  Unfortunately this gave me:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;opendiff 2094f14b81ddd5d6cf8eab7a487e
+97e4f34935c8.html 68e0f2de414da40d33a1728d6c5c592d12fc54ae.html
+xcode-select: error: tool 'opendiff' requires Xcode, but active developer directory '/Library/Developer/CommandLineTools' is a com
+mand line tools instance
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Messing around with an Xcode install always seems to mean rebooting your machine and I have an active crawl going on my development box so that was out of the question.  Looking back to my diff article, one of the other tools was Meld which is a part of &lt;a href=&quot;https://brew.sh/&quot;&gt;HomeBrew&lt;/a&gt;.  The beauty of anything HomeBrew is always the installation model.  Brew even helpfully tells you when the installation model changes which it did this time so I now needed to use:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;brew install caskroom/cask/meld&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;A very, very quick command:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;meld 2094f14b81ddd5d6cf8eab7a487e97e4
+f34935c8.html 68e0f2de414da40d33a1728d6c5c592d12fc54ae.html&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;gave me exactly the info I needed:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/meld_diff.png&quot; alt=&quot;meld_diff.png&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 18 Apr 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/software_engineering/2017/04/18/returning-to-a-better-diff-tool.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/software_engineering/2017/04/18/returning-to-a-better-diff-tool.html</guid>
+        
+        <category>software_engineering</category>
+        
+        <category>diff</category>
+        
+        
+        <category>software_engineering</category>
+        
+      </item>
+    
+      <item>
+        <title>In Praise of Quora</title>
+        <description>
+</description>
+        <pubDate>Mon, 17 Apr 2017 19:06:35 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/04/17/in-praise-of-quora.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/17/in-praise-of-quora.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Rails Idiocy - When Params In Your Controller Are Nil</title>
@@ -913,101 +973,6 @@ end
         
         
         <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Rails Tip - When Puma Doesn't Run on the Specified Port</title>
-        <description>&lt;p&gt;So I just noticed this particular oddness:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;12:12 $ bundle exec rails s -p4000
-=&amp;gt; Booting Puma
-=&amp;gt; Rails 5.0.1 application starting in development on http://localhost:4000
-=&amp;gt; Run `rails server -h` for more startup options
-Puma starting in single mode...
-* Version 3.7.0 (ruby 2.3.1-p112), codename: Snowy Sagebrush
-* Min threads: 5, max threads: 5
-* Environment: development
-* Listening on tcp://0.0.0.0:3000
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;As you can see Puma is being started with a port 4000 directive but it is actually listening on the default 3000 port.&lt;/p&gt;
-
-&lt;p&gt;A bit of googling led me to this bit of text in a &lt;a href=&quot;https://github.com/puma/puma/issues/1200&quot;&gt;Github issue&lt;/a&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;After updating the gem version and bundling: gem ‘puma’, ‘~&amp;gt; 3.6.2’ &lt;a href=&quot;https://github.com/puma/puma/issues/1200#issuecomment-278606118&quot;&gt;More…&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;I edited my Gemfile and replaced:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;gem ‘puma’, ‘~&amp;gt; 3.0’&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;with:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;gem ‘puma’, ‘~&amp;gt; 3.6.2’&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;A quick bundle install and then another rails s -p4000 gives:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle exec rails s -p4000
-=&amp;gt; Booting Puma
-=&amp;gt; Rails 5.0.1 application starting in development on http://localhost:4000
-=&amp;gt; Run `rails server -h` for more startup options
-Puma starting in single mode...
-* Version 3.6.2 (ruby 2.3.1-p112), codename: Sleepy Sunday Serenity
-* Min threads: 5, max threads: 5
-* Environment: development
-* Listening on tcp://localhost:4000
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;As with all http testing, a curl -I is always handy for figuring out if things are working:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -I http://localhost:4000/
-HTTP/1.1 200 OK
-X-Frame-Options: SAMEORIGIN
-X-XSS-Protection: 1; mode=block
-X-Content-Type-Options: nosniff
-Content-Type: text/html; charset=utf-8
-ETag: W/&quot;c06ad854cb732d5ed93f13e0e4a601ac&quot;
-Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 85a07f99-f8b3-4692-aaa5-4f7c8327d901
-X-Runtime: 0.032369
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Wed, 05 Apr 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2017/04/05/rails-tip-when-puma-doesn-t-run-on-the-specified-port.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/04/05/rails-tip-when-puma-doesn-t-run-on-the-specified-port.html</guid>
-        
-        <category>rails</category>
-        
-        <category>puma</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Finding God in Books and Serendipity</title>
-        <description>&lt;p&gt;This post is something different from what I usually write and far more personal.  I am a christian and, nominally, a protestant although I care little about denominations.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 01 Apr 2017 09:09:37 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/personal/2017/04/01/finding-god-in-books-and-serendipity.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/personal/2017/04/01/finding-god-in-books-and-serendipity.html</guid>
-        
-        <category>personal</category>
-        
-        <category>god</category>
-        
-        
-        <category>personal</category>
         
       </item>
     
