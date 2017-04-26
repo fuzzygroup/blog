@@ -3,6 +3,7 @@ layout: post
 title: Testing Out New Programming Languages Using Docker
 category: docker
 tags: ["docker", "programming", "elixir"]
+description: If you're looking to experiment with different programming languages then Docker can make this really, really easy -- far simpler than a native install.
 ---
 I am, as you likely know, an unabashed Ruby fan -- love the language; loathe the performance but still a huge, huge damn fan.  Ruby is the first language I ever fell in love with and like many first loves, they never really fade.  Still, even so, there times when you just hunger for something new.  Here's how to get a new programming language up and running with Docker for a handful of different environments.  I deliberately chose languages that can boot into a console or REPL (replace-evaluate-print-loop) since that's the easiest way to get going in terms of experimenting with a language.
 
