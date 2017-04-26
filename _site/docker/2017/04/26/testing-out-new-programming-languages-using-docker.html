@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Testing Out New Programming Languages Using Docker</title>
+  <meta name="description" content="I am, as you likely know, an unabashed Ruby fan – love the language; loathe the performance but still a huge, huge damn fan.  Ruby is the first language I ev...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/docker/2017/04/26/testing-out-new-programming-languages-using-docker.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="Testing Out New Programming Languages Using Docker">
+
+  
+    <meta name="twitter:description"
+      content="I am, as you likely know, an unabashed Ruby fan – love the language; loathe the performance but still a huge, huge damn fan.  Ruby is the first language I ever fell in love with and like many first...">
+  
+
+  
+    <meta name="twitter:image"
+      content="https://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Testing Out New Programming Languages Using Docker</h1>
+    <p class="I'll"><time datetime="2017-04-26T00:00:00-04:00" itemprop="datePublished">Apr 26, 2017</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>I am, as you likely know, an unabashed Ruby fan – love the language; loathe the performance but still a huge, huge damn fan.  Ruby is the first language I ever fell in love with and like many first loves, they never really fade.  Still, even so, there times when you just hunger for something new.  Here’s how to get a new programming language up and running with Docker for a handful of different environments.  I deliberately chose languages that can boot into a console or REPL (replace-evaluate-print-loop) since that’s the easiest way to get going in terms of experimenting with a language.</p>
+
+<h1 id="installing-docker">Installing Docker</h1>
+
+<p>The easiest way to install Docker is to follow the official directions <a href="https://docs.docker.com/engine/installation/">here</a>.  You want Docker Community Edition in likely one of these platforms:</p>
+
+<ul>
+  <li><a href="https://docs.docker.com/docker-for-mac/install/">Mac</a></li>
+  <li><a href="https://docs.docker.com/docker-for-windows/install/">Windows</a></li>
+  <li><a href="https://docs.docker.com/engine/installation/linux/ubuntu/">Ubuntu</a></li>
+</ul>
+
+<p>Please note that Docker install urls change frequently so you may need to look around a bit.  They work today, end of April 2017, how long that lasts is unclear.</p>
+
+<h1 id="docker-basics">Docker Basics</h1>
+
+<p>There are a few basic Docker things that you need to know, particularly, if you run Docker on OSX.  Docker is a container technology, similar to a virtual machine (albeit faster, smaller and very differently implemented) that allows you to run programs.  The best way I understand Docker is to think of it as a portable runtime that is bound to a software stack and allows you to achieve build once, run anywhere status.  The software stack can be your own code, 3rd party code such as a database or some combination.</p>
+
+<h2 id="the-ps-and-kill-commands">The ps and kill Commands</h2>
+
+<p>Just like your operating system has a ps command, so too does Docker:</p>
+
+<p><img src="/blog/assets/docker_ps.png" alt="docker_ps.png" /></p>
+
+<p>Unlike your operating system where a simple number denotes a process id, Docker uses a git like hash for each process.</p>
+
+<p>Just like your operating system has a kill command, so too does docker which you run with:</p>
+
+<blockquote>
+  <p>docker kill hash</p>
+</blockquote>
+
+<p>The general syntax shown above of <strong>docker</strong> <em>command</em> is what you’ll see below.  Normally there will be other options as well which you can see illustrated below.</p>
+
+<h2 id="the-magic-eval-statement">The Magic Eval Statement</h2>
+
+<p>If you get this message:</p>
+
+<p>docker ps
+Cannot connect to the Docker daemon at tcp://192.168.59.103:2376. Is the docker daemon running?</p>
+
+<p>after running a docker ps or any docker command then its an issue of not being able to find the Docker daemon and then you need this bit of magic:</p>
+
+<blockquote>
+  <p>eval $(docker-machine env ${C_DOCKER_MACHINE})</p>
+</blockquote>
+
+<p>My bash skills are laughably bad so I’m not going to even try and explain that.  Just think of it as a magic spell given to you by an experienced wizard – you don’t have to understand how it works as long as it does.</p>
+
+<h2 id="the-images-command">The images Command</h2>
+
+<p>Run the command docker images to find all the Docker images on your system.  You’ll be surprised at how big some of these can be and they often will hang out on your system, just eating your disc space.  Just as an example, a prototype I played with using the tleyden5iwx/open-ocr-preprocessor OpenOcr image over a year ago is still on my system using 1.3 gigs of disc sapce.</p>
+
+<h2 id="disc-space-usage--where-does-all-this-go">Disc Space Usage / Where Does All This Go?</h2>
+
+<p>The location of all your images varies by <a href="http://stackoverflow.com/questions/19234831/where-are-docker-images-stored-on-the-host-machine">operating system</a>.  On OSX it is stored under the virtual machine:</p>
+
+<blockquote>
+  <p>~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2</p>
+</blockquote>
+
+<p>Please keep in mind that you can use up a considerable amount of disc space just by experimenting with images.  Here’s my system:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>du -hc ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
+ 21G	/Users/sjohnson/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
+ 21G	total
+</code></pre>
+</div>
+
+<h1 id="testing-different-languages">Testing Different Languages</h1>
+
+<h2 id="ruby">Ruby</h2>
+
+<p>In case you’re not a rubyist, I thought I’d start with this one.  <a href="https://hub.docker.com/r/library/ruby/tags/">Ruby on Docker</a></p>
+
+<p>docker run –rm –name ruby -it ruby:2.4-alpine</p>
+
+<h2 id="elixir">Elixir</h2>
+
+<p>Elixir is a next generation functional language designed by some of the former Rails core members.  <a href="https://hub.docker.com/_/elixir/">Elixir on Docker</a></p>
+
+<p>docker run –rm –name elixir -it elixir:1.4-slim</p>
+
+<p>Here’s what this process looks like while it runs:</p>
+
+<p><img src="/blog/assets/docker_elixir.png" alt="docker_elixir.png" /></p>
+
+<h2 id="php-71">PHP 7.1</h2>
+
+<p>PHP is, well, php.  Do I really need to say any more?  <a href="https://hub.docker.com/r/library/php/tags/">PHP On Docker</a></p>
+
+<p>docker run –rm –name php -it php:7.1-alpine</p>
+
+<h2 id="python-27">Python 2.7</h2>
+
+<p>Python is a dynamic scripting language similar to Ruby.  Python 2.7 is the mainstream version of Python.  <a href="https://hub.docker.com/_/python/">Python on Docker</a></p>
+
+<p>docker run –rm –name python27 -it python:2.7-slim</p>
+
+<h2 id="python-3">Python 3</h2>
+
+<p>Python 3 is a newer version of Python that hasn’t been as widely adopted as the Python 2 family.</p>
+
+<p>docker run –rm –name python33 -it python:3.3-slim</p>
+
+<h2 id="r">R</h2>
+
+<p>I really, really like R for statistical analysis and data crunching.  <a href="https://hub.docker.com/_/r-base/">R on Docker</a></p>
+
+<p>docker run –rm –name r-base -it r-base:3.4.0</p>
+
+<p>R can be a bit different from other languages due to its mathematical orientation.  Here’s a sample R one liner you can use to test it:</p>
+
+<blockquote>
+  <p>print(sample(1:10))</p>
+</blockquote>
+
+<p><a href="http://www.rexamples.com/">More R Examples</a></p>
+
+<h2 id="perl">Perl</h2>
+
+<p>Perl in many ways is the grandfather to all modern web development.  Unlike the languages above, Perl isn’t a REPL based language so you’ll have to pass a script in when you run it.  <a href="https://hub.docker.com/_/perl/">Perl on Docker</a></p>
+
+<p>docker run -it –rm –name my-running-script -v “$PWD”:/usr/src/myapp -w /usr/src/myapp perl:5.20 perl your-daemon-or-script.pl</p>
+
+<h2 id="julia">Julia</h2>
+
+<p>Julia is a high performance language used for finance and math that runs on top of the Java VM.  <a href="https://hub.docker.com/_/julia/">Julia on Docker</a></p>
+
+<p>docker run -it –rm -v “$PWD”:/usr/myapp -w /usr/myapp julia julia script.jl arg1 arg2</p>
+
+<h1 id="learning-more-about-docker">Learning More About Docker</h1>
+
+<p>Most of what I know about Docker, I learned from The <a href="https://diveintodocker.com/">Dive into Docker</a> course by Nick Janetakis.  Recommended.</p>
+
+  </div>
+  
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

@@ -6,973 +6,523 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 18 Apr 2017 06:07:08 -0400</pubDate>
-    <lastBuildDate>Tue, 18 Apr 2017 06:07:08 -0400</lastBuildDate>
+    <pubDate>Wed, 26 Apr 2017 17:49:44 -0400</pubDate>
+    <lastBuildDate>Wed, 26 Apr 2017 17:49:44 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
-        <title>Returning to a Better Diff Tool</title>
-        <description>&lt;p&gt;So this morning I needed to diff some fairly complex html and see the differences. This is part of a page archiver I’m building and the command:&lt;/p&gt;
+        <title>Testing Out New Programming Languages Using Docker</title>
+        <description>&lt;p&gt;I am, as you likely know, an unabashed Ruby fan – love the language; loathe the performance but still a huge, huge damn fan.  Ruby is the first language I ever fell in love with and like many first loves, they never really fade.  Still, even so, there times when you just hunger for something new.  Here’s how to get a new programming language up and running with Docker for a handful of different environments.  I deliberately chose languages that can boot into a console or REPL (replace-evaluate-print-loop) since that’s the easiest way to get going in terms of experimenting with a language.&lt;/p&gt;
+
+&lt;h1 id=&quot;installing-docker&quot;&gt;Installing Docker&lt;/h1&gt;
+
+&lt;p&gt;The easiest way to install Docker is to follow the official directions &lt;a href=&quot;https://docs.docker.com/engine/installation/&quot;&gt;here&lt;/a&gt;.  You want Docker Community Edition in likely one of these platforms:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.docker.com/docker-for-mac/install/&quot;&gt;Mac&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.docker.com/docker-for-windows/install/&quot;&gt;Windows&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.docker.com/engine/installation/linux/ubuntu/&quot;&gt;Ubuntu&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Please note that Docker install urls change frequently so you may need to look around a bit.  They work today, end of April 2017, how long that lasts is unclear.&lt;/p&gt;
+
+&lt;h1 id=&quot;docker-basics&quot;&gt;Docker Basics&lt;/h1&gt;
+
+&lt;p&gt;There are a few basic Docker things that you need to know, particularly, if you run Docker on OSX.  Docker is a container technology, similar to a virtual machine (albeit faster, smaller and very differently implemented) that allows you to run programs.  The best way I understand Docker is to think of it as a portable runtime that is bound to a software stack and allows you to achieve build once, run anywhere status.  The software stack can be your own code, 3rd party code such as a database or some combination.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-ps-and-kill-commands&quot;&gt;The ps and kill Commands&lt;/h2&gt;
+
+&lt;p&gt;Just like your operating system has a ps command, so too does Docker:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/docker_ps.png&quot; alt=&quot;docker_ps.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Unlike your operating system where a simple number denotes a process id, Docker uses a git like hash for each process.&lt;/p&gt;
+
+&lt;p&gt;Just like your operating system has a kill command, so too does docker which you run with:&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;diff 2094f14b81ddd5d6cf8eab7a487e97e4f34935c8.html 68e0f2de414da40d33a1728d6c5c592d12fc54ae.html&lt;/p&gt;
+  &lt;p&gt;docker kill hash&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;just didn’t give me anything really intelligible (or I’m too dumb to read raw diff output; its possible).  I’ve always maintained that the reason I write a blog is to capture my own knowledge so I turned to a &lt;a href=&quot;http://fuzzyblog.io/blog/software_engineering/2017/02/07/on-merging-files-diff-alternatives-on-the-mac.html&quot;&gt;post&lt;/a&gt; I wrote a few months ago on this very topic.&lt;/p&gt;
+&lt;p&gt;The general syntax shown above of &lt;strong&gt;docker&lt;/strong&gt; &lt;em&gt;command&lt;/em&gt; is what you’ll see below.  Normally there will be other options as well which you can see illustrated below.&lt;/p&gt;
 
-&lt;p&gt;Ah Ha!  I need to use OpenDiff, a part of Xcode.  Unfortunately this gave me:&lt;/p&gt;
+&lt;h2 id=&quot;the-magic-eval-statement&quot;&gt;The Magic Eval Statement&lt;/h2&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;opendiff 2094f14b81ddd5d6cf8eab7a487e
-97e4f34935c8.html 68e0f2de414da40d33a1728d6c5c592d12fc54ae.html
-xcode-select: error: tool 'opendiff' requires Xcode, but active developer directory '/Library/Developer/CommandLineTools' is a com
-mand line tools instance
+&lt;p&gt;If you get this message:&lt;/p&gt;
+
+&lt;p&gt;docker ps
+Cannot connect to the Docker daemon at tcp://192.168.59.103:2376. Is the docker daemon running?&lt;/p&gt;
+
+&lt;p&gt;after running a docker ps or any docker command then its an issue of not being able to find the Docker daemon and then you need this bit of magic:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;eval $(docker-machine env ${C_DOCKER_MACHINE})&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;My bash skills are laughably bad so I’m not going to even try and explain that.  Just think of it as a magic spell given to you by an experienced wizard – you don’t have to understand how it works as long as it does.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-images-command&quot;&gt;The images Command&lt;/h2&gt;
+
+&lt;p&gt;Run the command docker images to find all the Docker images on your system.  You’ll be surprised at how big some of these can be and they often will hang out on your system, just eating your disc space.  Just as an example, a prototype I played with using the tleyden5iwx/open-ocr-preprocessor OpenOcr image over a year ago is still on my system using 1.3 gigs of disc sapce.&lt;/p&gt;
+
+&lt;h2 id=&quot;disc-space-usage--where-does-all-this-go&quot;&gt;Disc Space Usage / Where Does All This Go?&lt;/h2&gt;
+
+&lt;p&gt;The location of all your images varies by &lt;a href=&quot;http://stackoverflow.com/questions/19234831/where-are-docker-images-stored-on-the-host-machine&quot;&gt;operating system&lt;/a&gt;.  On OSX it is stored under the virtual machine:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Please keep in mind that you can use up a considerable amount of disc space just by experimenting with images.  Here’s my system:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;du -hc ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
+ 21G	/Users/sjohnson/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
+ 21G	total
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;Messing around with an Xcode install always seems to mean rebooting your machine and I have an active crawl going on my development box so that was out of the question.  Looking back to my diff article, one of the other tools was Meld which is a part of &lt;a href=&quot;https://brew.sh/&quot;&gt;HomeBrew&lt;/a&gt;.  The beauty of anything HomeBrew is always the installation model.  Brew even helpfully tells you when the installation model changes which it did this time so I now needed to use:&lt;/p&gt;
+&lt;h1 id=&quot;testing-different-languages&quot;&gt;Testing Different Languages&lt;/h1&gt;
+
+&lt;h2 id=&quot;ruby&quot;&gt;Ruby&lt;/h2&gt;
+
+&lt;p&gt;In case you’re not a rubyist, I thought I’d start with this one.  &lt;a href=&quot;https://hub.docker.com/r/library/ruby/tags/&quot;&gt;Ruby on Docker&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;docker run –rm –name ruby -it ruby:2.4-alpine&lt;/p&gt;
+
+&lt;h2 id=&quot;elixir&quot;&gt;Elixir&lt;/h2&gt;
+
+&lt;p&gt;Elixir is a next generation functional language designed by some of the former Rails core members.  &lt;a href=&quot;https://hub.docker.com/_/elixir/&quot;&gt;Elixir on Docker&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;docker run –rm –name elixir -it elixir:1.4-slim&lt;/p&gt;
+
+&lt;p&gt;Here’s what this process looks like while it runs:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/docker_elixir.png&quot; alt=&quot;docker_elixir.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;php-71&quot;&gt;PHP 7.1&lt;/h2&gt;
+
+&lt;p&gt;PHP is, well, php.  Do I really need to say any more?  &lt;a href=&quot;https://hub.docker.com/r/library/php/tags/&quot;&gt;PHP On Docker&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;docker run –rm –name php -it php:7.1-alpine&lt;/p&gt;
+
+&lt;h2 id=&quot;python-27&quot;&gt;Python 2.7&lt;/h2&gt;
+
+&lt;p&gt;Python is a dynamic scripting language similar to Ruby.  Python 2.7 is the mainstream version of Python.  &lt;a href=&quot;https://hub.docker.com/_/python/&quot;&gt;Python on Docker&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;docker run –rm –name python27 -it python:2.7-slim&lt;/p&gt;
+
+&lt;h2 id=&quot;python-3&quot;&gt;Python 3&lt;/h2&gt;
+
+&lt;p&gt;Python 3 is a newer version of Python that hasn’t been as widely adopted as the Python 2 family.&lt;/p&gt;
+
+&lt;p&gt;docker run –rm –name python33 -it python:3.3-slim&lt;/p&gt;
+
+&lt;h2 id=&quot;r&quot;&gt;R&lt;/h2&gt;
+
+&lt;p&gt;I really, really like R for statistical analysis and data crunching.  &lt;a href=&quot;https://hub.docker.com/_/r-base/&quot;&gt;R on Docker&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;docker run –rm –name r-base -it r-base:3.4.0&lt;/p&gt;
+
+&lt;p&gt;R can be a bit different from other languages due to its mathematical orientation.  Here’s a sample R one liner you can use to test it:&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;brew install caskroom/cask/meld&lt;/p&gt;
+  &lt;p&gt;print(sample(1:10))&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;A very, very quick command:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.rexamples.com/&quot;&gt;More R Examples&lt;/a&gt;&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;meld 2094f14b81ddd5d6cf8eab7a487e97e4
-f34935c8.html 68e0f2de414da40d33a1728d6c5c592d12fc54ae.html&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;h2 id=&quot;perl&quot;&gt;Perl&lt;/h2&gt;
 
-&lt;p&gt;gave me exactly the info I needed:&lt;/p&gt;
+&lt;p&gt;Perl in many ways is the grandfather to all modern web development.  Unlike the languages above, Perl isn’t a REPL based language so you’ll have to pass a script in when you run it.  &lt;a href=&quot;https://hub.docker.com/_/perl/&quot;&gt;Perl on Docker&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/blog/assets/meld_diff.png&quot; alt=&quot;meld_diff.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;docker run -it –rm –name my-running-script -v “$PWD”:/usr/src/myapp -w /usr/src/myapp perl:5.20 perl your-daemon-or-script.pl&lt;/p&gt;
+
+&lt;h2 id=&quot;julia&quot;&gt;Julia&lt;/h2&gt;
+
+&lt;p&gt;Julia is a high performance language used for finance and math that runs on top of the Java VM.  &lt;a href=&quot;https://hub.docker.com/_/julia/&quot;&gt;Julia on Docker&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;docker run -it –rm -v “$PWD”:/usr/myapp -w /usr/myapp julia julia script.jl arg1 arg2&lt;/p&gt;
+
+&lt;h1 id=&quot;learning-more-about-docker&quot;&gt;Learning More About Docker&lt;/h1&gt;
+
+&lt;p&gt;Most of what I know about Docker, I learned from The &lt;a href=&quot;https://diveintodocker.com/&quot;&gt;Dive into Docker&lt;/a&gt; course by Nick Janetakis.  Recommended.&lt;/p&gt;
 </description>
-        <pubDate>Tue, 18 Apr 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/software_engineering/2017/04/18/returning-to-a-better-diff-tool.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/software_engineering/2017/04/18/returning-to-a-better-diff-tool.html</guid>
+        <pubDate>Wed, 26 Apr 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/docker/2017/04/26/testing-out-new-programming-languages-using-docker.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/docker/2017/04/26/testing-out-new-programming-languages-using-docker.html</guid>
         
-        <category>software_engineering</category>
+        <category>docker</category>
         
-        <category>diff</category>
+        <category>programming</category>
+        
+        <category>elixir</category>
         
         
-        <category>software_engineering</category>
+        <category>docker</category>
         
       </item>
     
       <item>
-        <title>In Praise of Quora</title>
-        <description>
+        <title>Using the Bing Cognitive Search API - Decrypting the Search Result Url</title>
+        <description>&lt;p&gt;There are times when you use someone’s API that just make you go &lt;em&gt;What the Hell???&lt;/em&gt; – what were they thinking???  I hit this recently using the CognitiveBing gem in Ruby.  This is a gem which lets you execute queries against the Bing search engine. What I found was that an interface to the search engine &lt;strong&gt;fails&lt;/strong&gt; to give you the &lt;strong&gt;actual url&lt;/strong&gt; to the search results that it finds.  What Bing instead does is send down a tracking url on Bing itself that is a redirector to the search result in question.  This is so ludicrous that it astonishes me.  Sure, I get it, this gives Bing more tracking information but the CognitiveSearch api is a &lt;strong&gt;paid&lt;/strong&gt; api.  If I’m paying good money for an api then I wouldn’t expect that the destinations of everything I care about in the search result get fed bank to Bing.  And, just to clarify, this isn’t a part of the gem, it is in the raw search result sent back from Bing.&lt;/p&gt;
+
+&lt;p&gt;http://stackoverflow.com/questions/2733007/urldecode-in-ruby&lt;/p&gt;
+
+&lt;p&gt;You can’t use display url&lt;/p&gt;
+
+&lt;p&gt;My Fork: https://github.com/fuzzygroup/cognitivebing/&lt;/p&gt;
+
+&lt;p&gt;Pagination rference: https://github.com/kaminari/kaminari&lt;/p&gt;
+
+&lt;p&gt;https://github.com/aggounix/cognitivebing&lt;/p&gt;
+
+&lt;p&gt;https://msdn.microsoft.com/en-us/library/dn760794.aspx#responsefilter&lt;/p&gt;
+
+&lt;p&gt;https://msdn.microsoft.com/en-us/library/dn760787.aspx&lt;/p&gt;
+
+&lt;p&gt;https://msdn.microsoft.com/en-US/library/dn760794.aspx&lt;/p&gt;
+
+&lt;p&gt;https://docs.microsoft.com/en-us/azure/cognitive-services/Speech/GetStarted/GetStarted-cURL&lt;/p&gt;
+
+&lt;p&gt;https://docs.microsoft.com/en-us/azure/cognitive-services/cognitive-services-apis-create-account&lt;/p&gt;
 </description>
-        <pubDate>Mon, 17 Apr 2017 19:06:35 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/04/17/in-praise-of-quora.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/17/in-praise-of-quora.html</guid>
+        <pubDate>Sat, 22 Apr 2017 20:28:41 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/04/22/using-the-bing-api-decrypting-the-search-result-url.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/22/using-the-bing-api-decrypting-the-search-result-url.html</guid>
         
         
       </item>
     
       <item>
-        <title>Rails Idiocy - When Params In Your Controller Are Nil</title>
-        <description>&lt;p&gt;So I got up early and got cracking on some code and then I hit an absolute wall – the kind of thing that just stops you cold.  I was debugging a controller in my side project and I got a nil on accessing a member on the params hash.  And since this was something I’d done previously I thought it odd but added debugger to my controller and evaluated params:&lt;/p&gt;
+        <title>Rails and ActiveRecord Optimization - Banishing MySQL File Sorts</title>
+        <description>&lt;p&gt;MariaDB [seira_crawler_development]&amp;gt; explain SELECT  &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.* FROM &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt; WHERE &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.&lt;code class=&quot;highlighter-rouge&quot;&gt;url_type&lt;/code&gt; = ‘udemy_user’ AND &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.&lt;code class=&quot;highlighter-rouge&quot;&gt;url_fid&lt;/code&gt; = ‘zohouniversity’ ORDER BY &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.&lt;code class=&quot;highlighter-rouge&quot;&gt;id&lt;/code&gt; ASC LIMIT 1\G
+&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;* 1. row **&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;*****
+           id: 1
+  select_type: SIMPLE
+        table: page_archives
+         type: ref
+possible_keys: page_type__date_created_at__url,url_fid__url_type__adate_created_at__url,page_type__meta_type__date_created_at__url
+          key: url_fid__url_type__adate_created_at__url
+      key_len: 1536
+          ref: const,const
+         rows: 2
+        Extra: Using index condition; Using where; Using filesort
+1 row in set (0.00 sec)&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[12, 21] in /Users/sjohnson/Dropbox/fuzzygroup/hyde/seira_watch_web_app/app/controllers/instructors_controller.rb
-   12:   end
-   13:
-   14:   def create
-   15:     @instructor = Instructor.new# =&amp;gt; (params[:instructor])
-   16:     debugger
-=&amp;gt; 17:     if params[:instructor][:url] =~ /http/
-   18:     else
-   19:       flash[:error] = &quot;Please specify a valid url&quot;
-   20:       redirect_to edit_instructor_path(@instructor) and return
-   21:     end
-(byebug) params
-nil
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;p&gt;MariaDB [seira_crawler_development]&amp;gt; quit
+Bye
+sjohnson@ip-10-19-48-1:~/Dropbox/fuzzygroup/hyde/seira_crawler$ bundle exec rails c
+#&amp;lt;Gem::Specification name=sidekiq version=4.2.10&amp;gt;
+Loading development environment (Rails 5.0.2)
+2.3.1 :001 &amp;gt; PageArchive.url_type_and_url_fid_exist?(“udemy_user”, “zohouniversity1”)
+  PageArchive Load (0.4ms)  SELECT  &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.* FROM &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt; WHERE &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.&lt;code class=&quot;highlighter-rouge&quot;&gt;url_type&lt;/code&gt; = ‘udemy_user’ AND &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.&lt;code class=&quot;highlighter-rouge&quot;&gt;url_fid&lt;/code&gt; = ‘zohouniversity1’ LIMIT 1
+false
+2.3.1 :002 &amp;gt; quit
+sjohnson@ip-10-19-48-1:~/Dropbox/fuzzygroup/hyde/seira_crawler$ mysql -uroot -p seira_crawler_development
+Enter password:
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A&lt;/p&gt;
 
-&lt;p&gt;A decade plus in Rails and Ghu only knows how many controllers and I don’t think I’ve ever seen nil for params.  I mean params is effectively a god object that is always there.  How the hell does it become nil?&lt;/p&gt;
+&lt;p&gt;Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 147
+Server version: 10.1.19-MariaDB Homebrew&lt;/p&gt;
 
-&lt;p&gt;This was when I put my keyboard down, went over to my editor and started doing some writing.  I knew in my gut that this was an oddball issue and what I really needed was another set of eyes.  And, an hour later, my buddy &lt;a href=&quot;http://www.nickjanetakis.com/blog/&quot;&gt;Nick&lt;/a&gt;, gave me a hand over Google Hangouts pointing out that I had something wrong my strong params method:&lt;/p&gt;
+&lt;p&gt;Copyright (c) 2000, 2016, Oracle, MariaDB Corporation Ab and others.&lt;/p&gt;
 
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;instructor_params&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:instructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;permit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;p&gt;Type ‘help;’ or ‘\h’ for help. Type ‘\c’ to clear the current input statement.&lt;/p&gt;
 
-&lt;p&gt;The above code is lexically correct and won’t cause any errors but it will absolutely screw everything up and make params goto nil.  This should have been:&lt;/p&gt;
+&lt;p&gt;MariaDB [seira_crawler_development]&amp;gt; explain SELECT  &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.* FROM &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt; WHERE &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.&lt;code class=&quot;highlighter-rouge&quot;&gt;url_type&lt;/code&gt; = ‘udemy_user’ AND &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.&lt;code class=&quot;highlighter-rouge&quot;&gt;url_fid&lt;/code&gt; = ‘zohouniversity1’ LIMIT 1\G
+&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;* 1. row **&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;*****
+           id: 1
+  select_type: SIMPLE
+        table: page_archives
+         type: ref
+possible_keys: page_type__date_created_at__url,url_fid__url_type__adate_created_at__url,page_type__meta_type__date_created_at__url
+          key: url_fid__url_type__adate_created_at__url
+      key_len: 1536
+          ref: const,const
+         rows: 1
+        Extra: Using index condition
+1 row in set (0.00 sec)&lt;/p&gt;
 
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;instructor_params&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:instructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;permit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The difference between [ ] and () is of course very, very real but it is subtle, particularly from a visual angle where you can easily mistake them.&lt;/p&gt;
+&lt;p&gt;# PageArchive.url_type_and_url_fid_exist?(“udemy_user”, “zohouniversity”)
+  def self.url_type_and_url_fid_exist?(url_type, url_fid)
+    return true if PageArchive.where(:url_type =&amp;gt; url_type, :url_fid =&amp;gt; url_fid).order(“”).limit(1).first
+    return false 
+  end&lt;/p&gt;
 </description>
-        <pubDate>Wed, 12 Apr 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2017/04/12/rails-idiocy-when-params-in-your-controller-are-nil.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/04/12/rails-idiocy-when-params-in-your-controller-are-nil.html</guid>
+        <pubDate>Sat, 22 Apr 2017 19:40:04 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/04/22/rails-and-activerecord-optimization-banishing-mysql-file-sorts.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/04/22/rails-and-activerecord-optimization-banishing-mysql-file-sorts.html</guid>
         
         <category>rails</category>
         
+        <category>mysql</category>
+        
+        <category>optimization</category>
+        
+        <category>activerecord</category>
+        
         
         <category>rails</category>
         
       </item>
     
       <item>
-        <title>Executing Word Counts with Bash</title>
-        <description>&lt;p&gt;I’m in the process of starting a new writing project and I wanted to make the process of getting metrics easier so I rolled together this bash script:&lt;/p&gt;
+        <title>Git Overview - Resetting Your Changes</title>
+        <description>&lt;p&gt;http://stackoverflow.com/questions/5807137/how-to-revert-uncommitted-changes-including-files-and-folders&lt;/p&gt;
+</description>
+        <pubDate>Fri, 21 Apr 2017 04:53:30 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/04/21/git-overview-resetting-your-changes.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/21/git-overview-resetting-your-changes.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>OSX MySQL Disc Space Usage and Location</title>
+        <description>&lt;p&gt;Your permanent storage for a SAAS app is always one of your single biggest per user costs.  There are two ways to get this info – at the SQL layer with a query and at the filesystem layer.  Each method is explained.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Word Count:&quot;&lt;/span&gt;
-cat &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.md | wc -w
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Page Count:&quot;&lt;/span&gt;
-cat &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.md | wc -w | xargs -I&lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt; expr &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt; / 250
+&lt;h1 id=&quot;getting-disc-space-from-mysql-with-a-query&quot;&gt;Getting Disc Space From MySQL With a Query&lt;/h1&gt;
+
+&lt;p&gt;You can run this query:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;select table_schema, sum((data_length+index_length)/1024/1024) AS MB from information_schema.tables group by 1;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;If you’re looking to do this yourself then these commands all go into a single text file and a chmod +x command on the file makes it executable.&lt;/p&gt;
+&lt;p&gt;and you’ll get back a per database assessment of disc space used.  That’s the easiest way to get this information.  Here’s what it looks like:&lt;/p&gt;
 
-&lt;p&gt;Here’s the output of this script:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./wordcount
-Word Count:
-    3827
-Page Count:
-15
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;| seira_crawler_development         | 354.68750000 |
+| seira_crawler_test                |   0.23437500 |
+| seira_watch_development           |   0.75000000 |
+| seira_watch_site_development      |   0.12500000 |
+| seira_watch_web_app_1_development |   2.82812500 |
+| seira_watch_web_app_2_development |   1.21875000 |
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;The interesting tool here is &lt;strong&gt;expr&lt;/strong&gt; which is a command line math tool.  The 250 is a metric that I use for the number of words per printed page.  I know in the modern era that a printed page is perhaps a bit of an anachronism but I find it very comforting to know that I wrote 15 pages today (which is what I actually turned out today).&lt;/p&gt;
+&lt;h1 id=&quot;where-is-your-physical-database-instance&quot;&gt;Where Is Your Physical Database Instance?&lt;/h1&gt;
 
-&lt;p&gt;What this does is:&lt;/p&gt;
+&lt;p&gt;Run this mysql query from your command line:&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;take a collection of markdown files&lt;/li&gt;
-  &lt;li&gt;count all the words in the collection of markdown files&lt;/li&gt;
-  &lt;li&gt;count all the words in the markdown files and then feed that value into xargs which then feeds the value into expr and divides it by 250&lt;/li&gt;
-&lt;/ul&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql -uUSER -p -e 'SHOW VARIABLES WHERE Variable_Name LIKE &quot;%dir&quot;'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h1 id=&quot;cross-references&quot;&gt;Cross References:&lt;/h1&gt;
+&lt;p&gt;You’ll see something like this:&lt;/p&gt;
 
-&lt;p&gt;Here are the places where I sourced some of these techniques:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql -uUSER -p -e 'SHOW VARIABLES WHERE Variable_Name LIKE &quot;%dir&quot;'
+Enter password:
++---------------------------+---------------------------------------------------------+
+| Variable_name             | Value                                                   |
++---------------------------+---------------------------------------------------------+
+| aria_sync_log_dir         | NEWFILE                                                 |
+| basedir                   | /usr/local/Cellar/mariadb/10.1.19                       |
+| character_sets_dir        | /usr/local/Cellar/mariadb/10.1.19/share/mysql/charsets/ |
+| datadir                   | /usr/local/var/mysql/                                   |
+| innodb_data_home_dir      |                                                         |
+| innodb_log_arch_dir       | ./                                                      |
+| innodb_log_group_home_dir | ./                                                      |
+| innodb_tmpdir             |                                                         |
+| lc_messages_dir           |                                                         |
+| plugin_dir                | /usr/local/Cellar/mariadb/10.1.19/lib/plugin/           |
+| slave_load_tmpdir         | /var/folders/76/mqchlgzs6x5cv2f11jh3jkjw0000gn/T/       |
+| tmpdir                    | /var/folders/76/mqchlgzs6x5cv2f11jh3jkjw0000gn/T/       |
+| wsrep_data_home_dir       | /usr/local/var/mysql/                                   |
++---------------------------+---------------------------------------------------------+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;[Executing word counts using cat and wc](cat &lt;em&gt;work&lt;/em&gt;&lt;/td&gt;
-          &lt;td&gt;wc -w)&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/13182070/best-way-to-divide-in-bash-using-pipes&quot;&gt;An example using using Xargs to feed into expr&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Wed, 12 Apr 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/bash/2017/04/12/executing-word-counts-with-bash.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/bash/2017/04/12/executing-word-counts-with-bash.html</guid>
-        
-        <category>bash</category>
-        
-        <category>linux</category>
-        
-        <category>shell</category>
-        
-        
-        <category>Bash</category>
-        
-      </item>
-    
-      <item>
-        <title>A Content Strategy For Your Online Business</title>
-        <description>&lt;p&gt;Need flow – a stream of visitors always coming&lt;/p&gt;
+&lt;p&gt;The path datadir is where your data is stored.  For my system I want to look into this path: /usr/local/var/mysql/.&lt;/p&gt;
 
-&lt;p&gt;Two types of content - long form and short form&lt;/p&gt;
+&lt;h1 id=&quot;assessing-disc-space-usage&quot;&gt;Assessing Disc Space Usage&lt;/h1&gt;
 
-&lt;p&gt;Lack of Focus&lt;/p&gt;
+&lt;p&gt;Running an ls -l on the path in datadir will show you all your databases on your development machine.  Doing a du -h on the path to any database on your system will show you a result like this:&lt;/p&gt;
 
-&lt;p&gt;Lack of Flow&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;du -hc /usr/local/var/mysql/seira_crawler_development/
+400M    /usr/local/var/mysql/seira_crawler_development/
+400M    total
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;Lack of Short Form Content – bring in content Series&lt;/p&gt;
+&lt;p&gt;That’s the metric for my backing crawler data archive.  The data for a single user instance is:&lt;/p&gt;
 
-&lt;p&gt;Docker Tip of the Day&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;du -hc /usr/local/var/mysql/seira_watch_web_app_1_development/
+ 12M    /usr/local/var/mysql/seira_watch_web_app_1_development/
+ 12M    total
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;Docker Hint&lt;/p&gt;
+&lt;h1 id=&quot;scaling-the-numbers-up&quot;&gt;Scaling the Numbers Up&lt;/h1&gt;
 
-&lt;p&gt;Ansible&lt;/p&gt;
+&lt;p&gt;If you want to assess your disc space needs for a SAAS app, take your per user disc space needs and then multiply it by the number of users that you are projecting to handle and then add the disc space for any system level databases (such as the crawler data above).&lt;/p&gt;
 
-&lt;p&gt;Tweet + Short Form Blog Post&lt;/p&gt;
+&lt;h1 id=&quot;adding-the-numbers-to-a-dashboard&quot;&gt;Adding the Numbers to a Dashboard&lt;/h1&gt;
 
-&lt;p&gt;Write them a Week at a time - put 5 in the can - ignore saturdays and Sundays&lt;/p&gt;
+&lt;p&gt;If your SAAS app supports an admin tool of any type then you want to watch the growth of this number pretty carefully since unexpected database growth can lead to system outages and the like.  Here’s a quick Ruby snippet to get this information as a float which you could log, graph, etc:&lt;/p&gt;
 
-&lt;p&gt;right time to tweet&lt;/p&gt;
-
-&lt;p&gt;Weekly Email Blast – rollup of the content you wrote that week&lt;/p&gt;
-
-&lt;p&gt;a) Multiple Blog Solution&lt;/p&gt;
-
-&lt;p&gt;Multiple Blogs&lt;/p&gt;
-
-&lt;p&gt;Multiple Twitter Blogs&lt;/p&gt;
-
-&lt;p&gt;Why do people keep unscubscribing from my wtitter
-  * either focus change
-  * lack of updates -&amp;gt; tweet like 5x per day for a period&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 11 Apr 2017 13:02:48 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/04/11/a-content-strategy-for-your-online-business.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/11/a-content-strategy-for-your-online-business.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Linux Tip of the Day - ps -o</title>
-        <description>&lt;p&gt;https://til.hashrocket.com/posts/0edff85f2b-customizing-the-output-of-ps&lt;/p&gt;
-</description>
-        <pubDate>Tue, 11 Apr 2017 08:23:26 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/04/11/linux-tip-of-the-day-ps-o.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/11/linux-tip-of-the-day-ps-o.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Color Palette Design Tools</title>
-        <description>&lt;p&gt;Well Google released their new color palette tool for &lt;a href=&quot;https://material.io/color/&quot;&gt;Material&lt;/a&gt; and I thought I should point out some of the other tools for this:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.sankk.in/material-mixer/&quot;&gt;Sankk.in&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://flatuicolors.com/&quot;&gt;Flat UI Colors&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.materialpalette.com/&quot;&gt;MaterialPalette&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://color.adobe.com/create/color-wheel/&quot;&gt;Adobe Color Wheel&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://mdbootstrap.com/css/colors/&quot;&gt;Material Design Bootstrap&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.color-hex.com/color-palettes/&quot;&gt;Color-Hex&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Thanks to this &lt;a href=&quot;https://news.ycombinator.com/item?id=14085425&quot;&gt;Hacker News thread&lt;/a&gt; for surfacing some of these; the last two I found when I went looking for bootstrap versions.&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 11 Apr 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/design/2017/04/11/color-palette-design-tools.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/design/2017/04/11/color-palette-design-tools.html</guid>
-        
-        <category>design</category>
-        
-        <category>color</category>
-        
-        
-        <category>design</category>
-        
-      </item>
-    
-      <item>
-        <title>When Is a Side Project Ready to Ship</title>
-        <description>
-</description>
-        <pubDate>Mon, 10 Apr 2017 09:01:53 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/04/10/when-is-a-side-project-ready-to-ship.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/10/when-is-a-side-project-ready-to-ship.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Reviewing Open Source Ruby Crawling Gems</title>
-        <description>&lt;p&gt;I recently needed to build a crawler based page archiver that I could aim at a site and archive all pages on the site on a daily basis.  Historically I would have written this from scratch but I recently left my full time position and lost access to the recursive descent html crawler that I had painstakingly written over a period of years.  So it was either write it from scratch or build on top of something else.  Crawlers are one of those things that you can write easily at the start but then discover that getting them write is actually the work of years so I figured “time to look for some open source”.  This blog post is a write up on what I learned about open source crawling gems / projects in Ruby.&lt;/p&gt;
-
-&lt;p&gt;I used a number of criteria to winnow down the set of possibilities including:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;dependencies&lt;/li&gt;
-  &lt;li&gt;
-    &lt;h1 id=&quot;of-issues&quot;&gt;of issues&lt;/h1&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;h1 id=&quot;of-commits&quot;&gt;of commits&lt;/h1&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;h1 id=&quot;of-contributors&quot;&gt;of contributors&lt;/h1&gt;
-  &lt;/li&gt;
-  &lt;li&gt;last commit&lt;/li&gt;
-  &lt;li&gt;scalability approach: threads / queue / single machine&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;My logic here is that while code is good, maintained code is &lt;strong&gt;better&lt;/strong&gt;.  Things like the # of issues, # of commits and last commit indicate that a project should be alive and being worked on.  This isn’t entirely true.  There are some excellent crawling projects which have 0 issues (I was actually the first issue creator on at least one) but its a place to start.&lt;/p&gt;
-
-&lt;p&gt;The last one, scalability approach, is important.  I know that the site I need to crawl has 118,000 urls according to Google.  This means that unless I have either &lt;strong&gt;consistent&lt;/strong&gt; subsecond per page speed or a decent approach to scalability, a single process approach just won’t work.  There are 86,400 seconds per day so I need a per page crawl time of at least 0.75 seconds per page to meet that 118,000 goal with some wiggle room.  Additionally Ruby is a garbage collected, dynamic language so things tend to get slower over time as the crawl process either loses memory due to underling technical problems (either at their own code or at the components that it uses) or slows down due to garbage collection.&lt;/p&gt;
-
-&lt;p&gt;I started with github search for the terms: &lt;strong&gt;ruby crawl&lt;/strong&gt;.  I didn’t use the term gem because some crawling projects implemented in Ruby:&lt;/p&gt;
-
-&lt;p&gt;https://github.com/search?o=desc&amp;amp;q=ruby+crawl&amp;amp;s=stars&amp;amp;type=Repositories&amp;amp;utf8=%E2%9C%93&lt;/p&gt;
-
-&lt;p&gt;I then continued with the terms: &lt;strong&gt;ruby crawl gem&lt;/strong&gt; because there were tools I didn’t see on my first search that I remembered from having done this research previously (when I failed to document it).&lt;/p&gt;
-
-&lt;p&gt;https://github.com/search?p=2&amp;amp;q=ruby+crawl+gem&amp;amp;type=Repositories&amp;amp;utf8=%E2%9C%93&lt;/p&gt;
-
-&lt;p&gt;I ended up with this ridiculous set of browser tabs spanning two separate chrome windows:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/search_tabs_not_so_bad.png&quot; alt=&quot;search_tabs_not_so_bad.png&quot; /&gt;
-&lt;img src=&quot;/blog/assets/search_tabs_utterly_ridiculous.png&quot; alt=&quot;search_tabs_utterly_ridiculous.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;On a side note, I don’t understand why the state of researching something on the Internet, 20+ years after the browser launched, is still such a damn disaster but that’s an entirely different rant.&lt;/p&gt;
-
-&lt;p&gt;This url was also useful in discovering crawlers: http://www.rubygemsearch.com/ruby-gems/search?q=web+crawling&lt;/p&gt;
-
-&lt;p&gt;My final search url was Ruby gems:&lt;/p&gt;
-
-&lt;p&gt;https://rubygems.org/search?query=crawl&amp;amp;utf8=%E2%9C%93&lt;/p&gt;
-
-&lt;h1 id=&quot;sidebar-why-ruby&quot;&gt;Sidebar: Why Ruby?&lt;/h1&gt;
-
-&lt;p&gt;Given the issues noted above about Ruby and my particular performance metrics, you may be wondering “why ruby?”.  Well I’ve spent the last decade plus in the Ruby world and I know ruby best among all the languages in my toolchest.  I’m 100% certain that no matter what codebase I find, I’m going to need to make changes – that’s the nature of any type of crawling project so better to do that in a language that, for all its warts and flaws, I know.&lt;/p&gt;
-
-&lt;h1 id=&quot;gems--codebases-found&quot;&gt;Gems / Codebases Found&lt;/h1&gt;
-
-&lt;p&gt;Here is a quick enumeration of the codebases / gems that I found.  What I’m going to do is give a list of everything and then cherry pick the promising ones and dig deeper into them.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/lxxxvi/bc_crawler&quot;&gt;Band Camp Crawler&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies:&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-0&quot;&gt;of issues: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-5&quot;&gt;of commits: 5&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-1&quot;&gt;of contributors: 1&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 2 years ago&lt;/li&gt;
-      &lt;li&gt;scalability approach: single machine&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/andreikoenig/ruby_web_crawler/blob/master/crawl_script.rb&quot;&gt;Ruby Web Crawler&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: anemone&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-0-1&quot;&gt;of issues: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-1&quot;&gt;of commits: 1&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-1-1&quot;&gt;of contributors: 1&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 2 years ago&lt;/li&gt;
-      &lt;li&gt;scalability approach: none / anemone&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/belsonheng/spidercrawl&quot;&gt;Spider Crawl&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies:&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-1&quot;&gt;of issues:&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-1&quot;&gt;of commits:&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-1&quot;&gt;of contributors:&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit:&lt;/li&gt;
-      &lt;li&gt;scalability approach: single machine&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/CalculatedContent/cloud-crawler&quot;&gt;Cloud Crawler&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: Unclear / aws&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-15&quot;&gt;of issues: 15&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-170&quot;&gt;of commits: 170&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-2&quot;&gt;of contributors: 2&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 3 years ago&lt;/li&gt;
-      &lt;li&gt;scalability approach: redis&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/bash0C7/cosmicrawler&quot;&gt;CosmiCrawler&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: EventMachine&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-0-2&quot;&gt;of issues: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-8&quot;&gt;of commits: 8&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-2-1&quot;&gt;of contributors: 2&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 4 years ago&lt;/li&gt;
-      &lt;li&gt;scalability approach: EventMachine&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/reneklacan/kabutops&quot;&gt;Kabutops&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: Unclear&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-0-3&quot;&gt;of issues: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-94&quot;&gt;of commits: 94&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-1-2&quot;&gt;of contributors: 1&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 1 year ago&lt;/li&gt;
-      &lt;li&gt;scalability approach: sidekiq&lt;/li&gt;
-      &lt;li&gt;other: support for javascript agent, support for debugging (brilliant)&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/kdurski/crawler&quot;&gt;Crawler&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: unclear&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-0-4&quot;&gt;of issues: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-5-1&quot;&gt;of commits: 5&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-0&quot;&gt;of pull requests: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-1-3&quot;&gt;of contributors: 1&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 2 years ago&lt;/li&gt;
-      &lt;li&gt;scalability approach: threads&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/chriskite/anemone&quot;&gt;Anemone&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: mongo&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-0-5&quot;&gt;of issues: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-197&quot;&gt;of commits: 197&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-22&quot;&gt;of pull requests: 22&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-12&quot;&gt;of contributors: 12&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 5 years ago&lt;/li&gt;
-      &lt;li&gt;scalability approach: threads&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/endymion/link-checker&quot;&gt;Link Checker&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: unclear&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-15-1&quot;&gt;of issues: 15&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-105&quot;&gt;of commits: 105&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-6&quot;&gt;of pull requests: 6&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-2-2&quot;&gt;of contributors: 2&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 4 years ago&lt;/li&gt;
-      &lt;li&gt;scalability approach: threads&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/endymion/email_spider&quot;&gt;Email Spider&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: anemone&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-1&quot;&gt;of issues: 1&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-11&quot;&gt;of commits: 11&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-0-1&quot;&gt;of pull requests: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-1-4&quot;&gt;of contributors: 1&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 5 years ago&lt;/li&gt;
-      &lt;li&gt;scalability approach: anemone&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/versioneye/crawl_r&quot;&gt;crawler_r&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: docker, mongo&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-3&quot;&gt;of issues: 3&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-665&quot;&gt;of commits: 665&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-3&quot;&gt;of pull requests: 3&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-2-3&quot;&gt;of contributors: 2&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 1 month&lt;/li&gt;
-      &lt;li&gt;scalability approach: unclear&lt;/li&gt;
-      &lt;li&gt;app or gem: app&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/stewartmckee/cobweb&quot;&gt;Cobweb&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: unclear&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-9&quot;&gt;of issues: 9&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-481&quot;&gt;of commits: 481&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-2&quot;&gt;of pull requests: 2&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-13&quot;&gt;of contributors: 13&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 2 months ago&lt;/li&gt;
-      &lt;li&gt;scalability approach: resque / sidekiq&lt;/li&gt;
-      &lt;li&gt;app or gem: gem&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/joeyAghion/spidey&quot;&gt;Spidey&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies:&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-2&quot;&gt;of issues: 2&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-27&quot;&gt;of commits: 27&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-0-2&quot;&gt;of pull requests: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-3&quot;&gt;of contributors: 3&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 1 year ago&lt;/li&gt;
-      &lt;li&gt;scalability approach: none&lt;/li&gt;
-      &lt;li&gt;app or gem: app&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/bauerd/wayfarer/&quot;&gt;Wayfarer&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: unclear&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-2-i-created-both&quot;&gt;of issues: 2 (I created both)&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-1135&quot;&gt;of commits: 1,135&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-0-3&quot;&gt;of pull requests: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-1-5&quot;&gt;of contributors: 1&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 3 days ago&lt;/li&gt;
-      &lt;li&gt;scalability approach: ActiveJob / Threads&lt;/li&gt;
-      &lt;li&gt;app or gem: gem&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/alphasights/crawl&quot;&gt;Alpha Insights Crawl&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: Event Machine&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-0-6&quot;&gt;of issues: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-68&quot;&gt;of commits: 68&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-1&quot;&gt;of pull requests: 1&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-6&quot;&gt;of contributors: 6&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 4 months ago&lt;/li&gt;
-      &lt;li&gt;scalability approach: threads&lt;/li&gt;
-      &lt;li&gt;app or gem: app&lt;/li&gt;
-      &lt;li&gt;callback structure / extensibility approach: none&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/bm-sms/daimon_skycrawlers&quot;&gt;Daimon Skycrawlers&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: Docker&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-0-7&quot;&gt;of issues: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-665-1&quot;&gt;of commits: 665&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-0-4&quot;&gt;of pull requests: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-10&quot;&gt;of contributors: 10&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 2 months&lt;/li&gt;
-      &lt;li&gt;scalability approach: RabbitMQ&lt;/li&gt;
-      &lt;li&gt;app or gem: framework&lt;/li&gt;
-      &lt;li&gt;callback structure / extensibility approach:&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/felipecsl/wombat/&quot;&gt;Wombat&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: Unclear&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-11&quot;&gt;of issues: 11&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-242&quot;&gt;of commits: 242&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-3-1&quot;&gt;of pull requests: 3&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-16&quot;&gt;of contributors: 16&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 5 months&lt;/li&gt;
-      &lt;li&gt;scalability approach: Single machine&lt;/li&gt;
-      &lt;li&gt;app or gem: gem&lt;/li&gt;
-      &lt;li&gt;callback structure / extensibility approach: pass in code block&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/htaidirt/super_crawler&quot;&gt;SuperCrawler&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: Unclear&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-0-8&quot;&gt;of issues: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-15&quot;&gt;of commits: 15&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-0-5&quot;&gt;of pull requests: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-1-6&quot;&gt;of contributors: 1&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 9 months&lt;/li&gt;
-      &lt;li&gt;scalability approach: threads&lt;/li&gt;
-      &lt;li&gt;app or gem: gem / app&lt;/li&gt;
-      &lt;li&gt;callback structure / extensibility approach: unclear&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/slava-vishnyakov/grucrawler&quot;&gt;Gru Crawler&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: typhoeus&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-0-9&quot;&gt;of issues: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-18&quot;&gt;of commits: 18&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-0-6&quot;&gt;of pull requests: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-1-7&quot;&gt;of contributors: 1&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 2 years&lt;/li&gt;
-      &lt;li&gt;scalability approach: thread&lt;/li&gt;
-      &lt;li&gt;app or gem: gem&lt;/li&gt;
-      &lt;li&gt;callback structure / extensibility approach: callback&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/haqduong/news_crawler&quot;&gt;News Crawler&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies: typhoeus / celluloid&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-1-1&quot;&gt;of issues: 1&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-62&quot;&gt;of commits: 62&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-0-7&quot;&gt;of pull requests: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-1-8&quot;&gt;of contributors: 1&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit: 4 years&lt;/li&gt;
-      &lt;li&gt;scalability approach: celluloid&lt;/li&gt;
-      &lt;li&gt;app or gem: gem&lt;/li&gt;
-      &lt;li&gt;callback structure / extensibility approach: unclear&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;&quot;&gt;&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies:&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-2&quot;&gt;of issues:&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-2&quot;&gt;of commits:&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-0-8&quot;&gt;of pull requests: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-2&quot;&gt;of contributors:&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit:&lt;/li&gt;
-      &lt;li&gt;scalability approach:&lt;/li&gt;
-      &lt;li&gt;app or gem: app&lt;/li&gt;
-      &lt;li&gt;callback structure / extensibility approach:&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;&quot;&gt;&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies:&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-3&quot;&gt;of issues:&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-3&quot;&gt;of commits:&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-0-9&quot;&gt;of pull requests: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-3&quot;&gt;of contributors:&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit:&lt;/li&gt;
-      &lt;li&gt;scalability approach:&lt;/li&gt;
-      &lt;li&gt;app or gem: app&lt;/li&gt;
-      &lt;li&gt;callback structure / extensibility approach:&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;&quot;&gt;&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies:&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-4&quot;&gt;of issues:&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-4&quot;&gt;of commits:&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-0-10&quot;&gt;of pull requests: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-4&quot;&gt;of contributors:&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit:&lt;/li&gt;
-      &lt;li&gt;scalability approach:&lt;/li&gt;
-      &lt;li&gt;app or gem: app&lt;/li&gt;
-      &lt;li&gt;callback structure / extensibility approach:&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;&quot;&gt;&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;dependencies:&lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-issues-5&quot;&gt;of issues:&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-commits-5&quot;&gt;of commits:&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-pull-requests-0-11&quot;&gt;of pull requests: 0&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;h1 id=&quot;of-contributors-5&quot;&gt;of contributors:&lt;/h1&gt;
-      &lt;/li&gt;
-      &lt;li&gt;last commit:&lt;/li&gt;
-      &lt;li&gt;scalability approach:&lt;/li&gt;
-      &lt;li&gt;app or gem: app&lt;/li&gt;
-      &lt;li&gt;callback structure / extensibility approach:&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;commentary&quot;&gt;Commentary&lt;/h1&gt;
-
-&lt;p&gt;With this exhaustive a look at different crawlers, you’re probably wondering why I didn’t toss a lot of the candidates early on.  Well I’ve written a lot of crawlers over the years and this is a field where you can always learn from something.  A big part of why I looked at even some of the less promising candidates was that I wanted to learn from them.&lt;/p&gt;
-
-&lt;h1 id=&quot;crawlers-reviewed&quot;&gt;Crawlers Reviewed&lt;/h1&gt;
-
-&lt;p&gt;In no particular order, here are reviews of each of the crawlers.  Most of these, at least those I could make work, I attempted to actually using and build a simple page archiver with them.  This gave me a generic use case so that there was a similar evaluation for each.&lt;/p&gt;
-
-&lt;h2 id=&quot;spidr&quot;&gt;Spidr&lt;/h2&gt;
-
-&lt;p&gt;This was the first one I tried and probably the easiest to work with.  I had a sample crawler up and running with Spidr in probably less than 15 minutes which is stellar.  The one real problem is performance.  After about 300 pages were processed I started to see a 1.3 to 1.5 second per page response time.&lt;/p&gt;
-
-&lt;h2 id=&quot;anemone&quot;&gt;Anemone&lt;/h2&gt;
-
-&lt;p&gt;Anemone is an old school ruby project – I remember evaluating it back in 2014 the last time I  took a stab at this research.  And while I really wanted to look at it, the answers on this &lt;a href=&quot;http://stackoverflow.com/questions/18367170/getting-all-urls-using-anemone-gem-very-large-site&quot;&gt;Stack Overflow&lt;/a&gt; convinced me to take a pass.&lt;/p&gt;
-
-&lt;h2 id=&quot;cobweb&quot;&gt;Cobweb&lt;/h2&gt;
-
-&lt;p&gt;I really, really like Cobweb.  Sometimes you hit a codebase which just has a good feel and Cobweb is one of those.  It was very simple to integrate, quite fast and&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;statistics = CobwebCrawler.new(:cache =&amp;gt; 600, :thread_count =&amp;gt; 10, :valid_mime_types =&amp;gt; [&quot;text/html&quot;]).crawl(&quot;http://www.udemy.com&quot;) do |page|
-  puts &quot;Just crawled #{page[:url]} and got a status of #{page[:status_code]}.&quot;
-  if page[:mime_type] == &quot;text/html&quot;
-    page_ctr = page_ctr + 1
-    #puts page.title
-    #debugger
-    page_archive = PageArchive.find_or_create(page[:body], page[:url])
-    total_time = (Time.now - start_time) 
-    puts &quot;  Total time: #{total_time}&quot;
-    puts &quot;  Total pages: #{page_ctr}&quot;
-    puts &quot;  Time per page: #{total_time.to_f / page_ctr}&quot;
-  else
-    puts &quot;  Not text/html for: #{page[:url]}&quot;
-  end
-  
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def self.database_size
+  sql = &quot;select table_schema, sum((data_length+index_length)/1024/1024) AS MB from information_schema.tables where table_schema='#{Rails.configuration.database_configuration[Rails.env][&quot;database&quot;]}' group by 1;&quot;
+  results = ActiveRecord::Base.connection.select_all(sql)
+  return results.first[&quot;MB&quot;].to_f
 end
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h1 id=&quot;wayfarer&quot;&gt;Wayfarer&lt;/h1&gt;
+&lt;p&gt;I’m getting the name of the current database in an environment agnostic way using: &lt;strong&gt;Rails.configuration.database_configuration[Rails.env][“database”]&lt;/strong&gt;.  That value was read from the configuration file.  You could also get it from: &lt;strong&gt;ActiveRecord::Base.connection.current_database&lt;/strong&gt; (which to use depends on whether or not you are using ActiveRecord or a different storage abstraction).&lt;/p&gt;
 
-&lt;h2 id=&quot;alphasights-crawler&quot;&gt;AlphaSights Crawler&lt;/h2&gt;
+&lt;p&gt;Note: I’m feed this, via a JSON feed, to my new Cartazzi engine and I’m pretty pleased with this as an admin tool.&lt;/p&gt;
 
-&lt;p&gt;This was actually pretty interesting.  Its a threaded crawler written in ruby and actually appears to be fairly fast.  It has zero callbacks / extension facilities as best I can tell but the underlying engine appears clean and determining the integration points where I’d need to insert my own code was pretty easy.&lt;/p&gt;
-
-&lt;h2 id=&quot;daimon-sky-framework&quot;&gt;Daimon Sky Framework&lt;/h2&gt;
-
-&lt;p&gt;This crawler was extremely promising and very, very disappointing.  Here were the issues:&lt;/p&gt;
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;The crawler assumes that you have a Postgres installation by default so you can’t even bundle install without it.  So I had to fork it and then change that to MySQL just to install it.&lt;/li&gt;
-  &lt;li&gt;This is a very rails like framework where you install the gem and then the gem generates an application which is Rails-esque.  Its actually pretty brilliant and even generates docker containers for all the dependencies which is &lt;strong&gt;sweet&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;The only real problem is simple – I couldn’t make it actually crawl.  All that happened was that it would start, process the home page and fail to populate the body and then stop.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/17968287/how-to-find-the-mysql-data-directory-from-command-line-in-windows&quot;&gt;Finding Your MySQL Data Directory&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://dev.mysql.com/doc/mysql-utilities/1.5/en/mysqldiskusage.html&quot;&gt;mysqldiskusage utility (not always available)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://dba.stackexchange.com/questions/14337/calculating-disk-space-usage-per-mysql-db&quot;&gt;Calculating Disc Space Usage with a Query&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/10001583/how-to-check-the-database-name-that-activerecord-uses&quot;&gt;Getting Current ActiveRecord Configuration&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;There is definitely goodness here but when something fails at the very basic use case, it is hard to justify pushing farther.&lt;/p&gt;
 </description>
-        <pubDate>Sat, 08 Apr 2017 16:42:30 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/04/08/reviewing-open-source-ruby-crawling-gems.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/08/reviewing-open-source-ruby-crawling-gems.html</guid>
+        <pubDate>Fri, 21 Apr 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/mysql/2017/04/21/osx-mysql-disc-space-usage-and-location.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/mysql/2017/04/21/osx-mysql-disc-space-usage-and-location.html</guid>
+        
+        <category>osx</category>
+        
+        <category>mysql</category>
+        
+        <category>mariadb</category>
+        
+        <category>saas</category>
+        
+        <category>ruby</category>
+        
+        <category>hyde</category>
+        
+        
+        <category>mysql</category>
+        
+      </item>
+    
+      <item>
+        <title>Getting It Wrong with sync.rake and how to recover using git</title>
+        <description>&lt;p&gt;I’m working with a pretty complex source code model where I’m pulling in functionality from other git repos via shell scripts. This morning I got it wrong and a bunch of code disappeared. git checkout – . cleaned up my problem perfectly. Thanks!&lt;/p&gt;
+
+&lt;p&gt;http://stackoverflow.com/questions/5807137/how-to-revert-uncommitted-changes-including-files-and-folders&lt;/p&gt;
+
+&lt;p&gt;Here was the crucial portion of my manifest:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&quot;app/models/user.rb&quot;:[
+  &quot;../hyde_web&quot;,
+  &quot;../hyde_admin&quot;,
+  &quot;../hyde_worker&quot;,
+  &quot;../cartazzi_site&quot;,
+  &quot;../cartazzi_web_app&quot;],
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Thu, 20 Apr 2017 05:36:04 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/04/20/getting-it-wrong-with-sync-rake-and-how-to-recover-using-git.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/20/getting-it-wrong-with-sync-rake-and-how-to-recover-using-git.html</guid>
         
         
       </item>
     
       <item>
-        <title>Building Graphs with the chartjs-ror Gem</title>
-        <description>&lt;p&gt;There a lot of times in 2017 when, as a Rails developer who’s mostly backend, it feels like the world has passed us by when it comes to something that is purely front end like, say, dashboards and graphs.  I’m building a side project right now that is graph heavy and I’ve looked at a lot of different graph technologies:&lt;/p&gt;
+        <title>Real World Crawling and Scraping Using Ruby</title>
+        <description>&lt;p&gt;https://github.com/scrapy-plugins/scrapy-splash&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://d3js.org/&quot;&gt;d3.js&lt;/a&gt; - which I really like but I don’t feel I have the javascript mojo to use&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.highcharts.com/&quot;&gt;highcharts&lt;/a&gt; - which I’ve used in the past but is commercially licensed and this is a side project&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.chartjs.org/&quot;&gt;chartjs&lt;/a&gt; - which I really, really like&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;https://hub.docker.com/r/scrapinghub/splash/&lt;/p&gt;
 
-&lt;p&gt;Overall I’ve had the best luck with chartjs in terms of the ratio between time invested and graphs produced i.e. I got farther with chartjs with less effort than anything else so that’s where I’ve been focused lately.&lt;/p&gt;
+&lt;p&gt;https://devcentral.f5.com/articles/these-are-not-the-scrapes-youre-looking-for-session-anomalies&lt;/p&gt;
 
-&lt;p&gt;The single best reference I’ve found to using chartjs with rails was buried at the bottom of a message board from a guy in New Zealand who uses chartjs and rails to graph has big races:&lt;/p&gt;
+&lt;p&gt;https://github.com/JonasCz/How-To-Prevent-Scraping&lt;/p&gt;
 
-&lt;blockquote&gt;
-  Hi @glundgren,
-
-  Check out my full working example. Rather than mucking around with chartjs-ror, I have switched to using straight ChartJS.
-
-  The flow of events is:
-  1. My controller calls my model which produces the data in the correct format
-  2. My view defines a HTML canvas element with the data as HTML5 data attributes
-  3. Then the javascript comes along and uses native ChartJS (i.e. new Chart(element, options) to produce the chart. The values are read directly off the data attributes, (i.e. resultDurationCanvas.data('duration')). This is where I convert the number of seconds to hh:mm:ss format for the labels
-
-  I realise it's quite complicated but it allows me do the heavy lifting in ruby while giving me full power over the presentation of the labels etc without having to dance around with %= % in my erb.
-
-  This is just one of many possibilities, but it may help you think about options.
-
-  Let me know if you need any help with anything else!
-
-  Dave
-
-  [Source](https://www.bountysource.com/issues/7948443-graphing-times )(scroll down to the bottom).
-  
-  The full working example is here: [http://cycling.harris.org.nz/races/taupo-cycle-challenge](http://cycling.harris.org.nz/races/taupo-cycle-challenge) and his github for this is here: [https://github.com/daveharris/cycling.harris.org.nz](https://github.com/daveharris/cycling.harris.org.nz)
-&lt;/blockquote&gt;
-
-&lt;p&gt;Given the importance of mastering JavaScript in 2017 I’ve been working natively with chartjs and the Rails asset facilities but I thought it might be interesting to dip back to a gem based approach and see how far I got with it.  This led me to the &lt;a href=&quot;https://github.com/airblade/chartjs-ror&quot;&gt;chartjs-ror&lt;/a&gt; gem.&lt;/p&gt;
-
-&lt;p&gt;Here is the quick tutorial for using it:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Add gem ‘chartjs-ror’ to your gemfile and bundle install.&lt;/li&gt;
-  &lt;li&gt;Add //= require Chart.min to application.js&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Add this example to a view:&lt;/p&gt;
-
-    &lt;p&gt;&amp;lt;%
-    data = {
-      labels: [“January”, “February”, “March”, “April”, “May”, “June”, “July”],
-      datasets: [
-        {
-            label: “My First dataset”,
-            background_color: “rgba(220,220,220,0.2)”,
-            border_color: “rgba(220,220,220,1)”,
-            data: [65, 59, 80, 81, 56, 55, 40]
-        },
-        {
-            label: “My Second dataset”,
-            background_color: “rgba(151,187,205,0.2)”,
-            border_color: “rgba(151,187,205,1)”,
-            data: [28, 48, 40, 19, 86, 27, 90]
-        }
-      ]
-    }
- %&amp;gt;&lt;/p&gt;
-
-    &lt;p&gt;&amp;lt;% options = {} &amp;gt;  &lt;br /&gt;
-&amp;lt;%= line_chart data, options %&amp;gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;That will work but it will generate a bloody enormous graph for you.  You need to set the options hash correctly to make it size to something resembling a correct web app by changing the options hash as follows:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;%# options = { :responsive =&amp;gt; true, maintainAspectRatio: false } %&amp;gt;   
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I really don’t understand how maintainAspectRatio: false makes it smaller but that seems to be a chartjs thing since discovering that bit of magic made my other graphs using chartjs magically work also so I’m just going to treat it as a &lt;em&gt;magic incantation&lt;/em&gt; that works and leave it at that.  Honestly its no different than N other bits of technical knowledge that I don’t understand but rely on (mysql tuning at times comes to mind; or apache configuration).&lt;/p&gt;
-
-&lt;h1 id=&quot;tying-this-in-with-activerecord&quot;&gt;Tying this in with ActiveRecord&lt;/h1&gt;
-
-&lt;h1 id=&quot;common-errors&quot;&gt;Common Errors&lt;/h1&gt;
-
-&lt;p&gt;The first common error you might hit is this:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;(index):115 Uncaught ReferenceError: Chart is not defined   at initChart ((index):115)&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;That means “You need to add chartmin to application.js”&lt;/p&gt;
+&lt;p&gt;http://ngauthier.com/2014/06/scraping-the-web-with-ruby.html&lt;/p&gt;
 </description>
-        <pubDate>Fri, 07 Apr 2017 05:52:43 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2017/04/07/building-graphs-with-the-chartjs-ror-gem.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/04/07/building-graphs-with-the-chartjs-ror-gem.html</guid>
-        
-        <category>rails</category>
-        
-        <category>graphs</category>
-        
-        <category>chartjs</category>
-        
-        <category>chartjs-ror</category>
+        <pubDate>Wed, 19 Apr 2017 20:00:43 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/04/19/real-world-crawling-and-scraping-using-ruby.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/19/real-world-crawling-and-scraping-using-ruby.html</guid>
         
         
-        <category>rails</category>
+      </item>
+    
+      <item>
+        <title>NightmareJS and XVFB</title>
+        <description>&lt;p&gt;var Xvfb = require(‘xvfb’);
+var Nightmare = require(‘nightmare’);&lt;/p&gt;
+
+&lt;p&gt;var xvfb = new Xvfb({
+  silent: true
+});
+xvfb.startSync();&lt;/p&gt;
+
+&lt;p&gt;var nightmare = Nightmare({
+  show: false,
+  webPreferences: {
+    partition: ‘custom’
+  }
+});&lt;/p&gt;
+
+&lt;p&gt;nightmare
+  .goto(‘https://google.com’)
+  .evaluate(function() {
+    return document.title;
+  })
+  .end()
+  .then(function(title) {
+    console.log(title);
+    xvfb.stopSync();
+  });&lt;/p&gt;
+
+&lt;p&gt;https://github.com/segmentio/nightmare/issues/602&lt;/p&gt;
+
+&lt;p&gt;http://elementalselenium.com/tips/38-headless&lt;/p&gt;
+
+&lt;p&gt;https://github.com/sebastienvercammen/ptc-acc-gen/issues/23&lt;/p&gt;
+
+&lt;p&gt;https://github.com/nodejs/node-gyp/issues/569&lt;/p&gt;
+
+&lt;p&gt;https://github.com/segmentio/nightmare/issues/602&lt;/p&gt;
+
+&lt;p&gt;http://stackoverflow.com/questions/32518777/nightmare-js-browsing-and-parsing-multiple-sites&lt;/p&gt;
+
+&lt;p&gt;https://github.com/teampoltergeist/poltergeist#customization&lt;/p&gt;
+</description>
+        <pubDate>Wed, 19 Apr 2017 20:00:21 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/04/19/nightmarejs-and-xvfb.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/19/nightmarejs-and-xvfb.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Rails Redis Basics</title>
+        <description>&lt;p&gt;http://stackoverflow.com/questions/6301399/empty-delete-a-set-in-redis&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 19 Apr 2017 19:52:02 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/04/19/rails-redis-basics.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/19/rails-redis-basics.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>JavaScript and Node and NPM Basics</title>
+        <description>&lt;p&gt;http://stackoverflow.com/questions/21168141/cannot-install-packages-using-node-package-manager-in-ubuntu&lt;/p&gt;
+
+&lt;p&gt;http://stackoverflow.com/questions/8393636/node-log-in-a-file-instead-of-the-console&lt;/p&gt;
+
+&lt;p&gt;https://nodejs.org/en/docs/guides/nodejs-docker-webapp/&lt;/p&gt;
+
+&lt;p&gt;https://github.com/npm/npm/issues/9161&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 19 Apr 2017 19:50:19 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/04/19/javascript-and-node-and-npm-basics.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/19/javascript-and-node-and-npm-basics.html</guid>
+        
         
       </item>
     

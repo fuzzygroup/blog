@@ -1,7 +1,11 @@
 ---
 layout: post
 title: Rails and ActiveRecord Optimization - Banishing MySQL File Sorts
+category: rails
+tags: ["rails", "mysql", "optimization", "activerecord"]
+description: A filesort in your MySQL explain analysis indicates a performance problem.  ActiveRecord automatically adds a default ordering to your query that can cause this depending on your table structure.
 ---
+
 
 MariaDB [seira_crawler_development]> explain SELECT  `page_archives`.* FROM `page_archives` WHERE `page_archives`.`url_type` = 'udemy_user' AND `page_archives`.`url_fid` = 'zohouniversity' ORDER BY `page_archives`.`id` ASC LIMIT 1\G
 *************************** 1. row ***************************
