@@ -127,4 +127,4 @@ docker run -it --rm -v "$PWD":/usr/myapp -w /usr/myapp julia julia script.jl arg
 
 # Learning More About Docker
 
-Most of what I know about Docker, I learned from The [Dive into Docker](https://diveintodocker.com/) course by Nick Janetakis.  Recommended.
+Most of what I know about Docker, I learned from The [Dive into Docker](https://diveintodocker.com/courses/dive-into-docker) course by Nick Janetakis.  Recommended.
