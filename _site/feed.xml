@@ -6,9 +6,1296 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 26 Apr 2017 17:53:53 -0400</pubDate>
-    <lastBuildDate>Wed, 26 Apr 2017 17:53:53 -0400</lastBuildDate>
+    <pubDate>Wed, 10 May 2017 05:52:51 -0400</pubDate>
+    <lastBuildDate>Wed, 10 May 2017 05:52:51 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Building a Rails API App Which Accepts Data from JavaScript</title>
+        <description>&lt;p&gt;A friend recently described a web tracking problem to me and we discussed looking at it via Google Analytics or by rolling our own approach.  Google Analytics is tremendously powerful but I looked at this as a chance to improve my JavaScript skills which are, admittedly, not my strongest part of my technical skill set so I went with the roll my own approach.  As with most things I do, I’m writing this out in full to clarify my own thinking and understanding of the problem as well as to make this information publicly available.&lt;/p&gt;
+
+&lt;h1 id=&quot;problem&quot;&gt;Problem&lt;/h1&gt;
+
+&lt;p&gt;The problem at hand was to record tracking data as people viewed pages on an e-commerce web site.  The goal was to correlate the tracking data and try and resolve the per visitor url paths that were traversed.  I also wanted to experiment with browser fingerprinting so I used the FingerprintJS2 library.&lt;/p&gt;
+
+&lt;h1 id=&quot;solution&quot;&gt;Solution&lt;/h1&gt;
+
+&lt;p&gt;The solution was two fold:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;JavaScript that runs in the browser and executes an HTTP get with the details of the url that the user visited&lt;/li&gt;
+  &lt;li&gt;A Rails API server that accepts the details of the url that was visited and logs it to a database&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;part-1-javascript&quot;&gt;Part 1: JavaScript&lt;/h1&gt;
+
+&lt;p&gt;I’m not a JavaScript expert by any means so this js code was largely pulled together from StackOverflow and other sources (references are at the end).  I ended up writing this twice, first starting with jQuery and then realizing that for something embeddable you really want to eliminate every dependency – so getting rid of jQuery itself is a desirable goal.&lt;/p&gt;
+
+&lt;h2 id=&quot;browser-fingerprinting&quot;&gt;Browser Fingerprinting&lt;/h2&gt;
+
+&lt;p&gt;A browser fingerprint is an SHA / MD5 style hash which reflects a unique profile of a browser based on the browser’s uniquely exposed capabilities, platform, fonts and other attributes.  While not necessarily as unique as a fingerprint, browser fingerprint is actually a robust approach to tracking a user and since it is based on readily available &lt;a href=&quot;https://github.com/Valve/fingerprintjs2&quot;&gt;open source libraries&lt;/a&gt;, it isn’t something that needs to be developed from scratch.  And, happily, it even gets good marks on my new &lt;a href=&quot;http://shouldigem.com/report_cards/146?url=https%3A%2F%2Fgithub.com%2FValve%2Ffingerprintjs2&quot;&gt;Should I Gem&lt;/a&gt; tool.&lt;/p&gt;
+
+&lt;p&gt;Here’s all it takes to calculate a browser fingerprint:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;!-- bring in the library --&amp;gt;
+&amp;lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;!-- the hash will be in the variable result --&amp;gt;
+&amp;lt;script type=&quot;text/javascript&quot;&amp;gt;
+    new Fingerprint2().get(function(result, components){
+    }
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now that we know how to calculate a browser fingerprint, the next step is the sending it to our API service either by jQuery or a native XHR call.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-jquery-approach&quot;&gt;The jQuery Approach&lt;/h2&gt;
+
+&lt;p&gt;Here’s the jQuery code:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script type=&quot;text/javascript&quot;&amp;gt;
+    new Fingerprint2().get(function(result, components){
+ 
+    $(document).ready(function(){
+
+         $.post('http://localhost:3820/api/log_it', {
+           &quot;api_key&quot;: &quot;foobarbaz&quot;,
+           &quot;url&quot;: window.location.href,
+           &quot;fingerprint&quot;: result
+         }, function(serverResponse){
+         })
+
+     })
+ 
+   });
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;the-xhr-approach&quot;&gt;The XHR Approach&lt;/h2&gt;
+
+&lt;p&gt;Here’s the XHR code:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script type=&quot;text/javascript&quot;&amp;gt;
+    new Fingerprint2().get(function(result, components){
+      var xhr = new XMLHttpRequest();
+      var dest_url = &quot;http://localhost:3820/api/log_it?&quot; + &quot;api_key=&quot; + &quot;foobarbaz&quot; + &quot;&amp;amp;&quot; + &quot;url=&quot; + window.location.href + &quot;&amp;amp;&quot; + &quot;fingerprint=&quot; + result;
+      xhr.open('GET', dest_url);
+      xhr.onreadystatechange = function(e) {
+        if(xhr.readyState === 4)
+          console.log(&quot;got result: &quot;, xhr.responseText);
+      };
+      xhr.send();
+   });
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;part-2-rails-api-server&quot;&gt;Part 2: Rails API Server&lt;/h1&gt;
+
+&lt;p&gt;I’ve become an increasing fan of microservices as an architectural paradigm and Rails API servers are something I now generate regularly.  Here’s how I did that:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;rails new –api tracking_api –database=mysql –skip-spring –skip-listen –skip-sprockets&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;You’ll notice that I’m skipping spring and listen which gets rid of the &lt;a href=&quot;https://github.com/puma/puma-dev/issues/56&quot;&gt;disaster that is the evented file watcher on OSX&lt;/a&gt; / Github Issue (this causes huge issues with overly aggressive process launching).&lt;/p&gt;
+
+&lt;h2 id=&quot;getting-past-cors-restrictions&quot;&gt;Getting Past CORS Restrictions&lt;/h2&gt;
+
+&lt;p&gt;Once this is done we need to add the rack-cors gem with:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;gem ‘rack-cors’&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;in the Gemfile.  In case you’ve been following what I’ve done with &lt;a href=&quot;http://www.shouldigem.com&quot;&gt;ShouldIGem.com&lt;/a&gt;, you might be curious how rack-cors fared – it got an &lt;a href=&quot;http://shouldigem.com/report_cards/141?url=https%3A%2F%2Fgithub.com%2Fcyu%2Frack-cors&quot;&gt;A&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The rack-cors gem addresses the problems with Cross Origin Scripting (CORS) by allowing domain X to post or get to domain Y.  While there are a bunch of other approaches to getting around CORS, the rack-cors gem was by far the best solution I found.&lt;/p&gt;
+
+&lt;p&gt;Note: There are security implications if you open rack-cors to everything; please keep that in mind.&lt;/p&gt;
+
+&lt;h2 id=&quot;writing-the-api&quot;&gt;Writing the Api&lt;/h2&gt;
+
+&lt;p&gt;After a bundle install, I generated an Api controller with:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;bundle exec rails g controller api&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I then wrote a simple method to capture the data and save it to a PageView object in the database:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class ApiController &amp;lt; ApplicationController
+  
+  def log_it
+    PageView.create_page_view(params[:fingerprint], request.remote_ip, params[:url], request.user_agent)
+  end
+
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I then needed to write a route for this as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Rails.application.routes.draw do
+  get '/api/log_it', to: 'api#log_it'
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The PageView object is simply an ActiveRecord model which logs the view to the database and it is simple enough that I’m not going to cover it here.&lt;/p&gt;
+
+&lt;p&gt;Note: This is a simplified controller.  I have deliberately omitted handling the api key parameter which limits calls against the API to only those with valid API keys.&lt;/p&gt;
+
+&lt;h2 id=&quot;testing-this-with-wget-or-curl&quot;&gt;Testing this with Wget or Curl&lt;/h2&gt;
+
+&lt;p&gt;As I wrote about previously, I’m a huge believer in using curl or wget to test APIs.  Here is a simple wget statement that exercises the API as you tail a log file to make sure everything works:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;wget “http://localhost:3820/api/log_it?api_key=foobarbaz&amp;amp;url=http%3A%2F%2Flocalhost%3A3400%2F&amp;amp;fingerprint=e82eaadd”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;testing-this-from-the-browser&quot;&gt;Testing this From the Browser&lt;/h2&gt;
+
+&lt;p&gt;To test this from the browser just embed it in an HTML page and tail the logs on the API service.  Here’s what those logs look like:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Started GET &quot;/api/log_it?api_key=foobarbaz&amp;amp;url=http://localhost:3400/&amp;amp;fingerprint=e82eaadd998e1aae0309b781029f8edb&quot; for 127.0.0.1 at 2017-05-09 18:35:32 -0400
+Processing by ApiController#log_it as */*
+  Parameters: {&quot;api_key&quot;=&amp;gt;&quot;hyde314159&quot;, &quot;url&quot;=&amp;gt;&quot;http://localhost:3400/&quot;, &quot;fingerprint&quot;=&amp;gt;&quot;e82eaadd998e1aae0309b781029f8edb&quot;}
+   (0.2ms)  BEGIN
+  SQL (0.4ms)  INSERT INTO `page_views` (`created_at`, `updated_at`, `date_created_at`, `fingerprint`, `ip_address`, `user_agent`, `url`, `url_base`) VALUES ('2017-05-09 22:35:32', '2017-05-09 22:35:32', '2017-05-09', 'e82eaadd998e1aae0309b781029f8edb', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.96 Safari/537.36', 'http://localhost:3400/', 'localhost/')
+   (0.8ms)  COMMIT
+Completed 204 No Content in 4ms (ActiveRecord: 1.4ms)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;conclusions&quot;&gt;Conclusions&lt;/h1&gt;
+
+&lt;p&gt;This was an interesting exercise which taught me a bit of JavaScript, illustrated how to use the browser fingerprinting and finally taught me a way around CORS restrictions – the rack-cors gem.  Hopefully this blog post illustrated for you how to integrate external JavaScript with a Rails api.&lt;/p&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/38290552/using-rest-api-and-send-post-request&quot;&gt;http://stackoverflow.com/questions/38290552/using-rest-api-and-send-post-request&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/1034621/get-current-url-in-web-browser&quot;&gt;http://stackoverflow.com/questions/1034621/get-current-url-in-web-browser&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://test-cors.org/&quot;&gt;http://test-cors.org/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/monsur/test-cors.org&quot;&gt;https://github.com/monsur/test-cors.org&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/jpillora/xdomain&quot;&gt;https://github.com/jpillora/xdomain&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://learn.jquery.com/ajax/working-with-jsonp/&quot;&gt;https://learn.jquery.com/ajax/working-with-jsonp/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/29751115/how-to-enable-cors-in-rails-4-app&quot;&gt;http://stackoverflow.com/questions/29751115/how-to-enable-cors-in-rails-4-app&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/cyu/rack-cors&quot;&gt;https://github.com/cyu/rack-cors&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/20035101/no-access-control-allow-origin-header-is-present-on-the-requested-resource&quot;&gt;http://stackoverflow.com/questions/20035101/no-access-control-allow-origin-header-is-present-on-the-requested-resource&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 10 May 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/05/10/building-a-rails-api-app-which-accepts-data-from-javascript.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/05/10/building-a-rails-api-app-which-accepts-data-from-javascript.html</guid>
+        
+        <category>rails</category>
+        
+        <category>javascript</category>
+        
+        <category>api</category>
+        
+        <category>cors</category>
+        
+        <category>fingerprint</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>AVP versus MVP</title>
+        <description>
+</description>
+        <pubDate>Mon, 08 May 2017 18:47:10 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/05/08/avp-versus-mvp.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/05/08/avp-versus-mvp.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Building a Multitenant SAAS App with Rails, Docker, MySQL and the Apartment Gem</title>
+        <description>&lt;h1 id=&quot;saas-and-provisioning&quot;&gt;SAAS and Provisioning&lt;/h1&gt;
+
+&lt;p&gt;This document lays out the SAAS and provisioning aspects of SeiraWatch.&lt;/p&gt;
+
+&lt;h1 id=&quot;types-of-saas-isolation&quot;&gt;Types of SAAS Isolation&lt;/h1&gt;
+
+&lt;p&gt;At the heart of any SAAS app is isolating one user’s data from another.  There are several ways to do this but the simplest are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;scoping&lt;/li&gt;
+  &lt;li&gt;schemaing&lt;/li&gt;
+  &lt;li&gt;separating&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Scoping refers to bundling a user_id or account_id parameter with every single query so that you are always injecting the isolation with every query.  There are several disadvantages to this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Assumes that every db query is ActiveRecord and can be automagically done&lt;/li&gt;
+  &lt;li&gt;Eliminates straight sql or pushes it down to the user&lt;/li&gt;
+  &lt;li&gt;If something goes wrong User A gets access to User B’s data&lt;/li&gt;
+  &lt;li&gt;Adds a tricky bit of Rails magic to what is literally the most complex part of your application (storage)&lt;/li&gt;
+  &lt;li&gt;Pushes performance issues right onto the developer since every index has to incorporate user_id or account_id as well as all othe rthings&lt;/li&gt;
+  &lt;li&gt;The core db will grow in size infiniitely leading to an ever more costly database server&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Schemaing means using the ability of Postgres to run multiple schemas per physical database.  This is dramatically better than scoping but also has disadvantages:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ties you irrevocably to Postgres&lt;/li&gt;
+  &lt;li&gt;The core db will grow in size infiniitely leading to an ever more costly database server&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Separating means just what it sounds – every user or account gets a &lt;strong&gt;separate&lt;/strong&gt; database.  This is the approach that WordPress uses and its hard to argue with the sucess of WordPress.  While everything has its issues, I like the disavantages here best of all:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;More expensive since it means more physical databases but this is 2017 and we’re up to 64 bit servers now; we can get past this.&lt;/li&gt;
+  &lt;li&gt;In a broken up, non-monolith this is intimidating to implement but its actually pretty easy once you get your head around it&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;provisioning-approach&quot;&gt;Provisioning Approach&lt;/h1&gt;
+
+&lt;p&gt;In order to make the provisioning work we need to rely on the Apartment gem.  Apartment is a multitenancy gem which allows subdomain based tenancy so we can have a domain structure like this:&lt;/p&gt;
+
+&lt;p&gt;www.seirawatch.com - the site
+nickjj.seirawatch.com - nick’s account
+fuzzygroup.seirawatch.com - scott’s account
+…&lt;/p&gt;
+
+&lt;p&gt;Each new customer will get to register a username and that will become their subdomain that they log in by.  We will end up running one seira_watch_web_app container which can be autoscaled (since each database connection is separate) for load and we only need to run enough initial capacity that at least one instance is always available.&lt;/p&gt;
+
+&lt;p&gt;The way that the Apartment gem works is by changing the database it is using on the fly automatically based on the subdomain.  Here’s a peek at the logs from a test application:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# when I visited blog_1_development.lvmh.me:3000 (I started puma with -b lvmh.me:3000)
+Started GET &quot;/&quot; for 127.0.0.1 at 2017-04-23 23:24:19 -0400
+   (0.1ms)  use `apartment_development`
+   (0.2ms)  SELECT DATABASE() as db
+   (0.1ms)  use `blog_1_development`
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {&quot;internal&quot;=&amp;gt;true}
+  Rendering /Users/sjohnson/.rvm/gems/ruby-2.3.1/gems/railties-5.0.2/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/sjohnson/.rvm/gems/ruby-2.3.1/gems/railties-5.0.2/lib/rails/templates/rails/welcome/index.html.erb (4.5ms)
+Completed 200 OK in 11ms (Views: 7.1ms | ActiveRecord: 0.0ms)
+
+  # when I visited foo.lvmh.me:3000 (I started puma with -b lvmh.me:3000)
+   (0.5ms)  use `apartment_development`
+Started GET &quot;/&quot; for 127.0.0.1 at 2017-04-23 23:24:23 -0400
+   (0.6ms)  use `apartment_development`
+   (0.3ms)  SELECT DATABASE() as db
+   (0.2ms)  use `foo`
+Processing by Rails::WelcomeController#index as HTML
+  Parameters: {&quot;internal&quot;=&amp;gt;true}
+  Rendering /Users/sjohnson/.rvm/gems/ruby-2.3.1/gems/railties-5.0.2/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/sjohnson/.rvm/gems/ruby-2.3.1/gems/railties-5.0.2/lib/rails/templates/rails/welcome/index.html.erb (3.3ms)
+Completed 200 OK in 9ms (Views: 6.0ms | ActiveRecord: 0.0ms)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;adding-an-api-from-another-monolith-component&quot;&gt;Adding an API from Another Monolith Component&lt;/h2&gt;
+
+&lt;p&gt;The way that Apartment works is that has a call:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Apartment::Tenant.create(tenant_name)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;what you invoke in order to create the “tenancy” database (think subdomain) and this either runs migrations or uses schema.rb to create a new database.  The problem is that if you’re NOT building a monolith you are running in a context AWAY from the schema you need to clone.  The solution is two fold:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Add an api for provisioning to the SAAS app which allows for two calls: create_db and add_user&lt;/li&gt;
+  &lt;li&gt;The create_db call takes a single, unique, username, a fully validated string and then invokes Apartment::Tenant.create&lt;/li&gt;
+  &lt;li&gt;The add_user method takes all the params for the user instance that we want on the model and builds the user_instance&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This will allow a user to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;sign up at the web site (or commerce portion) if I decide to decouple signup and commerce from the home page&lt;/li&gt;
+  &lt;li&gt;goto the subdomain and be automatically prompted for login&lt;/li&gt;
+  &lt;li&gt;normal cookie based login approaches will preserve the login for the period of time of the cookie&lt;/li&gt;
+  &lt;li&gt;allows normal development to continue with something like bundle exec rails s -p3010 -b lvh.me and still allow the right database to be selected when I goto nickjj.lvh.me:3010&lt;/li&gt;
+  &lt;li&gt;should work brilliantly with Docker as a deployment tech and allow Docker to be used to test locally the entire stack&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Issues:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We need to block the common domains that we don’t want a user to register like www, help, search, admin, etc (this can be done when the username is created with a Rails validator)&lt;/li&gt;
+  &lt;li&gt;Exactly how we let fuzzygroup into the SAAS container but not www is unclear but I would expect that’s an nginx proxying thing&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;thoughts&quot;&gt;Thoughts?&lt;/h1&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/influitive/apartment&quot;&gt;Apartment Gem&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/wireframe/multitenant&quot;&gt;MultiTenant Gem&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://codecrate.com/2011/03/multitenant-locking-down-your-app-and.html&quot;&gt;MultiTenant Blog Post&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.quora.com/How-can-I-operate-a-DB-model-for-a-Rails-multi-tenant-application-with-a-multiple-database-model&quot;&gt;Quora&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/citusdata/activerecord-multi-tenant&quot;&gt;ActiveRecord-Multi-Tenant&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/ErwinM/acts_as_tenant&quot;&gt;ActsAsTenant&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://influitive.io/our-multi-tenancy-journey-with-postgres-schemas-and-apartment-6ecda151a21f&quot;&gt;Blog Post About Apartment&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;creating-a-tenant&quot;&gt;Creating a Tenant&lt;/h1&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Apartment::Tenant.create(‘fuzzygroup5’)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&quot;the-initializer&quot;&gt;The Initializer&lt;/h1&gt;
+
+&lt;p&gt;Shown below is the apartment.rb initializer.  The changes needed to enable db level tenancy are indicated by &lt;strong&gt;jsj&lt;/strong&gt; in the comments.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# You can have Apartment route to the appropriate Tenant by adding some Rack middleware.
+# Apartment can support many different &quot;Elevators&quot; that can take care of this routing to your data.
+# Require whichever Elevator you're using below or none if you have a custom one.
+#
+# require 'apartment/elevators/generic'
+# require 'apartment/elevators/domain'
+require 'apartment/elevators/subdomain'
+# require 'apartment/elevators/first_subdomain'
+
+#
+# Apartment Configuration
+#
+Apartment.configure do |config|
+
+  # Add any models that you do not want to be multi-tenanted, but remain in the global (public) namespace.
+  # A typical example would be a Customer or Tenant model that stores each Tenant's information.
+  #
+  # config.excluded_models = %w{ Tenant }
+
+  # In order to migrate all of your Tenants you need to provide a list of Tenant names to Apartment.
+  # You can make this dynamic by providing a Proc object to be called on migrations.
+  # This object should yield either:
+  # - an array of strings representing each Tenant name.
+  # - a hash which keys are tenant names, and values custom db config (must contain all key/values required in database.yml)
+  #
+  # config.tenant_names = lambda{ Customer.pluck(:tenant_name) }
+  # config.tenant_names = ['tenant1', 'tenant2']
+  # config.tenant_names = {
+  #   'tenant1' =&amp;gt; {
+  #     adapter: 'postgresql',
+  #     host: 'some_server',
+  #     port: 5555,
+  #     database: 'postgres' # this is not the name of the tenant's db
+  #                          # but the name of the database to connect to before creating the tenant's db
+  #                          # mandatory in postgresql
+  #   },
+  #   'tenant2' =&amp;gt; {
+  #     adapter:  'postgresql',
+  #     database: 'postgres' # this is not the name of the tenant's db
+  #                          # but the name of the database to connect to before creating the tenant's db
+  #                          # mandatory in postgresql
+  #   }
+  # }
+  # config.tenant_names = lambda do
+  #   Tenant.all.each_with_object({}) do |tenant, hash|
+  #     hash[tenant.name] = tenant.db_configuration
+  #   end
+  # end
+  #
+  
+  # jsj - this needed to be turned OFF 
+  ###config.tenant_names = lambda { ToDo_Tenant_Or_User_Model.pluck :database }
+
+  #
+  # ==&amp;gt; PostgreSQL only options
+
+  # Specifies whether to use PostgreSQL schemas or create a new database per Tenant.
+  # The default behaviour is true.
+  #
+  # config.use_schemas = true
+  
+  # jsj - this needed to be set to false
+  # required for mysql / Rails 5:
+  # https://github.com/influitive/apartment/issues/345#issuecomment-258733219
+  config.use_schemas = false
+
+  # Apartment can be forced to use raw SQL dumps instead of schema.rb for creating new schemas.
+  # Use this when you are using some extra features in PostgreSQL that can't be respresented in
+  # schema.rb, like materialized views etc. (only applies with use_schemas set to true).
+  # (Note: this option doesn't use db/structure.sql, it creates SQL dump by executing pg_dump)
+  #
+  # config.use_sql = false
+
+  # There are cases where you might want some schemas to always be in your search_path
+  # e.g when using a PostgreSQL extension like hstore.
+  # Any schemas added here will be available along with your selected Tenant.
+  #
+  # config.persistent_schemas = %w{ hstore }
+
+  # &amp;lt;== PostgreSQL only options
+  #
+
+  # By default, and only when not using PostgreSQL schemas, Apartment will prepend the environment
+  # to the tenant name to ensure there is no conflict between your environments.
+  # This is mainly for the benefit of your development and test environments.
+  # Uncomment the line below if you want to disable this behaviour in production.
+  #
+  # config.prepend_environment = !Rails.env.production?
+end
+
+# Setup a custom Tenant switching middleware. The Proc should return the name of the Tenant that
+# you want to switch to.
+# Rails.application.config.middleware.use 'Apartment::Elevators::Generic', lambda { |request|
+#   request.host.split('.').first
+# }
+
+# Rails.application.config.middleware.use 'Apartment::Elevators::Domain'
+
+# jsj - this needed to be set
+Rails.application.config.middleware.use 'Apartment::Elevators::Subdomain'
+# Rails.application.config.middleware.use 'Apartment::Elevators::FirstSubdomain'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Mon, 08 May 2017 18:46:08 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/05/08/building-a-multitenant-saas-app-with-rails-docker-mysql-and-the-apartment-gem.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/05/08/building-a-multitenant-saas-app-with-rails-docker-mysql-and-the-apartment-gem.html</guid>
+        
+        <category>rails</category>
+        
+        <category>saas</category>
+        
+        <category>mysql</category>
+        
+        <category>multitenant</category>
+        
+        <category>docker</category>
+        
+        <category>saas</category>
+        
+        <category>mysql</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Deploying a Rails app to AWS with Docker Swarm</title>
+        <description>&lt;p&gt;Historically I’ve deployed Rails apps via Vlad or Capistrano and, honestly, deployment is always one of the &lt;strong&gt;worst&lt;/strong&gt; parts of Rails.  I decided recently that I was just plain tired of classical deployment and I wanted to move to deploying via the new Docker Swarm.  I’m in an interesting position where I need to launching N things over the next few months and thought of struggling with Capistrano every time I want to make something publicly available is, honestly, more than I can bear.  I’m looking at Docker and Docker Swarm from the perspective of there &lt;strong&gt;has&lt;/strong&gt; to be a better way.&lt;/p&gt;
+
+&lt;h1 id=&quot;application-description&quot;&gt;Application Description&lt;/h1&gt;
+
+&lt;p&gt;In order to teach myself this new style of deployment, I didn’t want to use a toy application.  I wanted a real app that served a real purpose so I came up with the idea of a web app which evaluates a gem from GitHub and answers the question of “Should I (use this) Gem?”.  I call it &lt;a href=&quot;http://www.shouldigem.com/&quot;&gt;ShouldIGem&lt;/a&gt; and it is live on the web in a minimal state.&lt;/p&gt;
+
+&lt;p&gt;This would give me a:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;rails app&lt;/li&gt;
+  &lt;li&gt;that uses network i/o&lt;/li&gt;
+  &lt;li&gt;exercises a code base I’ve been building to illustrate possible issues&lt;/li&gt;
+  &lt;li&gt;uses multiple AWS resources in a scalable way - micro instances and RDS&lt;/li&gt;
+  &lt;li&gt;that uses Puma as a an application server&lt;/li&gt;
+  &lt;li&gt;separates the different functional parts of a Rails app into different “containers” i.e. web, sidekiq, migrations, redis&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Even though most applications of Docker seem to use a CI server, I wanted to do this at least quasi manually so I had a better understanding of what’s actually happening under the hood.  By the end I mildly regretted not using a CI server but I suspect the effort to setup a CI server would have been similar and I would have learned far less.&lt;/p&gt;
+
+&lt;p&gt;Surprisingly I didn’t actually have to do all that much development to pull this off.  Over the past several months, ever since I left my full time gig, I’ve been developing an HTML micro expression parsing engine and this is simply an application of it.&lt;/p&gt;
+
+&lt;p&gt;I call this application &lt;em&gt;Should I Gem&lt;/em&gt; and it is online at &lt;a href=&quot;http://www.shouldigem.com/&quot;&gt;http://www.shouldigem.com/&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;thank-you&quot;&gt;Thank You&lt;/h1&gt;
+
+&lt;p&gt;A good friend is Nick Janetakis who is a Docker Captain and has taught over 10,000 people how to use Docker.  His latest course is &lt;a href=&quot;https://diveintodocker.com/courses/dive-into-docker&quot;&gt;Dive Into Docker&lt;/a&gt;.  He pitched in on this and while I’m the humble scribe here, he’s been the steadfast advocate for Docker, pushing me towards it for almost a year now.  Thanks Nick – I couldn’t have done it without you.  Additional thank yous related to this project can be found on the &lt;a href=&quot;http://www.shouldigem.com/pages/about&quot;&gt;About Page&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;things-to-understand&quot;&gt;Things to Understand&lt;/h1&gt;
+
+&lt;p&gt;When you go into Docker Swarm, you’re not in the same old one server, one process Rails world you are likely used to.  You’re moving into a brave new world of zero downtime deploys and to support that, ideally, you need 2 of everything – 2 web instances, 2 sidekiq instances and so on.  This brings with it an increase in resource usage (mostly ram) so keep that in mind.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: Since this is all being paid for on my own dime, I initially put this up on a single machine; no matter, changing it to multiple machines with Docker Swarm is actually trivial.&lt;/p&gt;
+
+&lt;h1 id=&quot;getting-your-application-deployed-under-docker-swarm&quot;&gt;Getting Your Application Deployed Under Docker Swarm&lt;/h1&gt;
+
+&lt;h2 id=&quot;step-1-create-an-aws-rds-instance-for-the-database&quot;&gt;Step 1: Create an AWS RDS Instance for the Database&lt;/h2&gt;
+
+&lt;p&gt;The very first thing I did to get started was to decide that I wanted my persistent storage absolutely separate from Docker.  Yes I do know that Docker’s volume support makes this less absolutely necessary than it once was but I’m pretty old school when it comes to the data side of the equation so I used AWS RDS.&lt;/p&gt;
+
+&lt;p&gt;To do this, I used the standard AWS RDS web front end and then copied the configuration parameters to database.yml.  Yes I could have used environment variables or secrets or something else but database.yml is just fine for a private app where there is only one developer.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: Now that I’ve thought this over a bit, I understand more why in the Docker world, there is such a focus on environment variables versus static values checked into version control.  Historically I’ve always worked in terms of full time staff but in the brave new world of contract developers and freelancers, it does make sense to pull configuration away from people (particularly true with credentials like AWS api keys which can be so easily exploited if they escape into the wild).&lt;/p&gt;
+
+&lt;h2 id=&quot;step-2-build-an-aws-instance-for-the-server&quot;&gt;Step 2: Build an AWS Instance for the Server&lt;/h2&gt;
+
+&lt;p&gt;When you start talking about containers and cloud stuff, you often lose sight of the fact that there still are &lt;strong&gt;physical servers&lt;/strong&gt; involved and you’re going to need one to run your containers on.  Thinking of containers as &lt;em&gt;a runtime layer for a software stack&lt;/em&gt; is what finally make me understand them well enough to commit to using containers in production.&lt;/p&gt;
+
+&lt;p&gt;All I did here is build a t2.micro instance, nothing special at all.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-3-make-an-aws-security-group-and-set-up-aws-billing-alerts&quot;&gt;Step 3: Make an AWS Security Group and Set Up AWS Billing Alerts&lt;/h2&gt;
+
+&lt;p&gt;Add your AWS instance to the same security group that was automatically created for your RDS instance.  Personally I’d recommend opening up the ICMP port for ping but that’s just me.&lt;/p&gt;
+
+&lt;p&gt;If you don’t normally setup AWS Billing Alerts on your cloud stuff then I highly recommend it. AWS entirely lacks the concept of a hosting budget for experimental stuff like this but AWS will alert you when your spending goes over limits so that’s at least something.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-4-install-docker-locally-on-your-development-box&quot;&gt;Step 4: Install Docker Locally on Your Development box&lt;/h2&gt;
+
+&lt;p&gt;If you don’t have Docker installed locally then you need to do this now.  These days this is so simple that I don’t think you need any more help than &lt;a href=&quot;http://www.docker.com/&quot;&gt;http://www.docker.com/&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-5-sign-up-for-dockerhub&quot;&gt;Step 5: Sign up for DockerHub&lt;/h2&gt;
+
+&lt;p&gt;A key decision in any Docker strategy is where are your Docker Images stored.  This is called a &lt;em&gt;container registry&lt;/em&gt; and think of it as a git repo but for a &lt;strong&gt;compiled&lt;/strong&gt; artifact instead of source code.  AWS has their own registry called the AWS ECR (elastic container registry) but I decided to use Docker Hub instead.  The reason was that I figured that:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Docker Swarm would naturally work better with something from Docker.&lt;/li&gt;
+  &lt;li&gt;There are also issues with the AWS ECR and authentication needing to re-authenticate every 12 hours or so that I just plain didn’t want to tackle.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;steps&quot;&gt;Steps:&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Goto https://hub.docker.com/&lt;/li&gt;
+  &lt;li&gt;Create an account.&lt;/li&gt;
+  &lt;li&gt;Sign up for a paid account if you need more than one container (and you likely will).  It is only $7 per account for a micro account so it isn’t much money.&lt;/li&gt;
+  &lt;li&gt;Create repositories for each of your containers.  Please note that since you haven’t set them up yet you may need to wait until later in the process on this.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;review&quot;&gt;Review&lt;/h3&gt;
+
+&lt;p&gt;While I found DockerHub to be a bit pricey for what you get, it worked &lt;strong&gt;perfectly&lt;/strong&gt;.  I don’t think that I hit a single snag related to the container registry and that’s just plain awesome.  Recommended!&lt;/p&gt;
+
+&lt;h2 id=&quot;step-6-install-docker-on-your-aws-instance&quot;&gt;Step 6: Install Docker on Your AWS Instance&lt;/h2&gt;
+
+&lt;p&gt;Although Amazon offers an Amazon branded version of Linux complete with Docker, Ubuntu has been very, very good to me over the years so when I created my instance, I used Ubuntu which means I needed to manually install docker per the Linux Install instructions:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://docs.docker.com/engine/installation/linux/ubuntu/#install-from-a-package&quot;&gt;1&lt;/a&gt; and &lt;a href=&quot;https://docs.docker.com/engine/installation/linux/linux-postinstall/#kernel-compatibility&quot;&gt;2&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here’s what you need to do once you are SSH’d into your Linux box:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install     apt-transport-https     ca-certificates     curl     software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository    &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) \
+    stable&quot;
+sudo apt-get install docker-ce
+sudo docker run hello-world
+sudo groupadd docker
+sudo usermod -aG docker $USER
+docker run hello-world
+exit
+sudo systemctl enable docker
+docker login
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Enter your login credentials for Docker Hub when you type docker login and they will be saved, securely, to  this file:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~/.docker/config.json
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After you get Docker installed on your AWS instance, there are two final steps:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Create a directory where your application will live.  I called mine should_i_gem but yours will obviously be different so I have ~/should_i_gem as my path.&lt;/li&gt;
+  &lt;li&gt;You need to initialize swarm mode as it is turned off by default.  Do this with:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;docker swarm init&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;At the end of your docker swarm init command, you will get a message like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Swarm initialized: current node (zv7y6c7236mtjl4jv31kw1elb) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join \
+    --token SWMTKN-1-4vpwpu2qiwkj7c5br92g8x8kchynw7evto5xm7n0fj46fj7e51-1yzi6jj84m19e9wylz7wvg55q \
+    172.31.9.129:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This message is actually pretty important so make a note of it.  Personally all my Rails apps have a top level directory called docs where I can drop anything I need to ever come back to.  That’s a best practive that I’d recommend.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-7-get-your-application-ready-for-docker-ie-dockerizing-it&quot;&gt;Step 7: Get Your Application Ready for Docker i.e. “Dockerizing It”&lt;/h2&gt;
+
+&lt;p&gt;The next step is to get your Rails application ready for Docker.  There are different ways to do this.  If you’re starting with a brand new app then I’d recommend that you use the &lt;a href=&quot;https://github.com/nickjj/orats&quot;&gt;ORATS&lt;/a&gt; gem as a generator since that builds all the Docker stuff for you but I’ll take you through the steps manually.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-files-you-need&quot;&gt;The Files You Need&lt;/h3&gt;
+
+&lt;p&gt;You need:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Dockerfile&lt;/li&gt;
+  &lt;li&gt;.dockerignore&lt;/li&gt;
+  &lt;li&gt;docker-compose.yml&lt;/li&gt;
+  &lt;li&gt;docker-compose.production.yml&lt;/li&gt;
+  &lt;li&gt;.env&lt;/li&gt;
+  &lt;li&gt;.env.production&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;All of these files live in the root directory of your Rails app.  You’ll also likely need to change puma.rb in config.  Each of these files is described below.&lt;/p&gt;
+
+&lt;h4 id=&quot;dockerfile&quot;&gt;Dockerfile&lt;/h4&gt;
+
+&lt;p&gt;The Dockerfile tells Docker itself how to get it to build and how to run it.  Here’s what mine looked like:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FROM ruby:2.3.1-alpine
+
+RUN apk update &amp;amp;&amp;amp; apk add build-base nodejs mariadb-dev tzdata
+
+RUN mkdir /app
+WORKDIR /app
+
+COPY Gemfile Gemfile.lock ./
+RUN bundle install --binstubs
+
+COPY . .
+
+# The ENV variables simply need to be set for Rails to correctly pre-compile
+# your assets. They do not need to be populated by real values.
+RUN bundle exec rake RAILS_ENV=production DATABASE_URL=mysql2://user:pass@127.0.0.1/dbname SECRET_TOKEN=dummytoken assets:precompile
+
+CMD puma -C config/puma.rb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The FROM directive tells Docker what “software engine” to use.  In this case I’m using a Ruby 2.3.1 language implementation on top of the Alpine linux distro which is a tiny Linux just for containers.&lt;/p&gt;
+
+&lt;p&gt;The first RUN command tells it to update and then build the best, nodejs and mariadb-dev and tzdata.  These are equivalent to doing a apt-get install on any Ubuntu system.&lt;/p&gt;
+
+&lt;p&gt;The second RUN command makes a directory /app and then it is set as WORKDIR.  Please note that all these commands generally execute from where your Dockerfile is located.&lt;/p&gt;
+
+&lt;p&gt;The first COPY command copies in Gemfile and Gemfile.lock and then runs bundler so that your gems are build in the runtime container.&lt;/p&gt;
+
+&lt;p&gt;The second COPY command copies your code into the container.&lt;/p&gt;
+
+&lt;p&gt;THE RUN bundle exec command sets up environment variables and handles asset compilation.&lt;/p&gt;
+
+&lt;p&gt;And then CMD puma starts the web process.&lt;/p&gt;
+
+&lt;h4 id=&quot;dockerignore&quot;&gt;.dockerignore&lt;/h4&gt;
+
+&lt;p&gt;The .dockerignore file tells Docker what files to ignore.  For example .git shouldn’t ever be pushed to DockerHub and neither should tmp.  Generally speaking you want your Docker images to be as slim as possible since the larger they are, they longer they take to download.&lt;/p&gt;
+
+&lt;p&gt;Here’s my .dockerignore:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.git/
+.dockerignore
+.byebug_history
+tmp/*
+log/*
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We do want the tmp and log directories to exist in the runtime for our application so we exclude them as tmp/* so the files within them are excluded but not the directory.&lt;/p&gt;
+
+&lt;h4 id=&quot;docker-composeyml&quot;&gt;docker-compose.yml&lt;/h4&gt;
+
+&lt;p&gt;The docker-compose.yml tells Docker how to run all the different containers in your application.  If you think about a normal web application, even on a single server, there are actually different pieces like:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;web server&lt;/li&gt;
+  &lt;li&gt;database server&lt;/li&gt;
+  &lt;li&gt;sidekiq&lt;/li&gt;
+  &lt;li&gt;redis&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Here’s my docker-compose.yml:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;version: '3.1'
+
+services:
+  redis:
+    image: 'redis:3.2-alpine'
+    ports:
+      - '6379'
+    volumes:
+      - 'redis:/var/lib/redis/data'
+
+  web:
+    depends_on:
+      - 'redis'
+    build: .
+    env_file:
+      - '.env'
+    ports:
+      - '3500:3500'
+    volumes:
+      - '.:/app'
+  
+  sidekiq: 
+    depends_on: 
+      - 'web'
+    build: .
+    env_file:
+      - '.env'
+
+    volumes:
+      - '.:/app'
+    command: &quot;bundle exec sidekiq -C config/sidekiq.yml.erb&quot;
+  
+volumes:
+  redis: {}
+  assets: {}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;There are a few different directives here:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;version - this tells Docker what version you want to run and since we want to use Swarm, it needs to be 3 or later.  I want the latest and that’s 3.1.&lt;/li&gt;
+  &lt;li&gt;services - this is the top level grouping of each of the containers you’re going to create.&lt;/li&gt;
+  &lt;li&gt;volumes - this exposes data from service to service.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The key thing here is the services so let’s start by looking at our Redis service:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;redis:
+  image: 'redis:3.2-alpine'
+  ports:
+    - '6379'
+  volumes:
+    - 'redis:/var/lib/redis/data'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;What this is telling us is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;name the service redis&lt;/li&gt;
+  &lt;li&gt;base this on an image i.e. something from a repository (often DockerHub but not always); you find available images at &lt;a href=&quot;http://www.dockerhub.com&quot;&gt;DockerHub&lt;/a&gt; and there are thousands upon thousands of images&lt;/li&gt;
+  &lt;li&gt;expose the port 6379 to other services&lt;/li&gt;
+  &lt;li&gt;store your data at the specified volume location&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Our web service now starts to show how this all fits together:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;web:
+  depends_on:
+    - 'redis'
+  build: .
+  env_file:
+    - '.env'
+  ports:
+    - '3500:3500'
+  volumes:
+    - '.:/app'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;What this is telling us is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;web depends on Redis actually running&lt;/li&gt;
+  &lt;li&gt;build the code from the current directory i.e. .&lt;/li&gt;
+  &lt;li&gt;use the environment file .env&lt;/li&gt;
+  &lt;li&gt;run on the port 3500 both internally to the service and external in the local environment&lt;/li&gt;
+  &lt;li&gt;expose a volume at app&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now the sidekiq service brings it all home:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sidekiq: 
+  depends_on: 
+    - 'web'
+  build: .
+  env_file:
+    - '.env'
+
+  volumes:
+    - '.:/app'
+  command: &quot;bundle exec sidekiq -C config/sidekiq.yml.erb&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;What this is telling us is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;sidekiq depends on web&lt;/li&gt;
+  &lt;li&gt;it is again going to build from the current directory&lt;/li&gt;
+  &lt;li&gt;it will use the same env file and volumes&lt;/li&gt;
+  &lt;li&gt;it will use a special command to run sidekiq when the container starts up&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you look at this sidekiq container it actually answers a common question that people have about Docker which is CRON based processing.  Let’s say you had a rake task that you wanted to run every day under Docker.  Just create a container which has an entry command of either cron or a scheduling gem like ClockWork and make it part of your stack.  Please bear in mind that if you’re launching multiple copies of your container then you’d need to allow for locking or whatever mechanism you needed to prevent concurrency issues.&lt;/p&gt;
+
+&lt;h4 id=&quot;docker-composeproductionyml&quot;&gt;docker-compose.production.yml&lt;/h4&gt;
+
+&lt;p&gt;Here is the &lt;strong&gt;production&lt;/strong&gt; version of my docker-compose file that is the one that will be located on the server to define our services and our swarm:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;version: '3.1'
+
+services:
+  redis:
+    image: 'redis:3.2-alpine'
+    ports:
+      - '6379'
+    volumes:
+      - 'redis:/var/lib/redis/data'
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  web:
+    depends_on:
+      - 'redis'
+    image: fuzzygroup/shouldigem_web
+    env_file:
+      - '.env'
+      - '.env.production'
+    ports:
+      - '80:80'
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+
+  
+  sidekiq: 
+    depends_on: 
+      - 'web'
+    image: fuzzygroup/shouldigem_web
+    env_file:
+      - '.env'
+      - '.env.production'      
+    command: &quot;bundle exec sidekiq -C config/sidekiq.yml.erb&quot;
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+volumes:
+  redis: {}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;env&quot;&gt;.env&lt;/h4&gt;
+
+&lt;p&gt;A .env file is a set of environment variables that Docker will cause to come into being in the environment that you are setting up.  Here’s my .env file:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;COMPOSE_PROJECT_NAME=&quot;should-i-gem&quot;
+BIND_ON=0.0.0.0:3500
+RAILS_MAX_THREADS=1
+WEB_CONCURRENCY=1
+ACTIVE_JOB_URL=redis://redis:6379/0
+REDIS_CACHE_URL=redis://redis:6379/0
+ACTIVE_JOB_QUEUE_PREFIX=jobs
+LOG_LEVEL=debug
+RAILS_ENV=development
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;envproduction&quot;&gt;.env.production&lt;/h4&gt;
+
+&lt;p&gt;Here’s my .env.production:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;RAILS_MAX_THREADS=5
+WEB_CONCURRENCY=5
+RAILS_ENV=production
+RAILS_SERVE_STATIC_FILES=true
+BIND_ON=0.0.0.0:80
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;step-8-build-your-app-under-docker&quot;&gt;Step 8: Build Your App Under Docker&lt;/h2&gt;
+
+&lt;p&gt;Your Rails app is run inside a container or series of containers as defined by your compose file.  The key step to getting your containers to run is that they need to be “built”.  This is done with the docker-compose tool:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;docker-compose build web&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;step-9-create-your-images-tag-them-and-push-them-to-docker-hub&quot;&gt;Step 9: Create Your Images, Tag Them and Push them to Docker Hub&lt;/h2&gt;
+
+&lt;p&gt;Once you have built your docker images, they need to be pushed to the DockerHub where they can be pulled onto your server when you are ready to run them.  This is done with a command like this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;docker tag shouldigem_web fuzzygroup/shouldigem_web:latest&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;step-10-copy-the-docker-composeproductionyml-to-the-server&quot;&gt;Step 10: Copy the docker-compose.production.yml to the Server&lt;/h2&gt;
+
+&lt;p&gt;In order to run your containers in production there are three files that need to go up to the server:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;.env&lt;/li&gt;
+  &lt;li&gt;.env.production&lt;/li&gt;
+  &lt;li&gt;.docker-compose.production.yml&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Technically these files only need to be copied up &lt;strong&gt;once&lt;/strong&gt; but because configurations change, I’d recommend that you think of these as &lt;em&gt;deployment artifacts&lt;/em&gt; that need to be copied up every time.  And because these things are external to your actual image they can’t be a part of them.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-11-actually-deploying&quot;&gt;Step 11: Actually Deploying&lt;/h2&gt;
+
+&lt;p&gt;Deployment of a Rails app under Docker, the way I’ve done it, is actually a two step process:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Copy the three files in Step 10 to the server or servers (if you have N servers then they need to go up to all N servers).&lt;/li&gt;
+  &lt;li&gt;Restart the Docker Swarm engine.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;a-tiny-bash-deployer-to-get-your-files-up&quot;&gt;A Tiny Bash Deployer to Get Your Files Up&lt;/h3&gt;
+
+&lt;p&gt;Steps 8, 9 and 10 can all be rolled together into a simple bash script as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# The Docker Specific Stuff&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+docker-compose build web
+docker tag shouldigem_web fuzzygroup/shouldigem_web:latest
+docker push fuzzygroup/shouldigem_web:latest
+
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Setting up the remote box&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+scp -i ~/.ssh/fuzzygroup2.pem .env  ubuntu@shouldigem.com:~/shouldigem
+scp -i ~/.ssh/fuzzygroup2.pem .env.production  ubuntu@shouldigem.com:~/shouldigem
+scp -i ~/.ssh/fuzzygroup2.pem docker-compose.production.yml ubuntu@shouldigem.com:~/shouldigem
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;restarting-docker-swarm&quot;&gt;Restarting Docker Swarm&lt;/h3&gt;
+
+&lt;p&gt;Here’s the command to restart Docker Swarm:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;docker stack deploy -c docker-compose.production.yml –with-registry-auth shouldigem&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This has to be done after:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Your images have been built and pushed to Docker Hub&lt;/li&gt;
+  &lt;li&gt;The .env and compose files are copied to all remote servers&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;two-discrete-steps-sucks-monkey-chunks&quot;&gt;Two Discrete Steps Sucks Monkey Chunks&lt;/h3&gt;
+
+&lt;p&gt;Yes I’m clearly aware that two separate steps for deployment (and that this entirely ignores migrations) actually sucks monkey chunks.  I’ll roll all this into an Ansible deployer in the not too distant future.  And I’ll address migrations at that time.&lt;/p&gt;
+
+&lt;h1 id=&quot;gotchas&quot;&gt;Gotchas&lt;/h1&gt;
+
+&lt;p&gt;In getting this deployed, I only hit one real gotcha – I wanted to use Nginx to serve the 10 or so static assets (images, JS and CSS) that make up this application.  Due to the layers of isolation and the fact that Docker Swarm prevents use of the VOLUMES_FROM directive, I was simply unable to make this work.  There are various workarounds but none of them let me achieve my zero downtime goal so I ended up just using Puma to serve them for now.  At some point I’m sure that I or someone else will figure this out.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusions-and-observations&quot;&gt;Conclusions and Observations&lt;/h1&gt;
+
+&lt;p&gt;If you’re going to go down the container route then I strongly recommend that if at all possible, you do it with someone who has already done it.  Docker Swarm and Docker itself are highly impressive technologies but the levels of abstraction and isolation that you have to internalize are very hard to wrap your head around.&lt;/p&gt;
+
+&lt;p&gt;You should be aware that there’s a whole additional post that I need to write – &lt;em&gt;Working with a Rails App Under Docker&lt;/em&gt; which discusses how you work with a Rails app under Docker and will cover things like logs, migrations, getting into console and so on.  Look for that in the next few days.&lt;/p&gt;
+
+&lt;h1 id=&quot;recommended-reading&quot;&gt;Recommended Reading&lt;/h1&gt;
+
+&lt;p&gt;Here are some good things to read&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.diveintodocker.com&quot;&gt;Dive Into Docker&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://jbhannah.net/articles/rails-development-with-docker/&quot;&gt;J Hannah&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://leanpub.com/the-devops-2-1-toolkit&quot;&gt;Devops 2.1 Toolkit&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://diveintodocker.com/blog/comparing-virtual-machines-vs-docker-containers&quot;&gt;Containers versus Virtual machines&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Wed, 03 May 2017 19:32:30 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/05/03/deploying-a-rails-app-to-aws-with-docker-swarm.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/05/03/deploying-a-rails-app-to-aws-with-docker-swarm.html</guid>
+        
+        <category>rails</category>
+        
+        <category>docker</category>
+        
+        <category>aws</category>
+        
+        <category>swarm</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Working With a Rails App Under Docker</title>
+        <description>&lt;h1 id=&quot;working-with-a-rails-app-under-docker&quot;&gt;Working with a Rails App Under Docker&lt;/h1&gt;
+
+&lt;p&gt;If you view Docker as similar to an operating system, and, yes, I know that’s not technically correct, then it makes sense that there are a &lt;strong&gt;lot&lt;/strong&gt; of commands that you need to know, just as you need to know a lot of commands to use an operating system.  In this section I’m going to give examples of each of the docker commands that I found myself using.&lt;/p&gt;
+
+&lt;h2 id=&quot;finding-your-process---docker-ps&quot;&gt;Finding Your Process - docker ps&lt;/h2&gt;
+
+&lt;p&gt;The docker ps command lists your running processes under Docker:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;docker ps&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker ps
+CONTAINER ID        IMAGE                                                                                               COMMAND                  CREATED             STATUS              PORTS               NAMES
+c268d4b67dd6        fuzzygroup/shouldigem_web@sha256:cb55863d2a41d97ee2de5bc42354dae03c8ac30780d86557560e1a373567f116   &quot;bundle exec sidek...&quot;   10 minutes ago      Up 10 minutes                           shouldigem_sidekiq.1.klojjb9cnni0ceuwqunaxhuke
+7f04bfa41535        fuzzygroup/shouldigem_web@sha256:cb55863d2a41d97ee2de5bc42354dae03c8ac30780d86557560e1a373567f116   &quot;/bin/sh -c 'puma ...&quot;   10 minutes ago      Up 10 minutes                           shouldigem_web.1.r2m01ncqud8ynz2r0ui8fyvg5
+34e2624d5691        redis@sha256:9cd405cd1ec1410eaab064a1383d0d8854d1eef74a54e1e4a92fb4ec7bdc3ee7                       &quot;docker-entrypoint...&quot;   28 minutes ago      Up 28 minutes       6379/tcp            shouldigem_redis.1.wf9ggadw7c8pusgreaheojyz5
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In this case I want to look at the 2nd one – shouldigem_web.  I’ll need to capture the container id to my clipboard so I can use it to view logs in the next command.&lt;/p&gt;
+
+&lt;h2 id=&quot;viewing-logs----docker-logs&quot;&gt;Viewing Logs – docker logs&lt;/h2&gt;
+
+&lt;p&gt;The docker logs command views the logs from your running processes under Docker:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;docker logs 7f04bfa41535&lt;/td&gt;
+      &lt;td&gt;more&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;running-rails-console&quot;&gt;Running Rails Console&lt;/h2&gt;
+
+&lt;p&gt;I don’t know about other folks but, even in production, I’m intensely dependent on the Rails console, particularly at the early stages where nothing ever works right.  What you can do with Docker is connect to your Rails container with an interactive terminal flag (-it).  Start by using docker ps to get the process id and then:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker exec -it 7f04bfa41535 sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;That launches an old school sh terminal (I didn’t want the overhead of bash on my containers so I just left it with sh).  If you run an ls -l then this will all look familiar:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/app # ls -l
+total 104
+-rw-r--r--    1 root     root           489 Apr 27 18:30 Dockerfile
+-rw-r--r--    1 root     root          1522 Apr 27 14:03 Gemfile
+-rw-r--r--    1 root     root          8737 Apr 27 14:11 Gemfile.lock
+-rw-r--r--    1 root     root          3963 Apr 24 21:34 Guardfile
+-rw-r--r--    1 root     root           534 Apr 26 19:16 README
+-rw-r--r--    1 root     root           534 Apr 26 19:17 README.md
+-rw-r--r--    1 root     root           227 Apr 24 21:31 Rakefile
+drwxr-xr-x   10 root     root          4096 Apr 25 07:05 app
+drwxr-xr-x    2 root     root          4096 Apr 24 21:35 bin
+drwxr-xr-x    5 root     root          4096 Apr 26 15:06 config
+-rw-r--r--    1 root     root           130 Apr 24 21:31 config.ru
+drwxr-xr-x    3 root     root          4096 Apr 24 22:40 db
+-rwxr-xr-x    1 root     root           687 Apr 27 19:01 deploy.sh
+drwxr-xr-x    3 root     root          4096 Apr 27 14:44 docker
+-rw-r--r--    1 root     root          1464 Apr 27 19:04 docker-compose.production.yml
+-rw-r--r--    1 root     root          1013 Apr 27 15:46 docker-compose.yml
+drwxr-xr-x    2 root     root          4096 Apr 27 13:17 docs
+drwxr-xr-x    5 root     root          4096 Apr 24 21:34 lib
+drwxr-xr-x    2 root     root          4096 Apr 24 21:34 log
+drwxr-xr-x    4 root     root          4096 Apr 27 19:05 public
+drwxr-xr-x    6 root     root          4096 Apr 24 22:37 spec
+drwxr-xr-x    6 root     root          4096 Apr 27 19:05 tmp
+-rw-r--r--    1 root     root          1283 Apr 27 18:36 ubuntu@ec2-52-14-213-243.us-east-2.compute.amazonaws.com
+drwxr-xr-x    3 root     root          4096 Apr 24 21:31 vendor
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Yes Virginia – that’s a Rails app and you can just use bundle exec rails c:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/app # bundle exec rails c
+Loading production environment (Rails 5.0.2)
+irb(main):001:0&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;docker stack ps shouldigem&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ID            NAME                  IMAGE                             NODE             DESIRED STATE  CURRENT STATE               ERROR  PORTS
+wd1jlbwgx7m0  shouldigem_sidekiq.1  fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Running        Running 3 minutes ago
+xclwhnvhg9mm  shouldigem_web.1      fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Running        Running 3 minutes ago
+ugwqfsaqnsc3  shouldigem_sidekiq.1  fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Shutdown       Shutdown 3 minutes ago
+2lzgsunoay0y  shouldigem_web.1      fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Shutdown       Shutdown 3 minutes ago
+r2m01ncqud8y   \_ shouldigem_web.1  fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Shutdown       Shutdown 9 minutes ago
+klojjb9cnni0  shouldigem_sidekiq.1  fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Shutdown       Shutdown 9 minutes ago
+seegap6xlfy1  shouldigem_web.1      fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Shutdown       Shutdown about an hour ago
+akgkzn8ytfcc  shouldigem_sidekiq.1  fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Shutdown       Shutdown about an hour ago
+wf9ggadw7c8p  shouldigem_redis.1    redis:3.2-alpine                  ip-172-31-9-129  Running        Running 2 hours ago
+sp16ukp44u3e  shouldigem_sidekiq.1  fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Shutdown       Shutdown 2 hours ago
+o9kbzy6ojbat  shouldigem_web.1      fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Shutdown       Shutdown 2 hours ago
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;docker stack services shouldigem&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ID            NAME                MODE        REPLICAS  IMAGE
+f9dpr1o77x16  shouldigem_web      replicated  1/1       fuzzygroup/shouldigem_web:latest
+idhahasrpax2  shouldigem_sidekiq  replicated  1/1       fuzzygroup/shouldigem_web:latest
+zejrjetcdzgy  shouldigem_redis    replicated  1/1       redis:3.2-alpine
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;docker-compose build web&lt;/p&gt;
+
+&lt;p&gt;docker tag shouldigem_web fuzzygroup/shouldigem_web&lt;/p&gt;
+
+&lt;p&gt;docker push fuzzygroup/shouldigem_web&lt;/p&gt;
+</description>
+        <pubDate>Wed, 03 May 2017 19:28:49 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/05/03/working-with-a-rails-app-under-docker.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/05/03/working-with-a-rails-app-under-docker.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>A Tale of Two (rails) Caches</title>
+        <description>&lt;p&gt;2.3.1 :039 &amp;gt; seconds = Benchmark.realtime do
+2.3.1 :040 &amp;gt;     results = PageGithubProject.fetch(“https://github.com/nickjj/orats”)
+2.3.1 :041?&amp;gt;   end
+1.3151520000537857
+2.3.1 :042 &amp;gt; seconds = Benchmark.realtime do
+2.3.1 :043 &amp;gt;     seconds = Benchmark.realtime do^C
+2.3.1 :043 &amp;gt; reload!
+Reloading…
+true
+2.3.1 :044 &amp;gt; seconds = Benchmark.realtime do
+2.3.1 :045 &amp;gt;     results = PageGithubProject.fetch(“https://github.com/nickjj/orats”)
+2.3.1 :046?&amp;gt;   end
+1.1567529999883845&lt;/p&gt;
+
+&lt;p&gt;importance of an abstract class&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if html_page_body.nil?
+  #
+  # Cache variables
+  #
+  use_cache = true
+  cache_duration = 1.hour
+  cache = ActiveSupport::Cache::MemoryStore.new(expires_in: cache_duration)
+  #cache = ActiveSupport::Cache::FileStore.new(expires_in: cache_duration)
+  
+  if self.fetch_mechanism == &quot;javascript&quot;
+    #
+    cache_key = TextCommon.sha_it(&quot;javascript_page_fetcher__#{@url}&quot;)        
+    html_page_body = nil
+    html_page_body = cache.read(cache_key) if use_cache
+    if html_page_body
+      status = :ok
+      page = UrlCommon.create_mechanize_page_from_html(url, html_page_body)
+      html_page_body = nil # this is a big ass (200k to 500k) string so get rid of it immediately
+    elsif html_page_body.nil?
+      status, page = JavaScriptPageFetcher.fetch(@url, true)
+      cache.write(cache_key, page.body, expires_in: cache_duration) if use_cache
+    end
+  else
+    cache_key = TextCommon.sha_it(&quot;mechanize_page_fetcher__#{@url}&quot;)        
+    html_page_body = nil
+    html_page_body = cache.read(cache_key) if use_cache
+    if html_page_body
+      status = :ok
+      page = UrlCommon.create_mechanize_page_from_html(url, html_page_body)
+      html_page_body = nil # this is a big ass (200k to 500k) string so get rid of it immediately
+    elsif html_page_body.nil?
+      status, page = UrlCommon.get_page(@url)
+      cache.write(cache_key, page.body, expires_in: cache_duration) if use_cache
+    end
+  end
+else
+  #
+  # No caching at all here; data comes in from an alternate path (memoize / reuse previous operation)
+  #
+  status = :ok
+  page = UrlCommon.create_mechanize_page_from_html(url, html_page_body)
+end
+
+https://apidock.com/rails/ActiveSupport/Cache/Store/fetch
+
+https://apidock.com/rails/v4.2.7/ActiveSupport/Cache/Store/read
+
+http://stackoverflow.com/questions/5614389/anyone-know-of-a-caching-plugin-for-ruby-mechanize
+
+https://github.com/vcr/vcr
+
+http://stackoverflow.com/questions/11608127/writing-a-caching-version-of-mechanize
+
+
+with caching:
+
+Total parsers tested: 20
+  Total urls tested: 137
+Total time: 157.58553899999242
+
+w/o caching
+Total parsers tested: 20
+  Total urls tested: 137
+Total time: 179.80213199998252
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Tue, 02 May 2017 08:05:30 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/05/02/a-tale-of-two-rails-caches.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/05/02/a-tale-of-two-rails-caches.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Understanding the Docker Magic Eval Statement</title>
+        <description>&lt;p&gt;eval “$(docker-machine env)”
+that should be enough for your eval command btw
+that auto-grabs the “default” machine
+which you can verify with: docker-machine ls
+you would use eval “$(docker-machine env foobar)” , if you had another machine with the name foobar
+ah.
+Nick Janetakis (nick.janetakis@gmail.com)
+and it’s not magic at all hehe
+it just sets up a bunch of ENV variables to configure your docker client to connect to the docker daemon
+Just so you know once you get on a black list you often cannot get off since there’s no one in charge of them.  They’re often amateur efforts that get rolled up into other things
+Nick Janetakis (nick.janetakis@gmail.com)
+if someone watched the docker toolbox lecture you would know this!
+you can actually run:  docker-machine env , as is
+and it prints out a bunch of stuff – that’s what the eval command does for you
+it takes that output and executes as “real” bash code&lt;/p&gt;
+</description>
+        <pubDate>Sat, 29 Apr 2017 08:12:39 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/04/29/understanding-the-docker-magic-eval-statement.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/29/understanding-the-docker-magic-eval-statement.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>AWS Tutorial - Adding a Domain Name to an EC2 Instance with Route 53 and Elastic IPs</title>
+        <description>&lt;p&gt;I recently put up a new service – Should I Gem – which helps you evaluate open source technologies and I had to actually assign a real domain name to it – shouldigem.com.  I used AWS for everything and I found the process of getting a domain name assigned to the server to be more confusing than I thought necessary.&lt;/p&gt;
+
+&lt;h1 id=&quot;what-you-need&quot;&gt;What You Need&lt;/h1&gt;
+
+&lt;p&gt;Here’s what you need:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A domain hosted by Route 53&lt;/li&gt;
+  &lt;li&gt;An instance on EC2&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;step-1-assign-an-elastic-ip-to-your-instance&quot;&gt;Step 1: Assign an Elastic IP to Your Instance&lt;/h1&gt;
+
+&lt;h1 id=&quot;step-2&quot;&gt;Step 2:&lt;/h1&gt;
+</description>
+        <pubDate>Fri, 28 Apr 2017 10:54:26 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/aws/2017/04/28/aws-tutorial-adding-a-domain-name-to-an-ec2-instance-with-route-53-and-elastic-ips.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/aws/2017/04/28/aws-tutorial-adding-a-domain-name-to-an-ec2-instance-with-route-53-and-elastic-ips.html</guid>
+        
+        <category>aws</category>
+        
+        <category>route53</category>
+        
+        <category>elasticip</category>
+        
+        
+        <category>AWS</category>
+        
+      </item>
     
       <item>
         <title>Testing Out New Programming Languages Using Docker</title>
@@ -163,365 +1450,20 @@ Cannot connect to the Docker daemon at tcp://192.168.59.103:2376. Is the docker 
       </item>
     
       <item>
-        <title>Using the Bing Cognitive Search API - Decrypting the Search Result Url</title>
-        <description>&lt;p&gt;There are times when you use someone’s API that just make you go &lt;em&gt;What the Hell???&lt;/em&gt; – what were they thinking???  I hit this recently using the CognitiveBing gem in Ruby.  This is a gem which lets you execute queries against the Bing search engine. What I found was that an interface to the search engine &lt;strong&gt;fails&lt;/strong&gt; to give you the &lt;strong&gt;actual url&lt;/strong&gt; to the search results that it finds.  What Bing instead does is send down a tracking url on Bing itself that is a redirector to the search result in question.  This is so ludicrous that it astonishes me.  Sure, I get it, this gives Bing more tracking information but the CognitiveSearch api is a &lt;strong&gt;paid&lt;/strong&gt; api.  If I’m paying good money for an api then I wouldn’t expect that the destinations of everything I care about in the search result get fed bank to Bing.  And, just to clarify, this isn’t a part of the gem, it is in the raw search result sent back from Bing.&lt;/p&gt;
+        <title>To Udemy or Not to Udemy - Make a Living Selling Courses</title>
+        <description>&lt;p&gt;Scott’s Rule of Udemy or Not&lt;/p&gt;
 
-&lt;p&gt;http://stackoverflow.com/questions/2733007/urldecode-in-ruby&lt;/p&gt;
+&lt;p&gt;The more detailed and specific the course, the smaller the market and the greater the price has to be.  The more general the course, the greater the market and the lower the price.  Udemy works for mass market, low price, high volume courses.&lt;/p&gt;
 
-&lt;p&gt;You can’t use display url&lt;/p&gt;
+&lt;p&gt;As an example, a Docker course about the Moby open source components could have a price as high as a $100 or $200 but since Udemy would discount it severely, it needs to be sold via a direct model.  Where as an Intro to HTML course might have a price of $25 but be discounted down to $15 and you get $7.&lt;/p&gt;
 
-&lt;p&gt;My Fork: https://github.com/fuzzygroup/cognitivebing/&lt;/p&gt;
+&lt;p&gt;Context - this will go into a blog post about making a living selling courses&lt;/p&gt;
 
-&lt;p&gt;Pagination rference: https://github.com/kaminari/kaminari&lt;/p&gt;
-
-&lt;p&gt;https://github.com/aggounix/cognitivebing&lt;/p&gt;
-
-&lt;p&gt;https://msdn.microsoft.com/en-us/library/dn760794.aspx#responsefilter&lt;/p&gt;
-
-&lt;p&gt;https://msdn.microsoft.com/en-us/library/dn760787.aspx&lt;/p&gt;
-
-&lt;p&gt;https://msdn.microsoft.com/en-US/library/dn760794.aspx&lt;/p&gt;
-
-&lt;p&gt;https://docs.microsoft.com/en-us/azure/cognitive-services/Speech/GetStarted/GetStarted-cURL&lt;/p&gt;
-
-&lt;p&gt;https://docs.microsoft.com/en-us/azure/cognitive-services/cognitive-services-apis-create-account&lt;/p&gt;
+&lt;p&gt;Course authors need to take control of their sales and marketing&lt;/p&gt;
 </description>
-        <pubDate>Sat, 22 Apr 2017 20:28:41 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/04/22/using-the-bing-api-decrypting-the-search-result-url.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/22/using-the-bing-api-decrypting-the-search-result-url.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Rails and ActiveRecord Optimization - Banishing MySQL File Sorts</title>
-        <description>&lt;p&gt;MariaDB [seira_crawler_development]&amp;gt; explain SELECT  &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.* FROM &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt; WHERE &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.&lt;code class=&quot;highlighter-rouge&quot;&gt;url_type&lt;/code&gt; = ‘udemy_user’ AND &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.&lt;code class=&quot;highlighter-rouge&quot;&gt;url_fid&lt;/code&gt; = ‘zohouniversity’ ORDER BY &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.&lt;code class=&quot;highlighter-rouge&quot;&gt;id&lt;/code&gt; ASC LIMIT 1\G
-&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;* 1. row **&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;*****
-           id: 1
-  select_type: SIMPLE
-        table: page_archives
-         type: ref
-possible_keys: page_type__date_created_at__url,url_fid__url_type__adate_created_at__url,page_type__meta_type__date_created_at__url
-          key: url_fid__url_type__adate_created_at__url
-      key_len: 1536
-          ref: const,const
-         rows: 2
-        Extra: Using index condition; Using where; Using filesort
-1 row in set (0.00 sec)&lt;/p&gt;
-
-&lt;p&gt;MariaDB [seira_crawler_development]&amp;gt; quit
-Bye
-sjohnson@ip-10-19-48-1:~/Dropbox/fuzzygroup/hyde/seira_crawler$ bundle exec rails c
-#&amp;lt;Gem::Specification name=sidekiq version=4.2.10&amp;gt;
-Loading development environment (Rails 5.0.2)
-2.3.1 :001 &amp;gt; PageArchive.url_type_and_url_fid_exist?(“udemy_user”, “zohouniversity1”)
-  PageArchive Load (0.4ms)  SELECT  &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.* FROM &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt; WHERE &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.&lt;code class=&quot;highlighter-rouge&quot;&gt;url_type&lt;/code&gt; = ‘udemy_user’ AND &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.&lt;code class=&quot;highlighter-rouge&quot;&gt;url_fid&lt;/code&gt; = ‘zohouniversity1’ LIMIT 1
-false
-2.3.1 :002 &amp;gt; quit
-sjohnson@ip-10-19-48-1:~/Dropbox/fuzzygroup/hyde/seira_crawler$ mysql -uroot -p seira_crawler_development
-Enter password:
-Reading table information for completion of table and column names
-You can turn off this feature to get a quicker startup with -A&lt;/p&gt;
-
-&lt;p&gt;Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MariaDB connection id is 147
-Server version: 10.1.19-MariaDB Homebrew&lt;/p&gt;
-
-&lt;p&gt;Copyright (c) 2000, 2016, Oracle, MariaDB Corporation Ab and others.&lt;/p&gt;
-
-&lt;p&gt;Type ‘help;’ or ‘\h’ for help. Type ‘\c’ to clear the current input statement.&lt;/p&gt;
-
-&lt;p&gt;MariaDB [seira_crawler_development]&amp;gt; explain SELECT  &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.* FROM &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt; WHERE &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.&lt;code class=&quot;highlighter-rouge&quot;&gt;url_type&lt;/code&gt; = ‘udemy_user’ AND &lt;code class=&quot;highlighter-rouge&quot;&gt;page_archives&lt;/code&gt;.&lt;code class=&quot;highlighter-rouge&quot;&gt;url_fid&lt;/code&gt; = ‘zohouniversity1’ LIMIT 1\G
-&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;* 1. row **&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;&lt;strong&gt;**&lt;/strong&gt;*****
-           id: 1
-  select_type: SIMPLE
-        table: page_archives
-         type: ref
-possible_keys: page_type__date_created_at__url,url_fid__url_type__adate_created_at__url,page_type__meta_type__date_created_at__url
-          key: url_fid__url_type__adate_created_at__url
-      key_len: 1536
-          ref: const,const
-         rows: 1
-        Extra: Using index condition
-1 row in set (0.00 sec)&lt;/p&gt;
-
-&lt;p&gt;# PageArchive.url_type_and_url_fid_exist?(“udemy_user”, “zohouniversity”)
-  def self.url_type_and_url_fid_exist?(url_type, url_fid)
-    return true if PageArchive.where(:url_type =&amp;gt; url_type, :url_fid =&amp;gt; url_fid).order(“”).limit(1).first
-    return false 
-  end&lt;/p&gt;
-</description>
-        <pubDate>Sat, 22 Apr 2017 19:40:04 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2017/04/22/rails-and-activerecord-optimization-banishing-mysql-file-sorts.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/04/22/rails-and-activerecord-optimization-banishing-mysql-file-sorts.html</guid>
-        
-        <category>rails</category>
-        
-        <category>mysql</category>
-        
-        <category>optimization</category>
-        
-        <category>activerecord</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Git Overview - Resetting Your Changes</title>
-        <description>&lt;p&gt;http://stackoverflow.com/questions/5807137/how-to-revert-uncommitted-changes-including-files-and-folders&lt;/p&gt;
-</description>
-        <pubDate>Fri, 21 Apr 2017 04:53:30 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/04/21/git-overview-resetting-your-changes.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/21/git-overview-resetting-your-changes.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>OSX MySQL Disc Space Usage and Location</title>
-        <description>&lt;p&gt;Your permanent storage for a SAAS app is always one of your single biggest per user costs.  There are two ways to get this info – at the SQL layer with a query and at the filesystem layer.  Each method is explained.&lt;/p&gt;
-
-&lt;h1 id=&quot;getting-disc-space-from-mysql-with-a-query&quot;&gt;Getting Disc Space From MySQL With a Query&lt;/h1&gt;
-
-&lt;p&gt;You can run this query:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;select table_schema, sum((data_length+index_length)/1024/1024) AS MB from information_schema.tables group by 1;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;and you’ll get back a per database assessment of disc space used.  That’s the easiest way to get this information.  Here’s what it looks like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;| seira_crawler_development         | 354.68750000 |
-| seira_crawler_test                |   0.23437500 |
-| seira_watch_development           |   0.75000000 |
-| seira_watch_site_development      |   0.12500000 |
-| seira_watch_web_app_1_development |   2.82812500 |
-| seira_watch_web_app_2_development |   1.21875000 |
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;where-is-your-physical-database-instance&quot;&gt;Where Is Your Physical Database Instance?&lt;/h1&gt;
-
-&lt;p&gt;Run this mysql query from your command line:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql -uUSER -p -e 'SHOW VARIABLES WHERE Variable_Name LIKE &quot;%dir&quot;'
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;You’ll see something like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql -uUSER -p -e 'SHOW VARIABLES WHERE Variable_Name LIKE &quot;%dir&quot;'
-Enter password:
-+---------------------------+---------------------------------------------------------+
-| Variable_name             | Value                                                   |
-+---------------------------+---------------------------------------------------------+
-| aria_sync_log_dir         | NEWFILE                                                 |
-| basedir                   | /usr/local/Cellar/mariadb/10.1.19                       |
-| character_sets_dir        | /usr/local/Cellar/mariadb/10.1.19/share/mysql/charsets/ |
-| datadir                   | /usr/local/var/mysql/                                   |
-| innodb_data_home_dir      |                                                         |
-| innodb_log_arch_dir       | ./                                                      |
-| innodb_log_group_home_dir | ./                                                      |
-| innodb_tmpdir             |                                                         |
-| lc_messages_dir           |                                                         |
-| plugin_dir                | /usr/local/Cellar/mariadb/10.1.19/lib/plugin/           |
-| slave_load_tmpdir         | /var/folders/76/mqchlgzs6x5cv2f11jh3jkjw0000gn/T/       |
-| tmpdir                    | /var/folders/76/mqchlgzs6x5cv2f11jh3jkjw0000gn/T/       |
-| wsrep_data_home_dir       | /usr/local/var/mysql/                                   |
-+---------------------------+---------------------------------------------------------+
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The path datadir is where your data is stored.  For my system I want to look into this path: /usr/local/var/mysql/.&lt;/p&gt;
-
-&lt;h1 id=&quot;assessing-disc-space-usage&quot;&gt;Assessing Disc Space Usage&lt;/h1&gt;
-
-&lt;p&gt;Running an ls -l on the path in datadir will show you all your databases on your development machine.  Doing a du -h on the path to any database on your system will show you a result like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;du -hc /usr/local/var/mysql/seira_crawler_development/
-400M    /usr/local/var/mysql/seira_crawler_development/
-400M    total
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;That’s the metric for my backing crawler data archive.  The data for a single user instance is:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;du -hc /usr/local/var/mysql/seira_watch_web_app_1_development/
- 12M    /usr/local/var/mysql/seira_watch_web_app_1_development/
- 12M    total
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;scaling-the-numbers-up&quot;&gt;Scaling the Numbers Up&lt;/h1&gt;
-
-&lt;p&gt;If you want to assess your disc space needs for a SAAS app, take your per user disc space needs and then multiply it by the number of users that you are projecting to handle and then add the disc space for any system level databases (such as the crawler data above).&lt;/p&gt;
-
-&lt;h1 id=&quot;adding-the-numbers-to-a-dashboard&quot;&gt;Adding the Numbers to a Dashboard&lt;/h1&gt;
-
-&lt;p&gt;If your SAAS app supports an admin tool of any type then you want to watch the growth of this number pretty carefully since unexpected database growth can lead to system outages and the like.  Here’s a quick Ruby snippet to get this information as a float which you could log, graph, etc:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def self.database_size
-  sql = &quot;select table_schema, sum((data_length+index_length)/1024/1024) AS MB from information_schema.tables where table_schema='#{Rails.configuration.database_configuration[Rails.env][&quot;database&quot;]}' group by 1;&quot;
-  results = ActiveRecord::Base.connection.select_all(sql)
-  return results.first[&quot;MB&quot;].to_f
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I’m getting the name of the current database in an environment agnostic way using: &lt;strong&gt;Rails.configuration.database_configuration[Rails.env][“database”]&lt;/strong&gt;.  That value was read from the configuration file.  You could also get it from: &lt;strong&gt;ActiveRecord::Base.connection.current_database&lt;/strong&gt; (which to use depends on whether or not you are using ActiveRecord or a different storage abstraction).&lt;/p&gt;
-
-&lt;p&gt;Note: I’m feed this, via a JSON feed, to my new Cartazzi engine and I’m pretty pleased with this as an admin tool.&lt;/p&gt;
-
-&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/17968287/how-to-find-the-mysql-data-directory-from-command-line-in-windows&quot;&gt;Finding Your MySQL Data Directory&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://dev.mysql.com/doc/mysql-utilities/1.5/en/mysqldiskusage.html&quot;&gt;mysqldiskusage utility (not always available)&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://dba.stackexchange.com/questions/14337/calculating-disk-space-usage-per-mysql-db&quot;&gt;Calculating Disc Space Usage with a Query&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://stackoverflow.com/questions/10001583/how-to-check-the-database-name-that-activerecord-uses&quot;&gt;Getting Current ActiveRecord Configuration&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Fri, 21 Apr 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/mysql/2017/04/21/osx-mysql-disc-space-usage-and-location.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/mysql/2017/04/21/osx-mysql-disc-space-usage-and-location.html</guid>
-        
-        <category>osx</category>
-        
-        <category>mysql</category>
-        
-        <category>mariadb</category>
-        
-        <category>saas</category>
-        
-        <category>ruby</category>
-        
-        <category>hyde</category>
-        
-        
-        <category>mysql</category>
-        
-      </item>
-    
-      <item>
-        <title>Getting It Wrong with sync.rake and how to recover using git</title>
-        <description>&lt;p&gt;I’m working with a pretty complex source code model where I’m pulling in functionality from other git repos via shell scripts. This morning I got it wrong and a bunch of code disappeared. git checkout – . cleaned up my problem perfectly. Thanks!&lt;/p&gt;
-
-&lt;p&gt;http://stackoverflow.com/questions/5807137/how-to-revert-uncommitted-changes-including-files-and-folders&lt;/p&gt;
-
-&lt;p&gt;Here was the crucial portion of my manifest:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&quot;app/models/user.rb&quot;:[
-  &quot;../hyde_web&quot;,
-  &quot;../hyde_admin&quot;,
-  &quot;../hyde_worker&quot;,
-  &quot;../cartazzi_site&quot;,
-  &quot;../cartazzi_web_app&quot;],
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Thu, 20 Apr 2017 05:36:04 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/04/20/getting-it-wrong-with-sync-rake-and-how-to-recover-using-git.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/20/getting-it-wrong-with-sync-rake-and-how-to-recover-using-git.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Real World Crawling and Scraping Using Ruby</title>
-        <description>&lt;p&gt;https://github.com/scrapy-plugins/scrapy-splash&lt;/p&gt;
-
-&lt;p&gt;https://hub.docker.com/r/scrapinghub/splash/&lt;/p&gt;
-
-&lt;p&gt;https://devcentral.f5.com/articles/these-are-not-the-scrapes-youre-looking-for-session-anomalies&lt;/p&gt;
-
-&lt;p&gt;https://github.com/JonasCz/How-To-Prevent-Scraping&lt;/p&gt;
-
-&lt;p&gt;http://ngauthier.com/2014/06/scraping-the-web-with-ruby.html&lt;/p&gt;
-</description>
-        <pubDate>Wed, 19 Apr 2017 20:00:43 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/04/19/real-world-crawling-and-scraping-using-ruby.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/19/real-world-crawling-and-scraping-using-ruby.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>NightmareJS and XVFB</title>
-        <description>&lt;p&gt;var Xvfb = require(‘xvfb’);
-var Nightmare = require(‘nightmare’);&lt;/p&gt;
-
-&lt;p&gt;var xvfb = new Xvfb({
-  silent: true
-});
-xvfb.startSync();&lt;/p&gt;
-
-&lt;p&gt;var nightmare = Nightmare({
-  show: false,
-  webPreferences: {
-    partition: ‘custom’
-  }
-});&lt;/p&gt;
-
-&lt;p&gt;nightmare
-  .goto(‘https://google.com’)
-  .evaluate(function() {
-    return document.title;
-  })
-  .end()
-  .then(function(title) {
-    console.log(title);
-    xvfb.stopSync();
-  });&lt;/p&gt;
-
-&lt;p&gt;https://github.com/segmentio/nightmare/issues/602&lt;/p&gt;
-
-&lt;p&gt;http://elementalselenium.com/tips/38-headless&lt;/p&gt;
-
-&lt;p&gt;https://github.com/sebastienvercammen/ptc-acc-gen/issues/23&lt;/p&gt;
-
-&lt;p&gt;https://github.com/nodejs/node-gyp/issues/569&lt;/p&gt;
-
-&lt;p&gt;https://github.com/segmentio/nightmare/issues/602&lt;/p&gt;
-
-&lt;p&gt;http://stackoverflow.com/questions/32518777/nightmare-js-browsing-and-parsing-multiple-sites&lt;/p&gt;
-
-&lt;p&gt;https://github.com/teampoltergeist/poltergeist#customization&lt;/p&gt;
-</description>
-        <pubDate>Wed, 19 Apr 2017 20:00:21 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/04/19/nightmarejs-and-xvfb.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/19/nightmarejs-and-xvfb.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Rails Redis Basics</title>
-        <description>&lt;p&gt;http://stackoverflow.com/questions/6301399/empty-delete-a-set-in-redis&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 19 Apr 2017 19:52:02 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/04/19/rails-redis-basics.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/19/rails-redis-basics.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>JavaScript and Node and NPM Basics</title>
-        <description>&lt;p&gt;http://stackoverflow.com/questions/21168141/cannot-install-packages-using-node-package-manager-in-ubuntu&lt;/p&gt;
-
-&lt;p&gt;http://stackoverflow.com/questions/8393636/node-log-in-a-file-instead-of-the-console&lt;/p&gt;
-
-&lt;p&gt;https://nodejs.org/en/docs/guides/nodejs-docker-webapp/&lt;/p&gt;
-
-&lt;p&gt;https://github.com/npm/npm/issues/9161&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 19 Apr 2017 19:50:19 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/04/19/javascript-and-node-and-npm-basics.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/19/javascript-and-node-and-npm-basics.html</guid>
+        <pubDate>Tue, 25 Apr 2017 20:59:17 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/04/25/to-udemy-or-not-to-udemy-make-a-living-selling-courses.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/25/to-udemy-or-not-to-udemy-make-a-living-selling-courses.html</guid>
         
         
       </item>

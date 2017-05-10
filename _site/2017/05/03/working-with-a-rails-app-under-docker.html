@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Working With a Rails App Under Docker</title>
+  <meta name="description" content="Working with a Rails App Under Docker">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/2017/05/03/working-with-a-rails-app-under-docker.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="Working With a Rails App Under Docker">
+
+  
+    <meta name="twitter:description"
+      content="Working with a Rails App Under Docker
+
+If you view Docker as similar to an operating system, and, yes, I know that’s not technically correct, then it makes sense that there are a lot of commands th...">
+  
+
+  
+    <meta name="twitter:image"
+      content="https://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Working With a Rails App Under Docker</h1>
+    <p class="I'll"><time datetime="2017-05-03T19:28:49-04:00" itemprop="datePublished">May 3, 2017</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h1 id="working-with-a-rails-app-under-docker">Working with a Rails App Under Docker</h1>
+
+<p>If you view Docker as similar to an operating system, and, yes, I know that’s not technically correct, then it makes sense that there are a <strong>lot</strong> of commands that you need to know, just as you need to know a lot of commands to use an operating system.  In this section I’m going to give examples of each of the docker commands that I found myself using.</p>
+
+<h2 id="finding-your-process---docker-ps">Finding Your Process - docker ps</h2>
+
+<p>The docker ps command lists your running processes under Docker:</p>
+
+<blockquote>
+  <p>docker ps</p>
+</blockquote>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>docker ps
+CONTAINER ID        IMAGE                                                                                               COMMAND                  CREATED             STATUS              PORTS               NAMES
+c268d4b67dd6        fuzzygroup/shouldigem_web@sha256:cb55863d2a41d97ee2de5bc42354dae03c8ac30780d86557560e1a373567f116   "bundle exec sidek..."   10 minutes ago      Up 10 minutes                           shouldigem_sidekiq.1.klojjb9cnni0ceuwqunaxhuke
+7f04bfa41535        fuzzygroup/shouldigem_web@sha256:cb55863d2a41d97ee2de5bc42354dae03c8ac30780d86557560e1a373567f116   "/bin/sh -c 'puma ..."   10 minutes ago      Up 10 minutes                           shouldigem_web.1.r2m01ncqud8ynz2r0ui8fyvg5
+34e2624d5691        redis@sha256:9cd405cd1ec1410eaab064a1383d0d8854d1eef74a54e1e4a92fb4ec7bdc3ee7                       "docker-entrypoint..."   28 minutes ago      Up 28 minutes       6379/tcp            shouldigem_redis.1.wf9ggadw7c8pusgreaheojyz5
+</code></pre>
+</div>
+
+<p>In this case I want to look at the 2nd one – shouldigem_web.  I’ll need to capture the container id to my clipboard so I can use it to view logs in the next command.</p>
+
+<h2 id="viewing-logs----docker-logs">Viewing Logs – docker logs</h2>
+
+<p>The docker logs command views the logs from your running processes under Docker:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>docker logs 7f04bfa41535</td>
+      <td>more</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="running-rails-console">Running Rails Console</h2>
+
+<p>I don’t know about other folks but, even in production, I’m intensely dependent on the Rails console, particularly at the early stages where nothing ever works right.  What you can do with Docker is connect to your Rails container with an interactive terminal flag (-it).  Start by using docker ps to get the process id and then:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>docker exec -it 7f04bfa41535 sh
+</code></pre>
+</div>
+
+<p>That launches an old school sh terminal (I didn’t want the overhead of bash on my containers so I just left it with sh).  If you run an ls -l then this will all look familiar:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>/app # ls -l
+total 104
+-rw-r--r--    1 root     root           489 Apr 27 18:30 Dockerfile
+-rw-r--r--    1 root     root          1522 Apr 27 14:03 Gemfile
+-rw-r--r--    1 root     root          8737 Apr 27 14:11 Gemfile.lock
+-rw-r--r--    1 root     root          3963 Apr 24 21:34 Guardfile
+-rw-r--r--    1 root     root           534 Apr 26 19:16 README
+-rw-r--r--    1 root     root           534 Apr 26 19:17 README.md
+-rw-r--r--    1 root     root           227 Apr 24 21:31 Rakefile
+drwxr-xr-x   10 root     root          4096 Apr 25 07:05 app
+drwxr-xr-x    2 root     root          4096 Apr 24 21:35 bin
+drwxr-xr-x    5 root     root          4096 Apr 26 15:06 config
+-rw-r--r--    1 root     root           130 Apr 24 21:31 config.ru
+drwxr-xr-x    3 root     root          4096 Apr 24 22:40 db
+-rwxr-xr-x    1 root     root           687 Apr 27 19:01 deploy.sh
+drwxr-xr-x    3 root     root          4096 Apr 27 14:44 docker
+-rw-r--r--    1 root     root          1464 Apr 27 19:04 docker-compose.production.yml
+-rw-r--r--    1 root     root          1013 Apr 27 15:46 docker-compose.yml
+drwxr-xr-x    2 root     root          4096 Apr 27 13:17 docs
+drwxr-xr-x    5 root     root          4096 Apr 24 21:34 lib
+drwxr-xr-x    2 root     root          4096 Apr 24 21:34 log
+drwxr-xr-x    4 root     root          4096 Apr 27 19:05 public
+drwxr-xr-x    6 root     root          4096 Apr 24 22:37 spec
+drwxr-xr-x    6 root     root          4096 Apr 27 19:05 tmp
+-rw-r--r--    1 root     root          1283 Apr 27 18:36 ubuntu@ec2-52-14-213-243.us-east-2.compute.amazonaws.com
+drwxr-xr-x    3 root     root          4096 Apr 24 21:31 vendor
+</code></pre>
+</div>
+
+<p>Yes Virginia – that’s a Rails app and you can just use bundle exec rails c:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>/app # bundle exec rails c
+Loading production environment (Rails 5.0.2)
+irb(main):001:0&gt;
+</code></pre>
+</div>
+
+<p>docker stack ps shouldigem</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ID            NAME                  IMAGE                             NODE             DESIRED STATE  CURRENT STATE               ERROR  PORTS
+wd1jlbwgx7m0  shouldigem_sidekiq.1  fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Running        Running 3 minutes ago
+xclwhnvhg9mm  shouldigem_web.1      fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Running        Running 3 minutes ago
+ugwqfsaqnsc3  shouldigem_sidekiq.1  fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Shutdown       Shutdown 3 minutes ago
+2lzgsunoay0y  shouldigem_web.1      fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Shutdown       Shutdown 3 minutes ago
+r2m01ncqud8y   \_ shouldigem_web.1  fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Shutdown       Shutdown 9 minutes ago
+klojjb9cnni0  shouldigem_sidekiq.1  fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Shutdown       Shutdown 9 minutes ago
+seegap6xlfy1  shouldigem_web.1      fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Shutdown       Shutdown about an hour ago
+akgkzn8ytfcc  shouldigem_sidekiq.1  fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Shutdown       Shutdown about an hour ago
+wf9ggadw7c8p  shouldigem_redis.1    redis:3.2-alpine                  ip-172-31-9-129  Running        Running 2 hours ago
+sp16ukp44u3e  shouldigem_sidekiq.1  fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Shutdown       Shutdown 2 hours ago
+o9kbzy6ojbat  shouldigem_web.1      fuzzygroup/shouldigem_web:latest  ip-172-31-9-129  Shutdown       Shutdown 2 hours ago
+</code></pre>
+</div>
+
+<p>docker stack services shouldigem</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ID            NAME                MODE        REPLICAS  IMAGE
+f9dpr1o77x16  shouldigem_web      replicated  1/1       fuzzygroup/shouldigem_web:latest
+idhahasrpax2  shouldigem_sidekiq  replicated  1/1       fuzzygroup/shouldigem_web:latest
+zejrjetcdzgy  shouldigem_redis    replicated  1/1       redis:3.2-alpine
+</code></pre>
+</div>
+
+<p>docker-compose build web</p>
+
+<p>docker tag shouldigem_web fuzzygroup/shouldigem_web</p>
+
+<p>docker push fuzzygroup/shouldigem_web</p>
+
+  </div>
+  
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
