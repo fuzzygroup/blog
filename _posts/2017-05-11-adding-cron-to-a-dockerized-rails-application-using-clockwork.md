@@ -29,16 +29,15 @@ Unlike traditional cron syntax, I've never found an issue with reading the Clock
 
 Here are the steps to add clockwork to your Rails application:
 
-1.  Add the clockwork gem to your Gemfile: 
+Add the clockwork gem to your Gemfile: 
 
 > gem 'clockwork'
 
-2.  Create a clock.rb file in lib:
+Create a clock.rb file in lib:
 
 > touch lib/clock.rb
 
-3.  Write one or more clockwork expressions in clock.rb.  Here's an example from my application:
-
+Write one or more clockwork expressions in clock.rb.  Here's an example from my application:
 
     require 'clockwork'
     include Clockwork
