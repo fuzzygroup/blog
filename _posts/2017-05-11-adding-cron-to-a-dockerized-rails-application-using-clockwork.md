@@ -39,6 +39,7 @@ Here are the steps to add clockwork to your Rails application:
 
 3.  Write one or more clockwork expressions in clock.rb.  Here's an example from my application:
 
+
     require 'clockwork'
     include Clockwork
 
@@ -62,7 +63,7 @@ Here are the steps to add clockwork to your Rails application:
 
     end
     
-4.  To test this you can just use the command line:
+To test this you can just use the command line:
 
 > bundle exec clockwork lib/clock.rb
 
