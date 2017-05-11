@@ -6,9 +6,165 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 11 May 2017 05:47:28 -0400</pubDate>
-    <lastBuildDate>Thu, 11 May 2017 05:47:28 -0400</lastBuildDate>
+    <pubDate>Thu, 11 May 2017 05:48:18 -0400</pubDate>
+    <lastBuildDate>Thu, 11 May 2017 05:48:18 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Adding Cron to a Dockerized Rails Application Using Clockwork</title>
+        <description>&lt;p&gt;If you talk to any computer scientist they will easily tell you that 50 plus years into the computer age, scheduling is NOT a solved problem.  Even something as simple as cron which is decades old can still be challenging under different environments (example - cron and RVM is a bloody nightmare).  And then when you add containers into the mix, well …  In this blog post I outline how I’m handling a daily scheduled process using Docker and Clockwork (a cron like gem for Ruby).&lt;/p&gt;
+
+&lt;h1 id=&quot;why-is-cron-and-docker-a-problem&quot;&gt;Why is Cron and Docker a Problem&lt;/h1&gt;
+
+&lt;p&gt;Docker represents a simplified computing environment where you generally don’t have a full Linux stack – instead the model is generally a single root process.  Now there are people who challenge that approach, notably the good folks at Phusion, but this is generally regarded as a best practice.  So you’re not your own application stack and then cron as well.&lt;/p&gt;
+
+&lt;h1 id=&quot;enter-clockwork&quot;&gt;Enter Clockwork&lt;/h1&gt;
+
+&lt;p&gt;Clockwork is a long standing Ruby gem which acts as a persistent daemon with its own scheduler that executes a simple DSL allow your models to be easily executed.  Here’s an example:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;every(1.day, 'Midnight.job -- PageArchive.update_everything', :at =&amp;gt; '00:00') do |job|
+  PageArchive.update_everything
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Unlike traditional cron syntax, I’ve never found an issue with reading the Clockwork dsl, this says:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;every day&lt;/li&gt;
+  &lt;li&gt;execute at midnight&lt;/li&gt;
+  &lt;li&gt;run PageArchive.update_everything&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;adding-clockwork-to-your-rails-application&quot;&gt;Adding Clockwork to your Rails Application&lt;/h1&gt;
+
+&lt;p&gt;Here are the steps to add clockwork to your Rails application:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Add the clockwork gem to your Gemfile:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;gem ‘clockwork’&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Create a clock.rb file in lib:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;touch lib/clock.rb&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Write one or more clockwork expressions in clock.rb.  Here’s an example from my application:&lt;/p&gt;
+
+    &lt;p&gt;require ‘clockwork’
+include Clockwork&lt;/p&gt;
+
+    &lt;p&gt;require File.expand_path(‘../../config/boot’, &lt;strong&gt;FILE&lt;/strong&gt;)&lt;/p&gt;
+
+    &lt;p&gt;require File.expand_path(‘../../config/environment’, &lt;strong&gt;FILE&lt;/strong&gt;)&lt;/p&gt;
+
+    &lt;p&gt;require ‘clockwork’&lt;/p&gt;
+
+    &lt;p&gt;include Clockwork&lt;/p&gt;
+
+    &lt;p&gt;module Clockwork&lt;/p&gt;
+
+    &lt;p&gt;every(1.day, ‘Midnight.job – PageArchive.update_everything’, :at =&amp;gt; ‘03:58’) do |job|
+    PageArchive.update_everything
+  end&lt;/p&gt;
+
+    &lt;p&gt;every(1.week, ‘Weekly Job – PageArchive.update_bing’, :at =&amp;gt; ‘00:00’) do |job|
+    PageArchive.update_bing
+  end&lt;/p&gt;
+
+    &lt;p&gt;end&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;To test this you can just use the command line:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;bundle exec clockwork lib/clock.rb&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Once you set that running then you need to simply watch it to make sure that tasks execute.  Yes, provided that your syntax is correct, they certainly should but I’ve seen enough scheduled jobs fail over the years that I always feel better when I actually see them run.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; If you were previously using a Rake task to run your daily jobs then you need to refactor that as something like a class method that can be called from the Rake task.  This allows you to continue using the Rake task but also make your code easily executable from Clockwork.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-dockerfile&quot;&gt;The Dockerfile&lt;/h1&gt;
+
+&lt;p&gt;In this example I have a simple Rails app which exists to populate a page archive database consisting of data harvested daily from the Internet.  Here’s the Dockerfile:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FROM ruby:2.3.1-alpine
+
+RUN apk update &amp;amp;&amp;amp; apk add build-base nodejs mariadb-dev tzdata
+
+RUN mkdir /app
+WORKDIR /app
+
+COPY Gemfile Gemfile.lock ./
+RUN bundle install --binstubs
+
+COPY . .
+
+CMD bundle exec clockwork lib/clock.rb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The secret to making the scheduling work is to execute the clockwork executable as the root command in the container. This causes the Clockwork executable to be launched when the container initializes.  At that point Clockwork will run the command until it finishes and then remain running, waiting for its next invocation.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion-and-issues&quot;&gt;Conclusion and Issues&lt;/h1&gt;
+
+&lt;p&gt;As you can see, when you have a scheduling process as the root process in your container, it provides an easy way to handle your scheduled job needs and Clockwork really does make it easy.  Still this doesn’t mean that scheduling for your application is necessarily solved:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;What if your needs are large enough that you have to have multiple machines?&lt;/li&gt;
+  &lt;li&gt;How do you log issues with the scheduled jobs?&lt;/li&gt;
+  &lt;li&gt;What happens when a deploy occurs while your container is running a job?  How do you ensure that the day’s work actually got processed?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;multiple-machines&quot;&gt;Multiple Machines&lt;/h2&gt;
+
+&lt;p&gt;If I needed to have multiple machines involved, I would likely implement some kind of a work queue where they scheduler is solely responsible for setting up a queue of the work to be done and then containers on other machines are responsible for processing the data in the queue.  This approach is also useful for the deploy issue covered below.&lt;/p&gt;
+
+&lt;h2 id=&quot;logging-issues-with-scheduled-jobs&quot;&gt;Logging Issues with Scheduled Jobs&lt;/h2&gt;
+
+&lt;p&gt;There are enough issues with containers and logs that addressing it here is really out of the scope of this blog post.  I did want to point it out, however, as logging around scheduled jobs is usually necessary and needs to be thought through.&lt;/p&gt;
+
+&lt;h2 id=&quot;deploy-conflicts&quot;&gt;Deploy Conflicts&lt;/h2&gt;
+
+&lt;p&gt;There are at least three strategies that I’d use for handling deploy conflicts:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Start your jobs early and simply don’t deploy while they are running.  This is the least desirable strategy but it does actually work provided the execution time of the job is only a few hours (i.e. until when people need to deploy).  Obviously this works poorly with a globally distributed labor pool and a CI server that deploys code automatically.&lt;/li&gt;
+  &lt;li&gt;Change the code so that jobs become idempotent i.e. the job knows that a particular data item can be processed, for example, only once per day and then allow the scheduled process to be run multiple times per day.  This decreases the chance of a deploy shutting things down fully for an entire day since statistically it becomes less likely that you’ll conflict with something every single time that it is running allowing at least one of the runs to complete.&lt;/li&gt;
+  &lt;li&gt;Use the multiple machines strategy mentioned above so that you have a work queue and multiple asynchronous processing engines on the data.  As long as the queue is atomic in nature this avoids duplication issues and the additional parallelism that multiple containers bring should process the data more quickly thereby leading to fewer deploy conflicts.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Of each of these strategies, the third is likely the best but incurs the most application level changes.  Please keep in mind that you can iteratively evolve your application towards the right strategy for your needs.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 11 May 2017 05:02:25 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/05/11/adding-cron-to-a-dockerized-rails-application-using-clockwork.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/05/11/adding-cron-to-a-dockerized-rails-application-using-clockwork.html</guid>
+        
+        <category>rails</category>
+        
+        <category>docker</category>
+        
+        <category>cron</category>
+        
+        <category>clockwork</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>Adding Cron to a Dockerized Rails Application Using Clockwork</title>
@@ -1450,158 +1606,6 @@ it takes that output and executes as “real” bash code&lt;/p&gt;
         
         
         <category>AWS</category>
-        
-      </item>
-    
-      <item>
-        <title>Testing Out New Programming Languages Using Docker</title>
-        <description>&lt;p&gt;I am, as you likely know, an unabashed Ruby fan – love the language; loathe the performance but still a huge, huge damn fan.  Ruby is the first language I ever fell in love with and like many first loves, they never really fade.  Still, even so, there times when you just hunger for something new.  Here’s how to get a new programming language up and running with Docker for a handful of different environments.  I deliberately chose languages that can boot into a console or REPL (replace-evaluate-print-loop) since that’s the easiest way to get going in terms of experimenting with a language.&lt;/p&gt;
-
-&lt;h1 id=&quot;installing-docker&quot;&gt;Installing Docker&lt;/h1&gt;
-
-&lt;p&gt;The easiest way to install Docker is to follow the official directions &lt;a href=&quot;https://docs.docker.com/engine/installation/&quot;&gt;here&lt;/a&gt;.  You want Docker Community Edition in likely one of these platforms:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.docker.com/docker-for-mac/install/&quot;&gt;Mac&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.docker.com/docker-for-windows/install/&quot;&gt;Windows&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.docker.com/engine/installation/linux/ubuntu/&quot;&gt;Ubuntu&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Please note that Docker install urls change frequently so you may need to look around a bit.  They work today, end of April 2017, how long that lasts is unclear.&lt;/p&gt;
-
-&lt;h1 id=&quot;docker-basics&quot;&gt;Docker Basics&lt;/h1&gt;
-
-&lt;p&gt;There are a few basic Docker things that you need to know, particularly, if you run Docker on OSX.  Docker is a container technology, similar to a virtual machine (albeit faster, smaller and very differently implemented) that allows you to run programs.  The best way I understand Docker is to think of it as a portable runtime that is bound to a software stack and allows you to achieve build once, run anywhere status.  The software stack can be your own code, 3rd party code such as a database or some combination.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-ps-and-kill-commands&quot;&gt;The ps and kill Commands&lt;/h2&gt;
-
-&lt;p&gt;Just like your operating system has a ps command, so too does Docker:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/docker_ps.png&quot; alt=&quot;docker_ps.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Unlike your operating system where a simple number denotes a process id, Docker uses a git like hash for each process.&lt;/p&gt;
-
-&lt;p&gt;Just like your operating system has a kill command, so too does docker which you run with:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;docker kill hash&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The general syntax shown above of &lt;strong&gt;docker&lt;/strong&gt; &lt;em&gt;command&lt;/em&gt; is what you’ll see below.  Normally there will be other options as well which you can see illustrated below.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-magic-eval-statement&quot;&gt;The Magic Eval Statement&lt;/h2&gt;
-
-&lt;p&gt;If you get this message:&lt;/p&gt;
-
-&lt;p&gt;docker ps
-Cannot connect to the Docker daemon at tcp://192.168.59.103:2376. Is the docker daemon running?&lt;/p&gt;
-
-&lt;p&gt;after running a docker ps or any docker command then its an issue of not being able to find the Docker daemon and then you need this bit of magic:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;eval $(docker-machine env ${C_DOCKER_MACHINE})&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;My bash skills are laughably bad so I’m not going to even try and explain that.  Just think of it as a magic spell given to you by an experienced wizard – you don’t have to understand how it works as long as it does.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-images-command&quot;&gt;The images Command&lt;/h2&gt;
-
-&lt;p&gt;Run the command docker images to find all the Docker images on your system.  You’ll be surprised at how big some of these can be and they often will hang out on your system, just eating your disc space.  Just as an example, a prototype I played with using the tleyden5iwx/open-ocr-preprocessor OpenOcr image over a year ago is still on my system using 1.3 gigs of disc sapce.&lt;/p&gt;
-
-&lt;h2 id=&quot;disc-space-usage--where-does-all-this-go&quot;&gt;Disc Space Usage / Where Does All This Go?&lt;/h2&gt;
-
-&lt;p&gt;The location of all your images varies by &lt;a href=&quot;http://stackoverflow.com/questions/19234831/where-are-docker-images-stored-on-the-host-machine&quot;&gt;operating system&lt;/a&gt;.  On OSX it is stored under the virtual machine:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Please keep in mind that you can use up a considerable amount of disc space just by experimenting with images.  Here’s my system:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;du -hc ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
- 21G	/Users/sjohnson/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
- 21G	total
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;testing-different-languages&quot;&gt;Testing Different Languages&lt;/h1&gt;
-
-&lt;h2 id=&quot;ruby&quot;&gt;Ruby&lt;/h2&gt;
-
-&lt;p&gt;In case you’re not a rubyist, I thought I’d start with this one.  &lt;a href=&quot;https://hub.docker.com/r/library/ruby/tags/&quot;&gt;Ruby on Docker&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;docker run –rm –name ruby -it ruby:2.4-alpine&lt;/p&gt;
-
-&lt;h2 id=&quot;elixir&quot;&gt;Elixir&lt;/h2&gt;
-
-&lt;p&gt;Elixir is a next generation functional language designed by some of the former Rails core members.  &lt;a href=&quot;https://hub.docker.com/_/elixir/&quot;&gt;Elixir on Docker&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;docker run –rm –name elixir -it elixir:1.4-slim&lt;/p&gt;
-
-&lt;p&gt;Here’s what this process looks like while it runs:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/docker_elixir.png&quot; alt=&quot;docker_elixir.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;php-71&quot;&gt;PHP 7.1&lt;/h2&gt;
-
-&lt;p&gt;PHP is, well, php.  Do I really need to say any more?  &lt;a href=&quot;https://hub.docker.com/r/library/php/tags/&quot;&gt;PHP On Docker&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;docker run –rm –name php -it php:7.1-alpine&lt;/p&gt;
-
-&lt;h2 id=&quot;python-27&quot;&gt;Python 2.7&lt;/h2&gt;
-
-&lt;p&gt;Python is a dynamic scripting language similar to Ruby.  Python 2.7 is the mainstream version of Python.  &lt;a href=&quot;https://hub.docker.com/_/python/&quot;&gt;Python on Docker&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;docker run –rm –name python27 -it python:2.7-slim&lt;/p&gt;
-
-&lt;h2 id=&quot;python-3&quot;&gt;Python 3&lt;/h2&gt;
-
-&lt;p&gt;Python 3 is a newer version of Python that hasn’t been as widely adopted as the Python 2 family.&lt;/p&gt;
-
-&lt;p&gt;docker run –rm –name python33 -it python:3.3-slim&lt;/p&gt;
-
-&lt;h2 id=&quot;r&quot;&gt;R&lt;/h2&gt;
-
-&lt;p&gt;I really, really like R for statistical analysis and data crunching.  &lt;a href=&quot;https://hub.docker.com/_/r-base/&quot;&gt;R on Docker&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;docker run –rm –name r-base -it r-base:3.4.0&lt;/p&gt;
-
-&lt;p&gt;R can be a bit different from other languages due to its mathematical orientation.  Here’s a sample R one liner you can use to test it:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;print(sample(1:10))&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://www.rexamples.com/&quot;&gt;More R Examples&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;perl&quot;&gt;Perl&lt;/h2&gt;
-
-&lt;p&gt;Perl in many ways is the grandfather to all modern web development.  Unlike the languages above, Perl isn’t a REPL based language so you’ll have to pass a script in when you run it.  &lt;a href=&quot;https://hub.docker.com/_/perl/&quot;&gt;Perl on Docker&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;docker run -it –rm –name my-running-script -v “$PWD”:/usr/src/myapp -w /usr/src/myapp perl:5.20 perl your-daemon-or-script.pl&lt;/p&gt;
-
-&lt;h2 id=&quot;julia&quot;&gt;Julia&lt;/h2&gt;
-
-&lt;p&gt;Julia is a high performance language used for finance and math that runs on top of the Java VM.  &lt;a href=&quot;https://hub.docker.com/_/julia/&quot;&gt;Julia on Docker&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;docker run -it –rm -v “$PWD”:/usr/myapp -w /usr/myapp julia julia script.jl arg1 arg2&lt;/p&gt;
-
-&lt;h1 id=&quot;learning-more-about-docker&quot;&gt;Learning More About Docker&lt;/h1&gt;
-
-&lt;p&gt;Most of what I know about Docker, I learned from The &lt;a href=&quot;https://diveintodocker.com/courses/dive-into-docker&quot;&gt;Dive into Docker&lt;/a&gt; course by Nick Janetakis.  Recommended.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 26 Apr 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/docker/2017/04/26/testing-out-new-programming-languages-using-docker.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/docker/2017/04/26/testing-out-new-programming-languages-using-docker.html</guid>
-        
-        <category>docker</category>
-        
-        <category>programming</category>
-        
-        <category>elixir</category>
-        
-        
-        <category>docker</category>
         
       </item>
     
