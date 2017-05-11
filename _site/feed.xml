@@ -6,9 +6,165 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 10 May 2017 05:52:51 -0400</pubDate>
-    <lastBuildDate>Wed, 10 May 2017 05:52:51 -0400</lastBuildDate>
+    <pubDate>Thu, 11 May 2017 05:47:28 -0400</pubDate>
+    <lastBuildDate>Thu, 11 May 2017 05:47:28 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Adding Cron to a Dockerized Rails Application Using Clockwork</title>
+        <description>&lt;p&gt;If you talk to any computer scientist they will easily tell you that 50 plus years into the computer age, scheduling is NOT a solved problem.  Even something as simple as cron which is decades old can still be challenging under different environments (example - cron and RVM is a bloody nightmare).  And then when you add containers into the mix, well …  In this blog post I outline how I’m handling a daily scheduled process using Docker and Clockwork (a cron like gem for Ruby).&lt;/p&gt;
+
+&lt;h1 id=&quot;why-is-cron-and-docker-a-problem&quot;&gt;Why is Cron and Docker a Problem&lt;/h1&gt;
+
+&lt;p&gt;Docker represents a simplified computing environment where you generally don’t have a full Linux stack – instead the model is generally a single root process.  Now there are people who challenge that approach, notably the good folks at Phusion, but this is generally regarded as a best practice.  So you’re not your own application stack and then cron as well.&lt;/p&gt;
+
+&lt;h1 id=&quot;enter-clockwork&quot;&gt;Enter Clockwork&lt;/h1&gt;
+
+&lt;p&gt;Clockwork is a long standing Ruby gem which acts as a persistent daemon with its own scheduler that executes a simple DSL allow your models to be easily executed.  Here’s an example:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;every(1.day, 'Midnight.job -- PageArchive.update_everything', :at =&amp;gt; '00:00') do |job|
+  PageArchive.update_everything
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Unlike traditional cron syntax, I’ve never found an issue with reading the Clockwork dsl, this says:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;every day&lt;/li&gt;
+  &lt;li&gt;execute at midnight&lt;/li&gt;
+  &lt;li&gt;run PageArchive.update_everything&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;adding-clockwork-to-your-rails-application&quot;&gt;Adding Clockwork to your Rails Application&lt;/h1&gt;
+
+&lt;p&gt;Here are the steps to add clockwork to your Rails application:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Add the clockwork gem to your Gemfile:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;gem ‘clockwork’&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Create a clock.rb file in lib:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;touch lib/clock.rb&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Write one or more clockwork expressions in clock.rb.  Here’s an example from my application:&lt;/p&gt;
+
+    &lt;p&gt;require ‘clockwork’
+include Clockwork&lt;/p&gt;
+
+    &lt;p&gt;require File.expand_path(‘../../config/boot’, &lt;strong&gt;FILE&lt;/strong&gt;)&lt;/p&gt;
+
+    &lt;p&gt;require File.expand_path(‘../../config/environment’, &lt;strong&gt;FILE&lt;/strong&gt;)&lt;/p&gt;
+
+    &lt;p&gt;require ‘clockwork’&lt;/p&gt;
+
+    &lt;p&gt;include Clockwork&lt;/p&gt;
+
+    &lt;p&gt;module Clockwork&lt;/p&gt;
+
+    &lt;p&gt;every(1.day, ‘Midnight.job – PageArchive.update_everything’, :at =&amp;gt; ‘03:58’) do |job|
+    PageArchive.update_everything
+  end&lt;/p&gt;
+
+    &lt;p&gt;every(1.week, ‘Weekly Job – PageArchive.update_bing’, :at =&amp;gt; ‘00:00’) do |job|
+    PageArchive.update_bing
+  end&lt;/p&gt;
+
+    &lt;p&gt;end&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;To test this you can just use the command line:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;bundle exec clockwork lib/clock.rb&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Once you set that running then you need to simply watch it to make sure that tasks execute.  Yes, provided that your syntax is correct, they certainly should but I’ve seen enough scheduled jobs fail over the years that I always feel better when I actually see them run.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; If you were previously using a Rake task to run your daily jobs then you need to refactor that as something like a class method that can be called from the Rake task.  This allows you to continue using the Rake task but also make your code easily executable from Clockwork.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-dockerfile&quot;&gt;The Dockerfile&lt;/h1&gt;
+
+&lt;p&gt;In this example I have a simple Rails app which exists to populate a page archive database consisting of data harvested daily from the Internet.  Here’s the Dockerfile:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FROM ruby:2.3.1-alpine
+
+RUN apk update &amp;amp;&amp;amp; apk add build-base nodejs mariadb-dev tzdata
+
+RUN mkdir /app
+WORKDIR /app
+
+COPY Gemfile Gemfile.lock ./
+RUN bundle install --binstubs
+
+COPY . .
+
+CMD bundle exec clockwork lib/clock.rb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The secret to making the scheduling work is to execute the clockwork executable as the root command in the container. This causes the Clockwork executable to be launched when the container initializes.  At that point Clockwork will run the command until it finishes and then remain running, waiting for its next invocation.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion-and-issues&quot;&gt;Conclusion and Issues&lt;/h1&gt;
+
+&lt;p&gt;As you can see, when you have a scheduling process as the root process in your container, it provides an easy way to handle your scheduled job needs and Clockwork really does make it easy.  Still this doesn’t mean that scheduling for your application is necessarily solved:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;What if your needs are large enough that you have to have multiple machines?&lt;/li&gt;
+  &lt;li&gt;How do you log issues with the scheduled jobs?&lt;/li&gt;
+  &lt;li&gt;What happens when a deploy occurs while your container is running a job?  How do you ensure that the day’s work actually got processed?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;multiple-machines&quot;&gt;Multiple Machines&lt;/h2&gt;
+
+&lt;p&gt;If I needed to have multiple machines involved, I would likely implement some kind of a work queue where they scheduler is solely responsible for setting up a queue of the work to be done and then containers on other machines are responsible for processing the data in the queue.  This approach is also useful for the deploy issue covered below.&lt;/p&gt;
+
+&lt;h2 id=&quot;logging-issues-with-scheduled-jobs&quot;&gt;Logging Issues with Scheduled Jobs&lt;/h2&gt;
+
+&lt;p&gt;There are enough issues with containers and logs that addressing it here is really out of the scope of this blog post.  I did want to point it out, however, as logging around scheduled jobs is usually necessary and needs to be thought through.&lt;/p&gt;
+
+&lt;h2 id=&quot;deploy-conflicts&quot;&gt;Deploy Conflicts&lt;/h2&gt;
+
+&lt;p&gt;There are at least three strategies that I’d use for handling deploy conflicts:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Start your jobs early and simply don’t deploy while they are running.  This is the least desirable strategy but it does actually work provided the execution time of the job is only a few hours (i.e. until when people need to deploy).  Obviously this works poorly with a globally distributed labor pool and a CI server that deploys code automatically.&lt;/li&gt;
+  &lt;li&gt;Change the code so that jobs become idempotent i.e. the job knows that a particular data item can be processed, for example, only once per day and then allow the scheduled process to be run multiple times per day.  This decreases the chance of a deploy shutting things down fully for an entire day since statistically it becomes less likely that you’ll conflict with something every single time that it is running allowing at least one of the runs to complete.&lt;/li&gt;
+  &lt;li&gt;Use the multiple machines strategy mentioned above so that you have a work queue and multiple asynchronous processing engines on the data.  As long as the queue is atomic in nature this avoids duplication issues and the additional parallelism that multiple containers bring should process the data more quickly thereby leading to fewer deploy conflicts.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Of each of these strategies, the third is likely the best but incurs the most application level changes.  Please keep in mind that you can iteratively evolve your application towards the right strategy for your needs.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 11 May 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/05/11/adding-cron-to-a-dockerized-rails-application-using-clockwork.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/05/11/adding-cron-to-a-dockerized-rails-application-using-clockwork.html</guid>
+        
+        <category>rails</category>
+        
+        <category>docker</category>
+        
+        <category>cron</category>
+        
+        <category>clockwork</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>Building a Rails API App Which Accepts Data from JavaScript</title>
@@ -101,7 +257,7 @@
   &lt;p&gt;rails new –api tracking_api –database=mysql –skip-spring –skip-listen –skip-sprockets&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;You’ll notice that I’m skipping spring and listen which gets rid of the &lt;a href=&quot;https://github.com/puma/puma-dev/issues/56&quot;&gt;disaster that is the evented file watcher on OSX&lt;/a&gt; / Github Issue (this causes huge issues with overly aggressive process launching).&lt;/p&gt;
+&lt;p&gt;You’ll notice that I’m skipping spring and listen which gets rid of the &lt;a href=&quot;http://fuzzyblog.io/blog/osx/2017/03/20/getting-around-osx-bash-fork-issues.html&quot;&gt;disaster that is the evented file watcher on OSX&lt;/a&gt; / &lt;a href=&quot;https://github.com/puma/puma-dev/issues/56&quot;&gt;Github Issue&lt;/a&gt; (this causes huge issues with overly aggressive process launching).&lt;/p&gt;
 
 &lt;h2 id=&quot;getting-past-cors-restrictions&quot;&gt;Getting Past CORS Restrictions&lt;/h2&gt;
 
@@ -1446,25 +1602,6 @@ Cannot connect to the Docker daemon at tcp://192.168.59.103:2376. Is the docker 
         
         
         <category>docker</category>
-        
-      </item>
-    
-      <item>
-        <title>To Udemy or Not to Udemy - Make a Living Selling Courses</title>
-        <description>&lt;p&gt;Scott’s Rule of Udemy or Not&lt;/p&gt;
-
-&lt;p&gt;The more detailed and specific the course, the smaller the market and the greater the price has to be.  The more general the course, the greater the market and the lower the price.  Udemy works for mass market, low price, high volume courses.&lt;/p&gt;
-
-&lt;p&gt;As an example, a Docker course about the Moby open source components could have a price as high as a $100 or $200 but since Udemy would discount it severely, it needs to be sold via a direct model.  Where as an Intro to HTML course might have a price of $25 but be discounted down to $15 and you get $7.&lt;/p&gt;
-
-&lt;p&gt;Context - this will go into a blog post about making a living selling courses&lt;/p&gt;
-
-&lt;p&gt;Course authors need to take control of their sales and marketing&lt;/p&gt;
-</description>
-        <pubDate>Tue, 25 Apr 2017 20:59:17 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/04/25/to-udemy-or-not-to-udemy-make-a-living-selling-courses.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/25/to-udemy-or-not-to-udemy-make-a-living-selling-courses.html</guid>
-        
         
       </item>
     
