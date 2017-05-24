@@ -10,7 +10,18 @@ Skilled in DevOps, AWS, Ansible, Elixir, Ruby, Rails, PHP, MySQL, Redis, Sidekiq
 
 ## Experience
 
-# Architect, FI Navigator, Inc., Atlanta, GA 2015 - Present
+# Consultant, Sigstr, Inc., Indianapolis, IN, 2016 - Present
+Senior Engineer focused on internal code sharing tools as well as a cloud based email transformation engine for expanding the core Sigstr email marketing service.
+
+# Consultant, Interana, Inc., Redwood, City, CA 2016 - 2017
+Implemented a SAML authorization system that offered Single Sign ON (SSO) across multiple customer facing applications.  Accomplishments include:
+
+* Created a SAML authorization backend based on forking existing open source SAML software
+* Interfaces to Lithium and MindTouch documentation and customer service tools
+* Modified the Ruby Devise login engine to interface with SAML
+* Full logging of authentication workflow
+
+# Architect, FI Navigator, Inc., Atlanta, GA 2015 - 2017
 Led all development activities for FI Navigator, a leading provider of financial information for the banking industry.  Accomplishments include:
 
 * Responsible for all DevOps including automated provisioning of all machines using Ansible

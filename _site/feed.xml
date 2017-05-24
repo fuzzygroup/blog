@@ -6,9 +6,36 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 11 May 2017 05:52:35 -0400</pubDate>
-    <lastBuildDate>Thu, 11 May 2017 05:52:35 -0400</lastBuildDate>
+    <pubDate>Wed, 24 May 2017 14:21:25 -0400</pubDate>
+    <lastBuildDate>Wed, 24 May 2017 14:21:25 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>10 Things Software Engineering Daily Taught Me</title>
+        <description>&lt;p&gt;Software Engineering Daily is my absolute favorite podcast and it has replaced almost all my daily listens – no more Major Spoilers, very limited Geek History Lessons, etc.  And the main reason is 
+## Homomorphic Encryption&lt;/p&gt;
+
+&lt;h2 id=&quot;indie-hacking-exists&quot;&gt;Indie Hacking Exists!&lt;/h2&gt;
+
+&lt;p&gt;That indie hacking is a thing&lt;/p&gt;
+
+&lt;p&gt;SE Daily - Learned&lt;/p&gt;
+
+&lt;p&gt;Software Psychology&lt;/p&gt;
+
+&lt;p&gt;Subtle Engineering Complexitits - transition of&lt;/p&gt;
+
+&lt;p&gt;a distributed system of services is much harder in its debugging characteristics than a monolith – its much harder to put in breakpoints&lt;/p&gt;
+
+&lt;p&gt;17:03&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 16 May 2017 12:18:16 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/05/16/10-things-software-engineering-daily-taught-me.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/05/16/10-things-software-engineering-daily-taught-me.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Adding Cron to a Dockerized Rails Application Using Clockwork</title>
@@ -196,50 +223,44 @@ end
 
 &lt;p&gt;Here are the steps to add clockwork to your Rails application:&lt;/p&gt;
 
-&lt;ol&gt;
-  &lt;li&gt;Add the clockwork gem to your Gemfile:&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;Add the clockwork gem to your Gemfile:&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;gem ‘clockwork’&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;ol&gt;
-  &lt;li&gt;Create a clock.rb file in lib:&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;Create a clock.rb file in lib:&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;touch lib/clock.rb&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Write one or more clockwork expressions in clock.rb.  Here’s an example from my application:&lt;/p&gt;
+&lt;p&gt;Write one or more clockwork expressions in clock.rb.  Here’s an example from my application:&lt;/p&gt;
 
-    &lt;p&gt;require ‘clockwork’
-include Clockwork&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;require 'clockwork'
+include Clockwork
 
-    &lt;p&gt;require File.expand_path(‘../../config/boot’, &lt;strong&gt;FILE&lt;/strong&gt;)&lt;/p&gt;
+require File.expand_path('../../config/boot', __FILE__)
 
-    &lt;p&gt;require File.expand_path(‘../../config/environment’, &lt;strong&gt;FILE&lt;/strong&gt;)&lt;/p&gt;
+require File.expand_path('../../config/environment', __FILE__)
 
-    &lt;p&gt;require ‘clockwork’&lt;/p&gt;
+require 'clockwork'
 
-    &lt;p&gt;include Clockwork&lt;/p&gt;
+include Clockwork
 
-    &lt;p&gt;module Clockwork&lt;/p&gt;
+module Clockwork
 
-    &lt;p&gt;every(1.day, ‘Midnight.job – PageArchive.update_everything’, :at =&amp;gt; ‘03:58’) do |job|
+  every(1.day, 'Midnight.job -- PageArchive.update_everything', :at =&amp;gt; '03:58') do |job|
     PageArchive.update_everything
-  end&lt;/p&gt;
+  end
 
-    &lt;p&gt;every(1.week, ‘Weekly Job – PageArchive.update_bing’, :at =&amp;gt; ‘00:00’) do |job|
+  every(1.week, 'Weekly Job -- PageArchive.update_bing', :at =&amp;gt; '00:00') do |job|
     PageArchive.update_bing
-  end&lt;/p&gt;
+  end
 
-    &lt;p&gt;end&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;p&gt;To test this you can just use the command line:&lt;/p&gt;
 
@@ -1573,38 +1594,6 @@ it takes that output and executes as “real” bash code&lt;/p&gt;
         <link>http://fuzzyblog.io//blog/2017/04/29/understanding-the-docker-magic-eval-statement.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/04/29/understanding-the-docker-magic-eval-statement.html</guid>
         
-        
-      </item>
-    
-      <item>
-        <title>AWS Tutorial - Adding a Domain Name to an EC2 Instance with Route 53 and Elastic IPs</title>
-        <description>&lt;p&gt;I recently put up a new service – Should I Gem – which helps you evaluate open source technologies and I had to actually assign a real domain name to it – shouldigem.com.  I used AWS for everything and I found the process of getting a domain name assigned to the server to be more confusing than I thought necessary.&lt;/p&gt;
-
-&lt;h1 id=&quot;what-you-need&quot;&gt;What You Need&lt;/h1&gt;
-
-&lt;p&gt;Here’s what you need:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;A domain hosted by Route 53&lt;/li&gt;
-  &lt;li&gt;An instance on EC2&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;step-1-assign-an-elastic-ip-to-your-instance&quot;&gt;Step 1: Assign an Elastic IP to Your Instance&lt;/h1&gt;
-
-&lt;h1 id=&quot;step-2&quot;&gt;Step 2:&lt;/h1&gt;
-</description>
-        <pubDate>Fri, 28 Apr 2017 10:54:26 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/aws/2017/04/28/aws-tutorial-adding-a-domain-name-to-an-ec2-instance-with-route-53-and-elastic-ips.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/aws/2017/04/28/aws-tutorial-adding-a-domain-name-to-an-ec2-instance-with-route-53-and-elastic-ips.html</guid>
-        
-        <category>aws</category>
-        
-        <category>route53</category>
-        
-        <category>elasticip</category>
-        
-        
-        <category>AWS</category>
         
       </item>
     
