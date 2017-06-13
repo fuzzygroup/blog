@@ -35,7 +35,7 @@ Yep - that's a 10x difference in size, 200K down to 24K.  Surely it must be wort
 
 
 ## Compression
-![s3_no_compression.png](/blog/assets/s3_no_compression.png)
+![s3_compression.png](/blog/assets/s3_compression.png)
 
 Yep.  That's right -- the grand price difference of a 10 fold difference in size is all of $6 or 16.67%.  Now a 16 % cost savings shouldn't be dismissed but at the current scale I'm running it, it is a rounding error and can be ignored.
 
