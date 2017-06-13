@@ -38,6 +38,7 @@ Other than a text editor, terminal and Tmux, I use pretty little software but he
 * [Enpass](http://fuzzyblog.io/blog/software_worth_purchasing/2016/09/15/software-worth-purchasing-02-enpass.html) as a digital wallet
 * [Dropbox](http://fuzzyblog.io/blog/dropbox/2017/03/13/dropbox-for-the-software-developer.html) without which I simply could not function
 * [Deckset](https://www.decksetapp.com/) for converting Markdown files to simple presentations
+* Jekyll for blogging; so much of everything I do comes from Open Source but I wanted to call out Jekyll because, well, I'm using it right this second
 
 # Computer, Desk and Phone
 
