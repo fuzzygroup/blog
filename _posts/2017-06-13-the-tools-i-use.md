@@ -26,7 +26,7 @@ Other than a text editor, terminal and Tmux, I use pretty little software but he
 * Docker for containers
 * [Transmit by Panic](https://panic.com/transmit/) as an FTP / S3 client
 * [Fantastical 2](https://flexibits.com/fantastical)
-* ngrok for http connection sharing (if you've never used ngrok and you're a developer, run, not walk and get it -- it is that good)
+* [ngrok](https://ngrok.com/) for http connection sharing (if you've never used ngrok and you're a developer, run, not walk and get it -- it is that good)
 * Apple Mail for mail
 * Slack because, well, Slack
 * Skype (which gets worse and worse ever year it seems)
