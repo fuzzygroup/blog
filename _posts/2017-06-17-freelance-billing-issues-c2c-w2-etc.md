@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Freelance Billing Issues - 1099, C2C, W2, Etc
+title: Freelance Billing Issues 1099 C2C W2
 category: freelance
-tags: ["freelance", "billing", "w2", "1099", "c2c"], 
+tags: ["freelance", "billing", "w2", "1099", "c2c"]
 ---
 While I'm not doing a lot of consulting right now, I just ran across something interesting when talking to a recruiter the other day.  He was asking me about my rates and referenced a number of terms that I actually didn't understand.   This blog post is my attempt to tease this out and understand it a bit more.
 
