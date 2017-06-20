@@ -6,8 +6,8 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 20 Jun 2017 10:37:25 -0400</pubDate>
-    <lastBuildDate>Tue, 20 Jun 2017 10:37:25 -0400</lastBuildDate>
+    <pubDate>Tue, 20 Jun 2017 10:38:35 -0400</pubDate>
+    <lastBuildDate>Tue, 20 Jun 2017 10:38:35 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -25,7 +25,7 @@
         <title>Using Ansible on Ubuntu 16.04 When which python Fails</title>
         <description>&lt;p&gt;&lt;a href=&quot;https://www.ansible.com&quot;&gt;Ansible&lt;/a&gt; is my favorite devops tool.  I’ve used &lt;a href=&quot;https://www.chef.io/chef/&quot;&gt;Chef&lt;/a&gt; extensively and despite my Ruby background, well, I hated it.  I’ve slutted around with &lt;a href=&quot;https://www.terraform.io&quot;&gt;TerraForm&lt;/a&gt;; I’ve played with &lt;a href=&quot;https://puppet.com&quot;&gt;Puppet&lt;/a&gt; and I’ve put &lt;a href=&quot;https://saltstack.com&quot;&gt;Salt&lt;/a&gt; on my food and servers but time in and time out, I always come back to Ansible.  I even like Ansible enough that I wrote about it recently on &lt;a href=&quot;https://www.quora.com/What-do-I-need-to-study-before-studying-Ansible-Im-from-a-networking-background-and-we-like-to-do-automation-via-Ansible/answer/Scott-Johnson-16&quot;&gt;a Quora post&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;One of the beautiful things about Ansible is that it doesn’t require a server side agent.  Ansible works via SSH purely and that means that as long as you can login to the server then you can use Ansible to provision it, update it, deploy crap, etc.&lt;/p&gt;
+&lt;p&gt;One of the beautiful things about Ansible is that it &lt;strong&gt;does not&lt;/strong&gt; require a server side agent.  Ansible works via SSH purely and that means that as long as you can login to the server then you can use Ansible to provision it, update it, deploy stuff, etc.&lt;/p&gt;
 
 &lt;p&gt;I just deployed my first ever Ubuntu 16.04 LTS box on AWS the other day and one of my surprises was that a which python &lt;strong&gt;failed&lt;/strong&gt;.  Oy vey.  This means that you can’t use Ansible without installing Python – or so I thought.  Happily a bit of googling and I discovered the &lt;a href=&quot;https://docs.ansible.com/ansible/python_3_support.html&quot;&gt;ansible_python_interpreter&lt;/a&gt; option which lets you override the default of Python 2 and use Python 3.  This gets, oddly, embedded in the inventories file:&lt;/p&gt;
 
