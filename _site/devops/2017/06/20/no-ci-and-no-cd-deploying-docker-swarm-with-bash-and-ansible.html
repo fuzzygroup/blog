@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>No CI and No CD - Deploying Docker Swarm with Bash and Ansible</title>
+  <meta name="description" content="This post may well verge on the heretical.  I’m getting close on a new SAAS app that is going to be run using containers and Docker Swarm as my container eng...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/devops/2017/06/20/no-ci-and-no-cd-deploying-docker-swarm-with-bash-and-ansible.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="No CI and No CD - Deploying Docker Swarm with Bash and Ansible">
+
+  
+    <meta name="twitter:description"
+      content="This post may well verge on the heretical.  I’m getting close on a new SAAS app that is going to be run using containers and Docker Swarm as my container engine.  Rather than go the whole CI / CD r...">
+  
+
+  
+    <meta name="twitter:image"
+      content="https://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">No CI and No CD - Deploying Docker Swarm with Bash and Ansible</h1>
+    <p class="I'll"><time datetime="2017-06-20T00:00:00-04:00" itemprop="datePublished">Jun 20, 2017</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>This post may well verge on the heretical.  I’m getting close on a new SAAS app that is going to be run using containers and Docker Swarm as my container engine.  Rather than go the whole CI / CD route, I actually ended up using a combination of Bash and Ansible to handle my deployment onto AWS.  This is a side project type of thing and I didn’t want to spend the time / $$$ to setup CI / CD which, honestly, can be frightfully expensive (and, yes, I’m glaring at you CircleCI and your ridiculous $50 / container / month model; containers allow nice partitioning down to the microservice level but pricing plans like this want you to run screaming back to monoliths; ARGH).  But I’m digressing into a rant so …</p>
+
+<h1 id="under-the-hood-for-a-docker-swarm-deploy">Under the Hood for a Docker Swarm Deploy</h1>
+
+<p>Docker Swarm is a way to easily run a cluster of Docker containers as a shared, coherent entity.  Here is what has to happen under the hood for a Docker Swarm deploy (or at least how I’ve done it; I’m sure there are other ways):</p>
+
+<h2 id="stage-1-docker-build">Stage 1: Docker Build</h2>
+
+<p>The first stage is just building your Docker containers.  That looks like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>docker-compose build web
+docker tag seirawatchsite_web fuzzygroup/seirawatchsite_web:latest
+docker push fuzzygroup/seirawatchsite_web:latest
+</code></pre>
+</div>
+
+<p>As you can see I’m using the Docker Hub container registry here and the reason is that Docker Hub really gets this right.  Nick goes over some of the numbers about Docker Hub in a <a href="https://diveintodocker.com/blog/the-3-biggest-wins-when-using-alpine-as-a-base-docker-image">recent blog post</a> and the number of pulls is astonishing.</p>
+
+<h2 id="stage-2-copy-up">Stage 2: Copy Up</h2>
+
+<p>The next stage is to simply copy of your .env, .env.production and docker-compose files up to all the hosts where your swarm runs.  I suppose if you <em>know</em> that these files won’t change then you don’t need to do this but, personally, I feel that you want this as part of your deploy process.  You can do this anyway you move files but I just used straight up scp commands:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>scp -i ~/.ssh/fuzzygroup2.pem .env  ubuntu@foo.com:~/seirawatchsite
+scp -i ~/.ssh/fuzzygroup2.pem .env.production  ubuntu@foo.com:~/seirawatchsite
+scp -i ~/.ssh/fuzzygroup2.pem docker-compose.production.yml ubuntu@foo.com:~/seirawatchsite
+</code></pre>
+</div>
+
+<p>These are just going up to a project level directory on the underlying linux box where the container will run.  Putting them in a directory allows for another container for this project to exist on the same hardware.</p>
+
+<h2 id="stage-3-restart-docker">Stage 3: Restart Docker</h2>
+
+<p>The final stage is telling Docker Swarm to use the new files.  This requires using this Docker specific command:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cd ~/seirawatchsite/ &amp;&amp; docker stack deploy -c docker-compose.production.yml --with-registry-auth seirawatchsite
+</code></pre>
+</div>
+
+<p>The trick here is that you need to run that on all your Docker swarm hosts – once you are logged into them.  Up to this point all of our commands have executed locally on a development system.  With this command we need to now run on the remote box where swarm is executing – and that’s where Ansible comes in but first we have to learn a cool bash trick.</p>
+
+<h1 id="a-cool-ass-bash-trick">A Cool Ass Bash Trick</h1>
+
+<p>As I’ve alluded to in the past, I’m not a bash guy.  I initially grew up with DOS .bat files and I think that must have scarred me for life since while I use bash regularly, I’ve never, not once, really felt comfortable with.  For example, anyone who knows me personally knows that my bash prompt is never right.  One of the issues with deploy is that, in my opinion, when there is an error, it needs to HARD STOP IMMEDIATELY.  Otherwise you’ll end up with your remote system in an arbitrary state which is <strong>dangerous</strong>.  So I turned to Google and StackOverflow with the phrase “bash script exit on error” and found a <a href="https://stackoverflow.com/questions/1378274">wonderful answer</a>.  You start by adding this function to the top of your bash script:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function run() {
+  cmd_output=$(eval $1)
+  return_value=$?
+  if [ $return_value != 0 ]; then
+    echo "Command $1 failed"
+    exit -1
+  else
+    echo "output: $cmd_output"
+    echo "Command succeeded."
+  fi
+  return $return_value
+}
+</code></pre>
+</div>
+
+<p>You can then wrap each of your lines with the run command like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>run "date"
+run "false"
+run "date"
+</code></pre>
+</div>
+
+<p>And then it exits if there is an error and it tells you where it stopped.</p>
+
+<h1 id="putting-it-all-together">Putting it All Together</h1>
+
+<p>Now that we have a mechanism for handling errors we can bring this all together into a single deploy.sh bash script:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="c">#</span>
+<span class="c"># The Docker Specific Stuff</span>
+<span class="c">#</span>
+
+<span class="c">#function run comes from: https://stackoverflow.com/questions/1378274/ ; thank you velotron</span>
+
+<span class="k">function </span>run<span class="o">()</span> <span class="o">{</span>
+  <span class="nv">cmd_output</span><span class="o">=</span><span class="k">$(</span><span class="nb">eval</span> <span class="nv">$1</span><span class="k">)</span>
+  <span class="nv">return_value</span><span class="o">=</span><span class="nv">$?</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="nv">$return_value</span> !<span class="o">=</span> 0 <span class="o">]</span>; <span class="k">then
+    </span><span class="nb">echo</span> <span class="s2">"Command </span><span class="nv">$1</span><span class="s2"> failed"</span>
+    <span class="nb">exit</span> -1
+  <span class="k">else
+    </span><span class="nb">echo</span> <span class="s2">"output: </span><span class="nv">$cmd_output</span><span class="s2">"</span>
+    <span class="nb">echo</span> <span class="s2">"Command succeeded."</span>
+  <span class="k">fi
+  return</span> <span class="nv">$return_value</span>
+<span class="o">}</span>
+
+<span class="nb">echo</span> <span class="s2">"Stage 1: Docker Build"</span>
+run <span class="s2">"docker-compose build web"</span>
+run <span class="s2">"docker tag seirawatchsite_web fuzzygroup/seirawatchsite_web:latest"</span>
+run <span class="s2">"docker push fuzzygroup/seirawatchsite_web:latest"</span>
+
+<span class="nb">echo</span> <span class="s2">"Stage 2: Copy Up"</span>
+
+run <span class="s2">"scp -i ~/.ssh/fuzzygroup2.pem .env  ubuntu@foo.com:~/seirawatchsite"</span>
+run <span class="s2">"scp -i ~/.ssh/fuzzygroup2.pem .env.production  ubuntu@foo.com:~/seirawatchsite"</span>
+run <span class="s2">"scp -i ~/.ssh/fuzzygroup2.pem docker-compose.production.yml ubuntu@foo.com:~/seirawatchsite"</span>
+
+<span class="nb">echo</span> <span class="s2">"Stage 3: Restart Docker Using Ansible"</span>
+
+run <span class="s2">"ansible-playbook -i script/ansible/inventories/production script/ansible/deploy.yml"</span>
+</code></pre>
+</div>
+
+<p>The Ansible deploy.yml is about as simple as it gets for Ansible; damn close to a one liner:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>---
+- name: Restart Docker Swarm
+  become: no
+  shell:  "cd ~/seirawatchsite/ &amp;&amp; docker stack deploy -c docker-compose.production.yml --with-registry-auth seirawatchsite"
+</code></pre>
+</div>
+
+<p>Yes this needed to be wrapped in an entire Ansible environment including the full directory structure, etc but that really is pretty simple.  Here’s what the whole thing looked like:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>├── ansible.cfg
+├── deploy.yml
+├── group_vars
+├── inventories
+│   └── production
+└── roles
+    └── restart_docker_swarm
+        └── tasks
+            └── main.yml
+</code></pre>
+</div>
+
+<h1 id="closing-thoughts">Closing Thoughts</h1>
+
+<p>So the question comes up whether or not this is a good way to tackle a Docker Swarm deploy and I have mixed feelings.  Yes CI / CD is definitely better but it is also a lot “heavier”.  I am very much a believer in understanding exactly the bits that you are deploying and CI / CD always makes me feel uncomfortable in that regard.  When you understand how deploy is working you also understand how to handle the inevitable deploy problem – and there is always something.</p>
+
+<p>Note: I did not deal with migrations in the course of this writing; I’ll cover that in a future blog post.</p>
+
+<h1 id="thanks">Thanks</h1>
+
+<p>My thanks, as always, go out to my Docker friend and mentor, <a href="https://diveintodocker.com/courses/dive-into-docker">Nick Janetakis</a>, a strong shout out to <a href="https://stackoverflow.com/users/958118/velotron">Velotron on Stack Overflow</a> for his bash assistance.</p>
+
+  </div>
+  
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

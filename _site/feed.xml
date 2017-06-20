@@ -6,12 +6,246 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 17 Jun 2017 07:32:04 -0400</pubDate>
-    <lastBuildDate>Sat, 17 Jun 2017 07:32:04 -0400</lastBuildDate>
+    <pubDate>Tue, 20 Jun 2017 08:48:42 -0400</pubDate>
+    <lastBuildDate>Tue, 20 Jun 2017 08:48:42 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
-        <title></title>
+        <title>OSX Tip Using mdfind to search your hard disc for files by name</title>
+        <description>&lt;p&gt;As a long time Unix user, the lack of locate being automatically turned on in OSX has always, alway bothered me.  I have always wondered about this until yesterday when I couldn’t find where my.cnf was on the disc and I turned to the Internet.  Somewhere I located this syntax:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;mdfind -name my.cnf&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;When I run this I get this output:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/private/etc/my.cnf
+/Users/sjohnson/appdatallc/ansible/my.cnf
+/Users/sjohnson/Dropbox/appdatallc/chef2/cookbooks/mysql/templates/default/5.0/my.cnf.erb
+/Users/sjohnson/Dropbox/appdatallc/chef2/cookbooks/mysql/templates/default/5.1/my.cnf.erb
+/Users/sjohnson/Dropbox/appdatallc/chef2/cookbooks/mysql/templates/default/5.5/my.cnf.erb
+/Users/sjohnson/Dropbox/appdatallc/chef2/cookbooks/mysql/templates/default/5.6/my.cnf.erb
+/Users/sjohnson/Dropbox/appdatallc/chef2/cookbooks/mysql/templates/default/deprecated/my.cnf.erb
+/Users/sjohnson/Dropbox/appdatallc/chef2/berks-cookbooks/mysql/templates/default/deprecated/my.cnf.erb
+/Users/sjohnson/appdatallc/chef2/cookbooks/mysql/templates/default/5.0/my.cnf.erb
+/Users/sjohnson/appdatallc/chef2/cookbooks/mysql/templates/default/5.1/my.cnf.erb
+/Users/sjohnson/appdatallc/chef2/cookbooks/mysql/templates/default/5.5/my.cnf.erb
+/Users/sjohnson/appdatallc/chef2/cookbooks/mysql/templates/default/5.6/my.cnf.erb
+/Users/sjohnson/appdatallc/chef2/cookbooks/mysql/templates/default/deprecated/my.cnf.erb
+/Users/sjohnson/appdatallc/chef2/berks-cookbooks/mysql/templates/default/5.0/my.cnf.erb
+/Users/sjohnson/appdatallc/chef2/berks-cookbooks/mysql/templates/default/5.1/my.cnf.erb
+/Users/sjohnson/appdatallc/chef2/berks-cookbooks/mysql/templates/default/5.5/my.cnf.erb
+/Users/sjohnson/appdatallc/chef2/berks-cookbooks/mysql/templates/default/5.6/my.cnf.erb
+/Users/sjohnson/appdatallc/chef2/berks-cookbooks/mysql/templates/default/deprecated/my.cnf.erb
+/Users/sjohnson/Dropbox/consulting/interana/sso_portal/script/ansible/roles/mariadb/templates/my.cnf
+/Users/sjohnson/Dropbox/appdatallc/chef2/berks-cookbooks/mysql/templates/default/5.0/my.cnf.erb
+/Users/sjohnson/Dropbox/appdatallc/chef2/berks-cookbooks/mysql/templates/default/5.1/my.cnf.erb
+/Users/sjohnson/Dropbox/appdatallc/chef2/berks-cookbooks/mysql/templates/default/5.5/my.cnf.erb
+/Users/sjohnson/Dropbox/appdatallc/chef2/berks-cookbooks/mysql/templates/default/5.6/my.cnf.erb
+/Users/sjohnson/Dropbox/appdatallc/ansible/my.cnf
+/Users/sjohnson/Dropbox/consulting/interana/master_before_move_back_to_detached/sso_portal/script/ansible/roles/mariadb/templates/my.cnf
+/Users/sjohnson/Dropbox/appdatallc/ansible-clean/roles/install-mariadb55/files/etc/mysql/my.cnf.default
+/Users/sjohnson/Dropbox/fuzzygroup/ansible/ansible-for-aws/wordpress/roles/mysql/templates/my.cnf.j2
+/usr/local/etc/my.cnf
+/usr/local/etc/my.cnf.d
+/Library/Ruby/Gems/2.0.0/gems/mysql2-0.4.4/spec/my.cnf.example
+/Users/sjohnson/Dropbox/fuzzygroup/rails/crawl_evaluation/daimon_as_framework/udemy/docker-cache/bundle/ruby/2.4.0/gems/mysql2-0.4.5/spec/my.cnf.example
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So it looks to me like this gives me pretty much what I would have gotten from locate without having to worry about the locate db being updated and the like.  Kudos to Apple for this and bad on me for not knowing about this even after using OSX continuously since 2006 or so.  Sigh.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 20 Jun 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/osx/2017/06/20/osx-tip-using-mdfind.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/osx/2017/06/20/osx-tip-using-mdfind.html</guid>
+        
+        <category>find</category>
+        
+        <category>mdfind</category>
+        
+        <category>command_line</category>
+        
+        <category>osx</category>
+        
+        <category>locate</category>
+        
+        
+        <category>OSX</category>
+        
+      </item>
+    
+      <item>
+        <title>No CI and No CD - Deploying Docker Swarm with Bash and Ansible</title>
+        <description>&lt;p&gt;This post may well verge on the heretical.  I’m getting close on a new SAAS app that is going to be run using containers and Docker Swarm as my container engine.  Rather than go the whole CI / CD route, I actually ended up using a combination of Bash and Ansible to handle my deployment onto AWS.  This is a side project type of thing and I didn’t want to spend the time / $$$ to setup CI / CD which, honestly, can be frightfully expensive (and, yes, I’m glaring at you CircleCI and your ridiculous $50 / container / month model; containers allow nice partitioning down to the microservice level but pricing plans like this want you to run screaming back to monoliths; ARGH).  But I’m digressing into a rant so …&lt;/p&gt;
+
+&lt;h1 id=&quot;under-the-hood-for-a-docker-swarm-deploy&quot;&gt;Under the Hood for a Docker Swarm Deploy&lt;/h1&gt;
+
+&lt;p&gt;Docker Swarm is a way to easily run a cluster of Docker containers as a shared, coherent entity.  Here is what has to happen under the hood for a Docker Swarm deploy (or at least how I’ve done it; I’m sure there are other ways):&lt;/p&gt;
+
+&lt;h2 id=&quot;stage-1-docker-build&quot;&gt;Stage 1: Docker Build&lt;/h2&gt;
+
+&lt;p&gt;The first stage is just building your Docker containers.  That looks like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose build web
+docker tag seirawatchsite_web fuzzygroup/seirawatchsite_web:latest
+docker push fuzzygroup/seirawatchsite_web:latest
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;As you can see I’m using the Docker Hub container registry here and the reason is that Docker Hub really gets this right.  Nick goes over some of the numbers about Docker Hub in a &lt;a href=&quot;https://diveintodocker.com/blog/the-3-biggest-wins-when-using-alpine-as-a-base-docker-image&quot;&gt;recent blog post&lt;/a&gt; and the number of pulls is astonishing.&lt;/p&gt;
+
+&lt;h2 id=&quot;stage-2-copy-up&quot;&gt;Stage 2: Copy Up&lt;/h2&gt;
+
+&lt;p&gt;The next stage is to simply copy of your .env, .env.production and docker-compose files up to all the hosts where your swarm runs.  I suppose if you &lt;em&gt;know&lt;/em&gt; that these files won’t change then you don’t need to do this but, personally, I feel that you want this as part of your deploy process.  You can do this anyway you move files but I just used straight up scp commands:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scp -i ~/.ssh/fuzzygroup2.pem .env  ubuntu@foo.com:~/seirawatchsite
+scp -i ~/.ssh/fuzzygroup2.pem .env.production  ubuntu@foo.com:~/seirawatchsite
+scp -i ~/.ssh/fuzzygroup2.pem docker-compose.production.yml ubuntu@foo.com:~/seirawatchsite
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;These are just going up to a project level directory on the underlying linux box where the container will run.  Putting them in a directory allows for another container for this project to exist on the same hardware.&lt;/p&gt;
+
+&lt;h2 id=&quot;stage-3-restart-docker&quot;&gt;Stage 3: Restart Docker&lt;/h2&gt;
+
+&lt;p&gt;The final stage is telling Docker Swarm to use the new files.  This requires using this Docker specific command:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~/seirawatchsite/ &amp;amp;&amp;amp; docker stack deploy -c docker-compose.production.yml --with-registry-auth seirawatchsite
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The trick here is that you need to run that on all your Docker swarm hosts – once you are logged into them.  Up to this point all of our commands have executed locally on a development system.  With this command we need to now run on the remote box where swarm is executing – and that’s where Ansible comes in but first we have to learn a cool bash trick.&lt;/p&gt;
+
+&lt;h1 id=&quot;a-cool-ass-bash-trick&quot;&gt;A Cool Ass Bash Trick&lt;/h1&gt;
+
+&lt;p&gt;As I’ve alluded to in the past, I’m not a bash guy.  I initially grew up with DOS .bat files and I think that must have scarred me for life since while I use bash regularly, I’ve never, not once, really felt comfortable with.  For example, anyone who knows me personally knows that my bash prompt is never right.  One of the issues with deploy is that, in my opinion, when there is an error, it needs to HARD STOP IMMEDIATELY.  Otherwise you’ll end up with your remote system in an arbitrary state which is &lt;strong&gt;dangerous&lt;/strong&gt;.  So I turned to Google and StackOverflow with the phrase “bash script exit on error” and found a &lt;a href=&quot;https://stackoverflow.com/questions/1378274&quot;&gt;wonderful answer&lt;/a&gt;.  You start by adding this function to the top of your bash script:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function run() {
+  cmd_output=$(eval $1)
+  return_value=$?
+  if [ $return_value != 0 ]; then
+    echo &quot;Command $1 failed&quot;
+    exit -1
+  else
+    echo &quot;output: $cmd_output&quot;
+    echo &quot;Command succeeded.&quot;
+  fi
+  return $return_value
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You can then wrap each of your lines with the run command like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;run &quot;date&quot;
+run &quot;false&quot;
+run &quot;date&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And then it exits if there is an error and it tells you where it stopped.&lt;/p&gt;
+
+&lt;h1 id=&quot;putting-it-all-together&quot;&gt;Putting it All Together&lt;/h1&gt;
+
+&lt;p&gt;Now that we have a mechanism for handling errors we can bring this all together into a single deploy.sh bash script:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# The Docker Specific Stuff&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;#function run comes from: https://stackoverflow.com/questions/1378274/ ; thank you velotron&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;run&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;cmd_output&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;return_value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$?&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$return_value&lt;/span&gt; !&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0 &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
+    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Command &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; failed&quot;&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; -1
+  &lt;span class=&quot;k&quot;&gt;else
+    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;output: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$cmd_output&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Command succeeded.&quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;fi
+  return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$return_value&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Stage 1: Docker Build&quot;&lt;/span&gt;
+run &lt;span class=&quot;s2&quot;&gt;&quot;docker-compose build web&quot;&lt;/span&gt;
+run &lt;span class=&quot;s2&quot;&gt;&quot;docker tag seirawatchsite_web fuzzygroup/seirawatchsite_web:latest&quot;&lt;/span&gt;
+run &lt;span class=&quot;s2&quot;&gt;&quot;docker push fuzzygroup/seirawatchsite_web:latest&quot;&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Stage 2: Copy Up&quot;&lt;/span&gt;
+
+run &lt;span class=&quot;s2&quot;&gt;&quot;scp -i ~/.ssh/fuzzygroup2.pem .env  ubuntu@foo.com:~/seirawatchsite&quot;&lt;/span&gt;
+run &lt;span class=&quot;s2&quot;&gt;&quot;scp -i ~/.ssh/fuzzygroup2.pem .env.production  ubuntu@foo.com:~/seirawatchsite&quot;&lt;/span&gt;
+run &lt;span class=&quot;s2&quot;&gt;&quot;scp -i ~/.ssh/fuzzygroup2.pem docker-compose.production.yml ubuntu@foo.com:~/seirawatchsite&quot;&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Stage 3: Restart Docker Using Ansible&quot;&lt;/span&gt;
+
+run &lt;span class=&quot;s2&quot;&gt;&quot;ansible-playbook -i script/ansible/inventories/production script/ansible/deploy.yml&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The Ansible deploy.yml is about as simple as it gets for Ansible; damn close to a one liner:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
+- name: Restart Docker Swarm
+  become: no
+  shell:  &quot;cd ~/seirawatchsite/ &amp;amp;&amp;amp; docker stack deploy -c docker-compose.production.yml --with-registry-auth seirawatchsite&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Yes this needed to be wrapped in an entire Ansible environment including the full directory structure, etc but that really is pretty simple.  Here’s what the whole thing looked like:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;├── ansible.cfg
+├── deploy.yml
+├── group_vars
+├── inventories
+│   └── production
+└── roles
+    └── restart_docker_swarm
+        └── tasks
+            └── main.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;closing-thoughts&quot;&gt;Closing Thoughts&lt;/h1&gt;
+
+&lt;p&gt;So the question comes up whether or not this is a good way to tackle a Docker Swarm deploy and I have mixed feelings.  Yes CI / CD is definitely better but it is also a lot “heavier”.  I am very much a believer in understanding exactly the bits that you are deploying and CI / CD always makes me feel uncomfortable in that regard.  When you understand how deploy is working you also understand how to handle the inevitable deploy problem – and there is always something.&lt;/p&gt;
+
+&lt;p&gt;Note: I did not deal with migrations in the course of this writing; I’ll cover that in a future blog post.&lt;/p&gt;
+
+&lt;h1 id=&quot;thanks&quot;&gt;Thanks&lt;/h1&gt;
+
+&lt;p&gt;My thanks, as always, go out to my Docker friend and mentor, &lt;a href=&quot;https://diveintodocker.com/courses/dive-into-docker&quot;&gt;Nick Janetakis&lt;/a&gt;, a strong shout out to &lt;a href=&quot;https://stackoverflow.com/users/958118/velotron&quot;&gt;Velotron on Stack Overflow&lt;/a&gt; for his bash assistance.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 20 Jun 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/devops/2017/06/20/no-ci-and-no-cd-deploying-docker-swarm-with-bash-and-ansible.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/devops/2017/06/20/no-ci-and-no-cd-deploying-docker-swarm-with-bash-and-ansible.html</guid>
+        
+        <category>ci</category>
+        
+        <category>cd</category>
+        
+        <category>docker</category>
+        
+        <category>swarm</category>
+        
+        <category>docker_swarm</category>
+        
+        <category>bash</category>
+        
+        <category>ansible</category>
+        
+        
+        <category>devops</category>
+        
+      </item>
+    
+      <item>
+        <title>Freelance Billing Issues 1099 C2C W2</title>
         <description>&lt;p&gt;While I’m not doing a lot of consulting right now, I just ran across something interesting when talking to a recruiter the other day.  He was asking me about my rates and referenced a number of terms that I actually didn’t understand.   This blog post is my attempt to tease this out and understand it a bit more.&lt;/p&gt;
 
 &lt;p&gt;Traditionally I find an engagement and bill the client directly on a 1099 basis, easy peasy.  This recruiter specifically stated that his customer, the company I would ultimately work for, would not do 1099 at all.  The “rationale” was that they don’t want any IRS issues with “is this person really an employee?”.  Given the myriad issues with 1099s and the way that companies have abused it, I can understand the caution.  He proceeded to ask me if I was “C2C” and apparently this means “Company to Company” and can be translated as “Do you have a corporate entity of your own that you can bill through?”.&lt;/p&gt;
@@ -20,10 +254,22 @@
 
 &lt;p&gt;Hopefully this is useful to someone out there.  If not at least this will be a place where I can find it in the future…&lt;/p&gt;
 </description>
-        <pubDate>Sat, 17 Jun 2017 07:32:04 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/17/2017-06-17-freelance-billing-issues-c2c-w2-etc.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/17/2017-06-17-freelance-billing-issues-c2c-w2-etc.html</guid>
+        <pubDate>Sat, 17 Jun 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/freelance/2017/06/17/freelance-billing-issues-c2c-w2-etc.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/freelance/2017/06/17/freelance-billing-issues-c2c-w2-etc.html</guid>
         
+        <category>freelance</category>
+        
+        <category>billing</category>
+        
+        <category>w2</category>
+        
+        <category>1099</category>
+        
+        <category>c2c</category>
+        
+        
+        <category>freelance</category>
         
       </item>
     
@@ -338,145 +584,6 @@ end&lt;/p&gt;
         <pubDate>Tue, 23 May 2017 21:26:34 -0400</pubDate>
         <link>http://fuzzyblog.io//blog/2017/05/23/fixing-better-errors-performance-problems-on-rails-5-1.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/05/23/fixing-better-errors-performance-problems-on-rails-5-1.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Why I Didn't Choose Codeship for CI / CD</title>
-        <description>&lt;p&gt;Understood; just trying to wrap my head around it.
-getting this live means deploys of: site, web app, page archiver, page_archive api and store front so I’m debating CI server of my own
-that’s enough containers that I’m not sure I can justify paying for it since I’ll blow thru container build limits quickly over the course of a month with constant changes.
-Nick Janetakis (nick.janetakis@gmail.com)
-what happened to circleci or codeship?
-I don’t think the billing model works.  The limits we saw weren’t practical over this many repos.  Not for greenfield dev.&lt;br /&gt;
-The First Container Is Free + Each Additional Container Is $50/Month &amp;lt;== circle ci
-CodeShip
-You will always start with the free $0 plan which grants these resources
-100 BUILDS/MONTH&lt;/p&gt;
-
-&lt;p&gt;1 CONCURRENT BUILD&lt;/p&gt;
-
-&lt;p&gt;1 PARALLEL TEST PIPELINE&lt;/p&gt;
-
-&lt;p&gt;Nick Janetakis (nick.janetakis@gmail.com)
-that is exactly what you want
-you are not going to be building a bunch of things in parallel, or having 5 devs constantly pushing changes
-would be really surprised if you hit 100 builds a month too, because you’re only going to be building those things once you have a fairly stable version (something you deem is production worthy)
-Codeship is a confusing mess – its still tied to appdatallc and I can’t remove it.  They suggest my using an organization and let me create one but then I can’t do anything with it since organizations are a paid feature.
-if i disconnect github and reconnect github then the old projects go away and then come right back.&lt;br /&gt;
-Using the X on their UI doesn’t delete the project.  I don’t care if anyone / everyone can use this.  Its crap.
-Nick Janetakis (nick.janetakis@gmail.com)
-why not just sign in with an email not associated with app data?
-i’ve tried that before.  Trying it again.
-Nick Janetakis (nick.janetakis@gmail.com)
-and github, i’m not sure. usually apps let you pick what account to link it with if there’s &amp;gt; 1
-maybe you’re still logged into app data on github somewhere, and it’s picking that for whatever reason
-its because you generally only have 1 github identity and it spans personal and professional.
-Sigh.  They want you to duplicate your docker config just for them.  Sigh.
-Nick Janetakis (nick.janetakis@gmail.com)
-yeah, but most apps i use that integrate with github will let you pick the organization
-Nick Janetakis (nick.janetakis@gmail.com)
-Not dry at all.
-Example they give: https://github.com/codeship/discourse-demo/blob/master/codeship-services.yml
-Nope.  I’m out.&lt;/p&gt;
-
-&lt;p&gt;https://github.com/codeship/discourse-demo/blob/master/codeship-steps.yml&lt;/p&gt;
-
-&lt;p&gt;their docs say their format is compatible with docker-compose.yml
-its not that – its the duplication
-Nick Janetakis (nick.janetakis@gmail.com)
-and if doesn’t find a codeship-services.yml file, it falls back to using docker-compose.yml
-Well that’s fine.  But their shitty docs already convinced me to quit.
-Now&lt;/p&gt;
-</description>
-        <pubDate>Mon, 22 May 2017 09:33:10 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/05/22/why-i-didn-t-choose-codeship-for-ci-cd.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/05/22/why-i-didn-t-choose-codeship-for-ci-cd.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Obscure Rails Error - Undefined Method Collation for nil:NilClass</title>
-        <description>&lt;p&gt;undefined method `collation’ for nil:NilClass&lt;/p&gt;
-
-&lt;p&gt;I added a validates_uniqueness_of :url&lt;/p&gt;
-
-&lt;p&gt;NoMethodError - undefined method &lt;code class=&quot;highlighter-rouge&quot;&gt;collation' for nil:NilClass:
-  activerecord (5.0.2) lib/active_record/connection_adapters/abstract_mysql_adapter.rb:617:in &lt;/code&gt;case_sensitive_comparison’
-  activerecord (5.0.2) lib/active_record/validations/uniqueness.rb:75:in &lt;code class=&quot;highlighter-rouge&quot;&gt;build_relation'
-  activerecord (5.0.2) lib/active_record/validations/uniqueness.rb:18:in &lt;/code&gt;validate_each’
-  activemodel (5.0.2) lib/active_model/validator.rb:151:in &lt;code class=&quot;highlighter-rouge&quot;&gt;block in validate'
-  activemodel (5.0.2) lib/active_model/validator.rb:148:in &lt;/code&gt;validate’
-  activesupport (5.0.2) lib/active_support/callbacks.rb:405:in &lt;code class=&quot;highlighter-rouge&quot;&gt;block in make_lambda'
-  activesupport (5.0.2) lib/active_support/callbacks.rb:169:in &lt;/code&gt;block (2 levels) in halting’
-  activesupport (5.0.2) lib/active_support/callbacks.rb:547:in &lt;code class=&quot;highlighter-rouge&quot;&gt;block (2 levels) in default_terminator'
-  activesupport (5.0.2) lib/active_support/callbacks.rb:546:in &lt;/code&gt;block in default_terminator’
-  activesupport (5.0.2) lib/active_support/callbacks.rb:170:in &lt;code class=&quot;highlighter-rouge&quot;&gt;block in halting'
-  activesupport (5.0.2) lib/active_support/callbacks.rb:454:in &lt;/code&gt;block in call’
-  activesupport (5.0.2) lib/active_support/callbacks.rb:454:in &lt;code class=&quot;highlighter-rouge&quot;&gt;call'
-  activesupport (5.0.2) lib/active_support/callbacks.rb:101:in &lt;/code&gt;&lt;strong&gt;run_callbacks&lt;/strong&gt;’
-  activesupport (5.0.2) lib/active_support/callbacks.rb:750:in &lt;code class=&quot;highlighter-rouge&quot;&gt;_run_validate_callbacks'
-  activemodel (5.0.2) lib/active_model/validations.rb:408:in &lt;/code&gt;run_validations!’
-  activemodel (5.0.2) lib/active_model/validations/callbacks.rb:113:in &lt;code class=&quot;highlighter-rouge&quot;&gt;block in run_validations!'
-  activesupport (5.0.2) lib/active_support/callbacks.rb:97:in &lt;/code&gt;&lt;strong&gt;run_callbacks&lt;/strong&gt;’
-  activesupport (5.0.2) lib/active_support/callbacks.rb:750:in &lt;code class=&quot;highlighter-rouge&quot;&gt;_run_validation_callbacks'
-  activemodel (5.0.2) lib/active_model/validations/callbacks.rb:113:in &lt;/code&gt;run_validations!’
-  activemodel (5.0.2) lib/active_model/validations.rb:338:in &lt;code class=&quot;highlighter-rouge&quot;&gt;valid?'
-  activerecord (5.0.2) lib/active_record/validations.rb:65:in &lt;/code&gt;valid?’
-  activerecord (5.0.2) lib/active_record/validations.rb:82:in &lt;code class=&quot;highlighter-rouge&quot;&gt;perform_validations'
-  activerecord (5.0.2) lib/active_record/validations.rb:44:in &lt;/code&gt;save’
-  activerecord (5.0.2) lib/active_record/attribute_methods/dirty.rb:22:in &lt;code class=&quot;highlighter-rouge&quot;&gt;save'
-  activerecord (5.0.2) lib/active_record/transactions.rb:319:in &lt;/code&gt;block (2 levels) in save’
-  activerecord (5.0.2) lib/active_record/transactions.rb:395:in &lt;code class=&quot;highlighter-rouge&quot;&gt;block in with_transaction_returning_status'
-  activerecord (5.0.2) lib/active_record/connection_adapters/abstract/database_statements.rb:232:in &lt;/code&gt;block in transaction’
-  activerecord (5.0.2) lib/active_record/connection_adapters/abstract/transaction.rb:189:in &lt;code class=&quot;highlighter-rouge&quot;&gt;within_new_transaction'
-  activerecord (5.0.2) lib/active_record/connection_adapters/abstract/database_statements.rb:232:in &lt;/code&gt;transaction’
-  activerecord (5.0.2) lib/active_record/transactions.rb:211:in &lt;code class=&quot;highlighter-rouge&quot;&gt;transaction'
-  activerecord (5.0.2) lib/active_record/transactions.rb:392:in &lt;/code&gt;with_transaction_returning_status’
-  activerecord (5.0.2) lib/active_record/transactions.rb:319:in &lt;code class=&quot;highlighter-rouge&quot;&gt;block in save'
-  activerecord (5.0.2) lib/active_record/transactions.rb:334:in &lt;/code&gt;rollback_active_record_state!’
-  activerecord (5.0.2) lib/active_record/transactions.rb:318:in &lt;code class=&quot;highlighter-rouge&quot;&gt;save'
-  activerecord (5.0.2) lib/active_record/suppressor.rb:41:in &lt;/code&gt;save’
-  app/models/course.rb:130:in &lt;code class=&quot;highlighter-rouge&quot;&gt;save_all_objects'
-  app/controllers/courses_controller.rb:32:in &lt;/code&gt;create’
-  actionpack (5.0.2) lib/action_controller/metal/basic_implicit_render.rb:4:in &lt;code class=&quot;highlighter-rouge&quot;&gt;send_action'
-  actionpack (5.0.2) lib/abstract_controller/base.rb:188:in &lt;/code&gt;process_action’
-  actionpack (5.0.2) lib/action_controller/metal/rendering.rb:30:in &lt;code class=&quot;highlighter-rouge&quot;&gt;process_action'
-  actionpack (5.0.2) lib/abstract_controller/callbacks.rb:20:in &lt;/code&gt;block in process_action’
-  activesupport (5.0.2) lib/active_support/callbacks.rb:126:in &lt;code class=&quot;highlighter-rouge&quot;&gt;call'
-  activesupport (5.0.2) lib/active_support/callbacks.rb:506:in &lt;/code&gt;block (2 levels) in compile’
-  activesupport (5.0.2) lib/active_support/callbacks.rb:455:in &lt;code class=&quot;highlighter-rouge&quot;&gt;call'
-  activesupport (5.0.2) lib/active_support/callbacks.rb:101:in &lt;/code&gt;&lt;strong&gt;run_callbacks&lt;/strong&gt;’
-  activesupport (5.0.2) lib/active_support/callbacks.rb:750:in &lt;code class=&quot;highlighter-rouge&quot;&gt;_run_process_action_callbacks'
-  activesupport (5.0.2) lib/active_support/callbacks.rb:90:in &lt;/code&gt;run_callbacks’
-  actionpack (5.0.2) lib/abstract_controller/callbacks.rb:19:in &lt;code class=&quot;highlighter-rouge&quot;&gt;process_action'
-  actionpack (5.0.2) lib/action_controller/metal/rescue.rb:20:in &lt;/code&gt;process_action’
-  actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:32:in &lt;code class=&quot;highlighter-rouge&quot;&gt;block in process_action'
-  activesupport (5.0.2) lib/active_support/notifications.rb:164:in &lt;/code&gt;block in instrument’
-  activesupport (5.0.2) lib/active_support/notifications/instrumenter.rb:21:in &lt;code class=&quot;highlighter-rouge&quot;&gt;instrument'
-  activesupport (5.0.2) lib/active_support/notifications.rb:164:in &lt;/code&gt;instrument’
-  actionpack (5.0.2) lib/action_controller/metal/instrumentation.rb:30:in &lt;code class=&quot;highlighter-rouge&quot;&gt;process_action'
-  actionpack (5.0.2) lib/action_controller/metal/params_wrapper.rb:248:in &lt;/code&gt;process_action’
-  activerecord (5.0.2) lib/active_record/railties/controller_runtime.rb:18:in &lt;code class=&quot;highlighter-rouge&quot;&gt;process_action'
-  actionpack (5.0.2) lib/abstract_controller/base.rb:126:in &lt;/code&gt;process’
-  actionview (5.0.2) lib/action_view/rendering.rb:30:in &lt;code class=&quot;highlighter-rouge&quot;&gt;process'
-  actionpack (5.0.2) lib/action_controller/metal.rb:190:in &lt;/code&gt;dispatch’
-  actionpack (5.0.2) lib/action_controller/metal.rb:262:in &lt;code class=&quot;highlighter-rouge&quot;&gt;dispatch'
-  actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:50:in &lt;/code&gt;dispatch’
-  actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:32:in &lt;code class=&quot;highlighter-rouge&quot;&gt;serve'
-  actionpack (5.0.2) lib/action_dispatch/journey/router.rb:39:in &lt;/code&gt;block in serve’
-  actionpack (5.0.2) lib/action_dispatch/journey/router.rb:26:in &lt;code class=&quot;highlighter-rouge&quot;&gt;serve'
-  actionpack (5.0.2) lib/action_dispatch/routing/route_set.rb:725:in &lt;/code&gt;call’
-  apartment (1.2.0) lib/apartment/elevators/generic.rb:24:in &lt;code class=&quot;highlighter-rouge&quot;&gt;call'
-  apartment (1.2.0) lib/apartment/reloader.rb:18:in &lt;/code&gt;call’
-  meta_request (0.4.2) lib/meta_request/middlewares/app_request_handler.rb:13:in &lt;code class=&quot;highlighter-rouge&quot;&gt;call'
-  meta_request (0.4.2) lib/meta_request/middlewares/meta_request_handler.rb:13:in &lt;/code&gt;call’&lt;/p&gt;
-</description>
-        <pubDate>Thu, 18 May 2017 11:17:59 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/05/18/obscure-rails-error-undefined-method-collation-for-nil-nilclass.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/05/18/obscure-rails-error-undefined-method-collation-for-nil-nilclass.html</guid>
         
         
       </item>
