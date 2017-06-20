@@ -1,6 +1,9 @@
 ---
 layout: post
 title: A Father's Guide to Surviving Disney World
+category: disney
+tags: ["disney"]
+description: The classical trip to Disney, whether world or land, is a huge economic investment.  This is my guide for any father wanting to survive the experience.
 ---
 I'm writing this from Orlando, Florida where we're on our fourth trip to [DisneyWorld](http://www.disneyworld.com/).  Now I realize that to the true *Disney faithful*, four trips ins't a lot, it feels like enough for me to write this with some degree of authority.  My wife is one of the true Disney faithful and all of this really comes from her one way or another.So here you go -- **how to survive DisneyWorld**. 
 

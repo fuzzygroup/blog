@@ -6,9 +6,51 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 20 Jun 2017 08:49:09 -0400</pubDate>
-    <lastBuildDate>Tue, 20 Jun 2017 08:49:09 -0400</lastBuildDate>
+    <pubDate>Tue, 20 Jun 2017 10:37:25 -0400</pubDate>
+    <lastBuildDate>Tue, 20 Jun 2017 10:37:25 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Career Advice on Changing Industries</title>
+        <description>
+</description>
+        <pubDate>Tue, 20 Jun 2017 10:18:44 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/20/career-advice-on-changing-industries.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/20/career-advice-on-changing-industries.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Using Ansible on Ubuntu 16.04 When which python Fails</title>
+        <description>&lt;p&gt;&lt;a href=&quot;https://www.ansible.com&quot;&gt;Ansible&lt;/a&gt; is my favorite devops tool.  I’ve used &lt;a href=&quot;https://www.chef.io/chef/&quot;&gt;Chef&lt;/a&gt; extensively and despite my Ruby background, well, I hated it.  I’ve slutted around with &lt;a href=&quot;https://www.terraform.io&quot;&gt;TerraForm&lt;/a&gt;; I’ve played with &lt;a href=&quot;https://puppet.com&quot;&gt;Puppet&lt;/a&gt; and I’ve put &lt;a href=&quot;https://saltstack.com&quot;&gt;Salt&lt;/a&gt; on my food and servers but time in and time out, I always come back to Ansible.  I even like Ansible enough that I wrote about it recently on &lt;a href=&quot;https://www.quora.com/What-do-I-need-to-study-before-studying-Ansible-Im-from-a-networking-background-and-we-like-to-do-automation-via-Ansible/answer/Scott-Johnson-16&quot;&gt;a Quora post&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;One of the beautiful things about Ansible is that it doesn’t require a server side agent.  Ansible works via SSH purely and that means that as long as you can login to the server then you can use Ansible to provision it, update it, deploy crap, etc.&lt;/p&gt;
+
+&lt;p&gt;I just deployed my first ever Ubuntu 16.04 LTS box on AWS the other day and one of my surprises was that a which python &lt;strong&gt;failed&lt;/strong&gt;.  Oy vey.  This means that you can’t use Ansible without installing Python – or so I thought.  Happily a bit of googling and I discovered the &lt;a href=&quot;https://docs.ansible.com/ansible/python_3_support.html&quot;&gt;ansible_python_interpreter&lt;/a&gt; option which lets you override the default of Python 2 and use Python 3.  This gets, oddly, embedded in the inventories file:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[web]
+site1 ansible_ssh_host=foo.com
+
+[web:vars]
+ansible_python_interpreter=/usr/bin/python3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The way to interpret this is all boxes in the [web] group use the /usr/bin/python3 executable.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 20 Jun 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/ansible/2017/06/20/using-ansible-on-ubuntu-16-04-when-which-python-fails.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/ansible/2017/06/20/using-ansible-on-ubuntu-16-04-when-which-python-fails.html</guid>
+        
+        <category>ansible</category>
+        
+        <category>devops</category>
+        
+        
+        <category>ansible</category>
+        
+      </item>
     
       <item>
         <title>OSX Tip Using mdfind to search your hard disc for files by name</title>
@@ -507,84 +549,6 @@ run &lt;span class=&quot;s2&quot;&gt;&quot;ansible-playbook -i script/ansible/in
         
         
         <category>parenting</category>
-        
-      </item>
-    
-      <item>
-        <title>Fixing Chart.js Sizing Issues with Rails Using chartjs-ror</title>
-        <description>&lt;p&gt;I’ve spent the past few weeks struggling with a Chart.js graph sizing issue.  I’m not a real JavaScript guy so I’m using the Ruby gem &lt;a href=&quot;https://github.com/airblade/chartjs-ror&quot;&gt;chartjs-ror&lt;/a&gt; from AirBlade.  Out of all the charting gems I’ve looked at recently, Airblade’s has been the best (so thank you!).  The problem was that my graphs were appearing like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/chartjs_graph_size_bad.png&quot; alt=&quot;bad_graphs&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;where what I was really looking for was this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/chartjs_graph_size_good.png&quot; alt=&quot;good_graphs&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Here’s the partial I’m using to render the graph:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;%
-times = []
-metrics.each do |metric|
-  times &amp;lt;&amp;lt; metric.created_at.in_time_zone(current_user.time_zone).to_s(:db)
-end
-data = {
-  
-  labels: times,
-  datasets: [
-    {
-        label: label,
-        background_color: &quot;rgba(220,220,220,0.2)&quot;,
-        border_color: &quot;rgba(220,220,220,1)&quot;,
-        data: metrics.map(&amp;amp;:amount)
-    }
-
-  ]
-}
-%&amp;gt;
-
-&amp;lt;% options = { :height =&amp;gt; 100, 
-               :responsive =&amp;gt; true, 
-               maintainAspectRatio: true, # &amp;lt;== this option needs to be true not false
-               :yAxes =&amp;gt; [:ticks =&amp;gt; {:beginAtZero =&amp;gt; false }] } %&amp;gt;
-&amp;lt;%= line_chart data, options %&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The issue was the &lt;strong&gt;maintainAspectRatio: true&lt;/strong&gt; setting.  Somehow it got mistakenly set to false and that completely changes the look and feel of the graph.  Bizarre but apparently true.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 24 May 2017 18:05:18 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2017/05/24/fixing-chart-js-sizing-issues-with-rails-using-chartjs-ror.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/05/24/fixing-chart-js-sizing-issues-with-rails-using-chartjs-ror.html</guid>
-        
-        <category>rails</category>
-        
-        <category>chartjs-ror</category>
-        
-        <category>chartjs</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Fixing Better Errors Performance Problems on Rails 5.1</title>
-        <description>&lt;p&gt;https://github.com/charliesome/better_errors/issues/77&lt;/p&gt;
-
-&lt;p&gt;https://github.com/charliesome/better_errors/issues/341&lt;/p&gt;
-
-&lt;p&gt;Add to application controller:&lt;/p&gt;
-
-&lt;p&gt;before_action :better_errors_hack, if: -&amp;gt; { Rails.env.development? }&lt;/p&gt;
-
-&lt;p&gt;def better_errors_hack
-  request.env[‘puma.config’].options.user_options.delete :app
-end&lt;/p&gt;
-</description>
-        <pubDate>Tue, 23 May 2017 21:26:34 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/05/23/fixing-better-errors-performance-problems-on-rails-5-1.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/05/23/fixing-better-errors-performance-problems-on-rails-5-1.html</guid>
-        
         
       </item>
     
