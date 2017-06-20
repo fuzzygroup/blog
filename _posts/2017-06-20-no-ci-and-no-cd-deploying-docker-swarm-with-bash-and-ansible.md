@@ -3,6 +3,7 @@ layout: post
 title: No CI and No CD - Deploying Docker Swarm with Bash and Ansible
 category: devops
 tags: ["ci", "cd", "docker", "swarm", "docker_swarm", "bash", "ansible"]
+description: Learn how to deploy a containerized application from your local box to a Docker Swarm cluster using Bash and Ansible.
 ---
 This post may well verge on the heretical.  I'm getting close on a new SAAS app that is going to be run using containers and Docker Swarm as my container engine.  Rather than go the whole CI / CD route, I actually ended up using a combination of Bash and Ansible to handle my deployment onto AWS.  This is a side project type of thing and I didn't want to spend the time / $$$ to setup CI / CD which, honestly, can be frightfully expensive (and, yes, I'm glaring at you CircleCI and your ridiculous $50 / container / month model; containers allow nice partitioning down to the microservice level but pricing plans like this want you to run screaming back to monoliths; ARGH).  But I'm digressing into a rant so ...
 
