@@ -6,9 +6,346 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 20 Jun 2017 10:38:35 -0400</pubDate>
-    <lastBuildDate>Tue, 20 Jun 2017 10:38:35 -0400</lastBuildDate>
+    <pubDate>Sun, 25 Jun 2017 18:16:56 -0400</pubDate>
+    <lastBuildDate>Sun, 25 Jun 2017 18:16:56 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>How To Be A Developer 010 - Developer Reward Thyself</title>
+        <description>
+</description>
+        <pubDate>Sun, 25 Jun 2017 16:16:06 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/25/how-to-be-a-developer-010-developer-reward-thyself.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/25/how-to-be-a-developer-010-developer-reward-thyself.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Docker Tutorial Understanding Container Memory Usage</title>
+        <description>&lt;p&gt;I know that it might seem like in 2017, in our new container centric world, that understanding memory usage on a per container basis isn’t all that necessary but my recent experiences with my side project are, sorely, disagreeing with that.&lt;/p&gt;
+
+&lt;p&gt;I’m developing a SAAS product where I’ve firmly and irrevocably broken the traditional Rails monolithic development model.  So rather than have one giant Rails app, I have multiple Rails apps – the promotional website, the crawler, the admin tool and so on.  .  My current deployment model is Docker containers and each Rails app is represented by a container stack.  For cost reasons I want to use resources efficiently allowing multiple container stacks to exist on the same host.  This requires understanding our low level memory usage so here goes…&lt;/p&gt;
+
+&lt;p&gt;Note: All of this is being done on AWS under Ubuntu 16.04 using docker-compose 1.8&lt;/p&gt;
+
+&lt;h1 id=&quot;box-level-memory&quot;&gt;Box Level Memory&lt;/h1&gt;
+
+&lt;p&gt;Use free -m to find out the current memory status of your box:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;free -m&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;              total        used        free      shared  buff/cache   available
+Mem:           1998        1163          90          22         743         554
+Swap:             0           0           0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;docker-container-memory&quot;&gt;Docker Container Memory&lt;/h1&gt;
+
+&lt;p&gt;Use docker stats to get the low level container memory usage:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;docker stats&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CONTAINER           CPU %               MEM USAGE / LIMIT       MEM %               NET I/O             BLOCK I/O           PIDS
+a5251659f7c9        0.23%               15.29 MiB / 1.952 GiB   0.76%               35.5 MB / 20.3 MB   1.35 MB / 40.5 MB   3
+59ce2ad1dc64        0.01%               257.8 MiB / 1.952 GiB   12.90%              25.6 MB / 33.9 MB   143 kB / 0 B        6
+b4aaa4c36791        64.55%              237 MiB / 1.952 GiB     11.86%              639 MB / 115 MB     3.39 MB / 4.1 kB    14
+a7c039f80931        0.00%               199.8 MiB / 1.952 GiB   10.00%              152 kB / 1.22 MB    1.2 MB / 0 B        23
+ee27a6e37fef        0.00%               131.4 MiB / 1.952 GiB   6.57%               1.22 MB / 2.33 MB   26.9 MB / 0 B       6
+07d5252abf5f        0.00%               196.6 MiB / 1.952 GiB   9.84%               127 kB / 689 kB     1.63 MB / 0 B       23
+4aa705c8cf4b        0.07%               6.234 MiB / 1.952 GiB   0.31%               9.11 kB / 1.94 kB   0 B / 0 B           3
+78f495fcf733        0.06%               6.922 MiB / 1.952 GiB   0.35%               145 MB / 91.1 MB    766 kB / 2.97 MB    3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If you wanted to reduce the amount of output to the bare essentials then try:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;docker stats –format “table \t\t”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CONTAINER           CPU %               MEM USAGE / LIMIT
+a5251659f7c9        0.10%               15.29 MiB / 1.952 GiB
+59ce2ad1dc64        0.01%               239.1 MiB / 1.952 GiB
+b4aaa4c36791        21.33%              478.5 MiB / 1.952 GiB
+a7c039f80931        0.01%               251.1 MiB / 1.952 GiB
+ee27a6e37fef        0.00%               109 MiB / 1.952 GiB
+07d5252abf5f        0.00%               250.9 MiB / 1.952 GiB
+4aa705c8cf4b        0.05%               6.234 MiB / 1.952 GiB
+78f495fcf733        0.05%               6.664 MiB / 1.952 GiB
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now the clear and obvious problem here is that a5251659f7c9 or 59ce2ad1dc64 mean &lt;strong&gt;absolutely nothing&lt;/strong&gt; to us.
+# But What is a5251659f7c9 or Understanding Docker Process IDs?&lt;/p&gt;
+
+&lt;p&gt;The a5251659f7c9 is a Docker process id and you need to grep the docker process list to find out.  Docker process ids change with every single container  deploy so you always have to look them up with the &lt;em&gt;docker ps&lt;/em&gt; command.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker ps | grep a5251659f7c9
+a5251659f7c9        redis:3.2-alpine  &quot;docker-entrypoint...&quot;   27 minutes ago      Up 27 minutes       0.0.0.0:32771-&amp;gt;6379/tcp   seiracrawler_redis_1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So the way to interpret all this is the docker container with process id a5251659f7c9 corresponds to the named container seiracrawler_redis_1 and is using 15.29 mb RAM and 0.23% CPU.&lt;/p&gt;
+
+&lt;h1 id=&quot;putting-it-all-together---dockerstats&quot;&gt;Putting it All Together - dockerstats&lt;/h1&gt;
+
+&lt;p&gt;If you’re thinking that this two step process, well, &lt;strong&gt;sucks&lt;/strong&gt;, yep.  I took a pass at cleaning this up into a single shell script but I found my bash skills, sadly weren’t up to it.  Happily I did additional research and managed to put this together from some things I found on the web:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+docker stats --format &lt;span class=&quot;s2&quot;&gt;&quot;table &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;docker ps|grep -v &lt;span class=&quot;s2&quot;&gt;&quot;NAMES&quot;&lt;/span&gt;|awk &lt;span class=&quot;s1&quot;&gt;'{ print $NF }'&lt;/span&gt;|tr &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot; &quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If you put this into a shell script named dockerstats and then make it executable with:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;chmod +x dockerstats&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;then you’ll have a single shell script that produces this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CONTAINER                                            CPU %               MEM USAGE / LIMIT
+seiracrawler_redis_1                                 0.12%               15.29 MiB / 1.952 GiB
+seiracrawler_rake_1                                  0.01%               239.1 MiB / 1.952 GiB
+seiracrawler_sidekiq_1                               11.99%              480.5 MiB / 1.952 GiB
+seirawatchsite_web.2.3x1bx3ji93hueuidv4dgfeab3       0.00%               251.1 MiB / 1.952 GiB
+seirawatchsite_sidekiq.1.8nxcvjx353725lsv70h72mzup   0.10%               109 MiB / 1.952 GiB
+seirawatchsite_web.1.rxbzptnfuopfauqwjf4ib4bjr       0.01%               250.9 MiB / 1.952 GiB
+seiraadmin_redis.1.ws2hc37dihkbh0cejk6z75140         0.06%               6.234 MiB / 1.952 GiB
+seirawatchsite_redis.1.siatex4zd6xezsevxfk4no98n     0.09%               6.664 MiB / 1.952 GiB
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You’ll seem some redundancy here because one my Docker installations on this particular box is using Docker Swarm (not recommended btw) and there are  replicas of some of the containers due to my swarm configuration.&lt;/p&gt;
+
+&lt;p&gt;Personally I think this functionality is important enough that I’ve added it to my deploy process on all my boxes running Docker and I’ll recommend the same to all my clients.&lt;/p&gt;
+
+&lt;p&gt;If you just want the dockerstats shell script, here is a &lt;a href=&quot;https://gist.github.com/fuzzygroup/e000a972a999b406a38557324e11d1c0&quot;&gt;gist with it&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;see-also&quot;&gt;See Also&lt;/h1&gt;
+
+&lt;p&gt;Extracting just a section of the Docker stats output came from the official Docker docs for &lt;a href=&quot;https://docs.docker.com/engine/reference/commandline/stats/#formatting&quot;&gt;Docker Stats&lt;/a&gt;.  Feeding the output from Docker Stats to a docker ps grep statement came from a &lt;a href=&quot;https://github.com/moby/moby/issues/10772&quot;&gt;github issue on moby&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 25 Jun 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/docker/2017/06/25/docker-tutorial-understanding-container-memory-usage.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/docker/2017/06/25/docker-tutorial-understanding-container-memory-usage.html</guid>
+        
+        <category>docker</category>
+        
+        
+        <category>docker</category>
+        
+      </item>
+    
+      <item>
+        <title>How To Be A Developer 001 - Commit</title>
+        <description>&lt;h1 id=&quot;background&quot;&gt;Background&lt;/h1&gt;
+
+&lt;h1 id=&quot;lesson-001---commit&quot;&gt;Lesson 001 - Commit&lt;/h1&gt;
+
+</description>
+        <pubDate>Sat, 24 Jun 2017 15:58:41 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/development/2017/06/24/how-to-be-a-developer-001.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/development/2017/06/24/how-to-be-a-developer-001.html</guid>
+        
+        <category>development</category>
+        
+        
+        <category>development</category>
+        
+      </item>
+    
+      <item>
+        <title>Redis Quick Tip - Purge All Data</title>
+        <description>&lt;p&gt;redis-cli flushall&lt;/p&gt;
+
+&lt;p&gt;https://stackoverflow.com/questions/6851909/how-do-i-delete-everything-in-redis&lt;/p&gt;
+</description>
+        <pubDate>Sat, 24 Jun 2017 08:36:48 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/redis/2017/06/24/redis-quick-tip-purge-all-data.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/redis/2017/06/24/redis-quick-tip-purge-all-data.html</guid>
+        
+        <category>redis</category>
+        
+        
+        <category>redis</category>
+        
+      </item>
+    
+      <item>
+        <title></title>
+        <description>&lt;p&gt;I recently picked up an interesting bit of consulting work on large Rails project (62K lines of code):&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;fix the broken test coverage&lt;/li&gt;
+  &lt;li&gt;expand the missing test coverage to cover everything – validations, callbacks, associations, aliases, etc&lt;/li&gt;
+  &lt;li&gt;target a goal of roughly 90%+ coverage&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is a medical application written in Ruby / Rails and the mandate is to improve test coverage before it comes to market.  This is actually my third separate engagement with this client having built an MVP for them earlier and written the initial test coverage on this application – that was not kept up to date and thus became broken over time.&lt;/p&gt;
+
+&lt;p&gt;All of this work is using my preferred testing framework of &lt;a href=&quot;http://rspec.info/&quot;&gt;RSpec&lt;/a&gt; and &lt;a href=&quot;https://github.com/thoughtbot/factory_girl&quot;&gt;FactoryGirl&lt;/a&gt; along with the &lt;a href=&quot;http://matchers.shoulda.io/&quot;&gt;Shoulda&lt;/a&gt; set of matchers.&lt;/p&gt;
+
+&lt;p&gt;I’ve actually done quite a bit of work in taking Rails code bases without any test coverage and adding various levels of test coverage and I suspect that a detailed blog post on the topic will be forthcoming soon.&lt;/p&gt;
+
+&lt;p&gt;The topic for today is what happens when your factories themselves are the issue and you get crazy errors like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1) GraphTemplate factories has a valid factory
+    Failure/Error: expect(build(:graph_template)).to be_valid#, {element_id: element.id})).to be_valid
+
+    NoMethodError:
+      undefined method `humanize' for nil:NilClass
+    # ./spec/models/graph_template_spec.rb:8
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This is happening at a line which shouldn’t cause any problems:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;RSpec.describe GraphTemplate, type: :model do
+  describe &quot;factories&quot; do
+    it &quot;has a valid factory&quot; do      
+
+      expect(build(:graph_template)).to be_valid      
+  
+    end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The underlying graph_template model looks like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;+----------------+--------------+------+-----+---------+----------------+
+| Field          | Type         | Null | Key | Default | Extra          |
++----------------+--------------+------+-----+---------+----------------+
+| id             | int(11)      | NO   | PRI | NULL    | auto_increment |
+| data_points    | text         | NO   |     | NULL    |                |
+| name           | varchar(255) | NO   |     | NULL    |                |
+| created_at     | datetime     | YES  |     | NULL    |                |
+| updated_at     | datetime     | YES  |     | NULL    |                |
++----------------+--------------+------+-----+---------+----------------+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;While there are a number of validation  but the data_points column is the problem.&lt;/p&gt;
+
+&lt;p&gt;which is defined as a text column and the object’s internal validation methods are looking&lt;/p&gt;
+
+&lt;p&gt;[6/23/17, 5:45:03 PM] J. Scott Johnson: I figured out the issue with humanize.  Its happening because a hash is expected and a map / select operation is expected to operate on hash keys.  I fixed it for graph_template by adding some sample data in the data_points data element.
+ [6/23/17, 5:45:40 PM] J. Scott Johnson: It was data_points { [] } and that was causing the humanize error and then putting this in:
+     data_points { [{“selected_graph”=&amp;gt;”a”, “type”=&amp;gt;”0”, “label”=&amp;gt;””, “module_value_id”=&amp;gt;”15”, “workflow_person_type_mv”=&amp;gt;”subject”, “module”=&amp;gt;”dataramp”, “workflow_person_type”=&amp;gt;”subject”, “trial_timepoint_id”=&amp;gt;”33”, “journal_id”=&amp;gt;nil, “workflow_id”=&amp;gt;nil, “tat_form_id”=&amp;gt;”11”, “journal_form_id”=&amp;gt;nil, “workflow_step_item_id”=&amp;gt;”1”, “element_id”=&amp;gt;”4”, “workflow_step_id”=&amp;gt;nil, “journal_day”=&amp;gt;””}] }&lt;/p&gt;
+</description>
+        <pubDate>Fri, 23 Jun 2017 18:10:44 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/23/getting-past-rspec-nomethoderror-undefined-method-humanize-for-nil-nilclass-errors.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/23/getting-past-rspec-nomethoderror-undefined-method-humanize-for-nil-nilclass-errors.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Finally Understanding Git Stash</title>
+        <description>&lt;p&gt;git stash&lt;/p&gt;
+
+&lt;p&gt;git pull&lt;/p&gt;
+
+&lt;p&gt;git stash pop&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 23 Jun 2017 15:37:35 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/23/finally-understanding-git-stash.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/23/finally-understanding-git-stash.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Understanding Sidekiq or the Zen of Background Job Processors - a Ruby Tutorial</title>
+        <description>&lt;p&gt;As I’ve blogged in the past I am a huge, unreserved fan of the technical work of Mike Perham, the author of Sidekiq.  Sidekiq is a &lt;em&gt;background job processor&lt;/em&gt; for Ruby and Rails that takes long running tasks and runs them in an asynchronous fashion so your function executes immediately returning control to your main application.&lt;/p&gt;
+
+&lt;p&gt;The classical example of this is that you want to send an email and since the time of the connection to the email sending process is generally unknown, you instead treat this as a &lt;em&gt;job&lt;/em&gt; that gets executed via Sidekiq.&lt;/p&gt;
+
+&lt;p&gt;I haven’t used Sidekiq now for about six months so I thought I’d write a soup to nuts tutorial since I had to relearn all this stuff again (o)&lt;/p&gt;
+
+&lt;h1 id=&quot;three-components---worker-sidekiq-redis&quot;&gt;Three Components - Worker, Sidekiq, Redis&lt;/h1&gt;
+
+&lt;h1 id=&quot;a-bit-of-strong-advice&quot;&gt;A Bit of Strong Advice&lt;/h1&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;WRITE TEST COVERAGE ON ANY METHODS YOU WANT TO USE WITH SIDEKIQ&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;class UploadWorker
+  def perform&lt;/p&gt;
+
+&lt;p&gt;end
+end&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 23 Jun 2017 10:29:08 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/ruby/2017/06/23/understanding-sidekiq-or-the-zen-of-background-job-processors-a-ruby-tutorial.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/ruby/2017/06/23/understanding-sidekiq-or-the-zen-of-background-job-processors-a-ruby-tutorial.html</guid>
+        
+        <category>ruby</category>
+        
+        <category>rails</category>
+        
+        
+        <category>ruby</category>
+        
+      </item>
+    
+      <item>
+        <title>An RSpec Cautionary Tale</title>
+        <description>&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;it &quot;by_status&quot; do
+  Form::STATUS.each do |k, v|
+    puts &quot;Executing with k = #{k} and v = #{v}&quot;
+    form = create(:form, k)        
+    expect(Form.by_status(v).count).to eq 1
+    expect(Form.by_status(v).first).to eq form
+  end
+end
+
+describe &quot;by_status&quot; do
+  it &quot;should retrieve by status for draft&quot; do
+    form = create(:form, :draft)  
+    expect(Form.by_status(Form::STATUS[:draft]).count).to eq 1
+    expect(Form.by_status(Form::STATUS[:draft]).first).to eq form
+  end
+
+  it &quot;should retrieve by status for ready_to_approve&quot; do
+    form = create(:form, :ready_to_approve)  
+    expect(Form.by_status(Form::STATUS[:ready_to_approve]).count).to eq 1
+    expect(Form.by_status(Form::STATUS[:ready_to_approve]).first).to eq form
+    
+  end
+
+  it &quot;should retrieve by status for approved&quot; do
+    form = create(:form, :approved)  
+    expect(Form.by_status(Form::STATUS[:approved]).count).to eq 1
+    expect(Form.by_status(Form::STATUS[:approved]).first).to eq form
+    
+  end
+
+  it &quot;should retrieve by status for retired&quot; do
+    form = create(:form, :retired)  
+    expect(Form.by_status(Form::STATUS[:retired]).count).to eq 1
+    expect(Form.by_status(Form::STATUS[:retired]).first).to eq form
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Tue, 20 Jun 2017 17:25:22 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/20/an-rspec-cautionary-tale.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/20/an-rspec-cautionary-tale.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Career Advice on Changing Industries</title>
@@ -49,506 +386,6 @@ ansible_python_interpreter=/usr/bin/python3
         
         
         <category>ansible</category>
-        
-      </item>
-    
-      <item>
-        <title>OSX Tip Using mdfind to search your hard disc for files by name</title>
-        <description>&lt;p&gt;As a long time Unix user, the lack of locate being automatically turned on in OSX has always, alway bothered me.  I have always wondered about this until yesterday when I couldn’t find where my.cnf was on the disc and I turned to the Internet.  Somewhere I located this syntax:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;mdfind -name my.cnf&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;When I run this I get this output:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/private/etc/my.cnf
-/Users/sjohnson/appdatallc/ansible/my.cnf
-/Users/sjohnson/Dropbox/appdatallc/chef2/cookbooks/mysql/templates/default/5.0/my.cnf.erb
-/Users/sjohnson/Dropbox/appdatallc/chef2/cookbooks/mysql/templates/default/5.1/my.cnf.erb
-/Users/sjohnson/Dropbox/appdatallc/chef2/cookbooks/mysql/templates/default/5.5/my.cnf.erb
-/Users/sjohnson/Dropbox/appdatallc/chef2/cookbooks/mysql/templates/default/5.6/my.cnf.erb
-/Users/sjohnson/Dropbox/appdatallc/chef2/cookbooks/mysql/templates/default/deprecated/my.cnf.erb
-/Users/sjohnson/Dropbox/appdatallc/chef2/berks-cookbooks/mysql/templates/default/deprecated/my.cnf.erb
-/Users/sjohnson/appdatallc/chef2/cookbooks/mysql/templates/default/5.0/my.cnf.erb
-/Users/sjohnson/appdatallc/chef2/cookbooks/mysql/templates/default/5.1/my.cnf.erb
-/Users/sjohnson/appdatallc/chef2/cookbooks/mysql/templates/default/5.5/my.cnf.erb
-/Users/sjohnson/appdatallc/chef2/cookbooks/mysql/templates/default/5.6/my.cnf.erb
-/Users/sjohnson/appdatallc/chef2/cookbooks/mysql/templates/default/deprecated/my.cnf.erb
-/Users/sjohnson/appdatallc/chef2/berks-cookbooks/mysql/templates/default/5.0/my.cnf.erb
-/Users/sjohnson/appdatallc/chef2/berks-cookbooks/mysql/templates/default/5.1/my.cnf.erb
-/Users/sjohnson/appdatallc/chef2/berks-cookbooks/mysql/templates/default/5.5/my.cnf.erb
-/Users/sjohnson/appdatallc/chef2/berks-cookbooks/mysql/templates/default/5.6/my.cnf.erb
-/Users/sjohnson/appdatallc/chef2/berks-cookbooks/mysql/templates/default/deprecated/my.cnf.erb
-/Users/sjohnson/Dropbox/consulting/interana/sso_portal/script/ansible/roles/mariadb/templates/my.cnf
-/Users/sjohnson/Dropbox/appdatallc/chef2/berks-cookbooks/mysql/templates/default/5.0/my.cnf.erb
-/Users/sjohnson/Dropbox/appdatallc/chef2/berks-cookbooks/mysql/templates/default/5.1/my.cnf.erb
-/Users/sjohnson/Dropbox/appdatallc/chef2/berks-cookbooks/mysql/templates/default/5.5/my.cnf.erb
-/Users/sjohnson/Dropbox/appdatallc/chef2/berks-cookbooks/mysql/templates/default/5.6/my.cnf.erb
-/Users/sjohnson/Dropbox/appdatallc/ansible/my.cnf
-/Users/sjohnson/Dropbox/consulting/interana/master_before_move_back_to_detached/sso_portal/script/ansible/roles/mariadb/templates/my.cnf
-/Users/sjohnson/Dropbox/appdatallc/ansible-clean/roles/install-mariadb55/files/etc/mysql/my.cnf.default
-/Users/sjohnson/Dropbox/fuzzygroup/ansible/ansible-for-aws/wordpress/roles/mysql/templates/my.cnf.j2
-/usr/local/etc/my.cnf
-/usr/local/etc/my.cnf.d
-/Library/Ruby/Gems/2.0.0/gems/mysql2-0.4.4/spec/my.cnf.example
-/Users/sjohnson/Dropbox/fuzzygroup/rails/crawl_evaluation/daimon_as_framework/udemy/docker-cache/bundle/ruby/2.4.0/gems/mysql2-0.4.5/spec/my.cnf.example
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;So it looks to me like this gives me pretty much what I would have gotten from locate without having to worry about the locate db being updated and the like.  Kudos to Apple for this and bad on me for not knowing about this even after using OSX continuously since 2006 or so.  Sigh.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 20 Jun 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/osx/2017/06/20/osx-tip-using-mdfind.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/osx/2017/06/20/osx-tip-using-mdfind.html</guid>
-        
-        <category>find</category>
-        
-        <category>mdfind</category>
-        
-        <category>command_line</category>
-        
-        <category>osx</category>
-        
-        <category>locate</category>
-        
-        
-        <category>OSX</category>
-        
-      </item>
-    
-      <item>
-        <title>No CI and No CD - Deploying Docker Swarm with Bash and Ansible</title>
-        <description>&lt;p&gt;This post may well verge on the heretical.  I’m getting close on a new SAAS app that is going to be run using containers and Docker Swarm as my container engine.  Rather than go the whole CI / CD route, I actually ended up using a combination of Bash and Ansible to handle my deployment onto AWS.  This is a side project type of thing and I didn’t want to spend the time / $$$ to setup CI / CD which, honestly, can be frightfully expensive (and, yes, I’m glaring at you CircleCI and your ridiculous $50 / container / month model; containers allow nice partitioning down to the microservice level but pricing plans like this want you to run screaming back to monoliths; ARGH).  But I’m digressing into a rant so …&lt;/p&gt;
-
-&lt;h1 id=&quot;under-the-hood-for-a-docker-swarm-deploy&quot;&gt;Under the Hood for a Docker Swarm Deploy&lt;/h1&gt;
-
-&lt;p&gt;Docker Swarm is a way to easily run a cluster of Docker containers as a shared, coherent entity.  Here is what has to happen under the hood for a Docker Swarm deploy (or at least how I’ve done it; I’m sure there are other ways):&lt;/p&gt;
-
-&lt;h2 id=&quot;stage-1-docker-build&quot;&gt;Stage 1: Docker Build&lt;/h2&gt;
-
-&lt;p&gt;The first stage is just building your Docker containers.  That looks like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose build web
-docker tag seirawatchsite_web fuzzygroup/seirawatchsite_web:latest
-docker push fuzzygroup/seirawatchsite_web:latest
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;As you can see I’m using the Docker Hub container registry here and the reason is that Docker Hub really gets this right.  Nick goes over some of the numbers about Docker Hub in a &lt;a href=&quot;https://diveintodocker.com/blog/the-3-biggest-wins-when-using-alpine-as-a-base-docker-image&quot;&gt;recent blog post&lt;/a&gt; and the number of pulls is astonishing.&lt;/p&gt;
-
-&lt;h2 id=&quot;stage-2-copy-up&quot;&gt;Stage 2: Copy Up&lt;/h2&gt;
-
-&lt;p&gt;The next stage is to simply copy of your .env, .env.production and docker-compose files up to all the hosts where your swarm runs.  I suppose if you &lt;em&gt;know&lt;/em&gt; that these files won’t change then you don’t need to do this but, personally, I feel that you want this as part of your deploy process.  You can do this anyway you move files but I just used straight up scp commands:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scp -i ~/.ssh/fuzzygroup2.pem .env  ubuntu@foo.com:~/seirawatchsite
-scp -i ~/.ssh/fuzzygroup2.pem .env.production  ubuntu@foo.com:~/seirawatchsite
-scp -i ~/.ssh/fuzzygroup2.pem docker-compose.production.yml ubuntu@foo.com:~/seirawatchsite
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;These are just going up to a project level directory on the underlying linux box where the container will run.  Putting them in a directory allows for another container for this project to exist on the same hardware.&lt;/p&gt;
-
-&lt;h2 id=&quot;stage-3-restart-docker&quot;&gt;Stage 3: Restart Docker&lt;/h2&gt;
-
-&lt;p&gt;The final stage is telling Docker Swarm to use the new files.  This requires using this Docker specific command:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd ~/seirawatchsite/ &amp;amp;&amp;amp; docker stack deploy -c docker-compose.production.yml --with-registry-auth seirawatchsite
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The trick here is that you need to run that on all your Docker swarm hosts – once you are logged into them.  Up to this point all of our commands have executed locally on a development system.  With this command we need to now run on the remote box where swarm is executing – and that’s where Ansible comes in but first we have to learn a cool bash trick.&lt;/p&gt;
-
-&lt;h1 id=&quot;a-cool-ass-bash-trick&quot;&gt;A Cool Ass Bash Trick&lt;/h1&gt;
-
-&lt;p&gt;As I’ve alluded to in the past, I’m not a bash guy.  I initially grew up with DOS .bat files and I think that must have scarred me for life since while I use bash regularly, I’ve never, not once, really felt comfortable with.  For example, anyone who knows me personally knows that my bash prompt is never right.  One of the issues with deploy is that, in my opinion, when there is an error, it needs to HARD STOP IMMEDIATELY.  Otherwise you’ll end up with your remote system in an arbitrary state which is &lt;strong&gt;dangerous&lt;/strong&gt;.  So I turned to Google and StackOverflow with the phrase “bash script exit on error” and found a &lt;a href=&quot;https://stackoverflow.com/questions/1378274&quot;&gt;wonderful answer&lt;/a&gt;.  You start by adding this function to the top of your bash script:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function run() {
-  cmd_output=$(eval $1)
-  return_value=$?
-  if [ $return_value != 0 ]; then
-    echo &quot;Command $1 failed&quot;
-    exit -1
-  else
-    echo &quot;output: $cmd_output&quot;
-    echo &quot;Command succeeded.&quot;
-  fi
-  return $return_value
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;You can then wrap each of your lines with the run command like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;run &quot;date&quot;
-run &quot;false&quot;
-run &quot;date&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And then it exits if there is an error and it tells you where it stopped.&lt;/p&gt;
-
-&lt;h1 id=&quot;putting-it-all-together&quot;&gt;Putting it All Together&lt;/h1&gt;
-
-&lt;p&gt;Now that we have a mechanism for handling errors we can bring this all together into a single deploy.sh bash script:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# The Docker Specific Stuff&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#function run comes from: https://stackoverflow.com/questions/1378274/ ; thank you velotron&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;function &lt;/span&gt;run&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nv&quot;&gt;cmd_output&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nv&quot;&gt;return_value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$?&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$return_value&lt;/span&gt; !&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0 &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
-    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Command &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; failed&quot;&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; -1
-  &lt;span class=&quot;k&quot;&gt;else
-    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;output: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$cmd_output&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Command succeeded.&quot;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;fi
-  return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$return_value&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Stage 1: Docker Build&quot;&lt;/span&gt;
-run &lt;span class=&quot;s2&quot;&gt;&quot;docker-compose build web&quot;&lt;/span&gt;
-run &lt;span class=&quot;s2&quot;&gt;&quot;docker tag seirawatchsite_web fuzzygroup/seirawatchsite_web:latest&quot;&lt;/span&gt;
-run &lt;span class=&quot;s2&quot;&gt;&quot;docker push fuzzygroup/seirawatchsite_web:latest&quot;&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Stage 2: Copy Up&quot;&lt;/span&gt;
-
-run &lt;span class=&quot;s2&quot;&gt;&quot;scp -i ~/.ssh/fuzzygroup2.pem .env  ubuntu@foo.com:~/seirawatchsite&quot;&lt;/span&gt;
-run &lt;span class=&quot;s2&quot;&gt;&quot;scp -i ~/.ssh/fuzzygroup2.pem .env.production  ubuntu@foo.com:~/seirawatchsite&quot;&lt;/span&gt;
-run &lt;span class=&quot;s2&quot;&gt;&quot;scp -i ~/.ssh/fuzzygroup2.pem docker-compose.production.yml ubuntu@foo.com:~/seirawatchsite&quot;&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Stage 3: Restart Docker Using Ansible&quot;&lt;/span&gt;
-
-run &lt;span class=&quot;s2&quot;&gt;&quot;ansible-playbook -i script/ansible/inventories/production script/ansible/deploy.yml&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The Ansible deploy.yml is about as simple as it gets for Ansible; damn close to a one liner:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
-- name: Restart Docker Swarm
-  become: no
-  shell:  &quot;cd ~/seirawatchsite/ &amp;amp;&amp;amp; docker stack deploy -c docker-compose.production.yml --with-registry-auth seirawatchsite&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Yes this needed to be wrapped in an entire Ansible environment including the full directory structure, etc but that really is pretty simple.  Here’s what the whole thing looked like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;├── ansible.cfg
-├── deploy.yml
-├── group_vars
-├── inventories
-│   └── production
-└── roles
-    └── restart_docker_swarm
-        └── tasks
-            └── main.yml
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;closing-thoughts&quot;&gt;Closing Thoughts&lt;/h1&gt;
-
-&lt;p&gt;So the question comes up whether or not this is a good way to tackle a Docker Swarm deploy and I have mixed feelings.  Yes CI / CD is definitely better but it is also a lot “heavier”.  I am very much a believer in understanding exactly the bits that you are deploying and CI / CD always makes me feel uncomfortable in that regard.  When you understand how deploy is working you also understand how to handle the inevitable deploy problem – and there is always something.&lt;/p&gt;
-
-&lt;p&gt;Note: I did not deal with migrations in the course of this writing; I’ll cover that in a future blog post.&lt;/p&gt;
-
-&lt;h1 id=&quot;thanks&quot;&gt;Thanks&lt;/h1&gt;
-
-&lt;p&gt;My thanks, as always, go out to my Docker friend and mentor, &lt;a href=&quot;https://diveintodocker.com/courses/dive-into-docker&quot;&gt;Nick Janetakis&lt;/a&gt;, a strong shout out to &lt;a href=&quot;https://stackoverflow.com/users/958118/velotron&quot;&gt;Velotron on Stack Overflow&lt;/a&gt; for his bash assistance.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 20 Jun 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/devops/2017/06/20/no-ci-and-no-cd-deploying-docker-swarm-with-bash-and-ansible.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/devops/2017/06/20/no-ci-and-no-cd-deploying-docker-swarm-with-bash-and-ansible.html</guid>
-        
-        <category>ci</category>
-        
-        <category>cd</category>
-        
-        <category>docker</category>
-        
-        <category>swarm</category>
-        
-        <category>docker_swarm</category>
-        
-        <category>bash</category>
-        
-        <category>ansible</category>
-        
-        
-        <category>devops</category>
-        
-      </item>
-    
-      <item>
-        <title>Freelance Billing Issues 1099 C2C W2</title>
-        <description>&lt;p&gt;While I’m not doing a lot of consulting right now, I just ran across something interesting when talking to a recruiter the other day.  He was asking me about my rates and referenced a number of terms that I actually didn’t understand.   This blog post is my attempt to tease this out and understand it a bit more.&lt;/p&gt;
-
-&lt;p&gt;Traditionally I find an engagement and bill the client directly on a 1099 basis, easy peasy.  This recruiter specifically stated that his customer, the company I would ultimately work for, would not do 1099 at all.  The “rationale” was that they don’t want any IRS issues with “is this person really an employee?”.  Given the myriad issues with 1099s and the way that companies have abused it, I can understand the caution.  He proceeded to ask me if I was “C2C” and apparently this means “Company to Company” and can be translated as “Do you have a corporate entity of your own that you can bill through?”.&lt;/p&gt;
-
-&lt;p&gt;When I stated that I wasn’t C2C he then asked me for my “W2 rate” and this apparently means “Our hiring agency can actually employ you on a w2 basis”.  The reason that he asked for a different rate was to cover the employment taxes.  Since he claimed the employment tax amounted to 7.5%, I simply took my normal billing rate and discounted it by 7.5%.  Had I not earlier told him my normal billing rate then I would have added the 7.5% to my billing rate.  Sigh.&lt;/p&gt;
-
-&lt;p&gt;Hopefully this is useful to someone out there.  If not at least this will be a place where I can find it in the future…&lt;/p&gt;
-</description>
-        <pubDate>Sat, 17 Jun 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/freelance/2017/06/17/freelance-billing-issues-c2c-w2-etc.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/freelance/2017/06/17/freelance-billing-issues-c2c-w2-etc.html</guid>
-        
-        <category>freelance</category>
-        
-        <category>billing</category>
-        
-        <category>w2</category>
-        
-        <category>1099</category>
-        
-        <category>c2c</category>
-        
-        
-        <category>freelance</category>
-        
-      </item>
-    
-      <item>
-        <title>In Praise of Free Code Camp</title>
-        <description>&lt;p&gt;I recently recommended Free Code Camp to a good friend who runs a local charity, &lt;a href=&quot;http://www.outreachindiana.org&quot;&gt;Outreach Indiana&lt;/a&gt; as a way for his charity to offer career training to homeless youth (OutReach provides support to homeless youth).  I first learned about Free Code Camp thru the Software Engineering Daily podcast where the founder, Quincy Larson, was interviewed.  I found the concept pretty intriguing, did some research and sent off a recommendation.  Then, last weekend, I realized that I hadn’t done the proper due diligence – I should actually sign up for it and work through the exercises, so I started down that path …&lt;/p&gt;
-
-&lt;p&gt;Now I’ve been writing HTML and doing web development since about 1993.  I was even at the very first conference where Tim Berners Lee unveiled the world wide web and I vividly remember the paper he presented.  But, despite having done web development for most of my adult life, I’m really not a front end guy at all – I’m a back end web developer at heart.  I do HTML / JavaScript / CSS only as necessary.  And, to be really honest, I do it poorly at best.  In fact I have so little aptitude for front end development&lt;/p&gt;
-</description>
-        <pubDate>Tue, 13 Jun 2017 18:40:23 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/free_code_camp/2017/06/13/in-praise-of-free-code-camp.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/free_code_camp/2017/06/13/in-praise-of-free-code-camp.html</guid>
-        
-        <category>free_code_camp</category>
-        
-        <category>bootcamp</category>
-        
-        <category>developer</category>
-        
-        
-        <category>free_code_camp</category>
-        
-      </item>
-    
-      <item>
-        <title>The Tools I Use</title>
-        <description>&lt;p&gt;My buddy &lt;a href=&quot;https://nickjanetakis.com/&quot;&gt;Nick Janetakis&lt;/a&gt;, a solid guy and Docker Captain wrote an interesting thing on his blog: &lt;a href=&quot;https://nickjanetakis.com/blog/the-tools-i-use&quot;&gt;The Tools I Use&lt;/a&gt;.  So I thought I’d take a shot at authoring the same thing only from an OSX perspective.  I am going to shamelessly steal his organization and approach to this topic.&lt;/p&gt;
-
-&lt;h1 id=&quot;os&quot;&gt;OS&lt;/h1&gt;
-
-&lt;p&gt;Much to my regret my principal OS is Mac OSX Seira.  I’ve seen Apple’s OS stability go down release by release from Snow Leopard forward and I find Seira to be the absolute worst yet.  Yes I’m a developer and my usage of iTerm is intense but a Unix box (and that’s what all Mac’s actually are) having an update of less than 30 days is disturbing at best.  Right now I have an 11 day uptime but lately I’ve been averaging about 2 days before my 6 month old box forcibly restarts all on its own.  Stack traces available on request if you care.&lt;/p&gt;
-
-&lt;h1 id=&quot;code-editor-and-terminal&quot;&gt;Code Editor and Terminal&lt;/h1&gt;
-
-&lt;p&gt;I use TextMate 2, a damn near antiquated editor by today’s standards and I have a real love / hate relationship with it but I’ve written more code in than anything else except for VIM and it works fine for my needs.  A new editor would be wise but nothing feels as good as TextMate to me.&lt;/p&gt;
-
-&lt;p&gt;I use iTerm as a terminal and I regularly run an absolutely disturbing about of terminal sessions managed by Tmux which remains a stellar bit of technology.  Kudos to &lt;a href=&quot;https://www.linkedin.com/in/dvsuresh/&quot;&gt;Dv&lt;/a&gt; for hooking me on Tmux back in 2015; it genuinely improved my life.&lt;/p&gt;
-
-&lt;h1 id=&quot;notable-apps&quot;&gt;Notable Apps&lt;/h1&gt;
-
-&lt;p&gt;Other than a text editor, terminal and Tmux, I use pretty little software but here goes:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Chrome or Firefox for a browser with Brave on the side&lt;/li&gt;
-  &lt;li&gt;Activity Monitor at all times to shut down rogue Firefox sessions due to memory bloat&lt;/li&gt;
-  &lt;li&gt;Pages and Numbers for classical productivity although I do less and less of that every year&lt;/li&gt;
-  &lt;li&gt;Docker for containers&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://panic.com/transmit/&quot;&gt;Transmit by Panic&lt;/a&gt; as an FTP / S3 client&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://flexibits.com/fantastical&quot;&gt;Fantastical 2&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://ngrok.com/&quot;&gt;ngrok&lt;/a&gt; for http connection sharing (if you’ve never used ngrok and you’re a developer, run, not walk and get it – it is that good)&lt;/li&gt;
-  &lt;li&gt;Apple Mail for mail&lt;/li&gt;
-  &lt;li&gt;Slack because, well, Slack&lt;/li&gt;
-  &lt;li&gt;Skype (which gets worse and worse ever year it seems)&lt;/li&gt;
-  &lt;li&gt;TweetBot&lt;/li&gt;
-  &lt;li&gt;Wunderlist&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://fuzzyblog.io/blog/software_worth_purchasing/2016/09/11/software-worth-purchasing-01-acorn.html&quot;&gt;Acorn&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/janten/keypad-layout&quot;&gt;Keypad Layout 2&lt;/a&gt; for command key drive window resizing; yes I have the keyboard grid taped to my mac, it is that useful&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.alfredapp.com/&quot;&gt;Alfred 3&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://fuzzyblog.io/blog/software_worth_purchasing/2016/09/15/software-worth-purchasing-02-enpass.html&quot;&gt;Enpass&lt;/a&gt; as a digital wallet&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://fuzzyblog.io/blog/dropbox/2017/03/13/dropbox-for-the-software-developer.html&quot;&gt;Dropbox&lt;/a&gt; without which I simply could not function&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.decksetapp.com/&quot;&gt;Deckset&lt;/a&gt; for converting Markdown files to simple presentations&lt;/li&gt;
-  &lt;li&gt;Jekyll for blogging; so much of everything I do comes from Open Source but I wanted to call out Jekyll because, well, I’m using it right this second&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;computer-desk-and-phone&quot;&gt;Computer, Desk and Phone&lt;/h1&gt;
-
-&lt;p&gt;Here are the physical things I use:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;I run almost exclusively on a series of Mac laptops:
-    &lt;ul&gt;
-      &lt;li&gt;An old 15” Macbook Pro which runs the family media server&lt;/li&gt;
-      &lt;li&gt;A Macbook Air which is my blogging / writing / backup dev box&lt;/li&gt;
-      &lt;li&gt;A 15” Macbook Pro which is my secondary backup dev box but too slow for anything intensive&lt;/li&gt;
-      &lt;li&gt;A 13” Macbook Pro, last generation, maxed out on ram and SSD to be as fast as possible (note to Apple - we need vastly more than 16 gigs)&lt;/li&gt;
-      &lt;li&gt;I also have an Intel NUC as a Linux box but I don’t use it all that much&lt;/li&gt;
-      &lt;li&gt;All my Macs are configured with &lt;a href=&quot;http://fuzzyblog.io/blog/osx/2016/11/20/ansible-for-configuring-your-mac-so-much-better.html&quot;&gt;Ansible&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Apple iPhone 6; I didn’t find the iPhone 7 improvements in the small form factor (non plus) to be enough to justify the upgrade and now I’m hoping it lasts thru the iPhone 8 launch&lt;/li&gt;
-  &lt;li&gt;I built my own desk (&lt;a href=&quot;http://fuzzyblog.io/blog/assets/desk1.jpg&quot;&gt;pic 1&lt;/a&gt;, &lt;a href=&quot;http://fuzzyblog.io/blog/assets/desk2.jpg&quot;&gt;pic 2&lt;/a&gt;, &lt;a href=&quot;http://fuzzyblog.io/blog/assets/desk3.jpg&quot;&gt;pic 3&lt;/a&gt;) about 18 months ago and I love it.  I have an 8 foot long desk with plenty of space.&lt;/li&gt;
-  &lt;li&gt;I use iPads to monitor long running jobs using Transmit’s late StatusBoard app.  Pity that went away.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;recording-and-music&quot;&gt;Recording and Music&lt;/h1&gt;
-
-&lt;p&gt;I don’t do a lot of this but what I do use is:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;ScreenFlow for recording screencasts&lt;/li&gt;
-  &lt;li&gt;iTunes for music&lt;/li&gt;
-  &lt;li&gt;Audacity for audio editing on the rare occasion when I need that&lt;/li&gt;
-  &lt;li&gt;Bose Quiet Comfort Headphones Wired for pair programming&lt;/li&gt;
-  &lt;li&gt;Bost Quiet Comfort Headphones BlueTooth for listening to music and isolating out the world in coffee shops&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Tue, 13 Jun 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/osx/2017/06/13/the-tools-i-use.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/osx/2017/06/13/the-tools-i-use.html</guid>
-        
-        <category>osx</category>
-        
-        <category>tools</category>
-        
-        <category>development</category>
-        
-        
-        <category>osx</category>
-        
-      </item>
-    
-      <item>
-        <title>To Compress or Not to Compress - An S3 Question</title>
-        <description>&lt;p&gt;I’m finally at what I refer to derisively as the “Turd Polishing” stage of a new SAAS application that I hope to roll out over the next month or so.  I’ve validated the:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;the market&lt;/li&gt;
-  &lt;li&gt;the concept&lt;/li&gt;
-  &lt;li&gt;figured out how to get initial users over the OOBE (out of box experience)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;and now I’m at the stage of looking at the underlying crawler / indexer and how it acquires data.  Up to this stage I’ve been archiving daily crawl data to a flat directory on my hard disc and when I realized that I had over a million html archive files in a single directory, well, oops.  So yesterday was devoted to moving them into date named directories like:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;page_archives/2017-06-08&lt;/li&gt;
-  &lt;li&gt;page_archives/2017-06-09&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;and so on.  I’m currently archiving about 10 gigabytes per day spread across 200k to 240k individual files.  There is a backing database table that stores per object metadata so I can fetch back the information that I need.  My long term plan has always been to store this information in S3 and looking at the data last night I had the epiphany &lt;em&gt;I need to compress it&lt;/em&gt; – or do it?&lt;/p&gt;
-
-&lt;p&gt;Here’s what I know:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;200K files per day&lt;/li&gt;
-  &lt;li&gt;10 gigs per day, every day so 300 gigs per month&lt;/li&gt;
-  &lt;li&gt;6,000,000 put requests per month; dramatically lower read volume&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The data I’m archiving are simple html files and a quick test with gzip shows dramatic compression:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;206729 Jun  9 06:41 ad69734d630423333479b0a954ab52baf056c16d.html
-24881 Jun  9 06:41 ad69734d630423333479b0a954ab52baf056c16d.html.gz
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Yep - that’s a 10x difference in size, 200K down to 24K.  Surely it must be worth it to compress, right?  Normally this is exactly where I’d be rolling up my sleeves and implementing but, happily something wasn’t sitting right with me so I turned to the much maligned AWS calculator.  I ran two calculations, each of which is screen shotted below:&lt;/p&gt;
-
-&lt;h2 id=&quot;no-compression&quot;&gt;No Compression&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&quot;/blog/assets/s3_no_compression.png&quot; alt=&quot;s3_no_compression.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;compression&quot;&gt;Compression&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&quot;/blog/assets/s3_compression.png&quot; alt=&quot;s3_compression.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Yep.  That’s right – the grand price difference of a 10 fold difference in size is all of $6 or 16.67%.  Now a 16 % cost savings shouldn’t be dismissed but at the current scale I’m running it, it is a rounding error and can be ignored.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-moral-of-the-story&quot;&gt;The Moral of the Story&lt;/h2&gt;
-
-&lt;p&gt;Everyone always says that you can never understand your bottlenecks without benchmarking and that has always proven to be true for me.  I think guessing about cost structures in today’s cloud follows a similar rule – benchmark first and then implement, what you think may be pricey may actually not be.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 09 Jun 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/aws/2017/06/09/to-compress-or-not-to-compress-an-s3-question.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/aws/2017/06/09/to-compress-or-not-to-compress-an-s3-question.html</guid>
-        
-        <category>aws</category>
-        
-        <category>hosting</category>
-        
-        <category>s3</category>
-        
-        <category>pricing</category>
-        
-        
-        <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>Nerd Coach</title>
-        <description>&lt;p&gt;I’m not ashamed to admit that I’m a nerd.  I read.  I write code.  I work alone (in a basement).  I’m also a &lt;strong&gt;coach&lt;/strong&gt; – of youth sports – something I never expected.  And I thought writing up what this nerd learned about sports coaching might be useful&lt;/p&gt;
-
-&lt;h1 id=&quot;background&quot;&gt;Background&lt;/h1&gt;
-
-&lt;p&gt;I’m a father of two sons I’ve now coached 4 seasons of sports all of which my sons were playing.  So, yes, I’m that kind of coach – I do it for my kids, not for the love of the game.  Still&lt;/p&gt;
-
-&lt;h1 id=&quot;rule-1-write-it-down&quot;&gt;Rule 1: Write It Down&lt;/h1&gt;
-
-&lt;h1 id=&quot;rule-2-its-like-benchmarking---until-you-run-the-numbers-you-dont-understanding-it&quot;&gt;Rule 2: Its Like Benchmarking - Until You Run the Numbers You Don’t Understanding it&lt;/h1&gt;
-
-&lt;p&gt;I would never have guessed that Alyssa was our #1 player&lt;/p&gt;
-
-&lt;h1 id=&quot;rule-3-be-the-voice-of-reason&quot;&gt;Rule 3: Be the Voice of Reason&lt;/h1&gt;
-
-&lt;h1 id=&quot;rule-4-do-something-with-the-data&quot;&gt;Rule 4: Do Something with the Data&lt;/h1&gt;
-</description>
-        <pubDate>Sun, 04 Jun 2017 05:28:49 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/04/nerd-coach.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/04/nerd-coach.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Protecting Your Kids Online with Disney Circle</title>
-        <description>&lt;p&gt;I don’t care how permissive / how liberal a parent you are, I suspect that you would have problems with your relatively young kid (let’s say &lt;strong&gt;under&lt;/strong&gt; 18) going into a place like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/porn_shop.jpg&quot; alt=&quot;sex_shop_image&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I look at putting the Internet into your home without some kind of Internet filtering as analogous to letting your kids walk into a place like this and not stopping them.  In the rest of this post I’ll talk about Internet filtering and the first ever product, Disney Circle, that I’ve found is worth using&lt;/p&gt;
-
-&lt;h1 id=&quot;my-credentials-to-even-write-this&quot;&gt;My Credentials to Even Write This&lt;/h1&gt;
-
-&lt;p&gt;On a personal level I am a husband and father (two sons, 16 and 10).  I’m also a software engineer who has been active on the Internet since the pre-web days and I’ve spent a large amount of my professional life dealing with spam and bad actors on the Internet.  Finally I’m a firm believer in free speech and as my wife might comment, I’m the furthest thing from a prude in any way, shape or form.  Those last two points, free speech and not being a prude make this a hard post for me to write as I am generally philosophically opposed to Internet filtering.  Now, that said, I would never let my kid walk into a place like that pictured above and I don’t think you should either – what happens there is an adult activity and there is a reason why its actually illegal to be in there if you’re under 18.&lt;/p&gt;
-
-&lt;h1 id=&quot;internet-filtering-overview&quot;&gt;Internet Filtering Overview&lt;/h1&gt;
-
-&lt;p&gt;Internet filtering is a hard technical problem.&lt;/p&gt;
-
-&lt;h1 id=&quot;disney-circle&quot;&gt;Disney Circle&lt;/h1&gt;
-
-&lt;h1 id=&quot;mobile-devices&quot;&gt;Mobile Devices&lt;/h1&gt;
-
-&lt;h1 id=&quot;where-this-falls-down&quot;&gt;Where this Falls Down&lt;/h1&gt;
-
-</description>
-        <pubDate>Fri, 26 May 2017 05:11:03 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/parenting/2017/05/26/protecting-your-kids-online-with-disney-circle.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/parenting/2017/05/26/protecting-your-kids-online-with-disney-circle.html</guid>
-        
-        <category>parenting</category>
-        
-        <category>disney</category>
-        
-        <category>circle</category>
-        
-        
-        <category>parenting</category>
         
       </item>
     
