@@ -12,7 +12,9 @@ I have previously mentioned that I was using Docker Swarm and fairly happy with 
 
 My final conclusions are:
 
-* Swarm isn't ready for production use now
-* If you have to use Swarm then put only one "stack" on a physical instance
-* Don't try and use raw containers on a swarm box that aren't using swarm
-* If you want to stop using swarm then, well, destroy the instance
+* Swarm isn't ready for production use.
+* If you have to use Swarm then put only one "stack" on a physical instance.
+* Don't try and use raw containers on a swarm box that aren't using swarm.
+* If you want to stop using swarm then, well, destroy the instance; do not waste time trying to use the instance for another Docker related thing - something is fundamentally wrong at the box level after Docker Swarm is shut down.
+
+In closing I'd like to point out that I am still using containers and I am finding a lot of luck with docker-compose.  This is not an anti docker blog post but, rather, an anti Docker Swarm blog post.

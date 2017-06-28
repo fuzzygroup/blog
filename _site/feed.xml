@@ -6,8 +6,8 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 28 Jun 2017 09:59:42 -0400</pubDate>
-    <lastBuildDate>Wed, 28 Jun 2017 09:59:42 -0400</lastBuildDate>
+    <pubDate>Wed, 28 Jun 2017 10:08:09 -0400</pubDate>
+    <lastBuildDate>Wed, 28 Jun 2017 10:08:09 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -302,7 +302,22 @@ end
     
       <item>
         <title>Beware Docker Swarm</title>
-        <description>&lt;p&gt;I have previously mentioned that I was using Docker Swarm and fairly happy with it.  I even went so far as to document the &lt;a href=&quot;_posts/2017-06-28-beware-docker-swarm.md.&quot;&gt;deploy process&lt;/a&gt;.&lt;/p&gt;
+        <description>&lt;p&gt;I have previously mentioned that I was using Docker Swarm and fairly happy with it.  I even went so far as to document the &lt;a href=&quot;http://fuzzyblog.io/blog/devops/2017/06/20/no-ci-and-no-cd-deploying-docker-swarm-with-bash-and-ansible.html&quot;&gt;deploy process&lt;/a&gt;.  I now have to retract everything positive I said about Docker Swarm.  I have now reverted to just using Docker and Docker Compose and bare containers with an AWS ELB on top of it.  Here’s why:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I attempted to have multiple apps with Docker Swarm on the same instance.  Nothing seemed to work and I had continuous troubles including containers running out of memory and the instance itself becoming hugely unresponsive.  This led me to the conclusion that Docker Swarm wasn’t really ready for production.&lt;/li&gt;
+  &lt;li&gt;On the instance where I had previously used Docker Swarm I disabled the swarm functionality and attempted to use the instance just for raw containers.  This utterly failed with no http services (puma) being able to serve content but no clear errors either (i.e. the request wasn’t even getting to the http server).  Digging into it deeper showed that Docker Swarm had left all kinds of digital garbage in iptables.  So I flushed that with a sudo iptables –flush and did a fresh deploy of the containers.  This still failed.&lt;/li&gt;
+  &lt;li&gt;Finally I built a new instance from scratch and assigned that instance the same ip address as the instance referenced in #2 and did another deploy.  The result?  The container worked perfectly on the very first try.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;My final conclusions are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Swarm isn’t ready for production use now&lt;/li&gt;
+  &lt;li&gt;If you have to use Swarm then put only one “stack” on a physical instance&lt;/li&gt;
+  &lt;li&gt;Don’t try and use raw containers on a swarm box that aren’t using swarm&lt;/li&gt;
+  &lt;li&gt;If you want to stop using swarm then, well, destroy the instance&lt;/li&gt;
+&lt;/ul&gt;
 </description>
         <pubDate>Wed, 28 Jun 2017 00:00:00 -0400</pubDate>
         <link>http://fuzzyblog.io//blog/docker/2017/06/28/beware-docker-swarm.html</link>
@@ -311,6 +326,8 @@ end
         <category>docker</category>
         
         <category>swarm</category>
+        
+        <category>devops</category>
         
         
         <category>docker</category>
