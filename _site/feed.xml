@@ -6,9 +6,382 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 25 Jun 2017 18:16:56 -0400</pubDate>
-    <lastBuildDate>Sun, 25 Jun 2017 18:16:56 -0400</lastBuildDate>
+    <pubDate>Wed, 28 Jun 2017 09:59:42 -0400</pubDate>
+    <lastBuildDate>Wed, 28 Jun 2017 09:59:42 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>RSpec and Shoulda When You Have Database Level Validations</title>
+        <description>&lt;p&gt;1) TrialTimepoint validations should require case sensitive unique value for name scoped to trial_id, trial_arm_id, deleted_at
+     Failure/Error: it { should validate_uniqueness_of(:name).scoped_to([:trial_id, :trial_arm_id, :deleted_at]).with_message(“already exists”) }&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ActiveRecord::StatementInvalid:
+   Mysql2::Error: Field 'identifier' doesn't have a default value: INSERT INTO `trial_timepoints` (`name`, `created_at`, `updated_at`) VALUES ('a', '2017-06-27 19:25:49', '2017-06-27 19:25:49')
+ # ./spec/models/trial_timepoint_spec.rb:47:in `block (3 levels) in &amp;lt;top (required)&amp;gt;'
+ # ------------------
+ # --- Caused by: ---
+ # Mysql2::Error:
+ #   Field 'identifier' doesn't have a default value
+ #   ./spec/models/trial_timepoint_spec.rb:47:in `block (3 levels) in &amp;lt;top (required)&amp;gt;'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Finished in 0.05219 seconds (files took 10.82 seconds to load)
+1 example, 1 failure&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# http://www.rubydoc.info/github/thoughtbot/shoulda-matchers/Shoulda%2FMatchers%2FActiveRecord%3Avalidate_uniqueness_of
+describe &quot;should validate uniqueness of name scoped to trial_id, :trial_arm_id, :deleted_at&quot; do
+  subject { build(:trial_timepoint, :active) }
+  it { should validate_uniqueness_of(:name).scoped_to([:trial_id, :trial_arm_id, :deleted_at]).with_message(&quot;already exists&quot;) }      
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Pass 2&lt;/p&gt;
+
+&lt;p&gt;…..F&lt;/p&gt;
+
+&lt;p&gt;Failures:&lt;/p&gt;
+
+&lt;p&gt;1) ElementGroupItem validations validate_uniqueness_of element_id scoped to element_group_id should require case sensitive unique value for element_id scoped to element_group_id
+     Failure/Error: it { should validate_uniqueness_of(:element_id).scoped_to(:element_group_id)}&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ActiveRecord::InvalidForeignKey:
+   Mysql2::Error: Cannot add or update a child row: a foreign key constraint fails (`tap-test`.`element_group_items`, CONSTRAINT `fk_element_group_items_element_id` FOREIGN KEY (`element_id`) REFERENCES `elements` (`id`) ON DELETE CASCADE): INSERT INTO `element_group_items` (`position`, `element_group_id`, `element_id`, `created_at`, `updated_at`) VALUES (1, 79, 0, '2017-06-28 08:41:56', '2017-06-28 08:41:56')
+ # ./spec/models/element_group_item_spec.rb:36:in `block (4 levels) in &amp;lt;top (required)&amp;gt;'
+ # ------------------
+ # --- Caused by: ---
+ # Mysql2::Error:
+ #   Cannot add or update a child row: a foreign key constraint fails (`tap-test`.`element_group_items`, CONSTRAINT `fk_element_group_items_element_id` FOREIGN KEY (`element_id`) REFERENCES `elements` (`id`) ON DELETE CASCADE)
+ #   ./spec/models/element_group_item_spec.rb:36:in `block (4 levels) in &amp;lt;top (required)&amp;gt;'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Finished in 2.15 seconds (files took 13.41 seconds to load)
+6 examples, 1 failure&lt;/p&gt;
+
+&lt;p&gt;Failed examples:&lt;/p&gt;
+
+&lt;p&gt;rspec ./spec/models/element_group_item_spec.rb:36 # ElementGroupItem validations validate_uniqueness_of element_id scoped to element_group_id should require case sensitive unique value for element_id scoped to element_group_id&lt;/p&gt;
+
+&lt;p&gt;Coverage report generated for RSpec to /Users/sjohnson/mddx/tap/coverage. 1499 / 22804 LOC (6.57%) covered.
+✘-1 ~/mddx/tap [t760-automated-testing ↓·4|✚ 18…8⚑ 1]
+04:42 $ rspec spec/models/element_group_item_spec.rb
+TAP Info: Loading spec_helper.rb
+TAP Info: Loading rails_helper.rb
+……&lt;/p&gt;
+
+&lt;p&gt;Finished in 1.69 seconds (files took 11.02 seconds to load)
+6 examples, 0 failures&lt;/p&gt;
+
+&lt;p&gt;Coverage report generated for RSpec to /Users/sjohnson/mddx/tap/coverage. 1499 / 22804 LOC (6.57%) covered.
+✔ ~/mddx/tap [t760-automated-testing ↓·4|✚ 18…8⚑ 1]
+04:42 $&lt;/p&gt;
+
+&lt;p&gt;Pass 3 - switch from build to create&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;describe &quot;validate_uniqueness_of element_id scoped to element_group_id&quot; do
+  subject { create(:element_group_item) }
+  it { should validate_uniqueness_of(:element_id).scoped_to(:element_group_id)}
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Wed, 28 Jun 2017 04:44:16 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/28/rspec-and-shoulda-when-you-have-database-level-validations.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/28/rspec-and-shoulda-when-you-have-database-level-validations.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>RSpec, FactoryGirl and Associations versus After Builds</title>
+        <description>&lt;p&gt;Understanding how the association statement in FactoryGirl factories works can be moderately obscure – until you look at the data that it generates and then it is crystal clear.  Let’s consider three associated models:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;element&lt;/li&gt;
+  &lt;li&gt;element_group&lt;/li&gt;
+  &lt;li&gt;element_group_item&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And there are a series of associations here that define the object relationships (these are inter object and for an associated concept called a trial):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;**element**
+belongs_to :trial
+has_and_belongs_to_many :element_groups, join_table: :element_group_items
+
+**element_group**
+belongs_to :trial
+has_and_belongs_to_many :elements, join_table: :element_group_items
+
+**element_group_item**
+belongs_to :element
+belongs_to :element_group    
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here’s the factory for element_group_item:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FactoryGirl.define do
+
+  factory :element_group_item do
+    association :element, factory: :element
+    association :element_group, factory: :element_group
+    position { 1 }
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The single easiest way to understand your factories is to run rails console but in test mode so:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;bundle exec rails c test&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Once you are in test mode then you can use FactoryGirl interactively:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;egi = FactoryGirl.create(:element_group_item)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Here’s the instance of our ElementGroupItem model:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#&amp;lt;ElementGroupItem:0x007fbddb9855d0&amp;gt; {
+                  :id =&amp;gt; 2,
+    :element_group_id =&amp;gt; 2,
+          :element_id =&amp;gt; 6,
+            :position =&amp;gt; 1,
+          :created_at =&amp;gt; Wed, 28 Jun 2017 07:49:49 UTC +00:00,
+          :updated_at =&amp;gt; Wed, 28 Jun 2017 07:49:49 UTC +00:00
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here is the associated ElementGroup model:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;egi.element_group
+#&amp;lt;ElementGroup:0x007fbdd6b28090&amp;gt; {
+             :id =&amp;gt; 2,
+       :trial_id =&amp;gt; 31,
+           :name =&amp;gt; &quot;Miss Priscilla Cremin&quot;,
+       :position =&amp;gt; 1,
+    :cloned_from =&amp;gt; nil,
+     :deleted_at =&amp;gt; nil,
+     :created_by =&amp;gt; nil,
+     :updated_by =&amp;gt; nil,
+     :created_at =&amp;gt; Wed, 28 Jun 2017 07:49:49 UTC +00:00,
+     :updated_at =&amp;gt; Wed, 28 Jun 2017 07:49:49 UTC +00:00
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And, finally, here is our associated Element model:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;egi.element
+#&amp;lt;Element:0x007fbddb969830&amp;gt; {
+                    :id =&amp;gt; 6,
+              :trial_id =&amp;gt; 30,
+                  :kind =&amp;gt; 1,
+                  :name =&amp;gt; &quot;Art King&quot;,
+         :value_options =&amp;gt; [
+        [0] {}
+    ],
+    :conversion_options =&amp;gt; {},
+               :default =&amp;gt; nil,
+               :tooltip =&amp;gt; nil,
+           :description =&amp;gt; nil,
+                :slevel =&amp;gt; 0,
+                :suffix =&amp;gt; nil,
+               :encrypt =&amp;gt; false,
+          :privacy_mask =&amp;gt; false,
+            :input_mask =&amp;gt; false,
+                :active =&amp;gt; false,
+                 :flags =&amp;gt; nil,
+           :cloned_from =&amp;gt; nil,
+          :editor_types =&amp;gt; nil,
+         :decimal_scale =&amp;gt; nil,
+            :created_by =&amp;gt; nil,
+            :updated_by =&amp;gt; nil,
+             :locked_at =&amp;gt; nil,
+            :deleted_at =&amp;gt; nil,
+            :created_at =&amp;gt; Wed, 28 Jun 2017 07:49:48 UTC +00:00,
+            :updated_at =&amp;gt; Wed, 28 Jun 2017 07:49:48 UTC +00:00
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The issue here is the trial_id attribute which is common to element and element_group – what you’ll see is that element and element_group now belong to two different trials.&lt;/p&gt;
+
+&lt;p&gt;Now let’s rewrite our factory a bit:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FactoryGirl.define do
+
+  factory :element_group_item do
+    after(:build) do |element_group_item|
+      element = create(:element, :text_integer)
+      element_group = create(:element_group, :trial_id =&amp;gt; element.trial_id)
+      element_group_item.element_group_id = element_group.id
+      element_group_item.element_id = element.id
+    end
+
+    position { 1 }
+
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here is our instance of ElementGroupItem:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;egi = FactoryGirl.create(:element_group_item)
+#&amp;lt;ElementGroupItem:0x007f80cfd19ed8&amp;gt; {
+                  :id =&amp;gt; 3,
+    :element_group_id =&amp;gt; 7,
+          :element_id =&amp;gt; 11,
+            :position =&amp;gt; 1,
+          :created_at =&amp;gt; Wed, 28 Jun 2017 08:12:06 UTC +00:00,
+          :updated_at =&amp;gt; Wed, 28 Jun 2017 08:12:06 UTC +00:00
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here is our instance of ElementGroup associated with our starting object:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;egi.element_group
+  ElementGroup Load (8.6ms)  SELECT  `element_groups`.* FROM `element_groups` WHERE `element_groups`.`deleted_at` IS NULL AND `element_groups`.`id` = 7 LIMIT 1
+#&amp;lt;ElementGroup:0x007f80c91079e8&amp;gt; {
+             :id =&amp;gt; 7,
+       :trial_id =&amp;gt; 36,
+           :name =&amp;gt; &quot;Devan Ullrich&quot;,
+       :position =&amp;gt; 1,
+    :cloned_from =&amp;gt; nil,
+     :deleted_at =&amp;gt; nil,
+     :created_by =&amp;gt; nil,
+     :updated_by =&amp;gt; nil,
+     :created_at =&amp;gt; Wed, 28 Jun 2017 08:12:06 UTC +00:00,
+     :updated_at =&amp;gt; Wed, 28 Jun 2017 08:12:06 UTC +00:00
+}    
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And, finally, here is our instance of Element:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;egi.element
+  Element Load (3.2ms)  SELECT  `elements`.* FROM `elements` WHERE `elements`.`deleted_at` IS NULL AND `elements`.`id` = 11 LIMIT 1
+#&amp;lt;Element:0x007f80c8a38f18&amp;gt; {
+                    :id =&amp;gt; 11,
+              :trial_id =&amp;gt; 36,
+                  :kind =&amp;gt; 5,
+                  :name =&amp;gt; &quot;Estella Kuhic&quot;,
+            :created_at =&amp;gt; Wed, 28 Jun 2017 08:12:06 UTC +00:00,
+            :updated_at =&amp;gt; Wed, 28 Jun 2017 08:12:06 UTC +00:00
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;As you can see the difference between the association approach versus the after(:build) approach lies in the nature of the nested objects.  Here rather than two separate trials being created there instead is a trinity of objects shared across one trial.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 28 Jun 2017 04:25:12 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rspec/2017/06/28/rspec-factorygirl-and-associations-versus-after-builds.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rspec/2017/06/28/rspec-factorygirl-and-associations-versus-after-builds.html</guid>
+        
+        <category>rspec</category>
+        
+        <category>ruby</category>
+        
+        <category>factory_girl</category>
+        
+        <category>testing</category>
+        
+        
+        <category>rspec</category>
+        
+      </item>
+    
+      <item>
+        <title>Beware Docker Swarm</title>
+        <description>&lt;p&gt;I have previously mentioned that I was using Docker Swarm and fairly happy with it.  I even went so far as to document the &lt;a href=&quot;_posts/2017-06-28-beware-docker-swarm.md.&quot;&gt;deploy process&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 28 Jun 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/docker/2017/06/28/beware-docker-swarm.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/docker/2017/06/28/beware-docker-swarm.html</guid>
+        
+        <category>docker</category>
+        
+        <category>swarm</category>
+        
+        
+        <category>docker</category>
+        
+      </item>
+    
+      <item>
+        <title>Zero to Full Tests - How to Add Tests to an Existing Code Base</title>
+        <description>&lt;p&gt;Have to accept that this is an iterative, multi pass prcoess and you will have anomaloies  xits&lt;/p&gt;
+</description>
+        <pubDate>Tue, 27 Jun 2017 15:54:15 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/27/zero-to-full-tests-how-to-add-tests-to-an-existing-code-base.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/27/zero-to-full-tests-how-to-add-tests-to-an-existing-code-base.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>How To Be A Developer 003 - Write It Down</title>
+        <description>
+</description>
+        <pubDate>Tue, 27 Jun 2017 09:26:57 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/27/how-to-be-a-developer-003-write-it-down.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/27/how-to-be-a-developer-003-write-it-down.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>How To Be A Developer 008 - Learn to Write Tests</title>
+        <description>
+</description>
+        <pubDate>Tue, 27 Jun 2017 01:48:03 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/27/how-to-be-a-developer-008-learn-to-write-tests.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/27/how-to-be-a-developer-008-learn-to-write-tests.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>How To Be A Developer 002 - Focus Don't Multitask</title>
+        <description>
+</description>
+        <pubDate>Mon, 26 Jun 2017 13:43:48 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/26/how-to-be-a-developer-002-focus-don-t-multitask.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/26/how-to-be-a-developer-002-focus-don-t-multitask.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>How To Be A Developer 015 - Write Tests</title>
+        <description>
+</description>
+        <pubDate>Mon, 26 Jun 2017 08:02:36 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/26/how-to-be-a-developer-015-write-tests.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/26/how-to-be-a-developer-015-write-tests.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>How To Be A Developer 006 - Solve It Completely</title>
+        <description>
+</description>
+        <pubDate>Mon, 26 Jun 2017 08:02:20 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/26/how-to-be-a-developer-006-solve-it-completely.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/26/how-to-be-a-developer-006-solve-it-completely.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>How To Be A Developer 010 - Developer Reward Thyself</title>
@@ -18,374 +391,6 @@
         <link>http://fuzzyblog.io//blog/2017/06/25/how-to-be-a-developer-010-developer-reward-thyself.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/25/how-to-be-a-developer-010-developer-reward-thyself.html</guid>
         
-        
-      </item>
-    
-      <item>
-        <title>Docker Tutorial Understanding Container Memory Usage</title>
-        <description>&lt;p&gt;I know that it might seem like in 2017, in our new container centric world, that understanding memory usage on a per container basis isn’t all that necessary but my recent experiences with my side project are, sorely, disagreeing with that.&lt;/p&gt;
-
-&lt;p&gt;I’m developing a SAAS product where I’ve firmly and irrevocably broken the traditional Rails monolithic development model.  So rather than have one giant Rails app, I have multiple Rails apps – the promotional website, the crawler, the admin tool and so on.  .  My current deployment model is Docker containers and each Rails app is represented by a container stack.  For cost reasons I want to use resources efficiently allowing multiple container stacks to exist on the same host.  This requires understanding our low level memory usage so here goes…&lt;/p&gt;
-
-&lt;p&gt;Note: All of this is being done on AWS under Ubuntu 16.04 using docker-compose 1.8&lt;/p&gt;
-
-&lt;h1 id=&quot;box-level-memory&quot;&gt;Box Level Memory&lt;/h1&gt;
-
-&lt;p&gt;Use free -m to find out the current memory status of your box:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;free -m&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;              total        used        free      shared  buff/cache   available
-Mem:           1998        1163          90          22         743         554
-Swap:             0           0           0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;docker-container-memory&quot;&gt;Docker Container Memory&lt;/h1&gt;
-
-&lt;p&gt;Use docker stats to get the low level container memory usage:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;docker stats&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CONTAINER           CPU %               MEM USAGE / LIMIT       MEM %               NET I/O             BLOCK I/O           PIDS
-a5251659f7c9        0.23%               15.29 MiB / 1.952 GiB   0.76%               35.5 MB / 20.3 MB   1.35 MB / 40.5 MB   3
-59ce2ad1dc64        0.01%               257.8 MiB / 1.952 GiB   12.90%              25.6 MB / 33.9 MB   143 kB / 0 B        6
-b4aaa4c36791        64.55%              237 MiB / 1.952 GiB     11.86%              639 MB / 115 MB     3.39 MB / 4.1 kB    14
-a7c039f80931        0.00%               199.8 MiB / 1.952 GiB   10.00%              152 kB / 1.22 MB    1.2 MB / 0 B        23
-ee27a6e37fef        0.00%               131.4 MiB / 1.952 GiB   6.57%               1.22 MB / 2.33 MB   26.9 MB / 0 B       6
-07d5252abf5f        0.00%               196.6 MiB / 1.952 GiB   9.84%               127 kB / 689 kB     1.63 MB / 0 B       23
-4aa705c8cf4b        0.07%               6.234 MiB / 1.952 GiB   0.31%               9.11 kB / 1.94 kB   0 B / 0 B           3
-78f495fcf733        0.06%               6.922 MiB / 1.952 GiB   0.35%               145 MB / 91.1 MB    766 kB / 2.97 MB    3
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;If you wanted to reduce the amount of output to the bare essentials then try:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;docker stats –format “table \t\t”&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CONTAINER           CPU %               MEM USAGE / LIMIT
-a5251659f7c9        0.10%               15.29 MiB / 1.952 GiB
-59ce2ad1dc64        0.01%               239.1 MiB / 1.952 GiB
-b4aaa4c36791        21.33%              478.5 MiB / 1.952 GiB
-a7c039f80931        0.01%               251.1 MiB / 1.952 GiB
-ee27a6e37fef        0.00%               109 MiB / 1.952 GiB
-07d5252abf5f        0.00%               250.9 MiB / 1.952 GiB
-4aa705c8cf4b        0.05%               6.234 MiB / 1.952 GiB
-78f495fcf733        0.05%               6.664 MiB / 1.952 GiB
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Now the clear and obvious problem here is that a5251659f7c9 or 59ce2ad1dc64 mean &lt;strong&gt;absolutely nothing&lt;/strong&gt; to us.
-# But What is a5251659f7c9 or Understanding Docker Process IDs?&lt;/p&gt;
-
-&lt;p&gt;The a5251659f7c9 is a Docker process id and you need to grep the docker process list to find out.  Docker process ids change with every single container  deploy so you always have to look them up with the &lt;em&gt;docker ps&lt;/em&gt; command.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker ps | grep a5251659f7c9
-a5251659f7c9        redis:3.2-alpine  &quot;docker-entrypoint...&quot;   27 minutes ago      Up 27 minutes       0.0.0.0:32771-&amp;gt;6379/tcp   seiracrawler_redis_1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;So the way to interpret all this is the docker container with process id a5251659f7c9 corresponds to the named container seiracrawler_redis_1 and is using 15.29 mb RAM and 0.23% CPU.&lt;/p&gt;
-
-&lt;h1 id=&quot;putting-it-all-together---dockerstats&quot;&gt;Putting it All Together - dockerstats&lt;/h1&gt;
-
-&lt;p&gt;If you’re thinking that this two step process, well, &lt;strong&gt;sucks&lt;/strong&gt;, yep.  I took a pass at cleaning this up into a single shell script but I found my bash skills, sadly weren’t up to it.  Happily I did additional research and managed to put this together from some things I found on the web:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-docker stats --format &lt;span class=&quot;s2&quot;&gt;&quot;table &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;docker ps|grep -v &lt;span class=&quot;s2&quot;&gt;&quot;NAMES&quot;&lt;/span&gt;|awk &lt;span class=&quot;s1&quot;&gt;'{ print $NF }'&lt;/span&gt;|tr &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot; &quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;If you put this into a shell script named dockerstats and then make it executable with:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;chmod +x dockerstats&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;then you’ll have a single shell script that produces this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CONTAINER                                            CPU %               MEM USAGE / LIMIT
-seiracrawler_redis_1                                 0.12%               15.29 MiB / 1.952 GiB
-seiracrawler_rake_1                                  0.01%               239.1 MiB / 1.952 GiB
-seiracrawler_sidekiq_1                               11.99%              480.5 MiB / 1.952 GiB
-seirawatchsite_web.2.3x1bx3ji93hueuidv4dgfeab3       0.00%               251.1 MiB / 1.952 GiB
-seirawatchsite_sidekiq.1.8nxcvjx353725lsv70h72mzup   0.10%               109 MiB / 1.952 GiB
-seirawatchsite_web.1.rxbzptnfuopfauqwjf4ib4bjr       0.01%               250.9 MiB / 1.952 GiB
-seiraadmin_redis.1.ws2hc37dihkbh0cejk6z75140         0.06%               6.234 MiB / 1.952 GiB
-seirawatchsite_redis.1.siatex4zd6xezsevxfk4no98n     0.09%               6.664 MiB / 1.952 GiB
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;You’ll seem some redundancy here because one my Docker installations on this particular box is using Docker Swarm (not recommended btw) and there are  replicas of some of the containers due to my swarm configuration.&lt;/p&gt;
-
-&lt;p&gt;Personally I think this functionality is important enough that I’ve added it to my deploy process on all my boxes running Docker and I’ll recommend the same to all my clients.&lt;/p&gt;
-
-&lt;p&gt;If you just want the dockerstats shell script, here is a &lt;a href=&quot;https://gist.github.com/fuzzygroup/e000a972a999b406a38557324e11d1c0&quot;&gt;gist with it&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;see-also&quot;&gt;See Also&lt;/h1&gt;
-
-&lt;p&gt;Extracting just a section of the Docker stats output came from the official Docker docs for &lt;a href=&quot;https://docs.docker.com/engine/reference/commandline/stats/#formatting&quot;&gt;Docker Stats&lt;/a&gt;.  Feeding the output from Docker Stats to a docker ps grep statement came from a &lt;a href=&quot;https://github.com/moby/moby/issues/10772&quot;&gt;github issue on moby&lt;/a&gt;.&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 25 Jun 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/docker/2017/06/25/docker-tutorial-understanding-container-memory-usage.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/docker/2017/06/25/docker-tutorial-understanding-container-memory-usage.html</guid>
-        
-        <category>docker</category>
-        
-        
-        <category>docker</category>
-        
-      </item>
-    
-      <item>
-        <title>How To Be A Developer 001 - Commit</title>
-        <description>&lt;h1 id=&quot;background&quot;&gt;Background&lt;/h1&gt;
-
-&lt;h1 id=&quot;lesson-001---commit&quot;&gt;Lesson 001 - Commit&lt;/h1&gt;
-
-</description>
-        <pubDate>Sat, 24 Jun 2017 15:58:41 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/development/2017/06/24/how-to-be-a-developer-001.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/development/2017/06/24/how-to-be-a-developer-001.html</guid>
-        
-        <category>development</category>
-        
-        
-        <category>development</category>
-        
-      </item>
-    
-      <item>
-        <title>Redis Quick Tip - Purge All Data</title>
-        <description>&lt;p&gt;redis-cli flushall&lt;/p&gt;
-
-&lt;p&gt;https://stackoverflow.com/questions/6851909/how-do-i-delete-everything-in-redis&lt;/p&gt;
-</description>
-        <pubDate>Sat, 24 Jun 2017 08:36:48 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/redis/2017/06/24/redis-quick-tip-purge-all-data.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/redis/2017/06/24/redis-quick-tip-purge-all-data.html</guid>
-        
-        <category>redis</category>
-        
-        
-        <category>redis</category>
-        
-      </item>
-    
-      <item>
-        <title></title>
-        <description>&lt;p&gt;I recently picked up an interesting bit of consulting work on large Rails project (62K lines of code):&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;fix the broken test coverage&lt;/li&gt;
-  &lt;li&gt;expand the missing test coverage to cover everything – validations, callbacks, associations, aliases, etc&lt;/li&gt;
-  &lt;li&gt;target a goal of roughly 90%+ coverage&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;This is a medical application written in Ruby / Rails and the mandate is to improve test coverage before it comes to market.  This is actually my third separate engagement with this client having built an MVP for them earlier and written the initial test coverage on this application – that was not kept up to date and thus became broken over time.&lt;/p&gt;
-
-&lt;p&gt;All of this work is using my preferred testing framework of &lt;a href=&quot;http://rspec.info/&quot;&gt;RSpec&lt;/a&gt; and &lt;a href=&quot;https://github.com/thoughtbot/factory_girl&quot;&gt;FactoryGirl&lt;/a&gt; along with the &lt;a href=&quot;http://matchers.shoulda.io/&quot;&gt;Shoulda&lt;/a&gt; set of matchers.&lt;/p&gt;
-
-&lt;p&gt;I’ve actually done quite a bit of work in taking Rails code bases without any test coverage and adding various levels of test coverage and I suspect that a detailed blog post on the topic will be forthcoming soon.&lt;/p&gt;
-
-&lt;p&gt;The topic for today is what happens when your factories themselves are the issue and you get crazy errors like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1) GraphTemplate factories has a valid factory
-    Failure/Error: expect(build(:graph_template)).to be_valid#, {element_id: element.id})).to be_valid
-
-    NoMethodError:
-      undefined method `humanize' for nil:NilClass
-    # ./spec/models/graph_template_spec.rb:8
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;This is happening at a line which shouldn’t cause any problems:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;RSpec.describe GraphTemplate, type: :model do
-  describe &quot;factories&quot; do
-    it &quot;has a valid factory&quot; do      
-
-      expect(build(:graph_template)).to be_valid      
-  
-    end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The underlying graph_template model looks like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;+----------------+--------------+------+-----+---------+----------------+
-| Field          | Type         | Null | Key | Default | Extra          |
-+----------------+--------------+------+-----+---------+----------------+
-| id             | int(11)      | NO   | PRI | NULL    | auto_increment |
-| data_points    | text         | NO   |     | NULL    |                |
-| name           | varchar(255) | NO   |     | NULL    |                |
-| created_at     | datetime     | YES  |     | NULL    |                |
-| updated_at     | datetime     | YES  |     | NULL    |                |
-+----------------+--------------+------+-----+---------+----------------+
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;While there are a number of validation  but the data_points column is the problem.&lt;/p&gt;
-
-&lt;p&gt;which is defined as a text column and the object’s internal validation methods are looking&lt;/p&gt;
-
-&lt;p&gt;[6/23/17, 5:45:03 PM] J. Scott Johnson: I figured out the issue with humanize.  Its happening because a hash is expected and a map / select operation is expected to operate on hash keys.  I fixed it for graph_template by adding some sample data in the data_points data element.
- [6/23/17, 5:45:40 PM] J. Scott Johnson: It was data_points { [] } and that was causing the humanize error and then putting this in:
-     data_points { [{“selected_graph”=&amp;gt;”a”, “type”=&amp;gt;”0”, “label”=&amp;gt;””, “module_value_id”=&amp;gt;”15”, “workflow_person_type_mv”=&amp;gt;”subject”, “module”=&amp;gt;”dataramp”, “workflow_person_type”=&amp;gt;”subject”, “trial_timepoint_id”=&amp;gt;”33”, “journal_id”=&amp;gt;nil, “workflow_id”=&amp;gt;nil, “tat_form_id”=&amp;gt;”11”, “journal_form_id”=&amp;gt;nil, “workflow_step_item_id”=&amp;gt;”1”, “element_id”=&amp;gt;”4”, “workflow_step_id”=&amp;gt;nil, “journal_day”=&amp;gt;””}] }&lt;/p&gt;
-</description>
-        <pubDate>Fri, 23 Jun 2017 18:10:44 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/23/getting-past-rspec-nomethoderror-undefined-method-humanize-for-nil-nilclass-errors.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/23/getting-past-rspec-nomethoderror-undefined-method-humanize-for-nil-nilclass-errors.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Finally Understanding Git Stash</title>
-        <description>&lt;p&gt;git stash&lt;/p&gt;
-
-&lt;p&gt;git pull&lt;/p&gt;
-
-&lt;p&gt;git stash pop&lt;/p&gt;
-
-</description>
-        <pubDate>Fri, 23 Jun 2017 15:37:35 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/23/finally-understanding-git-stash.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/23/finally-understanding-git-stash.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Understanding Sidekiq or the Zen of Background Job Processors - a Ruby Tutorial</title>
-        <description>&lt;p&gt;As I’ve blogged in the past I am a huge, unreserved fan of the technical work of Mike Perham, the author of Sidekiq.  Sidekiq is a &lt;em&gt;background job processor&lt;/em&gt; for Ruby and Rails that takes long running tasks and runs them in an asynchronous fashion so your function executes immediately returning control to your main application.&lt;/p&gt;
-
-&lt;p&gt;The classical example of this is that you want to send an email and since the time of the connection to the email sending process is generally unknown, you instead treat this as a &lt;em&gt;job&lt;/em&gt; that gets executed via Sidekiq.&lt;/p&gt;
-
-&lt;p&gt;I haven’t used Sidekiq now for about six months so I thought I’d write a soup to nuts tutorial since I had to relearn all this stuff again (o)&lt;/p&gt;
-
-&lt;h1 id=&quot;three-components---worker-sidekiq-redis&quot;&gt;Three Components - Worker, Sidekiq, Redis&lt;/h1&gt;
-
-&lt;h1 id=&quot;a-bit-of-strong-advice&quot;&gt;A Bit of Strong Advice&lt;/h1&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;WRITE TEST COVERAGE ON ANY METHODS YOU WANT TO USE WITH SIDEKIQ&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;class UploadWorker
-  def perform&lt;/p&gt;
-
-&lt;p&gt;end
-end&lt;/p&gt;
-
-</description>
-        <pubDate>Fri, 23 Jun 2017 10:29:08 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/ruby/2017/06/23/understanding-sidekiq-or-the-zen-of-background-job-processors-a-ruby-tutorial.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/ruby/2017/06/23/understanding-sidekiq-or-the-zen-of-background-job-processors-a-ruby-tutorial.html</guid>
-        
-        <category>ruby</category>
-        
-        <category>rails</category>
-        
-        
-        <category>ruby</category>
-        
-      </item>
-    
-      <item>
-        <title>An RSpec Cautionary Tale</title>
-        <description>&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;it &quot;by_status&quot; do
-  Form::STATUS.each do |k, v|
-    puts &quot;Executing with k = #{k} and v = #{v}&quot;
-    form = create(:form, k)        
-    expect(Form.by_status(v).count).to eq 1
-    expect(Form.by_status(v).first).to eq form
-  end
-end
-
-describe &quot;by_status&quot; do
-  it &quot;should retrieve by status for draft&quot; do
-    form = create(:form, :draft)  
-    expect(Form.by_status(Form::STATUS[:draft]).count).to eq 1
-    expect(Form.by_status(Form::STATUS[:draft]).first).to eq form
-  end
-
-  it &quot;should retrieve by status for ready_to_approve&quot; do
-    form = create(:form, :ready_to_approve)  
-    expect(Form.by_status(Form::STATUS[:ready_to_approve]).count).to eq 1
-    expect(Form.by_status(Form::STATUS[:ready_to_approve]).first).to eq form
-    
-  end
-
-  it &quot;should retrieve by status for approved&quot; do
-    form = create(:form, :approved)  
-    expect(Form.by_status(Form::STATUS[:approved]).count).to eq 1
-    expect(Form.by_status(Form::STATUS[:approved]).first).to eq form
-    
-  end
-
-  it &quot;should retrieve by status for retired&quot; do
-    form = create(:form, :retired)  
-    expect(Form.by_status(Form::STATUS[:retired]).count).to eq 1
-    expect(Form.by_status(Form::STATUS[:retired]).first).to eq form
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Tue, 20 Jun 2017 17:25:22 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/20/an-rspec-cautionary-tale.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/20/an-rspec-cautionary-tale.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Career Advice on Changing Industries</title>
-        <description>
-</description>
-        <pubDate>Tue, 20 Jun 2017 10:18:44 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/20/career-advice-on-changing-industries.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/20/career-advice-on-changing-industries.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Using Ansible on Ubuntu 16.04 When which python Fails</title>
-        <description>&lt;p&gt;&lt;a href=&quot;https://www.ansible.com&quot;&gt;Ansible&lt;/a&gt; is my favorite devops tool.  I’ve used &lt;a href=&quot;https://www.chef.io/chef/&quot;&gt;Chef&lt;/a&gt; extensively and despite my Ruby background, well, I hated it.  I’ve slutted around with &lt;a href=&quot;https://www.terraform.io&quot;&gt;TerraForm&lt;/a&gt;; I’ve played with &lt;a href=&quot;https://puppet.com&quot;&gt;Puppet&lt;/a&gt; and I’ve put &lt;a href=&quot;https://saltstack.com&quot;&gt;Salt&lt;/a&gt; on my food and servers but time in and time out, I always come back to Ansible.  I even like Ansible enough that I wrote about it recently on &lt;a href=&quot;https://www.quora.com/What-do-I-need-to-study-before-studying-Ansible-Im-from-a-networking-background-and-we-like-to-do-automation-via-Ansible/answer/Scott-Johnson-16&quot;&gt;a Quora post&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;One of the beautiful things about Ansible is that it &lt;strong&gt;does not&lt;/strong&gt; require a server side agent.  Ansible works via SSH purely and that means that as long as you can login to the server then you can use Ansible to provision it, update it, deploy stuff, etc.&lt;/p&gt;
-
-&lt;p&gt;I just deployed my first ever Ubuntu 16.04 LTS box on AWS the other day and one of my surprises was that a which python &lt;strong&gt;failed&lt;/strong&gt;.  Oy vey.  This means that you can’t use Ansible without installing Python – or so I thought.  Happily a bit of googling and I discovered the &lt;a href=&quot;https://docs.ansible.com/ansible/python_3_support.html&quot;&gt;ansible_python_interpreter&lt;/a&gt; option which lets you override the default of Python 2 and use Python 3.  This gets, oddly, embedded in the inventories file:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[web]
-site1 ansible_ssh_host=foo.com
-
-[web:vars]
-ansible_python_interpreter=/usr/bin/python3
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The way to interpret this is all boxes in the [web] group use the /usr/bin/python3 executable.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 20 Jun 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/ansible/2017/06/20/using-ansible-on-ubuntu-16-04-when-which-python-fails.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/ansible/2017/06/20/using-ansible-on-ubuntu-16-04-when-which-python-fails.html</guid>
-        
-        <category>ansible</category>
-        
-        <category>devops</category>
-        
-        
-        <category>ansible</category>
         
       </item>
     
