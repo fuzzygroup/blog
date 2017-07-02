@@ -23,7 +23,7 @@ Let's start with some definitions:
 * **AWS ELB** -- The Amazon Elastic Load Balancer which routes incoming requests to the correct host (and port) on your boxes.  An ELB automatically handles SSL termination allowing a certificate from the AWS Certificate Manager to be routed to the correct instance or group of instances and http port.
 * **AWS ELB Listener** -- A listener on an elb listens for traffic and sends it, evaluating it with a rule based criteria, to an ELB target group.
 * **AWS ELB Target Group** -- A target group is a collection of AWS instances that are the destination of a listener.
-* **Port** -- The underlying http port where an HTTP based service exist.  Ports are important because you often want multiple http services on the same physical instance and the solution is to run them on different ports.
+* **Port** -- The underlying input channel on an http connection where an HTTP based service exist.  Ports are important because you often want multiple http services on the same physical instance and the solution is to run them on different ports.
 * **Docker Containers** -- Docker containers are a way to manage and deploy stacks of related code in an overall grouping called a container.  I could talk a lot more about Docker but my friend Nick Janetakis does it better in his course [Dive into Docker](https://diveintodocker.com/courses/dive-into-docker).
 
 # Mapping It All Out
@@ -52,7 +52,7 @@ You'll notice that some of my services are running directly on 80 and others on 
 Here's the overall process that needs to be followed:
 
 1. Use AWS Route 53 to setup your baseline domain, mysaas.com 
-2. Use AWS Certificate Manager to set up a certificate for https
+2. Use AWS Certificate Manager to set up a certificate for https for the domain name *.mysaas.com (this lets you define whatever subdomain names you want)
 3. Use AWS Route 53 to assign dns names to every server you have that you want to be available on port 80 (since we're not opening firewall ports, you don't need anything that's not on 80); this guarantees access to the low level resources at least on port 80.  These dns names are the ones with numbers like:
    * website1.mysaas.com
    * website2.mysaas.com
@@ -74,5 +74,5 @@ Here's the overall process that needs to be followed:
 
 Like a lot of us I use a laptop for all my computing, specifically a MacBook Pro.  I did all of this work with the AWS web based user interface and trying to use it without a big, external monitor was absolutely **maddening**.  If you don't have an external monitor hooked up to your Mac before you do this, you are making a big mistake because the web user interface for AWS simply doesn't display enough information for you to do this easily.  So having an external monitor available is the first tip.
 
-The second tip is that you will be constantly shifting between the AWS ELB interface and the AWS route 53 interface so open both of these at the start in separate browser windows.
+The second tip is that you will be constantly shifting between the AWS ELB interface and the AWS route 53 interface so open both of these at the start in separate browser windows. You will likely also want additional tabs for each but I would personally keep the Route 53 and ELB tasks in two separate browser windows.
   

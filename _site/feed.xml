@@ -6,294 +6,244 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 28 Jun 2017 17:50:33 -0400</pubDate>
-    <lastBuildDate>Wed, 28 Jun 2017 17:50:33 -0400</lastBuildDate>
+    <pubDate>Sun, 02 Jul 2017 11:57:26 -0400</pubDate>
+    <lastBuildDate>Sun, 02 Jul 2017 11:57:26 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
-        <title>RSpec and Shoulda When You Have Database Level Validations</title>
-        <description>&lt;p&gt;1) TrialTimepoint validations should require case sensitive unique value for name scoped to trial_id, trial_arm_id, deleted_at
-     Failure/Error: it { should validate_uniqueness_of(:name).scoped_to([:trial_id, :trial_arm_id, :deleted_at]).with_message(“already exists”) }&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ActiveRecord::StatementInvalid:
-   Mysql2::Error: Field 'identifier' doesn't have a default value: INSERT INTO `trial_timepoints` (`name`, `created_at`, `updated_at`) VALUES ('a', '2017-06-27 19:25:49', '2017-06-27 19:25:49')
- # ./spec/models/trial_timepoint_spec.rb:47:in `block (3 levels) in &amp;lt;top (required)&amp;gt;'
- # ------------------
- # --- Caused by: ---
- # Mysql2::Error:
- #   Field 'identifier' doesn't have a default value
- #   ./spec/models/trial_timepoint_spec.rb:47:in `block (3 levels) in &amp;lt;top (required)&amp;gt;'
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Finished in 0.05219 seconds (files took 10.82 seconds to load)
-1 example, 1 failure&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# http://www.rubydoc.info/github/thoughtbot/shoulda-matchers/Shoulda%2FMatchers%2FActiveRecord%3Avalidate_uniqueness_of
-describe &quot;should validate uniqueness of name scoped to trial_id, :trial_arm_id, :deleted_at&quot; do
-  subject { build(:trial_timepoint, :active) }
-  it { should validate_uniqueness_of(:name).scoped_to([:trial_id, :trial_arm_id, :deleted_at]).with_message(&quot;already exists&quot;) }      
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Pass 2&lt;/p&gt;
-
-&lt;p&gt;…..F&lt;/p&gt;
-
-&lt;p&gt;Failures:&lt;/p&gt;
-
-&lt;p&gt;1) ElementGroupItem validations validate_uniqueness_of element_id scoped to element_group_id should require case sensitive unique value for element_id scoped to element_group_id
-     Failure/Error: it { should validate_uniqueness_of(:element_id).scoped_to(:element_group_id)}&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ActiveRecord::InvalidForeignKey:
-   Mysql2::Error: Cannot add or update a child row: a foreign key constraint fails (`tap-test`.`element_group_items`, CONSTRAINT `fk_element_group_items_element_id` FOREIGN KEY (`element_id`) REFERENCES `elements` (`id`) ON DELETE CASCADE): INSERT INTO `element_group_items` (`position`, `element_group_id`, `element_id`, `created_at`, `updated_at`) VALUES (1, 79, 0, '2017-06-28 08:41:56', '2017-06-28 08:41:56')
- # ./spec/models/element_group_item_spec.rb:36:in `block (4 levels) in &amp;lt;top (required)&amp;gt;'
- # ------------------
- # --- Caused by: ---
- # Mysql2::Error:
- #   Cannot add or update a child row: a foreign key constraint fails (`tap-test`.`element_group_items`, CONSTRAINT `fk_element_group_items_element_id` FOREIGN KEY (`element_id`) REFERENCES `elements` (`id`) ON DELETE CASCADE)
- #   ./spec/models/element_group_item_spec.rb:36:in `block (4 levels) in &amp;lt;top (required)&amp;gt;'
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Finished in 2.15 seconds (files took 13.41 seconds to load)
-6 examples, 1 failure&lt;/p&gt;
-
-&lt;p&gt;Failed examples:&lt;/p&gt;
-
-&lt;p&gt;rspec ./spec/models/element_group_item_spec.rb:36 # ElementGroupItem validations validate_uniqueness_of element_id scoped to element_group_id should require case sensitive unique value for element_id scoped to element_group_id&lt;/p&gt;
-
-&lt;p&gt;Coverage report generated for RSpec to /Users/sjohnson/mddx/tap/coverage. 1499 / 22804 LOC (6.57%) covered.
-✘-1 ~/mddx/tap [t760-automated-testing ↓·4|✚ 18…8⚑ 1]
-04:42 $ rspec spec/models/element_group_item_spec.rb
-TAP Info: Loading spec_helper.rb
-TAP Info: Loading rails_helper.rb
-……&lt;/p&gt;
-
-&lt;p&gt;Finished in 1.69 seconds (files took 11.02 seconds to load)
-6 examples, 0 failures&lt;/p&gt;
-
-&lt;p&gt;Coverage report generated for RSpec to /Users/sjohnson/mddx/tap/coverage. 1499 / 22804 LOC (6.57%) covered.
-✔ ~/mddx/tap [t760-automated-testing ↓·4|✚ 18…8⚑ 1]
-04:42 $&lt;/p&gt;
-
-&lt;p&gt;Pass 3 - switch from build to create&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;describe &quot;validate_uniqueness_of element_id scoped to element_group_id&quot; do
-  subject { create(:element_group_item) }
-  it { should validate_uniqueness_of(:element_id).scoped_to(:element_group_id)}
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
+        <title>How To Be A Developer 011 - Bump Up Your Google Fu</title>
+        <description>
 </description>
-        <pubDate>Wed, 28 Jun 2017 04:44:16 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/28/rspec-and-shoulda-when-you-have-database-level-validations.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/28/rspec-and-shoulda-when-you-have-database-level-validations.html</guid>
+        <pubDate>Sun, 02 Jul 2017 08:55:33 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/07/02/how-to-be-a-developer-011-bump-up-your-google-fu.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/07/02/how-to-be-a-developer-011-bump-up-your-google-fu.html</guid>
         
         
       </item>
     
       <item>
-        <title>RSpec, FactoryGirl and Associations versus After Builds</title>
-        <description>&lt;p&gt;Understanding how the association statement in FactoryGirl factories works can be moderately obscure – until you look at the data that it generates and then it is crystal clear.  Let’s consider three associated models:&lt;/p&gt;
+        <title>How To Be A Developer 001 - Commit</title>
+        <description>&lt;h1 id=&quot;background&quot;&gt;Background&lt;/h1&gt;
+
+&lt;p&gt;I’ve taken on a new project recently.  I’m helping teach some local (Indianapolis) homeless youth basic software engineering using the web developer curriculum from &lt;a href=&quot;http://www.freecodecamp.com&quot;&gt;Free Code Camp&lt;/a&gt;.  Initially I’m teaching two students and we’re working out of the &lt;a href=&quot;https://outreachindiana.org/&quot;&gt;Outreach Indiana&lt;/a&gt; facility in downtown Indianapolis.  Outreach Indiana is a fantastic charity that truly does good work.&lt;/p&gt;
+
+&lt;p&gt;I thought I’d write a series of essays on How to Be a Developer that reflect some of the things I’ve learned over a career working in high tech.  While I am a fan of what Free Code Camp does, I thought some practical, hands on advice might add some value for my students.  I’ve structured these as a series of single topic narratives arranged numerically.&lt;/p&gt;
+
+&lt;h1 id=&quot;lesson-001---commit&quot;&gt;Lesson 001 - Commit&lt;/h1&gt;
+
+&lt;p&gt;The topic for my first lesson is that to be a developer you need to &lt;strong&gt;commit&lt;/strong&gt;.  Now I don’t mean a &lt;em&gt;git commit&lt;/em&gt; (more on that in #19), what I mean is that the nature of being a developer is &lt;strong&gt;committing to solving problems&lt;/strong&gt;.  I’m going to give you an example of a problem I solved just three days ago:&lt;/p&gt;
+
+&lt;p&gt;Broken:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;docker-compose -f docker-compose.production.yml exec web bundle exec rake db:migrate&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Working:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;docker-compose -f docker-compose.production.yml exec -T web bundle exec rake db:migrate&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;What these commands do doesn’t really matter but the only difference between these two commands is a small &lt;strong&gt;-T&lt;/strong&gt; flag that only discovered after troubleshooting an obscure Ansible to Docker error:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Traceback (most recent call last):\n  File \&quot;/usr/bin/docker-compose\&quot;, line 9, in 
+&amp;lt;module&amp;gt;\n    load_entry_point('docker-compose==1.8.0', 
+'console_scripts', 'docker-compose')()
+File \&quot;/usr/lib/python2.7/dist-packages/compose/cli/main.py\&quot;, 
+line 61, in main
+command()
+File \&quot;/usr/lib/python2.7/dist-packages/compose/cli/main.py\&quot;, line 113, 
+in perform_command handler(command, command_options)
+File \&quot;/usr/lib/python2.7/dist-packages/compose/cli/main.py\&quot;, line 441, in exec_command
+pty.start()
+File \&quot;/usr/lib/python2.7/dist-packages/dockerpty/pty.py\&quot;, line 338, in start
+io.set_blocking(pump, flag)
+File \&quot;/usr/lib/python2.7/dist-packages/dockerpty/io.py\&quot;, line 32, 
+in set_blocking
+old_flag = fcntl.fcntl(fd, fcntl.F_GETFL)\nValueError: file descriptor cannot be a negative integer (-1)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;It took considerable sleuthing to figure this out and the error was identified in &lt;a href=&quot;https://github.com/docker/compose/issues/3352&quot;&gt;a single Github issue&lt;/a&gt; on the underlying Docker project.  And when I say that this problem was obscure, even Docker experts I know had no idea about the -T flag.  Here’s part of the problem description:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;So basically, you need -i for docker exec when you are piping in data to the command.
+
+And you should not use -t for docker exec when you are piping data out from the command.
+
+And docker-compose exec only have -T, which means neither -i or -t. But you cannot represent -i without -t in docker-compose.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And that’s what I mean by obscure…  As a developer you run into this kind of stuff all the time – there’s a reason why when you start with Free Code Camp, it emphasizes using Google before you ever get into a programming language.  A huge part of being a developer is now your skill at using Google and that’s something that I’ll cover in #11.&lt;/p&gt;
+
+&lt;p&gt;To me the very essence of being a developer is being willing to commit to &lt;strong&gt;problem solving&lt;/strong&gt; at this level.  It means:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;element&lt;/li&gt;
-  &lt;li&gt;element_group&lt;/li&gt;
-  &lt;li&gt;element_group_item&lt;/li&gt;
+  &lt;li&gt;accepting that you will continually be encountering new things that you don’t know in depth&lt;/li&gt;
+  &lt;li&gt;trying hard to understand whatever the problem you encounter&lt;/li&gt;
+  &lt;li&gt;researching things in depth, sometimes over and over as the problems shift&lt;/li&gt;
+  &lt;li&gt;sometimes solving things by experimenting until you come up with a solution that works&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;And there are a series of associations here that define the object relationships (these are inter object and for an associated concept called a trial):&lt;/p&gt;
+&lt;p&gt;As a developer, sometimes the problem you solve:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;**element**
-belongs_to :trial
-has_and_belongs_to_many :element_groups, join_table: :element_group_items
+&lt;ul&gt;
+  &lt;li&gt;is one of languages where you can’t figure out how to do something using your language of choice&lt;/li&gt;
+  &lt;li&gt;is one of your tooling where the tool you’re using either doesn’t work or doesn’t work as expected&lt;/li&gt;
+  &lt;li&gt;is one of an algorithm where the underlying approach to solving the problem is unclear&lt;/li&gt;
+  &lt;li&gt;is an obscure bug which only happens from in certain circumstances; in this case you need to figure out what those circumstances are and how to repeat them&lt;/li&gt;
+&lt;/ul&gt;
 
-**element_group**
-belongs_to :trial
-has_and_belongs_to_many :elements, join_table: :element_group_items
+&lt;p&gt;And there are perhaps an infinite number of variants on these but the underlying nature of being a developer is really problem solving and in order to do that a developer has to commit himself or herself fully.  I’m going to close this with a song lyric that really reminds me of being a developer:&lt;/p&gt;
 
-**element_group_item**
-belongs_to :element
-belongs_to :element_group    
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;I get knocked down, but I get up again
+You are never gonna keep me down
+I get knocked down, but I get up again
+You are never gonna keep me down
+I get knocked down, but I get up again
+You are never gonna keep me down
+I get knocked down, but I get up again
+You are never gonna keep me down
+
+[TubThumping by Chumbawamba](https://www.google.com/search?q=i+get+knocked+down+lyrics&amp;amp;ie=utf-8&amp;amp;oe=utf-8) | [Youtube](https://www.youtube.com/watch?v=2H5uWRjFsGc)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;Here’s the factory for element_group_item:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FactoryGirl.define do
-
-  factory :element_group_item do
-    association :element, factory: :element
-    association :element_group, factory: :element_group
-    position { 1 }
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The single easiest way to understand your factories is to run rails console but in test mode so:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;bundle exec rails c test&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Once you are in test mode then you can use FactoryGirl interactively:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;egi = FactoryGirl.create(:element_group_item)&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Here’s the instance of our ElementGroupItem model:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#&amp;lt;ElementGroupItem:0x007fbddb9855d0&amp;gt; {
-                  :id =&amp;gt; 2,
-    :element_group_id =&amp;gt; 2,
-          :element_id =&amp;gt; 6,
-            :position =&amp;gt; 1,
-          :created_at =&amp;gt; Wed, 28 Jun 2017 07:49:49 UTC +00:00,
-          :updated_at =&amp;gt; Wed, 28 Jun 2017 07:49:49 UTC +00:00
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Here is the associated ElementGroup model:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;egi.element_group
-#&amp;lt;ElementGroup:0x007fbdd6b28090&amp;gt; {
-             :id =&amp;gt; 2,
-       :trial_id =&amp;gt; 31,
-           :name =&amp;gt; &quot;Miss Priscilla Cremin&quot;,
-       :position =&amp;gt; 1,
-    :cloned_from =&amp;gt; nil,
-     :deleted_at =&amp;gt; nil,
-     :created_by =&amp;gt; nil,
-     :updated_by =&amp;gt; nil,
-     :created_at =&amp;gt; Wed, 28 Jun 2017 07:49:49 UTC +00:00,
-     :updated_at =&amp;gt; Wed, 28 Jun 2017 07:49:49 UTC +00:00
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And, finally, here is our associated Element model:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;egi.element
-#&amp;lt;Element:0x007fbddb969830&amp;gt; {
-                    :id =&amp;gt; 6,
-              :trial_id =&amp;gt; 30,
-                  :kind =&amp;gt; 1,
-                  :name =&amp;gt; &quot;Art King&quot;,
-         :value_options =&amp;gt; [
-        [0] {}
-    ],
-    :conversion_options =&amp;gt; {},
-               :default =&amp;gt; nil,
-               :tooltip =&amp;gt; nil,
-           :description =&amp;gt; nil,
-                :slevel =&amp;gt; 0,
-                :suffix =&amp;gt; nil,
-               :encrypt =&amp;gt; false,
-          :privacy_mask =&amp;gt; false,
-            :input_mask =&amp;gt; false,
-                :active =&amp;gt; false,
-                 :flags =&amp;gt; nil,
-           :cloned_from =&amp;gt; nil,
-          :editor_types =&amp;gt; nil,
-         :decimal_scale =&amp;gt; nil,
-            :created_by =&amp;gt; nil,
-            :updated_by =&amp;gt; nil,
-             :locked_at =&amp;gt; nil,
-            :deleted_at =&amp;gt; nil,
-            :created_at =&amp;gt; Wed, 28 Jun 2017 07:49:48 UTC +00:00,
-            :updated_at =&amp;gt; Wed, 28 Jun 2017 07:49:48 UTC +00:00
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The issue here is the trial_id attribute which is common to element and element_group – what you’ll see is that element and element_group now belong to two different trials.&lt;/p&gt;
-
-&lt;p&gt;Now let’s rewrite our factory a bit:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FactoryGirl.define do
-
-  factory :element_group_item do
-    after(:build) do |element_group_item|
-      element = create(:element, :text_integer)
-      element_group = create(:element_group, :trial_id =&amp;gt; element.trial_id)
-      element_group_item.element_group_id = element_group.id
-      element_group_item.element_id = element.id
-    end
-
-    position { 1 }
-
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Here is our instance of ElementGroupItem:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;egi = FactoryGirl.create(:element_group_item)
-#&amp;lt;ElementGroupItem:0x007f80cfd19ed8&amp;gt; {
-                  :id =&amp;gt; 3,
-    :element_group_id =&amp;gt; 7,
-          :element_id =&amp;gt; 11,
-            :position =&amp;gt; 1,
-          :created_at =&amp;gt; Wed, 28 Jun 2017 08:12:06 UTC +00:00,
-          :updated_at =&amp;gt; Wed, 28 Jun 2017 08:12:06 UTC +00:00
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Here is our instance of ElementGroup associated with our starting object:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;egi.element_group
-  ElementGroup Load (8.6ms)  SELECT  `element_groups`.* FROM `element_groups` WHERE `element_groups`.`deleted_at` IS NULL AND `element_groups`.`id` = 7 LIMIT 1
-#&amp;lt;ElementGroup:0x007f80c91079e8&amp;gt; {
-             :id =&amp;gt; 7,
-       :trial_id =&amp;gt; 36,
-           :name =&amp;gt; &quot;Devan Ullrich&quot;,
-       :position =&amp;gt; 1,
-    :cloned_from =&amp;gt; nil,
-     :deleted_at =&amp;gt; nil,
-     :created_by =&amp;gt; nil,
-     :updated_by =&amp;gt; nil,
-     :created_at =&amp;gt; Wed, 28 Jun 2017 08:12:06 UTC +00:00,
-     :updated_at =&amp;gt; Wed, 28 Jun 2017 08:12:06 UTC +00:00
-}    
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And, finally, here is our instance of Element:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;egi.element
-  Element Load (3.2ms)  SELECT  `elements`.* FROM `elements` WHERE `elements`.`deleted_at` IS NULL AND `elements`.`id` = 11 LIMIT 1
-#&amp;lt;Element:0x007f80c8a38f18&amp;gt; {
-                    :id =&amp;gt; 11,
-              :trial_id =&amp;gt; 36,
-                  :kind =&amp;gt; 5,
-                  :name =&amp;gt; &quot;Estella Kuhic&quot;,
-            :created_at =&amp;gt; Wed, 28 Jun 2017 08:12:06 UTC +00:00,
-            :updated_at =&amp;gt; Wed, 28 Jun 2017 08:12:06 UTC +00:00
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;As you can see the difference between the association approach versus the after(:build) approach lies in the nature of the nested objects.  Here rather than two separate trials being created there instead is a trinity of objects shared across one trial.&lt;/p&gt;
+&lt;p&gt;The problems you solve will continually knock you down and you &lt;strong&gt;have&lt;/strong&gt; to get back up again.  Some of the best developers I have ever worked with actually weren’t the smartest but they knew how to commit and how to just stick with problems like a terrier until it was solved.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 28 Jun 2017 04:25:12 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rspec/2017/06/28/rspec-factorygirl-and-associations-versus-after-builds.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rspec/2017/06/28/rspec-factorygirl-and-associations-versus-after-builds.html</guid>
+        <pubDate>Sun, 02 Jul 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/how_to_be_a_developer/2017/07/02/how-to-be-a-developer-001.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/how_to_be_a_developer/2017/07/02/how-to-be-a-developer-001.html</guid>
+        
+        <category>how_to_be_a_developer</category>
+        
+        
+        <category>how_to_be_a_developer</category>
+        
+      </item>
+    
+      <item>
+        <title>How To Be A Developer 019 - Version Control</title>
+        <description>
+</description>
+        <pubDate>Fri, 30 Jun 2017 21:28:37 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/30/how-to-be-a-developer-019-version-control.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/30/how-to-be-a-developer-019-version-control.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Testing Includes in RSpec</title>
+        <description>&lt;p&gt;When you do software testing with a tool like RSpec, TestUnit or MiniTest, the obvious thing to test is the code itself.  So you write a method and then you write the lines of test coverage that are needed.  It won’t work the first time so you iterate – again and again until it works and then the client says something like:&lt;/p&gt;
+
+&lt;p&gt;“We want everything tested”&lt;/p&gt;
+
+&lt;p&gt;And you start considering the meta structure of the class you’re working on and you realize that you need to test an &lt;em&gt;include directive&lt;/em&gt; like:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;include DefaultThingInfo&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Now that’s actually interesting – because there is &lt;strong&gt;no code&lt;/strong&gt; to test.  Now you could argue that an include is an inherent property of the class and since the inclusion itself happens at the Ruby level, you &lt;strong&gt;don’t need&lt;/strong&gt; to test it at all.  And I’ve worked with engineers in the past who were credible in making that argument but code bases are &lt;em&gt;living&lt;/em&gt;, &lt;em&gt;ever changing&lt;/em&gt; beasts.  And people do make mistakes – I’ve seen all kinds of times where an engineer fat fingers the keyboard, a line is accidentally deleted or commented out and when you have something as important as an include directive, well, all kinds of badness can happen.&lt;/p&gt;
+
+&lt;p&gt;One approach to testing this would be to look at the underlying mechanics of DefaultThingInfo and see how it works and then test that – essentially testing its effects.  The problem here is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;those effects could change&lt;/li&gt;
+  &lt;li&gt;something else in the system could interfere&lt;/li&gt;
+  &lt;li&gt;we might not really understand those effects&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;What we really want to do is test that this actually injecting the right stuff into the code and that’s going to require looking into the code’s meta stuff.  Let’s say that this class is named MyStuff.  We can go into Rails Console and look at its methods with:&lt;/p&gt;
+
+&lt;p&gt;2.3.1 :002 &amp;gt; (MyStuff.methods - Object.methods).sort&lt;/p&gt;
+
+&lt;p&gt;Now that’s going to return, for me, 503 methods and I really, really don’t want to read all of them so let’s chain in a .grep call&lt;/p&gt;
+
+&lt;p&gt;2.3.1 :002 &amp;gt; (MyThing.methods - Object.methods).grep(/Thing/i)
+[
+    [0] thing_class() DefaultThingInfo
+]&lt;/p&gt;
+
+&lt;p&gt;We can then check the call method thing_class for its return value and use it in our test.  Let’s say that it returns “ThingInfo”.&lt;/p&gt;
+
+&lt;p&gt;So now our RSpec test becomes something like:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;it &quot;should include DefaultThingInfo&quot; do
+  expect(MyClass.think_class).to eq &quot;ThingInfo&quot;
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The combination of Class.methods - Object.methods with a .grep call chained onto it is incredibly powerful.  Ever since I learned this, years ago, I’ve been far more likely to experiment in rails console than I am to look things up.&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 30 Jun 2017 21:17:34 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rspec/2017/06/30/testing-includes-in-rspec.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rspec/2017/06/30/testing-includes-in-rspec.html</guid>
+        
+        <category>rails</category>
+        
+        <category>rspec</category>
+        
+        <category>testing</category>
+        
+        <category>ruby</category>
+        
+        
+        <category>rspec</category>
+        
+      </item>
+    
+      <item>
+        <title>Testing Callbacks in RSpec</title>
+        <description>&lt;p&gt;Callbacks, methods that fire automatically in reaction to other events, can be incredibly powerful but seem to always introduce consequences that are often hard to understand.  The canonical example of this is an after_save callback which causes a change to the object in question which then causes another save and so on – ultimately leading to an infinite loop and a recursive failure.   One of the best ways to understand your callbacks is to write tests for them so you have an understanding of how they are called.&lt;/p&gt;
+
+&lt;p&gt;Here is a simple example of how to test callbacks on a Ruby model:&lt;/p&gt;
+
+&lt;p&gt;Model:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Post &amp;lt; ActiveRecord::Base
+
+  def cannot_change_if_locked
+    # some code would go here that checks if the object is locked and returns accordingly
+  end
+
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Test:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;describe &quot;callbacks&quot; do
+  # implementation tested elsewhere; this just verifies that the callback is called
+  describe &quot;before_destroy&quot; do
+    it &quot;should receive cannot_change_if_locked on a destroy message&quot; do
+      # create a post object with the locked trait
+      post = FactoryGirl.create(:post, :locked)
+      
+      # or you could stub it in this way
+      allow(post).to receive(:locked).and_return(true)
+              
+      post.should_receive(:cannot_change_if_locked)
+      post.destroy        
+    end
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Fri, 30 Jun 2017 20:59:20 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rspec/2017/06/30/testing-callbacks-in-rspec.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rspec/2017/06/30/testing-callbacks-in-rspec.html</guid>
         
         <category>rspec</category>
         
         <category>ruby</category>
         
-        <category>factory_girl</category>
-        
-        <category>testing</category>
+        <category>rails</category>
         
         
         <category>rspec</category>
@@ -301,114 +251,104 @@ end
       </item>
     
       <item>
-        <title>Beware Docker Swarm</title>
-        <description>&lt;p&gt;I have previously mentioned that I was using Docker Swarm and fairly happy with it.  I even went so far as to document the &lt;a href=&quot;http://fuzzyblog.io/blog/devops/2017/06/20/no-ci-and-no-cd-deploying-docker-swarm-with-bash-and-ansible.html&quot;&gt;deploy process&lt;/a&gt;.  I now have to retract everything positive I said about Docker Swarm.  I have now reverted to just using Docker and Docker Compose and bare containers with an AWS ELB on top of it.  Here’s why:&lt;/p&gt;
+        <title>Redis Quick Tip - Purge All Data and Save All Data</title>
+        <description>&lt;p&gt;&lt;a href=&quot;redis-quick-tip-purge-all-data.md&quot;&gt;Redis&lt;/a&gt; is a memory backed, key value store, non-sql database / in memory data structure store that plays a crucial role in just about any Internet app.  Often you need to purge all the information in Redis.  Here’s an easy command line way to do this:&lt;/p&gt;
 
-&lt;ol&gt;
-  &lt;li&gt;I attempted to have multiple apps with Docker Swarm on the same instance.  Nothing seemed to work and I had continuous troubles including containers running out of memory and the instance itself becoming hugely unresponsive.  This led me to the conclusion that Docker Swarm wasn’t really ready for production.&lt;/li&gt;
-  &lt;li&gt;On the instance where I had previously used Docker Swarm I disabled the swarm functionality and attempted to use the instance just for raw containers.  This utterly failed with no http services (puma) being able to serve content but no clear errors either (i.e. the request wasn’t even getting to the http server).  Digging into it deeper showed that Docker Swarm had left all kinds of digital garbage in iptables.  So I flushed that with a sudo iptables –flush and did a fresh deploy of the containers.  This still failed.&lt;/li&gt;
-  &lt;li&gt;Finally I built a new instance from scratch and assigned that instance the same ip address as the instance referenced in #2 and did another deploy.  The result?  The container worked perfectly on the very first try.&lt;/li&gt;
-&lt;/ol&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;redis-cli flushall&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;p&gt;My final conclusions are:&lt;/p&gt;
+&lt;p&gt;Thanks to &lt;a href=&quot;https://stackoverflow.com/questions/6851909/how-do-i-delete-everything-in-redis&quot;&gt;Stack Overflow&lt;/a&gt; for providing the answer.&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;Swarm isn’t ready for production use.&lt;/li&gt;
-  &lt;li&gt;If you have to use Swarm then put only one “stack” on a physical instance.&lt;/li&gt;
-  &lt;li&gt;Don’t try and use raw containers on a swarm box that aren’t using swarm.&lt;/li&gt;
-  &lt;li&gt;If you want to stop using swarm then, well, destroy the instance; do not waste time trying to use the instance for another Docker related thing - something is fundamentally wrong at the box level after Docker Swarm is shut down.&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;Now the inverse of flush all is to force a save to disk and you do this with:&lt;/p&gt;
 
-&lt;p&gt;In closing I’d like to point out that I am still using containers and I am finding a lot of luck with docker-compose.  This is not an anti docker blog post but, rather, an anti Docker Swarm blog post.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;redis-cli save&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Thanks to my friend &lt;a href=&quot;http://www.nickjanetakis.com/blog/&quot;&gt;Nick Janetakis&lt;/a&gt; for answering this for me via chat.&lt;/p&gt;
+
+&lt;p&gt;Now if you were running a docker based system managed with Docker Compose and you wanted to wrap these in shell scripts you deploy with your system then you might have something like this (adjust for your own system):&lt;/p&gt;
+
+&lt;p&gt;Save to dredisflush&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;This will flush all redis data on this subsystem&quot;&lt;/span&gt; 
+
+&lt;span class=&quot;nb&quot;&gt;read&lt;/span&gt; -p &lt;span class=&quot;s2&quot;&gt;&quot;Press enter to continue&quot;&lt;/span&gt;
+
+docker-compose -f docker-compose.production.yml web &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; -T redis-cli flushall
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Save to dredissave&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;This will flush all redis data on this subsystem&quot;&lt;/span&gt; 
+
+&lt;span class=&quot;nb&quot;&gt;read&lt;/span&gt; -p &lt;span class=&quot;s2&quot;&gt;&quot;Press enter to continue&quot;&lt;/span&gt;
+
+docker-compose -f docker-compose.production.yml web &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; -T redis-cli save
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 </description>
-        <pubDate>Wed, 28 Jun 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/docker/2017/06/28/beware-docker-swarm.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/docker/2017/06/28/beware-docker-swarm.html</guid>
+        <pubDate>Fri, 30 Jun 2017 20:33:17 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/redis/2017/06/30/redis-quick-tip-purge-all-data.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/redis/2017/06/30/redis-quick-tip-purge-all-data.html</guid>
+        
+        <category>redis</category>
         
         <category>docker</category>
         
-        <category>swarm</category>
         
-        <category>devops</category>
-        
-        
-        <category>docker</category>
+        <category>redis</category>
         
       </item>
     
       <item>
         <title>Zero to Full Tests - How to Add Tests to an Existing Code Base</title>
         <description>&lt;p&gt;Have to accept that this is an iterative, multi pass prcoess and you will have anomaloies  xits&lt;/p&gt;
+
+&lt;p&gt;Learning process - start with one type of test and do it everywhere – example association tests&lt;/p&gt;
 </description>
-        <pubDate>Tue, 27 Jun 2017 15:54:15 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/27/zero-to-full-tests-how-to-add-tests-to-an-existing-code-base.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/27/zero-to-full-tests-how-to-add-tests-to-an-existing-code-base.html</guid>
+        <pubDate>Fri, 30 Jun 2017 14:32:49 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/30/zero-to-full-tests-how-to-add-tests-to-an-existing-code-base.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/30/zero-to-full-tests-how-to-add-tests-to-an-existing-code-base.html</guid>
         
         
       </item>
     
       <item>
-        <title>How To Be A Developer 003 - Write It Down</title>
+        <title>How To Be A Developer 009 - Ship Dates Are Good And You Want Them to Be Aggressive</title>
         <description>
 </description>
-        <pubDate>Tue, 27 Jun 2017 09:26:57 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/27/how-to-be-a-developer-003-write-it-down.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/27/how-to-be-a-developer-003-write-it-down.html</guid>
+        <pubDate>Fri, 30 Jun 2017 08:40:19 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/30/how-to-be-a-developer-009-ship-dates-are-good-and-you-want-them-to-be-aggressive.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/30/how-to-be-a-developer-009-ship-dates-are-good-and-you-want-them-to-be-aggressive.html</guid>
         
         
       </item>
     
       <item>
-        <title>How To Be A Developer 008 - Learn to Write Tests</title>
+        <title>How To Be A Developer 007 - Learn and Use Time Bounding</title>
         <description>
 </description>
-        <pubDate>Tue, 27 Jun 2017 01:48:03 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/27/how-to-be-a-developer-008-learn-to-write-tests.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/27/how-to-be-a-developer-008-learn-to-write-tests.html</guid>
+        <pubDate>Fri, 30 Jun 2017 08:39:44 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/30/how-to-be-a-developer-007-learn-and-use-time-bounding.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/30/how-to-be-a-developer-007-learn-and-use-time-bounding.html</guid>
         
         
       </item>
     
       <item>
-        <title>How To Be A Developer 002 - Focus Don't Multitask</title>
+        <title>How To Be A Developer 004 - Don't Be Cocky Its All About Step by Step</title>
         <description>
 </description>
-        <pubDate>Mon, 26 Jun 2017 13:43:48 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/26/how-to-be-a-developer-002-focus-don-t-multitask.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/26/how-to-be-a-developer-002-focus-don-t-multitask.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>How To Be A Developer 015 - Write Tests</title>
-        <description>
-</description>
-        <pubDate>Mon, 26 Jun 2017 08:02:36 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/26/how-to-be-a-developer-015-write-tests.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/26/how-to-be-a-developer-015-write-tests.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>How To Be A Developer 006 - Solve It Completely</title>
-        <description>
-</description>
-        <pubDate>Mon, 26 Jun 2017 08:02:20 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/26/how-to-be-a-developer-006-solve-it-completely.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/26/how-to-be-a-developer-006-solve-it-completely.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>How To Be A Developer 010 - Developer Reward Thyself</title>
-        <description>
-</description>
-        <pubDate>Sun, 25 Jun 2017 16:16:06 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/25/how-to-be-a-developer-010-developer-reward-thyself.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/25/how-to-be-a-developer-010-developer-reward-thyself.html</guid>
+        <pubDate>Fri, 30 Jun 2017 08:39:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/06/30/how-to-be-a-developer-004-don-t-be-cocky-its-all-about-step-by-step.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/30/how-to-be-a-developer-004-don-t-be-cocky-its-all-about-step-by-step.html</guid>
         
         
       </item>

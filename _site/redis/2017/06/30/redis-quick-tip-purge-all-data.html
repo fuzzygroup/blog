@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>How To Be A Developer 001 - Commit</title>
-  <meta name="description" content="Background">
+  <title>Redis Quick Tip - Purge All Data and Save All Data</title>
+  <meta name="description" content="Redis is a memory backed, key value store, non-sql database / in memory data structure store that plays a crucial role in just about any Internet app.  Often...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/development/2017/06/24/how-to-be-a-developer-001.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/redis/2017/06/30/redis-quick-tip-purge-all-data.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -40,15 +40,11 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="How To Be A Developer 001 - Commit">
+  <meta name="twitter:title" content="Redis Quick Tip - Purge All Data and Save All Data">
 
   
     <meta name="twitter:description"
-      content="Background
-
-Lesson 001 - Commit
-
-">
+      content="Redis is a memory backed, key value store, non-sql database / in memory data structure store that plays a crucial role in just about any Internet app.  Often you need to purge all the information i...">
   
 
   
@@ -138,15 +134,52 @@ Lesson 001 - Commit
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">How To Be A Developer 001 - Commit</h1>
-    <p class="I'll"><time datetime="2017-06-24T15:58:41-04:00" itemprop="datePublished">Jun 24, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">Redis Quick Tip - Purge All Data and Save All Data</h1>
+    <p class="I'll"><time datetime="2017-06-30T20:33:17-04:00" itemprop="datePublished">Jun 30, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h1 id="background">Background</h1>
+    <p><a href="redis-quick-tip-purge-all-data.md">Redis</a> is a memory backed, key value store, non-sql database / in memory data structure store that plays a crucial role in just about any Internet app.  Often you need to purge all the information in Redis.  Here’s an easy command line way to do this:</p>
 
-<h1 id="lesson-001---commit">Lesson 001 - Commit</h1>
+<blockquote>
+  <p>redis-cli flushall</p>
+</blockquote>
 
+<p>Thanks to <a href="https://stackoverflow.com/questions/6851909/how-do-i-delete-everything-in-redis">Stack Overflow</a> for providing the answer.</p>
+
+<p>Now the inverse of flush all is to force a save to disk and you do this with:</p>
+
+<blockquote>
+  <p>redis-cli save</p>
+</blockquote>
+
+<p>Thanks to my friend <a href="http://www.nickjanetakis.com/blog/">Nick Janetakis</a> for answering this for me via chat.</p>
+
+<p>Now if you were running a docker based system managed with Docker Compose and you wanted to wrap these in shell scripts you deploy with your system then you might have something like this (adjust for your own system):</p>
+
+<p>Save to dredisflush</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="nb">echo</span> <span class="s2">"This will flush all redis data on this subsystem"</span> 
+
+<span class="nb">read</span> -p <span class="s2">"Press enter to continue"</span>
+
+docker-compose -f docker-compose.production.yml web <span class="nb">exec</span> -T redis-cli flushall
+</code></pre>
+</div>
+
+<p>Save to dredissave</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="nb">echo</span> <span class="s2">"This will flush all redis data on this subsystem"</span> 
+
+<span class="nb">read</span> -p <span class="s2">"Press enter to continue"</span>
+
+docker-compose -f docker-compose.production.yml web <span class="nb">exec</span> -T redis-cli save
+</code></pre>
+</div>
 
   </div>
   
