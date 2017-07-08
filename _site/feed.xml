@@ -6,17 +6,159 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 02 Jul 2017 13:14:41 -0400</pubDate>
-    <lastBuildDate>Sun, 02 Jul 2017 13:14:41 -0400</lastBuildDate>
+    <pubDate>Sat, 08 Jul 2017 07:36:06 -0400</pubDate>
+    <lastBuildDate>Sat, 08 Jul 2017 07:36:06 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
-        <title>How To Be A Developer 011 - Bump Up Your Google Fu</title>
-        <description>
+        <title>JavaScript and CSS Magic for the Rails Front End Challenged</title>
+        <description>&lt;p&gt;I am, as I have often written, front end challenged.  I grew up on the Internet writing HTML long before JavaScript and CSS and there’s that old aphorism about old dogs, new tricks… Happily, the people in my nerd life, offer to teach me a trick or two from time to time and, well, &lt;a href=&quot;https://www.nickjanetakis.com/blog/&quot;&gt;Nick&lt;/a&gt; came thru for me this morning so I thought I’d write it all down.&lt;/p&gt;
+
+&lt;p&gt;The problem at hand was a landing page for a SAAS app with screenshots where it was hard to read the text in the screenshots (think a dense, information packed dashboard).  Nick said to me “those should be zoomable; just &lt;a href=&quot;http://github.com/fat/zoom.js&quot;&gt;zoom.js&lt;/a&gt;”.  I made my usual grumbles about being front end challenged but then realized that I was basically being a &lt;strong&gt;winer&lt;/strong&gt; – and I hate winers, so to work!&lt;/p&gt;
+
+&lt;p&gt;Zoom.js is a combination of CSS and JavaScript that makes an image clickable as a zoomable overlay onto the current page.  It is basically the same as &lt;a href=&quot;https://medium.design/image-zoom-on-medium-24d146fc0c20&quot;&gt;Medium.com&lt;/a&gt;’s image zooming which is a brilliant implementation (thank you Brad Birdsall and the whole Medium team).&lt;/p&gt;
+
+&lt;p&gt;It should be noted that Zoom.js is jQuery based which means that it won’t work off the bat in Rails 5.1 without the gem ‘jquery-rails’ line being present in Gemfile.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Disclaimer:&lt;/strong&gt; I recognize that some of this isn’t perfect.  Specifically this library is clearly packaged to be installed by gulp in an automated fashion but I’ve never had a lot of luck with gulp hence the use below of wget / curl.&lt;/p&gt;
+
+&lt;h1 id=&quot;how-to-add-zoomjs-to-a-rails-application&quot;&gt;How to Add zoom.js to a Rails Application&lt;/h1&gt;
+
+&lt;p&gt;Please note that jQuery has been a core Rails dependency for years and years so steps 1 and 2 likely aren’t needed for you.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Add jquery to your Rails app if it isn’t present.  Add jquery-rails to Gemfile:
+&amp;gt; gem ‘jquery-rails’&lt;/li&gt;
+  &lt;li&gt;Require jquery in your application.js:
+&amp;gt; //= require juery&lt;/li&gt;
+  &lt;li&gt;Add the data-action=&amp;gt;”zoom” to your image_tag calls for any images you want to be zoomable like this:
+&amp;gt; &amp;lt;%=image_tag(“screenshot_dashboard.png”, :class =&amp;gt; “img-responsive”, :alt =&amp;gt; “a dashboard view”, “data-action” =&amp;gt; “zoom”)%&amp;gt;&lt;/li&gt;
+  &lt;li&gt;In your terminal, change into the app/assets/stylesheets directory:
+&amp;gt; cd app/assets/stylesheets&lt;/li&gt;
+  &lt;li&gt;Do a wget or curl on the url for the css.  I got this url by navigating the source tree down to zoom.css and then viewing the file and clicking the raw view:
+&amp;gt; wget https://raw.githubusercontent.com/fat/zoom.js/master/css/zoom.css&lt;/li&gt;
+  &lt;li&gt;Do a wget or curl on the url for the js.  I got this url by navigating the source tree down to zoom.js and then viewing the file and clicking the raw view:
+&amp;gt; https://raw.githubusercontent.com/fat/zoom.js/master/js/zoom.js&lt;/li&gt;
+  &lt;li&gt;Add the css and js to your application layout, application.html.erb, with two lines like these:
+&amp;gt; &lt;link href=&quot;assets/zoom.css&quot; rel=&quot;stylesheet&quot; /&gt;
+&amp;gt; &lt;script src=&quot;assets/zoom.js&quot;&gt;&lt;/script&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
 </description>
-        <pubDate>Sun, 02 Jul 2017 08:55:33 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/07/02/how-to-be-a-developer-011-bump-up-your-google-fu.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/07/02/how-to-be-a-developer-011-bump-up-your-google-fu.html</guid>
+        <pubDate>Sat, 08 Jul 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/07/08/javascript-and-css-magic-for-the-rails-front-end-challenged.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/07/08/javascript-and-css-magic-for-the-rails-front-end-challenged.html</guid>
+        
+        <category>rails</category>
+        
+        <category>javascript</category>
+        
+        <category>css</category>
+        
+        <category>images</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Why I Haven't Switched Away from OSX</title>
+        <description>&lt;p&gt;It should be noted that these problems aren’t just at the operating system or GUI level.  Now I will admit that things tend to be worst at the , as an example, if I prematurely stop an RSpec test run then&lt;/p&gt;
+</description>
+        <pubDate>Fri, 07 Jul 2017 10:54:56 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/osx/2017/07/07/why-i-haven-t-switched-away-from-osx.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/osx/2017/07/07/why-i-haven-t-switched-away-from-osx.html</guid>
+        
+        <category>osx</category>
+        
+        <category>linux</category>
+        
+        
+        <category>OSX</category>
+        
+      </item>
+    
+      <item>
+        <title>How To Be A Developer 011 - Bump Up Your Google Fu</title>
+        <description>&lt;p&gt;site:&lt;/p&gt;
+
+&lt;p&gt;quoted terms&lt;/p&gt;
+
+&lt;p&gt;change time spec to last month or last year&lt;/p&gt;
+</description>
+        <pubDate>Tue, 04 Jul 2017 07:27:45 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/07/04/how-to-be-a-developer-011-bump-up-your-google-fu.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/07/04/how-to-be-a-developer-011-bump-up-your-google-fu.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>How To Be A Developer 012 - Vocabulary</title>
+        <description>&lt;h1 id=&quot;background&quot;&gt;Background&lt;/h1&gt;
+
+&lt;p&gt;I’ve taken on a new project recently.  I’m helping teach some local (Indianapolis) homeless youth basic software engineering using the web developer curriculum from &lt;a href=&quot;http://www.freecodecamp.com&quot;&gt;Free Code Camp&lt;/a&gt;.  Initially I’m teaching two students and we’re working out of the &lt;a href=&quot;https://outreachindiana.org/&quot;&gt;Outreach Indiana&lt;/a&gt; facility in downtown Indianapolis.  Outreach Indiana is a fantastic charity that truly does good work.&lt;/p&gt;
+
+&lt;p&gt;I thought I’d write a series of essays on How to Be a Developer that reflect some of the things I’ve learned over a career working in high tech.  While I am a fan of what Free Code Camp does, I thought some practical, hands on advice might add some value for my students.  I’ve structured these as a series of single topic narratives arranged numerically.&lt;/p&gt;
+
+&lt;h1 id=&quot;lesson-012---vocabulary&quot;&gt;Lesson 012 - Vocabulary&lt;/h1&gt;
+
+&lt;p&gt;One of the very best decisions I ever made took place in a Walden Books, an old fashioned bookstore, where I purchased an issue of Byte magazine:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/byteapril82.jpg&quot; alt=&quot;byteapril82.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I was 14 years old.&lt;/p&gt;
+
+&lt;p&gt;That issue of Byte magazine was probably 450 pages or so in length and I understood maybe 1 word in 10, possibly as few as 1 word in 50 (I did pretty well with pronouns and articles).  When you’re 14 years old and you see articles like:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;An introduction to two common interfaces between computers and other devices&lt;/li&gt;
+  &lt;li&gt;Designing the Star User Interface&lt;/li&gt;
+  &lt;li&gt;A Disk Operating System for FORTH, An In-depth Look at How a DOS Operates&lt;/li&gt;
+  &lt;li&gt;You can trim text size by 40 percent by encoding common character strings&lt;/li&gt;
+  &lt;li&gt;Texas Instruments’ SN76832AN Infrared Remote-Control Receiver simplifies the tough job of receiving modulated infrared light.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Sidebar:&lt;/strong&gt; Thank you &lt;a href=&quot;https://archive.org/details/byte-magazine-1982-04&quot;&gt;Archive.org&lt;/a&gt; for putting my proto history online; Appreciated!&lt;/p&gt;
+
+&lt;p&gt;well, there just isn’t a lot that you’re going to understand out of the gate but what Byte magazine did for me was give me a &lt;em&gt;vocabulary&lt;/em&gt;.  Just after reading thru that issue, I knew:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;that &lt;em&gt;Forth&lt;/em&gt; was a language where you made your own “words”&lt;/li&gt;
+  &lt;li&gt;that &lt;em&gt;interfaces&lt;/em&gt; were important&lt;/li&gt;
+  &lt;li&gt;that user interfaces could be &lt;em&gt;more than text menus&lt;/em&gt; (remember 1982 – pre Lisa, pre Macintosh)&lt;/li&gt;
+  &lt;li&gt;that text could be compressed with &lt;em&gt;encoding&lt;/em&gt; (even if I didn’t understand all of it)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As a budding developer, one of the hardest things isn’t actually the coding, it is being just &lt;em&gt;aware of &lt;strong&gt;everything&lt;/strong&gt;&lt;/em&gt;.  Computing is a vast field with so much going on in it that you’ll generally find that you’re doing something that someone else has already solved.  But if you don’t even have vocabulary to know that something exists, how can you even Google for it?  In 1982 Byte magazine gave me that vocabulary, but, times change and there is no more Byte magazine so what is a new developer to do?&lt;/p&gt;
+
+&lt;p&gt;My advice, to channel &lt;a href=&quot;https://en.wikipedia.org/wiki/The_Graduate&quot;&gt;The Graduate&lt;/a&gt;, is one world: &lt;em&gt;Podcasts&lt;/em&gt; (apologies if you miss the reference - look for “plastic”).  Podcasts are (generally) free audio streams on the Internet that you can put on a mobile device or your desktop and listen to at your leisure.  There are a huge number of developer podcasts but the one I always recommend is &lt;a href=&quot;https://softwareengineeringdaily.com/&quot;&gt;Software Engineering Daily&lt;/a&gt;, also known as SE Daily, by Jeff Atwood.  In the same way that Byte magazine once exposed me to things I had no idea about, I find that today from SE Daily.  Here are some of the things that I learned about in the past month from SE Daily:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Web Assembly&lt;/li&gt;
+  &lt;li&gt;IOT Edge&lt;/li&gt;
+  &lt;li&gt;Setting Up Your Own ServerLess Cluster&lt;/li&gt;
+  &lt;li&gt;Video Object Segmentation&lt;/li&gt;
+  &lt;li&gt;Relay Modern&lt;/li&gt;
+  &lt;li&gt;“Cloud Native”&lt;/li&gt;
+  &lt;li&gt;Convolutional Neural Networks&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;None of these were terms that I had ever encountered (neural nets, yes, convolutional, no) and each of them, covered in about an hour, expanded my understanding.  Am I an expert?  Of course not but what I now have is the knowledge that:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;this thing exists&lt;/li&gt;
+  &lt;li&gt;what type of problem it helps me solve&lt;/li&gt;
+  &lt;li&gt;where I might learn more&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you’re just starting out as a developer, I think there’s probably no better way to expand your vocabulary than a solid developer podcast like Software Engineering Daily.  Recommended.&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 03 Jul 2017 08:42:47 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/07/03/how-to-be-a-developer-012-vocabulary.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/07/03/how-to-be-a-developer-012-vocabulary.html</guid>
         
         
       </item>
@@ -397,41 +539,6 @@ docker-compose -f docker-compose.production.yml web &lt;span class=&quot;nb&quot
         
         
         <category>redis</category>
-        
-      </item>
-    
-      <item>
-        <title>Zero to Full Tests - How to Add Tests to an Existing Code Base</title>
-        <description>&lt;p&gt;Have to accept that this is an iterative, multi pass prcoess and you will have anomaloies  xits&lt;/p&gt;
-
-&lt;p&gt;Learning process - start with one type of test and do it everywhere – example association tests&lt;/p&gt;
-</description>
-        <pubDate>Fri, 30 Jun 2017 14:32:49 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/30/zero-to-full-tests-how-to-add-tests-to-an-existing-code-base.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/30/zero-to-full-tests-how-to-add-tests-to-an-existing-code-base.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>How To Be A Developer 009 - Ship Dates Are Good And You Want Them to Be Aggressive</title>
-        <description>
-</description>
-        <pubDate>Fri, 30 Jun 2017 08:40:19 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/30/how-to-be-a-developer-009-ship-dates-are-good-and-you-want-them-to-be-aggressive.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/30/how-to-be-a-developer-009-ship-dates-are-good-and-you-want-them-to-be-aggressive.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>How To Be A Developer 007 - Learn and Use Time Bounding</title>
-        <description>
-</description>
-        <pubDate>Fri, 30 Jun 2017 08:39:44 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/06/30/how-to-be-a-developer-007-learn-and-use-time-bounding.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/06/30/how-to-be-a-developer-007-learn-and-use-time-bounding.html</guid>
-        
         
       </item>
     
