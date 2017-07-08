@@ -8,7 +8,7 @@ I am, as I have often written, front end challenged.  I grew up on the Internet 
 
 The problem at hand was a landing page for a SAAS app with screenshots where it was hard to read the text in the screenshots (think a dense, information packed dashboard).  Nick said to me "those should be zoomable; just [zoom.js](http://github.com/fat/zoom.js)".  I made my usual grumbles about being front end challenged but then realized that I was basically being a **winer** -- and I hate winers, so to work!
 
-Zoom.js is a combination of CSS and JavaScript that makes an image clickable as a zoomable overlay onto the current page.  It is basically the same as [Medium.com](https://medium.design/image-zoom-on-medium-24d146fc0c20)'s image zooming which is a brilliant implementation (thank you Brad Birdsall and the whole Medium team).
+Zoom.js is a combination of CSS and JavaScript that makes an image clickable as a zoomable overlay onto the current page.  It is basically the same as [Medium.com](https://medium.design/image-zoom-on-medium-24d146fc0c20)'s image zooming which is a brilliant implementation (thank you Brad Birdsall and the whole Medium team).  And thanks to Github user [fat](http://www.github.com/fat/) who actually did the hard work on this.
 
 It should be noted that Zoom.js is jQuery based which means that it won't work off the bat in Rails 5.1 without the gem 'jquery-rails' line being present in Gemfile.  
 
@@ -32,6 +32,5 @@ Please note that jQuery has been a core Rails dependency for years and years so 
 > https://raw.githubusercontent.com/fat/zoom.js/master/js/zoom.js
 7. Add the css and js to your application layout, application.html.erb, with two lines like these (obviously you need to add angle braces around them; my blogging tool eats the text if I show them, alas):
 > link href="assets/zoom.css" rel="stylesheet"
-
 > script src="assets/zoom.js"
   
