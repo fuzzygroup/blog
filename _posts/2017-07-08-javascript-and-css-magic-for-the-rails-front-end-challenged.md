@@ -30,7 +30,7 @@ Please note that jQuery has been a core Rails dependency for years and years so 
 > wget https://raw.githubusercontent.com/fat/zoom.js/master/css/zoom.css
 6. Do a wget or curl on the url for the js.  I got this url by navigating the source tree down to zoom.js and then viewing the file and clicking the raw view:
 > https://raw.githubusercontent.com/fat/zoom.js/master/js/zoom.js
-7. Add the css and js to your application layout, application.html.erb, with two lines like these:
-> <link href="assets/zoom.css" rel="stylesheet">
-> <script src="assets/zoom.js">
+7. Add the css and js to your application layout, application.html.erb, with two lines like these (obviously you need to add angle braces around them; my blogging tool eats the text if I show them, alas):
+> link href="assets/zoom.css" rel="stylesheet">
+> script src="assets/zoom.js"
   
