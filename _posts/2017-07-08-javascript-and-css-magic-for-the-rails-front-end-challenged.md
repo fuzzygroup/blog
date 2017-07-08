@@ -32,6 +32,7 @@ Please note that jQuery has been a core Rails dependency for years and years so 
 > https://raw.githubusercontent.com/fat/zoom.js/master/js/zoom.js
 7. Add the css and js to your application layout, application.html.erb, with two lines like these (obviously you need to add angle braces around them; my blogging tool eats the text if I show them, alas):
     
-    link href="assets/zoom.css" rel="stylesheet"
-    script src="assets/zoom.js"
+<p>link href="assets/zoom.css" rel="stylesheet"</p>
+    
+<p>script src="assets/zoom.js"</p>
   
