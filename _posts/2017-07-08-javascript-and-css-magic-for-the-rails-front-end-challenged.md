@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JavaScript and CSS Magic for the Rails Front End Challenged
+title: JavaScript and CSS Magic for the Rails Front End Challenged using Zoom.js for Image Zooming
 category: rails
 tags: ["rails", "javascript", "css", "images"]
 ---
