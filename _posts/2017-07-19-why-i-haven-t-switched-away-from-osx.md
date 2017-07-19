@@ -3,6 +3,7 @@ layout: post
 title: Why I Haven't Switched Away from OSX
 category: OSX
 tags: ["osx", "linux"]
+description: When you have stability problems with software, the logical decision is to switch -- or is it?  Here I talk about OSX stability issues and why six months after I started trying to switch, I'm still using OSX.
 ---
 I'm writing this at 4:12 am sitting next to a machine with 11:50 hours of uptime.  The machine I'm using is an old OSX Macbook Air running OSX El Capitan 10.11.6 and the machine with less than 12 hours of uptime is running Sierra 10.12.5 and is a new (6 months old) Macbook Pro 13, the last one of the old generation before Apple foolishly messed around with the keyboard travel and layout on the new generation.  Yesterday my wife was driving and I was in the car drafting blog entries for a new, very focused blog I want to launch.  We were on flat dead empty and she stopped at a gas station so I got out to pump the fuel.  I came back to that worst of all experiences -- my laptop had rebooted spontaneously and was sitting at the login prompt.  *Groan*.  Even worse there was no system report this time so I don't even know what pathetic excuse for a piece of software screwed up (again).  So I'm just left wondering.  But since this happens so frequently, I found a [crash report from about a week ago](https://gist.github.com/fuzzygroup/a4589f50665fd62f9ded74d54cd77e74) when my box had an uptime of 94000 seconds (yes that's just one day).
 
