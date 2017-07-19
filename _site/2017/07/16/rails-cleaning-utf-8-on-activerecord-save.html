@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Examples of Data Parsing with Nokogiri</title>
-  <meta name="description" content="http://stackoverflow.com/questions/17782061/how-do-i-parse-and-scrape-the-meta-tags-of-a-url-with-nokogiri">
+  <title>Rails Cleaning UTF-8 on ActiveRecord Save</title>
+  <meta name="description" content="Quick Tip: Cleaning Unicode Before Saving ActiveRecord Objects">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/2017/03/03/examples-of-data-parsing-with-nokogiri.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/2017/07/16/rails-cleaning-utf-8-on-activerecord-save.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -40,13 +40,18 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Examples of Data Parsing with Nokogiri">
+  <meta name="twitter:title" content="Rails Cleaning UTF-8 on ActiveRecord Save">
 
   
     <meta name="twitter:description"
-      content="http://stackoverflow.com/questions/17782061/how-do-i-parse-and-scrape-the-meta-tags-of-a-url-with-nokogiri
+      content="Quick Tip: Cleaning Unicode Before Saving ActiveRecord Objects
 
-">
+ActiveSupport::Inflector.transliterate
+
+before_save :transliterate
+
+def transliterate
+    self.title = ActiveSupport::Inflector.trans...">
   
 
   
@@ -136,13 +141,23 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Examples of Data Parsing with Nokogiri</h1>
-    <p class="I'll"><time datetime="2017-03-03T05:41:47-05:00" itemprop="datePublished">Mar 3, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">Rails Cleaning UTF-8 on ActiveRecord Save</h1>
+    <p class="I'll"><time datetime="2017-07-16T05:54:37-04:00" itemprop="datePublished">Jul 16, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>http://stackoverflow.com/questions/17782061/how-do-i-parse-and-scrape-the-meta-tags-of-a-url-with-nokogiri</p>
+    <p>Quick Tip: Cleaning Unicode Before Saving ActiveRecord Objects</p>
 
+<p>ActiveSupport::Inflector.transliterate</p>
+
+<p>before_save :transliterate</p>
+
+<p>def transliterate
+    self.title = ActiveSupport::Inflector.transliterate(self.title)
+    self.body = ActiveSupport::Inflector.transliterate(self.body)
+  end</p>
+
+<p>https://stackoverflow.com/questions/225471/how-do-i-replace-accented-latin-characters-in-ruby</p>
 
   </div>
   

@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>JavaScript and CSS Magic for the Rails Front End Challenged using Zoom.js for Image Zooming</title>
-  <meta name="description" content="I am, as I have often written, front end challenged.  I grew up on the Internet writing HTML long before JavaScript and CSS and there’s that old aphorism abo...">
+  <title>Tips on Being a Home School Dad Teaching Math - Use Wolfram Alpha</title>
+  <meta name="description" content="Like a lot of software engineers, I’d like to think that I “know math” and certainly my wife thinks I do but so much of the “math” that you do for software e...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/rails/2017/07/08/javascript-and-css-magic-for-the-rails-front-end-challenged.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/2017/07/15/tips-on-being-a-home-school-dad-teaching-math-use-wolfram-alpha.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -40,11 +40,11 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="JavaScript and CSS Magic for the Rails Front End Challenged using Zoom.js for Image Zooming">
+  <meta name="twitter:title" content="Tips on Being a Home School Dad Teaching Math - Use Wolfram Alpha">
 
   
     <meta name="twitter:description"
-      content="When you're an old school web developer, sometimes today's front end world can be challenging.  Here I talk about how to use JavaScript and CSS to improve image zooming in a Rails app.">
+      content="Like a lot of software engineers, I’d like to think that I “know math” and certainly my wife thinks I do but so much of the “math” that you do for software engineering is, well, not all that much. ...">
   
 
   
@@ -134,44 +134,36 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">JavaScript and CSS Magic for the Rails Front End Challenged using Zoom.js for Image Zooming</h1>
-    <p class="I'll"><time datetime="2017-07-08T00:00:00-04:00" itemprop="datePublished">Jul 8, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">Tips on Being a Home School Dad Teaching Math - Use Wolfram Alpha</h1>
+    <p class="I'll"><time datetime="2017-07-15T07:35:42-04:00" itemprop="datePublished">Jul 15, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>I am, as I have often written, front end challenged.  I grew up on the Internet writing HTML long before JavaScript and CSS and there’s that old aphorism about old dogs, new tricks… Happily, the people in my nerd life, offer to teach me a trick or two from time to time and, well, <a href="https://www.nickjanetakis.com/blog/">Nick</a> came thru for me this morning so I thought I’d write it all down.</p>
+    <p>Like a lot of software engineers, I’d like to think that I “know math” and certainly my wife thinks I do but so much of the “math” that you do for software engineering is, well, not all that much.  Now, don’t get me wrong, I can <strong>implement</strong> math fairly well, particularly with a data scientist’s help (I once did a pretty significant bit of work around implementing revenue estimates for mobile apps based on leaderboard popularity) but implementation isn’t always the same as understanding.</p>
 
-<p>The problem at hand was a landing page for a SAAS app with screenshots where it was hard to read the text in the screenshots (think a dense, information packed dashboard).  Nick said to me “those should be zoomable; just <a href="http://github.com/fat/zoom.js">zoom.js</a>”.  I made my usual grumbles about being front end challenged but then realized that I was basically being a <strong>winer</strong> – and I hate winers, so to work!</p>
+<p>So I was recently helping my son with his algebra and he asked me this very simple thing:</p>
 
-<p>Zoom.js is a combination of CSS and JavaScript that makes an image clickable as a zoomable overlay onto the current page.  It is basically the same as <a href="https://medium.design/image-zoom-on-medium-24d146fc0c20">Medium.com</a>’s image zooming which is a brilliant implementation (thank you Brad Birdsall and the whole Medium team).  And thanks to Github user <a href="http://www.github.com/fat/">fat</a> who actually did the hard work on this.</p>
+<blockquote>
+  <p>Dad, what’s x squared * x ?</p>
+</blockquote>
 
-<p>It should be noted that Zoom.js is jQuery based which means that it won’t work off the bat in Rails 5.1 without the gem ‘jquery-rails’ line being present in Gemfile.</p>
+<p>And while I thought I knew the answer, I didn’t definitively <strong>know</strong> the answer but I knew how to get it – <a href="https://www.wolframalpha.com/">Wolfram Alpha</a>.  Wolfram Alpha is a symbolic mathematical problem solver that can actually show you how it solved your work.  And, for a lot of math, at least being able to confirm the answer lets you see how you can solve it.  Here’s what the answer looked like:</p>
 
-<p><strong>Disclaimer:</strong> I recognize that some of this isn’t perfect.  Specifically this library is clearly packaged to be installed by gulp in an automated fashion but I’ve never had a lot of luck with gulp hence the use below of wget / curl.</p>
+<p><img src="/blog/assets/wolfram_alpha_xsquared_times_x.png" alt="wolfram_alpha_xsquared_times_x.png" /></p>
 
-<h1 id="how-to-add-zoomjs-to-a-rails-application">How to Add zoom.js to a Rails Application</h1>
+<p><a href="https://www.wolframalpha.com/input/?i=x%5E2+*+x">See the answer in Wolfram Alpha</a>.</p>
 
-<p>Please note that jQuery has been a core Rails dependency for years and years so steps 1 and 2 likely aren’t needed for you.</p>
+<p>Using Wolfram Alpha does mean entering the problem in a way it can understand.  This shouldn’t be hard for most engineers:</p>
 
-<ol>
-  <li>Add jquery to your Rails app if it isn’t present.  Add jquery-rails to Gemfile:
-&gt; gem ‘jquery-rails’</li>
-  <li>Require jquery in your application.js:
-&gt; //= require juery</li>
-  <li>Add the data-action=&gt;”zoom” to your image_tag calls for any images you want to be zoomable like this:
-&gt; &lt;%=image_tag(“screenshot_dashboard.png”, :class =&gt; “img-responsive”, :alt =&gt; “a dashboard view”, “data-action” =&gt; “zoom”)%&gt;</li>
-  <li>In your terminal, change into the app/assets/stylesheets directory:
-&gt; cd app/assets/stylesheets</li>
-  <li>Do a wget or curl on the url for the css.  I got this url by navigating the source tree down to zoom.css and then viewing the file and clicking the raw view:
-&gt; wget https://raw.githubusercontent.com/fat/zoom.js/master/css/zoom.css</li>
-  <li>Do a wget or curl on the url for the js.  I got this url by navigating the source tree down to zoom.js and then viewing the file and clicking the raw view:
-&gt; https://raw.githubusercontent.com/fat/zoom.js/master/js/zoom.js</li>
-  <li>Add the css and js to your application layout, application.html.erb, with two lines like these (obviously you need to add angle braces around them; my blogging tool eats the text if I show them, alas):</li>
-</ol>
+<blockquote>
+  <p>x^2 * x</p>
+</blockquote>
 
-<p>link href="assets/zoom.css" rel="stylesheet"</p>
+<p>And Wolfram Alpha will almost instantly solve it to:</p>
 
-<p>script src="assets/zoom.js"</p>
+<p>x^3</p>
+
+<p>And what that tells me is that when you have exponential powers as the product of two terms, the powers must be added since there’s no other way that 2 and 1 result to 3.  If you click the Step by Step solution link then you’d see this:</p>
 
 
   </div>
