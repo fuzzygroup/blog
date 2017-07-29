@@ -3,6 +3,7 @@ layout: post
 title: Rails and Address Already In Use - Bind Error
 category: rails
 tags: ["rails", "sysadmin", "bind"]
+description: When you can't run your Rails server because of a bind error, use lsof to find the process which has that port in use and then kill it.
 ---
 Lately I've seen this error come up quite a few times:
 
