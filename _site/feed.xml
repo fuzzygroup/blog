@@ -6,9 +6,44 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 24 Jul 2017 08:39:49 -0400</pubDate>
-    <lastBuildDate>Mon, 24 Jul 2017 08:39:49 -0400</lastBuildDate>
+    <pubDate>Sat, 29 Jul 2017 05:54:31 -0400</pubDate>
+    <lastBuildDate>Sat, 29 Jul 2017 05:54:31 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Rails and Address Already In Use - Bind Error</title>
+        <description>&lt;p&gt;Lately I’ve seen this error come up quite a few times:&lt;/p&gt;
+
+&lt;p&gt;/Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch_web_app_api/gems/puma-3.9.1/lib/puma/binder.rb:269:in `initialize’: Address already in use - bind(2) for “::1” port 3220 (Errno::EADDRINUSE)&lt;/p&gt;
+
+&lt;p&gt;I’m running a fairly complex stack that mirrors an 8 micro service application where things are expected to be on certain points in development so having port 3220 not working means that one of my APIs isn’t available – and that’s &lt;strong&gt;unacceptable&lt;/strong&gt;.  So I dug into it a bit and with the help of &lt;a href=&quot;https://stackoverflow.com/questions/10261477/tcpserver-error-address-already-in-use-bind2&quot;&gt;this StackOverflow&lt;/a&gt;, I found the answer was to locate the offending process and then kill it dead:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;lsof -wni tcp:3220&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;That gives the process id or PID and then you can just kill it:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;kill -9 12345 (or whatever)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The problem s&lt;/p&gt;
+</description>
+        <pubDate>Sat, 29 Jul 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/07/29/rails-and-address-already-in-use-bind-error.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/07/29/rails-and-address-already-in-use-bind-error.html</guid>
+        
+        <category>rails</category>
+        
+        <category>sysadmin</category>
+        
+        <category>bind</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>Planning the Bare Minimum Billing Side of a SAAS Product</title>
@@ -491,51 +526,6 @@ end&lt;/p&gt;
         <pubDate>Sun, 16 Jul 2017 05:51:53 -0400</pubDate>
         <link>http://fuzzyblog.io//blog/2017/07/16/setting-up-custom-rails-loggers.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/07/16/setting-up-custom-rails-loggers.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Debugging Docker Problems - Omit the -d Flag</title>
-        <description>&lt;p&gt;I find that I don’t use Docker in an entirely standard way – I use Docker purely for &lt;strong&gt;deployment&lt;/strong&gt; and not at all for &lt;strong&gt;development&lt;/strong&gt;.  This means that I often discover container problems only at runtime – not as I work.  And the consequence of this is that debugging things can, at times, be &lt;em&gt;interesting&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;Debugging Docker&lt;/p&gt;
-
-&lt;p&gt;don’t run with -d&lt;/p&gt;
-
-&lt;p&gt;Let it run in the foreground&lt;/p&gt;
-
-&lt;p&gt;docker-compose -f docker-compose.production.yml up&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rake_1     | /app/config/initializers/seira_servers.rb:1: warning: already initialized constant HYDE_API_KEY
-rake_1     | /app/config/initializers/constants_system.rb:7: warning: previous definition of HYDE_API_KEY was here
-rake_1     | bundler: failed to load command: clockwork (/usr/local/bundle/bin/clockwork)
-rake_1     | LoadError: No such file to load -- FileUtils
-rake_1     |   /usr/local/bundle/gems/activesupport-5.0.2/lib/active_support/dependencies.rb:293:in `require'
-rake_1     |   /usr/local/bundle/gems/activesupport-5.0.2/lib/active_support/dependencies.rb:293:in `block in require'
-rake_1     |   /usr/local/bundle/gems/activesupport-5.0.2/lib/active_support/dependencies.rb:259:in `load_dependency'
-rake_1     |   /usr/local/bundle/gems/activesupport-5.0.2/lib/active_support/dependencies.rb:293:in `require'
-rake_1     |   /app/app/models/page_archive.rb:4:in `&amp;lt;class:PageArchive&amp;gt;'
-rake_1     |   /app/app/models/page_archive.rb:2:in `&amp;lt;top (required)&amp;gt;'
-rake_1     |   /usr/local/bundle/gems/activesupport-5.0.2/lib/active_support/dependencies.rb:293:in `require'
-rake_1     |   /usr/local/bundle/gems/activesupport-5.0.2/lib/active_support/dependencies.rb:293:in `block in require'
-rake_1     |   /usr/local/bundle/gems/activesupport-5.0.2/lib/active_support/dependencies.rb:259:in `load_dependency'
-rake_1     |   /usr/local/bundle/gems/activesupport-5.0.2/lib/active_support/dependencies.rb:293:in `require'
-rake_1     |   /usr/local/bundle/gems/activesupport-5.0.2/lib/active_support/dependencies.rb:380:in `block in require_or_load'
-rake_1     |   /usr/local/bundle/gems/activesupport-5.0.2/lib/active_support/dependencies.rb:37:in `block in load_interlock'
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And here was the fix:&lt;/p&gt;
-
-&lt;p&gt;before:
-&amp;gt; require “FileUtils”
-after:
-&amp;gt; require “FileUtils” if Rails.env.development?&lt;/p&gt;
-</description>
-        <pubDate>Sun, 16 Jul 2017 05:50:22 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/07/16/debugging-docker-problems-omit-the-d-flag.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/07/16/debugging-docker-problems-omit-the-d-flag.html</guid>
         
         
       </item>
