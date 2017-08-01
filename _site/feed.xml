@@ -6,9 +6,108 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 29 Jul 2017 05:56:37 -0400</pubDate>
-    <lastBuildDate>Sat, 29 Jul 2017 05:56:37 -0400</lastBuildDate>
+    <pubDate>Tue, 01 Aug 2017 11:08:17 -0400</pubDate>
+    <lastBuildDate>Tue, 01 Aug 2017 11:08:17 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Hacks for When Ansible Galaxy Isn't Working</title>
+        <description>&lt;p&gt;As of late I have manually bootstrapped a handful of machines into production using a text file with some command lines.  Yes this is a crap ass way to do it but one of the key things, Docker, is a damn pain in the ass to install.  Here’s what I was using as the command lines:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository \
+   &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable&quot;
+sudo apt-get update
+sudo apt-get install docker-ce
+sudo apt install docker-compose
+sudo groupadd docker
+sudo usermod -aG docker $USER
+sudo systemctl enable docker
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Even for me that’s damn ugly – so it is clearly time for &lt;a href=&quot;http://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt;.  Ansible is a machine provisioning tool that lets you reduce commands like the above to something short, sweet and idempotent.  For this particular thing I wanted to use &lt;a href=&quot;https://nickjanetakis.com/blog/automate-installing-docker-and-docker-compose-with-ansible&quot;&gt;Nick Janetakis’ Ansible Galaxy role&lt;/a&gt; to make installing this trivial.  Specifically I wanted what his blog post promises:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: nickjj.docker, tags docker}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;which is all you need to setup Docker.  And that’s actually what I got but I hit a few snags hence the workaround.&lt;/p&gt;
+
+&lt;p&gt;The problem that I hit was that his ansible galaxy role has some kind of version control conflict so that the version that gets installed when you type:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-galaxy install nickjj.docker
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;is actually the version from November 2016, not the current 17.xx version.  What I needed was the master version of the Github repo not the older tagged version.  A bit of googling and some interactions with Nick told me just clone it directly into my own project as a work around.  Here’s how I did that:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Change into the right directory
+cd ~/me/fuzzygroup/hyde/seira_watch/ansible/roles
+
+git clone git@github.com:nickjj/ansible-docker.git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This created an ansible-docker folder in my roles directory and all that I needed to make it work was to change the nickjj.docker reference to:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: ansible-docker, tags docker}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Nick also helpfully pointed out that I could have also cloned to tmp and then renamed to nickjj-docker before copying it over and that would have worked just fine tool.  Thanks Nick!&lt;/p&gt;
+
+&lt;p&gt;Note: Another workaround supposedly would be to make a requirements.yml file and specify the branch there but I’m less certain on how to do that.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 01 Aug 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/ansible/2017/08/01/hacks-for-when-ansible-galaxy-isn-t-working.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/ansible/2017/08/01/hacks-for-when-ansible-galaxy-isn-t-working.html</guid>
+        
+        <category>ansible</category>
+        
+        <category>ansible-galaxy</category>
+        
+        
+        <category>ansible</category>
+        
+      </item>
+    
+      <item>
+        <title>Configuring Your Mac with Ansible Take 2</title>
+        <description>&lt;p&gt;The last new Mac I setup was back in &lt;a href=&quot;http://fuzzyblog.io/blog/osx/2016/11/20/ansible-for-configuring-your-mac-so-much-better.html&quot;&gt;2016, November 20&lt;/a&gt; and to do that I used ansible which was a wonderful experience.  Rather than groveling for software to install, shell hacks, etc, my ansible routine handled all of those crappy tasks and it was brilliant.  I can’t claim any originality here – lots of people other than me have done this.  In specific I drew inspiration from &lt;a href=&quot;https://twitter.com/geerlingguy&quot;&gt;Jeff Geerling’s&lt;/a&gt; ansible Macbook Pro repository.  He and I did it differently (his ansible skills are better than mine) but the end result was much the same – a functional machine with minimal manual work.&lt;/p&gt;
+
+&lt;p&gt;I recently wrote about &lt;a href=&quot;http://fuzzyblog.io/blog/osx/2017/07/19/why-i-haven-t-switched-away-from-osx.html&quot;&gt;my lack of system stability&lt;/a&gt; and figured that it was time to address it.  My thesis for some time has been that most of my errors are somehow related to lack of RAM so moving to a bigger box made sense.  Over the weekend I converted my Linux Intel NUC over to an OSX Hackintosh and used an updated version of the same playbook to handle configuration.  This means that I’m now working on a 32 gigs of RAM development box.  It is unclear if this will work out long term or not but it is an interesting experiment.  Of course since its a Hackintosh there are certain bits of weirdness like the fact that audio doesn’t work at all at present.  Ah well…&lt;/p&gt;
+
+&lt;h1 id=&quot;useful-links&quot;&gt;Useful Links&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/geerlingguy/mac-dev-playbook&quot;&gt;Jeff Geerling’s Github Mac Repository&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fuzzygroup/ansible-macbook-pro&quot;&gt;My Github Repo for Macbook Configuration&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/&quot;&gt;TonyMacx86&lt;/a&gt; - The definitive OSX Hackintosh Resource&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 31 Jul 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/mac/2017/07/31/configuring-your-mac-with-ansible-take-2.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/mac/2017/07/31/configuring-your-mac-with-ansible-take-2.html</guid>
+        
+        <category>mac</category>
+        
+        <category>ansible</category>
+        
+        <category>hackintosh</category>
+        
+        
+        <category>mac</category>
+        
+      </item>
     
       <item>
         <title>Rails and Address Already In Use - Bind Error</title>
@@ -485,45 +584,6 @@ Now&lt;/p&gt;
         <pubDate>Sun, 16 Jul 2017 05:55:48 -0400</pubDate>
         <link>http://fuzzyblog.io//blog/2017/07/16/seirawatch-blog-udemy-warning-2-the-dangers-of-free-problems-with-cross-promotion.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/07/16/seirawatch-blog-udemy-warning-2-the-dangers-of-free-problems-with-cross-promotion.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Rails Cleaning UTF-8 on ActiveRecord Save</title>
-        <description>&lt;p&gt;Quick Tip: Cleaning Unicode Before Saving ActiveRecord Objects&lt;/p&gt;
-
-&lt;p&gt;ActiveSupport::Inflector.transliterate&lt;/p&gt;
-
-&lt;p&gt;before_save :transliterate&lt;/p&gt;
-
-&lt;p&gt;def transliterate
-    self.title = ActiveSupport::Inflector.transliterate(self.title)
-    self.body = ActiveSupport::Inflector.transliterate(self.body)
-  end&lt;/p&gt;
-
-&lt;p&gt;https://stackoverflow.com/questions/225471/how-do-i-replace-accented-latin-characters-in-ruby&lt;/p&gt;
-</description>
-        <pubDate>Sun, 16 Jul 2017 05:54:37 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/07/16/rails-cleaning-utf-8-on-activerecord-save.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/07/16/rails-cleaning-utf-8-on-activerecord-save.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Setting Up Custom Rails Loggers</title>
-        <description>&lt;p&gt;module Clockwork
-  configure do |config|
-    config[:logger] = Logger.new(“clockwork.log”)
-  end
-end&lt;/p&gt;
-
-&lt;p&gt;https://stackoverflow.com/questions/24189871/clockwork-gem-logger-not-working?rq=1&lt;/p&gt;
-</description>
-        <pubDate>Sun, 16 Jul 2017 05:51:53 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/07/16/setting-up-custom-rails-loggers.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/07/16/setting-up-custom-rails-loggers.html</guid>
         
         
       </item>
