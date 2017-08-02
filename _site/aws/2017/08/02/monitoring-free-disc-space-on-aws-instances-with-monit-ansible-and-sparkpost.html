@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Hacks for When Ansible Galaxy Isn&#39;t Working</title>
-  <meta name="description" content="As of late I have manually bootstrapped a handful of machines into production using a text file with some command lines.  Yes this is a crap ass way to do it...">
+  <title>Monitoring Free Disc Space On AWS Instances with Monit, Ansible and SparkPost</title>
+  <meta name="description" content="There are lots and lots of things that can go wrong with an AWS instance but I have always found that the single most common problem is nothing more than run...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/ansible/2017/08/01/hacks-for-when-ansible-galaxy-isn-t-working.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/aws/2017/08/02/monitoring-free-disc-space-on-aws-instances-with-monit-ansible-and-sparkpost.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -39,11 +39,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Hacks for When Ansible Galaxy Isn't Working">
+  <meta name="twitter:title" content="Monitoring Free Disc Space On AWS Instances with Monit, Ansible and SparkPost">
 
   
     <meta name="twitter:description"
-      content="When Ansible Galaxy won't function correctly then there is a work around albeit a mildly hacky one.">
+      content="There are lots and lots of things that can go wrong with an AWS instance but I have always found that the single most common problem is nothing more than running out of disc space – log files fill ...">
   
 
   
@@ -133,66 +133,103 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Hacks for When Ansible Galaxy Isn't Working</h1>
-    <p class="I'll"><time datetime="2017-08-01T00:00:00-04:00" itemprop="datePublished">Aug 1, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">Monitoring Free Disc Space On AWS Instances with Monit, Ansible and SparkPost</h1>
+    <p class="I'll"><time datetime="2017-08-02T00:00:00-04:00" itemprop="datePublished">Aug 2, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>As of late I have manually bootstrapped a handful of machines into production using a text file with some command lines.  Yes this is a crap ass way to do it but one of the key things, Docker, is a damn pain in the ass to install.  Here’s what I was using as the command lines:</p>
+    <p>There are lots and lots of things that can go wrong with an AWS instance but I have always found that the single most common problem is nothing more than running out of disc space – log files fill up, too many things get deployed, etc.  And with low end AWS instances being only 8 gigs of free disc space, well, this is bound to happen.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
-sudo apt-get update
-sudo apt-get install docker-ce
-sudo apt install docker-compose
-sudo groupadd docker
-sudo usermod -aG docker $USER
-sudo systemctl enable docker
+<p>The expensive solution is simple – buy more disc space – but I’m <strong>cheap</strong> and that means that the real solution is <strong>monitoring</strong> and <strong>alerting</strong>.  Here’s what this means:</p>
+
+<ul>
+  <li>You need a way to configure monitoring, <strong>automatically</strong>, on <strong>not</strong> just one server but <strong>all</strong> servers you have.  We’ll use <a href="http://www.ansible.com/">Ansible</a> for this.</li>
+  <li>You need a monitoring daemon, a piece of software which looks for error conditions and sends email when they occur.  We’ll use <a href="https://github.com/arnaudsj/monit">monit</a> for this.</li>
+  <li>You need an email server to send the messages through.  We’ll use <a href="http://www.sparkpost.com/">SparkPost</a> for this.</li>
+</ul>
+
+<h1 id="step-1-installation-of-monit-with-ansible">Step 1: Installation of Monit with Ansible</h1>
+
+<p>Ansible, which I’ve <a href="http://fuzzyblog.io/blog/category.html#ansible">written a lot about</a>, is a configuration tool for servers, your laptop, etc – essentially any device that you want to configure can be managed by Ansible.</p>
+
+<p>Here is a basic Ansible role which installs monit along with a configuration file:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>---
+- name: install monit
+  apt: pkg=monit state=present
+  
+- name: copy config file
+  template: src=roles/install_monit/files/monit.rc dest=/etc/monit/monitrc
+  
+- name: start monit
+  service: name=monit state=started
 </code></pre>
 </div>
 
-<p>Even for me that’s damn ugly – so it is clearly time for <a href="http://www.ansible.com/">Ansible</a>.  Ansible is a machine provisioning tool that lets you reduce commands like the above to something short, sweet and idempotent.  For this particular thing I wanted to use <a href="https://nickjanetakis.com/blog/automate-installing-docker-and-docker-compose-with-ansible">Nick Janetakis’ Ansible Galaxy role</a> to make installing this trivial.  Specifically I wanted what his blog post promises:</p>
+<p>The lines above would go in a file roles/install_monit/tasks/main.yml.  You could then call that from a playbook with nothing more than:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- { role: nickjj.docker, tags docker}
+<div class="highlighter-rouge"><pre class="highlight"><code>- { role: install_monit, tags: monit}
 </code></pre>
 </div>
 
-<p>which is all you need to setup Docker.  And that’s actually what I got but I hit a few snags hence the workaround.</p>
+<p>As long as all your AWS instances are listed in an inventory file then this will install monit on all boxes, copy up the configuration file and then restart the service.</p>
 
-<p>The problem that I hit was that his ansible galaxy role has some kind of version control conflict so that the version that gets installed when you type:</p>
+<h1 id="step-2-monit-configuration">Step 2: Monit Configuration</h1>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible-galaxy install nickjj.docker
+<p>We do need a simple Monit configuration file to tell it about our email server, credentials and the monitoring rules.  Monit is very powerful and can monitor for all kinds of issues but I’m only going to configure free disc space checking.  Where you see things in UPPERCASE then you need to configure them for your settings.</p>
+
+<p>This configuration file will be installed into /etc/monit/monitrc by your Ansible playbook.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>set daemon 120 with start delay 60
+
+  set mailserver smtp.sparkpostmail.com  port 587 username "SMTP_Injection" password "PASSWORD" using tlsv1 with timeout 30 seconds
+
+  set alert YOURADDRESS@YOURSERVER.COM
+  
+mail-format {
+    From: noreply@YOURSERVER.COM
+    Subject: MONIT ERROR !!! [$HOST] $EVENT $SERVICE
+    Message: $DESCRIPTION
+             $DATE
+}
+
+check filesystem "root" with path /dev/xvda1
+  if space usage &gt; 90% for 8 cycles then alert
 </code></pre>
 </div>
 
-<p>is actually the version from November 2016, not the current 17.xx version.  What I needed was the master version of the Github repo not the older tagged version.  A bit of googling and some interactions with Nick told me just clone it directly into my own project as a work around.  Here’s how I did that:</p>
+<p>And that’s it.  Here is the english language explanation of the Monit configuration:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># Change into the right directory
-cd ~/me/fuzzygroup/hyde/seira_watch/ansible/roles
+<ul>
+  <li>Set the daemon to monitor every 2 minutes (120 seconds) with a delay of 60 seconds for checking on startup</li>
+  <li>Set the mail server to be sparkpost on 587 with the SMTP_Injection username and a password</li>
+  <li>Set the alerting email address</li>
+  <li>Set the format for the alerting email including subject and description</li>
+  <li>check the filesystem device and then alert if the space usage is more than 90% for 8 cycles</li>
+</ul>
 
-git clone git@github.com:nickjj/ansible-docker.git
-</code></pre>
-</div>
+<h1 id="step-3-email-configuration">Step 3: Email Configuration</h1>
 
-<p>This created an ansible-docker folder in my roles directory and all that I needed to make it work was to change the nickjj.docker reference to:</p>
+<p><a href="http://www.sparkpost.com">SparkPost</a> is a provider of email sending services and they have an incredibly generous free plan with up to 10,000 emails per month for free.  And while I could have used SES or another email service, I’ve had wonderful success using SparkPost to power my Rails ActionMailer routines so I just reused the same email credentials for Monit and it worked like a charm.  Here’s what you need to do:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- { role: ansible-docker, tags docker}
-</code></pre>
-</div>
+<ol>
+  <li>To get a SparkPost account, sign up <a href="https://app.sparkpost.com/account/credentials">here</a>.</li>
+  <li>Go to your <a href="https://app.sparkpost.com/account/credentials">dashboard</a> to get an API key</li>
+  <li>You do need to goto <a href="https://app.sparkpost.com/account/sending-domains">Sending Domains</a> and configure the domains that you are sending from and then you need to add the DKIM settings to your DNS provider to prove that you own the domain in question.</li>
+</ol>
 
-<p>Nick also helpfully pointed out that I could have also cloned to tmp and then renamed to nickjj-docker before copying it over and that would have worked just fine tool.  Thanks Nick!</p>
+<h1 id="conclusion">Conclusion</h1>
 
-<p>Note 1: Another workaround supposedly would be to make a requirements.yml file and specify the branch there but I’m less certain on how to do that.</p>
+<p>If you put these three pieces together then you will have an Ansible playbook that you can deploy onto all your servers that monitors for free disc space and alerts you via email.  Down the road you could easily enhance the monit script with other things that need monitoring such as http services, CPU load and more.</p>
 
-<p>Note 2: I talked about this same type of problem <a href="http://fuzzyblog.io/blog/ansible/2016/10/09/ansible-quickie-fixing-a-poorly-designed-galaxy-role.html">once before</a>.</p>
+<h1 id="useful-references">Useful References</h1>
+
+<ul>
+  <li><a href="https://gist.github.com/akabos/3897117">Akabos Gist</a></li>
+  <li><a href="http://blog.artchang.com/post/37424851210/monitor-memcached-with-monit-and-alert-with-g">Art Chang</a></li>
+  <li><a href="http://www.ansible.com/">Ansible</a></li>
+  <li><a href="https://github.com/arnaudsj/monit">Monit</a></li>
+</ul>
 
   </div>
   

@@ -6,9 +6,121 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 01 Aug 2017 11:08:17 -0400</pubDate>
-    <lastBuildDate>Tue, 01 Aug 2017 11:08:17 -0400</lastBuildDate>
+    <pubDate>Wed, 02 Aug 2017 10:29:23 -0400</pubDate>
+    <lastBuildDate>Wed, 02 Aug 2017 10:29:23 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Monitoring Free Disc Space On AWS Instances with Monit, Ansible and SparkPost</title>
+        <description>&lt;p&gt;There are lots and lots of things that can go wrong with an AWS instance but I have always found that the single most common problem is nothing more than running out of disc space – log files fill up, too many things get deployed, etc.  And with low end AWS instances being only 8 gigs of free disc space, well, this is bound to happen.&lt;/p&gt;
+
+&lt;p&gt;The expensive solution is simple – buy more disc space – but I’m &lt;strong&gt;cheap&lt;/strong&gt; and that means that the real solution is &lt;strong&gt;monitoring&lt;/strong&gt; and &lt;strong&gt;alerting&lt;/strong&gt;.  Here’s what this means:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You need a way to configure monitoring, &lt;strong&gt;automatically&lt;/strong&gt;, on &lt;strong&gt;not&lt;/strong&gt; just one server but &lt;strong&gt;all&lt;/strong&gt; servers you have.  We’ll use &lt;a href=&quot;http://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt; for this.&lt;/li&gt;
+  &lt;li&gt;You need a monitoring daemon, a piece of software which looks for error conditions and sends email when they occur.  We’ll use &lt;a href=&quot;https://github.com/arnaudsj/monit&quot;&gt;monit&lt;/a&gt; for this.&lt;/li&gt;
+  &lt;li&gt;You need an email server to send the messages through.  We’ll use &lt;a href=&quot;http://www.sparkpost.com/&quot;&gt;SparkPost&lt;/a&gt; for this.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;step-1-installation-of-monit-with-ansible&quot;&gt;Step 1: Installation of Monit with Ansible&lt;/h1&gt;
+
+&lt;p&gt;Ansible, which I’ve &lt;a href=&quot;http://fuzzyblog.io/blog/category.html#ansible&quot;&gt;written a lot about&lt;/a&gt;, is a configuration tool for servers, your laptop, etc – essentially any device that you want to configure can be managed by Ansible.&lt;/p&gt;
+
+&lt;p&gt;Here is a basic Ansible role which installs monit along with a configuration file:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
+- name: install monit
+  apt: pkg=monit state=present
+  
+- name: copy config file
+  template: src=roles/install_monit/files/monit.rc dest=/etc/monit/monitrc
+  
+- name: start monit
+  service: name=monit state=started
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The lines above would go in a file roles/install_monit/tasks/main.yml.  You could then call that from a playbook with nothing more than:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: install_monit, tags: monit}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;As long as all your AWS instances are listed in an inventory file then this will install monit on all boxes, copy up the configuration file and then restart the service.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-2-monit-configuration&quot;&gt;Step 2: Monit Configuration&lt;/h1&gt;
+
+&lt;p&gt;We do need a simple Monit configuration file to tell it about our email server, credentials and the monitoring rules.  Monit is very powerful and can monitor for all kinds of issues but I’m only going to configure free disc space checking.  Where you see things in UPPERCASE then you need to configure them for your settings.&lt;/p&gt;
+
+&lt;p&gt;This configuration file will be installed into /etc/monit/monitrc by your Ansible playbook.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;set daemon 120 with start delay 60
+
+  set mailserver smtp.sparkpostmail.com  port 587 username &quot;SMTP_Injection&quot; password &quot;PASSWORD&quot; using tlsv1 with timeout 30 seconds
+
+  set alert YOURADDRESS@YOURSERVER.COM
+  
+mail-format {
+    From: noreply@YOURSERVER.COM
+    Subject: MONIT ERROR !!! [$HOST] $EVENT $SERVICE
+    Message: $DESCRIPTION
+             $DATE
+}
+
+check filesystem &quot;root&quot; with path /dev/xvda1
+  if space usage &amp;gt; 90% for 8 cycles then alert
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And that’s it.  Here is the english language explanation of the Monit configuration:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Set the daemon to monitor every 2 minutes (120 seconds) with a delay of 60 seconds for checking on startup&lt;/li&gt;
+  &lt;li&gt;Set the mail server to be sparkpost on 587 with the SMTP_Injection username and a password&lt;/li&gt;
+  &lt;li&gt;Set the alerting email address&lt;/li&gt;
+  &lt;li&gt;Set the format for the alerting email including subject and description&lt;/li&gt;
+  &lt;li&gt;check the filesystem device and then alert if the space usage is more than 90% for 8 cycles&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;step-3-email-configuration&quot;&gt;Step 3: Email Configuration&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.sparkpost.com&quot;&gt;SparkPost&lt;/a&gt; is a provider of email sending services and they have an incredibly generous free plan with up to 10,000 emails per month for free.  And while I could have used SES or another email service, I’ve had wonderful success using SparkPost to power my Rails ActionMailer routines so I just reused the same email credentials for Monit and it worked like a charm.  Here’s what you need to do:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;To get a SparkPost account, sign up &lt;a href=&quot;https://app.sparkpost.com/account/credentials&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Go to your &lt;a href=&quot;https://app.sparkpost.com/account/credentials&quot;&gt;dashboard&lt;/a&gt; to get an API key&lt;/li&gt;
+  &lt;li&gt;You do need to goto &lt;a href=&quot;https://app.sparkpost.com/account/sending-domains&quot;&gt;Sending Domains&lt;/a&gt; and configure the domains that you are sending from and then you need to add the DKIM settings to your DNS provider to prove that you own the domain in question.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;If you put these three pieces together then you will have an Ansible playbook that you can deploy onto all your servers that monitors for free disc space and alerts you via email.  Down the road you could easily enhance the monit script with other things that need monitoring such as http services, CPU load and more.&lt;/p&gt;
+
+&lt;h1 id=&quot;useful-references&quot;&gt;Useful References&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://gist.github.com/akabos/3897117&quot;&gt;Akabos Gist&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://blog.artchang.com/post/37424851210/monitor-memcached-with-monit-and-alert-with-g&quot;&gt;Art Chang&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/arnaudsj/monit&quot;&gt;Monit&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 02 Aug 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/aws/2017/08/02/monitoring-free-disc-space-on-aws-instances-with-monit-ansible-and-sparkpost.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/aws/2017/08/02/monitoring-free-disc-space-on-aws-instances-with-monit-ansible-and-sparkpost.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ansible</category>
+        
+        <category>monit</category>
+        
+        <category>SparkPost</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
     
       <item>
         <title>Hacks for When Ansible Galaxy Isn't Working</title>
@@ -64,7 +176,9 @@ git clone git@github.com:nickjj/ansible-docker.git
 
 &lt;p&gt;Nick also helpfully pointed out that I could have also cloned to tmp and then renamed to nickjj-docker before copying it over and that would have worked just fine tool.  Thanks Nick!&lt;/p&gt;
 
-&lt;p&gt;Note: Another workaround supposedly would be to make a requirements.yml file and specify the branch there but I’m less certain on how to do that.&lt;/p&gt;
+&lt;p&gt;Note 1: Another workaround supposedly would be to make a requirements.yml file and specify the branch there but I’m less certain on how to do that.&lt;/p&gt;
+
+&lt;p&gt;Note 2: I talked about this same type of problem &lt;a href=&quot;http://fuzzyblog.io/blog/ansible/2016/10/09/ansible-quickie-fixing-a-poorly-designed-galaxy-role.html&quot;&gt;once before&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Tue, 01 Aug 2017 00:00:00 -0400</pubDate>
         <link>http://fuzzyblog.io//blog/ansible/2017/08/01/hacks-for-when-ansible-galaxy-isn-t-working.html</link>
@@ -542,48 +656,6 @@ That took the value I wanted out from inside the div tags and stripped off the e
         <pubDate>Sun, 16 Jul 2017 05:58:55 -0400</pubDate>
         <link>http://fuzzyblog.io//blog/2017/07/16/examples-of-data-parsing-with-nokogiri.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/07/16/examples-of-data-parsing-with-nokogiri.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>SeiraWatch Blog - Udemy Warning 2 The Dangers of Free, Problems with Cross Promotion</title>
-        <description>&lt;p&gt;wow this is fucked, i can’t promote the let’s encrypt course to my free dive into docker course on udemy
-in other words, it’s useless to have that on udemy
-what can’t you?
-Why can;t you?
-Nick Janetakis (nick.janetakis@gmail.com)
-it’s not “eligible” because it’s free
-sheesh
-Nick Janetakis (nick.janetakis@gmail.com)
-this is a huge unexpected bullshit thing
-it means i can’t market any paid content to any of those people&lt;/p&gt;
-
-&lt;p&gt;Contact Udemy ? 
-how many thousands of people are free ?
-Nick Janetakis (nick.janetakis@gmail.com)
-almost 7,000 – it’s like a third of my audience
-Wow.  That completely ruins having free content on udemy
-Nick Janetakis (nick.janetakis@gmail.com)
-yep
-can you promote free to free ?
-Nick Janetakis (nick.janetakis@gmail.com)
-nope, because you’re not allowed to promote anything outside of udemy
-there’s announcements and promotions
-promotions are paid content for existing students (only paid i guess)
-if you made a free ssl intro course could you promote that to your free udemy people ? 
-Nick Janetakis (nick.janetakis@gmail.com)
-announcements are meant for like blog posts and other updates, not advertising courses
-no idea, all i know is i’m sick now
-as soon as i send this promo out
-i’m removing dive into docker on udemy
-anything I can do ?
-Now&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 16 Jul 2017 05:55:48 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/07/16/seirawatch-blog-udemy-warning-2-the-dangers-of-free-problems-with-cross-promotion.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/07/16/seirawatch-blog-udemy-warning-2-the-dangers-of-free-problems-with-cross-promotion.html</guid>
         
         
       </item>
