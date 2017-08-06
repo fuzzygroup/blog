@@ -6,8 +6,8 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 06 Aug 2017 08:13:55 -0400</pubDate>
-    <lastBuildDate>Sun, 06 Aug 2017 08:13:55 -0400</lastBuildDate>
+    <pubDate>Sun, 06 Aug 2017 08:33:55 -0400</pubDate>
+    <lastBuildDate>Sun, 06 Aug 2017 08:33:55 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -46,6 +46,7 @@
 &lt;p&gt;Here’s the bash function I wrote for this with the addition of say:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function verify_site_is_up_after_post_deploy() {
+  sleep 5
   IFS=$'\n' read -d '' -r -a site_urls &amp;lt; .dockerano_post_deploy_check_urls  
   
   for site_url in &quot;${site_urls[@]}&quot;; do
