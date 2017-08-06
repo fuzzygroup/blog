@@ -6,9 +6,69 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 02 Aug 2017 10:29:55 -0400</pubDate>
-    <lastBuildDate>Wed, 02 Aug 2017 10:29:55 -0400</lastBuildDate>
+    <pubDate>Sun, 06 Aug 2017 08:07:08 -0400</pubDate>
+    <lastBuildDate>Sun, 06 Aug 2017 08:07:08 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>A Bash Function for the 2 AM Blind Deploy</title>
+        <description>&lt;p&gt;I’m doing a lot more bash scripting these days – ever since I opted to write my new deployer, dockerano, in Bash.  Tackling something significant in Bash has absolutely forced me, 20 years plus after I started using it, to finally start to understand it.  By no means do I feel that I have a good handle on Bash – I’m still heavily reliant on &lt;a href=&quot;http://fuzzyblog.io/blog/bash/2017/07/17/improving-your-bash-scripting-with-shellcheck.html&quot;&gt;ShellCheck&lt;/a&gt; but I can actually do things with Bash that I feel somewhat confident about.&lt;/p&gt;
+
+&lt;p&gt;Here’s a bash function that I extended this morning to add OSX specific audio output after a deploy.  The problem at hand is what I call the “2 AM sleep blind deploy”.  We all know what this is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You get a downtime alert on a service&lt;/li&gt;
+  &lt;li&gt;You blearily struggle out of bed at 2 am and fix the code&lt;/li&gt;
+  &lt;li&gt;You deploy it and you want to get back to bed as soon as possible&lt;/li&gt;
+  &lt;li&gt;Something goes wrong with the deploy and you get alerted again just &lt;strong&gt;after&lt;/strong&gt; you get back in bed&lt;/li&gt;
+  &lt;li&gt;Lather, rinse, repeat until it is either fixed or morning comes&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I’m getting close to release on my much obliquely referenced new product and so deploy issues are now first and foremost in my mind. My task for this morning was to add audio output to my deployer &lt;strong&gt;when&lt;/strong&gt; there is a failure.  Here’s what I did:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;My first task was to recognize that this only ever had to run on OSX as I develop and deploy from OSX.&lt;/li&gt;
+  &lt;li&gt;There were two options - afplay and say.  The &lt;strong&gt;afplay&lt;/strong&gt; utility plays any media file from the command line and that’s good but a loud noise alone won’t tell me &lt;em&gt;what&lt;/em&gt; is down just that &lt;em&gt;something&lt;/em&gt; is down.  And while this works well – once upon a time, I used to trigger Billy Idol’s White Wedding whenever something was down – this time I wanted something a bit more nuanced and information rich.  I could also use the osx command &lt;strong&gt;say&lt;/strong&gt; to speak anything including the url which is failing.  Here is a &lt;a href=&quot;https://superuser.com/questions/298201/how-can-i-play-a-sound-from-the-command-line-in-mac-os-x&quot;&gt;Stack Overflow&lt;/a&gt; on the options.&lt;/li&gt;
+  &lt;li&gt;An sample of this is “say http://foo.com/ is down” which will be played thru the speaker.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;My new tech stack is 7 different services each of which provides a simple health check api but since the obviously differ for each service, I needed a way to store this on a per service basis which I opted to do with a .dockerano_post_deploy_check_urls file in the root directory of each project.  This file can store as many urls as are needed and it will be looped over by the bash script.  Given that most of the site needs to work in both http and https and with www and non www variants, I didn’t want a single check url.&lt;/p&gt;
+
+&lt;p&gt;Here’s the bash function I wrote for this with the addition of say:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function verify_site_is_up_after_post_deploy() {
+  IFS=$'\n' read -d '' -r -a site_urls &amp;lt; .dockerano_post_deploy_check_urls  
+  
+  for site_url in &quot;${site_urls[@]}&quot;; do
+    echo &quot;  Processing url: $site_url&quot;
+    if curl --output /dev/null --silent --head --fail &quot;$site_url&quot;; then
+      status_message_good &quot;$url exists; deploy worked&quot;
+    else
+      status_message_bad &quot;$url DOES NOT EXIST; DEPLOY FAILURE!!!!&quot;
+      say &quot;$url is DOWN!&quot;
+    fi
+
+  done
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I adapted the code above based on this  &lt;a href=&quot;https://unix.stackexchange.com/questions/148985/how-to-get-a-response-from-any-url&quot;&gt;source&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 06 Aug 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/bash/2017/08/06/a-bash-function-for-the-2-am-blind-deploy.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/bash/2017/08/06/a-bash-function-for-the-2-am-blind-deploy.html</guid>
+        
+        <category>devops</category>
+        
+        <category>deploy</category>
+        
+        <category>bash</category>
+        
+        
+        <category>bash</category>
+        
+      </item>
     
       <item>
         <title>Monitoring Free Disc Space On AWS Instances with Monit, Ansible and SparkPost</title>
@@ -632,31 +692,6 @@ files=(&quot;.env&quot;, &quot;.env.production&quot;, &quot;dockerstats&quot;, &
         
         
         <category>bash</category>
-        
-      </item>
-    
-      <item>
-        <title>Examples of Data Parsing with Nokogiri</title>
-        <description>&lt;p&gt;http://stackoverflow.com/questions/17782061/how-do-i-parse-and-scrape-the-meta-tags-of-a-url-with-nokogiri&lt;/p&gt;
-
-&lt;p&gt;0
-down vote
-I actually did this just yesterday. Here was my html:&lt;/p&gt;
-
-&lt;div data-purpose=&quot;video-length&quot;&gt;[^&amp;gt;]+&amp;lt;\/div&amp;gt;
-Here was my nokogiri expression:
-
-page.parser.css(&quot;div[data-purpose=video-length]&quot;).first.try(:text).try(:strip)
-That took the value I wanted out from inside the div tags and stripped off the extra returns. The reason for using .try calls is to skip having to have if statements to handle when a nil is returned. The secret here lies in using [] inside the .css expression: div[data-purpose=video-length].
-
-(answer is in my stack overflow)
-
-&lt;/div&gt;
-</description>
-        <pubDate>Sun, 16 Jul 2017 05:58:55 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/07/16/examples-of-data-parsing-with-nokogiri.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/07/16/examples-of-data-parsing-with-nokogiri.html</guid>
-        
         
       </item>
     
