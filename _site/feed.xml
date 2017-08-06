@@ -6,8 +6,8 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 06 Aug 2017 08:07:08 -0400</pubDate>
-    <lastBuildDate>Sun, 06 Aug 2017 08:07:08 -0400</lastBuildDate>
+    <pubDate>Sun, 06 Aug 2017 08:13:55 -0400</pubDate>
+    <lastBuildDate>Sun, 06 Aug 2017 08:13:55 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -32,7 +32,16 @@
   &lt;li&gt;An sample of this is “say http://foo.com/ is down” which will be played thru the speaker.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;My new tech stack is 7 different services each of which provides a simple health check api but since the obviously differ for each service, I needed a way to store this on a per service basis which I opted to do with a .dockerano_post_deploy_check_urls file in the root directory of each project.  This file can store as many urls as are needed and it will be looped over by the bash script.  Given that most of the site needs to work in both http and https and with www and non www variants, I didn’t want a single check url.&lt;/p&gt;
+&lt;p&gt;My new tech stack is 7 different services each of which provides a simple health check api but since the obviously differ for each service, I needed a way to store this on a per service basis which I opted to do with a .dockerano_post_deploy_check_urls file in the root directory of each project.  This file can store as many urls as are needed and it will be looped over by the bash script.  Given that most of the site needs to work in both http and https and with www and non www variants, I didn’t want a single check url.  If you allow for both https and http and non www and www variants, that amounts to 4 urls:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;http://foo.com/health&lt;/li&gt;
+  &lt;li&gt;http://www.foo.com/health&lt;/li&gt;
+  &lt;li&gt;https://foo.com/health&lt;/li&gt;
+  &lt;li&gt;https://www.foo.com/health&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And, yes, this may be overkill but it is all too easy for almost anything to break so I would argue that the right thing to do is be aggressive in your testing.&lt;/p&gt;
 
 &lt;p&gt;Here’s the bash function I wrote for this with the addition of say:&lt;/p&gt;
 

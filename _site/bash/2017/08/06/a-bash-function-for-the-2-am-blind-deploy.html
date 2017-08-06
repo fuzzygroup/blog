@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="I’m doing a lot more bash scripting these days – ever since I opted to write my new deployer, dockerano, in Bash.  Tackling something significant in Bash has absolutely forced me, 20 years plus aft...">
+      content="When you know that you're going to be woken up in the middle of the night with a new service, the smart thing is to make sure that your deploy routines take care of not only error checking but making it very obvious if there's a problem.">
   
 
   
@@ -158,7 +158,16 @@
   <li>An sample of this is “say http://foo.com/ is down” which will be played thru the speaker.</li>
 </ol>
 
-<p>My new tech stack is 7 different services each of which provides a simple health check api but since the obviously differ for each service, I needed a way to store this on a per service basis which I opted to do with a .dockerano_post_deploy_check_urls file in the root directory of each project.  This file can store as many urls as are needed and it will be looped over by the bash script.  Given that most of the site needs to work in both http and https and with www and non www variants, I didn’t want a single check url.</p>
+<p>My new tech stack is 7 different services each of which provides a simple health check api but since the obviously differ for each service, I needed a way to store this on a per service basis which I opted to do with a .dockerano_post_deploy_check_urls file in the root directory of each project.  This file can store as many urls as are needed and it will be looped over by the bash script.  Given that most of the site needs to work in both http and https and with www and non www variants, I didn’t want a single check url.  If you allow for both https and http and non www and www variants, that amounts to 4 urls:</p>
+
+<ul>
+  <li>http://foo.com/health</li>
+  <li>http://www.foo.com/health</li>
+  <li>https://foo.com/health</li>
+  <li>https://www.foo.com/health</li>
+</ul>
+
+<p>And, yes, this may be overkill but it is all too easy for almost anything to break so I would argue that the right thing to do is be aggressive in your testing.</p>
 
 <p>Here’s the bash function I wrote for this with the addition of say:</p>
 

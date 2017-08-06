@@ -33,6 +33,7 @@ And, yes, this may be overkill but it is all too easy for almost anything to bre
 Here's the bash function I wrote for this with the addition of say:
 
     function verify_site_is_up_after_post_deploy() {
+      sleep 5
       IFS=$'\n' read -d '' -r -a site_urls < .dockerano_post_deploy_check_urls  
   
       for site_url in "${site_urls[@]}"; do
