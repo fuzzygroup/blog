@@ -103,12 +103,13 @@ to get your current code base onto all your boxes.  Please keep in mind that Cap
 
 Here are some of the research sources I used in writing this:
 
+* [http://jyaasa.com/blog/deploying-rails-web-application-using-capistrano-bundler-and-rvm](http://jyaasa.com/blog/deploying-rails-web-application-using-capistrano-bundler-and-rvm) <== This is the best source
 * [https://www.sitepoint.com/deploy-your-rails-app-to-aws/](https://www.sitepoint.com/deploy-your-rails-app-to-aws/)
 * [https://www.digitalocean.com/community/tutorials/how-to-deploy-a-rails-app-with-puma-and-nginx-on-ubuntu-14-04](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-rails-app-with-puma-and-nginx-on-ubuntu-14-04)
 * [https://github.com/capistrano/bundler](https://github.com/capistrano/bundler)
 * [https://www.digitalocean.com/community/tutorials/deploying-a-rails-app-on-ubuntu-14-04-with-capistrano-nginx-and-puma](https://www.digitalocean.com/community/tutorials/deploying-a-rails-app-on-ubuntu-14-04-with-capistrano-nginx-and-puma)
 * [http://stackoverflow.com/questions/21259826/ruby-on-rails-capistrano-3-deployment-error](http://stackoverflow.com/questions/21259826/ruby-on-rails-capistrano-3-deployment-error)
-* [http://jyaasa.com/blog/deploying-rails-web-application-using-capistrano-bundler-and-rvm](http://jyaasa.com/blog/deploying-rails-web-application-using-capistrano-bundler-and-rvm) <== This is the best source
+
 * [https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server)
 * [http://railsapps.github.io/installing-rails.html](http://railsapps.github.io/installing-rails.html)
 * [http://stackoverflow.com/questions/12967918/deploy-with-capistrano-using-a-pem-file](http://stackoverflow.com/questions/12967918/deploy-with-capistrano-using-a-pem-file)
