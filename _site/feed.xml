@@ -6,9 +6,185 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 07 Aug 2017 08:09:29 -0400</pubDate>
-    <lastBuildDate>Mon, 07 Aug 2017 08:09:29 -0400</lastBuildDate>
+    <pubDate>Tue, 08 Aug 2017 04:31:45 -0400</pubDate>
+    <lastBuildDate>Tue, 08 Aug 2017 04:31:45 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Utter and Complete Heroku Fail</title>
+        <description>&lt;p&gt;So this morning I wanted to get a self hosted version of the &lt;a href=&quot;https://github.com/errbit/errbit&quot;&gt;Errbit&lt;/a&gt; project running.  This is an equivalent to BugSnag, Airbrake, HoneyBadger – a tool for tracking errors in live apps.  The inspiration for this was &lt;a href=&quot;http://developeronfire.com/podcast/episode-258-jeff-atwood-sharing-the-house&quot;&gt;Jeff Atwood’s Developer on Fire interview&lt;/a&gt; where he advised three things:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Jeff's top 3 tips for delivering more value:
+
+1. Measure performance all the time - Know how long every unit of work in your app is taking
+2. Have user friendly error handling for both the end user and the developer built into your application
+2. Have a place where people can go to discuss your software
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I’m close to releasing something and #2 has been on my list for sometime so I was pretty damn motivated to finally address this. And I’ve wanted to try Errbit for literally years and years so I turned to their &lt;a href=&quot;https://github.com/errbit/errbit/blob/master/docs/deployment/heroku.md&quot;&gt;deployment&lt;/a&gt; page where they, quote clearly, offered Heroku as an option and recommended it as the easiest way to start.  Awesome – right?  Unfortunately I found nothing but complete and total fail.  Here’s what happened:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I created an account.  This is normal and worked well.&lt;/li&gt;
+  &lt;li&gt;I had to verify my password via email.  Again normal and worked well.&lt;/li&gt;
+  &lt;li&gt;I returned to the &lt;a href=&quot;https://heroku.com/deploy?template=https://github.com/errbit/errbit/tree/master&quot;&gt;automatic app creation&lt;/a&gt; where it now told me I had to enter a credit card.  I did.&lt;/li&gt;
+  &lt;li&gt;Installation failed and wouldn’t tell me why “App creation failed.  Please ensure you have valid values in the above form field” – they were all there.&lt;/li&gt;
+  &lt;li&gt;Installation failed and it told me to that I needed to enter a credit card – which I did.  But I can do that dance again.&lt;/li&gt;
+  &lt;li&gt;I then get “the account foo@bar.com is not permitted to install the sendgrid add-on at this time.  If you believe this is an error please contact support and reference ID 56fda43c-8abb-4378-a320-079bec73f142” (note I did give heroku my correct email).&lt;/li&gt;
+  &lt;li&gt;I attempted to put in my own SMTP server but I’m told the same thing about sendgrid even though I put in a &lt;a href=&quot;http://www.sparkpost.com&quot;&gt;sparkpost&lt;/a&gt; domain.&lt;/li&gt;
+  &lt;li&gt;There is no link to support in this context.  Shouldn’t this have been automatically linked in place?&lt;/li&gt;
+  &lt;li&gt;I find the support button at the bottom of the page (disclaimer - it wasn’t all that far away) which takes me to help.heroku.com.&lt;/li&gt;
+  &lt;li&gt;On help.heroku.com I can find no way to actually create a ticket to enter the ID they gave me.  See Screenshot 1 below.&lt;/li&gt;
+  &lt;li&gt;There is a &lt;a href=&quot;https://help.heroku.com/tickets&quot;&gt;Ticket history&lt;/a&gt; button which also doesn’t give me a way to create a ticket.  See Screenshot 2 below.&lt;/li&gt;
+  &lt;li&gt;At this point I’ve given up in disgust and I’ll figure out how to do this on Docker and my own AWS instance.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;summary&quot;&gt;Summary&lt;/h1&gt;
+
+&lt;p&gt;This is a failure on so many damn levels that it is absurd:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Having to enter my credit card twice.&lt;/li&gt;
+  &lt;li&gt;Not allowing an authenticated, validated, paying user to use a baseline feature.&lt;/li&gt;
+  &lt;li&gt;Not allowing a way around the failure (use of another smtp resource).&lt;/li&gt;
+  &lt;li&gt;Not making support easy.&lt;/li&gt;
+  &lt;li&gt;Not even allowing me to create a ticket AS THEY TOLD ME TO.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The utter and complete pity of this is that Heroku allowing me to easily run a github repo would have been beautiful.  Here is the utter and fantastic simplicity of the Errbit deploy to Heroku url:&lt;/p&gt;
+
+&lt;p&gt;https://heroku.com/deploy?template=https://github.com/errbit/errbit/tree/master&lt;/p&gt;
+
+&lt;p&gt;I do not think it could be any simpler than that.  And, if it had worked, I can easily see myself doing this fairly often.  Now?  I suspect I’ll be deleting my Heroku account shortly and walking away forever.&lt;/p&gt;
+
+&lt;h1 id=&quot;screenshot-1&quot;&gt;Screenshot 1&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/herokufail1.png&quot; alt=&quot;herokufail1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So where would I even create a ticket?&lt;/p&gt;
+
+&lt;h1 id=&quot;screenshot-2&quot;&gt;Screenshot 2&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/herokufail2.png&quot; alt=&quot;herokufail2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So where would I even create a ticket?&lt;/p&gt;
+</description>
+        <pubDate>Tue, 08 Aug 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/fail/2017/08/08/utter-and-complete-heroku-fail.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/fail/2017/08/08/utter-and-complete-heroku-fail.html</guid>
+        
+        <category>heroku</category>
+        
+        <category>fail</category>
+        
+        <category>rails</category>
+        
+        
+        <category>fail</category>
+        
+      </item>
+    
+      <item>
+        <title>Creating a Hackintosh from an Intel NUC</title>
+        <description>&lt;p&gt;A few weeks ago I converted my Desktop Linux box from Ubuntu to an OSX (Sierra) based Hackintosh using the brilliant documentation and technology found on the &lt;a href=&quot;https://www.tonymacx86.com/&quot;&gt;TonyMacX86 site&lt;/a&gt;.  However I did it in a spur of inspiration and never bothered to document the process – yes, I am an idiot.  And then, today, in an inspiring display of additional idiocy, I accepted an Apple System Update – and broke everything.  And, naturally, since it was a brand new box, I hadn’t gotten around to setting up Time Machine or Carbon Copy so, well, this is pretty much toast.  So while this is a complete disaster, I use &lt;a href=&quot;http://fuzzyblog.io/blog/mac/2017/07/31/configuring-your-mac-with-ansible-take-2.html&quot;&gt;Ansible to configure all my application software&lt;/a&gt; and DropBox to sync my development environment so if I can just get the machine to boot again, well, I should be good to go.  The rest of this blog post writes out all the steps I found to make an OSX based Hackintosh from an Intel NUC.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Disclaimer&lt;/strong&gt;: This is lower level with hardware than I generally care to go so I’m unlikely to be willing or even able to answer questions.  You too can have the joyful experience of groveling thru driver documentation and figuring it out on your own – I did.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-1-understand-that-a-hackintosh-isnt-a-mac&quot;&gt;Step 1: Understand that a Hackintosh Isn’t a Mac&lt;/h1&gt;
+
+&lt;p&gt;The first step in all this is that you need to understand that a Hackintosh isn’t a Mac – it is a Hackintosh and that has limitations.  Here are some of the ones that I found:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I never got audio to work&lt;/li&gt;
+  &lt;li&gt;The first system update I put on it blew up the disc rendering it unbootable&lt;/li&gt;
+  &lt;li&gt;I never got Messages to work&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;But, for what I wanted, a development box, here’s what I got:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;32 gigs of RAM&lt;/li&gt;
+  &lt;li&gt;Tiny form factor&lt;/li&gt;
+  &lt;li&gt;Whisper quiet&lt;/li&gt;
+  &lt;li&gt;More reliable than my Macbook Retina Pro 13” (2015)&lt;/li&gt;
+  &lt;li&gt;Cheaper and used hardware I already had&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So this really can work but don’t kid yourself into thinking that what you have is a Mac, it really isn’t.  You need to keep it regularly backed up and take system updates with a high degree of care.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-2-making-a-bootable-usb-stick&quot;&gt;Step 2: Making a Bootable USB Stick&lt;/h1&gt;
+
+&lt;p&gt;The first step you want to follow is to make a bootable USB Stick (think of this as equivalent to a Unix LiveCD and you’ll be ok).  The directions to follow are &lt;a href=&quot;https://www.tonymacx86.com/threads/unibeast-install-macos-sierra-on-any-supported-intel-based-pc.200564/#create_unibeast&quot;&gt;here&lt;/a&gt; and I’ve put any specific notes below.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;You may not have an option in Disk Utility to create a GUID Partition Map scheme but if they aren’t there then it seems to default to them.  If you have problems using Disk Utility then here’s a &lt;a href=&quot;http://www.macworld.com/article/2990837/storage/how-to-format-a-startup-drive-in-el-capitan.html&quot;&gt;good reference&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;OSX Sierra can be downloaded from the Apple Store and it needs to be put in your /Applications folder for this to work.&lt;/li&gt;
+  &lt;li&gt;Creating the USB Stick with Unibeast generally runs perfectly.  It isn’t fast but it does the job.  Keep in mind that it can take long enough that you think it has crashed – but it always seems to finish.  I used UEFI boot mode for an Intel NUC and did not select any of the optional graphics configuration settings.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;useful-hackintosh-links&quot;&gt;Useful Hackintosh Links&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/unibeast-install-macos-sierra-on-any-supported-intel-based-pc.200564/&quot;&gt;The Best Sierra INnstructions I Found&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/gp/product/B018Q0GN60/ref=oh_aui_detailpage_o00_s00?ie=UTF8&amp;amp;psc=1&quot;&gt;My NUC&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/unibeast-install-macos-sierra-on-any-supported-intel-based-pc.200564/#download&quot;&gt;Sierra On Any Intel PC&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/guide-el-capitan-on-the-intel-skylake-nuc.183839/&quot;&gt;El Capitan NUC Guide&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/resources/el-capitan-post-install-tools.294/&quot;&gt;El Capitan Post Install Tools&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.reddit.com/r/hackintosh/comments/3c2wgy/guide_how_you_should_be_managing_your_hackintosh/&quot;&gt;Reddit Thread on Managing Your Hackintosh without Multibeast&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.reddit.com/r/hackintosh/comments/5jl4u7/psa_dont_use_multibeast_and_dont_edit_your_clover/&quot;&gt;Don’t Use Multibeast&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/sierra-installation-works-but-wont-boot-once-multibeast-installed.204644/&quot;&gt;Sierra Problems&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;https://www.tonymacx86.com/threads/guide-el-capitan-on-the-gigabyte-ga-z170n-gaming-5-mini-itx.199805/&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/search/25328190/?q=intel+nuc&amp;amp;o=date&quot;&gt;NUC Search&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/unibeast-5-0-1-cant-select-yosemite-installation-type.144159/&quot;&gt;Unibeast Yosemite Problems&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;https://www.tonymacx86.com/resources/multibeast-el-capitan-8-2-3.319/&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 07 Aug 2017 20:49:27 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/mac/2017/08/07/creating-a-hackintosh-from-an-intel-nuc.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/mac/2017/08/07/creating-a-hackintosh-from-an-intel-nuc.html</guid>
+        
+        <category>mac</category>
+        
+        <category>osx</category>
+        
+        <category>hackintosh</category>
+        
+        
+        <category>mac</category>
+        
+      </item>
+    
+      <item>
+        <title>Creating a Searchable Application with Rails, Mongo, Elastic Search and SearchKick</title>
+        <description>
+</description>
+        <pubDate>Mon, 07 Aug 2017 19:08:39 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/08/07/creating-a-searchable-application-with-rails-mongo-elastic-search-and-searchkick.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/08/07/creating-a-searchable-application-with-rails-mongo-elastic-search-and-searchkick.html</guid>
+        
+        <category>rails</category>
+        
+        <category>searchkick</category>
+        
+        <category>mongo</category>
+        
+        <category>elastic_search</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>The Best Way to Add Favicons to Your Rails Project</title>
+        <description>
+</description>
+        <pubDate>Mon, 07 Aug 2017 08:39:14 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/08/07/the-best-way-to-add-favicons-to-your-rails-project.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/08/07/the-best-way-to-add-favicons-to-your-rails-project.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Adding AutoSave on Focus Lost to TextMate 2</title>
@@ -325,211 +501,6 @@ git clone git@github.com:nickjj/ansible-docker.git
         
         
         <category>mac</category>
-        
-      </item>
-    
-      <item>
-        <title>Rails and Address Already In Use - Bind Error</title>
-        <description>&lt;p&gt;Lately I’ve seen this error come up quite a few times:&lt;/p&gt;
-
-&lt;p&gt;/Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch_web_app_api/gems/puma-3.9.1/lib/puma/binder.rb:269:in `initialize’: Address already in use - bind(2) for “::1” port 3220 (Errno::EADDRINUSE)&lt;/p&gt;
-
-&lt;p&gt;I’m running a fairly complex stack that mirrors an 8 micro service application where things are expected to be on certain points in development so having port 3220 not working means that one of my APIs isn’t available – and that’s &lt;strong&gt;unacceptable&lt;/strong&gt;.  So I dug into it a bit and with the help of &lt;a href=&quot;https://stackoverflow.com/questions/10261477/tcpserver-error-address-already-in-use-bind2&quot;&gt;this StackOverflow&lt;/a&gt;, I found the answer was to locate the offending process and then kill it dead:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;lsof -wni tcp:3220&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;That gives the process id or PID and then you can just kill it:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;kill -9 12345 (or whatever)&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
-        <pubDate>Sat, 29 Jul 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2017/07/29/rails-and-address-already-in-use-bind-error.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/07/29/rails-and-address-already-in-use-bind-error.html</guid>
-        
-        <category>rails</category>
-        
-        <category>sysadmin</category>
-        
-        <category>bind</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Planning the Bare Minimum Billing Side of a SAAS Product</title>
-        <description>&lt;p&gt;I’ve spent part of this week working through the billing side of my new SAAS product which I’m planning to use with Stripe as my credit card solution.  And what I did was focus solely on the &lt;em&gt;how&lt;/em&gt; of the code, you know, like:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;How do I use &lt;a href=&quot;https://stripe.com/docs/elements&quot;&gt;Stripe Elements&lt;/a&gt; with Rails&lt;/li&gt;
-  &lt;li&gt;How do I support credit card updating&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Most of this I learned from the excellent &lt;a href=&quot;http://courses.gorails.com&quot;&gt;Stripe course&lt;/a&gt; from &lt;a href=&quot;http://www.gorails.com/&quot;&gt;Go Rails&lt;/a&gt; which I strongly recommend for any Rails / Stripe projects you have.&lt;/p&gt;
-
-&lt;p&gt;What I never did was actually outline the functions that a bare minimum SAAS billing engine needs.  So you consider this a “retrospective specification”.  I’m not going to talk at all about the code – go buy the course for that – but, instead, about the minimum amount of features you need to have a SAAS product in 2017.  The criteria I used to define minimum functionality was pretty simple: I don’t ever want to have to get involved in day to day transactional crap.&lt;/p&gt;
-
-&lt;p&gt;Here are the bare minimum SAAS functions you need in 2017:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;The user has to be able to order the product with the product name and price displayed on the order form and a standard bootstrap approach to form elements. &lt;strong&gt;DONE&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;The system needs to be able to support at least Basic and Pro subscriptions from the very beginning. &lt;strong&gt;DONE&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;The user has to be able to enter a stripe coupon code on checkout so the user can get a discount. &lt;strong&gt;SKIP&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;The user has to be able to get a receipt for their transaction. &lt;strong&gt;Done&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;The user has to be able to cancel a subscription by forcing the user through one or two “please don’t cancel” screens first where you try and convince them not to cancel.  Now, that said, the user needs to be able to cancel on their own, without a refund, but with the service being available until the end of their payment period.&lt;/li&gt;
-  &lt;li&gt;The system has to be able to receive transactions from Stripe events and log them to a charges table.  &lt;strong&gt;Done&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;There needs to be easy access to admin tools with restricted access to only admin users.  &lt;strong&gt;Done&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;There needs to be an admin page which shows daily revenue and total revenue.  &lt;strong&gt;Done&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;There needs to be an admin page with calculation of lifetime customer value on a per customer basis.  &lt;strong&gt;Done&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;A basic has_valid_account? method on an instance of user needs to exist.  &lt;strong&gt;Done&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;An api needs to be exposed so other parts of the system can find out if a user’s account is still valid.  This isn’t a standard feature so I listed it last.  I chose to build my product in a distributed fashion thus requiring a basic authorization api to be implemented.  &lt;strong&gt;Done&lt;/strong&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;You’ll notice that I don’t put anything in on the admin pages about sorting, searching or even pagination.  This is purely an internal tool and since, right now, I have 0 transactions, none of that is needed.  If I get transactions for this side project, then and only then, do I need to worry about that.&lt;/p&gt;
-
-&lt;p&gt;There are a near infinite amount of billing / SAAS features that can be implemented but these are the bare minimum.  Each of these is discussed below.&lt;/p&gt;
-
-&lt;p&gt;I have specifically noted which features I was able to easily re-use from the Stripe course.&lt;/p&gt;
-
-&lt;h1 id=&quot;user-has-to-be-able-to-order-the-product&quot;&gt;User Has to be Able to Order the Product&lt;/h1&gt;
-
-&lt;h1 id=&quot;system-needs-to-support-basic-and-pro-subscriptions&quot;&gt;System Needs to Support Basic and Pro Subscriptions&lt;/h1&gt;
-
-&lt;h1 id=&quot;user-has-to-be-able-to-enter-a-coupon-code&quot;&gt;User Has to be Able to Enter a Coupon Code&lt;/h1&gt;
-
-&lt;p&gt;I made the executive decision to skip this based on complexity. A good reference to implementing it can be found here: https://stripe.com/docs/recipes/coupons-for-charges&lt;/p&gt;
-
-&lt;h1 id=&quot;user-has-to-be-able-to-get-a-receipt&quot;&gt;User Has to Be Able to Get a Receipt&lt;/h1&gt;
-&lt;p&gt;# User Has to Be Able to Cancel 
-# System Has to Receive Stripe Events
-# Admin Page with Daily Revenue and Total Revenue
-# Admin Page of Lifetime Customer Value&lt;/p&gt;
-</description>
-        <pubDate>Sat, 22 Jul 2017 11:12:26 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/saas/2017/07/22/planning-the-bare-minimum-billing-side-of-a-saas-product.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/saas/2017/07/22/planning-the-bare-minimum-billing-side-of-a-saas-product.html</guid>
-        
-        <category>rails</category>
-        
-        <category>stripe</category>
-        
-        <category>saas</category>
-        
-        <category>billing</category>
-        
-        
-        <category>saas</category>
-        
-      </item>
-    
-      <item>
-        <title>Blog as Well as Automate</title>
-        <description>&lt;p&gt;This morning I was reading &lt;a href=&quot;https://www.amazon.com/Effective-Engineer-Engineering-Disproportionate-Meaningful/dp/0996128107/ref=sr_1_1?ie=UTF8&amp;amp;qid=1500632263&amp;amp;sr=8-1&amp;amp;keywords=Effective+Engineer&quot;&gt;The Effective Engineer&lt;/a&gt; by Edmond Lau, an excellent read, and I hit on the section where he talks about how important it is to automate things that you do more than twice – and he’s right.&lt;/p&gt;
-
-&lt;p&gt;The very first thing I did on my current side project was dramatically reduce the amount of effort it is to build applications with Rails that aren’t monoliths and it absolutely has paid off.  I do think that there is a related aspect to automation – writing it down or blogging.&lt;/p&gt;
-
-&lt;p&gt;There are things that you do somewhat regularly that don’t merit automation but are often a pain in the arse to figure out.  The example this morning was I wrote the first test coverage on a new bit of greenfield code and RSpec ever so helpfully told me:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;An error occurred while loading ./spec/models/subscription_common_spec.rb.
-Failure/Error: require 'rails_helper' 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;This particular “app” has 8 separate git repos so, yes, I’ve done this more than twice but it isn’t amenable to automation since its an oddball step that I only do N times where N is the number of repos (its a setup task).  Now, in the age of monolithic Rails apps, this wasn’t a big deal – you only ever had one repo so you did it once and then you forgot about it.  Now I’ve already hit this more than twice so I made sure to write it down – on my &lt;a href=&quot;http://fuzzyblog.io/blog/rails/2017/02/26/setting-up-rails-with-rspec-from-the-start.html&quot;&gt;blog&lt;/a&gt;.  All I had to do was hit my &lt;a href=&quot;http://fuzzyblog.io/blog/&quot;&gt;blog home page&lt;/a&gt; and search for RSpec and there it was.  If you’ve ever wondered why my blog page is a long, long list of 600+ titles, that’s why – I want a single searchable thing that I can zoom through.  My blog gets very little traffic but it is incredibly useful l – to &lt;strong&gt;me&lt;/strong&gt;.  Anything that I expect to do more than twice, if I don’t think its worth automating, I write it down.&lt;/p&gt;
-
-&lt;p&gt;So, to me, the corollary to automate things you do more than twice is if you can’t automate it then write it down (preferably blog it) and make sure its searchable.&lt;/p&gt;
-
-&lt;p&gt;And you should buy The Effective Engineer by &lt;a href=&quot;https://twitter.com/edmondlau&quot;&gt;Raymond Lau&lt;/a&gt;.  It really is good.&lt;/p&gt;
-
-&lt;p&gt;Oh and my tests passed, first time out of the gate.  w00t!&lt;/p&gt;
-</description>
-        <pubDate>Fri, 21 Jul 2017 06:28:25 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/software_development/2017/07/21/blog-as-well-as-automate.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/software_development/2017/07/21/blog-as-well-as-automate.html</guid>
-        
-        <category>books</category>
-        
-        <category>monolith</category>
-        
-        <category>automation</category>
-        
-        <category>blogging</category>
-        
-        
-        <category>software_development</category>
-        
-      </item>
-    
-      <item>
-        <title>Rails Sys Admin When Puma Won't Run But Its Not Running</title>
-        <description>&lt;p&gt;I use Puma for local Rails development and I’m running a stack of roughly 7 related Rails apps on a series of varying ports starting from 3200 going up by increments of 10.  I run all development using Tmux as a way to launch all the resources for a single “app” in one shot.&lt;/p&gt;
-
-&lt;p&gt;I recently ran into the situation where Puma would not start even though I had exited all sessions and killed all instances of Tmux.  But, even so, I could not get Puma to start.  I kept getting the bind error like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle exec rails s -p3220
-=&amp;gt; Booting Puma
-=&amp;gt; Rails 5.0.0.1 application starting in development on http://localhost:3220
-=&amp;gt; Run `rails server -h` for more startup options
-Puma starting in single mode...
-* Version 3.6.0 (ruby 2.3.1-p112), codename: Sleepy Sunday Serenity
-* Min threads: 5, max threads: 5
-* Environment: development
-* Listening on tcp://localhost:3220
-Exiting
-/Users/sjohnson/.rvm/gems/ruby-2.3.1/gems/puma-3.6.0/lib/puma/binder.rb:266:in `initialize': Address already in use - bind(2) for &quot;::1&quot; port 3220 (Errno::EADDRINUSE)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I did a bunch of digging and found this [Stack Overflow answer] (https://stackoverflow.com/questions/39505675/ruby-on-rails-server-isnt-starting):&lt;/p&gt;
-
-&lt;p&gt;Step 1 is to run lsof on the offending port and find the PID associated with the port. In my case somehow vpnkit picked up this port and wouldn’t release it:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;lsof -i :3220
-
-COMMAND   PID     USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
-vpnkit  99947 sjohnson   27u  IPv4 0x8a1799bf7e1441df      0t0  TCP *:xnm-ssl (LISTEN)
-vpnkit  99947 sjohnson   28u  IPv6 0x8a1799bf93a6e2d7      0t0  TCP localhost:xnm-ssl (LISTEN)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Step 2 was a kill -9 on the offending port:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kill -9 99947
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And then Puma ran like a champ:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle exec rails s -p3220
-=&amp;gt; Booting Puma
-=&amp;gt; Rails 5.0.0.1 application starting in development on http://localhost:3220
-=&amp;gt; Run `rails server -h` for more startup options
-Puma starting in single mode...
-* Version 3.6.0 (ruby 2.3.1-p112), codename: Sleepy Sunday Serenity
-* Min threads: 5, max threads: 5
-* Environment: development
-* Listening on tcp://localhost:3220
-Use Ctrl-C to stop
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-</description>
-        <pubDate>Thu, 20 Jul 2017 13:55:41 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2017/07/20/rails-sys-admin-when-puma-won-t-run-but-its-not-running.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/07/20/rails-sys-admin-when-puma-won-t-run-but-its-not-running.html</guid>
-        
-        <category>rails</category>
-        
-        <category>puma</category>
-        
-        <category>sysadmin</category>
-        
-        
-        <category>rails</category>
         
       </item>
     

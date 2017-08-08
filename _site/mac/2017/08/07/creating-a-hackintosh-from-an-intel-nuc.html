@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Creating a Hackintosh from an Intel NUC</title>
+  <meta name="description" content="A few weeks ago I converted my Desktop Linux box from Ubuntu to an OSX (Sierra) based Hackintosh using the brilliant documentation and technology found on th...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/mac/2017/08/07/creating-a-hackintosh-from-an-intel-nuc.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="Creating a Hackintosh from an Intel NUC">
+
+  
+    <meta name="twitter:description"
+      content="A few weeks ago I converted my Desktop Linux box from Ubuntu to an OSX (Sierra) based Hackintosh using the brilliant documentation and technology found on the TonyMacX86 site.  However I did it in ...">
+  
+
+  
+    <meta name="twitter:image"
+      content="http://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Creating a Hackintosh from an Intel NUC</h1>
+    <p class="I'll"><time datetime="2017-08-07T20:49:27-04:00" itemprop="datePublished">Aug 7, 2017</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>A few weeks ago I converted my Desktop Linux box from Ubuntu to an OSX (Sierra) based Hackintosh using the brilliant documentation and technology found on the <a href="https://www.tonymacx86.com/">TonyMacX86 site</a>.  However I did it in a spur of inspiration and never bothered to document the process – yes, I am an idiot.  And then, today, in an inspiring display of additional idiocy, I accepted an Apple System Update – and broke everything.  And, naturally, since it was a brand new box, I hadn’t gotten around to setting up Time Machine or Carbon Copy so, well, this is pretty much toast.  So while this is a complete disaster, I use <a href="http://fuzzyblog.io/blog/mac/2017/07/31/configuring-your-mac-with-ansible-take-2.html">Ansible to configure all my application software</a> and DropBox to sync my development environment so if I can just get the machine to boot again, well, I should be good to go.  The rest of this blog post writes out all the steps I found to make an OSX based Hackintosh from an Intel NUC.</p>
+
+<p><strong>Disclaimer</strong>: This is lower level with hardware than I generally care to go so I’m unlikely to be willing or even able to answer questions.  You too can have the joyful experience of groveling thru driver documentation and figuring it out on your own – I did.</p>
+
+<h1 id="step-1-understand-that-a-hackintosh-isnt-a-mac">Step 1: Understand that a Hackintosh Isn’t a Mac</h1>
+
+<p>The first step in all this is that you need to understand that a Hackintosh isn’t a Mac – it is a Hackintosh and that has limitations.  Here are some of the ones that I found:</p>
+
+<ul>
+  <li>I never got audio to work</li>
+  <li>The first system update I put on it blew up the disc rendering it unbootable</li>
+  <li>I never got Messages to work</li>
+</ul>
+
+<p>But, for what I wanted, a development box, here’s what I got:</p>
+
+<ul>
+  <li>32 gigs of RAM</li>
+  <li>Tiny form factor</li>
+  <li>Whisper quiet</li>
+  <li>More reliable than my Macbook Retina Pro 13” (2015)</li>
+  <li>Cheaper and used hardware I already had</li>
+</ul>
+
+<p>So this really can work but don’t kid yourself into thinking that what you have is a Mac, it really isn’t.  You need to keep it regularly backed up and take system updates with a high degree of care.</p>
+
+<h1 id="step-2-making-a-bootable-usb-stick">Step 2: Making a Bootable USB Stick</h1>
+
+<p>The first step you want to follow is to make a bootable USB Stick (think of this as equivalent to a Unix LiveCD and you’ll be ok).  The directions to follow are <a href="https://www.tonymacx86.com/threads/unibeast-install-macos-sierra-on-any-supported-intel-based-pc.200564/#create_unibeast">here</a> and I’ve put any specific notes below.</p>
+
+<ol>
+  <li>You may not have an option in Disk Utility to create a GUID Partition Map scheme but if they aren’t there then it seems to default to them.  If you have problems using Disk Utility then here’s a <a href="http://www.macworld.com/article/2990837/storage/how-to-format-a-startup-drive-in-el-capitan.html">good reference</a>.</li>
+  <li>OSX Sierra can be downloaded from the Apple Store and it needs to be put in your /Applications folder for this to work.</li>
+  <li>Creating the USB Stick with Unibeast generally runs perfectly.  It isn’t fast but it does the job.  Keep in mind that it can take long enough that you think it has crashed – but it always seems to finish.  I used UEFI boot mode for an Intel NUC and did not select any of the optional graphics configuration settings.</li>
+</ol>
+
+<h1 id="useful-hackintosh-links">Useful Hackintosh Links</h1>
+
+<ul>
+  <li><a href="https://www.tonymacx86.com/threads/unibeast-install-macos-sierra-on-any-supported-intel-based-pc.200564/">The Best Sierra INnstructions I Found</a></li>
+  <li><a href="https://www.amazon.com/gp/product/B018Q0GN60/ref=oh_aui_detailpage_o00_s00?ie=UTF8&amp;psc=1">My NUC</a></li>
+  <li><a href="https://www.tonymacx86.com/threads/unibeast-install-macos-sierra-on-any-supported-intel-based-pc.200564/#download">Sierra On Any Intel PC</a></li>
+  <li><a href="https://www.tonymacx86.com/threads/guide-el-capitan-on-the-intel-skylake-nuc.183839/">El Capitan NUC Guide</a></li>
+  <li><a href="https://www.tonymacx86.com/resources/el-capitan-post-install-tools.294/">El Capitan Post Install Tools</a></li>
+  <li><a href="https://www.reddit.com/r/hackintosh/comments/3c2wgy/guide_how_you_should_be_managing_your_hackintosh/">Reddit Thread on Managing Your Hackintosh without Multibeast</a></li>
+  <li><a href="https://www.reddit.com/r/hackintosh/comments/5jl4u7/psa_dont_use_multibeast_and_dont_edit_your_clover/">Don’t Use Multibeast</a></li>
+  <li><a href="https://www.tonymacx86.com/threads/sierra-installation-works-but-wont-boot-once-multibeast-installed.204644/">Sierra Problems</a></li>
+  <li>https://www.tonymacx86.com/threads/guide-el-capitan-on-the-gigabyte-ga-z170n-gaming-5-mini-itx.199805/</li>
+  <li><a href="https://www.tonymacx86.com/search/25328190/?q=intel+nuc&amp;o=date">NUC Search</a></li>
+  <li><a href="https://www.tonymacx86.com/threads/unibeast-5-0-1-cant-select-yosemite-installation-type.144159/">Unibeast Yosemite Problems</a></li>
+  <li>https://www.tonymacx86.com/resources/multibeast-el-capitan-8-2-3.319/</li>
+</ul>
+
+  </div>
+  
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
