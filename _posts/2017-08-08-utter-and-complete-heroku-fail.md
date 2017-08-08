@@ -37,11 +37,11 @@ This is a failure on so many damn levels that it is absurd:
 4.  Not making support easy.
 5.  Not even allowing me to create a ticket AS THEY TOLD ME TO.
 
-The utter and complete pity of this is that Heroku allowing me to easily run a github repo would have been beautiful.  Here is the utter and fantastic simplicity of the Errbit deploy to Heroku url:
+The utter and complete pity of this is that Heroku allowing me to easily run a github repo would have been beautiful.  Here is the beautiful simplicity of the Errbit deploy to Heroku url:
 
   https://heroku.com/deploy?template=https://github.com/errbit/errbit/tree/master
   
-I do not think it could be any simpler than that.  And, if it had worked, I can easily see myself doing this fairly often.  Now?  I suspect I'll be deleting my Heroku account shortly and walking away forever.
+That is fantastic -- I do not think it could be any simpler than that.  And, if it had worked, I can easily see myself doing this fairly often.  Now?  I suspect I'll be deleting my Heroku account shortly and walking away forever.  And that's a crying shame.
 
 # Screenshot 1
 
