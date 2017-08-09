@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="If you talk to any computer scientist they will easily tell you that 50 plus years into the computer age, scheduling is NOT a solved problem.  Even something as simple as cron which is decades old ...">
+      content="It isn't obvious how to make Docker handle scheduled tasks for a Rails application.  In this blog post I walk through the process of scheduling tasks in a containerized application and then explore the issues associated with performance and deploy.">
   
 
   
@@ -134,7 +134,7 @@
 
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">Adding Cron to a Dockerized Rails Application Using Clockwork</h1>
-    <p class="I'll"><time datetime="2017-05-11T05:02:25-04:00" itemprop="datePublished">May 11, 2017</time></p>
+    <p class="I'll"><time datetime="2017-05-11T00:00:00-04:00" itemprop="datePublished">May 11, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
@@ -166,53 +166,46 @@ end
 
 <p>Here are the steps to add clockwork to your Rails application:</p>
 
-<ol>
-  <li>Add the clockwork gem to your Gemfile:</li>
-</ol>
+<p>Add the clockwork gem to your Gemfile:</p>
 
 <blockquote>
   <p>gem ‘clockwork’</p>
 </blockquote>
 
-<ol>
-  <li>Create a clock.rb file in lib:</li>
-</ol>
+<p>Create a clock.rb file in lib:</p>
 
 <blockquote>
   <p>touch lib/clock.rb</p>
 </blockquote>
 
-<ol>
-  <li>
-    <p>Write one or more clockwork expressions in clock.rb.  Here’s an example from my application:</p>
+<p>Write one or more clockwork expressions in clock.rb.  Here’s an example from my application:</p>
 
-    <p>require ‘clockwork’
-include Clockwork</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>require 'clockwork'
+include Clockwork
 
-    <p>require File.expand_path(‘../../config/boot’, <strong>FILE</strong>)</p>
+require File.expand_path('../../config/boot', __FILE__)
 
-    <p>require File.expand_path(‘../../config/environment’, <strong>FILE</strong>)</p>
+require File.expand_path('../../config/environment', __FILE__)
 
-    <p>require ‘clockwork’</p>
+require 'clockwork'
 
-    <p>include Clockwork</p>
+include Clockwork
 
-    <p>module Clockwork</p>
+module Clockwork
 
-    <p>every(1.day, ‘Midnight.job – PageArchive.update_everything’, :at =&gt; ‘03:58’) do |job|
+  every(1.day, 'Midnight.job -- PageArchive.update_everything', :at =&gt; '03:58') do |job|
     PageArchive.update_everything
-  end</p>
+  end
 
-    <p>every(1.week, ‘Weekly Job – PageArchive.update_bing’, :at =&gt; ‘00:00’) do |job|
+  every(1.week, 'Weekly Job -- PageArchive.update_bing', :at =&gt; '00:00') do |job|
     PageArchive.update_bing
-  end</p>
+  end
 
-    <p>end</p>
-  </li>
-  <li>
-    <p>To test this you can just use the command line:</p>
-  </li>
-</ol>
+end
+</code></pre>
+</div>
+
+<p>To test this you can just use the command line:</p>
 
 <blockquote>
   <p>bundle exec clockwork lib/clock.rb</p>

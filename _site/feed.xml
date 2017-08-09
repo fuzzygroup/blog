@@ -6,43 +6,34 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 09 Aug 2017 09:59:17 -0400</pubDate>
-    <lastBuildDate>Wed, 09 Aug 2017 09:59:17 -0400</lastBuildDate>
+    <pubDate>Wed, 09 Aug 2017 11:10:34 -0400</pubDate>
+    <lastBuildDate>Wed, 09 Aug 2017 11:10:34 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
-        <title>Evolution of a Tagline</title>
-        <description>
+        <title>Referencing Images in Rails 5 CSS Stylesheets</title>
+        <description>&lt;p&gt;I recently had the issue where I switched the images in my stylesheet from an absolute url on someone else’s domain to a relative path indicating a file in my /app/assets/images directory and that worked fine – until I deployed and then my image disappeared.  It took a few iterations to figure it out and here’s the trick:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Make sure you are using the sass-rails gem which provides the necessary helpers.&lt;/li&gt;
+  &lt;li&gt;For an image located in /app/assets/images/intro-bg.jpg, assuming that it is a CSS background image, you want to reference it as background: url(asset_path(“intro-bg.jpg”)).&lt;/li&gt;
+  &lt;li&gt;You need to rename your stylesheet with a .scss extension so it is fed through the preprocessor.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Here’s a &lt;a href=&quot;https://stackoverflow.com/questions/15257555/how-to-reference-images-in-css-within-rails-4&quot;&gt;Stack Overflow&lt;/a&gt; on this but please note that the highest answer was actually wrong (at least for me).&lt;/p&gt;
+
+&lt;p&gt;You should also note that, in my opinion, the asset pipeline is tricky and I no longer trust anything in it until I’ve deployed to production and tested it myself.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 09 Aug 2017 08:40:37 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/08/09/evolution-of-a-tagline.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/08/09/evolution-of-a-tagline.html</guid>
+        <pubDate>Wed, 09 Aug 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/08/09/referencing-images-in-rails-5-stylesheets.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/08/09/referencing-images-in-rails-5-stylesheets.html</guid>
+        
+        <category>rails</category>
+        
+        <category>CSS</category>
         
         
-      </item>
-    
-      <item>
-        <title>The Problem with Medium</title>
-        <description>&lt;p&gt;Yesterday I was at the movies with my son and during the endless\&lt;/p&gt;
-
-&lt;p&gt;Here’s what I remembered:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;james altschuler&lt;/li&gt;
-  &lt;li&gt;keywords: hedgefund marriage thestreet.com&lt;/li&gt;
-  &lt;li&gt;I had hearted it&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;And here are the problems:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;I couldn’t find&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Wed, 09 Aug 2017 08:29:08 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/08/09/the-problem-with-medium.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/08/09/the-problem-with-medium.html</guid>
-        
+        <category>rails</category>
         
       </item>
     
@@ -110,121 +101,6 @@
         
         
         <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>Creating a Hackintosh from an Intel NUC</title>
-        <description>&lt;p&gt;A few weeks ago I converted my Desktop Linux box from Ubuntu to an OSX (Sierra) based Hackintosh using the brilliant documentation and technology found on the &lt;a href=&quot;https://www.tonymacx86.com/&quot;&gt;TonyMacX86 site&lt;/a&gt;.  However I did it in a spur of inspiration and never bothered to document the process – yes, I am an idiot.  And then, today, in an inspiring display of additional idiocy, I accepted an Apple System Update – and broke everything.  And, naturally, since it was a brand new box, I hadn’t gotten around to setting up Time Machine or Carbon Copy so, well, this is pretty much toast.  So while this is a complete disaster, I use &lt;a href=&quot;http://fuzzyblog.io/blog/mac/2017/07/31/configuring-your-mac-with-ansible-take-2.html&quot;&gt;Ansible to configure all my application software&lt;/a&gt; and DropBox to sync my development environment so if I can just get the machine to boot again, well, I should be good to go.  The rest of this blog post writes out all the steps I found to make an OSX based Hackintosh from an Intel NUC.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Disclaimer&lt;/strong&gt;: This is lower level with hardware than I generally care to go so I’m unlikely to be willing or even able to answer questions.  You too can have the joyful experience of groveling thru driver documentation and figuring it out on your own – I did.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-1-understand-that-a-hackintosh-isnt-a-mac&quot;&gt;Step 1: Understand that a Hackintosh Isn’t a Mac&lt;/h1&gt;
-
-&lt;p&gt;The first step in all this is that you need to understand that a Hackintosh isn’t a Mac – it is a Hackintosh and that has limitations.  Here are some of the ones that I found:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;I never got audio to work&lt;/li&gt;
-  &lt;li&gt;The first system update I put on it blew up the disc rendering it unbootable&lt;/li&gt;
-  &lt;li&gt;I never got Messages to work&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;But, for what I wanted, a development box, here’s what I got:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;32 gigs of RAM&lt;/li&gt;
-  &lt;li&gt;Tiny form factor&lt;/li&gt;
-  &lt;li&gt;Whisper quiet&lt;/li&gt;
-  &lt;li&gt;More reliable than my Macbook Retina Pro 13” (2015)&lt;/li&gt;
-  &lt;li&gt;Cheaper and used hardware I already had&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;So this really can work but don’t kid yourself into thinking that what you have is a Mac, it really isn’t.  You need to keep it regularly backed up and take system updates with a high degree of care.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-2-understanding-the-tools&quot;&gt;Step 2: Understanding the Tools&lt;/h1&gt;
-
-&lt;p&gt;There are two tools you need to download from TonyMacX86:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;UniBeast&lt;/li&gt;
-  &lt;li&gt;MultiBeast&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Unibeast creates a bootable USB stick for you to create OSX onto a standard PC.  MultiBeast allows you to configure your machine so that the correct drivers are in place.  MultiBeast also handles the task of making your machine actually bootable once the drivers have been installed.  Please note that after your first pass with MultiBeast, your machine will NOT be bootable (but have patience; it will get there).&lt;/p&gt;
-
-&lt;h1 id=&quot;step-2-making-a-bootable-usb-stick&quot;&gt;Step 2: Making a Bootable USB Stick&lt;/h1&gt;
-
-&lt;p&gt;The first step you want to follow is to make a bootable USB Stick (think of this as equivalent to a Unix LiveCD and you’ll be ok).  The directions to follow are &lt;a href=&quot;https://www.tonymacx86.com/threads/unibeast-install-macos-sierra-on-any-supported-intel-based-pc.200564/#create_unibeast&quot;&gt;here&lt;/a&gt; and I’ve put any specific notes below.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;You may not have an option in Disk Utility to create a GUID Partition Map scheme but if they aren’t there then it seems to default to them.  If you have problems using Disk Utility then here’s a &lt;a href=&quot;http://www.macworld.com/article/2990837/storage/how-to-format-a-startup-drive-in-el-capitan.html&quot;&gt;good reference&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;OSX Sierra can be downloaded from the Apple Store and it needs to be put in your /Applications folder for this to work.&lt;/li&gt;
-  &lt;li&gt;Creating the USB Stick with Unibeast generally runs perfectly.  It isn’t fast but it does the job.  Keep in mind that it can take long enough that you think it has crashed – but it always seems to finish.  I used UEFI boot mode for an Intel NUC and did not select any of the optional graphics configuration settings.&lt;/li&gt;
-  &lt;li&gt;Once you’re done with creating a USB stick then you want to copy MultiBeast onto the USB stick.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;step-3-for-me-only&quot;&gt;Step 3: For Me Only&lt;/h1&gt;
-
-&lt;p&gt;After my OSX System Update nuked my installation even rebooting with my original USB stick would not get OSX to come up – even off the USB stick.  The workaround was to:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Install Ubuntu from a USB stick thus entirely blowing away the HFS+ partition&lt;/li&gt;
-  &lt;li&gt;Reboot from the USB stick&lt;/li&gt;
-  &lt;li&gt;Use Disk Utility to reformat the drive and then start the installation&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;step-4-getting-the-disc-setup-correctly&quot;&gt;Step 4: Getting the Disc Setup Correctly&lt;/h1&gt;
-
-&lt;p&gt;When you start going thru the installation process, you’ll need to create your OSX hard disc and it is vital that you follow these steps exactly:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;For a new installation of macOS, you MUST erase and format the destination drive according to the following steps before continuing.
-
-a. In the top menu bar choose Utilities, and open Disk Utility
-b. Highlight your target drive for the Sierra installation in left column.
-c. Click Erase button
-d. For Name: type Sierra (You can rename it later)
-e. For Format: choose OS X Extended (Journaled)
-f. For Scheme: choose GUID Partition Map
-g. Click Erase
-h. Close Disk Utility
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Your disc absolutely needs to be named Sierra.  Mine wasn’t and it bunged up the whole process.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-5-follow-the-instructions-exactly&quot;&gt;Step 5: Follow the Instructions Exactly&lt;/h1&gt;
-
-&lt;p&gt;The most useful thing to note is that the instructions are precise and need to be followed to the letter.&lt;/p&gt;
-
-&lt;h1 id=&quot;useful-hackintosh-links&quot;&gt;Useful Hackintosh Links&lt;/h1&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/unibeast-install-macos-sierra-on-any-supported-intel-based-pc.200564/&quot;&gt;The Best Sierra INnstructions I Found&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/gp/product/B018Q0GN60/ref=oh_aui_detailpage_o00_s00?ie=UTF8&amp;amp;psc=1&quot;&gt;My NUC&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/unibeast-install-macos-sierra-on-any-supported-intel-based-pc.200564/#download&quot;&gt;Sierra On Any Intel PC&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/guide-el-capitan-on-the-intel-skylake-nuc.183839/&quot;&gt;El Capitan NUC Guide&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/resources/el-capitan-post-install-tools.294/&quot;&gt;El Capitan Post Install Tools&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.reddit.com/r/hackintosh/comments/3c2wgy/guide_how_you_should_be_managing_your_hackintosh/&quot;&gt;Reddit Thread on Managing Your Hackintosh without Multibeast&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.reddit.com/r/hackintosh/comments/5jl4u7/psa_dont_use_multibeast_and_dont_edit_your_clover/&quot;&gt;Don’t Use Multibeast&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/sierra-installation-works-but-wont-boot-once-multibeast-installed.204644/&quot;&gt;Sierra Problems&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;https://www.tonymacx86.com/threads/guide-el-capitan-on-the-gigabyte-ga-z170n-gaming-5-mini-itx.199805/&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/search/25328190/?q=intel+nuc&amp;amp;o=date&quot;&gt;NUC Search&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/unibeast-5-0-1-cant-select-yosemite-installation-type.144159/&quot;&gt;Unibeast Yosemite Problems&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;https://www.tonymacx86.com/resources/multibeast-el-capitan-8-2-3.319/&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Tue, 08 Aug 2017 11:49:44 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/mac/2017/08/08/creating-a-hackintosh-from-an-intel-nuc.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/mac/2017/08/08/creating-a-hackintosh-from-an-intel-nuc.html</guid>
-        
-        <category>mac</category>
-        
-        <category>osx</category>
-        
-        <category>hackintosh</category>
-        
-        
-        <category>mac</category>
         
       </item>
     
@@ -303,38 +179,6 @@ h. Close Disk Utility
       </item>
     
       <item>
-        <title>Creating a Searchable Application with Rails, Mongo, Elastic Search and SearchKick</title>
-        <description>
-</description>
-        <pubDate>Mon, 07 Aug 2017 19:08:39 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2017/08/07/creating-a-searchable-application-with-rails-mongo-elastic-search-and-searchkick.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/08/07/creating-a-searchable-application-with-rails-mongo-elastic-search-and-searchkick.html</guid>
-        
-        <category>rails</category>
-        
-        <category>searchkick</category>
-        
-        <category>mongo</category>
-        
-        <category>elastic_search</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>The Best Way to Add Favicons to Your Rails Project</title>
-        <description>
-</description>
-        <pubDate>Mon, 07 Aug 2017 08:39:14 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/08/07/the-best-way-to-add-favicons-to-your-rails-project.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/08/07/the-best-way-to-add-favicons-to-your-rails-project.html</guid>
-        
-        
-      </item>
-    
-      <item>
         <title>Adding AutoSave on Focus Lost to TextMate 2</title>
         <description>&lt;p&gt;I’ve looked this up and set this on every single mac I’ve used since I switched to &lt;a href=&quot;https://macromates.com/&quot;&gt;TextMate 2&lt;/a&gt; so I guess it is time to finally write it down for myself:&lt;/p&gt;
 
@@ -355,17 +199,6 @@ h. Close Disk Utility
         
         
         <category>textmate</category>
-        
-      </item>
-    
-      <item>
-        <title>Software Development Philosophy - Features and Bugs Versus Flow</title>
-        <description>
-</description>
-        <pubDate>Sun, 06 Aug 2017 08:55:53 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/2017/08/06/software-development-philosophy-features-and-bugs-versus-flow.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/08/06/software-development-philosophy-features-and-bugs-versus-flow.html</guid>
-        
         
       </item>
     
@@ -436,6 +269,402 @@ h. Close Disk Utility
         
         
         <category>bash</category>
+        
+      </item>
+    
+      <item>
+        <title>Monitoring Free Disc Space On AWS Instances with Monit, Ansible and SparkPost</title>
+        <description>&lt;p&gt;There are lots and lots of things that can go wrong with an AWS instance but I have always found that the single most common problem is nothing more than running out of disc space – log files fill up, too many things get deployed, etc.  And with low end AWS instances being only 8 gigs of free disc space, well, this is bound to happen.&lt;/p&gt;
+
+&lt;p&gt;The expensive solution is simple – buy more disc space – but I’m &lt;strong&gt;cheap&lt;/strong&gt; and that means that the real solution is &lt;strong&gt;monitoring&lt;/strong&gt; and &lt;strong&gt;alerting&lt;/strong&gt;.  Here’s what this means:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You need a way to configure monitoring, &lt;strong&gt;automatically&lt;/strong&gt;, on &lt;strong&gt;not&lt;/strong&gt; just one server but &lt;strong&gt;all&lt;/strong&gt; servers you have.  We’ll use &lt;a href=&quot;http://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt; for this.&lt;/li&gt;
+  &lt;li&gt;You need a monitoring daemon, a piece of software which looks for error conditions and sends email when they occur.  We’ll use &lt;a href=&quot;https://github.com/arnaudsj/monit&quot;&gt;monit&lt;/a&gt; for this.&lt;/li&gt;
+  &lt;li&gt;You need an email server to send the messages through.  We’ll use &lt;a href=&quot;http://www.sparkpost.com/&quot;&gt;SparkPost&lt;/a&gt; for this.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;step-1-installation-of-monit-with-ansible&quot;&gt;Step 1: Installation of Monit with Ansible&lt;/h1&gt;
+
+&lt;p&gt;Ansible, which I’ve &lt;a href=&quot;http://fuzzyblog.io/blog/category.html#ansible&quot;&gt;written a lot about&lt;/a&gt;, is a configuration tool for servers, your laptop, etc – essentially any device that you want to configure can be managed by Ansible.&lt;/p&gt;
+
+&lt;p&gt;Here is a basic Ansible role which installs monit along with a configuration file:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
+- name: install monit
+  apt: pkg=monit state=present
+  
+- name: copy config file
+  template: src=roles/install_monit/files/monit.rc dest=/etc/monit/monitrc
+  
+- name: start monit
+  service: name=monit state=started
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The lines above would go in a file roles/install_monit/tasks/main.yml.  You could then call that from a playbook with nothing more than:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: install_monit, tags: monit}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;As long as all your AWS instances are listed in an inventory file then this will install monit on all boxes, copy up the configuration file and then restart the service.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-2-monit-configuration&quot;&gt;Step 2: Monit Configuration&lt;/h1&gt;
+
+&lt;p&gt;We do need a simple Monit configuration file to tell it about our email server, credentials and the monitoring rules.  Monit is very powerful and can monitor for all kinds of issues but I’m only going to configure free disc space checking.  Where you see things in UPPERCASE then you need to configure them for your settings.&lt;/p&gt;
+
+&lt;p&gt;This configuration file will be installed into /etc/monit/monitrc by your Ansible playbook.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;set daemon 120 with start delay 60
+
+  set mailserver smtp.sparkpostmail.com  port 587 username &quot;SMTP_Injection&quot; password &quot;PASSWORD&quot; using tlsv1 with timeout 30 seconds
+
+  set alert YOURADDRESS@YOURSERVER.COM
+  
+mail-format {
+    From: noreply@YOURSERVER.COM
+    Subject: MONIT ERROR !!! [$HOST] $EVENT $SERVICE
+    Message: $DESCRIPTION
+             $DATE
+}
+
+check filesystem &quot;root&quot; with path /dev/xvda1
+  if space usage &amp;gt; 90% for 8 cycles then alert
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And that’s it.  Here is the english language explanation of the Monit configuration:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Set the daemon to monitor every 2 minutes (120 seconds) with a delay of 60 seconds for checking on startup&lt;/li&gt;
+  &lt;li&gt;Set the mail server to be sparkpost on 587 with the SMTP_Injection username and a password&lt;/li&gt;
+  &lt;li&gt;Set the alerting email address&lt;/li&gt;
+  &lt;li&gt;Set the format for the alerting email including subject and description&lt;/li&gt;
+  &lt;li&gt;check the filesystem device and then alert if the space usage is more than 90% for 8 cycles&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;step-3-email-configuration&quot;&gt;Step 3: Email Configuration&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.sparkpost.com&quot;&gt;SparkPost&lt;/a&gt; is a provider of email sending services and they have an incredibly generous free plan with up to 10,000 emails per month for free.  And while I could have used SES or another email service, I’ve had wonderful success using SparkPost to power my Rails ActionMailer routines so I just reused the same email credentials for Monit and it worked like a charm.  Here’s what you need to do:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;To get a SparkPost account, sign up &lt;a href=&quot;https://app.sparkpost.com/account/credentials&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Go to your &lt;a href=&quot;https://app.sparkpost.com/account/credentials&quot;&gt;dashboard&lt;/a&gt; to get an API key&lt;/li&gt;
+  &lt;li&gt;You do need to goto &lt;a href=&quot;https://app.sparkpost.com/account/sending-domains&quot;&gt;Sending Domains&lt;/a&gt; and configure the domains that you are sending from and then you need to add the DKIM settings to your DNS provider to prove that you own the domain in question.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;If you put these three pieces together then you will have an Ansible playbook that you can deploy onto all your servers that monitors for free disc space and alerts you via email.  Down the road you could easily enhance the monit script with other things that need monitoring such as http services, CPU load and more.&lt;/p&gt;
+
+&lt;h1 id=&quot;useful-references&quot;&gt;Useful References&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://gist.github.com/akabos/3897117&quot;&gt;Akabos Gist&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://blog.artchang.com/post/37424851210/monitor-memcached-with-monit-and-alert-with-g&quot;&gt;Art Chang&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/arnaudsj/monit&quot;&gt;Monit&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 02 Aug 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/aws/2017/08/02/monitoring-free-disc-space-on-aws-instances-with-monit-ansible-and-sparkpost.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/aws/2017/08/02/monitoring-free-disc-space-on-aws-instances-with-monit-ansible-and-sparkpost.html</guid>
+        
+        <category>aws</category>
+        
+        <category>ansible</category>
+        
+        <category>monit</category>
+        
+        <category>SparkPost</category>
+        
+        
+        <category>aws</category>
+        
+      </item>
+    
+      <item>
+        <title>Hacks for When Ansible Galaxy Isn't Working</title>
+        <description>&lt;p&gt;As of late I have manually bootstrapped a handful of machines into production using a text file with some command lines.  Yes this is a crap ass way to do it but one of the key things, Docker, is a damn pain in the ass to install.  Here’s what I was using as the command lines:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository \
+   &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable&quot;
+sudo apt-get update
+sudo apt-get install docker-ce
+sudo apt install docker-compose
+sudo groupadd docker
+sudo usermod -aG docker $USER
+sudo systemctl enable docker
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Even for me that’s damn ugly – so it is clearly time for &lt;a href=&quot;http://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt;.  Ansible is a machine provisioning tool that lets you reduce commands like the above to something short, sweet and idempotent.  For this particular thing I wanted to use &lt;a href=&quot;https://nickjanetakis.com/blog/automate-installing-docker-and-docker-compose-with-ansible&quot;&gt;Nick Janetakis’ Ansible Galaxy role&lt;/a&gt; to make installing this trivial.  Specifically I wanted what his blog post promises:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: nickjj.docker, tags docker}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;which is all you need to setup Docker.  And that’s actually what I got but I hit a few snags hence the workaround.&lt;/p&gt;
+
+&lt;p&gt;The problem that I hit was that his ansible galaxy role has some kind of version control conflict so that the version that gets installed when you type:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-galaxy install nickjj.docker
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;is actually the version from November 2016, not the current 17.xx version.  What I needed was the master version of the Github repo not the older tagged version.  A bit of googling and some interactions with Nick told me just clone it directly into my own project as a work around.  Here’s how I did that:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Change into the right directory
+cd ~/me/fuzzygroup/hyde/seira_watch/ansible/roles
+
+git clone git@github.com:nickjj/ansible-docker.git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This created an ansible-docker folder in my roles directory and all that I needed to make it work was to change the nickjj.docker reference to:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: ansible-docker, tags docker}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Nick also helpfully pointed out that I could have also cloned to tmp and then renamed to nickjj-docker before copying it over and that would have worked just fine tool.  Thanks Nick!&lt;/p&gt;
+
+&lt;p&gt;Note 1: Another workaround supposedly would be to make a requirements.yml file and specify the branch there but I’m less certain on how to do that.&lt;/p&gt;
+
+&lt;p&gt;Note 2: I talked about this same type of problem &lt;a href=&quot;http://fuzzyblog.io/blog/ansible/2016/10/09/ansible-quickie-fixing-a-poorly-designed-galaxy-role.html&quot;&gt;once before&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 01 Aug 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/ansible/2017/08/01/hacks-for-when-ansible-galaxy-isn-t-working.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/ansible/2017/08/01/hacks-for-when-ansible-galaxy-isn-t-working.html</guid>
+        
+        <category>ansible</category>
+        
+        <category>ansible-galaxy</category>
+        
+        
+        <category>ansible</category>
+        
+      </item>
+    
+      <item>
+        <title>Configuring Your Mac with Ansible Take 2</title>
+        <description>&lt;p&gt;The last new Mac I setup was back in &lt;a href=&quot;http://fuzzyblog.io/blog/osx/2016/11/20/ansible-for-configuring-your-mac-so-much-better.html&quot;&gt;2016, November 20&lt;/a&gt; and to do that I used ansible which was a wonderful experience.  Rather than groveling for software to install, shell hacks, etc, my ansible routine handled all of those crappy tasks and it was brilliant.  I can’t claim any originality here – lots of people other than me have done this.  In specific I drew inspiration from &lt;a href=&quot;https://twitter.com/geerlingguy&quot;&gt;Jeff Geerling’s&lt;/a&gt; ansible Macbook Pro repository.  He and I did it differently (his ansible skills are better than mine) but the end result was much the same – a functional machine with minimal manual work.&lt;/p&gt;
+
+&lt;p&gt;I recently wrote about &lt;a href=&quot;http://fuzzyblog.io/blog/osx/2017/07/19/why-i-haven-t-switched-away-from-osx.html&quot;&gt;my lack of system stability&lt;/a&gt; and figured that it was time to address it.  My thesis for some time has been that most of my errors are somehow related to lack of RAM so moving to a bigger box made sense.  Over the weekend I converted my Linux Intel NUC over to an OSX Hackintosh and used an updated version of the same playbook to handle configuration.  This means that I’m now working on a 32 gigs of RAM development box.  It is unclear if this will work out long term or not but it is an interesting experiment.  Of course since its a Hackintosh there are certain bits of weirdness like the fact that audio doesn’t work at all at present.  Ah well…&lt;/p&gt;
+
+&lt;h1 id=&quot;what-to-do-when-you-just-installed-osx&quot;&gt;What to Do When You Just Installed OSX&lt;/h1&gt;
+
+&lt;p&gt;Here are the steps to follow for a brand new Mac when you don’t have any tooling installed yet:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Install the command line tools: xcode-select –install&lt;/li&gt;
+  &lt;li&gt;Install pip: easy_install –user pip&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Get pip into the path with:&lt;/p&gt;
+
+    &lt;p&gt;$ printf ‘if [ -f ~/.bashrc ]; then\n  source ~/.bashrc\nfi\n’ » $HOME/.profile
+$ printf ‘export PATH=$PATH:$HOME/Library/Python/2.7/bin\n’ » $HOME/.bashrc
+$ source $HOME/.profile&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Install ansible: pip install –user –upgrade ansible&lt;/li&gt;
+  &lt;li&gt;Create the global dir: sudo mkdir /etc/ansible&lt;/li&gt;
+  &lt;li&gt;Copy in a configuration file: sudo curl -L https://raw.githubusercontent.com/ansible/ansible/devel/examples/ansible.cfg -o /etc/ansible/ansible.cfg&lt;/li&gt;
+  &lt;li&gt;Verify it works with: ansible localhost -m ping&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;A good reference is the Binary Nature link below.&lt;/p&gt;
+
+&lt;h1 id=&quot;useful-links&quot;&gt;Useful Links&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/geerlingguy/mac-dev-playbook&quot;&gt;Jeff Geerling’s Github Mac Repository&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;[Vandenbrad.org on how to configure the OSX Dock]https://blog.vandenbrand.org/2016/01/04/how-to-automate-your-mac-os-x-setup-with-ansible/&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/fuzzygroup/ansible-macbook-pro&quot;&gt;My Github Repo for Macbook Configuration&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/&quot;&gt;TonyMacx86&lt;/a&gt; - The definitive OSX Hackintosh Resource&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://binarynature.blogspot.com/2016/01/install-ansible-on-os-x-el-capitan_30.html&quot;&gt;Binary Nature&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 31 Jul 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/mac/2017/07/31/configuring-your-mac-with-ansible-take-2.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/mac/2017/07/31/configuring-your-mac-with-ansible-take-2.html</guid>
+        
+        <category>mac</category>
+        
+        <category>ansible</category>
+        
+        <category>hackintosh</category>
+        
+        
+        <category>mac</category>
+        
+      </item>
+    
+      <item>
+        <title>Rails and Address Already In Use - Bind Error</title>
+        <description>&lt;p&gt;Lately I’ve seen this error come up quite a few times:&lt;/p&gt;
+
+&lt;p&gt;/Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch_web_app_api/gems/puma-3.9.1/lib/puma/binder.rb:269:in `initialize’: Address already in use - bind(2) for “::1” port 3220 (Errno::EADDRINUSE)&lt;/p&gt;
+
+&lt;p&gt;I’m running a fairly complex stack that mirrors an 8 micro service application where things are expected to be on certain points in development so having port 3220 not working means that one of my APIs isn’t available – and that’s &lt;strong&gt;unacceptable&lt;/strong&gt;.  So I dug into it a bit and with the help of &lt;a href=&quot;https://stackoverflow.com/questions/10261477/tcpserver-error-address-already-in-use-bind2&quot;&gt;this StackOverflow&lt;/a&gt;, I found the answer was to locate the offending process and then kill it dead:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;lsof -wni tcp:3220&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;That gives the process id or PID and then you can just kill it:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;kill -9 12345 (or whatever)&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Sat, 29 Jul 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/07/29/rails-and-address-already-in-use-bind-error.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/07/29/rails-and-address-already-in-use-bind-error.html</guid>
+        
+        <category>rails</category>
+        
+        <category>sysadmin</category>
+        
+        <category>bind</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Why I Haven't Switched Away from OSX</title>
+        <description>&lt;p&gt;I’m writing this at 4:12 am sitting next to a machine with 11:50 hours of uptime.  The machine I’m using is an old OSX Macbook Air running OSX El Capitan 10.11.6 and the machine with less than 12 hours of uptime is running Sierra 10.12.5 and is a new (6 months old) Macbook Pro 13, the last one of the old generation before Apple foolishly messed around with the keyboard travel and layout on the new generation.  Yesterday my wife was driving and I was in the car drafting blog entries for a new, very focused blog I want to launch.  We were on flat dead empty and she stopped at a gas station so I got out to pump the fuel.  I came back to that worst of all experiences – my laptop had rebooted spontaneously and was sitting at the login prompt.  &lt;em&gt;Groan&lt;/em&gt;.  Even worse there was no system report this time so I don’t even know what pathetic excuse for a piece of software screwed up (again).  So I’m just left wondering.  But since this happens so frequently, I found a &lt;a href=&quot;https://gist.github.com/fuzzygroup/a4589f50665fd62f9ded74d54cd77e74&quot;&gt;crash report from about a week ago&lt;/a&gt; when my box had an uptime of 94000 seconds (yes that’s just one day).&lt;/p&gt;
+
+&lt;p&gt;My old friend &lt;a href=&quot;https://gene-callahan.blogspot.com/&quot;&gt;Gene Callahan&lt;/a&gt;, the man who two decades ago taught me Awk and pattern matching, skills that have subsequently defined much of my technical career, asked me recently why don’t I switch to something stable and answering that is a challenge but I think I’m finally ready to address that.  Here’s the tldr with a deep discussion on each below.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Lack of Faith in the Alternatives&lt;/li&gt;
+  &lt;li&gt;Textmate, Textmate, Textmate&lt;/li&gt;
+  &lt;li&gt;iTerm2&lt;/li&gt;
+  &lt;li&gt;My Phone&lt;/li&gt;
+  &lt;li&gt;My Pictures / My Data&lt;/li&gt;
+  &lt;li&gt;Time Machine&lt;/li&gt;
+  &lt;li&gt;Apple Hardware is Simply Beautiful&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Gene was asking me this, I suspect, because I wrote &lt;a href=&quot;http://fuzzyblog.io/blog/tag.html#postmac&quot;&gt;a series of Postmac&lt;/a&gt; blog posts at the end of 2016 into 2017 and then I simply stopped.  I was &lt;a href=&quot;http://fuzzyblog.io/blog/postmac/2016/11/05/life-in-a-postmac-world.html&quot;&gt;very serious&lt;/a&gt; about this initially and then I went dark on the topic and this digs into that.&lt;/p&gt;
+
+&lt;h1 id=&quot;disclaimer-im-a-power-user&quot;&gt;Disclaimer: I’m a Power User&lt;/h1&gt;
+
+&lt;p&gt;It should be noted that I’m a power user and a software developer.  I mostly use a terminal and an editor.  My recent list of “5 Apps I use Everyday” on &lt;a href=&quot;iTerm, TextMate, Enpass, Ruby, Git&quot;&gt;Hacker News&lt;/a&gt; was iTerm, TextMate, Enpass, Ruby, Git – just one of those was a GUI app (a password manager).  What I develop are mostly Rails apps with a smattering of straight ruby and, lately, some JavaScript / Node for a &lt;a href=&quot;http://fuzzyblog.io/blog/how_to_be_a_developer/2017/07/02/how-to-be-a-developer-001.html&quot;&gt;course I’m teaching / mentoring&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now the way I develop Rails apps is optimized for developer productivity so I start every project by opening a succession of terminal windows:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Web Server Tail&lt;/li&gt;
+  &lt;li&gt;Database window&lt;/li&gt;
+  &lt;li&gt;Rails Console&lt;/li&gt;
+  &lt;li&gt;Command Line&lt;/li&gt;
+  &lt;li&gt;Remote Command Line&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;By keeping all the resources for whatever I need to do always active, I minimize cognitive overhead due to switching time / “ok do I want to drop out of console to check the log file; is that worth it?”.&lt;/p&gt;
+
+&lt;p&gt;I have the definition of these set in a &lt;a href=&quot;https://github.com/tmuxinator/tmuxinator&quot;&gt;Tmuxinator&lt;/a&gt; profile so when I want to work on project xyz, I just tell the command line “tmuxinator seira_watch_web_app” and all the terminals for that project spring into existence (and it is wonderful to not have to think about ‘ok what port do I need the web server on’).  Right now I have 97 profiles setup for Tmuxinator.&lt;/p&gt;
+
+&lt;p&gt;You’re probably thinking well – 5 terminal windows, how is that a power user?  &lt;em&gt;Chuckle&lt;/em&gt;, you should know play the opening bars of &lt;em&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=o1tj2zJ2Wvg&quot;&gt;welcome to the jungle&lt;/a&gt;&lt;/em&gt; in your head.  I’ve made the technical focus for 2017 learning how to do Rails development in a distributed, &lt;strong&gt;non monolithic&lt;/strong&gt; fashion so that means your traditional Rails monolith has now been decomposed into N separate Rails projects with formal APIs between them and that you generally need all parts live concurrently.  In my case that generally amounts to 8 separate projects, each with at least 5 terminal windows so my 5 terminal windows is now 5 * 8 or 40 plus terminal windows just to work on one side project – and that doesn’t include consulting work, side, side projects, etc.  Generally speaking I run about 100 to 200 separate bash sessions.  The reason why I know about things like &lt;a href=&quot;http://fuzzyblog.io/blog/unix/2016/11/23/pkill-rocks.html&quot;&gt;pkill&lt;/a&gt; is from trying to tease out just one terminal session from the sea of them that I normally am swamped by.&lt;/p&gt;
+
+&lt;p&gt;Now I’m sure that 100 terminal sessions sounds like absolute madness but it actually isn’t all bad.  The terminal ITerm2 is actually pretty damn good and I manage it through a combination of tooling (&lt;a href=&quot;https://github.com/tmux/tmux/wiki&quot;&gt;Tmux&lt;/a&gt; / Tmuxinator) and convention (terminal 2 is my core software development window; terminal 3 is blogging and so on).&lt;/p&gt;
+
+&lt;p&gt;So if you add 100 plus terminal windows to a browser or three each running say 50 plus tabs, I have very, very serious memory needs.  Apple’s persistent inability / lack of desire to ship a laptop with more than 16 gigs of RAM is something I find absolutely maddening.&lt;/p&gt;
+
+&lt;p&gt;But for all of my bitching about stability and investigating alternatives, 8 months since I first wrote about “postmac”, I’m still here using OSX every single day so what went wrong?&lt;/p&gt;
+
+&lt;h1 id=&quot;lack-of-faith--everything-crashes&quot;&gt;Lack of Faith / Everything Crashes&lt;/h1&gt;
+
+&lt;p&gt;I’m now 49 years old and I have an appalling lack of faith in software quality – or as I like to describe it “everything crashes”.  This past November I bought an Intel NUC for the purposes of just running Ubuntu and experimenting with desktop linux to see if it was an alternative.  I went with Ubuntu 16 and used Ubuntu Mate as the closest linux experience to OSX that I could find (and yes I flirted heavily with &lt;a href=&quot;http://www.hongkiat.com/blog/elementary-os-luna/&quot;&gt;Elementary&lt;/a&gt; but it wasn’t stable).  And you know what I found out, while Ubuntu didn’t crash as hard as OSX, I still lost the networking stack about every week.  And a machine without networking, well in 2016 / 2017, that’s not much of a computer.  And the only way I ever found to get this fixed was a full system restart.  Now I’m sure that if I had dug into it enough, I could have found a way to restart the network stack but I never found it.  Oh and this was an Intel NUC with twice the ram of my OSX that I was using under far less demanding circumstances.&lt;/p&gt;
+
+&lt;p&gt;Honestly the experience of trying to switch off OSX onto Ubuntu and finding that Ubuntu wasn’t stable, at least when used in a GUI context, was absolutely disheartening, so much so that that box sites on my desk and every time my eye falls on it, I get more than a little sad.  I run ubuntu linux boxes 24x7x365 with well over a &lt;em&gt;full year&lt;/em&gt; of uptime so the network stack on my personal Ubuntu box failing after less than a week (and failing consistently) puzzles me.  My suspicion is that this somehow related to a full GUI running on top of Ubuntu itself.&lt;/p&gt;
+
+&lt;p&gt;So, honestly, everything crashes and if you’re going to run a full computing stack, with a GUI, browser and everything else, I no longer think that there is such a thing as stability – at least not if you’re a power user like myself and really pushing the limits of the machine.  And yes that’s a crap ass attitude but it is what a lifetime of being a power user has reduced me to; sigh.&lt;/p&gt;
+
+&lt;h1 id=&quot;if-everything-crashes-then-resume-quality-is-key&quot;&gt;If Everything Crashes then Resume Quality is Key&lt;/h1&gt;
+
+&lt;p&gt;So if you assume that everything crashes then the quality of resume is key.  And this is something where I found a dramatic difference between Ubuntu and OSX.  Sure Ubuntu didn’t hard crash but if I have to restart the machine to get networking running again, well, it might as well have.  While I remain pissed that my machine crashes regularly (I’m averaging about once per week now), I will state that Apple / the application vendors have finally managed to make this suck less.  Specifically:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;iTerm2 remembers every window and tab’s position so all I have to do is relaunch Tmuxinator with a profile; since tab names are persistent (I’m glaring at you Apple Terminal), the name tells me what profile to launch&lt;/li&gt;
+  &lt;li&gt;My editor, covered next, restores bloody everything&lt;/li&gt;
+  &lt;li&gt;Apple generally relaunches every application I had going&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So while its not perfect, resume quality is far, far better than I have ever had it before.  Even the core browsers I rely on, Chrome, Firefox and Safari actually get window / tab restoration mostly correct.&lt;/p&gt;
+
+&lt;h1 id=&quot;textmate-textmate-textmate&quot;&gt;Textmate, Textmate, Textmate&lt;/h1&gt;
+
+&lt;p&gt;The very first editor I used once I switched fulltime to OSX from Windows / Linux (both on ThinkPad hardware) back in 2006 was &lt;a href=&quot;https://macromates.com/&quot;&gt;TextMate&lt;/a&gt; and I’m still using it.  I’ve written hundreds of thousands of lines of code in it and while the world has mostly moved on, I still find it to be the single best editor I’ve ever used.  Sure its old and a wee bit clunky but it:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Has restore implemented perfectly (even “unsaved” files are restored after a crash allowing you to treat it as a virtual scratch pad; once you drop things into a new window they never go away unless you choose kill them)&lt;/li&gt;
+  &lt;li&gt;Has extensions specific to Ruby / Rails&lt;/li&gt;
+  &lt;li&gt;Has extensions for almost anything&lt;/li&gt;
+  &lt;li&gt;Fast enough&lt;/li&gt;
+  &lt;li&gt;Great syntax highlighting&lt;/li&gt;
+  &lt;li&gt;Macro facility&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I used to laugh at engineers who were so closely tied to a particular editor and think “I’ll never be that”; karma is a bitch. But, seriously, an editor is what I spend maybe 90% + of my time in so having one that I love really matters and that is actually a switching cost.&lt;/p&gt;
+
+&lt;p&gt;When I attempted to using Ubuntu on the NUC, I used &lt;a href=&quot;https://www.sublimetext.com/&quot;&gt;Sublime&lt;/a&gt;, &lt;a href=&quot;http://www.atom.io&quot;&gt;Atom&lt;/a&gt; and &lt;a href=&quot;https://code.visualstudio.com/&quot;&gt;Visual Studio Code&lt;/a&gt;.  Sublime never felt right and I just can’t get past the performance / memory bloat of anything written using Electron (as beautiful as VS Code is). I should note that Visual Studio Code is actually awesome and Microsoft has done amazing work on it.&lt;/p&gt;
+
+&lt;p&gt;But I still love my TextMate.&lt;/p&gt;
+
+&lt;h1 id=&quot;iterm2&quot;&gt;iTerm2&lt;/h1&gt;
+
+&lt;p&gt;While iTerm2 takes some crap for not always fixing bugs, being sometimes &lt;a href=&quot;https://danluu.com/term-latency/&quot;&gt;slow&lt;/a&gt; and a few other failings, I personally find it awesome.  Once again the ability to resume after a crash looms large.  Oddly if I choose to install updates, it can’t resume anything so I rarely choose to update it.  Similarly its resumption doesn’t work if you exit so if I have to shut it down, well, I use Activity Monitor to kill it and then it brings back all my terminals perfectly.  I wish I could accept the updates but, honestly, decent resume is so wonderful that I can live without them.&lt;/p&gt;
+
+&lt;p&gt;iTerm2 has Tmux integration and decent multi pane support that could theoretically save me from having to be so reliant on Tmuxinator but I’ve explored it being really happy with Tmux / Tmuxinator.&lt;/p&gt;
+
+&lt;h1 id=&quot;my-iphone--phone-integration&quot;&gt;My iPhone / Phone Integration&lt;/h1&gt;
+
+&lt;p&gt;This one is an absolute killer.  I’m an iPhone user and the integration that Apple has put together is fairly compelling.  Specifically if my wife or kids text me, I can just reply using my laptop and not have to struggle with my fat fingers on a small phone screen.  That one feature is huge for me and after WhatsApp has completely stopped working for me since early 2017, I’m back to using SMS for texting with my family so this is huge.  I used to get around this with a dedicated WhatsApp app on OSX (which I think exist on other platforms).  Given that mobile isn’t going to any less important, integration is key and I find it hard to believe that I could ever have a better experience with an iPhone on non Apple hardware.&lt;/p&gt;
+
+&lt;h1 id=&quot;my-pictures--my-data&quot;&gt;My Pictures / My Data&lt;/h1&gt;
+
+&lt;p&gt;Moving between systems is always a lossy operation – you’re going to lose something whether it is a much loved app or data that doesn’t convert correctly or something else.  Given that I have a decade plus worth of files on OSX, I’m going to lose stuff when I move and just the prospect of that is daunting.&lt;/p&gt;
+
+&lt;h1 id=&quot;one-device&quot;&gt;One Device&lt;/h1&gt;
+
+&lt;p&gt;I used to have a work laptop for coding and then a personal computer for “my data”.  Ever since I switched to OSX, I’ve had only one device to worry about and that’s pretty damn wonderful.  Given that I use an iPhone, if I was to switch away from OSX for my daily coding, I’m likely still going to have OSX in life and that ruins the one device strategy.&lt;/p&gt;
+
+&lt;h1 id=&quot;time-machine&quot;&gt;Time Machine&lt;/h1&gt;
+
+&lt;p&gt;If you weren’t a hardcore Mac person when Time Machine shipped you likely don’t remember how rarely, if ever, most of us backed up.  I keep one machine constantly backed up with Time Machine and I actually trust it.  I’ve had only one back up issue with Time Machine since I started using it and that includes reformatting a machine that had every family photo on it ever and Time Machine brought back every drop of data.  Sure there are other backup solutions on other platforms but I &lt;strong&gt;know&lt;/strong&gt; that Time Machine works and that level of trust is pretty important.&lt;/p&gt;
+
+&lt;h1 id=&quot;apple-hardware-is-simply-beautiful-and-lasts&quot;&gt;Apple Hardware is Simply Beautiful and Lasts&lt;/h1&gt;
+
+&lt;p&gt;If you’re a PC guy then you may not understand the hardware quality of an Apple box.  While I have lots and lots of issues with Apple at times, I have to admit that their hardware is simply &lt;strong&gt;beautiful&lt;/strong&gt; – and it &lt;strong&gt;lasts&lt;/strong&gt;.  My first 15” Macbook pro, that old 2010 model, it still runs daily as the family Plex server hooked up to like 9 gigs of storage and runs pretty much like a champ.  My 2012 Macbook Pro?  Its still around and working perfectly.  So while the software has issues, the physical hardware is beautiful and durable.  If you’re going to use something on a daily basis then it being beautiful isn’t a bad thing – I spent a lot of years using Dell and Toshiba hardware and the build quality just sucked.  I used to know that when I heard rattling in my Toshiba’s it meant that a screw had come out (again) and that the machine would die shortly thereafter.  Overall the hardware side of my Macs haven’t let me down.&lt;/p&gt;
+
+&lt;h1 id=&quot;closing-thoughts-on-software-quality&quot;&gt;Closing Thoughts on Software Quality&lt;/h1&gt;
+
+&lt;p&gt;I should note that software quality problems are rampant in the industry.  Just as an example, if I prematurely abort a test run on RSpec with ctrl+c, well, I lose the cursor in the terminal – and there is nothing I can do to get it back, not clear, not ctrl+k, etc.  I just have to shut down that terminal session.  So it isn’t just OSX or the GUI on Ubuntu, it is everywhere and it is a damn pity.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 19 Jul 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/osx/2017/07/19/why-i-haven-t-switched-away-from-osx.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/osx/2017/07/19/why-i-haven-t-switched-away-from-osx.html</guid>
+        
+        <category>osx</category>
+        
+        <category>linux</category>
+        
+        
+        <category>OSX</category>
         
       </item>
     
