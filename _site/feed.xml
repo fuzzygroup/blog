@@ -6,9 +6,160 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 08 Aug 2017 04:31:45 -0400</pubDate>
-    <lastBuildDate>Tue, 08 Aug 2017 04:31:45 -0400</lastBuildDate>
+    <pubDate>Wed, 09 Aug 2017 09:48:04 -0400</pubDate>
+    <lastBuildDate>Wed, 09 Aug 2017 09:48:04 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Evolution of a Tagline</title>
+        <description>
+</description>
+        <pubDate>Wed, 09 Aug 2017 08:40:37 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/08/09/evolution-of-a-tagline.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/08/09/evolution-of-a-tagline.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>The Problem with Medium</title>
+        <description>&lt;p&gt;Yesterday I was at the movies with my son and during the endless\&lt;/p&gt;
+
+&lt;p&gt;Here’s what I remembered:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;james altschuler&lt;/li&gt;
+  &lt;li&gt;keywords: hedgefund marriage thestreet.com&lt;/li&gt;
+  &lt;li&gt;I had hearted it&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And here are the problems:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I couldn’t find&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 09 Aug 2017 08:29:08 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/2017/08/09/the-problem-with-medium.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/2017/08/09/the-problem-with-medium.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Creating a Hackintosh from an Intel NUC</title>
+        <description>&lt;p&gt;A few weeks ago I converted my Desktop Linux box from Ubuntu to an OSX (Sierra) based Hackintosh using the brilliant documentation and technology found on the &lt;a href=&quot;https://www.tonymacx86.com/&quot;&gt;TonyMacX86 site&lt;/a&gt;.  However I did it in a spur of inspiration and never bothered to document the process – yes, I am an idiot.  And then, today, in an inspiring display of additional idiocy, I accepted an Apple System Update – and broke everything.  And, naturally, since it was a brand new box, I hadn’t gotten around to setting up Time Machine or Carbon Copy so, well, this is pretty much toast.  So while this is a complete disaster, I use &lt;a href=&quot;http://fuzzyblog.io/blog/mac/2017/07/31/configuring-your-mac-with-ansible-take-2.html&quot;&gt;Ansible to configure all my application software&lt;/a&gt; and DropBox to sync my development environment so if I can just get the machine to boot again, well, I should be good to go.  The rest of this blog post writes out all the steps I found to make an OSX based Hackintosh from an Intel NUC.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Disclaimer&lt;/strong&gt;: This is lower level with hardware than I generally care to go so I’m unlikely to be willing or even able to answer questions.  You too can have the joyful experience of groveling thru driver documentation and figuring it out on your own – I did.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-1-understand-that-a-hackintosh-isnt-a-mac&quot;&gt;Step 1: Understand that a Hackintosh Isn’t a Mac&lt;/h1&gt;
+
+&lt;p&gt;The first step in all this is that you need to understand that a Hackintosh isn’t a Mac – it is a Hackintosh and that has limitations.  Here are some of the ones that I found:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I never got audio to work&lt;/li&gt;
+  &lt;li&gt;The first system update I put on it blew up the disc rendering it unbootable&lt;/li&gt;
+  &lt;li&gt;I never got Messages to work&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;But, for what I wanted, a development box, here’s what I got:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;32 gigs of RAM&lt;/li&gt;
+  &lt;li&gt;Tiny form factor&lt;/li&gt;
+  &lt;li&gt;Whisper quiet&lt;/li&gt;
+  &lt;li&gt;More reliable than my Macbook Retina Pro 13” (2015)&lt;/li&gt;
+  &lt;li&gt;Cheaper and used hardware I already had&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So this really can work but don’t kid yourself into thinking that what you have is a Mac, it really isn’t.  You need to keep it regularly backed up and take system updates with a high degree of care.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-2-understanding-the-tools&quot;&gt;Step 2: Understanding the Tools&lt;/h1&gt;
+
+&lt;p&gt;There are two tools you need to download from TonyMacX86:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;UniBeast&lt;/li&gt;
+  &lt;li&gt;MultiBeast&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Unibeast creates a bootable USB stick for you to create OSX onto a standard PC.  MultiBeast allows you to configure your machine so that the correct drivers are in place.  MultiBeast also handles the task of making your machine actually bootable once the drivers have been installed.  Please note that after your first pass with MultiBeast, your machine will NOT be bootable (but have patience; it will get there).&lt;/p&gt;
+
+&lt;h1 id=&quot;step-2-making-a-bootable-usb-stick&quot;&gt;Step 2: Making a Bootable USB Stick&lt;/h1&gt;
+
+&lt;p&gt;The first step you want to follow is to make a bootable USB Stick (think of this as equivalent to a Unix LiveCD and you’ll be ok).  The directions to follow are &lt;a href=&quot;https://www.tonymacx86.com/threads/unibeast-install-macos-sierra-on-any-supported-intel-based-pc.200564/#create_unibeast&quot;&gt;here&lt;/a&gt; and I’ve put any specific notes below.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;You may not have an option in Disk Utility to create a GUID Partition Map scheme but if they aren’t there then it seems to default to them.  If you have problems using Disk Utility then here’s a &lt;a href=&quot;http://www.macworld.com/article/2990837/storage/how-to-format-a-startup-drive-in-el-capitan.html&quot;&gt;good reference&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;OSX Sierra can be downloaded from the Apple Store and it needs to be put in your /Applications folder for this to work.&lt;/li&gt;
+  &lt;li&gt;Creating the USB Stick with Unibeast generally runs perfectly.  It isn’t fast but it does the job.  Keep in mind that it can take long enough that you think it has crashed – but it always seems to finish.  I used UEFI boot mode for an Intel NUC and did not select any of the optional graphics configuration settings.&lt;/li&gt;
+  &lt;li&gt;Once you’re done with creating a USB stick then you want to copy MultiBeast onto the USB stick.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;step-3-for-me-only&quot;&gt;Step 3: For Me Only&lt;/h1&gt;
+
+&lt;p&gt;After my OSX System Update nuked my installation even rebooting with my original USB stick would not get OSX to come up – even off the USB stick.  The workaround was to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Install Ubuntu from a USB stick thus entirely blowing away the HFS+ partition&lt;/li&gt;
+  &lt;li&gt;Reboot from the USB stick&lt;/li&gt;
+  &lt;li&gt;Use Disk Utility to reformat the drive and then start the installation&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;step-4-getting-the-disc-setup-correctly&quot;&gt;Step 4: Getting the Disc Setup Correctly&lt;/h1&gt;
+
+&lt;p&gt;When you start going thru the installation process, you’ll need to create your OSX hard disc and it is vital that you follow these steps exactly:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;For a new installation of macOS, you MUST erase and format the destination drive according to the following steps before continuing.
+
+a. In the top menu bar choose Utilities, and open Disk Utility
+b. Highlight your target drive for the Sierra installation in left column.
+c. Click Erase button
+d. For Name: type Sierra (You can rename it later)
+e. For Format: choose OS X Extended (Journaled)
+f. For Scheme: choose GUID Partition Map
+g. Click Erase
+h. Close Disk Utility
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Your disc absolutely needs to be named Sierra.  Mine wasn’t and it bunged up the whole process.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-5-follow-the-instructions-exactly&quot;&gt;Step 5: Follow the Instructions Exactly&lt;/h1&gt;
+
+&lt;p&gt;The most useful thing to note is that the instructions are precise and need to be followed to the letter.&lt;/p&gt;
+
+&lt;h1 id=&quot;useful-hackintosh-links&quot;&gt;Useful Hackintosh Links&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/unibeast-install-macos-sierra-on-any-supported-intel-based-pc.200564/&quot;&gt;The Best Sierra INnstructions I Found&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/gp/product/B018Q0GN60/ref=oh_aui_detailpage_o00_s00?ie=UTF8&amp;amp;psc=1&quot;&gt;My NUC&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/unibeast-install-macos-sierra-on-any-supported-intel-based-pc.200564/#download&quot;&gt;Sierra On Any Intel PC&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/guide-el-capitan-on-the-intel-skylake-nuc.183839/&quot;&gt;El Capitan NUC Guide&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/resources/el-capitan-post-install-tools.294/&quot;&gt;El Capitan Post Install Tools&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.reddit.com/r/hackintosh/comments/3c2wgy/guide_how_you_should_be_managing_your_hackintosh/&quot;&gt;Reddit Thread on Managing Your Hackintosh without Multibeast&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.reddit.com/r/hackintosh/comments/5jl4u7/psa_dont_use_multibeast_and_dont_edit_your_clover/&quot;&gt;Don’t Use Multibeast&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/sierra-installation-works-but-wont-boot-once-multibeast-installed.204644/&quot;&gt;Sierra Problems&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;https://www.tonymacx86.com/threads/guide-el-capitan-on-the-gigabyte-ga-z170n-gaming-5-mini-itx.199805/&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/search/25328190/?q=intel+nuc&amp;amp;o=date&quot;&gt;NUC Search&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/unibeast-5-0-1-cant-select-yosemite-installation-type.144159/&quot;&gt;Unibeast Yosemite Problems&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;https://www.tonymacx86.com/resources/multibeast-el-capitan-8-2-3.319/&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 08 Aug 2017 11:49:44 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/mac/2017/08/08/creating-a-hackintosh-from-an-intel-nuc.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/mac/2017/08/08/creating-a-hackintosh-from-an-intel-nuc.html</guid>
+        
+        <category>mac</category>
+        
+        <category>osx</category>
+        
+        <category>hackintosh</category>
+        
+        
+        <category>mac</category>
+        
+      </item>
     
       <item>
         <title>Utter and Complete Heroku Fail</title>
@@ -51,11 +202,11 @@
   &lt;li&gt;Not even allowing me to create a ticket AS THEY TOLD ME TO.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;The utter and complete pity of this is that Heroku allowing me to easily run a github repo would have been beautiful.  Here is the utter and fantastic simplicity of the Errbit deploy to Heroku url:&lt;/p&gt;
+&lt;p&gt;The utter and complete pity of this is that Heroku allowing me to easily run a github repo would have been beautiful.  Here is the beautiful simplicity of the Errbit deploy to Heroku url:&lt;/p&gt;
 
 &lt;p&gt;https://heroku.com/deploy?template=https://github.com/errbit/errbit/tree/master&lt;/p&gt;
 
-&lt;p&gt;I do not think it could be any simpler than that.  And, if it had worked, I can easily see myself doing this fairly often.  Now?  I suspect I’ll be deleting my Heroku account shortly and walking away forever.&lt;/p&gt;
+&lt;p&gt;That is fantastic – I do not think it could be any simpler than that.  And, if it had worked, I can easily see myself doing this fairly often.  Now?  I suspect I’ll be deleting my Heroku account shortly and walking away forever.  And that’s a crying shame.&lt;/p&gt;
 
 &lt;h1 id=&quot;screenshot-1&quot;&gt;Screenshot 1&lt;/h1&gt;
 
@@ -81,76 +232,6 @@
         
         
         <category>fail</category>
-        
-      </item>
-    
-      <item>
-        <title>Creating a Hackintosh from an Intel NUC</title>
-        <description>&lt;p&gt;A few weeks ago I converted my Desktop Linux box from Ubuntu to an OSX (Sierra) based Hackintosh using the brilliant documentation and technology found on the &lt;a href=&quot;https://www.tonymacx86.com/&quot;&gt;TonyMacX86 site&lt;/a&gt;.  However I did it in a spur of inspiration and never bothered to document the process – yes, I am an idiot.  And then, today, in an inspiring display of additional idiocy, I accepted an Apple System Update – and broke everything.  And, naturally, since it was a brand new box, I hadn’t gotten around to setting up Time Machine or Carbon Copy so, well, this is pretty much toast.  So while this is a complete disaster, I use &lt;a href=&quot;http://fuzzyblog.io/blog/mac/2017/07/31/configuring-your-mac-with-ansible-take-2.html&quot;&gt;Ansible to configure all my application software&lt;/a&gt; and DropBox to sync my development environment so if I can just get the machine to boot again, well, I should be good to go.  The rest of this blog post writes out all the steps I found to make an OSX based Hackintosh from an Intel NUC.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Disclaimer&lt;/strong&gt;: This is lower level with hardware than I generally care to go so I’m unlikely to be willing or even able to answer questions.  You too can have the joyful experience of groveling thru driver documentation and figuring it out on your own – I did.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-1-understand-that-a-hackintosh-isnt-a-mac&quot;&gt;Step 1: Understand that a Hackintosh Isn’t a Mac&lt;/h1&gt;
-
-&lt;p&gt;The first step in all this is that you need to understand that a Hackintosh isn’t a Mac – it is a Hackintosh and that has limitations.  Here are some of the ones that I found:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;I never got audio to work&lt;/li&gt;
-  &lt;li&gt;The first system update I put on it blew up the disc rendering it unbootable&lt;/li&gt;
-  &lt;li&gt;I never got Messages to work&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;But, for what I wanted, a development box, here’s what I got:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;32 gigs of RAM&lt;/li&gt;
-  &lt;li&gt;Tiny form factor&lt;/li&gt;
-  &lt;li&gt;Whisper quiet&lt;/li&gt;
-  &lt;li&gt;More reliable than my Macbook Retina Pro 13” (2015)&lt;/li&gt;
-  &lt;li&gt;Cheaper and used hardware I already had&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;So this really can work but don’t kid yourself into thinking that what you have is a Mac, it really isn’t.  You need to keep it regularly backed up and take system updates with a high degree of care.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-2-making-a-bootable-usb-stick&quot;&gt;Step 2: Making a Bootable USB Stick&lt;/h1&gt;
-
-&lt;p&gt;The first step you want to follow is to make a bootable USB Stick (think of this as equivalent to a Unix LiveCD and you’ll be ok).  The directions to follow are &lt;a href=&quot;https://www.tonymacx86.com/threads/unibeast-install-macos-sierra-on-any-supported-intel-based-pc.200564/#create_unibeast&quot;&gt;here&lt;/a&gt; and I’ve put any specific notes below.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;You may not have an option in Disk Utility to create a GUID Partition Map scheme but if they aren’t there then it seems to default to them.  If you have problems using Disk Utility then here’s a &lt;a href=&quot;http://www.macworld.com/article/2990837/storage/how-to-format-a-startup-drive-in-el-capitan.html&quot;&gt;good reference&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;OSX Sierra can be downloaded from the Apple Store and it needs to be put in your /Applications folder for this to work.&lt;/li&gt;
-  &lt;li&gt;Creating the USB Stick with Unibeast generally runs perfectly.  It isn’t fast but it does the job.  Keep in mind that it can take long enough that you think it has crashed – but it always seems to finish.  I used UEFI boot mode for an Intel NUC and did not select any of the optional graphics configuration settings.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;useful-hackintosh-links&quot;&gt;Useful Hackintosh Links&lt;/h1&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/unibeast-install-macos-sierra-on-any-supported-intel-based-pc.200564/&quot;&gt;The Best Sierra INnstructions I Found&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/gp/product/B018Q0GN60/ref=oh_aui_detailpage_o00_s00?ie=UTF8&amp;amp;psc=1&quot;&gt;My NUC&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/unibeast-install-macos-sierra-on-any-supported-intel-based-pc.200564/#download&quot;&gt;Sierra On Any Intel PC&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/guide-el-capitan-on-the-intel-skylake-nuc.183839/&quot;&gt;El Capitan NUC Guide&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/resources/el-capitan-post-install-tools.294/&quot;&gt;El Capitan Post Install Tools&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.reddit.com/r/hackintosh/comments/3c2wgy/guide_how_you_should_be_managing_your_hackintosh/&quot;&gt;Reddit Thread on Managing Your Hackintosh without Multibeast&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.reddit.com/r/hackintosh/comments/5jl4u7/psa_dont_use_multibeast_and_dont_edit_your_clover/&quot;&gt;Don’t Use Multibeast&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/sierra-installation-works-but-wont-boot-once-multibeast-installed.204644/&quot;&gt;Sierra Problems&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;https://www.tonymacx86.com/threads/guide-el-capitan-on-the-gigabyte-ga-z170n-gaming-5-mini-itx.199805/&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/search/25328190/?q=intel+nuc&amp;amp;o=date&quot;&gt;NUC Search&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/threads/unibeast-5-0-1-cant-select-yosemite-installation-type.144159/&quot;&gt;Unibeast Yosemite Problems&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;https://www.tonymacx86.com/resources/multibeast-el-capitan-8-2-3.319/&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Mon, 07 Aug 2017 20:49:27 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/mac/2017/08/07/creating-a-hackintosh-from-an-intel-nuc.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/mac/2017/08/07/creating-a-hackintosh-from-an-intel-nuc.html</guid>
-        
-        <category>mac</category>
-        
-        <category>osx</category>
-        
-        <category>hackintosh</category>
-        
-        
-        <category>mac</category>
         
       </item>
     
@@ -400,107 +481,6 @@ check filesystem &quot;root&quot; with path /dev/xvda1
         
         
         <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>Hacks for When Ansible Galaxy Isn't Working</title>
-        <description>&lt;p&gt;As of late I have manually bootstrapped a handful of machines into production using a text file with some command lines.  Yes this is a crap ass way to do it but one of the key things, Docker, is a damn pain in the ass to install.  Here’s what I was using as the command lines:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository \
-   &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable&quot;
-sudo apt-get update
-sudo apt-get install docker-ce
-sudo apt install docker-compose
-sudo groupadd docker
-sudo usermod -aG docker $USER
-sudo systemctl enable docker
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Even for me that’s damn ugly – so it is clearly time for &lt;a href=&quot;http://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt;.  Ansible is a machine provisioning tool that lets you reduce commands like the above to something short, sweet and idempotent.  For this particular thing I wanted to use &lt;a href=&quot;https://nickjanetakis.com/blog/automate-installing-docker-and-docker-compose-with-ansible&quot;&gt;Nick Janetakis’ Ansible Galaxy role&lt;/a&gt; to make installing this trivial.  Specifically I wanted what his blog post promises:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: nickjj.docker, tags docker}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;which is all you need to setup Docker.  And that’s actually what I got but I hit a few snags hence the workaround.&lt;/p&gt;
-
-&lt;p&gt;The problem that I hit was that his ansible galaxy role has some kind of version control conflict so that the version that gets installed when you type:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ansible-galaxy install nickjj.docker
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;is actually the version from November 2016, not the current 17.xx version.  What I needed was the master version of the Github repo not the older tagged version.  A bit of googling and some interactions with Nick told me just clone it directly into my own project as a work around.  Here’s how I did that:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Change into the right directory
-cd ~/me/fuzzygroup/hyde/seira_watch/ansible/roles
-
-git clone git@github.com:nickjj/ansible-docker.git
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;This created an ansible-docker folder in my roles directory and all that I needed to make it work was to change the nickjj.docker reference to:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- { role: ansible-docker, tags docker}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Nick also helpfully pointed out that I could have also cloned to tmp and then renamed to nickjj-docker before copying it over and that would have worked just fine tool.  Thanks Nick!&lt;/p&gt;
-
-&lt;p&gt;Note 1: Another workaround supposedly would be to make a requirements.yml file and specify the branch there but I’m less certain on how to do that.&lt;/p&gt;
-
-&lt;p&gt;Note 2: I talked about this same type of problem &lt;a href=&quot;http://fuzzyblog.io/blog/ansible/2016/10/09/ansible-quickie-fixing-a-poorly-designed-galaxy-role.html&quot;&gt;once before&lt;/a&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 01 Aug 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/ansible/2017/08/01/hacks-for-when-ansible-galaxy-isn-t-working.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/ansible/2017/08/01/hacks-for-when-ansible-galaxy-isn-t-working.html</guid>
-        
-        <category>ansible</category>
-        
-        <category>ansible-galaxy</category>
-        
-        
-        <category>ansible</category>
-        
-      </item>
-    
-      <item>
-        <title>Configuring Your Mac with Ansible Take 2</title>
-        <description>&lt;p&gt;The last new Mac I setup was back in &lt;a href=&quot;http://fuzzyblog.io/blog/osx/2016/11/20/ansible-for-configuring-your-mac-so-much-better.html&quot;&gt;2016, November 20&lt;/a&gt; and to do that I used ansible which was a wonderful experience.  Rather than groveling for software to install, shell hacks, etc, my ansible routine handled all of those crappy tasks and it was brilliant.  I can’t claim any originality here – lots of people other than me have done this.  In specific I drew inspiration from &lt;a href=&quot;https://twitter.com/geerlingguy&quot;&gt;Jeff Geerling’s&lt;/a&gt; ansible Macbook Pro repository.  He and I did it differently (his ansible skills are better than mine) but the end result was much the same – a functional machine with minimal manual work.&lt;/p&gt;
-
-&lt;p&gt;I recently wrote about &lt;a href=&quot;http://fuzzyblog.io/blog/osx/2017/07/19/why-i-haven-t-switched-away-from-osx.html&quot;&gt;my lack of system stability&lt;/a&gt; and figured that it was time to address it.  My thesis for some time has been that most of my errors are somehow related to lack of RAM so moving to a bigger box made sense.  Over the weekend I converted my Linux Intel NUC over to an OSX Hackintosh and used an updated version of the same playbook to handle configuration.  This means that I’m now working on a 32 gigs of RAM development box.  It is unclear if this will work out long term or not but it is an interesting experiment.  Of course since its a Hackintosh there are certain bits of weirdness like the fact that audio doesn’t work at all at present.  Ah well…&lt;/p&gt;
-
-&lt;h1 id=&quot;useful-links&quot;&gt;Useful Links&lt;/h1&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/geerlingguy/mac-dev-playbook&quot;&gt;Jeff Geerling’s Github Mac Repository&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/fuzzygroup/ansible-macbook-pro&quot;&gt;My Github Repo for Macbook Configuration&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.tonymacx86.com/&quot;&gt;TonyMacx86&lt;/a&gt; - The definitive OSX Hackintosh Resource&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Mon, 31 Jul 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/mac/2017/07/31/configuring-your-mac-with-ansible-take-2.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/mac/2017/07/31/configuring-your-mac-with-ansible-take-2.html</guid>
-        
-        <category>mac</category>
-        
-        <category>ansible</category>
-        
-        <category>hackintosh</category>
-        
-        
-        <category>mac</category>
         
       </item>
     

@@ -10,7 +10,7 @@
   <meta name="description" content="A few weeks ago I converted my Desktop Linux box from Ubuntu to an OSX (Sierra) based Hackintosh using the brilliant documentation and technology found on th...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/mac/2017/08/07/creating-a-hackintosh-from-an-intel-nuc.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/mac/2017/08/08/creating-a-hackintosh-from-an-intel-nuc.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -134,7 +134,7 @@
 
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">Creating a Hackintosh from an Intel NUC</h1>
-    <p class="I'll"><time datetime="2017-08-07T20:49:27-04:00" itemprop="datePublished">Aug 7, 2017</time></p>
+    <p class="I'll"><time datetime="2017-08-08T11:49:44-04:00" itemprop="datePublished">Aug 8, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
@@ -164,6 +164,17 @@
 
 <p>So this really can work but don’t kid yourself into thinking that what you have is a Mac, it really isn’t.  You need to keep it regularly backed up and take system updates with a high degree of care.</p>
 
+<h1 id="step-2-understanding-the-tools">Step 2: Understanding the Tools</h1>
+
+<p>There are two tools you need to download from TonyMacX86:</p>
+
+<ul>
+  <li>UniBeast</li>
+  <li>MultiBeast</li>
+</ul>
+
+<p>Unibeast creates a bootable USB stick for you to create OSX onto a standard PC.  MultiBeast allows you to configure your machine so that the correct drivers are in place.  MultiBeast also handles the task of making your machine actually bootable once the drivers have been installed.  Please note that after your first pass with MultiBeast, your machine will NOT be bootable (but have patience; it will get there).</p>
+
 <h1 id="step-2-making-a-bootable-usb-stick">Step 2: Making a Bootable USB Stick</h1>
 
 <p>The first step you want to follow is to make a bootable USB Stick (think of this as equivalent to a Unix LiveCD and you’ll be ok).  The directions to follow are <a href="https://www.tonymacx86.com/threads/unibeast-install-macos-sierra-on-any-supported-intel-based-pc.200564/#create_unibeast">here</a> and I’ve put any specific notes below.</p>
@@ -172,7 +183,41 @@
   <li>You may not have an option in Disk Utility to create a GUID Partition Map scheme but if they aren’t there then it seems to default to them.  If you have problems using Disk Utility then here’s a <a href="http://www.macworld.com/article/2990837/storage/how-to-format-a-startup-drive-in-el-capitan.html">good reference</a>.</li>
   <li>OSX Sierra can be downloaded from the Apple Store and it needs to be put in your /Applications folder for this to work.</li>
   <li>Creating the USB Stick with Unibeast generally runs perfectly.  It isn’t fast but it does the job.  Keep in mind that it can take long enough that you think it has crashed – but it always seems to finish.  I used UEFI boot mode for an Intel NUC and did not select any of the optional graphics configuration settings.</li>
+  <li>Once you’re done with creating a USB stick then you want to copy MultiBeast onto the USB stick.</li>
 </ol>
+
+<h1 id="step-3-for-me-only">Step 3: For Me Only</h1>
+
+<p>After my OSX System Update nuked my installation even rebooting with my original USB stick would not get OSX to come up – even off the USB stick.  The workaround was to:</p>
+
+<ul>
+  <li>Install Ubuntu from a USB stick thus entirely blowing away the HFS+ partition</li>
+  <li>Reboot from the USB stick</li>
+  <li>Use Disk Utility to reformat the drive and then start the installation</li>
+</ul>
+
+<h1 id="step-4-getting-the-disc-setup-correctly">Step 4: Getting the Disc Setup Correctly</h1>
+
+<p>When you start going thru the installation process, you’ll need to create your OSX hard disc and it is vital that you follow these steps exactly:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>For a new installation of macOS, you MUST erase and format the destination drive according to the following steps before continuing.
+
+a. In the top menu bar choose Utilities, and open Disk Utility
+b. Highlight your target drive for the Sierra installation in left column.
+c. Click Erase button
+d. For Name: type Sierra (You can rename it later)
+e. For Format: choose OS X Extended (Journaled)
+f. For Scheme: choose GUID Partition Map
+g. Click Erase
+h. Close Disk Utility
+</code></pre>
+</div>
+
+<p>Your disc absolutely needs to be named Sierra.  Mine wasn’t and it bunged up the whole process.</p>
+
+<h1 id="step-5-follow-the-instructions-exactly">Step 5: Follow the Instructions Exactly</h1>
+
+<p>The most useful thing to note is that the instructions are precise and need to be followed to the letter.</p>
 
 <h1 id="useful-hackintosh-links">Useful Hackintosh Links</h1>
 
