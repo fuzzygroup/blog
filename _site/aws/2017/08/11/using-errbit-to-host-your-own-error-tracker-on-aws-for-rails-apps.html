@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Using Errbit To Host Your own Error Tracker on AWS for Rails Apps</title>
+  <meta name="description" content="In this tutorial, I walk you through using the Errbit project, an open source error tracker to host your own error tracker.  Errbit is a competitor to HoneyB...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/aws/2017/08/11/using-errbit-to-host-your-own-error-tracker-on-aws-for-rails-apps.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="Using Errbit To Host Your own Error Tracker on AWS for Rails Apps">
+
+  
+    <meta name="twitter:description"
+      content="A hosted error tracking service is a great development tool but at $29+ per month, they can be expensive if what you're building is just a side project.  Here I document how to install the Errbit project on an AWS instance using Docker.">
+  
+
+  
+    <meta name="twitter:image"
+      content="http://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Using Errbit To Host Your own Error Tracker on AWS for Rails Apps</h1>
+    <p class="I'll"><time datetime="2017-08-11T00:00:00-04:00" itemprop="datePublished">Aug 11, 2017</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>In this tutorial, I walk you through using <a href="https://github.com/errbit/errbit">the Errbit project</a>, an open source error tracker to host your own error tracker.  Errbit is a competitor to <a href="http://www.honeybadger.io">HoneyBadger</a>, <a href="http://www.bugsnagcom/">BugSnag</a>, <a href="http://www.airbrake.io">AirBrake</a> and other similar hosted error tracking tools that generally cost $29 to $49 / month or more.  Using Errbit means you only pay for infrastructure capacity and end up with a solution you can maintain yourself.</p>
+
+<p>I’ve written about HoneyBadger <a href="http://fuzzyblog.io/blog/containers/2016/08/26/in-the-world-of-containers-honeybadger-will-reign-supreme-bye-bye-airbrake.html">previously</a> and it really is an excellent, excellent tool but I’m cheap and I wanted to experiment with an open source project that I’ve known about for years and never had the opportunity.  Although Errbit really is excellent, I found the getting started documentation lacking hence this post.</p>
+
+<p>I initially tried to get this running on Heroku but that resulted in what I termed <a href="http://fuzzyblog.io/blog/fail/2017/08/08/utter-and-complete-heroku-fail.html">Heroku Fail</a>.</p>
+
+<h1 id="step-1-getting-it-running-locally-using-docker">Step 1: Getting it Running Locally Using Docker</h1>
+
+<p>Errbit is a modern Rails app and it requires:</p>
+
+<ul>
+  <li>Rails</li>
+  <li>Mongo</li>
+</ul>
+
+<p>The easiest way to get this running locally is to just pull down the docker-compose.yml file from the github repo and use docker-compost to run it.  If you don’t have Docker installed then you need to install it now for development and on your server for production use.  After that:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>mkdir errbit
+cd errbit
+wget https://github.com/errbit/errbit/blob/master/docker-compose.yml
+docker-compose up 
+</code></pre>
+</div>
+
+<p>Once that is running, in a separate terminal window you need to bootstrap the installation and generate an admin user.  Do that with:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> docker-compose exec errbit bundle exec rake errbit:bootstrap
+</code></pre>
+</div>
+
+<p>The default errbit port is 8080 and you can access it by going to http://localhost:8080 where you can use the credentials you generated by bootstrapping it to log in.</p>
+
+<p>Once you’ve logged in, you need to add your app by clicking on the Add a new App button and then setting:</p>
+
+<ul>
+  <li>app name</li>
+  <li>github repo</li>
+  <li>issue tracker</li>
+  <li>notification service</li>
+</ul>
+
+<p>Once this is done, Errbit will generate you instructions for what to add to your Gemfile and what to configure in the errbit.rb initializer.  Generally this looks something like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># Require the airbrake gem in your App.
+# ---------------------------------------------
+#
+# Ruby - In your Gemfile
+# gem 'airbrake', '~&gt; 5.0'
+#
+# Then add the following to config/initializers/errbit.rb
+# -------------------------------------------------------
+
+Airbrake.configure do |config|
+  config.host = 'http://localhost:8080'
+  config.project_id = 1 # required, but any positive integer works
+  config.project_key = '2020e526a09c78462f0f9d45010efc6c'
+
+  # Uncomment for Rails apps
+  # config.environment = Rails.env
+  # config.ignore_environments = %w(development test)
+end
+</code></pre>
+</div>
+
+<p>If you want to test Errbit’s integration then you can use this rake task:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>rake airbrake:test
+</code></pre>
+</div>
+
+<p>Once you’ve confirmed that this works, you can proceed to Step 2 and move it a server.</p>
+
+<h1 id="step-2-moving-it-to-a-server">Step 2: Moving it to a Server</h1>
+
+<p>Installing Errbit on a docker enabled server really is exactly the same as you did above.  Here’s the quick recap:</p>
+
+<ol>
+  <li>Log into your server.</li>
+  <li>Make an errbit directory where you want it.</li>
+  <li>wget https://raw.githubusercontent.com/errbit/errbit/master/docker-compose.yml</li>
+  <li>Run <strong>docker-compose up</strong></li>
+  <li>In another terminal window, run <strong>docker-compose exec errbit bundle exec rake errbit:bootstrap</strong> and make note of the credentials.</li>
+</ol>
+
+<p>At this point you have an http service running errbit on port 8080 which your AWS security group likely isn’t configured for and that brings us to step 3.</p>
+
+<h1 id="step-3-aws-configuration">Step 3: AWS Configuration</h1>
+
+<p>Our goal in this step is to configure a domain name like errbit.foo.com where foo.com is your base domain name.  I’m assuming that you are using the standard AWS tools including Route 53 for DNS and an ALB for load balancing.  Here are the things we need to do to make this work on AWS:</p>
+
+<ol>
+  <li>Create a dns name for it.</li>
+  <li>Open a security group port for it.</li>
+  <li>Add it to our load balancer.</li>
+  <li>Add it to our monitoring tool</li>
+</ol>
+
+<h2 id="creating-a-dns-name-for-it">Creating a DNS Name for It</h2>
+
+<p>Here are the steps to follow:</p>
+
+<ol>
+  <li>Go into AWS console for Route 53.</li>
+  <li>Select your main domain name, the “foo.com” from above.</li>
+  <li>Select Create Record Set.</li>
+  <li>In the name field enter errbit and then choose that it is type A and that it is an alias.</li>
+  <li>In the alias target select your load balancer.</li>
+  <li>Click the Create button.</li>
+</ol>
+
+<p>This has created the domain name errbit.foo.com and assigned it to your load balanced AWS stack.</p>
+
+<h2 id="opening-a-security-group-port">Opening a Security Group Port</h2>
+
+<p>Your AWS security group is really nothing more than a firewall and to let traffic through you need to expose a hole for the port 8080.</p>
+
+<ol>
+  <li>Go into the AWS console for EC2 instances.</li>
+  <li>Select Security Groups from the left hand pane.</li>
+  <li>Click the Inbound tab and then click the Edit button.</li>
+  <li>Scroll all the way down to the bottom and click Add Rule.</li>
+  <li>Enter 8080 into the Port Range field as a custom TCP rule accessible to everywhere and then click the Save button.</li>
+</ol>
+
+<h2 id="adding-errbit-to-your-aws-alb-load-balancer">Adding Errbit to Your AWS ALB Load Balancer</h2>
+
+<p>At this point we just need to add Errbit to our AWS load balancer.  Please note that if you aren’t using a load balancer then at this point you would actually be done but since I have one, I should go through all the way to the end.</p>
+
+<p>The first step is to define a Target Group for your load balancer.  This allows you to map a service on a given port to an AWS instance.</p>
+
+<ol>
+  <li>Go into the AWS console for EC2 instances.</li>
+  <li>Select Target Groups from the left hand pane.</li>
+  <li>Click the Create Target Group button.</li>
+  <li>Enter errbit as the Target group name and specify /robots.txt as the health check path and then click Create.</li>
+</ol>
+
+<p>Once you have a Target Group then you need to add an actual Target for the group to serve traffic to:</p>
+
+<ol>
+  <li>Select the errbit Target Group in the list of target groups on the top.</li>
+  <li>Select the Targets tab on the bottom.</li>
+  <li>Click the Edit button.</li>
+  <li><strong>IMPORTANT</strong>: This next step is confusing so please pay attention.  You are now adding from a list on the bottom of the screen to a list on the top and then saving your work with a button on the bottom.  Honestly this is kind of a <em>shite show</em> as far as UI design goes but it does work; it is just tricky and unintuitive.</li>
+  <li>Select your instance where errbit is installed from the list of instances on the bottom and then check its box on the far left.  Enter 8080 in the port field and then click the Add to registered button.</li>
+  <li>Now click the Save button.</li>
+</ol>
+
+<p>You now have both a target group and a target which means you can now create a load balancer rule to process the traffic.</p>
+
+<ol>
+  <li>Go into the AWS console for EC2 instances.</li>
+  <li>Select Load Balancers from the left hand pane</li>
+  <li>Select your load balancer from the list of load balancers at the top.</li>
+  <li>Select Listeners from the bottom grouping of tabs.</li>
+  <li>Out of the box, Errbit only supports http not https so on the http listener select View/edit rules.</li>
+  <li>Select the + icon to add a rule.</li>
+  <li>At the top of the load balancer select the Insert Rule link.</li>
+  <li>Add errbit.foo.com (make sure you specify your correct base domain) to the Host field in the <strong>IF</strong> section of the rule.</li>
+  <li>Select your target group from the Forward to section of the <strong>THEN</strong> section of the rule.</li>
+  <li>Click the Save button.</li>
+</ol>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>At this point you should goto your url, something like http://errbit.foo.com/ and you should get a login screen where you can use the credentials you generated earlier.</p>
+
+<p>Your first tasks now need to be:</p>
+
+<ol>
+  <li>Add yourself as a user so your email address is supported for notifications (note I still need to configure email sending and that will happen but likely in a later blog post).</li>
+  <li>Add any other team members.</li>
+  <li>You need to add all of your applications to Errbit and then configure your applications accordingly.</li>
+  <li>Use the Rake task above to test each of your applications and verify that they are connected to errbit.</li>
+</ol>
+
+<h1 id="if-you-need-to-learn-docker">If You Need to Learn Docker</h1>
+
+<p>All my Docker knowledge came from <a href="https://diveintodocker.com/">Nick Janetakis’ Dive into Docker course</a> and he does a great job teaching about Docker.  Strongly recommended.</p>
+
+  </div>
+  
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
