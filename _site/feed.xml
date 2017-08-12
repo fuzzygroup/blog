@@ -6,9 +6,63 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 11 Aug 2017 15:39:20 -0400</pubDate>
-    <lastBuildDate>Fri, 11 Aug 2017 15:39:20 -0400</lastBuildDate>
+    <pubDate>Sat, 12 Aug 2017 06:05:47 -0400</pubDate>
+    <lastBuildDate>Sat, 12 Aug 2017 06:05:47 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>When Font Awesome Won't Render in Production on Rails 5.x</title>
+        <description>&lt;p&gt;&lt;a href=&quot;http://fontawesome.io/&quot;&gt;Font Awesome&lt;/a&gt; is one of those staggeringly good open source projects that you don’t realize just how good it is until you use it – and then it goes away.  The degree of &lt;em&gt;polish&lt;/em&gt; and &lt;em&gt;finish&lt;/em&gt; that an easy to use, inline icon adds to a project honestly just astounds me.  That’s why, when I moved some code to production recently, and Font Awesome failed to render, well, I was &lt;strong&gt;beyond frustrated&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;My current production platform is Rails 5.x and this is how I got past that particular hellish little bit of the Rails asset pipeline.  The context is that I’ve been developing with Font Awesome for over 8 months now and I even spent the $$$ to back their &lt;a href=&quot;https://www.kickstarter.com/projects/232193852/font-awesome-5/comments&quot;&gt;KickStarter&lt;/a&gt; since Font Awesome is just that, well, &lt;strong&gt;awesome&lt;/strong&gt; and I’ve been viewing their icons daily for 8 months – until I deployed at which point they vanished.&lt;/p&gt;
+
+&lt;p&gt;On digging into this problem, I found a lot of discussion and suggestions in the &lt;a href=&quot;https://stackoverflow.com/questions/17904949/rails-app-not-serving-assets-in-production-environment&quot;&gt;normal &lt;/a&gt; &lt;a href=&quot;https://github.com/FortAwesome/Font-Awesome/issues/5559&quot;&gt;places&lt;/a&gt; but I never found this solution.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Diagnose the problem by looking at the Chrome JavaScript console and seeing if you get a 404 error related to missing font files such as &lt;em&gt;fontawesome-webfont.woff2&lt;/em&gt;.  That’s the issue that this solution tackles.&lt;/li&gt;
+  &lt;li&gt;Use the font-awesome-rails gem in Gemfile: &lt;strong&gt;gem “font-awesome-rails”&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;In your application.css.scss file you should have an import directive at or near the top like @import “font-awesome”;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;In config/environments/production.rb, you need a series of asset compilation directives like these:&lt;/p&gt;
+
+    &lt;p&gt;# Do not fallback to assets pipeline if a precompiled asset is missed.
+ config.assets.compile = false
+ # font_awesome additions
+ config.serve_static_assets = true
+ config.assets.compress = true
+ config.assets.compile = true
+ config.assets.digest = true&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;before-and-after&quot;&gt;Before and After&lt;/h1&gt;
+
+&lt;p&gt;Here’s the obligatory before and after screenshots:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/font_awesome_broken.png&quot; alt=&quot;font_awesome_broken.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/assets/font_awesome_working.png&quot; alt=&quot;font_awesome_broken.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The working screenshot has slightly different data in it since this was written over a series of days while this issue was researched.&lt;/p&gt;
+
+&lt;h1 id=&quot;honest-disclaimer&quot;&gt;Honest Disclaimer&lt;/h1&gt;
+
+&lt;p&gt;I’ve now been using Rails since 2007 and Ruby since 2006 (and HTML since 93) which means that I so thoroughly precede the asset pipeline that it honestly makes me laugh.  In all honesty, I really don’t understand the asset pipeline particularly well so if this advice is technically wrong, I &lt;strong&gt;apologize&lt;/strong&gt;.  What I can tell you is that this advice took a Rails 5 system where Font Awesome worked in development but failed in production and made it work in production – but when you don’t understand the low level details, well, it makes you &lt;em&gt;uncomfortable&lt;/em&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 12 Aug 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/08/12/when-font-awesome-won-t-render-in-production-on-rails-5-x.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/08/12/when-font-awesome-won-t-render-in-production-on-rails-5-x.html</guid>
+        
+        <category>rails</category>
+        
+        <category>font_awesome</category>
+        
+        <category>asset_pipeline</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>Using Errbit To Host Your own Error Tracker on AWS for Rails Apps</title>
@@ -703,39 +757,6 @@ $ source $HOME/.profile&lt;/p&gt;
         
         
         <category>mac</category>
-        
-      </item>
-    
-      <item>
-        <title>Rails and Address Already In Use - Bind Error</title>
-        <description>&lt;p&gt;Lately I’ve seen this error come up quite a few times:&lt;/p&gt;
-
-&lt;p&gt;/Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch_web_app_api/gems/puma-3.9.1/lib/puma/binder.rb:269:in `initialize’: Address already in use - bind(2) for “::1” port 3220 (Errno::EADDRINUSE)&lt;/p&gt;
-
-&lt;p&gt;I’m running a fairly complex stack that mirrors an 8 micro service application where things are expected to be on certain points in development so having port 3220 not working means that one of my APIs isn’t available – and that’s &lt;strong&gt;unacceptable&lt;/strong&gt;.  So I dug into it a bit and with the help of &lt;a href=&quot;https://stackoverflow.com/questions/10261477/tcpserver-error-address-already-in-use-bind2&quot;&gt;this StackOverflow&lt;/a&gt;, I found the answer was to locate the offending process and then kill it dead:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;lsof -wni tcp:3220&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;That gives the process id or PID and then you can just kill it:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;kill -9 12345 (or whatever)&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
-        <pubDate>Sat, 29 Jul 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2017/07/29/rails-and-address-already-in-use-bind-error.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/07/29/rails-and-address-already-in-use-bind-error.html</guid>
-        
-        <category>rails</category>
-        
-        <category>sysadmin</category>
-        
-        <category>bind</category>
-        
-        
-        <category>rails</category>
         
       </item>
     
