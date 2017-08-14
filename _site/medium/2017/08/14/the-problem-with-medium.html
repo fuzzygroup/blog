@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>When Font Awesome Won&#39;t Render in Production on Rails 5.x</title>
-  <meta name="description" content="Font Awesome is one of those staggeringly good open source projects that you don’t realize just how good it is until you use it – and then it goes away.  The...">
+  <title>Fundamental Usability Problems with Medium</title>
+  <meta name="description" content="Yesterday I was at the movies with my son and during the endless roll of trailers, promos and advertisements, I was terribly, terribly bored so I dropped int...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/rails/2017/08/12/when-font-awesome-won-t-render-in-production-on-rails-5-x.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/medium/2017/08/14/the-problem-with-medium.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -39,16 +39,16 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="When Font Awesome Won't Render in Production on Rails 5.x">
+  <meta name="twitter:title" content="Fundamental Usability Problems with Medium">
 
   
     <meta name="twitter:description"
-      content="Font Awesome is, well, awesome but when the Rails asset pipeline gets involved you can run into things working correctly in production but failing in development.">
+      content="How can Medium have such basic problems with usability at this stage in its life?">
   
 
   
     <meta name="twitter:image"
-      content="https://fuzzyblog.io/blog/assets/font_awesome_working.png">
+      content="http://fuzzyblog.io/blog/assets/scott_johnson.jpg">
   
   
   
@@ -133,47 +133,77 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">When Font Awesome Won't Render in Production on Rails 5.x</h1>
-    <p class="I'll"><time datetime="2017-08-12T00:00:00-04:00" itemprop="datePublished">Aug 12, 2017</time></p>
+    <h1 class="post-title" itemprop="name headline">Fundamental Usability Problems with Medium</h1>
+    <p class="I'll"><time datetime="2017-08-14T00:00:00-04:00" itemprop="datePublished">Aug 14, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p><a href="http://fontawesome.io/">Font Awesome</a> is one of those staggeringly good open source projects that you don’t realize just how good it is until you use it – and then it goes away.  The degree of <em>polish</em> and <em>finish</em> that an easy to use, inline icon adds to a project honestly just astounds me.  That’s why, when I moved some code to production recently, and Font Awesome failed to render, well, I was <strong>beyond frustrated</strong>.</p>
+    <p>Yesterday I was at the movies with my son and during the endless roll of trailers, promos and advertisements, I was terribly, terribly bored so I dropped into the Medium app and saw something that I <strong>knew</strong> I wanted to read in more depth so I hearted it (by hearted I mean I clicked on the heart icon on the toolbar and watched it change color).  I figured that would be enough to find it later.  I also remembered a little bit about it:</p>
 
-<p>My current production platform is Rails 5.x and this is how I got past that particular hellish little bit of the Rails asset pipeline.  The context is that I’ve been developing with Font Awesome for over 8 months now and I even spent the $$$ to back their <a href="https://www.kickstarter.com/projects/232193852/font-awesome-5/comments">KickStarter</a> since Font Awesome is just that, well, <strong>awesome</strong> and I’ve been viewing their icons daily for 8 months – until I deployed at which point they vanished.</p>
+<ul>
+  <li>author: james altschuler</li>
+  <li>keywords: hedge fund marriage thestreet.com</li>
+</ul>
 
-<p>On digging into this problem, I found a lot of discussion and suggestions in the <a href="https://stackoverflow.com/questions/17904949/rails-app-not-serving-assets-in-production-environment">normal </a> <a href="https://github.com/FortAwesome/Font-Awesome/issues/5559">places</a> but I never found this solution.</p>
+<p>Just to cut to the chase, here’s the <a href="https://medium.com/the-mission/step-by-step-guide-to-make-10-million-and-then-totally-blow-it-a9283b6de90c">exact article</a> but the process by which I found something that I had:</p>
+
+<ul>
+  <li>already read</li>
+  <li>that I had hearted as a favorite</li>
+  <li>that I knew had certain keywords</li>
+</ul>
+
+<p>was an absolute usability failure and one that I just don’t understand.</p>
+
+<h1 id="usability-failure-1---where-are-my-hearted-things">Usability Failure #1 - Where Are My Hearted Things?</h1>
+
+<p>The next day I went to Medium in my laptop’s browser and signed in and I <strong>could not</strong> find the things I liked.  So I looked again, nope.  My next thought was ok maybe these are just stored in the Medium app on my phone – nope I couldn’t find anything there either.  This led me back to my laptop’s browser where I finally googled it and found a <a href="https://www.quora.com/How-do-I-find-a-list-of-all-the-articles-I-recommended-on-Medium">Quora post</a> that talked about it but their solution was no longer part of the Medium user interface.  They also pointed out that you could goto http://medium.com/@user/has-recommended and find your posts.  I typed in the correct url for me: <a href="http://medium.com/@fuzzygroup/has-recommended">http://medium.com/@fuzzygroup/has-recommended</a> and that actually did work but the question remains:</p>
+
+<blockquote>
+  <p>Medium has serious founders, serious money, serious talent – how can this be a problem?</p>
+</blockquote>
+
+<p><strong>Note</strong>: I never did find a way to get back to my hearted items on my phone.</p>
+
+<h1 id="usability-failure-2---search">Usability Failure #2 - Search</h1>
+
+<p>When I couldn’t find the article I <strong>knew</strong> was there, I turned to search as the next obvious way to find it.  Here was my process:</p>
 
 <ol>
-  <li>Diagnose the problem by looking at the Chrome JavaScript console and seeing if you get a 404 error related to missing font files such as <em>fontawesome-webfont.woff2</em>.  That’s the issue that this solution tackles.</li>
-  <li>Use the font-awesome-rails gem in Gemfile: <strong>gem “font-awesome-rails”</strong>.</li>
-  <li>In your application.css.scss file you should have an import directive at or near the top like @import “font-awesome”;</li>
-  <li>
-    <p>In config/environments/production.rb, you need a series of asset compilation directives like these:</p>
-
-    <p># Do not fallback to assets pipeline if a precompiled asset is missed.
- config.assets.compile = false
- # font_awesome additions
- config.serve_static_assets = true
- config.assets.compress = true
- config.assets.compile = true
- config.assets.digest = true</p>
-  </li>
+  <li>So I started with a search for <a href="https://medium.com/search?q=james%20altschuler">james altschuler</a> and that gave zero hits.</li>
+  <li>Then I continued with a search for <a href="https://medium.com/search?q=thestreet.com">thestreet.com</a> and that gave me hits but not the article I knew I had read.  Now I have no problem with a spelling error on altschuler but “thestreet.com” – <strong>nope</strong>.</li>
+  <li>I then proceeded to search for <a href="https://medium.com/search?q=hedge%20fund">hedge fund</a> and again the article that I wanted wasn’t there.</li>
+  <li>Ok I’ll accept that there are lots and lots of articles about hedge funds but how many <a href="https://medium.com/search?q=hedge%20fund%20marriage">hedge fund articles talk about the collapse of his marriage</a> - that must work, right?  Nope.  That three word query brings back just a <a href="https://medium.com/thinkprogress/hedge-fund-manager-runs-anti-gay-attack-ad-against-liz-cheney-2e851c82b758">single article</a>.  Interestingly Google finds <a href="https://www.google.com/search?biw=1313&amp;bih=646&amp;q=site%3Amedium.com+%22hedge+fund%22+%22marriage%22&amp;oq=site%3Amedium.com+%22hedge+fund%22+%22marriage%22&amp;gs_l=psy-ab.3...34964.39387.0.39831.4.4.0.0.0.0.62.207.4.4.0....0...1.1.64.psy-ab..0.0.0.FNpHjvAPKsM">360 things</a> on medium that contain hedge fund and marriage and the post I was looking for was on the second page.  I ran the google search with “hedge fund” and “marriage” to force all the terms to be in there as well as to treat “hedge fund” as a string.</li>
 </ol>
 
-<h1 id="before-and-after">Before and After</h1>
+<h1 id="how-did-i-finally-find-it">How Did I Finally Find It?</h1>
 
-<p>Here’s the obligatory before and after screenshots:</p>
+<p>I finally ended up giving up on Medium’s user interface and its search engine and using my incorrect version of the author’s name and <a href="https://www.google.com/search?q=site%3Amedium.com%20james%20altschuler">Google found the right author as the very first result</a>.  I then scrolled down and found <a href="https://medium.com/the-mission/step-by-step-guide-to-make-10-million-and-then-totally-blow-it-a9283b6de90c">the article</a>.</p>
 
-<p><img src="/blog/assets/font_awesome_broken.png" alt="font_awesome_broken.png" /></p>
+<h1 id="conclusion">Conclusion</h1>
 
-<p><img src="/blog/assets/font_awesome_working.png" alt="font_awesome_broken.png" /></p>
+<p>By any Silicon Valley standards, Medium is a real thing:</p>
 
-<p>The working screenshot has slightly different data in it since this was written over a series of days while this issue was researched.</p>
+<ul>
+  <li><a href="https://en.wikipedia.org/wiki/Medium_(website)">5 years old</a></li>
+  <li>Incredible Founder - Blogger and Twitter were Ev’s prior companies</li>
+  <li>Huge $$$ - More than <a href="https://techcrunch.com/2016/04/21/medium-series-c/">$107 Million</a></li>
+  <li>Has north of <a href="https://www.quora.com/How-many-employees-does-Medium-have-What-do-they-do">167 employees</a> as of November 2015</li>
+</ul>
 
-<h1 id="honest-disclaimer">Honest Disclaimer</h1>
+<p>It is very, very hard for me to understand this level of usability failure at a company with these type of metrics.  I can, perhaps, excuse the user interface to hearted items as being a redesign where something got lost in the shuffle.  But the search failure is deeply, deeply troubling.  If you’re in the content business then search is a <strong>requirement</strong> not an option and a search algorithm that:</p>
 
-<p>I’ve now been using Rails since 2007 and Ruby since 2006 (and HTML since 93) which means that I so thoroughly precede the asset pipeline that it honestly makes me laugh.  In all honesty, I really don’t understand the asset pipeline particularly well so if this advice is technically wrong, I <strong>apologize</strong>.  What I can tell you is that this advice took a Rails 5 system where Font Awesome worked in development but failed in production and made it work in production – but when you don’t understand the low level details, well, it makes you <em>uncomfortable</em>.</p>
+<ul>
+  <li>deals with misspellings</li>
+  <li>takes into account user input such as hearts / likes</li>
+  <li>actually finds the damn keywords the user puts in</li>
+</ul>
+
+<p>should not be a problem in 2017.  I’m spent my career in search in retrieval and we were solving these types of issue back in the early 90s if not sooner.  I just can’t fathom exactly what Medium is doing but they would likely be better served at this point by just embedding google instead of whatever search tool they’ve</p>
+
+<h1 id="obligatory-advertisement-for-myself">Obligatory Advertisement for Myself</h1>
+
+<p>If you have search and retrieval needs, I’ve spent a long time working on these kinds of issues and I’m always happy to talk to potential clients.  My contact details are on <a href="http://fuzzyblog.io/blog/resume.html">my resume</a>.</p>
 
   </div>
   
