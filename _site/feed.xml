@@ -6,9 +6,107 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 21 Aug 2017 08:25:45 -0400</pubDate>
-    <lastBuildDate>Mon, 21 Aug 2017 08:25:45 -0400</lastBuildDate>
+    <pubDate>Mon, 28 Aug 2017 11:16:03 -0400</pubDate>
+    <lastBuildDate>Mon, 28 Aug 2017 11:16:03 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>When Gems Won't Install - The mkmf.log Problem</title>
+        <description>&lt;p&gt;Computing is rich enough and deep enough as a profession that you can spent literally over a decade at something and still learn new things.  And, as frustrating as this is, I find that one of the best parts.   Personally I’ve been using Ruby now since 2006 and one of the things that is absolutely bedeviling is when a gem won’t install.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Upfront Disclaimer&lt;/strong&gt;: This problem was one of my own making but it proved to be an interesting exercise as I waited for someone to arrive for a meeting.  Far better than simply surfing the web or playing on my phone.&lt;/p&gt;
+
+&lt;p&gt;I was trying to get the &lt;a href=&quot;https://github.com/feedbin/feedbin&quot;&gt;FeedBin&lt;/a&gt; aggregator to install so I did the usual open source Rails dance:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;fork it&lt;/li&gt;
+  &lt;li&gt;clone it&lt;/li&gt;
+  &lt;li&gt;bundle install&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And, WHAM, this gave me the wonderfulness below:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+    current directory: /Users/sjohnson/.rvm/gems/ruby-2.3.1@feedbin/gems/nio4r-2.1.0/ext/nio4r
+/Users/sjohnson/.rvm/rubies/ruby-2.3.1/bin/ruby -r ./siteconf20170828-91881-jc70x3.rb extconf.rb
+--with-cflags=-std=c99
+checking for unistd.h... *** extconf.rb failed ***
+Could not create Makefile due to some reason, probably lack of necessary
+libraries and/or headers.  Check the mkmf.log file for more details.  You may
+need configuration options.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Nothing like an abstractly referenced log file &lt;strong&gt;WITHOUT A FULL PATH&lt;/strong&gt; to be completely unhelpful.  I’ve been seeing references to mkmf.log about as long as Gems have been in common usage and I’ve never understood exactly where that persnickety file was located.  Normally a quick Google or Stack Overflow gives me the answer but this time those just weren’t helpful.  What I did &lt;a href=&quot;https://stackoverflow.com/questions/20379274/when-a-gem-fails-where-do-i-find-the-mkmf-log-file&quot;&gt;discover&lt;/a&gt; was that the mkmf.log file is bundled with the gem where it is built.  Given that I use RVM, the example was to look in a path like this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;~/.rvm/gems/ruby-1.9.3-p194/gems/some-cool-gem-name/ext/mkmf.log&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I started with this find command:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;find ~/.rvm -name mkmf.log&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;and that produced a huge number of results, 995 to be specific (a decade or more of hacking Ruby stuff will do that).&lt;/p&gt;
+
+&lt;p&gt;This took me into adding a grep to the end:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;table&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;find ~/.rvm -name mkmf.log&lt;/td&gt;
+        &lt;td&gt;grep nio4r&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;which still gave me a full page of output so I added feedbin as a secondary grep:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;table&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;find ~/.rvm -name mkmf.log&lt;/td&gt;
+        &lt;td&gt;grep nio4r&lt;/td&gt;
+        &lt;td&gt;grep feedbin&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;which finally produced:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;/Users/sjohnson/.rvm/gems/ruby-2.3.1@feedbin/extensions/x86_64-darwin-15/2.3.0/nio4r-2.1.0/mkmf.log&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Digging into that file revealed this error:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;xcrun: error: active developer path (&quot;/Applications/Xcode.app/Contents/Developer&quot;) does not exist, use `xcode-select --switch path/to/Xcode.app` to specify the Xcode that you wish to use for command line developer tools (or see `man xcode-select`)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So somehow XCode is missing and I’m certain that’s my fault (this isn’t my primary dev box so perhaps it got deleted at some point to save disc space).&lt;/p&gt;
+</description>
+        <pubDate>Mon, 28 Aug 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/08/28/when-gems-won-t-install-the-mkmf-log-problem.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/08/28/when-gems-won-t-install-the-mkmf-log-problem.html</guid>
+        
+        <category>rails</category>
+        
+        <category>ruby</category>
+        
+        <category>gems</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>Rails, Apartment, Tenancy and Sidekiq</title>
@@ -1016,30 +1114,6 @@ end
         
         
         <category>fail</category>
-        
-      </item>
-    
-      <item>
-        <title>Adding AutoSave on Focus Lost to TextMate 2</title>
-        <description>&lt;p&gt;I’ve looked this up and set this on every single mac I’ve used since I switched to &lt;a href=&quot;https://macromates.com/&quot;&gt;TextMate 2&lt;/a&gt; so I guess it is time to finally write it down for myself:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Open a command prompt.&lt;/li&gt;
-  &lt;li&gt;Edit the file ~/Library/Application Support/TextMate/Global.tmProperties&lt;/li&gt;
-  &lt;li&gt;Add the line saveOnBlur = true in the top region before the square bracket sections.&lt;/li&gt;
-  &lt;li&gt;Save and Exit&lt;/li&gt;
-  &lt;li&gt;Relaunch and it should be there.&lt;/li&gt;
-&lt;/ol&gt;
-
-</description>
-        <pubDate>Mon, 07 Aug 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/textmate/2017/08/07/adding-autosave-on-focus-lost-to-textmate-2.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/textmate/2017/08/07/adding-autosave-on-focus-lost-to-textmate-2.html</guid>
-        
-        <category>textmate</category>
-        
-        
-        <category>textmate</category>
         
       </item>
     
