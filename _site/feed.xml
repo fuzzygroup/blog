@@ -6,8 +6,8 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 30 Aug 2017 07:08:31 -0400</pubDate>
-    <lastBuildDate>Wed, 30 Aug 2017 07:08:31 -0400</lastBuildDate>
+    <pubDate>Wed, 30 Aug 2017 07:11:02 -0400</pubDate>
+    <lastBuildDate>Wed, 30 Aug 2017 07:11:02 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -83,15 +83,13 @@ du -shc *
 
 &lt;ol&gt;
   &lt;li&gt;While there may have been issues related to a constant ongoing deploy process, the core underlying issue seems to be disc usage due to log file build up.&lt;/li&gt;
-  &lt;li&gt;Docker makes it very hard to see the underlying problem since there doesn’t seem to be a “where is my damn disc space going” type of command.  Update: Try using “docker system df” to visualize docker disc space usage.  I only found this late in the writing process on this post.&lt;/li&gt;
+  &lt;li&gt;Docker makes it very hard to see the underlying problem since there doesn’t seem to be a “where is my damn disc space going” type of command.  Update: Try using “docker system df” to visualize docker disc space usage.  I only found this late in the writing process on this post.  The docker system df command doesn’t specifically report log file space usage which I suspect would illuminate this problem.&lt;/li&gt;
   &lt;li&gt;Logs appear to be persistent over time and not reclaimed as you deploy.  My suspicion is that logs are only reset when you stop the Docker daemon (and sometimes not even then).&lt;/li&gt;
   &lt;li&gt;Traditional log management like log rotate won’t work unless you restart the Docker daemon.&lt;/li&gt;
-  &lt;li&gt;Sidebar: I wonder how many people that have struggled with this issue have actually had log file growth issues not actual Docker problems?&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Sidebar&lt;/strong&gt;: I wonder how many people that have struggled with this issue have actually had log file growth issues not actual Docker problems?  Most of the unresolved Docker / Moby issues below don’t explore the logs possibility.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;It should be noted that I’m not logging to files from within my application code and I’m using the&lt;/p&gt;
-
-&lt;p&gt;Onto the the solution!&lt;/p&gt;
+&lt;p&gt;It should be noted that I’m not logging to files from within my application code and I’m using the log to standard out approach from the &lt;a href=&quot;https://github.com/nickjj/orats&quot;&gt;Orats gem&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h1 id=&quot;fixing-this-problem-once-and-for-all&quot;&gt;Fixing this Problem Once and For All&lt;/h1&gt;
 

@@ -209,15 +209,13 @@ du -shc *
 
 <ol>
   <li>While there may have been issues related to a constant ongoing deploy process, the core underlying issue seems to be disc usage due to log file build up.</li>
-  <li>Docker makes it very hard to see the underlying problem since there doesn’t seem to be a “where is my damn disc space going” type of command.  Update: Try using “docker system df” to visualize docker disc space usage.  I only found this late in the writing process on this post.</li>
+  <li>Docker makes it very hard to see the underlying problem since there doesn’t seem to be a “where is my damn disc space going” type of command.  Update: Try using “docker system df” to visualize docker disc space usage.  I only found this late in the writing process on this post.  The docker system df command doesn’t specifically report log file space usage which I suspect would illuminate this problem.</li>
   <li>Logs appear to be persistent over time and not reclaimed as you deploy.  My suspicion is that logs are only reset when you stop the Docker daemon (and sometimes not even then).</li>
   <li>Traditional log management like log rotate won’t work unless you restart the Docker daemon.</li>
-  <li>Sidebar: I wonder how many people that have struggled with this issue have actually had log file growth issues not actual Docker problems?</li>
+  <li><strong>Sidebar</strong>: I wonder how many people that have struggled with this issue have actually had log file growth issues not actual Docker problems?  Most of the unresolved Docker / Moby issues below don’t explore the logs possibility.</li>
 </ol>
 
-<p>It should be noted that I’m not logging to files from within my application code and I’m using the</p>
-
-<p>Onto the the solution!</p>
+<p>It should be noted that I’m not logging to files from within my application code and I’m using the log to standard out approach from the <a href="https://github.com/nickjj/orats">Orats gem</a>.</p>
 
 <h1 id="fixing-this-problem-once-and-for-all">Fixing this Problem Once and For All</h1>
 
