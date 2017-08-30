@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Running out of Disc Space with Docker</title>
+  <meta name="description" content="I’ve now been exploring Docker hard core for almost a year now and using it hard core for six months or so.  And, as I get ever closer to shipping a product ...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/docker/2017/08/30/running-out-of-disc-space-with-docker.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="Running out of Disc Space with Docker">
+
+  
+    <meta name="twitter:description"
+      content="Docker has a tendency for its disc space usage to grow dramatically over time.  Here I discuss the issue and how to address it.">
+  
+
+  
+    <meta name="twitter:image"
+      content="http://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Running out of Disc Space with Docker</h1>
+    <p class="I'll"><time datetime="2017-08-30T00:00:00-04:00" itemprop="datePublished">Aug 30, 2017</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>I’ve now been exploring <a href="https://www.docker.com/">Docker</a> hard core for almost a year now and using it hard core for six months or so.  And, as I get ever closer to shipping a product that runs using containers for everything, I have been continually hitting issues regarding running out of disc space.</p>
+
+<h1 id="understanding-the-problem">Understanding The Problem</h1>
+
+<p>The platform I have been using is:</p>
+
+<ul>
+  <li>Docker Community Edition, Docker version 17.06.0-ce, build 02c1d87</li>
+  <li>AWS EC2 instances including ELB</li>
+  <li>No use of Kubernetes or the AWS ECS</li>
+  <li>Ubuntu Linux</li>
+  <li>Docker Hub for image hosting</li>
+  <li>Rails / Ruby as an application language</li>
+</ul>
+
+<p>What I have experienced is constant growth in disc space usage ultimately ending up in 0 bytes of free disc space and subsequent failure conditions in most of my containers.</p>
+
+<h1 id="docker-on-linux-basics">Docker on Linux Basics</h1>
+
+<p>On Ubuntu and most Linux platforms that I understand, the core Docker installation of your data is stored in /var/lib/docker and then a collection of subdirectories.  Here’s an example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ls -l /var/lib/docker
+total 44
+drwx------ 21 root root  4096 Aug 30 01:17 containers
+drwx------  3 root root  4096 Aug 30 01:10 image
+drwxr-x---  3 root root  4096 Aug 30 01:10 network
+drwx------ 85 root root 12288 Aug 30 01:17 overlay2
+drwx------  4 root root  4096 Aug 30 01:10 plugins
+drwx------  2 root root  4096 Aug 30 01:10 swarm
+drwx------  2 root root  4096 Aug 30 01:16 tmp
+drwx------  2 root root  4096 Aug 30 01:10 trust
+drwx------ 12 root root  4096 Aug 30 03:01 volumes
+</code></pre>
+</div>
+
+<p>There are two interesting directories here: containers and overlay2.  You should note that on a default docker installation the overlay2 directory would be named aufs.  The directories overlay2 and aufs are different filesystems that Docker can use to store your containers, volumes, etc.  The default Docker filesystem is called aufs and it is the oldest Docker filesystem.  The overlay2 filesystem is newer and seems to have some dramatic advantages.</p>
+
+<p>I am currently involved in what is termed <em>green field</em> software development – this is a development term related to creating a brand new product i.e. everything is a green field waiting to be plowed.  One of the characteristics of green field development is a <strong>lot</strong> of deploys.  As I initially looked into this problem, its characteristics seemed to map directly to the number of deploys – more deploys meant more disc space used.  When you see this type of situation, it tends to argue that the underlying issue is somehow tied to garbage collection.  My research and analysis of this led me to think that the issue was somehow tied to issues in the Docker aufs filesystem and I switched my installation from aufs to overlay2 and thought it was resolved.</p>
+
+<p>Last night I started getting alerts that my production server was again almost out of disc space (thank you <a href="https://github.com/arnaudsj/monit">Monit!</a>).  Now the interesting thing is that between when I thought this was resolved and last night, I <strong>have not been deploying at all</strong>.  Over the past 5 days, I have been involved in an intense refactor of my new product’s two core <a href="https://en.wikipedia.org/wiki/God_object">god objects</a> - course.rb and teacher.rb.  In software development parlance, a god object is an object that knows too much or does too much and it is regarded as an <a href="https://en.wikipedia.org/wiki/Anti-pattern">anti pattern</a>.  When you do this type of refactoring, it tends to shut down everything since it breaks, well, <strong>everything</strong>.  Seeing that I was again running out of disc space – while I wasn’t deploying – argued that my working theory was just plain <strong>wrong</strong>.</p>
+
+<p>My next step was to ssh into the box (yes, even with a containerized architecture, there are still servers and sshing in is still a thing) and look into /var/lib/docker once again.  My general tool for this was the command du -shc *  which translates to “show me the disc space usage at a summary level and translate it to human style (i.e. k / megs / gigs)”.  Here’s an example of my command flow:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo su - 
+cd /var/lib/docker
+du -shc * 
+
+du -shc *
+10G	containers
+11M	image
+140K	network
+3.4G	overlay2
+20K	plugins
+4.0K	swarm
+4.0K	tmp
+4.0K	trust
+3.3M	volumes
+13.5G	total
+</code></pre>
+</div>
+
+<p>I started to wonder what could possibly be in the containers directory with a size of <strong>10G</strong> so I changed into that directory and I found an anomaly, a single file, 6.2 gigs in size, like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>586e6e0b559281785d023097518ed9303e15db66eee04173792856ff7b2da528-json.log
+</code></pre>
+</div>
+
+<p>When I looked at that file, it was a log file showing the log output from the underlying crawler at the coder of the product I have been building.  And with this one discovery, the problem came into focus:</p>
+
+<ol>
+  <li>While there may have been issues related to a constant ongoing deploy process, the core underlying issue seems to be disc usage due to log file build up.</li>
+  <li>Docker makes it very hard to see the underlying problem since there doesn’t seem to be a “where is my damn disc space going” type of command.  Update: Try using “docker system df” to visualize docker disc space usage.  I only found this late in the writing process on this post.</li>
+  <li>Logs appear to be persistent over time and not reclaimed as you deploy.  My suspicion is that logs are only reset when you stop the Docker daemon (and sometimes not even then).</li>
+  <li>Traditional log management like log rotate won’t work unless you restart the Docker daemon.</li>
+  <li>Sidebar: I wonder how many people that have struggled with this issue have actually had log file growth issues not actual Docker problems?</li>
+</ol>
+
+<p>It should be noted that I’m not logging to files from within my application code and I’m using the</p>
+
+<p>Onto the the solution!</p>
+
+<h1 id="fixing-this-problem-once-and-for-all">Fixing this Problem Once and For All</h1>
+
+<p>Here are the steps that I took to address this problem:</p>
+
+<h2 id="step-1-stop-the-docker-daemon">Step 1: Stop the Docker Daemon</h2>
+
+<p>The first step is shutting down Docker itself:</p>
+
+<blockquote>
+  <p>sudo service docker stop</p>
+</blockquote>
+
+<h2 id="step-2-delete-varlibdocker">Step 2: Delete /var/lib/docker</h2>
+
+<p>The next step appears drastic and it is.  If you have important data in your Docker system then you’re going to lose it at this stage but when I attempted to do this piecemeal, I got bizarre deployment errors related to missing containers and even redeploying did not fix it.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo su
+umount /var/lib/docker/overlay2
+cd /var/lib/docker
+rm -rf * 
+</code></pre>
+</div>
+
+<p>This blows away everything in your Docker installation.  The second command line is only necessary if you have already switched your system to overlay2 as I had.</p>
+
+<h2 id="step-3-switch-from-aufs-to-overlay2-and-add-log-limits-to-docker-config">Step 3: Switch from aufs to overlay2 and Add Log Limits to Docker Config</h2>
+
+<p><strong>Note</strong>: Full use of the overlay2 driver is covered <a href="https://docs.docker.com/engine/userguide/storagedriver/overlayfs-driver/#configure-docker-with-the-overlay-or-overlay2-storage-driver">here</a> and should probably be read before you make this switch.  Not everyone can make use of overlay2.</p>
+
+<p>The core docker config file is:</p>
+
+<blockquote>
+  <p>/etc/docker/daemon.json</p>
+</blockquote>
+
+<p>You should edit this file and make it look something like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"storage-driver"</span><span class="p">:</span><span class="w"> </span><span class="s2">"overlay2"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"log-driver"</span><span class="p">:</span><span class="w"> </span><span class="s2">"json-file"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"log-opts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"max-size"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100m"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><strong>Disclaimer</strong>: I’m honestly not 100% certain that switching from aufs to overlay2 is absolutely required but it was a part of the overall solution and does seem to have benefits so I left it in here although I suspect that the logging is clearly the biggest win here.</p>
+
+<h2 id="step-4-restart-docker-daemon">Step 4: Restart Docker Daemon</h2>
+
+<p>Start Docker up again:</p>
+
+<blockquote>
+  <p>sudo service docker start</p>
+</blockquote>
+
+<h2 id="step-5-add-logging-limits-to-your-compose-files">Step 5: Add Logging Limits to Your Compose Files</h2>
+
+<p>On your local machine where you do your development, you need to set the logging options on a per container basis to your docker-compose file.  The lines to add are to each service are:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>logging:
+  options:
+    max-size: 50m
+</code></pre>
+</div>
+
+<p>Here’s an example in the context of a full container:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>services:
+  redis:
+    image: 'redis:3.2-alpine'
+    ports:
+      - '6379'
+    volumes:
+      - 'redis:/var/lib/redis/data'
+    restart: on-failure
+    logging:
+      options:
+        max-size: 50m
+</code></pre>
+</div>
+
+<p>Theoretically I could have ignored this at a per container level and just relied on the log management defined in /etc/docker/daemon.json but when you have a system level config file, that often gets changed and not checked into version control, belt <strong>and</strong> suspenders is better.  Setting this at the application level and the system level should ensure that I don’t get bit by this again.  This will also protect your local dev box from unlimited log growth which could otherwise be a problem since your local dev box isn’t configured by the same /etc/docker/daemon.json file.</p>
+
+<h2 id="add-cron-jobs-for-removing-unused-stuff-periodically">Add Cron Jobs for Removing Unused Stuff Periodically</h2>
+
+<p>I added cron jobs to my underlying instance for cleaning up after dangling containers and volumes:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>#Ansible: docker rmi images
+1 1 * * * docker rmi -f $(docker images -a -q -f dangling=true)
+#Ansible: docker volume rm
+1 3 * * * docker volume rm -f $(docker volume ls -q -f dangling=true)
+</code></pre>
+</div>
+
+<p>The #Ansible comment indicates that these were added by Ansible as part of my machine provisioning script (Step 8 below is now also part of that same script).</p>
+
+<h2 id="step-7-get-etcdockerdaemonjson-into-ansible--version-control">Step 7: Get /etc/docker/daemon.json into Ansible / Version Control</h2>
+
+<p>However you configure a new instance, you should make sure that your modified daemon.json file from Step 3 is part of that process or you’ll find that setting up a new machine has this same problem.</p>
+
+<h2 id="step-8-redeploy-everything">Step 8: Redeploy Everything</h2>
+
+<p>The final step is to re-deploy everything as all containers, volumes, etc have been deleted earlier in the process.  Hopefully you will find that your disc space usage comes under control.</p>
+
+<h1 id="sidebar-1-docker-system-df">Sidebar 1: docker system df</h1>
+
+<p>As I was finishing this post, I found the command docker system df which shows you the space docker uses.  Here’s an example from my local dev box:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>FuzzygroupMacbookPro2016% docker system df
+TYPE                TOTAL               ACTIVE              SIZE                RECLAIMABLE
+Images              671                 67                  40.59GB             24.07GB (59%)
+Containers          84                  5                   742.2MB             718MB (96%)
+Local Volumes       41                  22                  634.5MB             1.553kB (0%)
+</code></pre>
+</div>
+
+<h1 id="sidebar-2-docker-system-prune">Sidebar 2: docker system prune</h1>
+
+<p>The command docker system prune reclaims dangling images and stopped containers.  Here’s an example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>FuzzygroupMacbookPro2016% docker system prune
+WARNING! This will remove:
+        - all stopped containers
+        - all networks not used by at least one container
+        - all dangling images
+        - all build cache
+Are you sure you want to continue? [y/N] y
+Deleted Containers:
+4fc625609ac8f86f8d8f9076a8e75d5ccb31c1e871ed6f4589b79de2721af02c
+... (A long, long list of containers was here)
+Total reclaimed space: 28.72GB
+</code></pre>
+</div>
+
+<p>The interesting thing here is that before I ran this I had 46 gigs of free space on my local dev box and after I ran this, I still had 46 gigs free.  I don’t know why Docker states that it reclaimed space when it doesn’t.</p>
+
+<p>Note: I’m not the only person who can’t reclaim this space.</p>
+
+<h1 id="what-to-learn-from-this">What to Learn from This</h1>
+
+<p>I would argue that the big takeaway from this isn’t actually the specific Docker commands, useful as they are, but the observation that disc space growth wasn’t tied to deploys but instead to system operation.  Realizing this changed how I approached the problem.  When you build complex systems, learning how to observe them and then correlating that with what you are doing to the system is a key technique.</p>
+
+<h1 id="thank-yous">Thank Yous</h1>
+
+<p>Most of what I know about Docker, I learned from the courses of <a href="https://diveintodocker.com/">Nick Janetakis</a>.  He is a friend and he pitched in greatly on the analysis and resolution of this.  Thanks man!</p>
+
+<h1 id="references">References</h1>
+
+<ul>
+  <li><a href="http://blog.idetailaid.co.uk/docker-using-up-all-your-disk-space-dont-forget-to-clean-up-after-docker/">Interesting Blog Post about Cleaning Up After Docker</a></li>
+  <li><a href="https://www.google.com/search?tbs=li:1&amp;q=how+much+space+are+my+docker+logs+taking">Docker Logs on Stack Overflow</a></li>
+  <li><a href="https://github.com/moby/moby/issues/3804">Docker Disc Space Quotas and aufs</a></li>
+  <li><a href="https://thehftguy.com/2016/11/01/docker-in-production-an-history-of-failure/">Docker in Production a History of Failure</a></li>
+  <li><a href="https://news.ycombinator.com/item?id=12872304">Docker in Production a History of Failure</a> (search for overlay2)</li>
+  <li><a href="https://github.com/moby/moby/issues/22207">Docker not Cleaning Up tmp Files</a></li>
+  <li><a href="https://github.com/moby/moby/issues/29486">Docker Orphaned Diffs</a></li>
+  <li><a href="https://docs.docker.com/engine/userguide/storagedriver/overlayfs-driver/">Using Overlay2</a></li>
+  <li><a href="https://gist.github.com/stanislavb/6634fc35b3d1655201a93d2dd2c3a366">A seemingly good shell script for cleaning up after Docker</a></li>
+</ul>
+
+  </div>
+  
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

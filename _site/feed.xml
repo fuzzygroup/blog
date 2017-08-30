@@ -6,9 +6,271 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 28 Aug 2017 11:16:03 -0400</pubDate>
-    <lastBuildDate>Mon, 28 Aug 2017 11:16:03 -0400</lastBuildDate>
+    <pubDate>Wed, 30 Aug 2017 07:08:31 -0400</pubDate>
+    <lastBuildDate>Wed, 30 Aug 2017 07:08:31 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Running out of Disc Space with Docker</title>
+        <description>&lt;p&gt;I’ve now been exploring &lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt; hard core for almost a year now and using it hard core for six months or so.  And, as I get ever closer to shipping a product that runs using containers for everything, I have been continually hitting issues regarding running out of disc space.&lt;/p&gt;
+
+&lt;h1 id=&quot;understanding-the-problem&quot;&gt;Understanding The Problem&lt;/h1&gt;
+
+&lt;p&gt;The platform I have been using is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Docker Community Edition, Docker version 17.06.0-ce, build 02c1d87&lt;/li&gt;
+  &lt;li&gt;AWS EC2 instances including ELB&lt;/li&gt;
+  &lt;li&gt;No use of Kubernetes or the AWS ECS&lt;/li&gt;
+  &lt;li&gt;Ubuntu Linux&lt;/li&gt;
+  &lt;li&gt;Docker Hub for image hosting&lt;/li&gt;
+  &lt;li&gt;Rails / Ruby as an application language&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;What I have experienced is constant growth in disc space usage ultimately ending up in 0 bytes of free disc space and subsequent failure conditions in most of my containers.&lt;/p&gt;
+
+&lt;h1 id=&quot;docker-on-linux-basics&quot;&gt;Docker on Linux Basics&lt;/h1&gt;
+
+&lt;p&gt;On Ubuntu and most Linux platforms that I understand, the core Docker installation of your data is stored in /var/lib/docker and then a collection of subdirectories.  Here’s an example:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ls -l /var/lib/docker
+total 44
+drwx------ 21 root root  4096 Aug 30 01:17 containers
+drwx------  3 root root  4096 Aug 30 01:10 image
+drwxr-x---  3 root root  4096 Aug 30 01:10 network
+drwx------ 85 root root 12288 Aug 30 01:17 overlay2
+drwx------  4 root root  4096 Aug 30 01:10 plugins
+drwx------  2 root root  4096 Aug 30 01:10 swarm
+drwx------  2 root root  4096 Aug 30 01:16 tmp
+drwx------  2 root root  4096 Aug 30 01:10 trust
+drwx------ 12 root root  4096 Aug 30 03:01 volumes
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;There are two interesting directories here: containers and overlay2.  You should note that on a default docker installation the overlay2 directory would be named aufs.  The directories overlay2 and aufs are different filesystems that Docker can use to store your containers, volumes, etc.  The default Docker filesystem is called aufs and it is the oldest Docker filesystem.  The overlay2 filesystem is newer and seems to have some dramatic advantages.&lt;/p&gt;
+
+&lt;p&gt;I am currently involved in what is termed &lt;em&gt;green field&lt;/em&gt; software development – this is a development term related to creating a brand new product i.e. everything is a green field waiting to be plowed.  One of the characteristics of green field development is a &lt;strong&gt;lot&lt;/strong&gt; of deploys.  As I initially looked into this problem, its characteristics seemed to map directly to the number of deploys – more deploys meant more disc space used.  When you see this type of situation, it tends to argue that the underlying issue is somehow tied to garbage collection.  My research and analysis of this led me to think that the issue was somehow tied to issues in the Docker aufs filesystem and I switched my installation from aufs to overlay2 and thought it was resolved.&lt;/p&gt;
+
+&lt;p&gt;Last night I started getting alerts that my production server was again almost out of disc space (thank you &lt;a href=&quot;https://github.com/arnaudsj/monit&quot;&gt;Monit!&lt;/a&gt;).  Now the interesting thing is that between when I thought this was resolved and last night, I &lt;strong&gt;have not been deploying at all&lt;/strong&gt;.  Over the past 5 days, I have been involved in an intense refactor of my new product’s two core &lt;a href=&quot;https://en.wikipedia.org/wiki/God_object&quot;&gt;god objects&lt;/a&gt; - course.rb and teacher.rb.  In software development parlance, a god object is an object that knows too much or does too much and it is regarded as an &lt;a href=&quot;https://en.wikipedia.org/wiki/Anti-pattern&quot;&gt;anti pattern&lt;/a&gt;.  When you do this type of refactoring, it tends to shut down everything since it breaks, well, &lt;strong&gt;everything&lt;/strong&gt;.  Seeing that I was again running out of disc space – while I wasn’t deploying – argued that my working theory was just plain &lt;strong&gt;wrong&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;My next step was to ssh into the box (yes, even with a containerized architecture, there are still servers and sshing in is still a thing) and look into /var/lib/docker once again.  My general tool for this was the command du -shc *  which translates to “show me the disc space usage at a summary level and translate it to human style (i.e. k / megs / gigs)”.  Here’s an example of my command flow:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo su - 
+cd /var/lib/docker
+du -shc * 
+
+du -shc *
+10G	containers
+11M	image
+140K	network
+3.4G	overlay2
+20K	plugins
+4.0K	swarm
+4.0K	tmp
+4.0K	trust
+3.3M	volumes
+13.5G	total
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I started to wonder what could possibly be in the containers directory with a size of &lt;strong&gt;10G&lt;/strong&gt; so I changed into that directory and I found an anomaly, a single file, 6.2 gigs in size, like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;586e6e0b559281785d023097518ed9303e15db66eee04173792856ff7b2da528-json.log
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;When I looked at that file, it was a log file showing the log output from the underlying crawler at the coder of the product I have been building.  And with this one discovery, the problem came into focus:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;While there may have been issues related to a constant ongoing deploy process, the core underlying issue seems to be disc usage due to log file build up.&lt;/li&gt;
+  &lt;li&gt;Docker makes it very hard to see the underlying problem since there doesn’t seem to be a “where is my damn disc space going” type of command.  Update: Try using “docker system df” to visualize docker disc space usage.  I only found this late in the writing process on this post.&lt;/li&gt;
+  &lt;li&gt;Logs appear to be persistent over time and not reclaimed as you deploy.  My suspicion is that logs are only reset when you stop the Docker daemon (and sometimes not even then).&lt;/li&gt;
+  &lt;li&gt;Traditional log management like log rotate won’t work unless you restart the Docker daemon.&lt;/li&gt;
+  &lt;li&gt;Sidebar: I wonder how many people that have struggled with this issue have actually had log file growth issues not actual Docker problems?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;It should be noted that I’m not logging to files from within my application code and I’m using the&lt;/p&gt;
+
+&lt;p&gt;Onto the the solution!&lt;/p&gt;
+
+&lt;h1 id=&quot;fixing-this-problem-once-and-for-all&quot;&gt;Fixing this Problem Once and For All&lt;/h1&gt;
+
+&lt;p&gt;Here are the steps that I took to address this problem:&lt;/p&gt;
+
+&lt;h2 id=&quot;step-1-stop-the-docker-daemon&quot;&gt;Step 1: Stop the Docker Daemon&lt;/h2&gt;
+
+&lt;p&gt;The first step is shutting down Docker itself:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;sudo service docker stop&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;step-2-delete-varlibdocker&quot;&gt;Step 2: Delete /var/lib/docker&lt;/h2&gt;
+
+&lt;p&gt;The next step appears drastic and it is.  If you have important data in your Docker system then you’re going to lose it at this stage but when I attempted to do this piecemeal, I got bizarre deployment errors related to missing containers and even redeploying did not fix it.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo su
+umount /var/lib/docker/overlay2
+cd /var/lib/docker
+rm -rf * 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This blows away everything in your Docker installation.  The second command line is only necessary if you have already switched your system to overlay2 as I had.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-3-switch-from-aufs-to-overlay2-and-add-log-limits-to-docker-config&quot;&gt;Step 3: Switch from aufs to overlay2 and Add Log Limits to Docker Config&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: Full use of the overlay2 driver is covered &lt;a href=&quot;https://docs.docker.com/engine/userguide/storagedriver/overlayfs-driver/#configure-docker-with-the-overlay-or-overlay2-storage-driver&quot;&gt;here&lt;/a&gt; and should probably be read before you make this switch.  Not everyone can make use of overlay2.&lt;/p&gt;
+
+&lt;p&gt;The core docker config file is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;/etc/docker/daemon.json&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;You should edit this file and make it look something like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;storage-driver&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;overlay2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;log-driver&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;json-file&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;log-opts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;max-size&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;100m&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Disclaimer&lt;/strong&gt;: I’m honestly not 100% certain that switching from aufs to overlay2 is absolutely required but it was a part of the overall solution and does seem to have benefits so I left it in here although I suspect that the logging is clearly the biggest win here.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-4-restart-docker-daemon&quot;&gt;Step 4: Restart Docker Daemon&lt;/h2&gt;
+
+&lt;p&gt;Start Docker up again:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;sudo service docker start&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;step-5-add-logging-limits-to-your-compose-files&quot;&gt;Step 5: Add Logging Limits to Your Compose Files&lt;/h2&gt;
+
+&lt;p&gt;On your local machine where you do your development, you need to set the logging options on a per container basis to your docker-compose file.  The lines to add are to each service are:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;logging:
+  options:
+    max-size: 50m
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here’s an example in the context of a full container:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;services:
+  redis:
+    image: 'redis:3.2-alpine'
+    ports:
+      - '6379'
+    volumes:
+      - 'redis:/var/lib/redis/data'
+    restart: on-failure
+    logging:
+      options:
+        max-size: 50m
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Theoretically I could have ignored this at a per container level and just relied on the log management defined in /etc/docker/daemon.json but when you have a system level config file, that often gets changed and not checked into version control, belt &lt;strong&gt;and&lt;/strong&gt; suspenders is better.  Setting this at the application level and the system level should ensure that I don’t get bit by this again.  This will also protect your local dev box from unlimited log growth which could otherwise be a problem since your local dev box isn’t configured by the same /etc/docker/daemon.json file.&lt;/p&gt;
+
+&lt;h2 id=&quot;add-cron-jobs-for-removing-unused-stuff-periodically&quot;&gt;Add Cron Jobs for Removing Unused Stuff Periodically&lt;/h2&gt;
+
+&lt;p&gt;I added cron jobs to my underlying instance for cleaning up after dangling containers and volumes:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#Ansible: docker rmi images
+1 1 * * * docker rmi -f $(docker images -a -q -f dangling=true)
+#Ansible: docker volume rm
+1 3 * * * docker volume rm -f $(docker volume ls -q -f dangling=true)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The #Ansible comment indicates that these were added by Ansible as part of my machine provisioning script (Step 8 below is now also part of that same script).&lt;/p&gt;
+
+&lt;h2 id=&quot;step-7-get-etcdockerdaemonjson-into-ansible--version-control&quot;&gt;Step 7: Get /etc/docker/daemon.json into Ansible / Version Control&lt;/h2&gt;
+
+&lt;p&gt;However you configure a new instance, you should make sure that your modified daemon.json file from Step 3 is part of that process or you’ll find that setting up a new machine has this same problem.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-8-redeploy-everything&quot;&gt;Step 8: Redeploy Everything&lt;/h2&gt;
+
+&lt;p&gt;The final step is to re-deploy everything as all containers, volumes, etc have been deleted earlier in the process.  Hopefully you will find that your disc space usage comes under control.&lt;/p&gt;
+
+&lt;h1 id=&quot;sidebar-1-docker-system-df&quot;&gt;Sidebar 1: docker system df&lt;/h1&gt;
+
+&lt;p&gt;As I was finishing this post, I found the command docker system df which shows you the space docker uses.  Here’s an example from my local dev box:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FuzzygroupMacbookPro2016% docker system df
+TYPE                TOTAL               ACTIVE              SIZE                RECLAIMABLE
+Images              671                 67                  40.59GB             24.07GB (59%)
+Containers          84                  5                   742.2MB             718MB (96%)
+Local Volumes       41                  22                  634.5MB             1.553kB (0%)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;sidebar-2-docker-system-prune&quot;&gt;Sidebar 2: docker system prune&lt;/h1&gt;
+
+&lt;p&gt;The command docker system prune reclaims dangling images and stopped containers.  Here’s an example:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FuzzygroupMacbookPro2016% docker system prune
+WARNING! This will remove:
+        - all stopped containers
+        - all networks not used by at least one container
+        - all dangling images
+        - all build cache
+Are you sure you want to continue? [y/N] y
+Deleted Containers:
+4fc625609ac8f86f8d8f9076a8e75d5ccb31c1e871ed6f4589b79de2721af02c
+... (A long, long list of containers was here)
+Total reclaimed space: 28.72GB
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The interesting thing here is that before I ran this I had 46 gigs of free space on my local dev box and after I ran this, I still had 46 gigs free.  I don’t know why Docker states that it reclaimed space when it doesn’t.&lt;/p&gt;
+
+&lt;p&gt;Note: I’m not the only person who can’t reclaim this space.&lt;/p&gt;
+
+&lt;h1 id=&quot;what-to-learn-from-this&quot;&gt;What to Learn from This&lt;/h1&gt;
+
+&lt;p&gt;I would argue that the big takeaway from this isn’t actually the specific Docker commands, useful as they are, but the observation that disc space growth wasn’t tied to deploys but instead to system operation.  Realizing this changed how I approached the problem.  When you build complex systems, learning how to observe them and then correlating that with what you are doing to the system is a key technique.&lt;/p&gt;
+
+&lt;h1 id=&quot;thank-yous&quot;&gt;Thank Yous&lt;/h1&gt;
+
+&lt;p&gt;Most of what I know about Docker, I learned from the courses of &lt;a href=&quot;https://diveintodocker.com/&quot;&gt;Nick Janetakis&lt;/a&gt;.  He is a friend and he pitched in greatly on the analysis and resolution of this.  Thanks man!&lt;/p&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://blog.idetailaid.co.uk/docker-using-up-all-your-disk-space-dont-forget-to-clean-up-after-docker/&quot;&gt;Interesting Blog Post about Cleaning Up After Docker&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.google.com/search?tbs=li:1&amp;amp;q=how+much+space+are+my+docker+logs+taking&quot;&gt;Docker Logs on Stack Overflow&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/moby/moby/issues/3804&quot;&gt;Docker Disc Space Quotas and aufs&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://thehftguy.com/2016/11/01/docker-in-production-an-history-of-failure/&quot;&gt;Docker in Production a History of Failure&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://news.ycombinator.com/item?id=12872304&quot;&gt;Docker in Production a History of Failure&lt;/a&gt; (search for overlay2)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/moby/moby/issues/22207&quot;&gt;Docker not Cleaning Up tmp Files&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/moby/moby/issues/29486&quot;&gt;Docker Orphaned Diffs&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.docker.com/engine/userguide/storagedriver/overlayfs-driver/&quot;&gt;Using Overlay2&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://gist.github.com/stanislavb/6634fc35b3d1655201a93d2dd2c3a366&quot;&gt;A seemingly good shell script for cleaning up after Docker&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 30 Aug 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/docker/2017/08/30/running-out-of-disc-space-with-docker.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/docker/2017/08/30/running-out-of-disc-space-with-docker.html</guid>
+        
+        <category>docker</category>
+        
+        <category>aufs</category>
+        
+        <category>disc_space</category>
+        
+        <category>bloat</category>
+        
+        
+        <category>Docker</category>
+        
+      </item>
     
       <item>
         <title>When Gems Won't Install - The mkmf.log Problem</title>
@@ -1040,80 +1302,6 @@ end
         
         
         <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>Utter and Complete Heroku Fail</title>
-        <description>&lt;p&gt;So this morning I wanted to get a self hosted version of the &lt;a href=&quot;https://github.com/errbit/errbit&quot;&gt;Errbit&lt;/a&gt; project running.  This is an equivalent to BugSnag, Airbrake, HoneyBadger – a tool for tracking errors in live apps.  The inspiration for this was &lt;a href=&quot;http://developeronfire.com/podcast/episode-258-jeff-atwood-sharing-the-house&quot;&gt;Jeff Atwood’s Developer on Fire interview&lt;/a&gt; where he advised three things:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Jeff's top 3 tips for delivering more value:
-
-1. Measure performance all the time - Know how long every unit of work in your app is taking
-2. Have user friendly error handling for both the end user and the developer built into your application
-2. Have a place where people can go to discuss your software
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I’m close to releasing something and #2 has been on my list for sometime so I was pretty damn motivated to finally address this. And I’ve wanted to try Errbit for literally years and years so I turned to their &lt;a href=&quot;https://github.com/errbit/errbit/blob/master/docs/deployment/heroku.md&quot;&gt;deployment&lt;/a&gt; page where they, quote clearly, offered Heroku as an option and recommended it as the easiest way to start.  Awesome – right?  Unfortunately I found nothing but complete and total fail.  Here’s what happened:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;I created an account.  This is normal and worked well.&lt;/li&gt;
-  &lt;li&gt;I had to verify my password via email.  Again normal and worked well.&lt;/li&gt;
-  &lt;li&gt;I returned to the &lt;a href=&quot;https://heroku.com/deploy?template=https://github.com/errbit/errbit/tree/master&quot;&gt;automatic app creation&lt;/a&gt; where it now told me I had to enter a credit card.  I did.&lt;/li&gt;
-  &lt;li&gt;Installation failed and wouldn’t tell me why “App creation failed.  Please ensure you have valid values in the above form field” – they were all there.&lt;/li&gt;
-  &lt;li&gt;Installation failed and it told me to that I needed to enter a credit card – which I did.  But I can do that dance again.&lt;/li&gt;
-  &lt;li&gt;I then get “the account foo@bar.com is not permitted to install the sendgrid add-on at this time.  If you believe this is an error please contact support and reference ID 56fda43c-8abb-4378-a320-079bec73f142” (note I did give heroku my correct email).&lt;/li&gt;
-  &lt;li&gt;I attempted to put in my own SMTP server but I’m told the same thing about sendgrid even though I put in a &lt;a href=&quot;http://www.sparkpost.com&quot;&gt;sparkpost&lt;/a&gt; domain.&lt;/li&gt;
-  &lt;li&gt;There is no link to support in this context.  Shouldn’t this have been automatically linked in place?&lt;/li&gt;
-  &lt;li&gt;I find the support button at the bottom of the page (disclaimer - it wasn’t all that far away) which takes me to help.heroku.com.&lt;/li&gt;
-  &lt;li&gt;On help.heroku.com I can find no way to actually create a ticket to enter the ID they gave me.  See Screenshot 1 below.&lt;/li&gt;
-  &lt;li&gt;There is a &lt;a href=&quot;https://help.heroku.com/tickets&quot;&gt;Ticket history&lt;/a&gt; button which also doesn’t give me a way to create a ticket.  See Screenshot 2 below.&lt;/li&gt;
-  &lt;li&gt;At this point I’ve given up in disgust and I’ll figure out how to do this on Docker and my own AWS instance.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;summary&quot;&gt;Summary&lt;/h1&gt;
-
-&lt;p&gt;This is a failure on so many damn levels that it is absurd:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Having to enter my credit card twice.&lt;/li&gt;
-  &lt;li&gt;Not allowing an authenticated, validated, paying user to use a baseline feature.&lt;/li&gt;
-  &lt;li&gt;Not allowing a way around the failure (use of another smtp resource).&lt;/li&gt;
-  &lt;li&gt;Not making support easy.&lt;/li&gt;
-  &lt;li&gt;Not even allowing me to create a ticket AS THEY TOLD ME TO.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;The utter and complete pity of this is that Heroku allowing me to easily run a github repo would have been beautiful.  Here is the beautiful simplicity of the Errbit deploy to Heroku url:&lt;/p&gt;
-
-&lt;p&gt;https://heroku.com/deploy?template=https://github.com/errbit/errbit/tree/master&lt;/p&gt;
-
-&lt;p&gt;That is fantastic – I do not think it could be any simpler than that.  And, if it had worked, I can easily see myself doing this fairly often.  Now?  I suspect I’ll be deleting my Heroku account shortly and walking away forever.  And that’s a crying shame.&lt;/p&gt;
-
-&lt;h1 id=&quot;screenshot-1&quot;&gt;Screenshot 1&lt;/h1&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/herokufail1.png&quot; alt=&quot;herokufail1.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;So where would I even create a ticket?&lt;/p&gt;
-
-&lt;h1 id=&quot;screenshot-2&quot;&gt;Screenshot 2&lt;/h1&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/herokufail2.png&quot; alt=&quot;herokufail2.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;So where would I even create a ticket?&lt;/p&gt;
-</description>
-        <pubDate>Tue, 08 Aug 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/fail/2017/08/08/utter-and-complete-heroku-fail.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/fail/2017/08/08/utter-and-complete-heroku-fail.html</guid>
-        
-        <category>heroku</category>
-        
-        <category>fail</category>
-        
-        <category>rails</category>
-        
-        
-        <category>fail</category>
         
       </item>
     
