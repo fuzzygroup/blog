@@ -6,13 +6,192 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 30 Aug 2017 07:12:52 -0400</pubDate>
-    <lastBuildDate>Wed, 30 Aug 2017 07:12:52 -0400</lastBuildDate>
+    <pubDate>Fri, 01 Sep 2017 09:46:13 -0400</pubDate>
+    <lastBuildDate>Fri, 01 Sep 2017 09:46:13 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
+        <title>Notes on Upgrading to Rails 5.1</title>
+        <description>&lt;p&gt;Rails 5.1 Upgrade Notes
+description: With Rails 5.1.4 on the horizon, it is time to upgrade to Rails 5.1.  Here I discuss the issues that I found with upgrading a suite of 7 Rails apps from Rails 5.0.2 to Rails 5.1.&lt;/p&gt;
+
+&lt;p&gt;So this morning I upgraded the suite of Rails apps (7 in total) that make up the product that I’ve been building from Rails 5.0.2 to 5.1.3.  I took my usual, slow as a turtle, approach to doing this upgrade (5.1.4 has now reached RC1 status which means that 1 release behind is uite stable by now).  The main change driving my desire to upgrade was the improved low level connection handling in ActiveRecord which should make developing multi-tenant applications better.&lt;/p&gt;
+
+&lt;p&gt;Here are a few notes on upgrading to Rails 5.1.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-lines-to-change-in-gemfile&quot;&gt;The Lines to Change in Gemfile&lt;/h1&gt;
+
+&lt;p&gt;Previously I had:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem 'rails', '~&amp;gt; 5.0.2'
+gem 'puma', '~&amp;gt; 3.0'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;which I changed to&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem 'rails', '~&amp;gt; 5.1.3'
+gem 'puma', '~&amp;gt; 3.10'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The reason for the Puma update turned out to be unneeded but it is a core part of my stack so it is likely good to upgrade.&lt;/p&gt;
+
+&lt;h1 id=&quot;useful-links&quot;&gt;Useful Links&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://edgeguides.rubyonrails.org/5_1_release_notes.html&quot;&gt;Rails 5.1 Readme&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://rubygems.org/gems/puma/versions/3.4.0&quot;&gt;Ruby Gems on Puma&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://rubygems.org/gems/rails/versions/5.0.0&quot;&gt;Ruby Gems on Rails&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;dont-be-afraid-to-delete-gemfilelock-and-re-bundle&quot;&gt;Don’t Be Afraid to Delete Gemfile.lock and Re Bundle&lt;/h1&gt;
+
+&lt;p&gt;Out of my seven apps, all built on top of the same version of Rails, two had problems with:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;bundle update rails puma&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;These two applications had issues with the font-awesome-rails gem and railties.  Rather than try and monkey around with them, I simply did a:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;git rm Gemfile.lock&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;and then a:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;bundle install&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;And that fixed everything.&lt;/p&gt;
+
+&lt;h1 id=&quot;puma-now-needs-a-space-before-the-port&quot;&gt;Puma Now Needs a Space Before the Port&lt;/h1&gt;
+
+&lt;p&gt;Right after my Rails update and before I did the Puma update, I got this bit of joy when I started my server:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle exec rails s -p3203
+=&amp;gt; Booting Puma
+=&amp;gt; Rails 5.1.3 application starting in development on http://localhost:3203
+=&amp;gt; Run `rails server -h` for more startup options
+Puma starting in single mode...
+* Version 3.10.0 (ruby 2.3.1-p112), codename: Russell's Teapot
+* Min threads: 2, max threads: 2
+* Environment: development
+* Listening on tcp://
+Exiting
+/Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/puma-3.10.0/lib/puma/binder.rb:270:in `initialize': getaddrinfo: nodename nor servname provided, or not known (SocketError)
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/puma-3.10.0/lib/puma/binder.rb:270:in `new'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/puma-3.10.0/lib/puma/binder.rb:270:in `add_tcp_listener'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/puma-3.10.0/lib/puma/binder.rb:105:in `block in parse'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/puma-3.10.0/lib/puma/binder.rb:88:in `each'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/puma-3.10.0/lib/puma/binder.rb:88:in `parse'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/puma-3.10.0/lib/puma/runner.rb:144:in `load_and_bind'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/puma-3.10.0/lib/puma/single.rb:87:in `run'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/puma-3.10.0/lib/puma/launcher.rb:183:in `run'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/puma-3.10.0/lib/rack/handler/puma.rb:69:in `run'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/rack-2.0.3/lib/rack/server.rb:297:in `start'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/railties-5.1.3/lib/rails/commands/server/server_command.rb:44:in `start'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/railties-5.1.3/lib/rails/commands/server/server_command.rb:131:in `block in perform'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/railties-5.1.3/lib/rails/commands/server/server_command.rb:126:in `tap'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/railties-5.1.3/lib/rails/commands/server/server_command.rb:126:in `perform'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/thor-0.20.0/lib/thor/command.rb:27:in `run'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/thor-0.20.0/lib/thor/invocation.rb:126:in `invoke_command'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/thor-0.20.0/lib/thor.rb:387:in `dispatch'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/railties-5.1.3/lib/rails/command/base.rb:63:in `perform'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/railties-5.1.3/lib/rails/command.rb:44:in `invoke'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/railties-5.1.3/lib/rails/commands.rb:16:in `&amp;lt;top (required)&amp;gt;'
+        from /Users/sjohnson/Dropbox/fuzzygroup/hyde/seira_watch/seira_admin/bin/rails:9:in `require'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This turned out to be a change somewhere in Rails where a space is now needed between the -p and the port number, so this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;bundle exec rails s -p3203&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;needs to be:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;bundle exec rails s -p 3203&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This was covered in this &lt;a href=&quot;https://github.com/rails/rails/issues/28971&quot;&gt;Github Issue&lt;/a&gt;. Supposedly the latest version of Puma restores the previous functionality where a space isn’t needed but I have &lt;strong&gt;NOT&lt;/strong&gt; found that to be so.  The solution was to simply accept that a space after -p is required.  Technically I could have not upgraded Puma but it feels like running the current version of is always a good thing.&lt;/p&gt;
+
+&lt;h1 id=&quot;middleware-now-needs-a-class-constant-not-a-string&quot;&gt;Middleware Now Needs a Class Constant Not a String&lt;/h1&gt;
+
+&lt;p&gt;What I am building uses a multi-tenant approach based on the &lt;a href=&quot;https://github.com/influitive/apartment&quot;&gt;Apartment gem&lt;/a&gt; and this requires an initializer that specifies a middleware layer.  Prior to Rails 5.1, this was done as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Rails.application.config.middleware.use 'Apartment::Elevators::Subdomain'
+(in config/initializers/apartment.rb)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;When I first started my application using Rails 5.1, I got this unpleasant result:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; bundle exec rails s -p 3210
+=&amp;gt; Booting Puma
+=&amp;gt; Rails 5.1.3 application starting in development on http://localhost:3210
+=&amp;gt; Run `rails server -h` for more startup options
+Exiting
+/Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch/gems/actionpack-5.1.3/lib/action_dispatch/middleware/stack.rb:35:in `build': undefined method `new' for &quot;Apartment::Elevators::Subdomain&quot;:String (NoMethodError)
+Did you mean?  next
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch/gems/actionpack-5.1.3/lib/action_dispatch/middleware/stack.rb:99:in `block in build'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch/gems/actionpack-5.1.3/lib/action_dispatch/middleware/stack.rb:99:in `each'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch/gems/actionpack-5.1.3/lib/action_dispatch/middleware/stack.rb:99:in `inject'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch/gems/actionpack-5.1.3/lib/action_dispatch/middleware/stack.rb:99:in `build'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch/gems/railties-5.1.3/lib/rails/engine.rb:508:in `block in app'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch/gems/railties-5.1.3/lib/rails/engine.rb:504:in `synchronize'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch/gems/railties-5.1.3/lib/rails/engine.rb:504:in `app'
+        from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch/gems/railties-5.1.3/lib/rails/application/finisher.rb:45:in `block in &amp;lt;module
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Apparently middleware layers that used to take a string now need a class constant so this needs to be rewritten as:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Rails.application.config.middleware.use Apartment::Elevators::Subdomain
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This is discussed in this &lt;a href=&quot;https://github.com/rails/rails/issues/28946&quot;&gt;Rails Issue&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;skipbeforefilter-is-now-skipbeforeaction&quot;&gt;skip_before_filter Is Now skip_before_action&lt;/h1&gt;
+
+&lt;p&gt;Although I was able to start my application correctly in development mode with a still in place skip_before_filter, when I tried it in production, I got:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;=&amp;gt; Run `rails server -h` for more startup options
+Exiting
+/Users/sjohnson/Dropbox/fuzzygroup/hyde/seira_watch/seira_watch_web_app/app/controllers/api_controller.rb:3:in   `&amp;lt;class:ApiController&amp;gt;': undefined method `skip_before_filter' for ApiController:Class (NoMethodError)
+Did you mean?  skip_before_action
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This was an easy change but it is still something that could easily trip you up.  Obviously I have been seeing the deprecation warnings for some time now and it is my bad for not having made these changes.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusions&quot;&gt;Conclusions&lt;/h1&gt;
+
+&lt;p&gt;While mildly annoying these are relatively small issues htat I was able to work around quite cleanly.  The total time to upgrade 7 Rails apps from 5.0.2 to 5.1 was less than an hour in total even including the research and deploy time.  &lt;strong&gt;Recommended&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;public-service-announcement&quot;&gt;Public Service Announcement&lt;/h1&gt;
+
+&lt;p&gt;If you haven’t upgraded your Ruby Gems executable, you likely should.  &lt;a href=&quot;https://www.ruby-lang.org/en/news/2017/08/29/multiple-vulnerabilities-in-rubygems/&quot;&gt;More details are here&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 01 Sep 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/09/01/notes-on-upgrading-to-rails-5-1.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/09/01/notes-on-upgrading-to-rails-5-1.html</guid>
+        
+        <category>rails</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
         <title>Running out of Disc Space with Docker</title>
-        <description>&lt;p&gt;I’ve now been exploring &lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt; for almost a year now and using it hard core for six months or so.  And, as I get ever closer to shipping a product that runs using containers for everything, I have been continually hitting issues regarding running out of disc space.&lt;/p&gt;
+        <description>&lt;p&gt;I’ve now been exploring &lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt; for almost a year now and using it daily for five months or so.  And, as I get ever closer to shipping a product that runs using containers for everything, I have been continually hitting issues regarding running out of disc space.&lt;/p&gt;
 
 &lt;h1 id=&quot;understanding-the-problem&quot;&gt;Understanding The Problem&lt;/h1&gt;
 
@@ -1233,73 +1412,6 @@ end
         
         
         <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Expanding an AWS Instance Volume</title>
-        <description>&lt;p&gt;One of the true promises of cloud computing is freeing you from resource limits.  In an ideal world you’d be able to easily example:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;ram&lt;/li&gt;
-  &lt;li&gt;storage&lt;/li&gt;
-  &lt;li&gt;networking&lt;/li&gt;
-  &lt;li&gt;cpu&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;And while this is somewhat true, the reality is always a bit trickier.  I’ve had a new project underway for a while and I’ve been plagued by constant disc space issues.  And while this is a multi container project, my core /var/lib/docker/containers directory is only 1.1 gigs according to a du -sh /var/lib/docker/containers and /var/lib/docker/volumes is only 288K but my /var/lib/docker/aufs directory is 14 + gigs.  Despite diving deeply into the &lt;a href=&quot;https://github.com/spotify/docker-gc&quot;&gt;spotify-gc project&lt;/a&gt; and the &lt;a href=&quot;https://github.com/moby/issues/22207&quot;&gt;open issue on Moby&lt;/a&gt;, none of these actually solved the issue.&lt;/p&gt;
-
-&lt;p&gt;So it was time to just suck it up and add more disc space – even though I am an admitted cheap bastard and this bothers the hell out of me.  I’ve done this in the past and while it wasn’t &lt;a href=&quot;http://fuzzyblog.io/blog/aws/2016/11/26/fear-and-loathing-in-awsville-or-adventures-in-partition-resizing.html&quot;&gt;as bad as the last time&lt;/a&gt;, it still wasn’t obvious.&lt;/p&gt;
-
-&lt;h1 id=&quot;how-to-expand-your-aws-volume-on-a-running-instance&quot;&gt;How to Expand Your AWS Volume on a Running Instance&lt;/h1&gt;
-
-&lt;p&gt;I’ve broken this into two stages.  Here is stage 1 - using the web UI.  &lt;strong&gt;Keep in mind that you are going to need to do a reboot at the end and that means some level of downtime so plan this out accordingly.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Start at your dashboard on &lt;a href=&quot;http://console.aws.amazon.com&quot;&gt;console.aws.amazon.com&lt;/a&gt; or however you log in and go into the EC2 section.&lt;/li&gt;
-  &lt;li&gt;Select volumes on the left hand sidebar.&lt;/li&gt;
-  &lt;li&gt;Select the instance.&lt;/li&gt;
-  &lt;li&gt;From the actions drop down select Modify Volume.&lt;/li&gt;
-  &lt;li&gt;Change the disc space to whatever you want and click ok.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;This starts the process of AWS reallocating your disc.  If you’re on Linux you now need to proceed to stage two:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Log into your box.&lt;/li&gt;
-  &lt;li&gt;Run a df -h and see if the new space shows up.  It almost certainly won’t but you can always try.&lt;/li&gt;
-  &lt;li&gt;Run a lsblk to list your blog devices and you need to note the one that your system is using.  The default is /dev/xvda1&lt;/li&gt;
-  &lt;li&gt;Run a sudo resize2fs /dev/xvda1&lt;/li&gt;
-  &lt;li&gt;Reboot the box with /sbin/reboot&lt;/li&gt;
-  &lt;li&gt;Wait the appropriate amount of time and ssh in again.  Re-run df -h and you should see the new space.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;commentary&quot;&gt;Commentary&lt;/h1&gt;
-
-&lt;p&gt;As a computer scientist I entirely understand why you have to reboot.  But as a consumer of cloud services it feels to me like we should be past this at this stage of the using cloud services.  All of my AWS experience is generally using Ubuntu and if Amazon was to tell me that this wasn’t necessary on the AWS Linux, well, that alone would be enough to make me switch distros.&lt;/p&gt;
-
-&lt;h1 id=&quot;links&quot;&gt;Links&lt;/h1&gt;
-
-&lt;p&gt;Here are two useful links that dig into this:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-expand-volume.html?icmpid=docs_ec2_console&quot;&gt;EC2 Console Notes&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-expand-volume.html#recognize-expanded-volume-linux&quot;&gt;Linux Recognizing the Resized Space&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Wed, 09 Aug 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/aws/2017/08/09/expanding-an-aws-instance-volume.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/aws/2017/08/09/expanding-an-aws-instance-volume.html</guid>
-        
-        <category>aws</category>
-        
-        <category>docker</category>
-        
-        <category>aufs</category>
-        
-        
-        <category>aws</category>
         
       </item>
     
