@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Remembering Jerry Pournelle'
+title: Remembering Jerry Pournelle
 category: personal
 tags: ["personal", "scifi"]
 description: Jerry Pournelle was a giant who strode across at least two different fields, science fiction and computing and each of those dramatically impacted my life.
@@ -51,5 +51,7 @@ There are some amazing stories here:
 * In Twit 95, we talks about Robert Heinlein and the problem with being a best selling author, no one has the guts to edit you: "Time Enough or Love -- there are three good novels there, shouldn't they be three good novels?" (loose paraphrase but it is pretty close)
 
 In Twit 90, Jerry describes his Byte writing as "I wrote the Field and Stream column" and that analogy instantly brought all of his computing writing into focus for me since I actually grew up hunting **and** reading Field and Stream.  
+
+Thank you very, very much Leo for doing these interviews, listening to you talk with Jerry for a few hours means a huge amount to me.  
 
 Goodbye Jerry, you'll be missed but your influence is still alive and well.
