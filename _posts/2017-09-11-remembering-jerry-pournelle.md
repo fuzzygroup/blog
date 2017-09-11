@@ -11,7 +11,7 @@ There were three main dimensions to how I grew up:
 2.  Computing.
 3.  Entrepreneurship.  
 
-Jerry Pournelle dramatically affected each of these for me.  Here's how:
+[Jerry Pournelle](https://en.wikipedia.org/wiki/Jerry_Pournelle) dramatically affected each of these for me.  Here's how:
 
 # Reading
 
