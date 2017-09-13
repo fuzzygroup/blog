@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Analyzing iPhone X, iPhone 7 and iPhone 7 Plus
+title: Analyzing iPhone X, iPhone 8 and iPhone 8 Plus
 category: iphone
 tags: ["iphone", "apple"]
 description: Understanding Apple's new phones and whether or not to jump to the iPhone X can be challenging.  Understanding the differences is key and here is my analysis.
