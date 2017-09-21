@@ -85,3 +85,7 @@ This was hugely surprising to me because according to github, I haven't touched 
 # And Here's Why this Happened
 
 My normal use of libxml, for the past decade or so, is always tied straight to Ruby's [Mechanize gem](https://github.com/sparklemotion/mechanize) which I've had running correctly under Docker for the past six months.  And that's why this was so, so surprising to me.  The mistake that I made was that earlier today I had added [twilio-ruby](https://github.com/twilio/twilio-ruby) to my Gemfile and apparently twilio-ruby has different nokogiri dependencies than Mechanize which caused the Dockerfile to need libxml2-dev.  Digging into the twilio-ruby issues, I found [this issue](https://github.com/twilio/twilio-ruby/issues/315) which seems to address it.
+
+# See Also
+
+My buddy Nick, mentioned above, [talks about this on his blog](https://nickjanetakis.com/blog/docker-tip-9-installing-popular-packages-on-alpine).

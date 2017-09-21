@@ -225,6 +225,10 @@ ERROR: Service 'web' failed to build: The command '/bin/sh -c bundle install --b
 
 <p>My normal use of libxml, for the past decade or so, is always tied straight to Ruby’s <a href="https://github.com/sparklemotion/mechanize">Mechanize gem</a> which I’ve had running correctly under Docker for the past six months.  And that’s why this was so, so surprising to me.  The mistake that I made was that earlier today I had added <a href="https://github.com/twilio/twilio-ruby">twilio-ruby</a> to my Gemfile and apparently twilio-ruby has different nokogiri dependencies than Mechanize which caused the Dockerfile to need libxml2-dev.  Digging into the twilio-ruby issues, I found <a href="https://github.com/twilio/twilio-ruby/issues/315">this issue</a> which seems to address it.</p>
 
+<h1 id="see-also">See Also</h1>
+
+<p>My buddy Nick, mentioned above, <a href="https://www.google.com/url?q=https%3A%2F%2Fnickjanetakis.com%2Fblog%2Fdocker-tip-9-installing-popular-packages-on-alpine&amp;sa=D&amp;sntz=1&amp;usg=AFQjCNFXe4gy-jZoLslIkw4oigA6ZDAHCQ">talks about this on his blog</a>.</p>
+
   </div>
   
   
