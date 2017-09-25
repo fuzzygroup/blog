@@ -6,9 +6,55 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 21 Sep 2017 06:18:14 -0400</pubDate>
-    <lastBuildDate>Thu, 21 Sep 2017 06:18:14 -0400</lastBuildDate>
+    <pubDate>Mon, 25 Sep 2017 15:24:33 -0400</pubDate>
+    <lastBuildDate>Mon, 25 Sep 2017 15:24:33 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Rails, AuthLogic, CSRF, 422 and session_store.rb</title>
+        <description>&lt;p&gt;When you’re a professional developer, you come to recognize a category of problems that I refer to as “Pair Programming Required”.  These are those mysterious failures where you know damn well that something should work but &lt;em&gt;nothing&lt;/em&gt; and I repeat &lt;strong&gt;&lt;em&gt;nothing&lt;/em&gt;&lt;/strong&gt; works.  In this situation, you really want to bring another set of eyes to bear on the problem.&lt;/p&gt;
+
+&lt;p&gt;I’m in the process of bringing a new Rails powered application online and I discovered around 3:53 am this morning that login, which works perfectly in development, completely fails in production with the wonderfully helpful error message:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Rails 5 ActionController::InvalidAuthenticityToken error&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;When I dug into it, I saw that was a CSRF error and, oddly, I was getting a 422 error message returned to me.&lt;/p&gt;
+
+&lt;p&gt;The mystery of all this was that this wasn’t new login code – it was code that I’ve been using in another application for months and it has been flawless.&lt;/p&gt;
+
+&lt;p&gt;Here are just a few of the things that I tried to address this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Switch from Rails 5.1.x back to 5.0.x&lt;/li&gt;
+  &lt;li&gt;Investigate the prepend: true approach to protect_from_forgery (&lt;a href=&quot;http://www.stackoverflow.com/questions/38331496&quot;&gt;StackOverflow&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Rewrite most of application_controller.rb&lt;/li&gt;
+  &lt;li&gt;Massively hack around in the guts of AuthLogic&lt;/li&gt;
+  &lt;li&gt;Google&lt;/li&gt;
+  &lt;li&gt;Stack Overflow&lt;/li&gt;
+  &lt;li&gt;Run production locally&lt;/li&gt;
+  &lt;li&gt;change, deploy, test, change again, Lather, Rinse Repeat N times where N is &amp;gt; 10 and less than 50&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Once I exhausted all these possibilities, I reached out to a &lt;a href=&quot;http://www.nickjanetakis.com/&quot;&gt;friend&lt;/a&gt; and he and I paired on it.  And that’s where the power of pair programming really illustrated itself.  We fairly quickly discovered that the issue was that session_store.rb didn’t match the production domain.  I find it unbelievable that the error message wasn’t actually useful but since I’ve been guilty of that sin more than a few times, well, karma I guess.&lt;/p&gt;
+
+&lt;p&gt;Documented here for the next time that I hit this (in the spirit of being a good Internet citizen, I did add it to the Stack Overflow as well).&lt;/p&gt;
+</description>
+        <pubDate>Mon, 25 Sep 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2017/09/25/rails-authlogic-csrf-422-and-session-store-rb.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/09/25/rails-authlogic-csrf-422-and-session-store-rb.html</guid>
+        
+        <category>rails</category>
+        
+        <category>authlogic</category>
+        
+        <category>csrf</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>Docker Won't Install Libxml</title>
@@ -1145,53 +1191,6 @@ end
         
         
         <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Marketing 101 - Ride the Wave If You Can</title>
-        <description>&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: I haven’t written a Marketing 101 piece since 2003 but a friend recently pointed out that even &lt;a href=&quot;http://fuzzyblog.io/blog/tag.html#marketing101&quot;&gt;my old ones&lt;/a&gt; were pretty good so I’m giving it a shot.&lt;/p&gt;
-
-&lt;p&gt;One of the more difficult things in marketing to grasp is the idea of a &lt;em&gt;wave&lt;/em&gt;.  I don’t know if there’s a better term for this but wave is how I’ve been thinking of this for the better part of two decades now.  A wave is an underlying meme or movement that resonates at the industry or even society level and I think the best way to illustrate this is with an example.  My first company, founded in 1987, was a hypertext authoring system (think FrontPage with an integrated browser but back in the DOS days).  There was a small burst of interest in all things hyper* due to Apple’s HyperCard but that pretty much subsided by late 1988 / early 1999.  And then, over the next few years the industry shifted, in a huge way, to &lt;strong&gt;multimedia&lt;/strong&gt;.  Multimedia became a huge wave – and we shifted our product features slightly and our marketing dramatically to ride the multimedia wave:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;We added a small handful of features for controlling digital video discs&lt;/li&gt;
-  &lt;li&gt;We went to multimedia centric trade shows&lt;/li&gt;
-  &lt;li&gt;We adopted the multimedia term and related iconography to all our product literature&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;We saw our fortunes increase in parallel with multimedia – there is truth in the old aphorism, &lt;em&gt;a rising tide lifts all boats&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;When you are a teeny, tiny startup, one of the best things that you can do is to &lt;em&gt;ride the wave&lt;/em&gt; when there is a wave.  I’ve been consulting recently with an up and coming online education product and my strongest advice to them has been to position their product as a &lt;em&gt;STEM learning tool&lt;/em&gt;. STEM is the current term in vogue for &lt;em&gt;science, technology, engineering and mathematics&lt;/em&gt; education.&lt;/p&gt;
-
-&lt;p&gt;When you’re a pure technical person, the idea of riding a wave can at times be disturbing.  Technical founders tend to think of their product solely in the context where the original idea.  And, when that wasn’t the wave, repositioning the product in terms of a wave can feel a bit like being a &lt;a href=&quot;http://www.urbandictionary.com/define.php?term=carpet%20bagger&quot;&gt;carpet bagger&lt;/a&gt;.  I’m here to tell you, both as a technical person and a marketer, that this just is &lt;strong&gt;not&lt;/strong&gt; the case.  Waves are often large in nature – what was multimedia after all – and as long as the product is credible in terms of the wave, repositioning can actually benefit both you and the product’s customers:&lt;/p&gt;
-
-&lt;p&gt;For you:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;You get to tap into a market that is growing faster that normal&lt;/li&gt;
-  &lt;li&gt;You get access to a set of focused marketing events such as trade shows that are wave focused&lt;/li&gt;
-  &lt;li&gt;You get access to a smaller but more focused group of customers&lt;/li&gt;
-  &lt;li&gt;Customers are often willing to spend more due to funding specific to the wave (new budgets, grants, etc)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;For the customer:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The customer gets a more specific product&lt;/li&gt;
-  &lt;li&gt;The customer gets the benefit of at least some wave specific features&lt;/li&gt;
-  &lt;li&gt;The customer gets the benefit of a company focusing very specifically on their needs&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Thu, 17 Aug 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/marketing/2017/08/17/marketing-101-ride-the-wave-if-you-can.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/marketing/2017/08/17/marketing-101-ride-the-wave-if-you-can.html</guid>
-        
-        <category>marketing101</category>
-        
-        
-        <category>marketing</category>
         
       </item>
     
