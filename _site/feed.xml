@@ -6,9 +6,130 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 25 Sep 2017 15:24:33 -0400</pubDate>
-    <lastBuildDate>Mon, 25 Sep 2017 15:24:33 -0400</lastBuildDate>
+    <pubDate>Sat, 30 Sep 2017 14:37:59 -0400</pubDate>
+    <lastBuildDate>Sat, 30 Sep 2017 14:37:59 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Using Chrome Driver with Docker, Rails and Selenium on AWS</title>
+        <description>&lt;p&gt;I’ve done a lot of crawling in my professional career and I mean a &lt;strong&gt;lot&lt;/strong&gt;.  The recent trend towards JavaScript based sites, however, has wreaked havoc on my traditional approach of low level html parsing.  For a new product I’m launching, I recently had to make the switch to using Selenium for crawling.  Selenium, commonly known as a testing tool, can be used in an embedded fashion where you use code like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;browser = Selenium::WebDriver.for :chrome
+browser.get &quot;https://www.google.com&quot;
+html = browser.page_source
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Although the lines of code look similar to something like Mechanize this is actually an entirely different approach because underneath it all is a full browser including JavaScript which lets something like a page which sends its data down in a JavaScript array and then uses JavaScript to display it actually render and return back to you parseable html.&lt;/p&gt;
+
+&lt;h1 id=&quot;doing-this-server-side&quot;&gt;Doing this Server Side&lt;/h1&gt;
+
+&lt;p&gt;If you’re going to use Selenium for a server side crawling process then what you actually needs is called ChromeDriver which is the embedded chrome executable that represents a browser.  One approach is to locally install ChromeDriver on each of your compute nodes but the better approach is to Dockerize everything and run ChromeDriver as a container.  Here are the steps to do just that.&lt;/p&gt;
+
+&lt;h2 id=&quot;add-chromedriver-to-your-docker-compose-file&quot;&gt;Add ChromeDriver to Your Docker Compose File&lt;/h2&gt;
+
+&lt;p&gt;You’ll likely need to implement both Step 1 and Step 2.&lt;/p&gt;
+
+&lt;h3 id=&quot;step-1&quot;&gt;Step 1&lt;/h3&gt;
+
+&lt;p&gt;Here’s what you’ll need for docker-compose.yml or docker-compose.production.yml:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;chromedriver:
+  image: 'robcherry/docker-chromedriver'
+  ports: 
+    - 4444:4444
+  restart: on-failure
+  shm_size: 1G    
+  environment:
+    - CHROMEDRIVER_WHITELISTED_IPS=&quot;&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;step-2&quot;&gt;Step 2&lt;/h3&gt;
+
+&lt;p&gt;A docker container is dramatically lighter than a full computer and you’ll find that Chrome will start.  The specific error you are likely to hit is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Selenium::WebDriver::Error::UnknownError: unknown error: Chrome failed to start: crashed&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;When you discover this you need to change your daemon.json file (normally located in /etc/docker/daemon.json) to have a larger shm_size like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cat daemon.json
+{
+  &quot;default-shm-size&quot;:&quot;2g&quot;,
+  &quot;storage-driver&quot;: &quot;overlay2&quot;,
+  &quot;log-driver&quot;: &quot;json-file&quot;,
+  &quot;log-opts&quot;: {
+    &quot;max-size&quot;: &quot;10m&quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Yes I’m aware that I use 1G in the first example and 2g in the second.  This is how I currently have it working and I’m leaving it alone until I play with it more.  I suspect you could sync these but I don’t know that definitively.&lt;/p&gt;
+
+&lt;h3 id=&quot;step-3&quot;&gt;Step 3&lt;/h3&gt;
+
+&lt;p&gt;The next error you are likely to hit 1 of these 2:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Net::ReadTimeout during browser launch&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;UnknownError: session deleted because of page crash from tab crashed&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The solution to each of these is how you invoke the core browser object.  Here’s what I used:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;browser = Selenium::WebDriver.for :chrome, url: &quot;http://chromedriver:4444&quot;, :prefs =&amp;gt; {:password_manager_enable =&amp;gt; false, :credentials_enable_service =&amp;gt; false}, :switches =&amp;gt; [&quot;disable-infobars&quot;, &quot;no-sandbox&quot;]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;security-issues&quot;&gt;Security Issues&lt;/h1&gt;
+
+&lt;p&gt;Here’s an interesting security note:&lt;/p&gt;
+
+&lt;p&gt;Note: ChromeDriver restricts access to local connections by default. To allow external connections, you can pass in a custom CHROMEDRIVER_WHITELISTED_IPS environment variable. By default, this is set to 127.0.0.1, but this can by any comma separated list of IP addresses. Setting the value as empty will allow all remote connections.&lt;/p&gt;
+
+&lt;p&gt;Docker and the inherent AWS security policy really saves you on this one.  By setting CHROMEDRIVER_WHITELISTED_IPS=””, I am able to use ChromeDriver from any other container but nothing else can execute them.  An embedded browser like Selenium is akin to an open proxy so you do not want that.&lt;/p&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://hub.docker.com/r/robcherry/docker-chromedriver/&quot;&gt;Docker Chrome Driver&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/SeleniumHQ/selenium/wiki/Ruby-Bindings&quot;&gt;Ruby and Selenium&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://gist.github.com/ziadoz/3e8ab7e944d02fe872c3454d17af31a5&quot;&gt;Installing Chrome Driver Locally on Ubuntu&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/SeleniumHQ/docker-selenium/issues/198&quot;&gt;Net::ReadTimeout during browser launch&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://intoli.com/blog/running-selenium-with-headless-chrome/&quot;&gt;Running Selenium on Headless Chrome&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.docker.com/engine/reference/run/#ipc-settings-ipc&quot;&gt;Setting Docker Shm&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/elgalu/docker-selenium&quot;&gt;Docker and Selenium&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/zalando/zalenium#run-it&quot;&gt;Zalenium&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/elgalu/docker-selenium/issues/20#issuecomment-133011186&quot;&gt;Docker and Selenium and Shm / Chrome&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;thank-you&quot;&gt;Thank You&lt;/h1&gt;
+
+&lt;p&gt;Kudos and thanks to &lt;a href=&quot;http://www.nickjanetakis.com/&quot;&gt;Nick my Docker buddy&lt;/a&gt;.  He teaches Docker professionally and really knows his stuff.  I probably could have slogged through this but his help turned what would have been a man day into a quick one hour pairing session.  Appreciated.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 30 Sep 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/docker/2017/09/30/using-chrome-driver-with-docker-rails-and-selenium-on-aws.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/docker/2017/09/30/using-chrome-driver-with-docker-rails-and-selenium-on-aws.html</guid>
+        
+        <category>docker</category>
+        
+        <category>rails</category>
+        
+        <category>ruby</category>
+        
+        <category>selenium</category>
+        
+        <category>aws</category>
+        
+        
+        <category>docker</category>
+        
+      </item>
     
       <item>
         <title>Rails, AuthLogic, CSRF, 422 and session_store.rb</title>
@@ -1044,150 +1165,6 @@ need configuration options.
         <category>ruby</category>
         
         <category>gems</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Rails, Apartment, Tenancy and Sidekiq</title>
-        <description>&lt;h1 id=&quot;tldr&quot;&gt;TLDR&lt;/h1&gt;
-
-&lt;p&gt;This is a long one.  If you need the quick answer on how to solve Apartment-Sidekiq errors then scroll down to the section titled &lt;strong&gt;Correctly Implementing Sidekiq with Apartment&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;thanks&quot;&gt;Thanks&lt;/h1&gt;
-
-&lt;p&gt;This blog post is dedicated to three people / things:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;My good friend &lt;a href=&quot;https://www.nickjanetakis.com&quot;&gt;Nick Janetakis&lt;/a&gt; who helped me debug these issues&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.mikeperham.com&quot;&gt;Mike Perham&lt;/a&gt;, the author of &lt;a href=&quot;https://www.contribsys.com&quot;&gt;Sidekiq&lt;/a&gt;, whose candor about Apartment-Sidekiq helped point the way&lt;/li&gt;
-  &lt;li&gt;The &lt;a href=&quot;https://influitive.com/&quot;&gt;Influitive&lt;/a&gt; team at the Apartment gem; great work guys, thank you&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
-
-&lt;p&gt;Tenancy in database application development refers to using a separate storage system (think a partition within a database) or a whole separate database per “user” (note that user might mean a group of people).  The idea behind tenancy is to:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Isolate one user from another; this tends to provide a much more secure approach&lt;/li&gt;
-  &lt;li&gt;Isolate storage so that the capacity needs of one user don’t affect other users&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Tenancy is something that we don’t often think about but examples of it abound on the Internet.  The best known example is Wordpress.com where every user’s data is stored in a separate database.&lt;/p&gt;
-
-&lt;p&gt;I’ve been developing a new product for sometime now and I went into it knowing that if I was successful, storage was going to be a huge issue.  When I first developed &lt;a href=&quot;https://web.archive.org/web/20100610030143/http://www.appdata.com:80/&quot;&gt;AppData&lt;/a&gt; I had no idea that I was beginning a near [decade long]*https://web.archive.org/web/20160905051931/http://www.appdata.com/ cycle of struggling with storage.  As with all engineers, I was determined to at least not hit the same errors (better to make different ones) so I knew that I needed a tenancy solution for my development platform, Rails, and that led me to the &lt;a href=&quot;https://github.com/influitive/apartment&quot;&gt;Apartment gem&lt;/a&gt;.  Apartment views tenancy as a problem of managing the underlying database connection so that when you goto foo.app.com, foo generally represents the underlying database or “tenant”.&lt;/p&gt;
-
-&lt;h1 id=&quot;enter-sidekiq-enter-tenancy-problems&quot;&gt;Enter Sidekiq; Enter Tenancy Problems&lt;/h1&gt;
-
-&lt;p&gt;When you develop a web application you are quickly going to discover the need for asynchronous processing.  This is a fancy term that could be defined as “don’t make the user wait while a long running operation completes”.  Let’s consider the very simple case of sending an email with account details once a user signs up.  Sending that email might be instantaneous or the email server might have problems and might take a few seconds.  By handling this operation asynchronously, the email is send by a separate process and control to the user returns instantly.  In the Rails world the leading technology for this is an open source tool called Sidekiq and Sidekiq is a fantastic bit of code.  It runs as a background daemon coupled to your application through Redis and its multi threading scalably handles all kinds of asynchronous needs.  In the past I’ve used it to handle email deliveries, data imports, whole site crawling and more.&lt;/p&gt;
-
-&lt;p&gt;The problem I’ve been struggling with for sometime now is handling back data imports.  My new product has a cool feature – you sign up and the back history for your account is imported from a central data archive.  I wanted to avoid the problems with a data tool where data builds over time.  My goal was for people to sign up and then be instantly product, not productive after a week of data acquisition, at which point they might have stopped caring due to the waiting.  This was clearly a job for Sidekiq but how could that work since the underlying database connection changed for every single user?&lt;/p&gt;
-
-&lt;p&gt;My tenancy solution was a Ruby gem called Apartment and there is actually an extension gem called &lt;a href=&quot;https://github.com/influitive/apartment-sidekiq&quot;&gt;Apartment-Sidekiq&lt;/a&gt;.  What apartment sidekiq purports to do is push into the redis stream a reference to the tenant and then patch sidekiq so that every time it processes the redis data it will connect to the right tenant.  The problem here is that this seems to only sort of work.  For the past two weeks or so my asynchronous code has worked – but with errors.  Sometime I would see 1 error related to tenancy when a back data import was processed and sometimes I would see 26 errors per import.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-solution---dont-use-apartment-sidekiq&quot;&gt;The Solution - Don’t Use Apartment Sidekiq&lt;/h2&gt;
-
-&lt;p&gt;This problem was on my radar for quite a while and then I finally said “Ok I can’t ship until this is addressed” and I’ve been working it for the past two days.  Understanding the solution came from this &lt;a href=&quot;https://github.com/mperham/sidekiq/issues/3005&quot;&gt;Github Issue&lt;/a&gt;.  The key bit of wisdom is here:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Just as a side note, passing the tenant as a job argument is a hack. The correct way to implement a cross-cutting concern (like tenant) is with client and server middleware. You just need to copy and configure the two bits of code &lt;a href=&quot;https://github.com/influitive/apartment-sidekiq/tree/master/lib/apartment/sidekiq/middleware&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;When you work with an open source project like Sidekiq, understanding who the people involved are is key because it tells you who to trust.  I’ve now used Sidekiq for years and years and I trust Mike implicitly when it comes to these matters.  When Mike Perham, the author of Sidekiq, describes something as a &lt;strong&gt;hack&lt;/strong&gt;, well, that tells me there might be real issues.&lt;/p&gt;
-
-&lt;p&gt;I looked at the related &lt;a href=&quot;https://stackoverflow.com/questions/41229392/why-is-apartment-sidekiq-not-finding-the-tenant/41471241#41471241&quot;&gt;Stack Overflow&lt;/a&gt; but no where did I have a problem with my environment and that also didn’t mesh which Mikes comment about passing the tenant as a job argument.  Sorting through all kinds of tenancy issues took me different places:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/influitive/apartment-sidekiq/issues/10&quot;&gt;Possible Version Conflicts&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/influitive/apartment-sidekiq/issues/12#ref-pullrequest-190952852&quot;&gt;Maybe It is Rails 5&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/influitive/apartment-sidekiq/issues/11&quot;&gt;More Perham Commentary&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In the More Perham Commentary, I found this bit of wisdom:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;@andrba the intention cannot be done safely. You need to explicitly switch and cleanup any connections. I hate that callback and wish I’d never implemented it.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;When something like the &lt;em&gt;underlying callback&lt;/em&gt; on which Apartment-Sidekiq is described in this way it made me realize, “Hm… this isn’t going to work, is it”.&lt;/p&gt;
-
-&lt;h2 id=&quot;correctly-implementing-sidekiq-with-apartment&quot;&gt;Correctly Implementing Sidekiq with Apartment&lt;/h2&gt;
-
-&lt;p&gt;Once I accepted that I couldn’t use the Apartment-Sidekiq gem, the solution was pretty obvious:&lt;/p&gt;
-
-&lt;h3 id=&quot;step-1-remove-apartment-sidekiq-from-gemfile&quot;&gt;Step 1: Remove Apartment-Sidekiq from Gemfile&lt;/h3&gt;
-
-&lt;p&gt;This was pretty easy - just delete one line and then run bundle install.&lt;/p&gt;
-
-&lt;h3 id=&quot;step-2-pass-the-current-tenant-in-my-calls-to-the-sidekiq-worker&quot;&gt;Step 2: Pass the Current Tenant in my Calls to the Sidekiq Worker&lt;/h3&gt;
-
-&lt;p&gt;Most of my import routines are after_create calls that look like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;after_create :import_back_history_sidekiq
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;This method looks like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def import_back_history_sidekiq
-  InstructorImportBackHistoryWorker.perform_async(self.id, Apartment::Tenant.current)
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;There are two parameters here:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;self.id - Sidekiq is oriented around passing low level primitives not full blown ActiveRecord objects so you pass an id reference to the object you want to do an asynchronous call on and then you reload it in the Sidekiq context.&lt;/li&gt;
-  &lt;li&gt;Apartment::Tenant.current - This is a string that represents the name of the current tenant.  We need to know this because the real solution to this entire problem is to switch to the right tenant in our Sidekiq worker code.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;step-3-switching-to-the-right-tenant&quot;&gt;Step 3: Switching to the Right Tenant&lt;/h3&gt;
-
-&lt;p&gt;Here’s what the underlying Sidekiq worker class looks like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class InstructorImportBackHistoryWorker
-  include Sidekiq::Worker
-
-  def perform(id, tenant)
-    Apartment::Tenant.switch!(tenant)
-    instructor = Instructor.where(id: id).first
-    if instructor
-      instructor.import_back_history
-    else
-      # Some error handling code goes here
-    end
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;All this does is invoke Apartment::Tenant.switch!(tenant) at the start of the asynchronous processing and that ensures that the correct tenant is used.  After that the import proceeds as normal.  The reason that I have a wrapper approach (import_back_history versus import_back_history_sidekiq) is that I have cases where I use these calls in batch process routines where I don’t invoke Sidekiq.&lt;/p&gt;
-
-&lt;p&gt;Using this approach to managing tenancy and Sidekiq, I went from multiple tenancy connection errors tracked thru &lt;a href=&quot;http://fuzzyblog.io/blog/aws/2017/08/11/using-errbit-to-host-your-own-error-tracker-on-aws-for-rails-apps.html&quot;&gt;Errbit&lt;/a&gt; to zero errors.&lt;/p&gt;
-
-&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/41229392/why-is-apartment-sidekiq-not-finding-the-tenant&quot;&gt;Apartment-Sidekiq Stack Overflow&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/influitive/apartment-sidekiq/issues/11&quot;&gt;Long Error Thread&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Mon, 21 Aug 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2017/08/21/rails-apartment-tenancy-and-sidekiq.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/08/21/rails-apartment-tenancy-and-sidekiq.html</guid>
-        
-        <category>rails</category>
-        
-        <category>apartment</category>
-        
-        <category>tenancy</category>
-        
-        <category>multi_tenant</category>
-        
-        <category>sidekiq</category>
         
         
         <category>rails</category>
