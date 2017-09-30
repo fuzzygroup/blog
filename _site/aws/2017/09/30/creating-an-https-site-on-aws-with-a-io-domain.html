@@ -140,9 +140,7 @@
   <div class="post-content" itemprop="articleBody">
     <p>I recently registered my first .io domain using an all AWS stack (Route 53, EC2, Elastic Load Balancer or ELB, Amazon Certificate Manager or ACM) and I found the process mildly odd – to the degree that I know that it will either bite me again or it will bite someone else.  Either way I thought that it would be best to fully document the process.</p>
 
-<p>The site I’m building has login and as such https is important for this site.  Although I could have used Let’s Encrypt,</p>
-
-<p>If you’re using https on AWS then there’s a good chance that you are using an ELB and ACM as they make SSL brilliantly simple.  In all my years of deploying SSL, it has never been as simple as using this AWS stack and I sincerely recommend it.  The oddness occurred when I had to bind the .io domain into the certificate itself.  This process requires an email authentication to the owner of the domain to ensure that no one compromised your AWS credentials.  When you are using a normal .com or .net domain and you do this, Amazon sends the email to the email address on the domain registration itself, easy peasy.  When you are using a .io account, the email is NOT sent to the email address on the domain registration but it is instead sent to all of these:</p>
+<p>The site I’m building has login and as such https is important for this site.  Although I could have used <a href="https://nickjanetakis.com/blog/lets-encrypt-vs-cloudflare-for-https">Let’s Encrypt or CloudFlare</a> for the https, if you’re using https on AWS then there’s a good chance that you are using an ELB and ACM as they make SSL brilliantly simple.  In all my years of deploying SSL, it has never been as simple as using this AWS stack and I sincerely recommend it.  The oddness occurred when I had to bind the .io domain into the certificate itself.  This process requires an email authentication to the owner of the domain to ensure that no one compromised your AWS credentials.  When you are using a normal .com or .net domain and you do this, Amazon sends the email to the email address on the domain registration itself, easy peasy.  When you are using a .io account, the email is NOT sent to the email address on the domain registration but it is instead sent to all of these:</p>
 
 <ul>
   <li>administrator@your_domain.io</li>
@@ -168,7 +166,7 @@ To receive validation mail for an .IO domain, make sure that you have one of the
 
 <h1 id="thank-you">Thank You</h1>
 
-<p>As always, I resolved this with my favorite pairing buddy, <a href="http://www.nickjanetakis.com">Nick Janetakis</a>.  He does Docker stuff and is very, very talented.  Recommended.</p>
+<p>As always, I resolved this with my favorite pairing buddy, <a href="http://www.nickjanetakis.com">Nick Janetakis</a>.  He does Docker stuff and is very, very talented.  He is also a Let’s Encrypt expert.  Recommended.</p>
 
   </div>
   
