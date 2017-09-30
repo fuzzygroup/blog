@@ -17,11 +17,11 @@ The site I'm building has login and as such https is important for this site.  A
 
 To Amazon's credit, they do kind of disclose this in the ACM documentation [here](http://docs.aws.amazon.com/acm/latest/userguide/troubleshoot-iodomains.html). Here's the relevant passage:
 
-  ACM does, however, send validation email to the following five common system addresses where your_domain is the domain name you entered when you initially requested a certificate and .io is the top level domain.
+> ACM does, however, send validation email to the following five common system addresses where your_domain is the domain name you entered when you initially requested a certificate and .io is the top level domain.
 
-  (see above)
+> (see above)
 
-  To receive validation mail for an .IO domain, make sure that you have one of the preceding five email accounts enabled. If you do not, you will not receive validation email and you will not be issued an ACM certificate. 
+> To receive validation mail for an .IO domain, make sure that you have one of the preceding five email accounts enabled. If you do not, you will not receive validation email and you will not be issued an ACM certificate. 
 
 The problem here is that like a lot of us, probably most of us, I don't have a mail server running on my .io domain so there's nothing to receive the email (so I can respond to it).  Now I could have set up a mail server but a much, much easier approach is to use [ImprovMX](http://improvmx.com/) which promises "Free painless email forwarding for your domains" and it really, really delivers.  Within only a few minutes, I had my ACM mailing and I was off to the races.  With any luck, I will even launch my new site later this week.  
 
