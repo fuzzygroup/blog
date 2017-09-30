@@ -79,7 +79,7 @@ Here's an interesting security note:
 
   Note: ChromeDriver restricts access to local connections by default. To allow external connections, you can pass in a custom CHROMEDRIVER_WHITELISTED_IPS environment variable. By default, this is set to 127.0.0.1, but this can by any comma separated list of IP addresses. Setting the value as empty will allow all remote connections.
   
-Docker and the inherent AWS security policy really saves you on this one.  By setting CHROMEDRIVER_WHITELISTED_IPS="", I am able to use ChromeDriver from any other container but nothing else can execute them.  An embedded browser like Selenium is akin to an open proxy so you do not want that.
+AWS security groups really save you on this one.  By setting CHROMEDRIVER_WHITELISTED_IPS="", I am able to use ChromeDriver from any other container but nothing else can execute them.  An embedded browser like Selenium is akin to an open proxy so you do not want that.
 
 # References
 * [Docker Chrome Driver](https://hub.docker.com/r/robcherry/docker-chromedriver/)
