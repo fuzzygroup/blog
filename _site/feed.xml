@@ -6,8 +6,8 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 30 Sep 2017 14:57:04 -0400</pubDate>
-    <lastBuildDate>Sat, 30 Sep 2017 14:57:04 -0400</lastBuildDate>
+    <pubDate>Sat, 30 Sep 2017 16:36:20 -0400</pubDate>
+    <lastBuildDate>Sat, 30 Sep 2017 16:36:20 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -136,6 +136,55 @@ html = page.body
         
         
         <category>docker</category>
+        
+      </item>
+    
+      <item>
+        <title>Creating an HTTPS Site on AWS with a .IO Domain</title>
+        <description>&lt;p&gt;I recently registered my first .io domain using an all AWS stack (Route 53, EC2, Elastic Load Balancer or ELB, Amazon Certificate Manager or ACM) and I found the process mildly odd – to the degree that I know that it will either bite me again or it will bite someone else.  Either way I thought that it would be best to fully document the process.&lt;/p&gt;
+
+&lt;p&gt;The site I’m building has login and as such https is important for this site.  Although I could have used Let’s Encrypt,&lt;/p&gt;
+
+&lt;p&gt;If you’re using https on AWS then there’s a good chance that you are using an ELB and ACM as they make SSL brilliantly simple.  In all my years of deploying SSL, it has never been as simple as using this AWS stack and I sincerely recommend it.  The oddness occurred when I had to bind the .io domain into the certificate itself.  This process requires an email authentication to the owner of the domain to ensure that no one compromised your AWS credentials.  When you are using a normal .com or .net domain and you do this, Amazon sends the email to the email address on the domain registration itself, easy peasy.  When you are using a .io account, the email is NOT sent to the email address on the domain registration but it is instead sent to all of these:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;administrator@your_domain.io&lt;/li&gt;
+  &lt;li&gt;hostmaster@your_domain.io&lt;/li&gt;
+  &lt;li&gt;postmaster@your_domain.io&lt;/li&gt;
+  &lt;li&gt;webmaster@your_domain.io&lt;/li&gt;
+  &lt;li&gt;admin@your_domain.io&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To Amazon’s credit, they do kind of disclose this in the ACM documentation &lt;a href=&quot;http://docs.aws.amazon.com/acm/latest/userguide/troubleshoot-iodomains.html&quot;&gt;here&lt;/a&gt;. Here’s the relevant passage:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ACM does, however, send validation email to the following five common system addresses where your_domain is the domain name you entered when you initially requested a certificate and .io is the top level domain.
+
+(see above)
+
+To receive validation mail for an .IO domain, make sure that you have one of the preceding five email accounts enabled. If you do not, you will not receive validation email and you will not be issued an ACM certificate. 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The problem here is that like a lot of us, probably most of us, I don’t have a mail server running on my .io domain so there’s nothing to receive the email (so I can respond to it).  Now I could have set up a mail server but a much, much easier approach is to use &lt;a href=&quot;http://improvmx.com/&quot;&gt;ImprovMX&lt;/a&gt; which promises “Free painless email forwarding for your domains” and it really, really delivers.  Within only a few minutes, I had my ACM mailing and I was off to the races.  With any luck, I will even launch my new site later this week.&lt;/p&gt;
+
+&lt;p&gt;ImprovMX is strongly, strongly recommended.&lt;/p&gt;
+
+&lt;h1 id=&quot;thank-you&quot;&gt;Thank You&lt;/h1&gt;
+
+&lt;p&gt;As always, I resolved this with my favorite pairing buddy, &lt;a href=&quot;http://www.nickjanetakis.com&quot;&gt;Nick Janetakis&lt;/a&gt;.  He does Docker stuff and is very, very talented.  Recommended.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 30 Sep 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/aws/2017/09/30/creating-an-https-site-on-aws-with-a-io-domain.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/aws/2017/09/30/creating-an-https-site-on-aws-with-a-io-domain.html</guid>
+        
+        <category>aws</category>
+        
+        <category>io</category>
+        
+        <category>https</category>
+        
+        
+        <category>aws</category>
         
       </item>
     
@@ -1078,104 +1127,6 @@ Total reclaimed space: 28.72GB
         
         
         <category>Docker</category>
-        
-      </item>
-    
-      <item>
-        <title>When Gems Won't Install - The mkmf.log Problem</title>
-        <description>&lt;p&gt;Computing is rich enough and deep enough as a profession that you can spent literally over a decade at something and still learn new things.  And, as frustrating as this is, I find that one of the best parts.   Personally I’ve been using Ruby now since 2006 and one of the things that is absolutely bedeviling is when a gem won’t install.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Upfront Disclaimer&lt;/strong&gt;: This problem was one of my own making but it proved to be an interesting exercise as I waited for someone to arrive for a meeting.  Far better than simply surfing the web or playing on my phone.&lt;/p&gt;
-
-&lt;p&gt;I was trying to get the &lt;a href=&quot;https://github.com/feedbin/feedbin&quot;&gt;FeedBin&lt;/a&gt; aggregator to install so I did the usual open source Rails dance:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;fork it&lt;/li&gt;
-  &lt;li&gt;clone it&lt;/li&gt;
-  &lt;li&gt;bundle install&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;And, WHAM, this gave me the wonderfulness below:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
-
-    current directory: /Users/sjohnson/.rvm/gems/ruby-2.3.1@feedbin/gems/nio4r-2.1.0/ext/nio4r
-/Users/sjohnson/.rvm/rubies/ruby-2.3.1/bin/ruby -r ./siteconf20170828-91881-jc70x3.rb extconf.rb
---with-cflags=-std=c99
-checking for unistd.h... *** extconf.rb failed ***
-Could not create Makefile due to some reason, probably lack of necessary
-libraries and/or headers.  Check the mkmf.log file for more details.  You may
-need configuration options.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Nothing like an abstractly referenced log file &lt;strong&gt;WITHOUT A FULL PATH&lt;/strong&gt; to be completely unhelpful.  I’ve been seeing references to mkmf.log about as long as Gems have been in common usage and I’ve never understood exactly where that persnickety file was located.  Normally a quick Google or Stack Overflow gives me the answer but this time those just weren’t helpful.  What I did &lt;a href=&quot;https://stackoverflow.com/questions/20379274/when-a-gem-fails-where-do-i-find-the-mkmf-log-file&quot;&gt;discover&lt;/a&gt; was that the mkmf.log file is bundled with the gem where it is built.  Given that I use RVM, the example was to look in a path like this:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;~/.rvm/gems/ruby-1.9.3-p194/gems/some-cool-gem-name/ext/mkmf.log&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;I started with this find command:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;find ~/.rvm -name mkmf.log&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;and that produced a huge number of results, 995 to be specific (a decade or more of hacking Ruby stuff will do that).&lt;/p&gt;
-
-&lt;p&gt;This took me into adding a grep to the end:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;table&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;find ~/.rvm -name mkmf.log&lt;/td&gt;
-        &lt;td&gt;grep nio4r&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;which still gave me a full page of output so I added feedbin as a secondary grep:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;table&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;find ~/.rvm -name mkmf.log&lt;/td&gt;
-        &lt;td&gt;grep nio4r&lt;/td&gt;
-        &lt;td&gt;grep feedbin&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;which finally produced:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;/Users/sjohnson/.rvm/gems/ruby-2.3.1@feedbin/extensions/x86_64-darwin-15/2.3.0/nio4r-2.1.0/mkmf.log&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Digging into that file revealed this error:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;xcrun: error: active developer path (&quot;/Applications/Xcode.app/Contents/Developer&quot;) does not exist, use `xcode-select --switch path/to/Xcode.app` to specify the Xcode that you wish to use for command line developer tools (or see `man xcode-select`)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;So somehow XCode is missing and I’m certain that’s my fault (this isn’t my primary dev box so perhaps it got deleted at some point to save disc space).&lt;/p&gt;
-</description>
-        <pubDate>Mon, 28 Aug 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2017/08/28/when-gems-won-t-install-the-mkmf-log-problem.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2017/08/28/when-gems-won-t-install-the-mkmf-log-problem.html</guid>
-        
-        <category>rails</category>
-        
-        <category>ruby</category>
-        
-        <category>gems</category>
-        
-        
-        <category>rails</category>
         
       </item>
     
