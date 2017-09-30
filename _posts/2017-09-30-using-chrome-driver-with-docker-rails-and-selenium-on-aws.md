@@ -5,13 +5,19 @@ category: docker
 tags: ["docker", "rails", "ruby", "selenium", "aws"]
 description: Although normally thought of as a testing tool, Selenium can also allow you to do crawling in Rails not through low level parsing but also through an embedded browser.  However getting Selenium working on a headless AWS server is tedious and non-obvious.  Here is how I did it.
 ---
-I've done a lot of crawling in my professional career and I mean a **lot**.  The recent trend towards JavaScript based sites, however, has wreaked havoc on my traditional approach of low level html parsing.  For a new product I'm launching, I recently had to make the switch to using Selenium for crawling.  Selenium, commonly known as a testing tool, can be used in an embedded fashion where you use code like this:
+I've done a lot of crawling in my professional career and I mean a **lot**.  The recent trend towards JavaScript based sites, however, has wreaked havoc on my traditional approach of low level html parsing.  For a new product I'm launching, I recently had to make the switch to using [Selenium](https://github.com/SeleniumHQ/) for crawling.  Selenium, commonly known as a testing tool, can be used in an embedded fashion where you use code like this:
 
     browser = Selenium::WebDriver.for :chrome
     browser.get "https://www.google.com"
     html = browser.page_source
 
-Although the lines of code look similar to something like Mechanize this is actually an entirely different approach because underneath it all is a full browser including JavaScript which lets something like a page which sends its data down in a JavaScript array and then uses JavaScript to display it actually render and return back to you parseable html.
+Here's a rough equivalent in Mechanize:
+
+    agent = Mechanize.new
+    page = agent.get("https://www.google.com")
+    html = page.body
+
+Although the lines of code look similar to something like [Mechanize](https://github.com/sparklemotion/mechanize) this is actually an entirely different approach because underneath it all is a full browser including JavaScript which lets something like a page which sends its data down in a JavaScript array and then uses JavaScript to display it actually render and return back to you parseable html.
 
 # Doing this Server Side
 
@@ -57,7 +63,7 @@ Yes I'm aware that I use 1G in the first example and 2g in the second.  This is 
 
 ### Step 3
 
-The next error you are likely to hit 1 of these 2:
+The next error you are likely to hit is one of these two, possibly both:
 
 > Net::ReadTimeout during browser launch
 

@@ -6,17 +6,25 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 30 Sep 2017 14:37:59 -0400</pubDate>
-    <lastBuildDate>Sat, 30 Sep 2017 14:37:59 -0400</lastBuildDate>
+    <pubDate>Sat, 30 Sep 2017 14:56:19 -0400</pubDate>
+    <lastBuildDate>Sat, 30 Sep 2017 14:56:19 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
         <title>Using Chrome Driver with Docker, Rails and Selenium on AWS</title>
-        <description>&lt;p&gt;I’ve done a lot of crawling in my professional career and I mean a &lt;strong&gt;lot&lt;/strong&gt;.  The recent trend towards JavaScript based sites, however, has wreaked havoc on my traditional approach of low level html parsing.  For a new product I’m launching, I recently had to make the switch to using Selenium for crawling.  Selenium, commonly known as a testing tool, can be used in an embedded fashion where you use code like this:&lt;/p&gt;
+        <description>&lt;p&gt;I’ve done a lot of crawling in my professional career and I mean a &lt;strong&gt;lot&lt;/strong&gt;.  The recent trend towards JavaScript based sites, however, has wreaked havoc on my traditional approach of low level html parsing.  For a new product I’m launching, I recently had to make the switch to using &lt;a href=&quot;https://github.com/SeleniumHQ/&quot;&gt;Selenium&lt;/a&gt; for crawling.  Selenium, commonly known as a testing tool, can be used in an embedded fashion where you use code like this:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;browser = Selenium::WebDriver.for :chrome
 browser.get &quot;https://www.google.com&quot;
 html = browser.page_source
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here’s a rough equivalent in Mechanize:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;agent = Mechanize.new
+page = agent.get(&quot;https://www.google.com&quot;)
+html = page.body
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
@@ -71,7 +79,7 @@ html = browser.page_source
 
 &lt;h3 id=&quot;step-3&quot;&gt;Step 3&lt;/h3&gt;
 
-&lt;p&gt;The next error you are likely to hit 1 of these 2:&lt;/p&gt;
+&lt;p&gt;The next error you are likely to hit is one of these two, possibly both:&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;Net::ReadTimeout during browser launch&lt;/p&gt;

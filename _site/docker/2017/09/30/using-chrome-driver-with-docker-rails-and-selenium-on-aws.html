@@ -138,11 +138,19 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>I’ve done a lot of crawling in my professional career and I mean a <strong>lot</strong>.  The recent trend towards JavaScript based sites, however, has wreaked havoc on my traditional approach of low level html parsing.  For a new product I’m launching, I recently had to make the switch to using Selenium for crawling.  Selenium, commonly known as a testing tool, can be used in an embedded fashion where you use code like this:</p>
+    <p>I’ve done a lot of crawling in my professional career and I mean a <strong>lot</strong>.  The recent trend towards JavaScript based sites, however, has wreaked havoc on my traditional approach of low level html parsing.  For a new product I’m launching, I recently had to make the switch to using <a href="https://github.com/SeleniumHQ/">Selenium</a> for crawling.  Selenium, commonly known as a testing tool, can be used in an embedded fashion where you use code like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>browser = Selenium::WebDriver.for :chrome
 browser.get "https://www.google.com"
 html = browser.page_source
+</code></pre>
+</div>
+
+<p>Here’s a rough equivalent in Mechanize:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>agent = Mechanize.new
+page = agent.get("https://www.google.com")
+html = page.body
 </code></pre>
 </div>
 
@@ -197,7 +205,7 @@ html = browser.page_source
 
 <h3 id="step-3">Step 3</h3>
 
-<p>The next error you are likely to hit 1 of these 2:</p>
+<p>The next error you are likely to hit is one of these two, possibly both:</p>
 
 <blockquote>
   <p>Net::ReadTimeout during browser launch</p>
