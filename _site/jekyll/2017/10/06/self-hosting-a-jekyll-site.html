@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Self Hosting a Jekyll Site</title>
+  <meta name="description" content="I’ve been a blogger since 2002 and over the years there have been a lot of different blogging tools: Radio, WordPress, Serendipity, Movable Type, TypePad, b2...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/jekyll/2017/10/06/self-hosting-a-jekyll-site.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="Self Hosting a Jekyll Site">
+
+  
+    <meta name="twitter:description"
+      content="Jekyll can be ridiculously easy to work with when you're using it with Github Pages but what about when Jekyll is running on your own server, how do you handle it?">
+  
+
+  
+    <meta name="twitter:image"
+      content="http://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2015/02/1424055625jekyll.png">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Self Hosting a Jekyll Site</h1>
+    <p class="I'll"><time datetime="2017-10-06T00:00:00-04:00" itemprop="datePublished">Oct 6, 2017</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>I’ve been a blogger since 2002 and over the years there have been a lot of different blogging tools: Radio, WordPress, Serendipity, Movable Type, TypePad, b2, etc.  After a long, on and off hiatus, I made the decision in 2016 to get serious about blogging again and at that point I committed to <a href="https://jekyllrb.com/">Jekyll</a>.  The reason was really the simplicity of:</p>
+
+<ul>
+  <li>Having all my blog posts in a filesystem, not a database, was a transformative and wonderful experience</li>
+  <li>Being able to use my coding editor to jot down a simple blog post was a big, big deal</li>
+  <li>Having all my blog posts run thru github, a tool I use not just daily but generally hourly</li>
+  <li>The ease of use of Github Pages which magically hosts a blog for you</li>
+</ul>
+
+<p>And, for the past almost 2 years, this has been a great decision.  My blog, <a href="http://www.fuzzyblog.io/blog/">FuzzyBlog</a>, has been an essential tool for writing and just personal documentation.  Basically whenever I have to learn something, I try and write it down and that’s a model which works great for me.</p>
+
+<p>I recently needed, however, to make a product specific blog, <a href="https://blog.gamenanny.io">blog.gamenanny.io</a>, for my new <a href="https://www.gamenanny.io/">Game Nanny</a> product and I discovered that I just couldn’t use Github Pages for this at all.  Github Pages creates a single blog tied to your github username and, well, I only have one github username.  This meant that I had to get into self hosting my Jekyll blog or changing from Jekyll to something else.  I chose the self hosting route and there in lies a how to tale.</p>
+
+<p><strong>Note</strong>: Like most things on the Internet, there must be a way around this limitation but I haven’t found it yet.</p>
+
+<h1 id="understanding-jekylls-output">Understanding Jekyll’s Output</h1>
+
+<p>The key thing to understand about Jekyll is that, at its heart, it is a static site generator.  What this means is that when you type:</p>
+
+<blockquote>
+  <p>jekyll serve</p>
+</blockquote>
+
+<p>or</p>
+
+<blockquote>
+  <p>jekyll build</p>
+</blockquote>
+
+<p>it creates a set of static files that represent your site based on the markdown documents in _posts and your _config.yml configuration file.  Self hosting a Jekyll site basically amounts to:</p>
+
+<ol>
+  <li>Creating a jekyll site.</li>
+  <li>Creating content in that Jekyll site.</li>
+  <li>Running jekyll build or jekyll serve to create the static site files.</li>
+  <li>Getting the files in _site to a public server (rsync).</li>
+  <li>Having a web server on a public box that can serve the files generated by Jekyll.</li>
+</ol>
+
+<p>The rest of this blog post walks you through all these steps.  I’m a big, big believer in AWS so that’s what I used but any public web host will work.</p>
+
+<h1 id="creating-a-jekyll-site">Creating a Jekyll Site</h1>
+
+<p>This can be done with:</p>
+
+<blockquote>
+  <p>jekyll new site_name</p>
+</blockquote>
+
+<p>I used:</p>
+
+<blockquote>
+  <p>jekyll new game_nanny_blog</p>
+</blockquote>
+
+<p>I’m not going to cover Jekyll details like theme configuration much although I have a set of references at the end.  Jekyll theme configuration is to me, well, a <strong>black art</strong> that best resembles a <em>pagan ritual</em> (do it at in the dark of night, naked, chanting and so on).  I just use the default minima theme and generally hope I can get away with it.</p>
+
+<p>Basic configuration can be done by modifying _config.yml in your Jekyll root directory.  Advanced configuration, well, it can be tedious.</p>
+
+<h1 id="configuring-your-server">Configuring Your Server</h1>
+
+<p>All you need to self host a jekyll blog is a dead simple web server like Nginx.  Although I’ve mostly been doing Docker for executable software for sometime now, it just felt simpler to go old school on this.</p>
+
+<p>Install nginx with:</p>
+
+<blockquote>
+  <p>sudo apt-get install nginx</p>
+</blockquote>
+
+<p>You may need to edit the main configuration file with:</p>
+
+<blockquote>
+  <p>sudo vi /etc/nginx/nginx.conf</p>
+</blockquote>
+
+<p>I found the defaults are pretty basic but your details may vary.  And you’d also need to create a config file specifically for your main blog with:</p>
+
+<blockquote>
+  <p>sudo vi /etc/nginx/conf.d/blog.conf</p>
+</blockquote>
+
+<p>Here’s what I have in my blog.conf file:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>server {
+  listen 3301;
+  server_name blog.gamenanny.io;
+  root /home/ubuntu/gamenannyblog/_site;
+
+  expires 30s;
+  add_header Cache-Control public;
+  add_header ETag "";
+
+  error_page 404 /404.html;
+  error_page 500 /500.html;
+
+  location  ~ ^/assets/ {
+    expires max;
+  }
+
+  location ~ /\. {
+    return 404;
+    access_log off;
+    log_not_found off;
+  }
+
+  location = /favicon.ico {
+    try_files /favicon.ico =204;
+    access_log off;
+    log_not_found off;
+  }
+
+  location / {
+    try_files $uri $uri.html $uri/ =404;
+  }
+}
+</code></pre>
+</div>
+
+<p>The main changes that I made in blog.conf are these:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>listen 3301;
+server_name blog.gamenanny.io;
+root /home/ubuntu/gamenannyblog/_site;
+</code></pre>
+</div>
+
+<p>Each of these is explained as follows:</p>
+
+<ul>
+  <li><strong>listen 3301;</strong> The reason for that is that I have multiple sites on this one AWS instance and my AWS Elastic Load Balancer will be responsible for translation data on port 3301 to an port 80 request on blog.gamenanny.io.  I use a standard set of port mappings on everything I build (*00 is always the main site, *01 is always the blog, *05 is always the ecommerce)</li>
+  <li><strong>server_name server_name blog.gamenanny.io;</strong> This configures the site’s domain name.</li>
+  <li><strong>root /home/ubuntu/gamenannyblog/_site;</strong> This sets the root directory to serve the site’s data from.</li>
+</ul>
+
+<h1 id="aws-specifics">AWS Specifics</h1>
+
+<p>I’m deploying to a basic AWS EC2 instance and here is a quick overview of what I needed to do.  Please note that these are the very broad strokes as I was quite rushed when I did it:</p>
+
+<ol>
+  <li>Add blog.gamenanny.io to my Route 53 domain settings.</li>
+  <li>Add a target group to the ELB for the blog.</li>
+  <li>Add a listener rule to the ELB for the blog.</li>
+  <li>Connect the listener rule to the target group.  Until you do this there will be a 503 error and that’s what always reminds me to couple the two.</li>
+  <li>Create a directory on your file system where the content can reside.  I did this with:</li>
+</ol>
+
+<blockquote>
+  <p>mkdir /home/ubuntu/gamenannyblog/_site</p>
+</blockquote>
+
+<p>The _site corresponds to Jekyll’s _site directory where it generates all data.</p>
+
+<h1 id="deployment">Deployment</h1>
+
+<p>In order to handle deployment, I wrote a small shell script. deploy3.sh, which invokes jekyll build and then rsync’s the content to the server.  I’ve now spent almost two years using Jekyll with Github pages and my one comment about the git push to get my content live is that <strong>it is slow</strong>.  I was absolutely shocked just how fast invoking jekyll build and then rsync was.  Here’s my deploy3.sh script:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="nv">JEKYLL_ENV</span><span class="o">=</span>production bundle <span class="nb">exec </span>jekyll build
+rsync -avr --rsh<span class="o">=</span><span class="s1">'ssh'</span> --delete-after --delete-excluded _site/ ubuntu@52.14.179.50:/home/ubuntu/gamenannyblog/_site
+</code></pre>
+</div>
+
+<p>This level of speed is just plain awesome.</p>
+
+<h1 id="thank-you">Thank You</h1>
+
+<p>This is actually the first time I’ve ever successfully used Nginx; previously I was a straight up, old school Apache guy.  My buddy <a href="http://www.nickjanetakis.com">Nick</a> did my Nginx configuration in about 2 shakes of time (read that as “really, really, really quick”).  Thanks Nick!</p>
+
+<h1 id="see-also">See Also</h1>
+
+<ul>
+  <li><a href="https://www.nginx.com/resources/wiki/">Nginx</a></li>
+  <li><a href="https://jekyllrb.com/">Jekyll Home Page</a></li>
+  <li><a href="https://github.com/jekyll/minima">Customizing Minima</a></li>
+  <li><a href="https://jekyllrb.com/docs/themes/">Customizing Jekyll Themes</a></li>
+  <li><a href="https://jekyllrb.com/docs/deployment-methods/">Jekyll Deployment</a></li>
+  <li><a href="https://github.com/vitalyrepin/vrepinblog/blob/master/transfer.sh">Jekyll RSync Example</a></li>
+  <li><a href="http://sgeos.github.io/jekyll/disqus/2016/02/14/adding-disqus-to-a-jekyll-blog.html">Adding Disqus to Your Jekyll Blog</a> Disclaimer - this was a total fail for me and I found the documentation horrid but Disqus has always failed for me so perhaps it is just me.</li>
+</ul>
+
+  </div>
+  
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+
+  
+<a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Take Control of Your Kid's Xbox Gaming - Sign Up for Game Nanny Today!</a></p>
+<footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
