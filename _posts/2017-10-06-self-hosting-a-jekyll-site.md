@@ -19,6 +19,8 @@ I recently needed, however, to make a product specific blog, [blog.gamenanny.io]
 
 **Note**: Like most things on the Internet, there must be a way around this limitation but I haven't found it yet.
 
+**Update**: My friend [Steve Grossi](https://www.twitter.com/stevegrossi) told me that you can get around this apparent [Github limitation](https://help.github.com/articles/user-organization-and-project-pages/). I'm not entirely certain that I understand it but I'm glad to have it as an option. Thx Steve!
+
 # Understanding Jekyll's Output
 
 The key thing to understand about Jekyll is that, at its heart, it is a static site generator.  What this means is that when you type:
