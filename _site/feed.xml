@@ -6,9 +6,156 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 07 Oct 2017 05:46:51 -0400</pubDate>
-    <lastBuildDate>Sat, 07 Oct 2017 05:46:51 -0400</lastBuildDate>
+    <pubDate>Sun, 08 Oct 2017 08:05:06 -0400</pubDate>
+    <lastBuildDate>Sun, 08 Oct 2017 08:05:06 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Forensic Computing 2 - Kernel Panics and Kexts</title>
+        <description>
+</description>
+        <pubDate>Sun, 08 Oct 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/osx/2017/10/08/forensic-computing-2-kernel-panics-and-kexts.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/osx/2017/10/08/forensic-computing-2-kernel-panics-and-kexts.html</guid>
+        
+        <category>osx</category>
+        
+        <category>kernel_panics</category>
+        
+        <category>kexts</category>
+        
+        
+        <category>osx</category>
+        
+      </item>
+    
+      <item>
+        <title>Forensic Computing 1 - Finding TextMate Untitled Documents</title>
+        <description>&lt;p&gt;So my Mac crashed again last night.  This is now roughly a two to three times per week occurrence.  Once upon a time I would have sworn like a sailor about this but I now, sadly, accept it.  If you’re curious about OSX crashes and kernel panics, I dig into them here.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://macromates.com/&quot;&gt;TextMate&lt;/a&gt; is the programming editor and writing tool I use and normally after a crash, it automatically opens all the documents I previously had open.  And when I say “all”, I mean everything, even the things that weren’t ever formally saved i.e. “untitled 107”, “untitled 132”, etc.  Because TextMate doesn’t force met to assign a file, I’m able to treat TextMate windows as virtual pieces of paper, virtual post-its if you will and just drop stuff into them.  I only bother to save a file when I actually need to make it long term persistent.  And an awful lot of the time, that never happens.  Sometimes these the contents of these windows flows into a &lt;a href=&quot;https://gist.github.com/&quot;&gt;gist&lt;/a&gt; which then gets emailed to someone.&lt;/p&gt;
+
+&lt;p&gt;Now this bizarre “don’t bother to save the file” approach is well and good until it &lt;strong&gt;breaks&lt;/strong&gt;.  Last night, just before my machine crashed, I know for a fact that I was in &lt;strong&gt;untitled 30&lt;/strong&gt;.  But when I restarted my machine, I noticed that untitled 30 wasn’t in my Window list:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/textmate_window_list.png&quot; alt=&quot;/blog/textmate_window_list.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This literally sent a chill down my spine – if untitled 30 isn’t present then:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Where did it go?&lt;/li&gt;
+  &lt;li&gt;How often has this happened?&lt;/li&gt;
+  &lt;li&gt;What other untitled xyz files have I unknowingly lost?&lt;/li&gt;
+  &lt;li&gt;Where on the blankety, blank computer is untitled 30 stored so I can bloody well find it?&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Questions 1 and 2 simply cannot be answered but questions 3 and 4 are actually answerable.  If I can simply find out where TextMate stores its untitled files then I can browse the directory and find them.  I should also then be able to find untitled 30.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-1-google&quot;&gt;Step 1: Google&lt;/h1&gt;
+
+&lt;p&gt;Whenever you are trying to understand something like this Google is generally your first place to look.  Unfortunately these googles didn’t really yield anything:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.google.com/search?tbs=li:1&amp;amp;q=where+does+textmate+store+untitled+files&quot;&gt;where does textmate store untitled files&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.google.com/search?tbs=li:1&amp;amp;q=where+does+textmate+store+untitled+files&quot;&gt;textmate untitled&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;step-2-spotlight&quot;&gt;Step 2: Spotlight&lt;/h1&gt;
+
+&lt;p&gt;OSX’s Spotlight, the system level search engine was next.  This too yielded nothing, squat, &lt;a href=&quot;http://www.urbandictionary.com/define.php?term=bupkus&quot;&gt;bupkus&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-3-alfred&quot;&gt;Step 3: Alfred&lt;/h1&gt;
+
+&lt;p&gt;The filename search engine in &lt;a href=&quot;https://www.alfredapp.com/&quot;&gt;Alfred&lt;/a&gt; which you trigger with your Alfred hotkey plus the keyword open and then what you want to search yielded nothing.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-4-mdfind&quot;&gt;Step 4: mdfind&lt;/h1&gt;
+
+&lt;p&gt;Another way to use Spotlight is to trigger the mdfind utility from the command line and look for the filename untitled 30 directly by typing:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;mdfind “untitled”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The output of mdfind is a list of filenames.  But, unfortunately, mdfind isn’t, by default, for filenames which means that it finds the word untitled in the &lt;em&gt;body of documents&lt;/em&gt; where as we want it in the filename itself. Just to be sure we can feed the mdfind’s output thru grep to winnow it down:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;table&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;mdfind untitled&lt;/td&gt;
+        &lt;td&gt;grep untitled&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;There is a -name option to mdfind but that also returned nothing:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;mdfind -name untitled&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;Cool as Hell Sidenote&lt;/strong&gt;: In looking up &lt;a href=&quot;http://osxdaily.com/2017/08/24/find-all-screenshots-mac/&quot;&gt;details on mdfind&lt;/a&gt;, I found this very, very cool command line:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;mdfind kMDItemIsScreenCapture:1&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;What that does is find every screenshot you’ve taken on your Mac.  And I don’t mean files named “Screen Shot xyz” but any screenshot you’ve ever taken, even ones you’ve moved to other directories, renamed, etc.  Wow.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-5-look-elsewhere&quot;&gt;Step 5: Look Elsewhere&lt;/h1&gt;
+
+&lt;p&gt;Now the absence of results in Steps 2, 3 and 4 gave me a strong indication that what I was looking for wasn’t in an indexed location and that gave me a clue.  Spotlight  and mdfind are both generally looking in the files for the user but NOT in the application level files.  OSX has a key directory structure for users that generally isn’t indexed:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;/Users/sjohnson/Library/Application Support/&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;And I know for a fact there is a TextMate directory below it:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;/Users/sjohnson/Library/Application Support/TextMate/&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;What I didn’t know was what was below the TextMate directory:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ls -l &quot;/Users/sjohnson/Library/Application Support/TextMate/&quot;
+total 6488
+drwxr-xr-x   10 sjohnson  staff   340B Jan  1  2017 Bundles/
+-rw-r--r--    1 sjohnson  staff   732K Oct  8 05:40 ClipboardHistory.db
+-rw-r--r--    1 sjohnson  staff    32K Oct  8 05:40 ClipboardHistory.db-shm
+-rw-r--r--    1 sjohnson  staff   1.7M Oct  8 07:12 ClipboardHistory.db-wal
+-rw-r--r--    1 sjohnson  staff   1.1K Sep 30 08:46 Global.tmProperties
+drwxr-xr-x    5 sjohnson  staff   170B Oct  7 06:31 Managed/
+-rw-r--r--    1 sjohnson  staff   688K Oct  8 05:51 RecentProjects.db
+drwxr-xr-x    4 sjohnson  staff   136B Nov 20  2016 Ruby/
+drwxr-xr-x  156 sjohnson  staff   5.2K Oct  8 07:12 Session/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And, yep, &lt;strong&gt;bingo&lt;/strong&gt;, &lt;em&gt;Session/&lt;/em&gt;.  A quick look there showed me all my untitled documents including:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ls -l /Users/sjohnson/Library/Application\ Support/TextMate/Session/untitled\ 30*
+
+-rw-r--r--@ 1 sjohnson  staff   5.3K Sep 13 04:23 /Users/sjohnson/Library/Application Support/TextMate/Session/untitled 30.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And now that I have a path I can just type open “/Users/sjohnson/Library/Application\ Support/TextMate/Session” and get a Finder window of all my untitled documents like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/text_mate_session.png&quot; alt=&quot;text_mate_session.png&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 08 Oct 2017 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/text/2017/10/08/forensic-computing-1-finding-textmate-untitled-documents.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/text/2017/10/08/forensic-computing-1-finding-textmate-untitled-documents.html</guid>
+        
+        <category>textmate</category>
+        
+        <category>computer_forensics</category>
+        
+        
+        <category>text</category>
+        
+      </item>
     
       <item>
         <title>The Game Nanny Story Or When Life Gives You Lemons</title>
@@ -762,189 +909,6 @@ ERROR: Service 'web' failed to build: The command '/bin/sh -c bundle install --b
         
         
         <category>personal</category>
-        
-      </item>
-    
-      <item>
-        <title>SAAS Business Best Practices from Jonathan Siegel</title>
-        <description>&lt;p&gt;Jonathan Siegel wrote &lt;a href=&quot;https://www.amazon.com/dp/B071NGMJPN&quot;&gt;The San Francisco Fallacy&lt;/a&gt; which is my favorite startup book of the year.  I liked it well enough that I’m in the middle of a second read and its one of the books I packed for an upcoming trip to Disney World.  Jonathan was &lt;a href=&quot;http://okdork.com/buying-a-business-jonathan-siegel/&quot;&gt;recently interviewed by Noah Kagan for Ok Dork&lt;/a&gt; and while all of it was excellent, there was one brief shining moment where it felt like the sun had opened up and ideas were literally shining down.  Here’s a recap of the best practices that he identified for a SAAS business:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Testing their adwords.&lt;/li&gt;
-  &lt;li&gt;Doing landing page testing.&lt;/li&gt;
-  &lt;li&gt;Sending out newsletters.&lt;/li&gt;
-  &lt;li&gt;Blogging regularly.&lt;/li&gt;
-  &lt;li&gt;Forming partnerships.&lt;/li&gt;
-  &lt;li&gt;Going to events.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;5 minute callbacks whenever they get a new lead on the website&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Try six times to reach every new inbound lead&lt;/strong&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Numbers 7 and 8 are new to me and ones that I definitely want to try.  Much of this interview was covering how he buys a business and the money statement of this was “If they team is already doing all these then I would never buy this company” because these techniques are how he adds value to the business and increases revenue.&lt;/p&gt;
-
-&lt;p&gt;All of this was covered around the 24 minute mark.  If you’re an entrepreneur, I’d highly recommend listening to this podcast.  Noah’s stuff is always great but this particular episode was golden.  There’s also a great segment on how he identifies people to hire and why he doesn’t hire A players.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 06 Sep 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/saas/2017/09/06/saas-business-best-practices-from-jonathan-siegel.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/saas/2017/09/06/saas-business-best-practices-from-jonathan-siegel.html</guid>
-        
-        <category>saas</category>
-        
-        <category>marketing</category>
-        
-        <category>best_practices</category>
-        
-        <category>business</category>
-        
-        
-        <category>saas</category>
-        
-      </item>
-    
-      <item>
-        <title>Reclaiming Docker Disc Space on OSX</title>
-        <description>&lt;p&gt;A few nights ago, after a truly horrible night’s sleep complete with my first ever incidence of acid reflux, I woke to find my Mac nattering at me about being &lt;strong&gt;out of disc space&lt;/strong&gt;.  And by out of disc space I mean that I was down to about 3 gigs out of a terabyte sized SSD.  Yikes!&lt;/p&gt;
-
-&lt;p&gt;Taking a look at the normal culprits yielded no surprise increases and I can distinctly recall having in excess of 30 gigs just a day or two ago.  Given all the &lt;a href=&quot;http://fuzzyblog.io/blog/docker/2017/08/30/running-out-of-disc-space-with-docker.html&quot;&gt;server side problems with respect to Docker and disc space&lt;/a&gt; that I have written about previously, I had a strong hunch that somehow Docker was involved.&lt;/p&gt;
-
-&lt;h1 id=&quot;logs&quot;&gt;Logs&lt;/h1&gt;
-
-&lt;p&gt;My first thought was that perhaps Docker logs are huge.  On OSX, Docker logs are stored here:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/log&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;But a quick:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;09:41 $ du -shc ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/log
- 20K	/Users/sjohnson/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/log
- 20K	total
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Nope – clearly 20K isn’t anything for disc space usage.&lt;/p&gt;
-
-&lt;h1 id=&quot;containers&quot;&gt;Containers&lt;/h1&gt;
-
-&lt;p&gt;My next thought was that perhaps Docker has some massive backing store for containers.  I did a bunch of searches and ran across this &lt;a href=&quot;https://forums.docker.com/t/consistently-out-of-disk-space-in-docker-beta/9438/67&quot;&gt;Docker thread&lt;/a&gt; and then &lt;a href=&quot;https://forums.docker.com/t/consistently-out-of-disk-space-in-docker-beta/9438/36&quot;&gt;another thread&lt;/a&gt;, both of which pointed me to the Docker.qcow2 file.&lt;/p&gt;
-
-&lt;p&gt;Here’s what a du -shc showed me on this file:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
- 57G	/Users/sjohnson/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
- 57G	total
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;futile-attempts-to-reclaim-space&quot;&gt;Futile Attempts to Reclaim Space&lt;/h1&gt;
-
-&lt;p&gt;I tried the normal things like:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;docker system prune&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;And when that failed, I tried a bash based approach:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;item &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;docker ps -aq&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;do
-&lt;/span&gt;docker stop &lt;span class=&quot;nv&quot;&gt;$item&lt;/span&gt;
-docker rm &lt;span class=&quot;nv&quot;&gt;$item&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;done
-
-for &lt;/span&gt;item &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;docker images --filter &lt;span class=&quot;nv&quot;&gt;dangling&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt; -q&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;do
-&lt;/span&gt;docker rmi &lt;span class=&quot;nv&quot;&gt;$item&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;But even after both of these, I still had:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
- 57G	total
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;my-solution&quot;&gt;My Solution&lt;/h1&gt;
-
-&lt;p&gt;Here was the approach that I used:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Quit Docker for Mac entirely.&lt;/li&gt;
-  &lt;li&gt;rm /Users/sjohnson/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2&lt;/li&gt;
-  &lt;li&gt;As best as I can tell this is actually safe because containers can always be rebuilt.&lt;/li&gt;
-  &lt;li&gt;Restart Docker&lt;/li&gt;
-  &lt;li&gt;Verify space usage:&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
-  1.3G total&lt;/p&gt;
-
-&lt;p&gt;I then built a container and then reverified disc space usage.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
-1.3G	total
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I then built some more containers and then checked disc space usage:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
-3.0G	total
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I then started my overall “build all containers” shell script and tracked progress as it went:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
-3.0G	total
-
-09:58 $ du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
-3.1G	total
-
-du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
-3.4G    total
-
-du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
-5.4G    total
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;By the time all containers were built:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
-7.2G    /Users/sjohnson/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And now, several days later and even more deploys, it has increased again:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
-8.2G	/Users/sjohnson/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
-8.2G	total
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;read-more&quot;&gt;Read More&lt;/h1&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://forums.docker.com/t/consistently-out-of-disk-space-in-docker-beta/9438/67&quot;&gt;Great Docker Thread about Disc Space Usage&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://forums.docker.com/t/where-does-docker-keep-images-containers-so-i-can-better-track-my-disk-usage/8370&quot;&gt;Docker Thread about Disc Space&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Wed, 06 Sep 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/docker/2017/09/06/reclaiming-docker-disc-space-on-osx.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/docker/2017/09/06/reclaiming-docker-disc-space-on-osx.html</guid>
-        
-        <category>docker</category>
-        
-        <category>osx</category>
-        
-        <category>mac</category>
-        
-        
-        <category>docker</category>
         
       </item>
     
