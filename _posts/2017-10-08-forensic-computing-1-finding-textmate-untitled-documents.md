@@ -5,7 +5,7 @@ category: text
 tags: ["textmate", "computer_forensics"]
 description: When you don't know where it lives on your computer, finding it can be surprisingly hard.
 ---
-So my Mac crashed again last night.  This is now roughly a two to three times per week occurrence.  Once upon a time I would have sworn like a sailor about this but I now, sadly, accept it.  If you're curious about OSX crashes and kernel panics, I dig into them here.
+So my Mac crashed again last night.  This is now roughly a two to three times per week occurrence.  Once upon a time I would have sworn like a sailor about this but I now, sadly, accept it.  If you're curious about OSX crashes and kernel panics, I dig into [them here](http://fuzzyblog.io/blog/osx/2017/10/08/forensic-computing-2-kernel-panics-and-kexts.html).
 
 [TextMate](http://macromates.com/) is the programming editor and writing tool I use and normally after a crash, it automatically opens all the documents I previously had open.  And when I say "all", I mean everything, even the things that weren't ever formally saved i.e. "untitled 107", "untitled 132", etc.  Because TextMate doesn't force met to assign a file, I'm able to treat TextMate windows as virtual pieces of paper, virtual post-its if you will and just drop stuff into them.  I only bother to save a file when I actually need to make it long term persistent.  And an awful lot of the time, that never happens.  Sometimes these the contents of these windows flows into a [gist](https://gist.github.com/) which then gets emailed to someone.
 

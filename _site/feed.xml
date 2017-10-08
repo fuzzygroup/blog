@@ -6,13 +6,50 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 08 Oct 2017 08:05:06 -0400</pubDate>
-    <lastBuildDate>Sun, 08 Oct 2017 08:05:06 -0400</lastBuildDate>
+    <pubDate>Sun, 08 Oct 2017 08:12:03 -0400</pubDate>
+    <lastBuildDate>Sun, 08 Oct 2017 08:12:03 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
         <title>Forensic Computing 2 - Kernel Panics and Kexts</title>
-        <description>
+        <description>&lt;p&gt;As I’ve noted in &lt;a href=&quot;http://fuzzyblog.io/blog/text/2017/10/08/forensic-computing-1-finding-textmate-untitled-documents.html&quot;&gt;other places&lt;/a&gt;, my Mac crashes a lot.  For some time now I’ve just sort of accepted this as a consequence of how I do things.  I’m a software developer and I tend to push the limits of everything.  Part of the reason that I accept it is that my computing usage is more than a bit non standard and I suspect that I’m running up against nothing more than resource limits.  Just as an example, at the start of my day, my terminal count looks something like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ps auwwx | grep bash | wc -l
+      50
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;That’s at the start of my computing day (I open a lot of terminals and generally leave them running).  Just as a side note, my desktop Hackintosh, with double the RAM, also running OSX is pretty much rock solid so I tend to view this as a resource issue.  But what if it is not?  What if this is a solvable software issue?&lt;/p&gt;
+
+&lt;h1 id=&quot;analyzing-kernel-panics&quot;&gt;Analyzing Kernel Panics&lt;/h1&gt;
+
+&lt;p&gt;In order to figure this out, I took a number of my kernel panics and put them online as gists:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://gist.github.com/fuzzygroup/ab3a4c81edb3fa80910e25fc12e49993&quot;&gt;October 8th&lt;/a&gt;.  Yes this one happened while I was writing this all down.  Damn it.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://gist.github.com/fuzzygroup/97bc867094294a2b724f5860d04d09ab&quot;&gt;October 7th&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://gist.github.com/fuzzygroup/30ee32761f72d55d1fe8b870dbdc04af&quot;&gt;September 30th&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://gist.github.com/fuzzygroup/137e695b9ed5cc2d2ebcda8c983616a4&quot;&gt;August 27&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;[September 11](https://gist.github.com/fuzzygroup/5e41b8ccdcdf6c8bf95bbe002aa158&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As I’ve been reading these crash by crash, I always attributed it to randomness since there was no consistent application that seemed to cause the crash (WindowServer was the most common but by no means the sole thing).  But there is a lot of information in these reports and the application when it crashed perhaps isn’t the only thing I should be caring about.&lt;/p&gt;
+
+&lt;p&gt;I noticed one interesting thing in going thru the above kernel panics (oh and by the way, you can find many of these logs in /Library/Logs/DiagnosticReports/).  They are all named something like Kernel_2017-09-16-132730_FuzzygroupMacbookPro2016.panic.  &lt;a href=&quot;https://support.apple.com/en-us/TS3742&quot;&gt;Thanks Apple&lt;/a&gt;.  What I noticed was that the kext (Kernel Extension) that always is last loaded is com.github.kbfuse.filesystems.kbfuse which belongs to KeyBase.  This is a part of &lt;a href=&quot;https://keybase.io/&quot;&gt;Keybase&lt;/a&gt; which is a very cool crypto app.  This extension is apparently part of the new &lt;a href=&quot;https://keybase.io/docs/kbfs&quot;&gt;Keybase Filesystem&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;A kext is a kernel extension and that basically means “code that extends the lowest level of the operating system (the kernel)”.  Fuse is a toolkit that lets you write filesystems in user space and what I do remember about the Fuse project is that I’ve seen a lot of flakiness / crashes over the years from Fuse related stuff.&lt;/p&gt;
+
+&lt;p&gt;A quick google for the term &lt;a href=&quot;https://www.google.com/search?tbs=li:1&amp;amp;q=osx+fuse+kernel+panic&quot;&gt;osx kernel panic fuse&lt;/a&gt; gave me 49,100 results so I’m not the only one thinking this.  Googling instead for (com.github.kbfuse.filesystems.kbfuse)[https://www.google.com/search?tbs=li:1&amp;amp;q=com.github.kbfuse.filesystems.kbfuse] took me to the github page for the &lt;a href=&quot;https://github.com/keybase/client/tree/master/osx/Fuse&quot;&gt;keybase fuse project&lt;/a&gt; where I found the following uninstallation directions:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Check for any mounts (if there are you need to umount)
+mount -t kbfuse
+
+sudo kextunload -b com.github.kbfuse.filesystems.kbfuse
+sudo rm -rf /Library/Filesystems/kbfuse.fs
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I’ve done these steps and now I need to just wait and see if my system stability improves.  I also deleted the Keybase application entirely because its unclear to me what happens to Keybase if I delete a kext that it is using.&lt;/p&gt;
 </description>
         <pubDate>Sun, 08 Oct 2017 00:00:00 -0400</pubDate>
         <link>http://fuzzyblog.io//blog/osx/2017/10/08/forensic-computing-2-kernel-panics-and-kexts.html</link>
@@ -31,7 +68,7 @@
     
       <item>
         <title>Forensic Computing 1 - Finding TextMate Untitled Documents</title>
-        <description>&lt;p&gt;So my Mac crashed again last night.  This is now roughly a two to three times per week occurrence.  Once upon a time I would have sworn like a sailor about this but I now, sadly, accept it.  If you’re curious about OSX crashes and kernel panics, I dig into them here.&lt;/p&gt;
+        <description>&lt;p&gt;So my Mac crashed again last night.  This is now roughly a two to three times per week occurrence.  Once upon a time I would have sworn like a sailor about this but I now, sadly, accept it.  If you’re curious about OSX crashes and kernel panics, I dig into &lt;a href=&quot;http://fuzzyblog.io/blog/osx/2017/10/08/forensic-computing-2-kernel-panics-and-kexts.html&quot;&gt;them here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;http://macromates.com/&quot;&gt;TextMate&lt;/a&gt; is the programming editor and writing tool I use and normally after a crash, it automatically opens all the documents I previously had open.  And when I say “all”, I mean everything, even the things that weren’t ever formally saved i.e. “untitled 107”, “untitled 132”, etc.  Because TextMate doesn’t force met to assign a file, I’m able to treat TextMate windows as virtual pieces of paper, virtual post-its if you will and just drop stuff into them.  I only bother to save a file when I actually need to make it long term persistent.  And an awful lot of the time, that never happens.  Sometimes these the contents of these windows flows into a &lt;a href=&quot;https://gist.github.com/&quot;&gt;gist&lt;/a&gt; which then gets emailed to someone.&lt;/p&gt;
 
