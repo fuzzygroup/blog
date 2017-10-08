@@ -35,5 +35,9 @@ A quick google for the term [osx kernel panic fuse](https://www.google.com/searc
 
     sudo kextunload -b com.github.kbfuse.filesystems.kbfuse
     sudo rm -rf /Library/Filesystems/kbfuse.fs
+    
+# What Next?
 
 I've done these steps and now I need to just wait and see if my system stability improves.  I also deleted the Keybase application entirely because its unclear to me what happens to Keybase if I delete a kext that it is using.
+
+In closing, I'd like to add that I am not the only person who is reporting an issue with this kext and kernel panics.  Here's an [open Github thread](https://github.com/keybase/client/issues/5190) on it.

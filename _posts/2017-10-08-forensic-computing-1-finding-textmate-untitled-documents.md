@@ -89,4 +89,4 @@ And, yep, **bingo**, *Session/*.  A quick look there showed me all my untitled d
     
 And now that I have a path I can just type open "/Users/sjohnson/Library/Application\ Support/TextMate/Session" and get a Finder window of all my untitled documents like this:
 
-![text_mate_session.png](/blog/text_mate_session.png)
+![text_mate_session.png](/blog/assets/text_mate_session.png)
