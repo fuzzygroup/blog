@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Concept of the Week - Immutable Infrastructure
+category: software_engineering
 ---
 In nerd speak the term immutable means “something that cannot be changed”.  An immutable variable, for example, is one that can be set but then cannot be changed.  
 

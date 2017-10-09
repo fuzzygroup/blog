@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Executing Word Counts with Bash
-category: Bash
+category: bash
 tags: ["bash", "linux", "shell"]
 description: Stringing together cat, wc, xargs and expr gives a word count tool and a calculation of the printed pages.
 ---

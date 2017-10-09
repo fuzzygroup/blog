@@ -2,6 +2,8 @@
 layout: post
 title: Ansible Error with AWS, AMI Creation and Encrypted
 description: Hitting bizarre AWS / Ansible errors that reference encrypted?  Try upgrading boto.
+category: aws
+tags: ["aws"]
 ---
 Here is a bizarre Ansible / AWS error I just found:
 

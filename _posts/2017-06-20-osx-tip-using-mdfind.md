@@ -1,7 +1,7 @@
 ---
 layout: post
 title: OSX Tip Using mdfind to search your hard disc for files by name
-category: OSX
+category: osx
 tags: ["find", "mdfind", "command_line", "osx", "locate"]
 description: Need to find files on OSX in the command line?  The mdfind tool makes it as easy as Unix locate.
 ---

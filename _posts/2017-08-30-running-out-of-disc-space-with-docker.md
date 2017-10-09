@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Running out of Disc Space with Docker
-category: Docker
+category: docker
 tags: ["docker", "aufs", "disc_space", "bloat"]
 description: Docker has a tendency for its disc space usage to grow dramatically over time.  Here I discuss the issue and how to address it.
 ---

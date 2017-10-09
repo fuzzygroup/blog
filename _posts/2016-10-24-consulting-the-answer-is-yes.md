@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Consulting - The Answer Is Yes
-category: Consulting
+category: consulting
 tags: ["consulting", "business"]
 ---
 This happened a year or two ago but the memory just descended on me in a flash of blinding deja vu that was so powerful it was frightening.  If you're a consultant and a customer calls you with a problem, there's only one answer:

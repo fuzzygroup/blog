@@ -1,6 +1,6 @@
 layout: post
 title: Hailing at React Native Just By Starting
-category: react native
+category: react_native
 tags: ["react native"]
 ---
 #Failing at React Native Just By Starting

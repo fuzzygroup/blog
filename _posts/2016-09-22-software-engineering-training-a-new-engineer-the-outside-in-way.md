@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Software Engineering - Training a New Engineer the Outside In Way
-categories: "software_engineering"
+category: "software_engineering"
 tags: ["software_engineering", "economics"]
 ---
 This post is about training a new hire to do things the way you want them done.  Your way may not be the right way or even the current way but it is your way and that's ok.  You know your code base better than the new hire and you know your environment.  Now that's not to say that you should ignore their inputs by any means -- they're coming in with fresh eyes and that's incredibly valuable.  Every engineer generally:

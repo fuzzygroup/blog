@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Bash on OSX versus Bash on Ubuntu and Upgrading Your Bash
-category: OSX
+category: osx
 tags: ["osx", "linux", "bash"]
 description: Your version of Bash can differ dramatically on OSX versus any modern Linux.  Here's how to understand the difference and upgrade to the current version.
 ---

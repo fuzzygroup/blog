@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Why I Haven't Switched Away from OSX
-category: OSX
+category: osx
 tags: ["osx", "linux"]
 description: When you have stability problems with software, the logical decision is to switch -- or is it?  Here I talk about OSX stability issues and why six months after I started trying to switch, I'm still using OSX.
 ---

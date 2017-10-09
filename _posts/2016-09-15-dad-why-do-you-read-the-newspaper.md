@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Dad - Why Do You Read the Newspaper?
-categories: "dad_why_do_you"
+category: "dad_why_do_you"
 tags: ["dad_why_do_you", "m"]
 ---
 My youngest son has taken to asking me questions.  And, since he's my son, I find them infinitely interesting and they make me **think**.  He isn't really cognizant of my blogging at present nor do I find it necessary for him to know.  After all, what I write about, isn't of general interest; I'm nerd folk  Still I like to think that on some far off distant day he finds this on the Internet and knows that Dad actually listened.

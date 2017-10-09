@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Developer Employee Transitions When You're an AWS Shop
+category: aws
+tags: ["aws", "management"]
 ---
 So I find myself advising a former employer on how to lock out an employee with fairly pervasive access (and, yes, I am the employee).  Here was my advice:
 
