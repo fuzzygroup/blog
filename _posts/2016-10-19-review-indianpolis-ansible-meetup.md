@@ -2,7 +2,7 @@
 layout: post
 title: Review - Indianpolis Ansible Meetup
 category: ansible
-tags: ["ansible", "tdd", "humor", "serverspec"]
+tags: ["ansible", "tdd", "humor", "serverspec", "meetup"]
 ---
 I attended the Indianapolis Ansible meetup last night and it was a wonderful, albeit amusing, success.  The thrust of the meetup was watching an Ansible Fest video on TDD and Ansible.  And, well, it was a hoot!  I have rarely, if ever, watched a conference video that got something so damn wrong.  All the videos are [here](https://www.ansible.com/videos-ansiblefest-sf-2016) and most looked excellent.  The video we watched and that I mocked mercilessly is [here](https://www.ansible.com/beginners-guide-to-testing-infrastructure-as-code).  The problems with it were many including:
 

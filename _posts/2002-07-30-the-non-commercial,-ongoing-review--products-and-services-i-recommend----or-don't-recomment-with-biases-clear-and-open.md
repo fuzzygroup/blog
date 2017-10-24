@@ -1,8 +1,8 @@
 ---
 layout: post
-title: The Non Commercial, Ongoing Review- Products and Services I Recommend -- Or Don't Recomment with Biases Clear and Open
+title: The Non Commercial, Ongoing Review- Products and Services I Recommend -- Or Don't Recommend with Biases Clear and Open
 category: story.radio.weblogs.com
-tags: []
+tags: ["misc"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

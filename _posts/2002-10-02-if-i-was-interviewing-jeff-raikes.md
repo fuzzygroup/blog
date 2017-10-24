@@ -2,7 +2,7 @@
 layout: post
 title: If I Was Interviewing Jeff Raikes
 category: story.radio.weblogs.com
-tags: []
+tags: ["microsoft", "office", "microsoft_office"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

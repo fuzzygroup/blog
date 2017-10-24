@@ -2,7 +2,7 @@
 layout: post
 title: Scotts Searching -- A Bad Search Trick -- Screwing Up Over Searching By Ignoring Search Context
 category: story.radio.weblogs.com
-tags: []
+tags: ["search"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

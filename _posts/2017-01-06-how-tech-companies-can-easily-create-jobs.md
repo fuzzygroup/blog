@@ -2,7 +2,7 @@
 layout: post
 title: How Tech Companies Can Easily Create Jobs
 category: startup
-tags: ["jobs", "economy"]
+tags: ["jobs", "economy", "ross_mayfield"]
 ---
 A few days ago Ross Mayfield wrote an absolutely compelling piece about jobs, tech companies and the original [Luddite movement](https://en.wikipedia.org/wiki/Luddite):
 

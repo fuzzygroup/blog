@@ -2,7 +2,7 @@
 layout: post
 title: Startup Learnings - Four Things that Betsy Devine Taught Me
 category: startup
-tags: ["startup"]
+tags: ["startup", "learnings", "betsy_devine"]
 ---
 Although I'm now happily ensconced in the mid west, once upon a time, in a vastly different personal universe, I lived in Boston.  And I think the happiest times I had in Boston were the brief period where I was part of the informal Boston blogging crowd centered around [Dave Winer](http://www.scripting.com/), the [Berkman Center at Harvard](https://cyber.harvard.edu/) and a random crew of people that drifted into that orbit.  Among those people were:
 

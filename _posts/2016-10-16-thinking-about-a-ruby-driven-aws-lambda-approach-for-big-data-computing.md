@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Thinking About a Ruby Driven AWS Lambda Approach for Big Data Computing
-category: ["aws"]
+category: aws
 tags: ["aws", "ruby", "lambda", "software_engineering"]
 ---
 So I have a computing problem to solve where the amount of data to process vastly exceeds even my desire to spin up EC2 instances.  I really do actually enjoy [Ansible](https://fuzzygroup.github.io/blog/tag.html#ansible) but at some point you have to cry to the heavens and shout out "There must be a better way!".  This is literally an "oh crap" moment when I realized exactly the scale of the problem.  

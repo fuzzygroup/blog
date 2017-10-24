@@ -2,7 +2,7 @@
 layout: post
 title: Dealing with Loss and Difficult Times
 category: story.radio.weblogs.com
-tags: []
+tags: ["personal", "cancer"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

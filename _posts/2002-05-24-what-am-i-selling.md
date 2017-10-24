@@ -2,7 +2,7 @@
 layout: post
 title: What Am I Selling?
 category: story.radio.weblogs.com
-tags: []
+tags: ["misc"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

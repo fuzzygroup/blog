@@ -2,7 +2,7 @@
 layout: post
 title: Dad Why Is Your Face Bloody? An Essay on Shaving Economics
 category: "dad_why_do_you"
-tags: ["dad_why_do_you", "m", "shaving", "razor", "economics", "fatherhood"]
+tags: ["dad_why_do_you", "m", "shaving", "razor", "economics", "fatherhood", "personal"]
 ---
 Another excellent question from my youngest son.  I've heard it said that when the question begins with "Why ...", the answer generally is **money** and that is the reason here.  My youngest is too young to shave so much of this won't make sense to him yet but I'll write it none the less since some day it might save him even more money than it saved me.
 

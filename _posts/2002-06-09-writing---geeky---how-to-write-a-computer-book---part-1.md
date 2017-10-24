@@ -2,7 +2,7 @@
 layout: post
 title: Writing - Geeky - How to Write a Computer Book - Part 1
 category: story.radio.weblogs.com
-tags: []
+tags: ["blogging", "writing"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

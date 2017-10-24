@@ -2,7 +2,7 @@
 layout: post
 title: So What Am I Trying to Sell You Anyway....
 category: story.radio.weblogs.com
-tags: []
+tags: ["misc"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

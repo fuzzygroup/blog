@@ -2,7 +2,7 @@
 layout: post
 title: WhitePaper- Internet + Intranet + Extranet  = A SuperNet
 category: story.radio.weblogs.com
-tags: []
+tags: ["intranet", "extranet"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

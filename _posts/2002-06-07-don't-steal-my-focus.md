@@ -2,7 +2,7 @@
 layout: post
 title: Don't Steal My Focus
 category: story.radio.weblogs.com
-tags: []
+tags: ["misc", "rant"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

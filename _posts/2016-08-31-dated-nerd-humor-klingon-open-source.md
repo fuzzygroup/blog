@@ -2,7 +2,7 @@
 layout: post
 title: Dated Nerd Humor - Klingon Open Source
 category: humor
-tags: ["humor", "klingon", "open source"]
+tags: ["humor", "klingon", "open_source"]
 
 ---
 I dug up an archive of an old server and found some stuff I wrote back in 2000 (pre 9/11 actually).  Mildly amusing at least if you're old enough.  I should likely rewrite it.

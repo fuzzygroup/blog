@@ -2,7 +2,7 @@
 layout: post
 title: Why Intel Needs to Buy Detto Technologies and Give it Away
 category: story.radio.weblogs.com
-tags: []
+tags: ["rant"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

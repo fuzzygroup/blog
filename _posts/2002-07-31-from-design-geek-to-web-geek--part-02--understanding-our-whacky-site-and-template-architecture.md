@@ -2,7 +2,7 @@
 layout: post
 title: From Design Geek to Web Geek- Part 02- Understanding Our Whacky Site and Template Architecture
 category: story.radio.weblogs.com
-tags: []
+tags: ["startup"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

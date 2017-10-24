@@ -2,7 +2,7 @@
 layout: post
 title: Marketing 101, Consulting 101, Business 101- Table of Contents
 category: story.radio.weblogs.com
-tags: ["marketing101"]
+tags: ["marketing101", "marketing"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

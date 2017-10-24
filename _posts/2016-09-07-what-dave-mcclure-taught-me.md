@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Startup Learnings - What Dave McClure Taught Me
-category: ["startup"]
-tags: ["startup", "learnings", "entrepreneurship", "feedster"]
+category: startup
+tags: ["startup", "learnings", "entrepreneurship", "feedster", "dave_mcclure"]
 ---
 
 Feedster was not the first company I raised money for but it was the first time I raised money from true silicon valley investors.  I vividly remember [Scott Rafer](https://fuzzygroup.github.io/blog/startup/2016/09/02/what-scott-rafer-taught-me.html) taking me around all the different angel groups, individual investors and Sand Hill Road.  One of those investors was [Dave McClure](https://twitter.com/davemcclure) of [500 Startups](http://500.co) fame.  

@@ -2,7 +2,7 @@
 layout: post
 title: Startup Learnings What Francois Schiettecatte Taught Me
 category: startup
-tags: ["startup"]
+tags: ["startup", "learnings", "francois_schiettecatte"]
 ---
 Its been more than a few weeks since I've written anything categorized as startup so I guess its time for one of these.  In the Spring of 2003, I was happily running Feedster. We were maybe a few months old -- and I saw we but it was really just me -- and an email showed up over the transom that read something like this: "I found your contact info thru a DNS lookup.  My name is [Francois Schiettecatte](https://fschiettecatte.wordpress.com) and I have a small search engine called rss-search and I'm just 15 miles from you, perhaps we should have lunch".  At lunch our personalities basically clicked and and a few weeks later, Francois and I were partners.  We felt:
 

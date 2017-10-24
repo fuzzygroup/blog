@@ -2,7 +2,7 @@
 layout: post
 title: Email Based Knowledge Management
 category: story.radio.weblogs.com
-tags: []
+tags: ["email", "knowledge_management"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

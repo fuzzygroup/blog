@@ -2,7 +2,7 @@
 layout: post
 title: Software Worth Purchasing 01 - Acorn
 category: software_worth_purchasing
-tags: ["software", "tools"]
+tags: ["software", "tools", "osx", "acorn"]
 ---
 If you know me as a developer then you know that I'm, well, text centric.  I'm a back end guy living in a front end world so to speak and I lack, ahem, **any graphical skills whatsoever**.  To this day my favorite graphic tools are:
 

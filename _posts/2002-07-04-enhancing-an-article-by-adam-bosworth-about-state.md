@@ -2,7 +2,7 @@
 layout: post
 title: Enhancing an Article by Adam Bosworth about State
 category: story.radio.weblogs.com
-tags: []
+tags: ["software_engineering"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

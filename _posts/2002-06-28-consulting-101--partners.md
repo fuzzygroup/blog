@@ -2,7 +2,7 @@
 layout: post
 title: Consulting 101- Partners
 category: story.radio.weblogs.com
-tags: ["consulting101"]
+tags: ["consulting101", "startup", "partner"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

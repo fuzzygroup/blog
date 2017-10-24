@@ -2,7 +2,7 @@
 layout: post
 title: Marketing an Open Source Product - The Product Literature
 category: story.radio.weblogs.com
-tags: ["marketing101"]
+tags: ["marketing101", "marketing", "open_source"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

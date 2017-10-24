@@ -2,7 +2,7 @@
 layout: post
 title: Business 101- A Next Generation Software Company Based on Digital Piece Work
 category: story.radio.weblogs.com
-tags: []
+tags: ["startup"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

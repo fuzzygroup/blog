@@ -6,12 +6,12 @@ J. Scott Johnson / Indianapolis, IN / Software Engineer / fuzzygroup [at] gmail.
 
 ## Profile
 An experienced Senior Software Engineer with a proven ability to innovate and deliver new products in a startup context.  Heavy focus on testing applications (RSpec, Test Unit / Functional) and agile methodologies.
-Skilled in DevOps, AWS, Ansible, Elixir, Ruby, Rails, PHP, MySQL, Redis, Sidekiq, Apache Web Server.  Extensive experience with both deploying and administering Rails applications using tools such as Phusion Passenger, Vlad, Capistrano, Anistrano, Git and Docker.
+Skilled in Ruby, Rails, API Development, Docker, DevOps, AWS, Ansible, Stripe API, Elixir, PHP, MySQL, Redis, Sidekiq, Apache Web Server.  Extensive experience with both deploying and administering Rails applications using tools such as Phusion Passenger, Vlad, Capistrano, Anistrano, Git and Docker.
 
 ## Experience
 
-# Consultant, Sigstr, Inc., Indianapolis, IN, 2016 - Present
-Senior Engineer focused on internal code sharing tools as well as a cloud based email transformation engine for expanding the core Sigstr email marketing service.
+# Author, Game Nanny.
+Full stack author of [www.gamenanny.io](https://www.gamenanny.io), a subscription service for alerting parents to their kid's Xbox gaming spending.
 
 # Consultant, Interana, Inc., Redwood, City, CA 2016 - 2017
 Implemented a SAML authorization system that offered Single Sign ON (SSO) across multiple customer facing applications.  Accomplishments include:
@@ -20,6 +20,9 @@ Implemented a SAML authorization system that offered Single Sign ON (SSO) across
 * Interfaces to Lithium and MindTouch documentation and customer service tools
 * Modified the Ruby Devise login engine to interface with SAML
 * Full logging of authentication workflow
+
+# Consultant, Sigstr, Inc., Indianapolis, IN, 2016 - 2017
+Senior Engineer focused on internal code sharing tools as well as a cloud based email transformation engine for expanding the core Sigstr email marketing service.
 
 # Architect, FI Navigator, Inc., Atlanta, GA 2015 - 2017
 Led all development activities for FI Navigator, a leading provider of financial information for the banking industry.  Accomplishments include:
@@ -79,20 +82,20 @@ Co-founded NTERGAID to create a suite of hypertext / hypermedia tools for online
 
 ## Technologies / APIs
 
-* Elixir
 * Ruby
 * Rails
-* Ansible
-* AWS
 * Docker
+* AWS
+* Stripe API
+* Ansible
+* Elixir
 * MySQL including big data applications
 * NLP
-* Full Text Indexing
+* Full Text Indexing and Crawling
 * Sphinx Search Engine
 * ElasticSearch
 * Capistrano / VLAD / Ansistrano
 * RSpec
-* Docker
 
 ## Education
 B.S., Cum Laude, 3.4 GPA, University of Bridgeport, May 1990.  Major in Management. Selected as the year’s “Best Management Student” (1989/1990 academic year).  Dean’s List for last two years of college.

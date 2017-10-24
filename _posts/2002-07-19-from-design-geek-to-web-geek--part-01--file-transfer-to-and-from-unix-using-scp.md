@@ -2,7 +2,7 @@
 layout: post
 title: From Design Geek to Web Geek- Part 01- File Transfer to and From Unix using SCP
 category: story.radio.weblogs.com
-tags: []
+tags: ["linux"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

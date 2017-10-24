@@ -2,7 +2,7 @@
 layout: post
 title: Marketing 101- How Do I Get People to Change Platforms - Part 2
 category: story.radio.weblogs.com
-tags: ["marketing101"]
+tags: ["marketing101", "marketing"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

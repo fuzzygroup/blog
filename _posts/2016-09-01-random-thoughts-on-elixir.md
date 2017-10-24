@@ -2,7 +2,7 @@
 layout: post
 title: Random Thoughts on Elixir
 category: elixir
-tags: ["elixir", "elixirconf"]
+tags: ["elixir", "elixirconf", "phoenix"]
 ---
 
 # Things overheard in conversations:

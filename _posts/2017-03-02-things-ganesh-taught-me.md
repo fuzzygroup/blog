@@ -2,7 +2,7 @@
 layout: post
 title: Things Ganesh Taught Me
 category: learning
-tags: ["terminal", "podcasting", "screen_recording"]
+tags: ["terminal", "podcasting", "screen_recording", "keep"]
 description: Any fellow nerd you sit down and work with can teach you N things where N can be surprisingly large. Here's what Ganesh taught me last week.
 image: http://d2l5v8ibvnnoh9.cloudfront.net/assets/screenflick/darken-4a4f14e94a7bba4d3a51486e8bed54cb4b48ed56513ee89089cd41de29a3b4d4.png
 ---

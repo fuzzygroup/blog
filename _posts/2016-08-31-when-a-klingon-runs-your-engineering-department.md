@@ -2,7 +2,7 @@
 layout: post
 title: Top 10 things Likely to be Overheard if a Klingon was Running Your Engineering Department
 category: humor
-tags: ["humor"]
+tags: ["humor", "star_trek"]
 ---
 This humor is company specific - I wrote it when I was at an Internet startup ages and ages ago.  It used to be better when I had actual customer names here but you get the gist.  The people at that company can probably understand best.  Its not bad as a piece of internal satire if you add your customer names into it.
   

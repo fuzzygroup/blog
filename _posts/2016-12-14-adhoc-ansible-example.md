@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Adhoc Ansible Example
-tags: ansible
-category: ["ansible"]
+category: ansible
+tags: ["ansible", "adhoc"]
 ---
 I've never been a fan of adhoc ansible -- I'm more of a playbook and role kind of guy but this was pretty useful earlier today:
 

@@ -2,7 +2,7 @@
 layout: post
 title: Scott's Guide to Python
 category: story.radio.weblogs.com
-tags: []
+tags: ["python"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

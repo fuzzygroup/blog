@@ -2,7 +2,7 @@
 layout: post
 title: Creating an Email Marketing Campaign for Your Software Product
 category: story.radio.weblogs.com
-tags: ["marketing101"]
+tags: ["marketing101", "marketing"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

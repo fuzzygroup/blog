@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Docker Tutorial Understanding Container Memory Usage
-category: ["docker"]
+category: docker
 tags: ["docker"]
 description: While we might like to pretend that containers isolate us from low level details like memory usage, you still need to understand it.  Here I explain docker stats and give a shell script for an easy to use tool for viewing container memory stats.
 ---

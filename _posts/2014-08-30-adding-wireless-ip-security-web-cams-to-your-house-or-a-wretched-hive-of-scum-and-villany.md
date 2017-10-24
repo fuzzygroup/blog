@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Adding Wireless IP Security Web Cams to Your House or a Wretched Hive of Scum and Villany
-category: home security
-tags: ["home security", "wifi", "web cam", "security"]
+category: home_security
+tags: ["home_security", "wifi", "web cam", "security"]
 
 ---
 Due to a recent attempted break in at our home -- when my wife and kids were all in the house -- I've taken the steps of hardening our home security.  This has included:

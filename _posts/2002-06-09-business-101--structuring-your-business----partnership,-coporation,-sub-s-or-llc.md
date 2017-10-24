@@ -1,13 +1,13 @@
 ---
 layout: post
-title: Business 101- Structuring Your Business -- Partnership, Coporation, Sub S or LLC
+title: Business 101- Structuring Your Business -- Partnership, Corporation, Sub S or LLC
 category: story.radio.weblogs.com
-tags: []
+tags: ["startup"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="Expires" content="Mon, 01 Jan 1990 01:00:00 GMT">
-    <title>Business 101: Structuring Your Business -- Partnership, Coporation, Sub S or LLC</title>
+    <title>Business 101: Structuring Your Business -- Partnership, Corporation, Sub S or LLC</title>
     <style type="text/css">
       body {
         margin-top: 0px;

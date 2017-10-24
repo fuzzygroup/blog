@@ -2,7 +2,7 @@
 layout: post
 title: Basic Network Troubleshooting or What Do I Do Before I Call My SysAdmin ?
 category: story.radio.weblogs.com
-tags: []
+tags: ["computing_tips"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

@@ -2,7 +2,7 @@
 layout: post
 title: Startup Learnings - What Eric Howard Taught Me
 category: startup
-tags: ["startup", "learnings", "entrepreneurship"]
+tags: ["startup", "learnings", "entrepreneurship", "eric_howard", "outreach_indiana"]
 ---
 Eric Howard, a good friend of mine, is the founder of [Outreach Indiana](http://www.outreachindiana.org), and he is not a part of the high tech world and he is no one that anyone in high tech has likely ever heard of.  But learnings can come from anywhere and Eric taught me a powerful one.
 

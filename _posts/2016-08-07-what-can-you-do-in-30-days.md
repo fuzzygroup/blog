@@ -2,7 +2,7 @@
 layout: post
 title: Case Study What Can You Do In 30 Days Using Ruby and Rails 5
 category: mvp
-tags: ["ruby", "mvp", "30 days", "startup"]
+tags: ["ruby", "mvp", "startup"]
 
 ---
 

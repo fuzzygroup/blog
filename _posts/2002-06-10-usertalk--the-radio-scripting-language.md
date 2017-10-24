@@ -2,7 +2,7 @@
 layout: post
 title: UserTalk- The Radio Scripting Language
 category: story.radio.weblogs.com
-tags: ["blogging"]
+tags: ["blogging", "radio_userland", "usertalk"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

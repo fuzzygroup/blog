@@ -2,7 +2,7 @@
 layout: post
 title: Scott In a Nutshell
 category: story.radio.weblogs.com
-tags: []
+tags: ["misc"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

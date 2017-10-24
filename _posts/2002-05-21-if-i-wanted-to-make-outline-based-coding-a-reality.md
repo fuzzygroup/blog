@@ -2,7 +2,7 @@
 layout: post
 title: If I Wanted to Make Outline Based Coding A Reality
 category: story.radio.weblogs.com
-tags: []
+tags: ["software_engineering", "outlining"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

@@ -2,7 +2,7 @@
 layout: post
 title: ElixirCon Review and Closing Thoughts
 category: elixir
-tags: ["elixir"]
+tags: ["elixir", "phoenix"]
 ---
 As I write this, ElixirCon is winding down and I have to just say **thank you** to the organizers.  This was a **fantastic conference** and worth every single penny.  I spent my own money on this and I still feel it was worth it.
 

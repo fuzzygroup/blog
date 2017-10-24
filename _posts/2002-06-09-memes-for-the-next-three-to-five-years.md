@@ -2,7 +2,7 @@
 layout: post
 title: Memes for the Next Three to Five Years
 category: story.radio.weblogs.com
-tags: []
+tags: ["misc"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

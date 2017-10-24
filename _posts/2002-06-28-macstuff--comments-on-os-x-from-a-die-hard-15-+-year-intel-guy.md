@@ -2,7 +2,7 @@
 layout: post
 title: MacStuff- Comments on OS X from a Die Hard 15 + Year Intel Guy
 category: story.radio.weblogs.com
-tags: []
+tags: ["mac", "osx"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

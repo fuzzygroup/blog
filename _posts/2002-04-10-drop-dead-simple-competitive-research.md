@@ -2,7 +2,7 @@
 layout: post
 title: Drop Dead Simple Competitive Research
 category: story.radio.weblogs.com
-tags: []
+tags: ["marketing", "competitive_research"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

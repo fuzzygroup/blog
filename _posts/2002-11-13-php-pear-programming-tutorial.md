@@ -2,7 +2,7 @@
 layout: post
 title: PHP Pear Programming Tutorial
 category: story.radio.weblogs.com
-tags: ["php"]
+tags: ["php", "pear"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

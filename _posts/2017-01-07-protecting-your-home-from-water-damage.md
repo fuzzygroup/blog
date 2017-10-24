@@ -2,7 +2,7 @@
 layout: post
 title: Protecting Your Home from Water Damage
 category: house
-tags: ["house", "hacking", "home_ownership"]
+tags: ["house", "hacking", "home_ownership", "water_damage"]
 ---
 I hate, hate, hate to be superstitious but at times it really does seem like bad things do come in groups -- I'd have said threes but there have been four occurrences.  The house I'm living in now, the one where I talked recently about [Debugging Christmas Light Wiring](https://fuzzygroup.github.io/blog/debugging/2016/12/01/debugging-christmas-lights.html), is one that I arrived in after my wife, kids and I were **flooded** out of our previous residence back in 2015.  Long story and the only relevant part about it is **water**.  So we  recover from the flood, buy this house and move in.  And then probably less than a month later, we find water pouring out of our basement furnace area due to a sump pump failure (see Tip 1).  About six months after that one of first floor toilets was clogged and we found water pouring thru the basement ceiling due to a broken wax gasket at the toilet base and an improperly plumbed run of line to the main waste feed.  And last Sunday we heard a noise behind our fridge when we got ice that turned out to be a pin hole leak in the water line feeding the fridge.  And, of course, it had been going on for some time so now we have a ruined piece of cabinetry.
 

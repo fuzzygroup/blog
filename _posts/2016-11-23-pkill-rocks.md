@@ -2,7 +2,7 @@
 layout: post
 title: pkill Rocks
 category: unix
-tags: ["linux", "unix", "command_line", "osx"]
+tags: ["linux", "unix", "command_line", "osx", "pkill"]
 ---
 One of the singularly best things about Unix / Linux is that even after using it for literally years, there is always a new thing to learn.  The best way to learn something is to just get frustrated and then **google**.  There is always a different way to do it -- sometimes it is simple i.e. better and sometimes it might be really hard but there is always a different way.  
 

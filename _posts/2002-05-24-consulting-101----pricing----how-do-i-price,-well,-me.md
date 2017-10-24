@@ -2,7 +2,7 @@
 layout: post
 title: Consulting 101 -- Pricing -- How do I Price, well, Me?
 category: story.radio.weblogs.com
-tags: ["consulting101"]
+tags: ["consulting101", "consulting", "freelance", "gig"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

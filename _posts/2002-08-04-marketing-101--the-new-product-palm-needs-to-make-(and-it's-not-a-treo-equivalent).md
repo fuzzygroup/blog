@@ -2,7 +2,7 @@
 layout: post
 title: Marketing 101- The New Product Palm Needs to Make (And it's NOT a Treo Equivalent)
 category: story.radio.weblogs.com
-tags: ["marketing101"]
+tags: ["marketing101", "marketing"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

@@ -2,7 +2,7 @@
 layout: post
 title: Welcome Back David Gerrold and Chapters from a Method for Madness
 category: story.radio.weblogs.com
-tags: []
+tags: ["scifi"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

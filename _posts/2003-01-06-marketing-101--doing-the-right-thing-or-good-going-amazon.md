@@ -2,7 +2,7 @@
 layout: post
 title: Marketing 101- Doing the Right Thing or Good Going Amazon
 category: story.radio.weblogs.com
-tags: ["marketing101"]
+tags: ["marketing101", "marketing"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

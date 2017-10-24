@@ -2,7 +2,7 @@
 layout: post
 title: Solving the MP3 Piracy Issues By Adding Responsibility to the Mix
 category: story.radio.weblogs.com
-tags: []
+tags: ["mp3"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

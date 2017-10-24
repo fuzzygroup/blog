@@ -130,15 +130,28 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <p style="text-align: center; padding: 10px; border: 2px dashed #000">
-        <a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Take Control of Your Kid's Xbox Gaming - Sign Up for Game Nanny Today!</a></p>
-        
+        <div style="width: 70%; float:left; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+              <a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Never be surprised by your kid's Xbox spending again!</a>
+            </p>
+        </div>
+        <!--
+        <div style="width: 75%; float:left; ">&nbsp;&nbsp;&nbsp;</div>
+        -->
+        <div style="width: 20%; float:right; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+              <a href="http://www.fuzzyblog.io/" class="cta-button-blue">Hire Me!</a>
+            </p>
+        </div>
+        <div style="clear: both;"></div>
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">Troubleshooting Rails and Sidekiq</h1>
-    <p class="I'll"><time datetime="2017-02-17T00:00:00-05:00" itemprop="datePublished">Feb 17, 2017</time></p>
+    <p class="I'll"><time datetime="2017-02-17T00:00:00-05:00" itemprop="datePublished">Feb 17, 2017</time> 
+      </p> 
   </header>
+  
 
   <div class="post-content" itemprop="articleBody">
     <p>I recently had a problem with Rails and <a href="http://sidekiq.org/">Sidekiq</a> that confused the heck out of me for an embarrassingly long time so I thought I’d document.  Sidekiq is an asynchronous job processor that allows you to defer a long running routine so a collection of other computing resources take care of it.  In this case it was a data extraction routine which should have written some records to the database.  I deployed the code to AWS, made an image and then launched 180 instances to process the data.  Each of the instances was configured with Sidekiq on boot so the minute that AWS launched the instance they would all start churning thru the data with the very best threading that <a href="http://www.mikeperham.com/">Mike Perham</a> can bring to bear on the problem.  Mike is the author of Sidekiq, a great member of the Open Source community and the best threaded programmer I’ve ran across in years and years.</p>
@@ -158,6 +171,49 @@
 
   </div>
   
+  <!--
+    http://fuzzyblog.io/blog/tag.html#aws
+    http://localhost:5000/blog/category.html#facebook
+  -->
+  
+  <hr/><br/>
+  <p><strong>Posted In:</strong>
+  
+    <a href="http://fuzzyblog.io//blog/tag.html#rails" >
+      #rails
+    </a>
+    
+    <a href="http://fuzzyblog.io//blog/tag.html#sidekiq" >
+      #sidekiq
+    </a>
+    
+  </p>
+  
+  <!--
+  <hr/><br/>
+  <div style="text-align: center;">
+      <ul class="list-inline tags" >       
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io//blog/tag.html#rails" class="link_button">
+         rails
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io//blog/tag.html#sidekiq" class="link_button">
+         sidekiq
+       </a>
+     </li>
+     
+    </ul>
+
+  </div>
+-->  
+
+
+  
+  
   
 
 </article>
@@ -166,10 +222,11 @@
     </div>
 
     <div class="wrapper">
-<div style="">
-<p style="text-align: center; padding: 10px; border: 2px dashed #000">
-<a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Take Control of Your Kid's Xbox Gaming - Sign Up for Game Nanny Today!</a></p>
-</div>
+  <div style="">
+    <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+      <a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Never be surprised by your kid's Xbox spending again!</a>
+    </p>
+  </div>
 </div>
 
 <footer class="site-footer">

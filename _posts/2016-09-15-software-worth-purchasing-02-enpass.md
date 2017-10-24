@@ -2,7 +2,7 @@
 layout: post
 title: Software Worth Purchasing 02 - Enpass
 category: software_worth_purchasing
-tags: ["software", "tools", "password_managers"]
+tags: ["software", "tools", "password_managers", "enpass", "osx", "iphone"]
 ---
 Password Managers are one of those categories of tools that provoke fierce debate among us nerd folk.  Personally now that I've figured out how to remember a different password for every web site I log into, I've needed one less than I used to but the recent move to a monthly billing plan for 1 Password just plain made me furious.  Not only is that ridiculous but 1 Password, at least in my experience, doesn't work worth a damn.  I spent the time and money to buy it for my wife and myself about a year 
 ago and we had nothing but problems.

@@ -2,7 +2,7 @@
 layout: post
 title: PHP -- Using the Google API from PHP
 category: story.radio.weblogs.com
-tags: ["php"]
+tags: ["php", "google"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

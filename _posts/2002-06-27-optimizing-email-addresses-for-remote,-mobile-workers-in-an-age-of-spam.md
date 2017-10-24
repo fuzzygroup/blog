@@ -2,7 +2,7 @@
 layout: post
 title: Optimizing Email Addresses for Remote, Mobile Workers in an Age of Spam
 category: story.radio.weblogs.com
-tags: []
+tags: ["email", "spam"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

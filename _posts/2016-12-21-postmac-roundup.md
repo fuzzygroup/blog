@@ -2,7 +2,7 @@
 layout: post
 title: PostMac Roundup
 category: postmac
-tags: ["postmac", "mac"]
+tags: ["postmac", "mac", "osx"]
 ---
 Here are a few more things in the ongoing PostMac roundup:
 

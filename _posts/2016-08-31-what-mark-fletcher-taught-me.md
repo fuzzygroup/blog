@@ -2,7 +2,7 @@
 layout: post
 title: Startup Learnings - What Mark Fletcher Taught Me
 category: startup
-tags: ["startup", "learnings", "feedster"]
+tags: ["startup", "learnings", "feedster", "mark_fletcher"]
 ---
 When I started Feedster back in 2003, I ended up taking a very, very traditional startup route: 
 

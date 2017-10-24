@@ -2,7 +2,7 @@
 layout: post
 title: Building a Large Scale Distributed Outline Renderer for OPML
 category: story.radio.weblogs.com
-tags: []
+tags: ["opml"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

@@ -2,7 +2,7 @@
 layout: post
 title: Very, Very Practical Tips for the Busy Person - Part 3 - More Computer Stuff
 category: story.radio.weblogs.com
-tags: []
+tags: ["misc", "tips"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

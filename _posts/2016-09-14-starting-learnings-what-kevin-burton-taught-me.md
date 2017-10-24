@@ -2,7 +2,7 @@
 layout: post
 title: Startup Learnings - What Kevin Burton Taught Me
 category: startup
-tags: ["startup", "learnings", "entrepreneurship"]
+tags: ["startup", "learnings", "entrepreneurship", "kevin_burton"]
 ---
 I got to know [Kevin Burton](https://github.com/burtonator) of [Spinn3r](http://www.spinn3r.com/) fame back in my Feedster days and while I don't know him tremendously well, I absolutely learned from him.  Interestingly, unlike a lot of my Silicon Valley contacts where I learned from them at the time, the learnings from Kevin came later, much later.  
 

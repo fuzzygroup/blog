@@ -2,7 +2,7 @@
 layout: post
 title: Getting All Jobs for You From HotJobs or Monster.com - or Understanding Online Jobs Searches
 category: story.radio.weblogs.com
-tags: []
+tags: ["job_search", "jobs"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

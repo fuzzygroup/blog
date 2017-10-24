@@ -2,7 +2,7 @@
 layout: post
 title: Software Engineering Learnings - What Wolfram Arnold Taught Me
 category: software engineering
-tags: ["startup", "learnings", "entrepreneurship", "feedster", "software engineering"]
+tags: ["startup", "learnings", "entrepreneurship", "feedster", "software_engineering", "wolfram_arnold"]
 
 ---
 The year was 2007 and the month was August.  I had just joined eduFire and we made the decision at a corporate level that despite my technical expertise being in anything but Rails, we were going to move all of our development efforts to Rails.  Thankfully I did have Ruby experience but Rails was new to me so we brought in a consultant, [Wolfram Arnold](https://twitter.com/wolframarnold), to bring me up to speed.  

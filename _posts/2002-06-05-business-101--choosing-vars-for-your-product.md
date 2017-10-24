@@ -2,7 +2,7 @@
 layout: post
 title: Business 101- Choosing Vars for Your Product
 category: story.radio.weblogs.com
-tags: []
+tags: ["marketing", "var"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

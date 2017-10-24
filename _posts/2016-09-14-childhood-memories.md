@@ -2,7 +2,7 @@
 layout: post
 title: Childhood Memories
 category: parenting
-tags: ["m", "disney", "safari"]
+tags: ["m", "disney", "safari", "personal"]
 ---
 I am writing this at 4 am sitting by my youngest's bedside,  Yesterday was a fabulous day from the parents perspective and from his I suspect had a *high degree of suck*.  We are at DisneyWorld right now and my wife arranged for us to take an end of day safari.  This is a new offering from DisneyWorld's Animal Kingdom and it was a limited person safari (just 10 people) that finished with a private meal on a viewing platform in the middle of Animal Kingdom's Serengeti area.  We had a fantastic guide, Jason, who was not only knowledgeable but just plain beyond entertaining.  My boys liked him so well that they even wanted his picture with him at the end.
 

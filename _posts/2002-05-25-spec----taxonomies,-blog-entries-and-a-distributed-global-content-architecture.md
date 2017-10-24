@@ -2,7 +2,7 @@
 layout: post
 title: Spec -- Taxonomies, Blog Entries and a Distributed Global Content Architecture
 category: story.radio.weblogs.com
-tags: ["blogging"]
+tags: ["blogging", "taxonomy"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

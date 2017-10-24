@@ -4,7 +4,7 @@ title: How to Become a Better Cook
 category: cooking
 tags: ["cooking"]
 ---
-I'm going to step out of my normal nerd comfort zone and move onto something more decidedly analog than digital -- cooking.  Over on my [recipe blog](https://fuzzygroup.github.io/recipes), I write down the recipe for everything I've ever cooked.  I'm a few hundred behind but all the current stuff I cook every single week is there.  What isn't there however is the meta layer like how to do X or in this case how to **become a better cook**.  And while I think I'm an ok cook, I do get rave reviews from the people who matter most to me -- my wife, kids and friends.  So here's how I got there:
+I'm going to step out of my normal nerd comfort zone and move onto something more decidedly analog than digital -- cooking.  Over on my [recipe blog](https://fuzzyblog.io/recipes), I write down the recipe for everything I've ever cooked.  I'm a few hundred behind but all the current stuff I cook every single week is there.  What isn't there however is the meta layer like how to do X or in this case how to **become a better cook**.  And while I think I'm an ok cook, I do get rave reviews from the people who matter most to me -- my wife, kids and friends.  So here's how I got there:
 
 #  You Must Cook
 

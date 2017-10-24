@@ -2,7 +2,7 @@
 layout: post
 title: Good Riddance to Zoom or Video Conferencing Is Still Not the Future
 category: video conferencing
-tags: ["zoom", "video conferencing", rant]
+tags: ["zoom", "video conferencing", "rant"]
 ---
 Over the past 11 months or so I've had the opportunity to fairly regularly use a video conferencing tool known as [Zoom](http://www.zoom.us) and I'm finally rid of it and **thank heavens**.  Ever since I stopped using it, I'm free of:
 

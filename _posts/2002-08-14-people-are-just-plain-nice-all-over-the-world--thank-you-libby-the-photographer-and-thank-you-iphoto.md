@@ -2,7 +2,7 @@
 layout: post
 title: People are Just Plain Nice All Over the World!  Thank You Libby the Photographer! And Thank You iPhoto!
 category: story.radio.weblogs.com
-tags: []
+tags: ["misc"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

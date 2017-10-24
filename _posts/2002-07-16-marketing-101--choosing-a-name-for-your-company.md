@@ -2,7 +2,7 @@
 layout: post
 title: Marketing 101- Choosing A Name for Your Company
 category: story.radio.weblogs.com
-tags: ["marketing101"]
+tags: ["marketing101", "marketing", "startup"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

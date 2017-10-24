@@ -2,7 +2,7 @@
 layout: post
 title: Consulting 101- Computers for Consultants -- Laptop versus Desktop Revisited
 category: story.radio.weblogs.com
-tags: ["consulting101"]
+tags: ["consulting101", "consulting"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

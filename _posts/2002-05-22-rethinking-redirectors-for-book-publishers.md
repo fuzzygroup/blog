@@ -2,7 +2,7 @@
 layout: post
 title: Rethinking Redirectors for Book Publishers
 category: story.radio.weblogs.com
-tags: []
+tags: ["publishing", "marketing"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

@@ -2,7 +2,7 @@
 layout: post
 title: Disabling Spring in Rails
 category: rails
-tag: ["rails", "monolith", "hyde"]
+tag: ["rails", "monolith", "hyde", "spring"]
 description: The spring application pre-loader works find in a monolithic Rails app but far less so when you're not a monolith.  Here's how to disable it.
 ---
 I now have more than a decade at building Rails apps and, since most of that time was a consultant, I think its fair to say that I've seen, worked on and built from scratch a lot of Rails applications.  My single least favorite part of Rails is the monolith application pattern.  While it can be incredibly productive to have every aspect of your source code in a single place, monoliths are an inherent anti-pattern:

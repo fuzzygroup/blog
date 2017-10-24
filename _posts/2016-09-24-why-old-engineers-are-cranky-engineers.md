@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Why Old Engineers Are Cranky Engineers
-category: ["software_engineering"]
+category: software_engineering
 tags: ["ci", "software_engineering"]
 ---
 I recently had an interaction with a younger software engineer and I'm pretty sure that his impression of me after that boiled down to *cranky old bastard* and that would be the nice version.  The less nice version could easily have incorporated the words difficult, jerk and a few other bits of invective.

@@ -2,7 +2,7 @@
 layout: post
 title: Tutorial How To Upgrade Your PS4 to 2 Terabytes of Storage
 category: gaming
-tags: ["tutorial", "ps4"]
+tags: ["tutorial", "ps4", "gaming"]
 ---
 There are times when it seems like we live in a weird world of storage capacity imbalance.  We see this in two places: 
 

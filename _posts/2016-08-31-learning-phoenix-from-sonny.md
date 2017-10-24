@@ -2,7 +2,7 @@
 layout: post
 title: Learning Phoenix from Sonny
 category: elixir
-tags: ["elixir", "elixirconf"]
+tags: ["elixir", "elixirconf", "phoenix"]
 ---
 
 # Overview

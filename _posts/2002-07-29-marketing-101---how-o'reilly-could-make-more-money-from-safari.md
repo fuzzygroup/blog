@@ -2,7 +2,7 @@
 layout: post
 title: Marketing 101 - How O'Reilly Could Make More Money from Safari
 category: story.radio.weblogs.com
-tags: ["marketing101"]
+tags: ["marketing101", "marketing", "safari"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

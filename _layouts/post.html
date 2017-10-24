@@ -6,12 +6,47 @@ comments: true
 
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">{{ page.title }}</h1>
-    <p class="I'll"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %-d, %Y" }}</time>{% if page.author %} • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>{% endif %}</p>
+    <p class="I'll"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %-d, %Y" }}</time> 
+      {% if page.author %} • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>{% endif %}</p> 
   </header>
+  
 
   <div class="post-content" itemprop="articleBody">
     {{ content }}
   </div>
+  
+  <!--
+    http://fuzzyblog.io/blog/tag.html#aws
+    http://localhost:5000/blog/category.html#facebook
+  -->
+  
+  <hr/><br/>
+  <p><strong>Posted In:</strong>
+  {% for tag in page.tags %}
+    <a href="{{ site.url }}/blog/tag.html#{{ tag }}" >
+      #{{ tag }}
+    </a>
+    {% endfor %}
+  </p>
+  
+  <!--
+  <hr/><br/>
+  <div style="text-align: center;">
+      <ul class="list-inline tags" >       
+     {% for tag in page.tags %}
+     <li style="display: inline-block;">
+       <a href="{{ site.url }}/blog/tag.html#{{ tag }}" class="link_button">
+         {{ tag }}
+       </a>
+     </li>
+     {% endfor %}
+    </ul>
+
+  </div>
+-->  
+
+
+  
   
   {% if page.comments %}
   <div id="disqus_thread"></div>

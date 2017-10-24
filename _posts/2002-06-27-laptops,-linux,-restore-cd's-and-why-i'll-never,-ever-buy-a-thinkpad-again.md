@@ -2,7 +2,7 @@
 layout: post
 title: Laptops, Linux, Restore CD's and Why I'll Never, Ever Buy a ThinkPad Again
 category: story.radio.weblogs.com
-tags: ["linux"]
+tags: ["linux", "thinkpad"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

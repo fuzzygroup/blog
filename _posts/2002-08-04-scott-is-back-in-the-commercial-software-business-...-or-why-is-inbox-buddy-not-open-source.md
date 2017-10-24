@@ -2,7 +2,7 @@
 layout: post
 title: Scott Is Back in the Commercial Software Business ... Or Why Is Inbox Buddy NOT Open Source?
 category: story.radio.weblogs.com
-tags: ["open_source"]
+tags: ["inbox_buddy"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

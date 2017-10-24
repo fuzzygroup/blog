@@ -2,7 +2,7 @@
 layout: post
 title: From Design Geek to Web Geek- Part 0- Introduction
 category: story.radio.weblogs.com
-tags: []
+tags: ["startup"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

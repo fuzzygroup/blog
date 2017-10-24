@@ -2,7 +2,7 @@
 layout: post
 title: Email -- Understanding SMTP Headers or Outlook's View -> Options Command
 category: story.radio.weblogs.com
-tags: []
+tags: ["smtp", "outlook"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

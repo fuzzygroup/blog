@@ -2,7 +2,7 @@
 layout: post
 title: General - I Just Graduated with a Computer Science Degree And Please, Please Don't Make Me Work at the Mall
 category: story.radio.weblogs.com
-tags: []
+tags: ["misc"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

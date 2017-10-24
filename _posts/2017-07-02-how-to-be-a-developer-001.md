@@ -2,7 +2,7 @@
 layout: post
 title: How To Be A Developer 001 - Commit
 category: how_to_be_a_developer
-tags: ["how_to_be_a_developer"]
+tags: ["how_to_be_a_developer", "software_development"]
 description: If you want to be a developer you have to commit to problem solving, no matter how arcane the problem.
 ---
 # Background

@@ -2,7 +2,7 @@
 layout: post
 title: Marketing 101- Making Money from a Website- PHPBeginner Case Study
 category: story.radio.weblogs.com
-tags: ["php"]
+tags: ["php", "marketing", "marketing101"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

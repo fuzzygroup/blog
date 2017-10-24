@@ -2,7 +2,7 @@
 layout: post
 title: 10 Signs You Might Be an Alpha Geek
 category: story.radio.weblogs.com
-tags: []
+tags: ["humor"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

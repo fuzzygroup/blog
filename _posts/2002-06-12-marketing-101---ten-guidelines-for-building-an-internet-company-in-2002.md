@@ -2,7 +2,7 @@
 layout: post
 title: Marketing 101 - Ten Guidelines for Building an Internet Company in 2002
 category: story.radio.weblogs.com
-tags: ["marketing101"]
+tags: ["marketing101", "marketing", "startup"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

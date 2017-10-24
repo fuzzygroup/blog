@@ -4,7 +4,7 @@ title: My Worst Git Commit Message Ever
 category: git
 tags: ["git", "humor"]
 ---
-I was in the car with my wife talking to her as I worked and this was the bmessage:
+I was in the car with my wife talking to her as I worked and this was the message:
 
      git commit -m "misc:
     → '''''''''''''''''''vvvvvvvvvvvvvvvvvvvvvvV 

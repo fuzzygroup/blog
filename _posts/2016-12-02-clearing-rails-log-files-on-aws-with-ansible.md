@@ -2,7 +2,7 @@
 layout: post
 title: Clearing Rails Log Files on AWS with Ansible
 category: aws
-tags: ["aws", "ansible", "logs"]
+tags: ["aws", "ansible", "logs", "rails"]
 ---
 If you are reading this and you've read more than a few things I've written then you know that I'm, well, a *wordy son of a bitch*.  I mean come on -- did you see the post on [AWS Partition Resizing](https://fuzzygroup.github.io/blog/aws/2016/11/26/fear-and-loathing-in-awsville-or-adventures-in-partition-resizing.html)?  I took like 7800 words to say "can't do it" -- apologies.  
 

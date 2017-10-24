@@ -1,7 +1,7 @@
 ---
 layout: post
 title: In the World of Containers HoneyBadger Will Reign Supreme - Bye Bye AirBrake
-category: containers
+category: docker
 tags: ["aws", "containers", "docker", "logs", "error messages", "honey badger"]
 
 ---

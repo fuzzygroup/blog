@@ -1,8 +1,8 @@
 ---
 layout: post
 title: AuthLogic Tutorial
-category: authentication
-tags: ["rails", "ruby", "authlogic"]
+category: rails
+tags: ["rails", "ruby", "authlogic", "authentication"]
 
 ---
 Disclaimer: Before you follow this, if you're using Rails 5, then make damn sure that AuthLogic supports Rails 5.  As of a few weeks ago (mid july 2016) they didn't and trying to get it to work was an absolute sh*t show (and I say that with regret because I bloody well love authlogic).

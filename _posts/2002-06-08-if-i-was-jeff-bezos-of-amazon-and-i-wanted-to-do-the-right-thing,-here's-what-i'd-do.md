@@ -2,7 +2,7 @@
 layout: post
 title: If I Was Jeff Bezos of Amazon and I wanted to do the Right Thing, Here's What I'd Do
 category: story.radio.weblogs.com
-tags: []
+tags: ["amazon", "jeff_bezos"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

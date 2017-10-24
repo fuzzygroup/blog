@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Startup Learnings - What Matt Mullenweg Taught Me
-category: ["startup"]
+category: startup
 tags: ["startup", "learnings", "entrepreneurship"]
 ---
 WordPress, today, is an unquestioned king of the Internet.  I just checked the stats and WP 4.6 has been downloaded over [7 million times](https://wordpress.org/download/counter/) (and you can watch the number increase).  I remember, however, a time when its dominance wasn't so clear -- I remember being at the launch party for either [.72 or 1.0](https://codex.wordpress.org/WordPress_Versions) when things weren't so clear.  But I suspect that I'm rambling now -- long day.  Anyway, even when WP's ascendancy wasn't so clear, I always thought that [Matt Mullenweg](https://ma.tt/) himself was the real deal. He clearly knew what he was doing and [his history since 2004](https://en.wikipedia.org/wiki/Matt_Mullenweg) certainly bears that out.

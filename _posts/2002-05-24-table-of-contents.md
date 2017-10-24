@@ -2,7 +2,7 @@
 layout: post
 title: Table of Contents
 category: story.radio.weblogs.com
-tags: []
+tags: ["blogging"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

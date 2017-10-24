@@ -2,7 +2,7 @@
 layout: post
 title: Chris Prince- The Smartest ex-Dot Commer of them All ?
 category: story.radio.weblogs.com
-tags: []
+tags: ["startup"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

@@ -2,7 +2,7 @@
 layout: post
 title: Drupal - Drupal from a Radio User's Perspective
 category: story.radio.weblogs.com
-tags: ["blogging"]
+tags: ["blogging", "drupal"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

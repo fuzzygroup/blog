@@ -2,7 +2,7 @@
 layout: post
 title: Product Literature- The Starck Intranet
 category: story.radio.weblogs.com
-tags: []
+tags: ["intranet"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

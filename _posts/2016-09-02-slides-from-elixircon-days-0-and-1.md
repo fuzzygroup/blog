@@ -2,6 +2,7 @@
 layout: post
 title: Slides from Elixircon Days 0, 1 and 2
 category: elixir
+tags: ["elixir", "phoenix"]
 ---
 
 Not a lot of order other than temporal but I'm sure it'll be useful to someone beyond just me.

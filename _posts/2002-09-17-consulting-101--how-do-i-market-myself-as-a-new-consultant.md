@@ -2,7 +2,7 @@
 layout: post
 title: Consulting 101- How Do I Market Myself as a New Consultant
 category: story.radio.weblogs.com
-tags: ["consulting101"]
+tags: ["consulting101", "consulting", "freelance"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

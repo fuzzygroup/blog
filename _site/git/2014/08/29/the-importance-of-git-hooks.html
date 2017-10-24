@@ -130,15 +130,28 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <p style="text-align: center; padding: 10px; border: 2px dashed #000">
-        <a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Take Control of Your Kid's Xbox Gaming - Sign Up for Game Nanny Today!</a></p>
-        
+        <div style="width: 70%; float:left; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+              <a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Never be surprised by your kid's Xbox spending again!</a>
+            </p>
+        </div>
+        <!--
+        <div style="width: 75%; float:left; ">&nbsp;&nbsp;&nbsp;</div>
+        -->
+        <div style="width: 20%; float:right; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+              <a href="http://www.fuzzyblog.io/" class="cta-button-blue">Hire Me!</a>
+            </p>
+        </div>
+        <div style="clear: both;"></div>
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
     <h1 class="post-title" itemprop="name headline">The Importance of Git Hooks</h1>
-    <p class="I'll"><time datetime="2014-08-29T00:00:00-04:00" itemprop="datePublished">Aug 29, 2014</time></p>
+    <p class="I'll"><time datetime="2014-08-29T00:00:00-04:00" itemprop="datePublished">Aug 29, 2014</time> 
+      </p> 
   </header>
+  
 
   <div class="post-content" itemprop="articleBody">
     <p>So I was working this morning and got one of those bloody awful Rails stack traces – every error was at the system layer and I could not make any progress debugging it.  So I looked at git status and there were like 25 + files all tied to an overall CSV import process (2 data models, 1 controller, system level UI changes, etc) and then it hit me – I need my .git hooks setup on this project!  Every bit of source code under management by git has a .git directory at the top level and under it a hooks directory.  Hooks are executable files that are run when you do an atomic level git action.  For example there is one called pre-commit and this is code that is executed BEFORE a commit actually happens.  What you can do with a pre-commit hook is tie in a code evaluation process (think lint if you’re a C guy) to find any errors before they are committed.  Now I’ve set these up in almost every project but not here so a quick copy of a file from another project to .git/hooks gave me this:</p>
@@ -223,6 +236,59 @@ end
 
   </div>
   
+  <!--
+    http://fuzzyblog.io/blog/tag.html#aws
+    http://localhost:5000/blog/category.html#facebook
+  -->
+  
+  <hr/><br/>
+  <p><strong>Posted In:</strong>
+  
+    <a href="http://fuzzyblog.io//blog/tag.html#ruby" >
+      #ruby
+    </a>
+    
+    <a href="http://fuzzyblog.io//blog/tag.html#git" >
+      #git
+    </a>
+    
+    <a href="http://fuzzyblog.io//blog/tag.html#hooks" >
+      #hooks
+    </a>
+    
+  </p>
+  
+  <!--
+  <hr/><br/>
+  <div style="text-align: center;">
+      <ul class="list-inline tags" >       
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io//blog/tag.html#ruby" class="link_button">
+         ruby
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io//blog/tag.html#git" class="link_button">
+         git
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io//blog/tag.html#hooks" class="link_button">
+         hooks
+       </a>
+     </li>
+     
+    </ul>
+
+  </div>
+-->  
+
+
+  
+  
   
 
 </article>
@@ -231,10 +297,11 @@ end
     </div>
 
     <div class="wrapper">
-<div style="">
-<p style="text-align: center; padding: 10px; border: 2px dashed #000">
-<a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Take Control of Your Kid's Xbox Gaming - Sign Up for Game Nanny Today!</a></p>
-</div>
+  <div style="">
+    <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+      <a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Never be surprised by your kid's Xbox spending again!</a>
+    </p>
+  </div>
 </div>
 
 <footer class="site-footer">

@@ -2,7 +2,7 @@
 layout: post
 title: Ansible Quickie Fixing a Poorly Designed Galaxy Role
 category: ansible
-tags: ["ansible", "galaxy", "sidekiq"]
+tags: ["ansible", "galaxy", "sidekiq", "ansible-galaxy"]
 ---
 Update: This really, really doesn't work.  Please read my [revised Sidekiq post](https://fuzzygroup.github.io/blog/ansible/2016/10/13/ansible-tutorial-02-configuring-a-sidekiq-upstart-job-on-ubuntu-14-04.html).
 

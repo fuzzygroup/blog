@@ -2,7 +2,7 @@
 layout: post
 title: Marketing 101 - When Good People Do Things That Make Them LOOK Like a Spammer!
 category: story.radio.weblogs.com
-tags: ["marketing101"]
+tags: ["marketing101", "marketing"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

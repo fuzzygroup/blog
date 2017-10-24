@@ -2,7 +2,7 @@
 layout: post
 title: Startup Learnings - I Do All My Coding Before Anyone Gets to Work or What Ed Fisher Taught Me
 category: startup
-tags: ["startup", "software_engineering"]
+tags: ["startup", "software_engineering", "learnings", "ed_fisher"]
 ---
 Once upon a time, ages and ages ago, I worked for a company called Dataware Technologies.  Dataware had bought my first company, NTERGAID, relocated me to Cambridge, MA and I went from being president of a teeny, tiny, 9 person software company in Milford, CT to a member of a 435 person global, publicly traded company.  Dataware wanted only myself and my co-founder so I lost my whole team in the process.  Needless to say this was not an easy or pleasant transition.  And I made about every mistake that a fish out of water could make.  At least one of those mistakes, the one that would ultimately doom me at Dataware, I made on my **very first day**.  
 

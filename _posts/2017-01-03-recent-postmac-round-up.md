@@ -2,7 +2,7 @@
 layout: post
 title: Recent PostMac Round Up
 category: postmac
-tags: ["apple", "osx", "postmac", "windows"]
+tags: ["apple", "osx", "postmac", "windows", "mac"]
 ---
 Well a new year and people are still unhappy about the state of the Mac.  Here are some interesting links worth following:
 

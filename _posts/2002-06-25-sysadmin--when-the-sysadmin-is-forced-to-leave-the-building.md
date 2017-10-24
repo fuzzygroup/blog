@@ -2,7 +2,7 @@
 layout: post
 title: SysAdmin- When the SysAdmin Is Forced to Leave the Building
 category: story.radio.weblogs.com
-tags: []
+tags: ["sysadmin", "hr"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

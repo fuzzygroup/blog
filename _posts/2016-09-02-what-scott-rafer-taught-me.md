@@ -2,7 +2,7 @@
 layout: post
 title: Startup Learnings - What Scott Rafer Taught Me
 category: startup
-tags: ["startup", "learnings", "entrepreneurship", "feedster"]
+tags: ["startup", "learnings", "entrepreneurship", "feedster", "scott_rafer"]
 ---
 When I founded Feedster in 2003, I always knew that I wasn't the CEO.  Sure -- I could blog and communicate well -- but I didn't want to raise money and, in a startup, that's the CEO's job.  Also I was in Boston at the time, 2003, and in those days the funding climate was much better on the West Coast so Feedster was always going to be a West Coast company.  The only thing I didn't know was the how.  That happened at the [1st SuperNova Conference](https://www.supernovagroup.net) by [Kevin Werbach](https://en.wikipedia.org/wiki/Kevin_Werbach).  Since I was a poor, unfunded startup, ok technology experiment at that point, Kevin very graciously comped me a pass.
 

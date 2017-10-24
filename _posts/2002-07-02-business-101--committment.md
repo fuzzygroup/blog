@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Business 101- Committment
+title: Business 101- Commitment
 category: story.radio.weblogs.com
-tags: []
+tags: ["startup"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

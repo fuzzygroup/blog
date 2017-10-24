@@ -2,7 +2,7 @@
 layout: post
 title: Travel- Getting Ready to Be Away from Your PC for an Extended Trip
 category: story.radio.weblogs.com
-tags: []
+tags: ["travel", "computing_tips"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

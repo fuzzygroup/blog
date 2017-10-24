@@ -2,7 +2,7 @@
 layout: post
 title: Marketing 101- How to Handle a Difficult Sales Call -- Perfectly!
 category: story.radio.weblogs.com
-tags: ["marketing101"]
+tags: ["marketing101", "marketing"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

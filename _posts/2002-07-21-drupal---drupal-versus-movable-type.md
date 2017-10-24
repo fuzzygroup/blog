@@ -2,7 +2,7 @@
 layout: post
 title: Drupal - Drupal Versus Movable Type
 category: story.radio.weblogs.com
-tags: ["drupal"]
+tags: ["drupal", "movable_type"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

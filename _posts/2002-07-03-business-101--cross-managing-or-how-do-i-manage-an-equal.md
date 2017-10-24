@@ -2,7 +2,7 @@
 layout: post
 title: Business 101- Cross Managing or How do I manage an Equal?
 category: story.radio.weblogs.com
-tags: []
+tags: ["management", "startup"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

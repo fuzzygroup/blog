@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Ansible Tutorial 02 - Understanding How Failures Are Handled
+category: ansible
+tags: ["ansible"]
 ---
 I just used Ansible to provision 8 new boxes and at the end I saw this:
 

@@ -2,7 +2,7 @@
 layout: post
 title: Marketing 101 - Ride the Wave If You Can
 category: marketing
-tags: ["marketing101"]
+tags: ["marketing101", "marketing"]
 description: When you're a small startup if you can credibly attach yourself to a wave, it can dramatically accelerate your overall marketing.
 ---
 **Note**: I haven't written a Marketing 101 piece since 2003 but a friend recently pointed out that even [my old ones](http://fuzzyblog.io/blog/tag.html#marketing101) were pretty good so I'm giving it a shot.

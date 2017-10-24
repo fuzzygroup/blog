@@ -2,7 +2,7 @@
 layout: post
 title: Dear Apple Please Make iTunes Sync Suck Less
 category: iphone
-tags: ["iphone", "osx"]
+tags: ["iphone", "osx", "apple", "itunes"]
 ---
 Dear Apple, 
 

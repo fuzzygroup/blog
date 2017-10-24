@@ -2,7 +2,7 @@
 layout: post
 title: Negotiation 101- Analyzing a Contract for Sale of a Business
 category: story.radio.weblogs.com
-tags: []
+tags: ["startup", "negotiation"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

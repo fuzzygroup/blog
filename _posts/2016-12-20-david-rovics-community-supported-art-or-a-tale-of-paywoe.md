@@ -2,7 +2,7 @@
 layout: post
 title: David Rovics Community Supported Art or a Tale of PayWoe and UI / UX Failures for Startups to Learn From
 category: rant
-tags: ["startup", "paypal", "paywoe", "rant", "art", "rovics", "ui", "ux", "usability"]
+tags: ["startup", "paypal", "paywoe", "rant", "art", "rovics", "ui", "ux", "usability", "david_rovics"]
 ---
 Tales on the Internet of problems with PayPal are damn near epic in their size.  Everyone, always, seems to have issues with PayPal and I am no exception.  Part of this is the nature of PayPal:
 

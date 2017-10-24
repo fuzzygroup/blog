@@ -2,7 +2,7 @@
 layout: post
 title: Improving Your Bash Scripting with shellcheck
 category: bash
-tags: ["bash"]
+tags: ["bash", "shellcheck"]
 description: ShellCheck is a lint tool for bash scripts which catches common errors and makes writing shell scripts dramatically easier.
 ---
 I know to the outside world it often appears that a "developer" or "software engineer" knows everything when it comes to "coding" but the reality is that most of us are fairly specialized and we have both strengths and weaknesses.  My personal weaknesses include Bash scripting and current front end technologies (JavaScript, CSS).  Now, even when you have weaknesses, you can still improve them and I'm currently working hard on my Bash skills.  The project at hand is that I'm writing a custom deployer for a stack of software related to a new SAAS app I'm building.

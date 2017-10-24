@@ -2,7 +2,7 @@
 layout: post
 title: Gluten Free Cookies for a Wedding
 category: cooking
-tags: ["wedding", "cookies", "cooking"]
+tags: ["wedding", "cookies", "cooking", "recipes"]
 ---
 After just finishing my post about [How to Improve Your Cooking](https://fuzzygroup.github.io/blog/cooking/2016/09/26/how-to-become-a-better-cook.html), my wife asked me *Can we make cookies for X's wedding?*  Oy.  X is a close friend of ours and she's **gluten free**.  And not any of the bakeries in the St Louis bakery are able to produce Gluten Free cookies either in bulk or apparently at all.  This calls for my standard [gluten free cookie recipe](https://fuzzygroup.github.io/recipes/cookie/2016/09/25/max-s-gluten-free-double-chocolate-cookies.html) but the volume calls for a re-examination and planning.  And, in typical nerdy fashion, we must start with some math and a benchmark.  And, yes, this is actually how an engineer approaches cooking at least when it matters.
 

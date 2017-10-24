@@ -2,7 +2,7 @@
 layout: post
 title: Draft- Why Software Sucks- An Alternate Perspective
 category: story.radio.weblogs.com
-tags: []
+tags: ["software_engineering"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

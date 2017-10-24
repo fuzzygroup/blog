@@ -2,7 +2,7 @@
 layout: post
 title: Startup Learnings The Smartest Thing I've Ever Seen PayPal Do
 category: startup
-tags: ["startup", "learnings"]
+tags: ["startup", "learnings", "paypal"]
 description: PayPal's automatic currency translation simplifies commerce by making things easier for you and they make money from it.
 image: http://fuzzyblog.io/blog/assets/paypal_is_smart.png
 ---

@@ -2,7 +2,7 @@
 layout: post
 title: Marketing 101- Humor is Powerful
 category: story.radio.weblogs.com
-tags: ["marketing101"]
+tags: ["marketing101", "marketing", "humor"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

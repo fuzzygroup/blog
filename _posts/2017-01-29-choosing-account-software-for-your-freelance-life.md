@@ -2,7 +2,7 @@
 layout: post
 title: Choosing Account Software For Your Freelance Life
 category: freelance
-tags: ["startup", "freelance", "accounting"]
+tags: ["startup", "freelance", "accounting", "quicken", "hurdlr", "freshbooks"]
 description: If you're a freelancer, choosing personal accounting software is tricky.  Here I review three packages.
 image: http://fuzzyblog.io/blog/assets/accounting_software.png
 ---

@@ -2,7 +2,7 @@
 layout: post
 title: Why I Didn't Look at Phusion's Union Station But You Should
 category: rails
-tags: ["rails", "ruby", "startup", "marketing", "oobe", "hyde"]
+tags: ["rails", "ruby", "startup", "marketing", "oobe", "hyde", "phusion"]
 description: Phusion Union Station is a powerful performance analysis tool for Rails that you should look at.
 image: https://www.unionstationapp.com/images/dashboard.png
 ---

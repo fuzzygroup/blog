@@ -2,7 +2,7 @@
 layout: post
 title: Marketing 101 - How to Blow a Sale Cleanly, Clearly and Quickly
 category: story.radio.weblogs.com
-tags: ["marketing101"]
+tags: ["marketing101", "marketing"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

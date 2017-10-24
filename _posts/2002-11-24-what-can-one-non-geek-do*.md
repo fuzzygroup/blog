@@ -2,7 +2,7 @@
 layout: post
 title: What Can One Non-Geek Do?*
 category: story.radio.weblogs.com
-tags: []
+tags: ["open_source"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

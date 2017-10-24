@@ -2,7 +2,7 @@
 layout: post
 title: PostMac 001 -- Adding pbcopy to ElementaryOS or Another Unix
 category: postmac
-tags: ["postmac", "linux"]
+tags: ["postmac", "linux", "mac"]
 ---
 Well as will become clear in another few blog posts, I took ElementaryOS and installed it on my 2012 MBP with 16 gigs RAM and 768 mb SSD storage.  This used to be my full time machine up until a few months ago when I shifted everything to my Macbook Air due to this box becoming flat out unusable as a Ruby dev box.  Even after re-install brew and all the tools, I just can't get gems to reliably build.
 

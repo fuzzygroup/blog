@@ -2,7 +2,7 @@
 layout: post
 title: Marketing 101- Why I Think that Apple Uses Proprietary Connectors
 category: story.radio.weblogs.com
-tags: ["marketing101"]
+tags: ["marketing101", "marketing"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

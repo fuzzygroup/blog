@@ -2,7 +2,7 @@
 layout: post
 title: When Windows Profiles Fail and Why
 category: story.radio.weblogs.com
-tags: []
+tags: ["windows"]
 ---
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

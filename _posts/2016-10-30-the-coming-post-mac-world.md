@@ -2,7 +2,7 @@
 layout: post
 title: The Coming Post Mac World
 category: post_mac
-tags: ["osx", "post_mac"]
+tags: ["osx", "post_mac", "mac"]
 ---
 Given my recent [tweet](https://twitter.com/fuzzygroup/status/791907801824043009) about my absolute dissatisfaction with Apple's new MacBook Pros, specifically the fact that storage and memory are on part with my **Mid 2012 MacBook Pro**, its time to consider options.  I'm partially down the road of a Hackintosh although my build got stalled out and I have a pile of non working pieces waiting for me to get back to them.  But in the event that doesn't work out I need a backup plan.
 
