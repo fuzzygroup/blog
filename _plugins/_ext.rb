@@ -1,1 +1,1 @@
-require 'jekyll/galleries' 
+#require 'jekyll/galleries' 
