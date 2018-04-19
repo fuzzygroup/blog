@@ -6,9 +6,215 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 29 Jan 2018 17:01:49 -0500</pubDate>
-    <lastBuildDate>Mon, 29 Jan 2018 17:01:49 -0500</lastBuildDate>
+    <pubDate>Thu, 19 Apr 2018 09:07:05 -0400</pubDate>
+    <lastBuildDate>Thu, 19 Apr 2018 09:07:05 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Using Elastic Search and Rails for a Compound Query with Text Strings and User ID</title>
+        <description>&lt;p&gt;I’m writing this blog post, my first in quite a while, because I recently had to implement &lt;a href=&quot;https://github.com/elastic/elasticsearch-rails&quot;&gt;ElasticSearch for Rails&lt;/a&gt; for a &lt;a href=&quot;https://www.jobhound.io&quot;&gt;new application I’m building&lt;/a&gt; and I find life in the Elastic world a bit different than I had expected.  If you’re an Elastic Search veteran then you should definitely move along because:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;This is fairly basic&lt;/li&gt;
+  &lt;li&gt;I’m writing this mostly to cement this in my own brain&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Curiously I found very few examples about how to do this type of compound query in Rails and that’s also part of my motivation for writing it.  The closest example I found was in a &lt;a href=&quot;https://stackoverflow.com/questions/19381199/how-to-perform-elasticsearch-query-on-records-from-only-a-certain-user-rails-ti/49900343#49900343&quot;&gt;four year old Stack Overflow post&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-problem-everyone-should-see-only-their-own-data&quot;&gt;The Problem: Everyone Should See Only Their Own Data&lt;/h1&gt;
+
+&lt;p&gt;I have a series of ActiveRecord models that I want to be able to search using Elastic Search.  This can easily be done with this code fragment:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Job.search_user(params[:q])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Given that I was initially the only user on this code base, I didn’t even notice the issue until I thought about deployment.  At which point there was the obligatory light bulb / I’m an idiot moment.  The problem here is that this code searches everyone’s jobs, not just the jobs that &lt;strong&gt;you&lt;/strong&gt; created.  Now since every bit of data encompasses a user_id attribute, this should boil down to two problems:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Getting user_id into the index&lt;/li&gt;
+  &lt;li&gt;Constructing a JSON query for ElasticSearch to execute&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;sidebar-but-what-about-searchkick&quot;&gt;Sidebar: But What About SearchKick&lt;/h1&gt;
+
+&lt;p&gt;I’m sure a number of people are shouting out “Use &lt;a href=&quot;https://github.com/ankane/searchkick&quot;&gt;SearchKick&lt;/a&gt; (dummy)” but whenever I tried to use SearchKick, I got odd errors and I eventually just pulled it from Gemfile.  Given that I’m a long time believer in Ankane’s ChartKick, I’m sure it is me but I still couldn’t make use of it.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-1-getting-userid-into-the-index&quot;&gt;Step 1: Getting user_id into the Index&lt;/h1&gt;
+
+&lt;p&gt;I’ve opted to setup each of my searchable models as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;include Elasticsearch::Model
+include Elasticsearch::Model::Callbacks
+
+settings do
+  mappings dynamic: false do
+    indexes :company^5, type: :text, analyzer: :english
+    indexes :title^5, type: :text, analyzer: :english
+    indexes :why_rejected, type: :text, analyzer: :english
+    indexes :location, type: :text, analyzer: :english
+    indexes :name, type: :text, analyzer: :english
+    indexes :domain, type: :text, analyzer: :english
+    indexes :created_at, type: :date
+    indexes :user_id, type: :text
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The :title^5 bumps the ranking of search results in the title or company attributes by a factor of 5.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-2-constructing-the-json-query&quot;&gt;Step 2: Constructing the JSON query&lt;/h1&gt;
+
+&lt;p&gt;I ended up with a class method on each of my searchable objects like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def self.search_user(query, user)
+  self.search({
+    query: {
+      bool: {
+        must: [
+        {
+          multi_match: {
+            query: query,
+            fields: [:company, :title, :description, :name]
+          }
+        },
+        {
+          match: {
+            user_id: user.id.to_s
+          }
+        }]
+      }
+    }
+  })
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I can call this from my search controller like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@jobs = Job.search_user(params[:q], current_user)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;and get results bound only to the logged in user – exactly what I was looking for.&lt;/p&gt;
+
+&lt;h1 id=&quot;step-3-re-indexing-everything&quot;&gt;Step 3: Re-indexing Everything&lt;/h1&gt;
+
+&lt;p&gt;After making changes to your settings / mappings, you need to re-index everything.  I handle this with a simple rake task like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;namespace :search do
+  # bundle exec rake search:index_all --trace
+  task :index_all =&amp;gt; :environment do
+    klasses = [Job, Note, CoverLetter, Task]
+    klasses.each do |klass|
+      klass.send(:import, :force =&amp;gt; true)
+    end
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This re-indexes every model in full.  You don’t always need this but it is very convenient to have for development when you’re playing with schema changes and the like.&lt;/p&gt;
+
+&lt;h1 id=&quot;recommended-reading&quot;&gt;Recommended Reading&lt;/h1&gt;
+
+&lt;p&gt;I made heavy use of &lt;a href=&quot;https://iridakos.com/tutorials/2017/12/03/elasticsearch-and-rails-tutorial.html&quot;&gt;Iridakos’s excellent tutorial&lt;/a&gt; and I recommend you do too.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 19 Apr 2018 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2018/04/19/using-elastic-search-and-rails-for-a-compound-query-with-text-strings-and-user-id.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2018/04/19/using-elastic-search-and-rails-for-a-compound-query-with-text-strings-and-user-id.html</guid>
+        
+        <category>rails</category>
+        
+        <category>ruby</category>
+        
+        <category>elastic_search</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Converting from FactoryGirl to FactoryBot</title>
+        <description>&lt;p&gt;This blog post talks about the renaming of FactoryGirl to FactoryBoy  and the necessary refactoring that you have to do to a current Rails app to support it.  The official guide to converting your Rails from &lt;a href=&quot;https://github.com/thoughtbot/factory_bot/blob/4-9-0-stable/UPGRADE_FROM_FACTORY_GIRL.md&quot;&gt;FactoryGirl to FactoryBot&lt;/a&gt; is here.  Their solution is a search and replace approach and while that works, I wanted to go thru this step by step.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-0-update-your-gemfile&quot;&gt;Step 0: Update Your Gemfile&lt;/h2&gt;
+
+&lt;p&gt;You need to change your Gemfile from FactoryGirl to FactoryBot:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem &quot;factory_bot_rails&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;step-1-specsupportfactorygirlrb&quot;&gt;Step 1: spec/support/factory_girl.rb&lt;/h2&gt;
+
+&lt;p&gt;This file needs to be renamed from spec/support/factory_girl.rb to spec/support/factory_bot.rb and then the contents changed to reflect it:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;RSpec.configure do |config|
+  config.include FactoryBot::Syntax::Methods
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;step-2-specrailshelperrb&quot;&gt;Step 2: spec/rails_helper.rb&lt;/h2&gt;
+
+&lt;p&gt;Depending on your RSpec configuration you may not need to adjust this file.  In my case I was using FactoryGirl to create an @user variable so I had to adjust this as:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@user = FactoryBot.create(:user, options)    
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;step-3-specfactoriesrb&quot;&gt;Step 3: spec/factories/*.rb&lt;/h2&gt;
+
+&lt;p&gt;Each of your factories needs to be rewritten to call FactoryBot not FactoryGirl so you’ll have a structure something like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FactoryBot.define do
+  factory :user do
+    email { Faker::Internet.email }
+    username Faker::Name.first_name.downcase
+    password &quot;Sample:1&quot;
+    password_confirmation &quot;Sample:1&quot;
+    first_name Faker::Name.first_name
+    last_name Faker::Name.last_name
+    active true
+    confirmed true
+  end
+end    
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;step-4-your-actual-spec-files&quot;&gt;Step 4: Your Actual Spec Files&lt;/h2&gt;
+
+&lt;p&gt;In each of your spec files, you’ll need to change calls from FactoryGirl.create to FactoryBot.create like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@job = FactoryBot.create(:job, :user_id =&amp;gt; User.first.id)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;step-5-also-check-specspechelperrb&quot;&gt;Step 5: Also Check spec/spec_helper.rb&lt;/h2&gt;
+
+&lt;p&gt;You should also check spec/spec_helper.rb as this is a common place where you may have located some Factory* type of stuff.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Overall this was a simpler conversion than I had expected.  Admittedly this was done in a relatively small &lt;a href=&quot;https://www.jobhound.io&quot;&gt;Rails MVP&lt;/a&gt; but it really was pretty painless.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 19 Apr 2018 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2018/04/19/converting-from-factorygirl-to-factorybot.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2018/04/19/converting-from-factorygirl-to-factorybot.html</guid>
+        
+        <category>rails</category>
+        
+        <category>ruby</category>
+        
+        <category>testing</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>Enabling Github Security Alerts on Your Private Repositories</title>
@@ -721,205 +927,6 @@ html = page.body
         
         
         <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Docker Won't Install Libxml</title>
-        <description>&lt;p&gt;One of the most vexing situations in any type of development is when something that you swear you’ve done literally hundreds of times fails to work – at all.  It always turns out to be that what you’re doing is 99.995% the same as something previous – and .005% different.  Last night I went to do a docker-compose build on a new application using my standard stack of Ruby, Rails, Mechanize and the like and I got this, well, crap:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[24/1918]
-Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
-
-   current directory: /usr/local/bundle/gems/libxml-ruby-3.0.0/ext/libxml
-/usr/local/bin/ruby -r ./siteconf20170920-5-mpa6ar.rb extconf.rb
-checking for libxml/xmlversion.h in
-/opt/include/libxml2,/opt/local/include/libxml2,/usr/local/include/libxml2,/usr/include/libxml2...
-no
-*** extconf.rb failed ***
-Could not create Makefile due to some reason, probably lack of necessary
-libraries and/or headers.  Check the mkmf.log file for more details.  You may
-need configuration options.
-
-Provided configuration options:
-       --with-opt-dir
-       --without-opt-dir
-       --with-opt-include
-       --without-opt-include=${opt-dir}/include
-       --with-opt-lib
-       --without-opt-lib=${opt-dir}/lib
-       --with-make-prog
-       --without-make-prog
-       --srcdir=.
-       --curdir
-       --ruby=/usr/local/bin/$(RUBY_BASE_NAME)
-       --with-xml2-config
-       --without-xml2-config
-       --with-xml2-dir
-       --without-xml2-dir
-       --with-xml2-include
-       --without-xml2-include=${xml2-dir}/include
-       --with-xml2-lib
-       --without-xml2-lib=${xml2-dir}/lib
-extconf failure: need libxml2.
-
-   Install the library or try one of the following options to extconf.rb:
-
-     --with-xml2-config=/path/to/xml2-config
-     --with-xml2-dir=/path/to/libxml2
-     --with-xml2-lib=/path/to/libxml2/lib
-     --with-xml2-include=/path/to/libxml2/include
-
-
-To see why this extension failed to compile, please check the mkmf.log which can
-be found here:
-
-/usr/local/bundle/extensions/x86_64-linux/2.3.0-static/libxml-ruby-3.0.0/mkmf.log
-I can't get to the mkmf.log file since that's I think done with a container since its clearly linux not osx.
-No clue why this is happening since I use this same damn gem everwhere
-There was also this info
-
-Gem files will remain installed in /usr/local/bundle/gems/libxml-ruby-3.0.0 for
-inspection.
-Results logged to
-/usr/local/bundle/extensions/x86_64-linux/2.3.0-static/libxml-ruby-3.0.0/gem_make.out
-
-An error occurred while installing libxml-ruby (3.0.0), and Bundler cannot
-continue.
-Make sure that `gem install libxml-ruby -v '3.0.0'` succeeds before bundling.
-ERROR: Service 'web' failed to build: The command '/bin/sh -c bundle install --binstubs' returned a non-zero code: 5
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;One of the major reasons I got into Docker in the first place was to get away from this kind of crap!  Gem builds, particularly where libxml is involved, well, suck.  I spent close to two hours last night tweaking things, updating libraries and such and it was a complete and utter failure.  I even installed Docker on a brand new dev machine and got the exact same result.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-solution&quot;&gt;The Solution&lt;/h1&gt;
-
-&lt;p&gt;This morning I revisited it using the Google query &lt;a href=&quot;https://www.google.com/search?q=docker+won%27t+install+libxml&amp;amp;ie=utf-8&amp;amp;oe=utf-8&quot;&gt;docker won’t install libxml&lt;/a&gt; and found this &lt;a href=&quot;https://github.com/docker-library/php/issues/315&quot;&gt;Github Issue&lt;/a&gt; where they suggest adding libxml2-dev to your Dockerfile.  Thus this:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;RUN apk update &amp;amp;&amp;amp; apk add build-base nodejs mariadb-dev tzdata git&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;becomes&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;RUN apk update &amp;amp;&amp;amp; apk add build-base nodejs mariadb-dev tzdata git libxml2-dev&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;This was hugely surprising to me because according to github, I haven’t touched my Dockerfile in &lt;strong&gt;4 months&lt;/strong&gt; ever since my &lt;a href=&quot;https://diveintodocker.com/&quot;&gt;Docker buddy and guru, Nick&lt;/a&gt;, helped me set it up.  My docker-compose file, however, was just modified 22 days ago. As docker-compose has become ever more important in the Docker world, the basic Dockerfile is something you touch less and less – apparently until something bites you in the proverbial arse.&lt;/p&gt;
-
-&lt;h1 id=&quot;and-heres-why-this-happened&quot;&gt;And Here’s Why this Happened&lt;/h1&gt;
-
-&lt;p&gt;My normal use of libxml, for the past decade or so, is always tied straight to Ruby’s &lt;a href=&quot;https://github.com/sparklemotion/mechanize&quot;&gt;Mechanize gem&lt;/a&gt; which I’ve had running correctly under Docker for the past six months.  And that’s why this was so, so surprising to me.  The mistake that I made was that earlier today I had added &lt;a href=&quot;https://github.com/twilio/twilio-ruby&quot;&gt;twilio-ruby&lt;/a&gt; to my Gemfile and apparently twilio-ruby has different nokogiri dependencies than Mechanize which caused the Dockerfile to need libxml2-dev.  Digging into the twilio-ruby issues, I found &lt;a href=&quot;https://github.com/twilio/twilio-ruby/issues/315&quot;&gt;this issue&lt;/a&gt; which seems to address it.&lt;/p&gt;
-
-&lt;h1 id=&quot;see-also&quot;&gt;See Also&lt;/h1&gt;
-
-&lt;p&gt;My buddy Nick, mentioned above, &lt;a href=&quot;https://nickjanetakis.com/blog/docker-tip-9-installing-popular-packages-on-alpine&quot;&gt;talks about this on his blog&lt;/a&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 21 Sep 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/docker/2017/09/21/docker-won-t-install-libxml.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/docker/2017/09/21/docker-won-t-install-libxml.html</guid>
-        
-        <category>docker</category>
-        
-        <category>rails</category>
-        
-        
-        <category>docker</category>
-        
-      </item>
-    
-      <item>
-        <title>Analyzing iPhone X, iPhone 8 and iPhone 8 Plus</title>
-        <description>&lt;p&gt;I am not an Apple blogger – I leave that to people like &lt;a href=&quot;https://www.daringfireball.net&quot;&gt;Daring Fireball&lt;/a&gt; but I am an avid Apple user.  Between my wife and two sons, all of us have at least one Mac, iPad or iPhone.  I wrote this piece to analyze the differences between the new iPhones and help analyze how to spend what ultimately will be quite a bit of money.&lt;/p&gt;
-
-&lt;p&gt;Note: This is all sourced from the web; my thanks to all the wonderful coverage cited below.  Particular kudos to Quincy Larson for his salient &lt;a href=&quot;https://medium.freecodecamp.org/why-you-should-never-unlock-your-phone-with-your-face-79c07772a28&quot;&gt;FaceID analysis&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;understanding-your-personal-phone-usage&quot;&gt;Understanding Your Personal Phone Usage&lt;/h1&gt;
-
-&lt;p&gt;I think the key to deciding whether or not to upgrade is to understand your personal phone usage and then if the new phones offer &lt;em&gt;you&lt;/em&gt; a benefit.  You &lt;em&gt;don’t have&lt;/em&gt; to upgrade.  Let me repeat that – you &lt;strong&gt;don’t have&lt;/strong&gt; to upgrade.  Personally I am still running a 128 gig iPhone 6.  I never made the leap to the 7 because I use the smaller phone form factor and the camera was mostly unchanged from the 6 to the 7.  Given the importance of the camera to people’s daily lives, I was delighted to see all the camera updates in the iPhone X - it is now the same camera as the 6 plus / 7 plus but in the smaller phone’s form factor (ok the X is a little bit larger but I would deem it insignificant).&lt;/p&gt;
-
-&lt;p&gt;My iPhone usage pattern is simple: it goes &lt;strong&gt;everywhere&lt;/strong&gt; I go.  I carry it constantly and the only place I don’t take it is swimming. I’ve carried it with me when I was:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;working on a roof&lt;/li&gt;
-  &lt;li&gt;cutting down trees&lt;/li&gt;
-  &lt;li&gt;fishing&lt;/li&gt;
-  &lt;li&gt;working out&lt;/li&gt;
-  &lt;li&gt;cooking&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In aggregate, I use my phone more than any other computing device.  I compute less with it than I do a laptop but I use it more (if that makes sense).&lt;/p&gt;
-
-&lt;p&gt;Since I am using an iPhone 6 still, this means that I am now two cycles removed from current.  Consequently my battery life is such that I have to recharge during the day even when I’m not using the GPS, I’m constantly running out of space, the screen is scratched (no clue how that happened).  I am thus in the market for a new phone.&lt;/p&gt;
-
-&lt;h1 id=&quot;new-phones-summarized&quot;&gt;New Phones Summarized&lt;/h1&gt;
-
-&lt;p&gt;There are three new phones:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.apple.com/iphone-8/specs/&quot;&gt;iPhone 8&lt;/a&gt; (similar to the current 7).  $699.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.apple.com/iphone-x/specs/&quot;&gt;iPhone 8 Plus&lt;/a&gt; (similar to the current 7 plus).  $799.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.apple.com/iphone-x/specs/&quot;&gt;iPhone X&lt;/a&gt; (the new phone).  $999.  Slightly bigger physically than the current iPhone 6 / 7 base model but NOT at all as large as the plus model.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The iPhone X is the new hotness with an all new form factor, better camera, &lt;strong&gt;no home button&lt;/strong&gt; and an OLED screen.  Both the iPhone X and iPhone 8 offer wireless charging although Apple’s own wireless charging mat will not ship until “2018”.  Given the AirPod shipping delays this is concerning.  Technically any Qi compatible charging mat can be used but my suspicion is that Apple’s will somehow be better / faster (otherwise why the delay).&lt;/p&gt;
-
-&lt;h1 id=&quot;key-stats&quot;&gt;Key Stats&lt;/h1&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;iPhone X is available for pre-order on October 27 w/ launch on November 3&lt;/li&gt;
-  &lt;li&gt;iPhone X is available in 256 and 64 gig capacities&lt;/li&gt;
-  &lt;li&gt;iPhone X has the &lt;strong&gt;same camera&lt;/strong&gt; as on the 7 Plus.&lt;/li&gt;
-  &lt;li&gt;iPhone X has no home button and no TouchID.&lt;/li&gt;
-  &lt;li&gt;iPhone X claims 2 hours longer battery life than the iPhone 7.&lt;/li&gt;
-  &lt;li&gt;Animoji is exclusive to the iPhone X&lt;/li&gt;
-  &lt;li&gt;iPhone 8 is available for pre-order on September 15th with launch on September 22&lt;/li&gt;
-  &lt;li&gt;iPhone 8 and iPhone 8 Plus offer 12 MP cameras but the 8 Plus also has a telephoto lens.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;See the &lt;a href=&quot;https://www.apple.com/iphone/compare/&quot;&gt;Compare page&lt;/a&gt; for more.&lt;/p&gt;
-
-&lt;h1 id=&quot;qualms-and-a-decision&quot;&gt;Qualms and a Decision&lt;/h1&gt;
-
-&lt;p&gt;My biggest issue with the iPhone X is the lack of the home button and TouchID.  This is a fundamental change to the iPhone interface and one that greatly concerns me.  &lt;a href=&quot;https://medium.freecodecamp.org/why-you-should-never-unlock-your-phone-with-your-face-79c07772a28&quot;&gt;Quincy Larson&lt;/a&gt; raises some excellent points on why you shouldn’t unlock with your face.  Personally I find the need to unlock your phone while driving (GPS, play a podcast, etc) and the new FaceID feature disturbing to say the least.  As the parent of a driving age teenager, I will not be eager to see him get anything with FaceID.  Thankfully the device cost alone will prevent that but in a few years …&lt;/p&gt;
-
-&lt;p&gt;Based on the analysis that I’ve done so far, I’m likely to upgrade to the iPhone X and do it through Apple’s monthly plan.  From what I’ve read, this amounts to about a $12 and change difference over the baseline 7 model and while I don’t like the $999 price, I don’t think that’s too much for something that I use constantly and travels with me literally everywhere I go that isn’t a swimming pool.&lt;/p&gt;
-
-&lt;p&gt;The tipping point that pushed me over the edge to the new iPhone X was the new camera features being available in the iPhone X’s smaller form factor.  Had iPhone X had the same camera as the iPhone 7 then I likely wouldn’t have upgraded at all.  And had the iPhone 7 had the new camera as the iPhone X or 7 Plus, I likely would have decided to stay with the traditional home button design and not risked learning the new gestures.&lt;/p&gt;
-
-&lt;h1 id=&quot;see-also&quot;&gt;See Also&lt;/h1&gt;
-
-&lt;p&gt;Here are some excellent breakdowns:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.apple.com/iphone/compare/&quot;&gt;Apple iPhone Compare Page&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.apple.com/iphone-x/&quot;&gt;Apple iPhone X Page&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.apple.com/iphone-8/&quot;&gt;Apple iPhone 8 Page&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.apple.com/apple-watch-series-3/&quot;&gt;Apple Watch Page&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.apple.com/iphone-x/specs/&quot;&gt;iPhone X Tech Specs&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.apple.com/iphone-8/specs/&quot;&gt;iPhone 8 Tech Specs&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://arstechnica.com/gadgets/2017/09/hands-on-with-the-iphone-x-oled-and-hdr-outshine-everything-else/&quot;&gt;Ars Technica Hands On on the iPhone X&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://arstechnica.com/gadgets/2017/09/apples-radically-different-smartphone-is-called-the-iphone-x/&quot;&gt;Ars Technica on the iPhone X&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.theverge.com/2017/9/12/16287932/apple-iphone-8-plus-photos-video-hands-on&quot;&gt;iPhone 8 and 8 Plus from The Verge&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.theverge.com/2017/9/12/16291244/new-iphone-x-photos-video-hands-on&quot;&gt;iPhone X from the Verge&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.macrumors.com/roundup/iphone-x/&quot;&gt;MacRumors on iPhone X&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.macrumors.com/roundup/iphone-8/&quot;&gt;MacRumors on iPhone 8&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://news.ycombinator.com/item?id=15229317&quot;&gt;Apple Watch Discussion on Hacker News&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Wed, 13 Sep 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/iphone/2017/09/13/analyzing-iphone-x-iphone-7-and-iphone-7-plus.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/iphone/2017/09/13/analyzing-iphone-x-iphone-7-and-iphone-7-plus.html</guid>
-        
-        <category>iphone</category>
-        
-        <category>apple</category>
-        
-        
-        <category>iphone</category>
         
       </item>
     

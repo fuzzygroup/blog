@@ -16,7 +16,7 @@ gem 'exifr'
 group :jekyll_plugins do
   gem "hpricot"
   gem "open_uri_redirections"
-  #gem 'github-pages'
+  gem 'github-pages'
   gem "jekyll-compose"
   gem 'jekyll-seo-tag'
   gem 'jekyll-lunr-js-search'

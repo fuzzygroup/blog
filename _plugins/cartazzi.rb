@@ -13,12 +13,14 @@ module Jekyll
     end
 
     def convert(content)
-      #raise content.inspect
-      #content.upcase
-      output = {}
-      output["body"] = content.to_json
-      output["full_url"] = ''
-      return output.to_json
+      content.upcase
+      # return "fuck"
+      # #raise content.inspect
+      # #content.upcase
+      # output = {}
+      # output["body"] = content.to_json
+      # output["full_url"] = ''
+      # return output.to_json
     end
   end
 end
