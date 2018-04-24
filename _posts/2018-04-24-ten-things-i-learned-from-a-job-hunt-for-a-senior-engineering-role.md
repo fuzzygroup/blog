@@ -145,6 +145,8 @@ The end result of all this was that while I did end up with a full time job, I a
 
 [Sign Up for Job Hound Today!](https://www.jobhound.io)
 
+Also here is [Job Hound on Product Hunt](https://www.producthunt.com/posts/job-hound) in case you want to toss me an upvote.  Thanks in advance.
+
 # Conclusion and What this Means for the Industry and the Job Seeker
 
 I wouldn't underestimate these changes to the hiring process and their impact on the industry as a whole.  Here's how I see things changing:
