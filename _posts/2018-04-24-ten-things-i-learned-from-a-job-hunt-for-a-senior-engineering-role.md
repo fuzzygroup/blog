@@ -143,7 +143,7 @@ You would think that more information than "We all really liked you but we went 
 
 The end result of all this was that while I did end up with a full time job, I also ended up creating a new **free** product, [Job Hound](https://www.jobhound.io) to make applying for tech jobs (generally programming) easier.  Job Hound is a job application tracking system and it puts the job application firmly in charge of the process.  I built it because after I had applied for about 15 jobs, I had no idea where I was in the process and I couldn't give my wife a decent answer about my progress because I simply had no idea.  Job Hound isn't a SAAS product, it is 100% free and I'd encourage you to check it out.
 
-[Sign Up for Job Hound Today!](https://www.jobhound.io)
+[My new free product is Job Hound: Make applying for tech jobs suck less!  Sign Up Today.](https://www.jobhound.io)
 
 Also here is [Job Hound on Product Hunt](https://www.producthunt.com/posts/job-hound) in case you want to toss me an upvote.  Thanks in advance.
 
