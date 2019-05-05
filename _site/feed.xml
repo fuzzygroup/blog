@@ -6,8 +6,8 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 04 May 2019 17:00:41 -0400</pubDate>
-    <lastBuildDate>Sat, 04 May 2019 17:00:41 -0400</lastBuildDate>
+    <pubDate>Sat, 04 May 2019 23:27:27 -0400</pubDate>
+    <lastBuildDate>Sat, 04 May 2019 23:27:27 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -43,6 +43,75 @@
         
         
         <category>health</category>
+        
+      </item>
+    
+      <item>
+        <title>Getting AWS Costs Under Control</title>
+        <description>&lt;p&gt;&lt;em&gt;Note:&lt;/em&gt; AWS is an abbreviation for Amazon Web Services, the Amazon cloud computing platform.&lt;/p&gt;
+
+&lt;p&gt;I am presently responsible for a monthly AWS budget that is running about $20,000 per month.  And that is up from about $11,000 per month only eight months ago.  I was recently tasked with bringing that down through &lt;em&gt;reserved instances&lt;/em&gt; and I thought that writing up the learnings from doing a deep dive into reserved instances and AWS Cost Control was worth writing up.  Even though I’ve worked with AWS now since 2008, I found the results of my research pretty damn surprising.&lt;/p&gt;
+
+&lt;p&gt;I should note that when I say “responsible”, I mean that I have technical / implementation responsibility in my role as a Senior Software Engineer. I’m not actually a cost control / accounting person in any way.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-are-reserved-instances&quot;&gt;What are Reserved Instances&lt;/h2&gt;
+
+&lt;p&gt;The first thing to understand is that Reserved Instances are poorly named, very poorly named.  Reserved instances are nothing more than &lt;em&gt;coupons&lt;/em&gt; for the use of an instance of the type of the coupon.  You actually aren’t reserving a specific instance but instead saying to Amazon “Ok I’ll buy this much of instance type X”.  And it is important to understand that reserved instances aren’t a simple volume discount.  They are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Massively complex and confusing&lt;/li&gt;
+  &lt;li&gt;Expensive, requiring an up front payment to get the maximum discount&lt;/li&gt;
+  &lt;li&gt;Available in multiple flavors such as convertible and non convertible&lt;/li&gt;
+  &lt;li&gt;Complex enough that after researching them in depth you will want to drink and drink heavily&lt;/li&gt;
+  &lt;li&gt;Such a big deal that there actually is a secondary market where you can resell and purchase reserved instances&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;When I looked into how much reserved instances could save us, I generally found between a 15% to 20% savings with our current approach to things.  Given our current spending rate, that could easily amount to nearly $40,000 per year.   And while that’s nothing to sneer at, my research into reserved instances told me to keep digging.&lt;/p&gt;
+
+&lt;p&gt;The most interesting thing about reserved instances with respect  to AWS cost control is that universally the recommendation I found was this: &lt;em&gt;Don’t start with reserved instances&lt;/em&gt;.  Even though reserved instances directly reduce your costs, you should never start with reserved instances.  And that brings us to the next section, AWS Cost Control Strategy.
+￼
+## AWS Cost Control Strategy&lt;/p&gt;
+
+&lt;p&gt;After a considerable amount of research, I came up with the following approach for reducing AWS costs. Please note that where I say “we”, you should substitute your own organization.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;We need to designate someone as the person responsible for managing / monitoring AWS costs.  Right now, for example, we have a quarter of a million dollar budgetary line item that &lt;em&gt;no one&lt;/em&gt; is responsible for.  This isn’t a technical problem; this is an accounting problem.&lt;/li&gt;
+  &lt;li&gt;We need to correctly tag all instances by name, by product family, by application and more so that there is the metadata to properly examine and drill into costs using the AWS or third party accounting tools.&lt;/li&gt;
+  &lt;li&gt;We need to implement a lights on / lights off strategy where you turn off resources when they aren’t in use.  As an example, our staging and training environments clusters of machines only need to be available some of the time (staging needs to be available Mon - Friday, 9 to 6 EST; training needs to be available only when specifically scheduled).  Right now all those environments are powered up and available 24x7x365.  Admittedly these aren’t as many boxes as our production environment but if you don’t have something turned on, you’re not paying for it.&lt;/li&gt;
+  &lt;li&gt;We need to implement a Right Sizing strategy where we dig into machine utilization and figure out if we’re actually using the correctly sized instances or if we are over spending by using machines that are too large.&lt;/li&gt;
+  &lt;li&gt;We should only implement reserved instances when &lt;em&gt;all&lt;/em&gt; of the above steps are implemented.  Otherwise you are over buying capacity that you likely don’t need.  Also it is not widely understood that you can buy reserved instances not only for your EC2 boxes but also for your RDS boxes; keep that firmly in mind when you plan your reserved instance purchases.&lt;/li&gt;
+  &lt;li&gt;Finally we need to realize that AWS Cost Management is a task you need to do regularly whether that is monthly, quarterly or annually.  It needs to be not only someone’s actual job (or portion of their job) but as an activity, it needs to be done consistently.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;tools-and-recommended-reading&quot;&gt;Tools and Recommended Reading&lt;/h2&gt;
+
+&lt;p&gt;Here are some tools to investigate:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://aws.amazon.com/solutions/instance-scheduler/&quot;&gt;AWS Instance Scheduler&lt;/a&gt; - This is a code based tool to configure turn on / turn off of your cloud instances&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.parkmycloud.com&quot;&gt;Park My Cloud&lt;/a&gt; - This is a tool which can turn on / off your cloud instances automatically with an easy user interface&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.cloudhealthtech.com&quot;&gt;CloudHealth&lt;/a&gt; - this is an AWS management and analytics tool with specific features for reserved instance analysis&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.cloudability.com&quot;&gt;CloudAbility&lt;/a&gt; - this is an AWS management and analytics tool with specific features for reserved instance analysis&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The CloudAbility and CloudHealth tools are seriously pricey, they are generally priced as a percentage of your AWS bill, but they have outstanding analytics features and the ability  to analyze your reserved instance needs more powerfully than the built in AWS tools for this.&lt;/p&gt;
+
+&lt;p&gt;Here are some of the better research materials to investigate:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=3jhKM1rgpEw&quot;&gt;AWS Cost Optimization Levers, Tools and Strategies&lt;/a&gt;.  This is an excellent video from the AWS Australia branch.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=L5rlqaC6uNs&quot;&gt;Saving at Scale with Reserved Instances by Cloudability&lt;/a&gt;.  This is also excellent and it illustrates two key points - a) that reserved instances can actually increase your bill and b) that you really need to have someone responsible for AWS cost control on an ongoing basis&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://get.cloudability.com/rs/064-CAC-529/images/the-complete-guide-to-saving-with-aws-reserved-instances-ebook.pdf&quot;&gt;Reserved Instance Ebook&lt;/a&gt;.  A great read.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 04 May 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/aws/2019/05/04/getting-aws-costs-under-control.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/aws/2019/05/04/getting-aws-costs-under-control.html</guid>
+        
+        <category>aws</category>
+        
+        
+        <category>aws</category>
         
       </item>
     
@@ -820,64 +889,6 @@ drwxr-xr-x  156 sjohnson  staff   5.2K Oct  8 07:12 Session/
         
         
         <category>text</category>
-        
-      </item>
-    
-      <item>
-        <title>The Game Nanny Story Or When Life Gives You Lemons</title>
-        <description>&lt;p&gt;I have built a lot of products in my career:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;search engines&lt;/li&gt;
-  &lt;li&gt;blogging tools&lt;/li&gt;
-  &lt;li&gt;podcasting tools&lt;/li&gt;
-  &lt;li&gt;online learning systems&lt;/li&gt;
-  &lt;li&gt;hypertext authoring tools&lt;/li&gt;
-  &lt;li&gt;email marketing aka spamming tools&lt;/li&gt;
-  &lt;li&gt;Even a web UI to calculate radiation doses for prostate cancer&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;But the one thing that I’ve stayed resolutely way from is &lt;em&gt;gaming&lt;/em&gt;.  And, despite that, three days ago, I launched a product named &lt;strong&gt;Game Nanny&lt;/strong&gt; so what happened?&lt;/p&gt;
-
-&lt;p&gt;The short answer is &lt;strong&gt;life happened&lt;/strong&gt; or as I refer to it with my wife, &lt;em&gt;When Life Gives You Lemons&lt;/em&gt;.  Here’s a snippet from the home page that tells the tale:&lt;/p&gt;
-
-&lt;div style=&quot;margin-left: 50px; margin-right: 50px; background-color: #f6f8fa; padding: 16px;overflow: auto;font-size: 85%;line-height: 1.45;background-color: #f6f8fa;border-radius: 3px;&quot;&gt; 
-&lt;p&gt;Hi,&lt;/p&gt;
-
-&lt;p&gt;My name is Scott and I'm a parent, I bet a lot like you. I recently discovered that one of my children has been using my credit card to purchase things in the XBox store -- a lot of things. That $347.82 bill I mentioned above, well, that's true -- and it was just the tip of the iceberg.&lt;/p&gt;
-
-&lt;p&gt;I'm also a software developer and I'll admit that while I realized immediately that I had a parenting problem, this was also an opportunity -- and the very next morning I started building Game Nanny.&lt;/p&gt;
-
-&lt;p&gt;As parents, even if we don't like video games, we should admit that our kids love them -- but they can be addictive and lead to crazy bad behavior. I'm not the first parent to be surprised by his kid's gaming spending and I won't be the last.&lt;/p&gt;
-
-&lt;p&gt;Use Game Nanny to take control of your kid's XBox bad habits. Don't be surprised again!&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;And that’s the honest to god truth as how Game Nanny came into being.  To summarize:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;I saw my kid had made a mistake (and, yes, a big one)&lt;/li&gt;
-  &lt;li&gt;I realized that this wasn’t just a parenting problem, that it was an opportunity&lt;/li&gt;
-  &lt;li&gt;That realization took about all of a minute.&lt;/li&gt;
-  &lt;li&gt;After that first minute, I had a pretty good idea of what the product was&lt;/li&gt;
-  &lt;li&gt;Two weeks later I had a functional product&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The bottom line for anyone that either perceives themself to be an entrepreneur or wants to be is that when life gives you a problem, you can look at as just that.  Or you can look at your problem as “Is there an opportunity here?” and then, if you think the answer is “Yes” then build a business around it.&lt;/p&gt;
-
-</description>
-        <pubDate>Fri, 06 Oct 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/startup/2017/10/06/the-game-nanny-story-or-when-life-gives-you-lemons.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/startup/2017/10/06/the-game-nanny-story-or-when-life-gives-you-lemons.html</guid>
-        
-        <category>game_nanny</category>
-        
-        <category>startup</category>
-        
-        
-        <category>startup</category>
         
       </item>
     
