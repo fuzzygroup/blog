@@ -6,9 +6,62 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 04 May 2019 23:27:27 -0400</pubDate>
-    <lastBuildDate>Sat, 04 May 2019 23:27:27 -0400</lastBuildDate>
+    <pubDate>Tue, 07 May 2019 15:59:38 -0400</pubDate>
+    <lastBuildDate>Tue, 07 May 2019 15:59:38 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>HTTPS And Your Custom Domain on Github Pages</title>
+        <description>&lt;p&gt;Github for sometime now has supported https for *.github.io (aka GitHub pages).  And they have allowed it for custom domains as well.  However I was never able to figure this out until yesterday.  Here was the magic process and well as some references.&lt;/p&gt;
+
+&lt;p&gt;My issue was that I had three “sites” hosted on GitHub pages:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.fuzzyblog.io/&quot;&gt;http://www.fuzzyblog.io/&lt;/a&gt; - my personal home page and resume&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.fuzzyblog.io/blog/&quot;&gt;http://www.fuzzyblog.io/blog/&lt;/a&gt; - my blog&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.fuzzyblog.io/recipes/&quot;&gt;http://www.fuzzyblog.io/recipes/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I tend to look at my online presence mostly as my blog / recipes.  I had actually forgotten that the root personal home page site even existed.  And the issues preventing me from having https working amounted to this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Changing the A records on my DNS provider (Amazon’s Route 53)&lt;/li&gt;
+  &lt;li&gt;Waiting 24 hours for a certificate to be generated&lt;/li&gt;
+  &lt;li&gt;Clicking the Enforce Https option on the GitHub Settings for the repo that drives fuzzyblog.io.  This has to be done first&lt;/li&gt;
+  &lt;li&gt;Clicking the Enforce Https option on the GitHub Settings for all other GitHub Pages repos (for me this was blog and recipes)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;: If you can’t remember which git repo drives your GitHub Pages, look in the directory and file .git/config. It will be right there; look for a url / .git filename.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;: In case you were wondering why you want https, there are lots of reasons but the best is that it should give your content at least a small boost in page rank.&lt;/p&gt;
+
+&lt;h2 id=&quot;recommended-reading&quot;&gt;Recommended Reading&lt;/h2&gt;
+
+&lt;p&gt;Here are the recommended tech notes from Github on all this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://help.github.com/en/articles/about-supported-custom-domains&quot;&gt;Supported Custom Domains&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://help.github.com/en/articles/adding-or-removing-a-custom-domain-for-your-github-pages-site&quot;&gt;Adding Custom Domains&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://help.github.com/en/articles/troubleshooting-custom-domains#https-errors&quot;&gt;Troubleshooting Custom Domains&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.blog/2018-05-01-github-pages-custom-domains-https/&quot;&gt;Press Release&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 07 May 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/https/2019/05/07/https-and-your-custom-domain-on-github-pages.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/https/2019/05/07/https-and-your-custom-domain-on-github-pages.html</guid>
+        
+        <category>https</category>
+        
+        <category>blogging</category>
+        
+        <category>GitHub</category>
+        
+        <category>git</category>
+        
+        
+        <category>https</category>
+        
+      </item>
     
       <item>
         <title>Managing An Attack of Hives</title>
@@ -761,134 +814,6 @@ sudo rm -rf /Library/Filesystems/kbfuse.fs
         
         
         <category>osx</category>
-        
-      </item>
-    
-      <item>
-        <title>Forensic Computing 1 - Finding TextMate Untitled Documents</title>
-        <description>&lt;p&gt;So my Mac crashed again last night.  This is now roughly a two to three times per week occurrence.  Once upon a time I would have sworn like a sailor about this but I now, sadly, accept it.  If you’re curious about OSX crashes and kernel panics, I dig into &lt;a href=&quot;http://fuzzyblog.io/blog/osx/2017/10/08/forensic-computing-2-kernel-panics-and-kexts.html&quot;&gt;them here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://macromates.com/&quot;&gt;TextMate&lt;/a&gt; is the programming editor and writing tool I use and normally after a crash, it automatically opens all the documents I previously had open.  And when I say “all”, I mean everything, even the things that weren’t ever formally saved i.e. “untitled 107”, “untitled 132”, etc.  Because TextMate doesn’t force met to assign a file, I’m able to treat TextMate windows as virtual pieces of paper, virtual post-its if you will and just drop stuff into them.  I only bother to save a file when I actually need to make it long term persistent.  And an awful lot of the time, that never happens.  Sometimes these the contents of these windows flows into a &lt;a href=&quot;https://gist.github.com/&quot;&gt;gist&lt;/a&gt; which then gets emailed to someone.&lt;/p&gt;
-
-&lt;p&gt;Now this bizarre “don’t bother to save the file” approach is well and good until it &lt;strong&gt;breaks&lt;/strong&gt;.  Last night, just before my machine crashed, I know for a fact that I was in &lt;strong&gt;untitled 30&lt;/strong&gt;.  But when I restarted my machine, I noticed that untitled 30 wasn’t in my Window list:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/textmate_window_list.png&quot; alt=&quot;/blog/textmate_window_list.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This literally sent a chill down my spine – if untitled 30 isn’t present then:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Where did it go?&lt;/li&gt;
-  &lt;li&gt;How often has this happened?&lt;/li&gt;
-  &lt;li&gt;What other untitled xyz files have I unknowingly lost?&lt;/li&gt;
-  &lt;li&gt;Where on the blankety, blank computer is untitled 30 stored so I can bloody well find it?&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Questions 1 and 2 simply cannot be answered but questions 3 and 4 are actually answerable.  If I can simply find out where TextMate stores its untitled files then I can browse the directory and find them.  I should also then be able to find untitled 30.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-1-google&quot;&gt;Step 1: Google&lt;/h1&gt;
-
-&lt;p&gt;Whenever you are trying to understand something like this Google is generally your first place to look.  Unfortunately these googles didn’t really yield anything:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.google.com/search?tbs=li:1&amp;amp;q=where+does+textmate+store+untitled+files&quot;&gt;where does textmate store untitled files&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.google.com/search?tbs=li:1&amp;amp;q=where+does+textmate+store+untitled+files&quot;&gt;textmate untitled&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;step-2-spotlight&quot;&gt;Step 2: Spotlight&lt;/h1&gt;
-
-&lt;p&gt;OSX’s Spotlight, the system level search engine was next.  This too yielded nothing, squat, &lt;a href=&quot;http://www.urbandictionary.com/define.php?term=bupkus&quot;&gt;bupkus&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-3-alfred&quot;&gt;Step 3: Alfred&lt;/h1&gt;
-
-&lt;p&gt;The filename search engine in &lt;a href=&quot;https://www.alfredapp.com/&quot;&gt;Alfred&lt;/a&gt; which you trigger with your Alfred hotkey plus the keyword open and then what you want to search yielded nothing.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-4-mdfind&quot;&gt;Step 4: mdfind&lt;/h1&gt;
-
-&lt;p&gt;Another way to use Spotlight is to trigger the mdfind utility from the command line and look for the filename untitled 30 directly by typing:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;mdfind “untitled”&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The output of mdfind is a list of filenames.  But, unfortunately, mdfind isn’t, by default, for filenames which means that it finds the word untitled in the &lt;em&gt;body of documents&lt;/em&gt; where as we want it in the filename itself. Just to be sure we can feed the mdfind’s output thru grep to winnow it down:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;table&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;mdfind untitled&lt;/td&gt;
-        &lt;td&gt;grep untitled&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;There is a -name option to mdfind but that also returned nothing:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;mdfind -name untitled&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;Cool as Hell Sidenote&lt;/strong&gt;: In looking up &lt;a href=&quot;http://osxdaily.com/2017/08/24/find-all-screenshots-mac/&quot;&gt;details on mdfind&lt;/a&gt;, I found this very, very cool command line:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;mdfind kMDItemIsScreenCapture:1&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;What that does is find every screenshot you’ve taken on your Mac.  And I don’t mean files named “Screen Shot xyz” but any screenshot you’ve ever taken, even ones you’ve moved to other directories, renamed, etc.  Wow.&lt;/p&gt;
-
-&lt;h1 id=&quot;step-5-look-elsewhere&quot;&gt;Step 5: Look Elsewhere&lt;/h1&gt;
-
-&lt;p&gt;Now the absence of results in Steps 2, 3 and 4 gave me a strong indication that what I was looking for wasn’t in an indexed location and that gave me a clue.  Spotlight  and mdfind are both generally looking in the files for the user but NOT in the application level files.  OSX has a key directory structure for users that generally isn’t indexed:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;/Users/sjohnson/Library/Application Support/&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;And I know for a fact there is a TextMate directory below it:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;/Users/sjohnson/Library/Application Support/TextMate/&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;What I didn’t know was what was below the TextMate directory:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ls -l &quot;/Users/sjohnson/Library/Application Support/TextMate/&quot;
-total 6488
-drwxr-xr-x   10 sjohnson  staff   340B Jan  1  2017 Bundles/
--rw-r--r--    1 sjohnson  staff   732K Oct  8 05:40 ClipboardHistory.db
--rw-r--r--    1 sjohnson  staff    32K Oct  8 05:40 ClipboardHistory.db-shm
--rw-r--r--    1 sjohnson  staff   1.7M Oct  8 07:12 ClipboardHistory.db-wal
--rw-r--r--    1 sjohnson  staff   1.1K Sep 30 08:46 Global.tmProperties
-drwxr-xr-x    5 sjohnson  staff   170B Oct  7 06:31 Managed/
--rw-r--r--    1 sjohnson  staff   688K Oct  8 05:51 RecentProjects.db
-drwxr-xr-x    4 sjohnson  staff   136B Nov 20  2016 Ruby/
-drwxr-xr-x  156 sjohnson  staff   5.2K Oct  8 07:12 Session/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And, yep, &lt;strong&gt;bingo&lt;/strong&gt;, &lt;em&gt;Session/&lt;/em&gt;.  A quick look there showed me all my untitled documents including:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ls -l /Users/sjohnson/Library/Application\ Support/TextMate/Session/untitled\ 30*
-
--rw-r--r--@ 1 sjohnson  staff   5.3K Sep 13 04:23 /Users/sjohnson/Library/Application Support/TextMate/Session/untitled 30.txt
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And now that I have a path I can just type open “/Users/sjohnson/Library/Application\ Support/TextMate/Session” and get a Finder window of all my untitled documents like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/blog/assets/text_mate_session.png&quot; alt=&quot;text_mate_session.png&quot; /&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sun, 08 Oct 2017 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/text/2017/10/08/forensic-computing-1-finding-textmate-untitled-documents.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/text/2017/10/08/forensic-computing-1-finding-textmate-untitled-documents.html</guid>
-        
-        <category>textmate</category>
-        
-        <category>computer_forensics</category>
-        
-        
-        <category>text</category>
         
       </item>
     

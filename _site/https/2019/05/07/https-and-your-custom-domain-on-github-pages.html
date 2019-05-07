@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Thanks Mike!</title>
-  <meta name="description" content="Thanks Mike!">
+  <title>HTTPS And Your Custom Domain on Github Pages</title>
+  <meta name="description" content="Github for sometime now has supported https for *.github.io (aka GitHub pages).  And they have allowed it for custom domains as well.  However I was never ab...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/misc/2005/10/30/thanks-mike.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/https/2019/05/07/https-and-your-custom-domain-on-github-pages.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -39,12 +39,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Thanks Mike!">
+  <meta name="twitter:title" content="HTTPS And Your Custom Domain on Github Pages">
 
   
     <meta name="twitter:description"
-      content="Thanks Mike!
-">
+      content="Github for sometime now has supported https for *.github.io (aka GitHub pages).  And they have allowed it for custom domains as well.  However I was never able to figure this out until yesterday.  ...">
   
 
   
@@ -150,14 +149,46 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Thanks Mike!</h1>
-    <p class="I'll"><time datetime="2005-10-30T00:34:12-04:00" itemprop="datePublished">Oct 30, 2005</time> 
-       • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{"login"=>"fuzzyblog", "email"=>"eric@appdata.com", "display_name"=>"fuzzyblog", "first_name"=>"Scott", "last_name"=>"Johnson"}</span></span></p> 
+    <h1 class="post-title" itemprop="name headline">HTTPS And Your Custom Domain on Github Pages</h1>
+    <p class="I'll"><time datetime="2019-05-07T00:00:00-04:00" itemprop="datePublished">May 7, 2019</time> 
+      </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>Thanks <a href="http://airhead.typepad.com/">Mike!</a></p>
+    <p>Github for sometime now has supported https for *.github.io (aka GitHub pages).  And they have allowed it for custom domains as well.  However I was never able to figure this out until yesterday.  Here was the magic process and well as some references.</p>
+
+<p>My issue was that I had three “sites” hosted on GitHub pages:</p>
+
+<ul>
+  <li><a href="http://www.fuzzyblog.io/">http://www.fuzzyblog.io/</a> - my personal home page and resume</li>
+  <li><a href="http://www.fuzzyblog.io/blog/">http://www.fuzzyblog.io/blog/</a> - my blog</li>
+  <li><a href="http://www.fuzzyblog.io/recipes/">http://www.fuzzyblog.io/recipes/</a></li>
+</ul>
+
+<p>I tend to look at my online presence mostly as my blog / recipes.  I had actually forgotten that the root personal home page site even existed.  And the issues preventing me from having https working amounted to this:</p>
+
+<ul>
+  <li>Changing the A records on my DNS provider (Amazon’s Route 53)</li>
+  <li>Waiting 24 hours for a certificate to be generated</li>
+  <li>Clicking the Enforce Https option on the GitHub Settings for the repo that drives fuzzyblog.io.  This has to be done first</li>
+  <li>Clicking the Enforce Https option on the GitHub Settings for all other GitHub Pages repos (for me this was blog and recipes)</li>
+</ul>
+
+<p><em>Note</em>: If you can’t remember which git repo drives your GitHub Pages, look in the directory and file .git/config. It will be right there; look for a url / .git filename.</p>
+
+<p><em>Note</em>: In case you were wondering why you want https, there are lots of reasons but the best is that it should give your content at least a small boost in page rank.</p>
+
+<h2 id="recommended-reading">Recommended Reading</h2>
+
+<p>Here are the recommended tech notes from Github on all this:</p>
+
+<ul>
+  <li><a href="https://help.github.com/en/articles/about-supported-custom-domains">Supported Custom Domains</a></li>
+  <li><a href="https://help.github.com/en/articles/adding-or-removing-a-custom-domain-for-your-github-pages-site">Adding Custom Domains</a></li>
+  <li><a href="https://help.github.com/en/articles/troubleshooting-custom-domains#https-errors">Troubleshooting Custom Domains</a></li>
+  <li><a href="https://github.blog/2018-05-01-github-pages-custom-domains-https/">Press Release</a></li>
+</ul>
 
   </div>
   
@@ -169,8 +200,20 @@
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io//blog/tag.html#misc" >
-      #misc
+    <a href="http://fuzzyblog.io//blog/tag.html#https" >
+      #https
+    </a>
+    
+    <a href="http://fuzzyblog.io//blog/tag.html#blogging" >
+      #blogging
+    </a>
+    
+    <a href="http://fuzzyblog.io//blog/tag.html#GitHub" >
+      #GitHub
+    </a>
+    
+    <a href="http://fuzzyblog.io//blog/tag.html#git" >
+      #git
     </a>
     
   </p>
@@ -181,8 +224,26 @@
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io//blog/tag.html#misc" class="link_button">
-         misc
+       <a href="http://fuzzyblog.io//blog/tag.html#https" class="link_button">
+         https
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io//blog/tag.html#blogging" class="link_button">
+         blogging
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io//blog/tag.html#GitHub" class="link_button">
+         GitHub
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io//blog/tag.html#git" class="link_button">
+         git
        </a>
      </li>
      
