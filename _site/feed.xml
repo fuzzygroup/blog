@@ -6,8 +6,8 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 09 May 2019 12:46:37 -0400</pubDate>
-    <lastBuildDate>Thu, 09 May 2019 12:46:37 -0400</lastBuildDate>
+    <pubDate>Thu, 09 May 2019 12:52:11 -0400</pubDate>
+    <lastBuildDate>Thu, 09 May 2019 12:52:11 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -87,36 +87,7 @@ feature/ATT-1551-a - Debugging hooks for understanding this bit of madness
   &lt;li&gt;Figuring out that we weren’t in a Rails environment was one of those face palm moments — you’ve seen the meme, the one with Picard.  I’m more than a bit embarrassed to point out how long that took so we’re just going to move on past that issue.&lt;/li&gt;
   &lt;li&gt;Once we recognized that Figaro wasn’t available and that we would never get a value for our environment variable key, it wasn’t hard to write our own YAML reading routine.  That went thru a deploy cycle and we were fairly certain that it would be solved any minute now — what a crock!&lt;/li&gt;
   &lt;li&gt;What we found was that even though our YAML file had a structure of KEY_NAME=TRUE, we weren’t getting back TRUE, we were getting back true.  So, of course, our if test which matched on ‘TRUE’ would fail.&lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;At this point we started testing using the IRB (remember you aren’t using Rails) console and YAML parsing.  And this led us to realize that YAML has automatic type coercion for a range of possible true / false values. The first clue was when my editor showed color coding on the YAML value we had, but not when we changed it to something odd like “ASDF”.  And we ultimately found the &lt;a href=&quot;https://yaml.org/type/bool.html&quot;&gt;YAML spec&lt;/a&gt; which takes about booleans.  Who even knew there was a spec for YAML???  Any of these in a YAML file will automatically get coerced into a boolean: *y&lt;/td&gt;
-          &lt;td&gt;Y&lt;/td&gt;
-          &lt;td&gt;yes&lt;/td&gt;
-          &lt;td&gt;Yes&lt;/td&gt;
-          &lt;td&gt;YES&lt;/td&gt;
-          &lt;td&gt;n&lt;/td&gt;
-          &lt;td&gt;N&lt;/td&gt;
-          &lt;td&gt;no&lt;/td&gt;
-          &lt;td&gt;No&lt;/td&gt;
-          &lt;td&gt;NO&lt;/td&gt;
-          &lt;td&gt;true&lt;/td&gt;
-          &lt;td&gt;True&lt;/td&gt;
-          &lt;td&gt;TRUE&lt;/td&gt;
-          &lt;td&gt;false&lt;/td&gt;
-          &lt;td&gt;False&lt;/td&gt;
-          &lt;td&gt;FALSE&lt;/td&gt;
-          &lt;td&gt;on&lt;/td&gt;
-          &lt;td&gt;On&lt;/td&gt;
-          &lt;td&gt;ON&lt;/td&gt;
-          &lt;td&gt;off&lt;/td&gt;
-          &lt;td&gt;Off&lt;/td&gt;
-          &lt;td&gt;OFF*&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
+  &lt;li&gt;At this point we started testing using the IRB (remember you aren’t using Rails) console and YAML parsing.  And this led us to realize that YAML has automatic type coercion for a range of possible true / false values. The first clue was when my editor showed color coding on the YAML value we had, but not when we changed it to something odd like “ASDF”.  And we ultimately found the &lt;a href=&quot;https://yaml.org/type/bool.html&quot;&gt;YAML spec&lt;/a&gt; which takes about booleans.  Who even knew there was a spec for YAML???  Any of these in a YAML file will automatically get coerced into a boolean: &lt;em&gt;yY, yes, Yes, YES, n, N, no, No, NO, true, True, TRUE, false, False, FALSE, on, On, ON, off, Off, OFF&lt;/em&gt;&lt;/li&gt;
   &lt;li&gt;I don’t know about any other developer but to hell with that noise!  I changed our value from TRUE to 1.  And because I wasn’t sure if that would come to me as a value or a string, I ended up with a logical check like this: [1,”1”].include?(ENV[‘DELETE_TMP_FILE_DAYS’]).&lt;/li&gt;
   &lt;li&gt;The next hurdle was that we realized that it was ambiguous where we should be looking for the YAML file.  The backtrace indicated that the YAML file should be found on the box where Capistrano was executing but logically because the post deploy hook executes each node being deployed, it should be on that machine.  And given that there was an 11 minute minimum cycle time per attempt to figure this out, we simply said to heck with it and tested for each directory and read from whichever existed.  And don’t even bring up the fact that the exception Ruby throws on an invalid directory isn’t Errno::ENOENT but instead a system call exception.  Sheesh.&lt;/li&gt;
   &lt;li&gt;Once we finally got past nothing more than the boolean test of whether or not to run this (remember that’s all we’ve been trying to do so far, isolate a boolean from inside the code base to an environment variable), we found the code failing entirely.  And this time the failure was weird and unclear.  It had the feeling that Capistrano itself was swallowing at least one exception.  Doing a read of the code line by line made is realize that the date time math was using a Rails-ism, 10.days.  And, remember, we aren’t in Rails now (even though this is a Rails app), this is a Capistrano post deploy hook so we are really running an an IRB context without ActiveSupport.&lt;/li&gt;
