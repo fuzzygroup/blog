@@ -6,9 +6,237 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 09 May 2019 11:53:15 -0400</pubDate>
-    <lastBuildDate>Thu, 09 May 2019 11:53:15 -0400</lastBuildDate>
+    <pubDate>Thu, 09 May 2019 12:34:43 -0400</pubDate>
+    <lastBuildDate>Thu, 09 May 2019 12:34:43 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>So You Want to Delete Temp Files - An Excursion into Software Engineering Suckitude</title>
+        <description>&lt;p&gt;So today was a day of epic software engineering failure.  Let’s consider, just for a second, this string of commit messages:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;feature/ATT-1551-f - And goodbye ... it all goes away like the bad dream that it was
+feature/ATT-1551-e - It is called a constant; sigh; oh and an entire rewrite
+feature/ATT-1551-d - And let's go again - there are still hours in the day to get this wrong ...
+feature/ATT-1551-c - hopefully, possibly the last iteration on this humiliating bit of work
+feature/ATT-1551-b - Argggh !!!!
+feature/ATT-1551-a - Debugging hooks for understanding this bit of madness
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Any experienced engineer can read between the lines of that level of &lt;em&gt;gallows humor&lt;/em&gt; in these commit messages and know, I mean &lt;em&gt;know&lt;/em&gt;, what’s coming.  This whole blog post is an illustration of how something that is drop dead simple can really, really bite you in the ass.  And you can take away from this either a smug feeling of “I’m smarter than that” or you are raising a glass to me somewhere and saying “you poor damn bastard, there, there”.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-problem&quot;&gt;The Problem&lt;/h2&gt;
+
+&lt;p&gt;This all started with the git branch &lt;em&gt;feature/ATT-1551&lt;/em&gt; which added a feature to our architecture which cleaned up straggling temp files that had been left behind by a variety of different processes that generated data locally that was then queued up to S3.  Yes, yes, yes I know fix the cause not the symptom but that was out of the scope of the defined work; you know the drill.&lt;/p&gt;
+
+&lt;p&gt;We are a Rails application and I made the decision to implement this as a Capistrano post deploy hook that executed a Capistrano rake task.  That was, unbeknownst to me, my &lt;em&gt;first&lt;/em&gt; mistake.  The specification on the ticket said that the need was to clean up any files in shared/tmp that were older than 10 days.  My initial pass on this ended up being about maybe 25 lines of ruby implemented in lib/capistrano/tasks/tmp_files.rake.&lt;/p&gt;
+
+&lt;h2 id=&quot;and-heres-where-it-all-began&quot;&gt;And Here’s Where It All Began&lt;/h2&gt;
+
+&lt;p&gt;My code went thru the pull review process just fine until there was a comment that said something to the effect of “Wouldn’t it be better if the 10 days was not fixed in the code but could be adjustable from outside so we didn’t have to redeploy if we needed a different amount of days”.  That sounds logical, right?  The pull request discussion thread diverged between passing in a parameter or using an environment variable and it ultimately converged on an environment variable because a parameter didn’t work since this was already buried inside an Ansible based deploy engine that executed a Capistrano task (that then called a post deploy hook).  So with that decision, the descent into madness truly began.  And if my description of Ansible spawning Capistrano spawning a post deploy hook feels virtually Cthulian to you, well, &lt;em&gt;yep&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Sidebar:&lt;/em&gt; I’d love to tell you that all of this was easily resolved but that wouldn’t be fun, now would it?  Instead, while the initial code was written by me, getting this actually debugged and solved took two senior software engineers most of a day. And it is an excellent illustration of just how complex even something simple can be in today’s world.  The second engineer got pulled in right about here, after the pull review process centered around environment variables.&lt;/p&gt;
+
+&lt;h2 id=&quot;nothing-is-actually-simple-anymore&quot;&gt;Nothing is Actually Simple Anymore&lt;/h2&gt;
+
+&lt;p&gt;We have a file of environment variables that are automatically defined by our application using the &lt;a href=&quot;https://github.com/laserlemon/figaro&quot;&gt;Figaro gem&lt;/a&gt;.  Normally I’m not an environment var fan but this really works well so I followed our normal process for this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Go into our Ansible stack&lt;/li&gt;
+  &lt;li&gt;Decrypt the environment variable files (these are YAML files and that becomes relevant later on)&lt;/li&gt;
+  &lt;li&gt;Add the new variable to each of our environments (production, training, staging)&lt;/li&gt;
+  &lt;li&gt;Encrypt the environment variables&lt;/li&gt;
+  &lt;li&gt;Move the environment variable files up to our Jenkins deployment box&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The reason for the convoluted process is that we don’t have these files as part of our Capistrano deployment since they expose serious credentials.  Instead our Ansible wrapper around the deployment handles moving these up and in place.  And this uses Ansible’s transparent encrypting / decrypting as well.&lt;/p&gt;
+
+&lt;p&gt;After a few go arounds of “what should this variable be named”, I added to our Ansible stack two shell files:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;decrypt_all.sh&lt;/li&gt;
+  &lt;li&gt;encrypt_all.sh&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So at least that makes this process suck less given that each command line for this is about 112 characters long and I have to do it three times every single time.  I try and follow a boy scout’s approach to code where you leave things better than you found them whenever possible.  And this did make things better.&lt;/p&gt;
+
+&lt;h2 id=&quot;using-the-environment-variables&quot;&gt;Using the Environment Variables&lt;/h2&gt;
+
+&lt;p&gt;Once this was done, that led to modifying the code to pull the value out of the environment variable.  Now this should have been nothing more than reading ENV[‘DELETE_TMP_FILE_DAYS’] for the value TRUE, couldn’t be easier, right?  Ha!  &lt;em&gt;Shudder&lt;/em&gt;. Given that this was implemented as a Capistrano post deploy hook, getting any bit of this tested boiled down to this process:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Create a new branch for every single debugging attempt (because we have to go thru a pull review process)&lt;/li&gt;
+  &lt;li&gt;Write code&lt;/li&gt;
+  &lt;li&gt;Git commit / add / push&lt;/li&gt;
+  &lt;li&gt;Go thru pull review process&lt;/li&gt;
+  &lt;li&gt;Deploy&lt;/li&gt;
+  &lt;li&gt;Wait thru a roughly 11 minute deploy cycle for something to fail&lt;/li&gt;
+  &lt;li&gt;Read logs to analyze failure&lt;/li&gt;
+  &lt;li&gt;Lather / Rinse / Repeat&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Given that this is a post deploy hook executed Rake task there is no way to debug this easily.  Yes you can check the code.  And you can execute it manually in Rails console but that’s not quite the same as it actually running in the environment … or is it?&lt;/p&gt;
+
+&lt;h2 id=&quot;cutting-to-the-chase-or-11-steps-into-madness&quot;&gt;Cutting to the Chase Or 11 Steps Into Madness&lt;/h2&gt;
+
+&lt;p&gt;This is getting kind of long already so I’m going to cut to the chase and bullet point the issues as we hit them:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The first issue was that we kept defaulting to the if / else case where our environment variable wasn’t being set.  And since I was casting this to a constant for safety (remember this code deletes files on a file system so it is wise to be damn careful with it), this meant that the constant kept failing a defined? check.  We had put in a raise “Constant not defined” unless defined?(CONSTANT_NAME) check before anything got deleted as a safe guard and that one line of code entirely saved us.  Kudos to my coding partner, Sean Kennedy, for that.&lt;/li&gt;
+  &lt;li&gt;This first issue ultimately ended up being tied to recognizing that a Capistrano post deploy hook &lt;em&gt;DOES NOT RUN UNDER RAILS&lt;/em&gt;!  And that means that anything loaded by a Rails initializer isn’t available — meaning the Figaro gem never executed so the values in our environment variable file weren’t even being seen.  But since our environment variable file syntax was read from using ENV[‘VARIABLE_NAME’] we weren’t getting failures due to ENV not existing (ENV always exists, even in an IRB environment).  We would just get a nil value instead of the expected string value of TRUE or FALSE.&lt;/li&gt;
+  &lt;li&gt;Figuring out that we weren’t in a Rails environment was one of those face palm moments — you’ve seen the meme, the one with Picard.  I’m more than a bit embarrassed to point out how long that took so we’re just going to move on past that issue.&lt;/li&gt;
+  &lt;li&gt;Once we recognized that Figaro wasn’t available and that we would never get a value for our environment variable key, it wasn’t hard to write our own YAML reading routine.  That went thru a deploy cycle and we were fairly certain that it would be solved any minute now — what a crock!&lt;/li&gt;
+  &lt;li&gt;What we found was that even though our YAML file had a structure of KEY_NAME=TRUE, we weren’t getting back TRUE, we were getting back true.  So, of course, our if test which matched on ‘TRUE’ would fail.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;At this point we started testing using the IRB (remember you aren’t using Rails) console and YAML parsing.  And this led us to realize that YAML has automatic type coercion for a range of possible true / false values. The first clue was when my editor showed color coding on the YAML value we had, but not when we changed it to something odd like “ASDF”.  And we ultimately found the &lt;a href=&quot;https://yaml.org/type/bool.html&quot;&gt;YAML spec&lt;/a&gt; which takes about booleans.  Who even knew there was a spec for YAML???  Any of these in a YAML file will automatically get coerced into a boolean: *y&lt;/td&gt;
+          &lt;td&gt;Y&lt;/td&gt;
+          &lt;td&gt;yes&lt;/td&gt;
+          &lt;td&gt;Yes&lt;/td&gt;
+          &lt;td&gt;YES&lt;/td&gt;
+          &lt;td&gt;n&lt;/td&gt;
+          &lt;td&gt;N&lt;/td&gt;
+          &lt;td&gt;no&lt;/td&gt;
+          &lt;td&gt;No&lt;/td&gt;
+          &lt;td&gt;NO&lt;/td&gt;
+          &lt;td&gt;true&lt;/td&gt;
+          &lt;td&gt;True&lt;/td&gt;
+          &lt;td&gt;TRUE&lt;/td&gt;
+          &lt;td&gt;false&lt;/td&gt;
+          &lt;td&gt;False&lt;/td&gt;
+          &lt;td&gt;FALSE&lt;/td&gt;
+          &lt;td&gt;on&lt;/td&gt;
+          &lt;td&gt;On&lt;/td&gt;
+          &lt;td&gt;ON&lt;/td&gt;
+          &lt;td&gt;off&lt;/td&gt;
+          &lt;td&gt;Off&lt;/td&gt;
+          &lt;td&gt;OFF*&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;I don’t know about any other developer but to hell with that noise!  I changed our value from TRUE to 1.  And because I wasn’t sure if that would come to me as a value or a string, I ended up with a logical check like this: [1,”1”].include?(ENV[‘DELETE_TMP_FILE_DAYS’]).&lt;/li&gt;
+  &lt;li&gt;The next hurdle was that we realized that it was ambiguous where we should be looking for the YAML file.  The backtrace indicated that the YAML file should be found on the box where Capistrano was executing but logically because the post deploy hook executes each node being deployed, it should be on that machine.  And given that there was an 11 minute minimum cycle time per attempt to figure this out, we simply said to heck with it and tested for each directory and read from whichever existed.  And don’t even bring up the fact that the exception Ruby throws on an invalid directory isn’t Errno::ENOENT but instead a system call exception.  Sheesh.&lt;/li&gt;
+  &lt;li&gt;Once we finally got past nothing more than the boolean test of whether or not to run this (remember that’s all we’ve been trying to do so far, isolate a boolean from inside the code base to an environment variable), we found the code failing entirely.  And this time the failure was weird and unclear.  It had the feeling that Capistrano itself was swallowing at least one exception.  Doing a read of the code line by line made is realize that the date time math was using a Rails-ism, 10.days.  And, remember, we aren’t in Rails now (even though this is a Rails app), this is a Capistrano post deploy hook so we are really running an an IRB context without ActiveSupport.&lt;/li&gt;
+  &lt;li&gt;And that brought in the need to treat this not as logical days but instead as old school Unix epoch math.  So it become a matter of comparing a File.ctime(path_to_file).to_i (for the epoch conversion) against Time.now.to_i - (10 * 86400).  My pairing partner wanted to bring in ActiveSupport for the clarity of the 10.days expression but I was having none of that, ActiveSupport is a beast.&lt;/li&gt;
+  &lt;li&gt;With each of these changes, we would make the code better and better, each time and we were finally at a point where the code was actually what even I would call good.  It was well structured, well written and clean.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;sidebar-what-about-test-coverage&quot;&gt;Sidebar: What About Test Coverage&lt;/h2&gt;
+
+&lt;p&gt;Someone out there reading this is pounding their desk and shouting “YOU SHOULDA WRITTEN TESTS DUMB ASS!!!”.  Now normally I would agree with you but there are a few problems with that:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Rake tasks aren’t well testable; God bless Jim Weirich but rake tasks have always been an aside to testing&lt;/li&gt;
+  &lt;li&gt;There isn’t, to my knowledge, a way to test a rake task that is executing under Capistrano and isn’t actually part of Rails&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;and-that-brings-us-to-the-final-solution&quot;&gt;And that Brings Us to The Final Solution&lt;/h2&gt;
+
+&lt;p&gt;And with the code finally rewritten and being actually implemented in a very service object pattern, my co worker said “WAIT!  Why are we doing this as a Capistrano post deploy hook anyway?  Why isn’t this just a CRON job calling a rake task”  This led to a discussion of the issues around CRON and &lt;a href=&quot;https://github.com/rbenv/rbenv&quot;&gt;RbEnv&lt;/a&gt; and the need for the DevOps around getting a CRON job installed on N boxes.  And then he said the magic incantation: “Why don’t we just use &lt;a href=&quot;https://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt; for this and execute it regularly via &lt;a href=&quot;https://jenkins.io/&quot;&gt;Jenkins&lt;/a&gt;?”  Ansible is an outstandingly good DevOps environment and one that I actually taught him.  My initial argument to him against Ansible was because this was fundamentally an imperative task and Ansible was declarative.  His counter was why not just use Ansible to solve this via a &lt;a href=&quot;https://fuzzyblog.io/blog/linux/2019/05/09/linux-tip-find-all-files-older-than-10-days-and-delete-them.html&quot;&gt;bash shell expression&lt;/a&gt;.  I thought about it for a few, and, son of a bitch, he was right.  In about 40 minutes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We tossed out all of the Ruby&lt;/li&gt;
+  &lt;li&gt;We tossed out the entire Capistrano post deploy task&lt;/li&gt;
+  &lt;li&gt;We tossed out the invocation of the call back (ok I remembered this right now as I wrote this section of the blog post)&lt;/li&gt;
+  &lt;li&gt;We spun up an Ansible Playbook and Role that executed a shell one liner and had it running on a dozen plus boxes.  This included researching and testing how to do this with shell.&lt;/li&gt;
+  &lt;li&gt;We defined a Jenkins scheduled task that ran this every 7 days at an off time using a simple CRON syntax&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Here is the before / after on the final Ansible implementation showing the change in our disc space utilization:&lt;/p&gt;
+
+&lt;h3 id=&quot;before&quot;&gt;BEFORE&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ok: [194.55.22.38] =&amp;gt;
+  msg: 'Actual free disc space: 5.3G'
+ok: [194.55.19.230] =&amp;gt;
+  msg: 'Actual free disc space: 5.6G'
+ok: [194.55.23.18] =&amp;gt;
+  msg: 'Actual free disc space: 5.6G'
+ok: [194.55.23.10] =&amp;gt;
+  msg: 'Actual free disc space: 8.5G'
+ok: [194.55.30.164] =&amp;gt;
+  msg: 'Actual free disc space: 8.5G'
+ok: [194.55.20.214] =&amp;gt;
+  msg: 'Actual free disc space: 11G'
+ok: [194.55.30.119] =&amp;gt;
+  msg: 'Actual free disc space: 8.2G'
+ok: [194.55.29.248] =&amp;gt;
+  msg: 'Actual free disc space: 8.7G'
+ok: [194.55.26.185] =&amp;gt;
+  msg: 'Actual free disc space: 6.7G'
+ok: [194.55.24.235] =&amp;gt;
+  msg: 'Actual free disc space: 6.6G'
+ok: [194.55.30.37] =&amp;gt;
+  msg: 'Actual free disc space: 2.3G'
+ok: [194.55.31.216] =&amp;gt;
+  msg: 'Actual free disc space: 2.4G'
+ok: [194.55.29.170] =&amp;gt;
+  msg: 'Actual free disc space: 11G'
+ok: [194.55.29.107] =&amp;gt;
+  msg: 'Actual free disc space: 11G'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;after&quot;&gt;AFTER&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ok: [194.55.22.38] =&amp;gt;
+  msg: 'Actual free disc space: 5.3G'
+ok: [194.55.19.230] =&amp;gt;
+  msg: 'Actual free disc space: 5.8G'
+ok: [194.55.23.18] =&amp;gt;
+  msg: 'Actual free disc space: 5.8G'
+ok: [194.55.23.10] =&amp;gt;
+  msg: 'Actual free disc space: 8.5G'
+ok: [194.55.30.164] =&amp;gt;
+  msg: 'Actual free disc space: 8.5G'
+ok: [194.55.20.214] =&amp;gt;
+  msg: 'Actual free disc space: 11G'
+ok: [194.55.30.119] =&amp;gt;
+  msg: 'Actual free disc space: 8.3G'
+ok: [194.55.29.248] =&amp;gt;
+  msg: 'Actual free disc space: 8.7G'
+ok: [194.55.26.185] =&amp;gt;
+  msg: 'Actual free disc space: 6.7G'
+ok: [194.55.24.235] =&amp;gt;
+  msg: 'Actual free disc space: 6.6G'
+ok: [194.55.30.37] =&amp;gt;
+  msg: 'Actual free disc space: 7.2G'
+ok: [194.55.31.216] =&amp;gt;
+  msg: 'Actual free disc space: 7.0G'
+ok: [194.55.29.170] =&amp;gt;
+  msg: 'Actual free disc space: 11G'
+ok: [194.55.29.107] =&amp;gt;
+  msg: 'Actual free disc space: 11G'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You’ll notice that boxes 194.55.30.37 and 194.55.31.216 went from 2 odd gigs of free disc space to 7 odd gigs of disc space.  That’s a huge win.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;The hardest part about debugging anything is when your mental model doesn’t match what’s actually going on under the hood.  The actual epiphany moment was when I realized that this wasn’t running under Rails itself.  After that things started to fall into place.&lt;/p&gt;
+
+&lt;h2 id=&quot;thank-yous&quot;&gt;Thank Yous&lt;/h2&gt;
+
+&lt;p&gt;A big shout out to Sean Kennedy who did a fantastic job debugging this with me and came up with a great final solution.  Kudos also to various friends who im’d with me over the course of the day and provided moral support on an extremely frustrating day.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 09 May 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/software_engineering/2019/05/09/so-you-want-to-delete-temp-files-an-excursion-into-software-engineering-suckitude.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/software_engineering/2019/05/09/so-you-want-to-delete-temp-files-an-excursion-into-software-engineering-suckitude.html</guid>
+        
+        <category>software_engineering</category>
+        
+        <category>rails</category>
+        
+        <category>ruby</category>
+        
+        
+        <category>software_engineering</category>
+        
+      </item>
     
       <item>
         <title>Linux Tip - Find All Files Older than 10 Days and Delete Them</title>
@@ -34,7 +262,7 @@
         <link>http://fuzzyblog.io//blog/linux/2019/05/09/linux-tip-find-all-files-older-than-10-days-and-delete-them.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io//blog/linux/2019/05/09/linux-tip-find-all-files-older-than-10-days-and-delete-them.html</guid>
         
-        <category>“linux”</category>
+        <category>linux</category>
         
         
         <category>Linux</category>
@@ -684,86 +912,6 @@ end
         <category>ruby</category>
         
         <category>elastic_search</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Converting from FactoryGirl to FactoryBot</title>
-        <description>&lt;p&gt;This blog post talks about the renaming of FactoryGirl to FactoryBoy  and the necessary refactoring that you have to do to a current Rails app to support it.  The official guide to converting your Rails from &lt;a href=&quot;https://github.com/thoughtbot/factory_bot/blob/4-9-0-stable/UPGRADE_FROM_FACTORY_GIRL.md&quot;&gt;FactoryGirl to FactoryBot&lt;/a&gt; is here.  Their solution is a search and replace approach and while that works, I wanted to go thru this step by step.&lt;/p&gt;
-
-&lt;h2 id=&quot;step-0-update-your-gemfile&quot;&gt;Step 0: Update Your Gemfile&lt;/h2&gt;
-
-&lt;p&gt;You need to change your Gemfile from FactoryGirl to FactoryBot:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem &quot;factory_bot_rails&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;step-1-specsupportfactorygirlrb&quot;&gt;Step 1: spec/support/factory_girl.rb&lt;/h2&gt;
-
-&lt;p&gt;This file needs to be renamed from spec/support/factory_girl.rb to spec/support/factory_bot.rb and then the contents changed to reflect it:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;RSpec.configure do |config|
-  config.include FactoryBot::Syntax::Methods
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;step-2-specrailshelperrb&quot;&gt;Step 2: spec/rails_helper.rb&lt;/h2&gt;
-
-&lt;p&gt;Depending on your RSpec configuration you may not need to adjust this file.  In my case I was using FactoryGirl to create an @user variable so I had to adjust this as:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@user = FactoryBot.create(:user, options)    
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;step-3-specfactoriesrb&quot;&gt;Step 3: spec/factories/*.rb&lt;/h2&gt;
-
-&lt;p&gt;Each of your factories needs to be rewritten to call FactoryBot not FactoryGirl so you’ll have a structure something like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FactoryBot.define do
-  factory :user do
-    email { Faker::Internet.email }
-    username Faker::Name.first_name.downcase
-    password &quot;Sample:1&quot;
-    password_confirmation &quot;Sample:1&quot;
-    first_name Faker::Name.first_name
-    last_name Faker::Name.last_name
-    active true
-    confirmed true
-  end
-end    
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;step-4-your-actual-spec-files&quot;&gt;Step 4: Your Actual Spec Files&lt;/h2&gt;
-
-&lt;p&gt;In each of your spec files, you’ll need to change calls from FactoryGirl.create to FactoryBot.create like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@job = FactoryBot.create(:job, :user_id =&amp;gt; User.first.id)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;step-5-also-check-specspechelperrb&quot;&gt;Step 5: Also Check spec/spec_helper.rb&lt;/h2&gt;
-
-&lt;p&gt;You should also check spec/spec_helper.rb as this is a common place where you may have located some Factory* type of stuff.&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;Overall this was a simpler conversion than I had expected.  Admittedly this was done in a relatively small &lt;a href=&quot;https://www.jobhound.io&quot;&gt;Rails MVP&lt;/a&gt; but it really was pretty painless.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 19 Apr 2018 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2018/04/19/converting-from-factorygirl-to-factorybot.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2018/04/19/converting-from-factorygirl-to-factorybot.html</guid>
-        
-        <category>rails</category>
-        
-        <category>ruby</category>
-        
-        <category>testing</category>
         
         
         <category>rails</category>

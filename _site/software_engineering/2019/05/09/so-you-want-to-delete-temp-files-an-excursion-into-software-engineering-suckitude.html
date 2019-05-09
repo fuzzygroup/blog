@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>So You Want to Delete Temp Files - An Excursion into Software Engineering Suckitude</title>
+  <meta name="description" content="So today was a day of epic software engineering failure.  Let’s consider, just for a second, this string of commit messages:">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/software_engineering/2019/05/09/so-you-want-to-delete-temp-files-an-excursion-into-software-engineering-suckitude.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="So You Want to Delete Temp Files - An Excursion into Software Engineering Suckitude">
+
+  
+    <meta name="twitter:description"
+      content="So today was a day of epic software engineering failure.  Let’s consider, just for a second, this string of commit messages:
+
+feature/ATT-1551-f - And goodbye ... it all goes away like the bad drea...">
+  
+
+  
+    <meta name="twitter:image"
+      content="http://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div style="width: 70%; float:left; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed red">
+              <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound: Make applying for tech jobs suck less!</a>
+            </p>
+        </div>
+        <!--
+        <div style="width: 75%; float:left; ">&nbsp;&nbsp;&nbsp;</div>
+        -->
+          <!--
+        <div style="width: 20%; float:right; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+              <a href="http://www.fuzzyblog.io/" class="cta-button-blue">Hire Me!</a>
+            </p>
+        </div>
+            -->
+        <div style="clear: both;"></div>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">So You Want to Delete Temp Files - An Excursion into Software Engineering Suckitude</h1>
+    <p class="I'll"><time datetime="2019-05-09T00:00:00-04:00" itemprop="datePublished">May 9, 2019</time> 
+      </p> 
+  </header>
+  
+
+  <div class="post-content" itemprop="articleBody">
+    <p>So today was a day of epic software engineering failure.  Let’s consider, just for a second, this string of commit messages:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>feature/ATT-1551-f - And goodbye ... it all goes away like the bad dream that it was
+feature/ATT-1551-e - It is called a constant; sigh; oh and an entire rewrite
+feature/ATT-1551-d - And let's go again - there are still hours in the day to get this wrong ...
+feature/ATT-1551-c - hopefully, possibly the last iteration on this humiliating bit of work
+feature/ATT-1551-b - Argggh !!!!
+feature/ATT-1551-a - Debugging hooks for understanding this bit of madness
+</code></pre>
+</div>
+
+<p>Any experienced engineer can read between the lines of that level of <em>gallows humor</em> in these commit messages and know, I mean <em>know</em>, what’s coming.  This whole blog post is an illustration of how something that is drop dead simple can really, really bite you in the ass.  And you can take away from this either a smug feeling of “I’m smarter than that” or you are raising a glass to me somewhere and saying “you poor damn bastard, there, there”.</p>
+
+<h2 id="the-problem">The Problem</h2>
+
+<p>This all started with the git branch <em>feature/ATT-1551</em> which added a feature to our architecture which cleaned up straggling temp files that had been left behind by a variety of different processes that generated data locally that was then queued up to S3.  Yes, yes, yes I know fix the cause not the symptom but that was out of the scope of the defined work; you know the drill.</p>
+
+<p>We are a Rails application and I made the decision to implement this as a Capistrano post deploy hook that executed a Capistrano rake task.  That was, unbeknownst to me, my <em>first</em> mistake.  The specification on the ticket said that the need was to clean up any files in shared/tmp that were older than 10 days.  My initial pass on this ended up being about maybe 25 lines of ruby implemented in lib/capistrano/tasks/tmp_files.rake.</p>
+
+<h2 id="and-heres-where-it-all-began">And Here’s Where It All Began</h2>
+
+<p>My code went thru the pull review process just fine until there was a comment that said something to the effect of “Wouldn’t it be better if the 10 days was not fixed in the code but could be adjustable from outside so we didn’t have to redeploy if we needed a different amount of days”.  That sounds logical, right?  The pull request discussion thread diverged between passing in a parameter or using an environment variable and it ultimately converged on an environment variable because a parameter didn’t work since this was already buried inside an Ansible based deploy engine that executed a Capistrano task (that then called a post deploy hook).  So with that decision, the descent into madness truly began.  And if my description of Ansible spawning Capistrano spawning a post deploy hook feels virtually Cthulian to you, well, <em>yep</em>.</p>
+
+<p><em>Sidebar:</em> I’d love to tell you that all of this was easily resolved but that wouldn’t be fun, now would it?  Instead, while the initial code was written by me, getting this actually debugged and solved took two senior software engineers most of a day. And it is an excellent illustration of just how complex even something simple can be in today’s world.  The second engineer got pulled in right about here, after the pull review process centered around environment variables.</p>
+
+<h2 id="nothing-is-actually-simple-anymore">Nothing is Actually Simple Anymore</h2>
+
+<p>We have a file of environment variables that are automatically defined by our application using the <a href="https://github.com/laserlemon/figaro">Figaro gem</a>.  Normally I’m not an environment var fan but this really works well so I followed our normal process for this:</p>
+
+<ul>
+  <li>Go into our Ansible stack</li>
+  <li>Decrypt the environment variable files (these are YAML files and that becomes relevant later on)</li>
+  <li>Add the new variable to each of our environments (production, training, staging)</li>
+  <li>Encrypt the environment variables</li>
+  <li>Move the environment variable files up to our Jenkins deployment box</li>
+</ul>
+
+<p>The reason for the convoluted process is that we don’t have these files as part of our Capistrano deployment since they expose serious credentials.  Instead our Ansible wrapper around the deployment handles moving these up and in place.  And this uses Ansible’s transparent encrypting / decrypting as well.</p>
+
+<p>After a few go arounds of “what should this variable be named”, I added to our Ansible stack two shell files:</p>
+
+<ul>
+  <li>decrypt_all.sh</li>
+  <li>encrypt_all.sh</li>
+</ul>
+
+<p>So at least that makes this process suck less given that each command line for this is about 112 characters long and I have to do it three times every single time.  I try and follow a boy scout’s approach to code where you leave things better than you found them whenever possible.  And this did make things better.</p>
+
+<h2 id="using-the-environment-variables">Using the Environment Variables</h2>
+
+<p>Once this was done, that led to modifying the code to pull the value out of the environment variable.  Now this should have been nothing more than reading ENV[‘DELETE_TMP_FILE_DAYS’] for the value TRUE, couldn’t be easier, right?  Ha!  <em>Shudder</em>. Given that this was implemented as a Capistrano post deploy hook, getting any bit of this tested boiled down to this process:</p>
+
+<ul>
+  <li>Create a new branch for every single debugging attempt (because we have to go thru a pull review process)</li>
+  <li>Write code</li>
+  <li>Git commit / add / push</li>
+  <li>Go thru pull review process</li>
+  <li>Deploy</li>
+  <li>Wait thru a roughly 11 minute deploy cycle for something to fail</li>
+  <li>Read logs to analyze failure</li>
+  <li>Lather / Rinse / Repeat</li>
+</ul>
+
+<p>Given that this is a post deploy hook executed Rake task there is no way to debug this easily.  Yes you can check the code.  And you can execute it manually in Rails console but that’s not quite the same as it actually running in the environment … or is it?</p>
+
+<h2 id="cutting-to-the-chase-or-11-steps-into-madness">Cutting to the Chase Or 11 Steps Into Madness</h2>
+
+<p>This is getting kind of long already so I’m going to cut to the chase and bullet point the issues as we hit them:</p>
+
+<ol>
+  <li>The first issue was that we kept defaulting to the if / else case where our environment variable wasn’t being set.  And since I was casting this to a constant for safety (remember this code deletes files on a file system so it is wise to be damn careful with it), this meant that the constant kept failing a defined? check.  We had put in a raise “Constant not defined” unless defined?(CONSTANT_NAME) check before anything got deleted as a safe guard and that one line of code entirely saved us.  Kudos to my coding partner, Sean Kennedy, for that.</li>
+  <li>This first issue ultimately ended up being tied to recognizing that a Capistrano post deploy hook <em>DOES NOT RUN UNDER RAILS</em>!  And that means that anything loaded by a Rails initializer isn’t available — meaning the Figaro gem never executed so the values in our environment variable file weren’t even being seen.  But since our environment variable file syntax was read from using ENV[‘VARIABLE_NAME’] we weren’t getting failures due to ENV not existing (ENV always exists, even in an IRB environment).  We would just get a nil value instead of the expected string value of TRUE or FALSE.</li>
+  <li>Figuring out that we weren’t in a Rails environment was one of those face palm moments — you’ve seen the meme, the one with Picard.  I’m more than a bit embarrassed to point out how long that took so we’re just going to move on past that issue.</li>
+  <li>Once we recognized that Figaro wasn’t available and that we would never get a value for our environment variable key, it wasn’t hard to write our own YAML reading routine.  That went thru a deploy cycle and we were fairly certain that it would be solved any minute now — what a crock!</li>
+  <li>What we found was that even though our YAML file had a structure of KEY_NAME=TRUE, we weren’t getting back TRUE, we were getting back true.  So, of course, our if test which matched on ‘TRUE’ would fail.</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>At this point we started testing using the IRB (remember you aren’t using Rails) console and YAML parsing.  And this led us to realize that YAML has automatic type coercion for a range of possible true / false values. The first clue was when my editor showed color coding on the YAML value we had, but not when we changed it to something odd like “ASDF”.  And we ultimately found the <a href="https://yaml.org/type/bool.html">YAML spec</a> which takes about booleans.  Who even knew there was a spec for YAML???  Any of these in a YAML file will automatically get coerced into a boolean: *y</td>
+          <td>Y</td>
+          <td>yes</td>
+          <td>Yes</td>
+          <td>YES</td>
+          <td>n</td>
+          <td>N</td>
+          <td>no</td>
+          <td>No</td>
+          <td>NO</td>
+          <td>true</td>
+          <td>True</td>
+          <td>TRUE</td>
+          <td>false</td>
+          <td>False</td>
+          <td>FALSE</td>
+          <td>on</td>
+          <td>On</td>
+          <td>ON</td>
+          <td>off</td>
+          <td>Off</td>
+          <td>OFF*</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>I don’t know about any other developer but to hell with that noise!  I changed our value from TRUE to 1.  And because I wasn’t sure if that would come to me as a value or a string, I ended up with a logical check like this: [1,”1”].include?(ENV[‘DELETE_TMP_FILE_DAYS’]).</li>
+  <li>The next hurdle was that we realized that it was ambiguous where we should be looking for the YAML file.  The backtrace indicated that the YAML file should be found on the box where Capistrano was executing but logically because the post deploy hook executes each node being deployed, it should be on that machine.  And given that there was an 11 minute minimum cycle time per attempt to figure this out, we simply said to heck with it and tested for each directory and read from whichever existed.  And don’t even bring up the fact that the exception Ruby throws on an invalid directory isn’t Errno::ENOENT but instead a system call exception.  Sheesh.</li>
+  <li>Once we finally got past nothing more than the boolean test of whether or not to run this (remember that’s all we’ve been trying to do so far, isolate a boolean from inside the code base to an environment variable), we found the code failing entirely.  And this time the failure was weird and unclear.  It had the feeling that Capistrano itself was swallowing at least one exception.  Doing a read of the code line by line made is realize that the date time math was using a Rails-ism, 10.days.  And, remember, we aren’t in Rails now (even though this is a Rails app), this is a Capistrano post deploy hook so we are really running an an IRB context without ActiveSupport.</li>
+  <li>And that brought in the need to treat this not as logical days but instead as old school Unix epoch math.  So it become a matter of comparing a File.ctime(path_to_file).to_i (for the epoch conversion) against Time.now.to_i - (10 * 86400).  My pairing partner wanted to bring in ActiveSupport for the clarity of the 10.days expression but I was having none of that, ActiveSupport is a beast.</li>
+  <li>With each of these changes, we would make the code better and better, each time and we were finally at a point where the code was actually what even I would call good.  It was well structured, well written and clean.</li>
+</ol>
+
+<h2 id="sidebar-what-about-test-coverage">Sidebar: What About Test Coverage</h2>
+
+<p>Someone out there reading this is pounding their desk and shouting “YOU SHOULDA WRITTEN TESTS DUMB ASS!!!”.  Now normally I would agree with you but there are a few problems with that:</p>
+
+<ul>
+  <li>Rake tasks aren’t well testable; God bless Jim Weirich but rake tasks have always been an aside to testing</li>
+  <li>There isn’t, to my knowledge, a way to test a rake task that is executing under Capistrano and isn’t actually part of Rails</li>
+</ul>
+
+<h2 id="and-that-brings-us-to-the-final-solution">And that Brings Us to The Final Solution</h2>
+
+<p>And with the code finally rewritten and being actually implemented in a very service object pattern, my co worker said “WAIT!  Why are we doing this as a Capistrano post deploy hook anyway?  Why isn’t this just a CRON job calling a rake task”  This led to a discussion of the issues around CRON and <a href="https://github.com/rbenv/rbenv">RbEnv</a> and the need for the DevOps around getting a CRON job installed on N boxes.  And then he said the magic incantation: “Why don’t we just use <a href="https://www.ansible.com/">Ansible</a> for this and execute it regularly via <a href="https://jenkins.io/">Jenkins</a>?”  Ansible is an outstandingly good DevOps environment and one that I actually taught him.  My initial argument to him against Ansible was because this was fundamentally an imperative task and Ansible was declarative.  His counter was why not just use Ansible to solve this via a <a href="https://fuzzyblog.io/blog/linux/2019/05/09/linux-tip-find-all-files-older-than-10-days-and-delete-them.html">bash shell expression</a>.  I thought about it for a few, and, son of a bitch, he was right.  In about 40 minutes:</p>
+
+<ul>
+  <li>We tossed out all of the Ruby</li>
+  <li>We tossed out the entire Capistrano post deploy task</li>
+  <li>We tossed out the invocation of the call back (ok I remembered this right now as I wrote this section of the blog post)</li>
+  <li>We spun up an Ansible Playbook and Role that executed a shell one liner and had it running on a dozen plus boxes.  This included researching and testing how to do this with shell.</li>
+  <li>We defined a Jenkins scheduled task that ran this every 7 days at an off time using a simple CRON syntax</li>
+</ul>
+
+<p>Here is the before / after on the final Ansible implementation showing the change in our disc space utilization:</p>
+
+<h3 id="before">BEFORE</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ok: [194.55.22.38] =&gt;
+  msg: 'Actual free disc space: 5.3G'
+ok: [194.55.19.230] =&gt;
+  msg: 'Actual free disc space: 5.6G'
+ok: [194.55.23.18] =&gt;
+  msg: 'Actual free disc space: 5.6G'
+ok: [194.55.23.10] =&gt;
+  msg: 'Actual free disc space: 8.5G'
+ok: [194.55.30.164] =&gt;
+  msg: 'Actual free disc space: 8.5G'
+ok: [194.55.20.214] =&gt;
+  msg: 'Actual free disc space: 11G'
+ok: [194.55.30.119] =&gt;
+  msg: 'Actual free disc space: 8.2G'
+ok: [194.55.29.248] =&gt;
+  msg: 'Actual free disc space: 8.7G'
+ok: [194.55.26.185] =&gt;
+  msg: 'Actual free disc space: 6.7G'
+ok: [194.55.24.235] =&gt;
+  msg: 'Actual free disc space: 6.6G'
+ok: [194.55.30.37] =&gt;
+  msg: 'Actual free disc space: 2.3G'
+ok: [194.55.31.216] =&gt;
+  msg: 'Actual free disc space: 2.4G'
+ok: [194.55.29.170] =&gt;
+  msg: 'Actual free disc space: 11G'
+ok: [194.55.29.107] =&gt;
+  msg: 'Actual free disc space: 11G'
+</code></pre>
+</div>
+
+<h3 id="after">AFTER</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ok: [194.55.22.38] =&gt;
+  msg: 'Actual free disc space: 5.3G'
+ok: [194.55.19.230] =&gt;
+  msg: 'Actual free disc space: 5.8G'
+ok: [194.55.23.18] =&gt;
+  msg: 'Actual free disc space: 5.8G'
+ok: [194.55.23.10] =&gt;
+  msg: 'Actual free disc space: 8.5G'
+ok: [194.55.30.164] =&gt;
+  msg: 'Actual free disc space: 8.5G'
+ok: [194.55.20.214] =&gt;
+  msg: 'Actual free disc space: 11G'
+ok: [194.55.30.119] =&gt;
+  msg: 'Actual free disc space: 8.3G'
+ok: [194.55.29.248] =&gt;
+  msg: 'Actual free disc space: 8.7G'
+ok: [194.55.26.185] =&gt;
+  msg: 'Actual free disc space: 6.7G'
+ok: [194.55.24.235] =&gt;
+  msg: 'Actual free disc space: 6.6G'
+ok: [194.55.30.37] =&gt;
+  msg: 'Actual free disc space: 7.2G'
+ok: [194.55.31.216] =&gt;
+  msg: 'Actual free disc space: 7.0G'
+ok: [194.55.29.170] =&gt;
+  msg: 'Actual free disc space: 11G'
+ok: [194.55.29.107] =&gt;
+  msg: 'Actual free disc space: 11G'
+</code></pre>
+</div>
+
+<p>You’ll notice that boxes 194.55.30.37 and 194.55.31.216 went from 2 odd gigs of free disc space to 7 odd gigs of disc space.  That’s a huge win.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>The hardest part about debugging anything is when your mental model doesn’t match what’s actually going on under the hood.  The actual epiphany moment was when I realized that this wasn’t running under Rails itself.  After that things started to fall into place.</p>
+
+<h2 id="thank-yous">Thank Yous</h2>
+
+<p>A big shout out to Sean Kennedy who did a fantastic job debugging this with me and came up with a great final solution.  Kudos also to various friends who im’d with me over the course of the day and provided moral support on an extremely frustrating day.</p>
+
+  </div>
+  
+  <!--
+    http://fuzzyblog.io/blog/tag.html#aws
+    http://localhost:5000/blog/category.html#facebook
+  -->
+  
+  <hr/><br/>
+  <p><strong>Posted In:</strong>
+  
+    <a href="http://fuzzyblog.io//blog/tag.html#software_engineering" >
+      #software_engineering
+    </a>
+    
+    <a href="http://fuzzyblog.io//blog/tag.html#rails" >
+      #rails
+    </a>
+    
+    <a href="http://fuzzyblog.io//blog/tag.html#ruby" >
+      #ruby
+    </a>
+    
+  </p>
+  
+  <!--
+  <hr/><br/>
+  <div style="text-align: center;">
+      <ul class="list-inline tags" >       
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io//blog/tag.html#software_engineering" class="link_button">
+         software_engineering
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io//blog/tag.html#rails" class="link_button">
+         rails
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io//blog/tag.html#ruby" class="link_button">
+         ruby
+       </a>
+     </li>
+     
+    </ul>
+
+  </div>
+-->  
+
+
+  
+  
+  
+
+</article>
+
+      </div>
+    </div>
+
+    <div class="wrapper">
+  <div style="">
+    <!--
+    <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+      <a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Never be surprised by your kid's Xbox spending again!</a>
+    </p>
+      -->
+      <p style="text-align: center; padding: 10px; border: 2px dashed red">
+        <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound: Make applying for tech jobs suck less!</a>
+      </p>
+      
+  </div>
+</div>
+
+<footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
