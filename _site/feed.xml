@@ -6,9 +6,40 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 08 May 2019 09:39:21 -0400</pubDate>
-    <lastBuildDate>Wed, 08 May 2019 09:39:21 -0400</lastBuildDate>
+    <pubDate>Thu, 09 May 2019 11:53:15 -0400</pubDate>
+    <lastBuildDate>Thu, 09 May 2019 11:53:15 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Linux Tip - Find All Files Older than 10 Days and Delete Them</title>
+        <description>&lt;p&gt;It is easy to forget at times just how powerful simple Linux shell commands here.  Here’s one I used recently that finds all files in a single directory that are older than 25 days and deletes them:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find /apps/foo/shared/tmp/ -mtime +25 -maxdepth 1 -exec rm {} \;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The -mtime param takes a number of days.  The maxdepth takes the number of directories below this to look (1 means the specified directory).  The exec takes the list of files produced and runs rm on each of them.  For reference, this was discovered from &lt;a href=&quot;https://serverfault.com/questions/122824/linux-using-find-to-locate-files-older-than-date/122854#122854&quot;&gt;ServerFault&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Just in case you’re curious, I tested this on a system with more than 11,000 files in a single directory and it executed flawlessly — no problems at all and it cleaned up more than 5 gigs of disc space.&lt;/p&gt;
+
+&lt;p&gt;And you don’t just have to delete files of course.  If you wanted to say find all the files older than 25 days and list them out with the date and time stamp then you could use:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;find /apps/cas-seas3/shared/tmp/ -mtime +10 -maxdepth 1 -exec ls -al {} \;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This was how we debugged this courtesy of a &lt;a href=&quot;https://stackoverflow.com/questions/20893022/how-to-display-modified-date-time-with-find-command/20893429#20893429&quot;&gt;Stack Overflow post&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 09 May 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/linux/2019/05/09/linux-tip-find-all-files-older-than-10-days-and-delete-them.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/linux/2019/05/09/linux-tip-find-all-files-older-than-10-days-and-delete-them.html</guid>
+        
+        <category>“linux”</category>
+        
+        
+        <category>Linux</category>
+        
+      </item>
     
       <item>
         <title>So You Get Ideas In the Car And Don't Want to Die</title>
@@ -736,44 +767,6 @@ end
         
         
         <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Enabling Github Security Alerts on Your Private Repositories</title>
-        <description>&lt;p&gt;Github recently announced that they would be providing &lt;a href=&quot;https://github.com/blog/2470-introducing-security-alerts-on-github&quot;&gt;security alerts for github repositories&lt;/a&gt;.  These alerts let you know when a dependency that you’re relying on has a critical vulnerability.  Given the importance of security, this is an excellent idea.  Thank you Github!  These alerts are turned on automatically for public repositories but they require you to opt in for your private repositories.  And while this isn’t hard, Github doesn’t make it clear exactly how to set this option for your private repositories.  I just spent an hour or so turning this on for all my private repositories and here’s the step by step approach:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Go to &lt;a href=&quot;https://www.github.com&quot;&gt;github&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;Login if you’re not logged in.&lt;/li&gt;
-  &lt;li&gt;Navigate to your dashboard.&lt;/li&gt;
-  &lt;li&gt;Go to your repositories list by clicking on the repositories link in the header.&lt;/li&gt;
-  &lt;li&gt;Select a private repository by clicking on it.&lt;/li&gt;
-  &lt;li&gt;Select the Settings link.&lt;/li&gt;
-  &lt;li&gt;Scroll down to &lt;strong&gt;Data services&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;Turn on “Allow Github to perform read-only analysis of this repository”.&lt;/li&gt;
-  &lt;li&gt;Turn on Dependency graph.&lt;/li&gt;
-  &lt;li&gt;Turn on Vulnerability alerts.  You should note that Github saves the status of each of these via ajax as you check them off so there’s no Save button you need to click.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Now you need to navigate back to repositories and turn this on for any other private repositories that you have. Given the number of private Rails apps I have repositories for, I’m really, really glad I turned this on.&lt;/p&gt;
-
-&lt;p&gt;Note: Its unclear exactly how long it takes to build the Dependency graph and for the Vulnerability alert scan to be completed.  I don’t think it is immediate so you might want to keep an eye on the home page for your repos over the next few days.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 17 Nov 2017 00:00:00 -0500</pubDate>
-        <link>http://fuzzyblog.io//blog/github/2017/11/17/enabling-github-security-alerts-on-your-private-repositories.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/github/2017/11/17/enabling-github-security-alerts-on-your-private-repositories.html</guid>
-        
-        <category>github</category>
-        
-        <category>git</category>
-        
-        <category>security</category>
-        
-        <category>rails</category>
-        
-        
-        <category>github</category>
         
       </item>
     
