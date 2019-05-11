@@ -6,9 +6,117 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 10 May 2019 15:29:12 -0400</pubDate>
-    <lastBuildDate>Fri, 10 May 2019 15:29:12 -0400</lastBuildDate>
+    <pubDate>Sat, 11 May 2019 11:45:20 -0400</pubDate>
+    <lastBuildDate>Sat, 11 May 2019 11:45:20 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>When libreadline Goes Whack</title>
+        <description>&lt;p&gt;Well shite.  I’ve seen this before and I just plain hate it.  This is the last error you want to get on a Friday afternoon after five.  Taking the time to fix it now generally means that your computer won’t boot on a Monday due to something going wrong in the fixing process and you forgetting what you did.&lt;/p&gt;
+
+&lt;p&gt;Every single time libreadline goes to hell, it is always a pain. Here’s how I fixed it this time.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-environment--context&quot;&gt;The Environment / Context&lt;/h2&gt;
+
+&lt;p&gt;I’m running a MacBook on OSX (Sierra; yes I’m a luddite on OS upgrades) with &lt;a href=&quot;https://brew.sh/&quot;&gt;HomeBrew&lt;/a&gt; 1.7.0.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-error&quot;&gt;The Error&lt;/h2&gt;
+
+&lt;p&gt;Here is the error:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;```dyld: Library not loaded: /usr/local/opt/readline/lib/libreadline.7.dylib
+Referenced from: /usr/local/Cellar/postgresql@9.5/9.5.12/bin/psql
+Reason: image not found
+sh: line 1: 36440 Abort trap: 6           
+/usr/local/Cellar/postgresql@9.5/9.5.12/bin/psql seasthree_test /Users/sjohnson/fuzzygroup/seas/cas-seas3-attain-admin/spec/fixtures/schools.sql```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;libreadline is a core library used by almost any open source tool that ends up reading input from the standard in.  In this case I’m trying to feed a sql file into the pg (postgres) executable.&lt;/p&gt;
+
+&lt;p&gt;This is one of those errors that I’ve seen a dozen or so times and I always fix it with some crazy combination of jiggery-pokery / goat sacrificing.  This time I thought I’d document it for, well, the next damn time.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
+
+&lt;p&gt;The answer appears, courtesy of Google via a &lt;a href=&quot;https://github.com/Homebrew/homebrew-core/issues/5799&quot;&gt;Github Issue&lt;/a&gt;, appears to be an update of bash.  Sigh.  While I love the power of command shells, I truly, truly hate messing with them.&lt;/p&gt;
+
+&lt;p&gt;Here’s the process I followed:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew update
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;That upgrades HomeBrew to the latest.  I then check the process again to see if it has magically gone away and no such luck.  The next step is to upgrade bash itself:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew upgrade bash 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;On an OSX box there is the version of bash that comes with the system and then there is the bash that comes from HomeBrew.  The reason you upgrade bash is that what Apple ships is woefully obsolete:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash --version
+GNU bash, version 3.2.57(1)-release (x86_64-apple-darwin16)
+Copyright (C) 2007 Free Software Foundation, Inc.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Bash after it has been upgraded is now north of version 5.&lt;/p&gt;
+
+&lt;p&gt;The way that you make your new bash usable is that you first have to add it to /etc/shells by editing this file:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo nano /etc/shells
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This prompts you for your password.  Then at the very end of the file you need to add this line:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/local/bin/bash
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After adding this line, do the CTRL+W and then CTRL+Q dance to exit the editor.  That essentially tells OSX “Ok this is a valid shell that someone can now tell us they want to use”.  The next step is to use the chsh command to make this permanent.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;chsh -s /usr/local/bin/bash $USER
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Much of what I know about changing an OSX shell comes from this &lt;a href=&quot;https://apple.stackexchange.com/questions/224511/how-to-use-bash-as-default-shell&quot;&gt;Stack Exchange post&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;At this point you have set your system up to use the new shell but it won’t take effect until you restart your terminal.  Given that I use iTerm and I have about 70 terminals open at any point, restarting a terminal is a big deal.  But what I can do is validate this by using the Apple Terminal.  So I start up Apple Terminal and do a:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;echo $BASH_VERSION
+5.0.7(1)-release
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And, unfortunately, I still get the error when I try again.  Sigh.  At this point with the new Bash in place, I’m able to try:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew upgrade libreadline
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And that begins the process.  Now since libreadline is used by almost everyone that HomeBrew has installed for me, it is a long, long process.  I can watch it upgrade Postgres, Maple, etc.  When it is finally done, I try again only to find that my pg executable isn’t there anymore.  This takes a moment of thought but I realize that it is simply moved since the previous directory included a version number.  When I finally reconstruct a path to the correct version of pg, it now executes flawlessly:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/local/Cellar/postgresql@9.5/9.5.15/bin/psq
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Success!  And, in closing, yes I do actually know that I shouldn’t have to specify the exact pathing.  A big part of homebrew’s advantage is that this isn’t needed.  But for some reason, on this particular box, it is needed.  And I’ve just never bothered to figure out why.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 11 May 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/brew/2019/05/11/when-libreadline-goes-whack.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/brew/2019/05/11/when-libreadline-goes-whack.html</guid>
+        
+        <category>brew</category>
+        
+        <category>osx</category>
+        
+        <category>libreadline</category>
+        
+        
+        <category>brew</category>
+        
+      </item>
     
       <item>
         <title>The Schema WTF Moment Take 2 - An Excursion into SourceTree</title>
@@ -588,101 +696,6 @@ ok: [194.55.29.107] =&amp;gt;
         <guid isPermaLink="true">http://fuzzyblog.io//blog/jobhound/2018/05/03/new-job-hound-feature-cover-letters-from-templates.html</guid>
         
         <category>jobhound</category>
-        
-        
-        <category>jobhound</category>
-        
-      </item>
-    
-      <item>
-        <title>Anatomy of an Accidental Product Launch with Metrics - Day 1</title>
-        <description>&lt;p&gt;I’m a software engineer and I am decidedly &lt;strong&gt;not&lt;/strong&gt; a marketing guy (I play one on the Internet from time to time but I really just write code).  I recently launched a side project, &lt;a href=&quot;https://www.jobhound.io&quot;&gt;Job Hound&lt;/a&gt;, that had an unexpectedly successful first day and I thought documenting it might help someone out there (and certainly help me; that’s usually why I blog anything; it helps me understand things).&lt;/p&gt;
-
-&lt;h1 id=&quot;what-is-job-hound&quot;&gt;What is Job Hound?&lt;/h1&gt;
-
-&lt;p&gt;Job Hound is a tool that I wrote recently as a way to “make getting a tech job suck less”.  I recently went out to get a full time gig and I found the process &lt;a href=&quot;http://fuzzyblog.io/blog/jobhound/2018/04/24/ten-things-i-learned-from-a-job-hunt-for-a-senior-engineering-role.html&quot;&gt;just so plain awful&lt;/a&gt; so I wrote software as a way to put myself in control of it.  After finding it incredibly useful for my own needs, and then showing it a few friends to positive feedback, I figured that I’d throw it on a cheap Digital Ocean box and see what happened.&lt;/p&gt;
-
-&lt;h1 id=&quot;timing-for-metrics&quot;&gt;Timing for Metrics&lt;/h1&gt;
-
-&lt;p&gt;I’m writing this after the first 16 hours the product was live.  All marketing activities were done around 8 am EST.  There’s a bit in the Metrics section that gives the numbers after a full 24 hours but this was initially written at the 16 hour mark and then published a few days later.&lt;/p&gt;
-
-&lt;h1 id=&quot;my-launch-plan&quot;&gt;My Launch “Plan”&lt;/h1&gt;
-
-&lt;p&gt;Last week an article on &lt;a href=&quot;https://work.qz.com/1254663/job-interviews-for-programmers-now-often-come-with-days-of-unpaid-homework/&quot;&gt;Quartz talking about the rise in homework for job seekers&lt;/a&gt; took off on &lt;a href=&quot;https://news.ycombinator.com/item?id=16874015&quot;&gt;Hacker News&lt;/a&gt; with 989 comments.&lt;/p&gt;
-
-&lt;p&gt;Here was my launch plan:&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;My friend &lt;a href=&quot;https://nickjanetakis.com/blog/&quot;&gt;Nick&lt;/a&gt;&lt;/strong&gt;:  You should document your story on your struggle to find a job and then post it on Hacker News&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Me&lt;/strong&gt;: Ok.&lt;/p&gt;
-
-&lt;p&gt;Honestly there wasn’t more to it than that.  This isn’t a humblebrag by any means.  Someone I respect suggested it and, well, that is how it started.&lt;/p&gt;
-
-&lt;p&gt;I had about 500 words of a very crufty blog post in draft form right in my coding editor so I polished that up from 5 am to 7 am and that became my &lt;a href=&quot;http://fuzzyblog.io/blog/jobhound/2018/04/24/ten-things-i-learned-from-a-job-hunt-for-a-senior-engineering-role.html&quot;&gt;Ten Things I Learned from a Job Hunt for a Senior Engineering Role&lt;/a&gt; blog post.  I also submitted it to &lt;a href=&quot;https://news.ycombinator.com/item?id=16912546#16913834&quot;&gt;Hacker News&lt;/a&gt; where over the course of the next 16 hours, it got 638 comments.&lt;/p&gt;
-
-&lt;p&gt;I should point out that this is the first thing I’ve ever submitted to Hacker News that has gotten &lt;strong&gt;any&lt;/strong&gt; traction at all.&lt;/p&gt;
-
-&lt;p&gt;I did tweet my blog post on &lt;a href=&quot;https://twiiter.com/fuzzygroup/&quot;&gt;my personal twitter&lt;/a&gt; and I also made a Job Hound specific tweet and then pinned the Job Hound tweet so it stayed at the top of my twitter feed.&lt;/p&gt;
-
-&lt;p&gt;I honestly never even thought to put my blog post on Facebook.  I did that 24 hours later so I don’t have any metrics on that.&lt;/p&gt;
-
-&lt;p&gt;My final launch action, one I had no hope for at all, was that I also tossed Job Hound up on &lt;a href=&quot;https://www.producthunt.com/posts/job-hound&quot;&gt;Product Hunt&lt;/a&gt; where it got 56 up votes during roughly the same period (it may have been on Product Hunt 1 day longer; the whole day is kind of a blur right now).&lt;/p&gt;
-
-&lt;h1 id=&quot;fine-tuning&quot;&gt;Fine Tuning&lt;/h1&gt;
-
-&lt;p&gt;I did relatively little tuning of the content.  My buddy Nick suggested that I emphasize the free nature of Job Hound in the blog post and that I add the Product Hunt link into the blog post.  Both of these were good ideas and done around 2 pm EST.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-metrics&quot;&gt;The Metrics&lt;/h1&gt;
-
-&lt;p&gt;Since roughly 8 am this morning (sixteen hours so far), Job Hound has had:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;204 user accounts created (email / password)&lt;/li&gt;
-  &lt;li&gt;98 jobs added&lt;/li&gt;
-  &lt;li&gt;An average of 0.48 jobs per user&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;After a full 24 hours, the numbers were:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;236 user accounts created (email / password)&lt;/li&gt;
-  &lt;li&gt;119 jobs added&lt;/li&gt;
-  &lt;li&gt;An average of 0.50 jobs per user&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In terms of social media metrics, I started the day with 163 twitter followers and I ended it a full 24 hours later with 187.&lt;/p&gt;
-
-&lt;p&gt;Are these numbers good?  I think that absolutely depends on your perspective.  For a side project that I publicly launched with absolutely zero planning – I’m absolutely delighted.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Followup after 4 days&lt;/strong&gt;: The numbers have continued to steadily grow and I’ve gotten quite a few emails, linked in messages, tweets and other feedback that all indicates to me that I have hit on something.  My plan is that keep working Job Hound as a side project and just making it better and better.  Maybe something comes of this; maybe not but helping people get jobs is a &lt;strong&gt;good&lt;/strong&gt; thing.&lt;/p&gt;
-
-&lt;h1 id=&quot;other&quot;&gt;Other&lt;/h1&gt;
-
-&lt;p&gt;I received a number of emails and messages via LinkedIn and I tried to respond to everyone on the same day.  I’ve always found that talking to users is the best damn marketing you can do.  This is the root of the &lt;a href=&quot;https://www.jobhound.io/pages/thank_you&quot;&gt;Job Hound Thank You&lt;/a&gt; page.&lt;/p&gt;
-
-&lt;p&gt;You’re probably wondering “what about the web traffic?”  I’m sorry to say that my Google Analytics skills just aren’t all that good so I haven’t been able to dig into them with any success as of yet.  I’m sure the data is there but I’m too brain dead to figure it out.&lt;/p&gt;
-
-&lt;h1 id=&quot;conclusion---content-does-work&quot;&gt;Conclusion - Content Does Work&lt;/h1&gt;
-
-&lt;p&gt;I think my overall conclusions from all this are:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Creating content on the Internet as a marketing tool really does work but the content has to have value of its own.  You can’t simply shill your product; embed it in something that is interesting all on its own.&lt;/li&gt;
-  &lt;li&gt;Telling a personal story works.&lt;/li&gt;
-  &lt;li&gt;Lucky is better than smart.  I was extremely lucky in getting coverage from Hacker News.&lt;/li&gt;
-  &lt;li&gt;Timing matters.  I was lucky to be able to ride a wave of hiring interest from the Quartz article.  This didn’t occur to me and it took the pushing of a good friend for me to put this out.  Thanks Nick.&lt;/li&gt;
-&lt;/ul&gt;
-
-</description>
-        <pubDate>Fri, 27 Apr 2018 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/jobhound/2018/04/27/anatomy-of-an-accidental-product-launch-with-metrics-day-1.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/jobhound/2018/04/27/anatomy-of-an-accidental-product-launch-with-metrics-day-1.html</guid>
-        
-        <category>jobhound</category>
-        
-        <category>startup</category>
-        
-        <category>metrics</category>
         
         
         <category>jobhound</category>
