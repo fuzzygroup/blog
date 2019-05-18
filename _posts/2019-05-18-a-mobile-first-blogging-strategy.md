@@ -4,9 +4,6 @@ title: A Mobile First Blogging Strategy
 category: blogging
 tags: ["blogging", "writing"]
 ---
-
-A Mobile First Blogging Strategy
-
 Not that anyone’s watching but if they were, they would notice that I’ve started blogging again both here and on my [recipes](https://www.fuzzyblog.io/recipes) site.  There were a few things that really made the difference in my starting again but the biggest was realizing that I could actually employ mobile devices in my blogging strategy.  
 
 The interesting thing here is that I made zero changes in my blogging tool.  I'm still using Jekyll hosted on Github Pages.  These changes were purely in how I approached content.  You could use this with Jekyll, WordPress or any blogging tool.
