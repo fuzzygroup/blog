@@ -6,9 +6,115 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 11 May 2019 11:45:20 -0400</pubDate>
-    <lastBuildDate>Sat, 11 May 2019 11:45:20 -0400</lastBuildDate>
+    <pubDate>Sat, 18 May 2019 15:10:07 -0400</pubDate>
+    <lastBuildDate>Sat, 18 May 2019 15:10:07 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Using Ansible ec2.py Directly</title>
+        <description>&lt;p&gt;This is a shorty but it is incredibly useful when you need to diagnose &lt;a href=&quot;https://www.ansible.com/&quot;&gt;Ansible&lt;/a&gt; weirdness.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Note:&lt;/em&gt; I know this is obvious but when you have used Ansible and AWS extensively, you get used to ec2.py just being a component to Ansible and you don’t even think about calling it directly.&lt;/p&gt;
+
+&lt;p&gt;We recently had a situation where all of our Ansible driven deploys were failing.  And the reason for this wasn’t easy to diagnose because all of our deploys were wrapped up in fairly complex shell logic.  What helped us sort it out was breaking the underlying Ansible execution pipeline apart and calling &lt;a href=&quot;https://github.com/ansible/ansible/blob/devel/contrib/inventory/ec2.py&quot;&gt;ec2.py&lt;/a&gt; directly.  ec2.py is the open source bit that talks to an AWS environment and returns a massive data structure that represents the “inventory” of servers, volumes, network connections, etc.&lt;/p&gt;
+
+&lt;p&gt;Here’s the way to call ec2.py directly&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;AWS_ACCESS_KEY_ID=some_access_key AWS_SECRET_ACCESS_KEY=some_secret_key /etc/ansible/inventory/ec2.py
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;As long as your ec2.py is executable (and it damn well should be), this will return the normal giant JSON hash of data that represents your AWS environment.  And if it doesn’t return a giant JSON hash, well, then you know you have a problem.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 18 May 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/ansible/2019/05/18/using-ansible-ec2-py-directly.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/ansible/2019/05/18/using-ansible-ec2-py-directly.html</guid>
+        
+        <category>ansible</category>
+        
+        <category>devops</category>
+        
+        <category>python</category>
+        
+        <category>aws</category>
+        
+        
+        <category>ansible</category>
+        
+      </item>
+    
+      <item>
+        <title>Camel Camel Camel - A Way to Get Amazon Stuff Cheaper</title>
+        <description>&lt;p&gt;The vast breadth of things on the Internet never fails to amaze me.  And when I discover something new, I find that writing about it helps me internalize them.  &lt;a href=&quot;https://www.camelcamelcamel.com&quot;&gt;Camel Camel Camel&lt;/a&gt;, hence forth referred to as Camel^3, is one that I am absolutely late to the party  on but I thought that someone out there might not know about it.&lt;/p&gt;
+
+&lt;p&gt;Camel^3 is an Amazon price watcher that lets you supply either an Amazon link or simply a search term as well as a price target.  Camel^3 will then persistently monitor that product and alert you when the price drops.  The advantage to this is that even though you think that Amazon’s prices are fixed, they are actually fairly variable and when you have a &lt;strong&gt;non immediate&lt;/strong&gt; purchase need, Camel^3 gets you what you need at a cheaper price.&lt;/p&gt;
+
+&lt;p&gt;In my case I’m currently lusting after a &lt;a href=&quot;https://www.amazon.com/Synology-bay-DiskStation-DS218j-Diskless/dp/B076G6YKWZ/ref=sr_1_3?keywords=Synology&amp;amp;qid=1558199113&amp;amp;s=gateway&amp;amp;sr=8-3&quot;&gt;Synology NAS Disc array&lt;/a&gt; which presently has a price of $175.  So I added it to my Camel^3 page with a price target of $130.  And since this is going to require drives with it, I can also set up Camel^3 price watches on &lt;a href=&quot;https://www.amazon.com/Red-Pro-10TB-Hard-Drive/dp/B072F422FW/ref=sr_1_fkmrnull_3?keywords=western+digital+raid+red+10tb&amp;amp;qid=1558199233&amp;amp;s=gateway&amp;amp;sr=8-3-fkmrnull&quot;&gt;Western Digital RED Raid Drives&lt;/a&gt;.    So if my price watches get fulfilled between the disc array and the drives, I should save about $200.&lt;/p&gt;
+
+&lt;p&gt;Camel^3 makes money by you returning to their page and using their affiliate links to Amazon.  There doesn’t seem to be any privacy violations, advertising or any other crap as all too often there are.  Oh and massive props to Camel^3 for allowing use of its service without even creating an account and password.  That’s hugely awesome.&lt;/p&gt;
+
+&lt;p&gt;Strongly Recommended.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 18 May 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/amazon/2019/05/18/camel-camel-camel-a-way-to-get-amazon-stuff-cheaper.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/amazon/2019/05/18/camel-camel-camel-a-way-to-get-amazon-stuff-cheaper.html</guid>
+        
+        <category>amazon</category>
+        
+        
+        <category>amazon</category>
+        
+      </item>
+    
+      <item>
+        <title>A Mobile First Blogging Strategy</title>
+        <description>&lt;p&gt;A Mobile First Blogging Strategy&lt;/p&gt;
+
+&lt;p&gt;Not that anyone’s watching but if they were, they would notice that I’ve started blogging again both here and on my &lt;a href=&quot;https://www.fuzzyblog.io/recipes&quot;&gt;recipes&lt;/a&gt; site.  There were a few things that really made the difference in my starting again but the biggest was realizing that I could actually employ mobile devices in my blogging strategy.&lt;/p&gt;
+
+&lt;p&gt;The interesting thing here is that I made zero changes in my blogging tool.  I’m still using Jekyll hosted on Github Pages.  These changes were purely in how I approached content.  You could use this with Jekyll, WordPress or any blogging tool.&lt;/p&gt;
+
+&lt;p&gt;Here’s what I did:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The biggest change was my adoption of Apple Notes as a core text editor.  Yes it isn’t perfect by any means but the fact that Apple Notes is a standard thing across my iPhone, my iPad and my OSX laptops means that I have a simple way to always create a blog post no matter where I am.  The Sync on Apple Notes seems to be flawless and it is fast enough that I now use Apple Notes as a “paste buffer” between my boxes.&lt;/li&gt;
+  &lt;li&gt;I &lt;a href=&quot;https://www.howtogeek.com/344310/how-to-turn-off-smart-punctuation-on-your-iphone-and-ipad/&quot;&gt;turned off Smart Punctuation&lt;/a&gt; on all my iOS devices so I don’t have issues with a curly quote in a MarkDown file.&lt;/li&gt;
+  &lt;li&gt;I turned off Smart Punctuation on my OSX device also, Apple Menu, System Preferences, Keyboard, Text, uncheck Use Smart Quotes and Dashes.&lt;/li&gt;
+  &lt;li&gt;I copied into my Apple Notes Blogging folder a markdown template for how I like to create a post.  When I need to start something I just copy it in at the top of the post.&lt;/li&gt;
+  &lt;li&gt;I added a Belkin keyboard to my iPad converting it from a tablet to a lightweight, long lasting laptop.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;And this is what my blogging strategy now looks like:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Go into notes, wherever I am, in whatever computing device I have handy.&lt;/li&gt;
+  &lt;li&gt;Open my template post and copy all of it.&lt;/li&gt;
+  &lt;li&gt;Create a new note and paste in my template.&lt;/li&gt;
+  &lt;li&gt;Write.  Lather / Rinse / Repeat as needed.&lt;/li&gt;
+  &lt;li&gt;When I’m ready to publish, go to my actual laptop and copy the title off the post.  Then I execute a “jekyll post (paste in title)” and press enter.&lt;/li&gt;
+  &lt;li&gt;I go back into the note and copy all of it with command + a, command + c&lt;/li&gt;
+  &lt;li&gt;I open the resulting post in my MarkDown editor of choice, TextMate.&lt;/li&gt;
+  &lt;li&gt;I paste in the text and make any residual edits / adjustments.&lt;/li&gt;
+  &lt;li&gt;If I don’t have the Jekyll Server running, I start it with jekyll s to generate the correct feed and such.&lt;/li&gt;
+  &lt;li&gt;In the command line, I do a git add / commit / push cycle.&lt;/li&gt;
+  &lt;li&gt;And then everything is online almost instantly.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Writing this out does make it seem convoluted but it is actually pretty damn seamless and the ability to use any computing device I have at hand for content creation makes it &lt;em&gt;wonderful&lt;/em&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 18 May 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/blogging/2019/05/18/a-mobile-first-blogging-strategy.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/blogging/2019/05/18/a-mobile-first-blogging-strategy.html</guid>
+        
+        <category>blogging</category>
+        
+        <category>writing</category>
+        
+        
+        <category>blogging</category>
+        
+      </item>
     
       <item>
         <title>When libreadline Goes Whack</title>
@@ -536,169 +642,6 @@ ok: [194.55.29.107] =&amp;gt;
         
         
         <category>https</category>
-        
-      </item>
-    
-      <item>
-        <title>Managing An Attack of Hives</title>
-        <description>&lt;p&gt;&lt;em&gt;Disclaimer:&lt;/em&gt; I am not a doctor.  I am not a nurse.  I do not even play a doctor or a nurse on the Internet.  But I have been unlucky enough to suffer from poison ivy on N (N rounds up pretty high; it involves the number of fingers on both hands) occasions so I know a lot about suffering through itchiness.  And I’ve had hives myself.&lt;/p&gt;
-
-&lt;p&gt;I recently watched a dear, dear friend come down with hives out of the clear blue.  One day they were fine and the next day there were “an itchy, splotchy mess”.  Hives are one of those things that generally are an allergic reaction that you never quite understand.  They come over you, your life sucks beyond belief and then they go away.  As another friend would say, “How Rude!”.&lt;/p&gt;
-
-&lt;p&gt;We ultimately figured out a good way to help deal with the itchiness but it took about a day so I thought I’d write down some tips and recommendations.  I know this is not the sort of content I usually produce but it made at least one person’s life better so …&lt;/p&gt;
-
-&lt;h2 id=&quot;managing-hives-or-poison-ivy&quot;&gt;Managing Hives or Poison Ivy&lt;/h2&gt;
-
-&lt;p&gt;Here are some techniques for managing hives or poison ivy:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Cool water; never hot.  Getting under a hot shower with an itchy condition actually feels good but it is a complete mistake. It seems to reactivate the underlying cause.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/Benadryl-Ultratabs-Antihistamine-Allergy-Diphenhydramine/dp/B001F1DV72/ref=sr_1_2_sspa?keywords=benedryl&amp;amp;qid=1556977968&amp;amp;s=gateway&amp;amp;sr=8-2-spons&amp;amp;psc=1&quot;&gt;Benedryl&lt;/a&gt;.  If you’re looking for a medicine and don’t mind the associated drowsiness, Benedryl really does help.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/Aveeno-Soothing-Treatment-Itchy-Irritated/dp/B000UEAARO/ref=sr_1_1?crid=3GVFYJIK6BNCE&amp;amp;keywords=aveeno+oatmeal+bath&amp;amp;qid=1556977411&amp;amp;s=gateway&amp;amp;sprefix=aveeno+ot%2Caps%2C138&amp;amp;sr=8-1&quot;&gt;Colloidal Oatmeal Bath&lt;/a&gt;.  If you have the ability to soak in a tub, a cool tub filled with the Aveeno Oatmeal works well.  Or you can make your &lt;a href=&quot;https://www.verywellfamily.com/how-to-make-your-own-oatmeal-bath-289466&quot;&gt;own&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/Benadryl-Relief-Spray-Extra-Strength/dp/B00MHYLOMA/ref=sr_1_1_sspa?crid=FG56ZRO8EATG&amp;amp;keywords=spray+benedryl&amp;amp;qid=1556977467&amp;amp;s=gateway&amp;amp;sprefix=spray+bene%2Caps%2C139&amp;amp;sr=8-1-spons&amp;amp;psc=1&amp;amp;smid=ASEVS99O6FS73&quot;&gt;Spray Benadryl&lt;/a&gt;.  This is a topical spray and while it makes you sticky, it provides solid relief.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/Gold-Bond-Ultimate-Eczema-Protectant/dp/B00GIHMOGW/ref=sr_1_5?keywords=gold+bond+eczema+ultimate+relief&amp;amp;qid=1556979092&amp;amp;s=gateway&amp;amp;sr=8-5&quot;&gt;Gold Bond Ultimate Eczema Relief&lt;/a&gt;.  This is a colloidal oatmeal lotion and it has specific ingredients (since its an eczema solution) to “deal with the itches”.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/ZANFEL-Poison-Ivy-Sumac-Wash/dp/B000GCPWUU/ref=sr_1_1_sspa?keywords=zanfel&amp;amp;qid=1556977531&amp;amp;s=gateway&amp;amp;sr=8-1-spons&amp;amp;smid=A188ED3JB77RWM&amp;amp;th=1&quot;&gt;Zanfel&lt;/a&gt;.  I listed this last but it is ABSOLUTELY THE BEST THING EVER for hives or poison ivy.  It is ridiculously expensive ($50 for a tube in downtown Chicago) but it is completely worth it.  Follow the directions exactly and it provides fantastic relief.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Of the recommendations above, #6, Zanfel, is the best.  You won’t want to spend the money but it really is worth it. #5 also comes very, very highly recommended.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 04 May 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/health/2019/05/04/managing-an-attack-of-hives.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/health/2019/05/04/managing-an-attack-of-hives.html</guid>
-        
-        <category>health</category>
-        
-        <category>hives</category>
-        
-        
-        <category>health</category>
-        
-      </item>
-    
-      <item>
-        <title>Getting AWS Costs Under Control</title>
-        <description>&lt;p&gt;&lt;em&gt;Note:&lt;/em&gt; AWS is an abbreviation for Amazon Web Services, the Amazon cloud computing platform.&lt;/p&gt;
-
-&lt;p&gt;I am presently responsible for a monthly AWS budget that is running about $20,000 per month.  And that is up from about $11,000 per month only eight months ago.  I was recently tasked with bringing that down through &lt;em&gt;reserved instances&lt;/em&gt; and I thought that writing up the learnings from doing a deep dive into reserved instances and AWS Cost Control was worth writing up.  Even though I’ve worked with AWS now since 2008, I found the results of my research pretty damn surprising.&lt;/p&gt;
-
-&lt;p&gt;I should note that when I say “responsible”, I mean that I have technical / implementation responsibility in my role as a Senior Software Engineer. I’m not actually a cost control / accounting person in any way.&lt;/p&gt;
-
-&lt;h2 id=&quot;what-are-reserved-instances&quot;&gt;What are Reserved Instances&lt;/h2&gt;
-
-&lt;p&gt;The first thing to understand is that Reserved Instances are poorly named, very poorly named.  Reserved instances are nothing more than &lt;em&gt;coupons&lt;/em&gt; for the use of an instance of the type of the coupon.  You actually aren’t reserving a specific instance but instead saying to Amazon “Ok I’ll buy this much of instance type X”.  And it is important to understand that reserved instances aren’t a simple volume discount.  They are:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Massively complex and confusing&lt;/li&gt;
-  &lt;li&gt;Expensive, requiring an up front payment to get the maximum discount&lt;/li&gt;
-  &lt;li&gt;Available in multiple flavors such as convertible and non convertible&lt;/li&gt;
-  &lt;li&gt;Complex enough that after researching them in depth you will want to drink and drink heavily&lt;/li&gt;
-  &lt;li&gt;Such a big deal that there actually is a secondary market where you can resell and purchase reserved instances&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;When I looked into how much reserved instances could save us, I generally found between a 15% to 20% savings with our current approach to things.  Given our current spending rate, that could easily amount to nearly $40,000 per year.   And while that’s nothing to sneer at, my research into reserved instances told me to keep digging.&lt;/p&gt;
-
-&lt;p&gt;The most interesting thing about reserved instances with respect  to AWS cost control is that universally the recommendation I found was this: &lt;em&gt;Don’t start with reserved instances&lt;/em&gt;.  Even though reserved instances directly reduce your costs, you should never start with reserved instances.  And that brings us to the next section, AWS Cost Control Strategy.
-￼
-## AWS Cost Control Strategy&lt;/p&gt;
-
-&lt;p&gt;After a considerable amount of research, I came up with the following approach for reducing AWS costs. Please note that where I say “we”, you should substitute your own organization.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;We need to designate someone as the person responsible for managing / monitoring AWS costs.  Right now, for example, we have a quarter of a million dollar budgetary line item that &lt;em&gt;no one&lt;/em&gt; is responsible for.  This isn’t a technical problem; this is an accounting problem.&lt;/li&gt;
-  &lt;li&gt;We need to correctly tag all instances by name, by product family, by application and more so that there is the metadata to properly examine and drill into costs using the AWS or third party accounting tools.&lt;/li&gt;
-  &lt;li&gt;We need to implement a lights on / lights off strategy where you turn off resources when they aren’t in use.  As an example, our staging and training environments clusters of machines only need to be available some of the time (staging needs to be available Mon - Friday, 9 to 6 EST; training needs to be available only when specifically scheduled).  Right now all those environments are powered up and available 24x7x365.  Admittedly these aren’t as many boxes as our production environment but if you don’t have something turned on, you’re not paying for it.&lt;/li&gt;
-  &lt;li&gt;We need to implement a Right Sizing strategy where we dig into machine utilization and figure out if we’re actually using the correctly sized instances or if we are over spending by using machines that are too large.&lt;/li&gt;
-  &lt;li&gt;We should only implement reserved instances when &lt;em&gt;all&lt;/em&gt; of the above steps are implemented.  Otherwise you are over buying capacity that you likely don’t need.  Also it is not widely understood that you can buy reserved instances not only for your EC2 boxes but also for your RDS boxes; keep that firmly in mind when you plan your reserved instance purchases.&lt;/li&gt;
-  &lt;li&gt;Finally we need to realize that AWS Cost Management is a task you need to do regularly whether that is monthly, quarterly or annually.  It needs to be not only someone’s actual job (or portion of their job) but as an activity, it needs to be done consistently.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;tools-and-recommended-reading&quot;&gt;Tools and Recommended Reading&lt;/h2&gt;
-
-&lt;p&gt;Here are some tools to investigate:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://aws.amazon.com/solutions/instance-scheduler/&quot;&gt;AWS Instance Scheduler&lt;/a&gt; - This is a code based tool to configure turn on / turn off of your cloud instances&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.parkmycloud.com&quot;&gt;Park My Cloud&lt;/a&gt; - This is a tool which can turn on / off your cloud instances automatically with an easy user interface&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.cloudhealthtech.com&quot;&gt;CloudHealth&lt;/a&gt; - this is an AWS management and analytics tool with specific features for reserved instance analysis&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.cloudability.com&quot;&gt;CloudAbility&lt;/a&gt; - this is an AWS management and analytics tool with specific features for reserved instance analysis&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The CloudAbility and CloudHealth tools are seriously pricey, they are generally priced as a percentage of your AWS bill, but they have outstanding analytics features and the ability  to analyze your reserved instance needs more powerfully than the built in AWS tools for this.&lt;/p&gt;
-
-&lt;p&gt;Here are some of the better research materials to investigate:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=3jhKM1rgpEw&quot;&gt;AWS Cost Optimization Levers, Tools and Strategies&lt;/a&gt;.  This is an excellent video from the AWS Australia branch.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=L5rlqaC6uNs&quot;&gt;Saving at Scale with Reserved Instances by Cloudability&lt;/a&gt;.  This is also excellent and it illustrates two key points - a) that reserved instances can actually increase your bill and b) that you really need to have someone responsible for AWS cost control on an ongoing basis&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://get.cloudability.com/rs/064-CAC-529/images/the-complete-guide-to-saving-with-aws-reserved-instances-ebook.pdf&quot;&gt;Reserved Instance Ebook&lt;/a&gt;.  A great read.&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Sat, 04 May 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/aws/2019/05/04/getting-aws-costs-under-control.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/aws/2019/05/04/getting-aws-costs-under-control.html</guid>
-        
-        <category>aws</category>
-        
-        
-        <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>New Job Hound Feature - Create Cover Letters More Easily</title>
-        <description>&lt;p&gt;When you are a product creator, there is something wonderful about building a product that people are really using and implementing a new feature that you &lt;strong&gt;know&lt;/strong&gt; will make their lives easier.  I am very, very please to announce the new Job Hound feature Cover Letters More Easily.  Yes I know that’s an absolutely crap name but it does describe what this does.  Let me walk you through how this works.&lt;/p&gt;
-
-&lt;p&gt;At the heart of Job Hound is an underlying database of the jobs you apply for and how successful you are with them.  Success is measured by your interactions with the job and Job Hound understands that the type of interaction that you have matters.  Every job has a number of status fields like “got_hr_screen” or “passed_technical_interview”.  As each job gains additional status fields, the underlying “score” associated with how successful you are &lt;em&gt;for this job&lt;/em&gt; grows.  And that is how Job Hound can do things like generate a report of cover letters organized by most successful to least successful.&lt;/p&gt;
-
-&lt;p&gt;Let’s walk through the cover letter creation process as it has been and then let’s walk through it with the new features.&lt;/p&gt;
-
-&lt;h2 id=&quot;before&quot;&gt;Before&lt;/h2&gt;
-
-&lt;p&gt;If you want to create a cover letter, you start at your list of Jobs to Apply For:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://jobhound.io/assets/cover_letter_all_jobs.png&quot; alt=&quot;cover_letter_all_jobs.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Let’s say that you want to apply for the Eezy job so you click on it giving you the details of the job:&lt;/p&gt;
-
-&lt;p&gt;The obvious next step is to click on the Add Cover Letter button:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://jobhound.io/assets/cover_letter_eezy.png&quot; alt=&quot;https://jobhound.io/assets/cover_letter_eezy.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Clicking that Add Cover Letter button takes you into the Cover Letter writer where you can see the job description but you start with a totally blank screen.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://jobhound.io/assets/cover_letter_blank.png&quot; alt=&quot;https://jobhound.io/assets/cover_letter_blank.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: The Job Description above is something that Job Hound always tries to provide so that you can write your cover letter to respond to the requirements of the job.&lt;/p&gt;
-
-&lt;p&gt;Writing anything from a blank state is always harder than starting from a template so let’s see how this has been improved.&lt;/p&gt;
-
-&lt;h2 id=&quot;with-the-new-feature&quot;&gt;With the New Feature&lt;/h2&gt;
-
-&lt;p&gt;With the new feature you can start creating your cover letter for a job you want to apply for by going to the Successful Cover Letter report (click Report in the menu bar):&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://jobhound.io/assets/cover_letter_all_reports.png&quot; alt=&quot;https://jobhound.io/assets/cover_letter_all_reports.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Select the Successful Cover Letters report from the links and you’ll see the report of all your cover letters organized from most successful to least successful.  In this case we want to use the Wedding Wire cover letter as a template for the job we want to apply to – Eezy.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://jobhound.io/assets/cover_letter_select_from_report.png&quot; alt=&quot;https://jobhound.io/assets/cover_letter_select_from_report.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Just select the Eezy job from the drop down list (yes I realize now that I didn’t show Eezy in the drop down; apologies; it is there) and click the Create Cover Letter from this button.  That will take you to the Cover Letter Writer with the selected template loaded in.  You can now adjust the the cover letter for your new job.  You’ll notice an alert message at the top that reminds you to make adjustments like the company name and job title.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://jobhound.io/assets/cover_letter_create_from_template.png&quot; alt=&quot;https://jobhound.io/assets/cover_letter_create_from_template.pngg&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;Now you can easily start from your list of cover letters, choose the one that works best for the job you want to apply to and instantly create a new cover letter from it.  Enjoy!&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 03 May 2018 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/jobhound/2018/05/03/new-job-hound-feature-cover-letters-from-templates.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/jobhound/2018/05/03/new-job-hound-feature-cover-letters-from-templates.html</guid>
-        
-        <category>jobhound</category>
-        
-        
-        <category>jobhound</category>
         
       </item>
     
