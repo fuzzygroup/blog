@@ -21,7 +21,7 @@ Here's what I did:
 
 And this is what my blogging strategy now looks like:
 
-1.  Go into notes, wherever I am, in whatever computing device I have handy.
+1. Go into notes, wherever I am, in whatever computing device I have handy.
 2. Open my template post and copy all of it.
 3. Create a new note and paste in my template.
 4. Write.  Lather / Rinse / Repeat as needed.
@@ -30,7 +30,7 @@ And this is what my blogging strategy now looks like:
 7. I open the resulting post in my MarkDown editor of choice, TextMate.
 8. I paste in the text and make any residual edits / adjustments.
 9. If I don’t have the Jekyll Server running, I start it with jekyll s to generate the correct feed and such.
-10. In the command line, I do a git add / commit / push cycle.
+10. In the command line, I do a git add / commit / push cycle. I also wrapped this into a shell command so I can just type ./postentries.sh "some description of what i'm posting" and have all of this handled for me (including step 9).
 11. And then everything is online almost instantly.
 
 Writing this out does make it seem convoluted but it is actually pretty damn seamless and the ability to use any computing device I have at hand for content creation makes it *wonderful*.
