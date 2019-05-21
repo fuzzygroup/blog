@@ -44,6 +44,39 @@ And then a shift to [RSpec](https://fuzzyblog.io/blog/rails/2017/02/26/setting-u
     # create first branch paralleling first ticket id
     git branch feature/1
     git co feature/1
+    
+And now its time for real work.  I personally believe that Rails development is always, always, always, always, always, always best done with N terminal windows where the beginning of them is as follows: Server, Database Terminal, Rails Console, General Command Line usage (add / commit / run tests / etc).  Your opinion may differ but that's how I roll -- keep all your tooling available at the same time.  And yes it is a Zorkian experience where you can be lost in a twisty maze of terminal windows all alike.
+
     # onto Bootstrap configuration for some appearance
+    mate Gemfile
+    # add bootsnap
+    # add bootstrap-saas
+    # stop server with command + c / ctrl c
+    bundle update
+    # port 3000 is default so omit
+    bundle exec rails s 
+    # start second terminal tab - db window
+    # cd development root
+    cd slumgullion
+    # start third terminal tab - console window
+    # cd development root
+    cd slumgullion
+    bundle exec rails c
+    # start fourth terminal window
+    cd slumgullion
+
+Realize that after N late nights, even with examples you wrote yourself using Bootstrap, you do not know how to setup Bootstrap from scratch so sacrifice a small goat in the dark of the night whilst chanting around a firepit.  When that fails to produce results, grumble and then resume with Google while chanting [Save Me FreeCodeCamp.  Save Me FreeCodeCamp](https://medium.freecodecamp.org/add-bootstrap-to-your-ruby-on-rails-project-8d76d70d0e3b).  And like magic you channel this set of commands:
+
+    git mv app/assets/stylesheets/application.css app/assets/stylesheets/application.scss
+    # fix application.scss like url above directs
+    mate app/assets/stylesheets/application.scss
+    # fix application.js like url above directs
+    mate app/assets/javascripts/application.js
+    mate app/views/application.html.erb
+    # add a jumbotron element to see if bootstrap works
+    mate app/views/dashboard/index.html.erb
+    # restart server as per above
+
+Success !
 
 With thanks to Pete Jenney / Dataware for giving me the basis to make up that lyrical riff.
