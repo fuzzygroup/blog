@@ -1,6 +1,9 @@
 ---
 layout: post
 title: And Now for Something New
+category: slumgullion
+tags: ["rails", "slumgullion"]
+
 ---
 Hi, ho, hi, ho, its off to code I go
 
