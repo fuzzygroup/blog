@@ -5,7 +5,7 @@ category: slumgullion
 tags: ["rails", "slumgullion"]
 
 ---
-Hi, ho, hi, ho, its off to code I go
+Io, Io, its off to code I go.  From bit to byte I build my stack. Io, Io its off to code I go....  
 
     cd development_project_path
     rails new slumgullion --database=mysql   --skip-spring --skip-listen --skip-test
@@ -46,3 +46,4 @@ And then a shift to [RSpec](https://fuzzyblog.io/blog/rails/2017/02/26/setting-u
     git co feature/1
     # onto Bootstrap configuration for some appearance
 
+With thanks to Pete Jenney / Dataware for giving me the basis to make up that lyrical riff.
