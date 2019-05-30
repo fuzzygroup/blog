@@ -275,25 +275,14 @@ Folding camping chairs make it happy to sit down and talk with people. You shoul
 
 You need a heat source that you can cluster around because cooking over wood or charcoal is fun. We wanted a fire pit but my wife found the [Char Griller Table Top Charcoal Grill](https://www.amazon.com/Char-Griller-2-2424-Table-Charcoal-Grill/dp/B003HFFVJK/) and everyone was very impressed by it. Even Ignitable Shot Therapy, Summer Games Fire Demigod, thought it was a great idea.
 
-
-
-<p id="gdcalert1" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/Summer-Games0.jpg). Store image on your image server and adjust path/filename if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert2">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/Summer-Games0.jpg "image_tooltip")
-
+![grill](https://cdn.shopify.com/s/files/1/1960/2909/products/22424_1_STUDIO_Front.jpg?v=1557240466)
 
 
 ### Popup
 
 A popup is just that, a popup canopy which goes over your camping table and chairs to shield you from the rain. There will be times when you are sitting under your popup while water runs underneath you and are still having a damn great time.
 
-
-
-<p id="gdcalert2" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/Summer-Games1.jpg). Store image on your image server and adjust path/filename if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert3">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/Summer-Games1.jpg "image_tooltip")
+![popup](https://www.leaderaccessories.com/public/uploads/goods/image/goods_img/e26f6981bd07d97ea6b26098a9d09089_thumb.jpg)
 
 
 Note: The best trick I saw at Summer Games was the person who pitched a pop up over their tent.  That one trick likely trimmed 10 degrees from the heat in their tent.  
