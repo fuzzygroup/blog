@@ -6,9 +6,108 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 18 May 2019 15:17:32 -0400</pubDate>
-    <lastBuildDate>Sat, 18 May 2019 15:17:32 -0400</lastBuildDate>
+    <pubDate>Thu, 30 May 2019 11:44:54 -0400</pubDate>
+    <lastBuildDate>Thu, 30 May 2019 11:44:54 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>And Now for Something New</title>
+        <description>&lt;p&gt;Io, Io, its off to code I go.  From bit to byte I build my stack. Io, Io its off to code I go….&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd development_project_path
+rails new slumgullion --database=mysql   --skip-spring --skip-listen --skip-test
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And then a shift to &lt;a href=&quot;https://fuzzyblog.io/blog/rails/2017/02/26/setting-up-rails-with-rspec-from-the-start.html&quot;&gt;RSpec&lt;/a&gt;.  And then a:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd slumgullion
+# mate is my source code editor
+# edit Gemfile (core package file for external components aka gems)
+mate Gemfile
+# Change gemfile version number to 5.2.3
+# Follow directions in blog post above
+bundle update
+mate config/database.yml
+#update database configuration file with development credentials
+bundle exec rails db:create
+bundle exec rails g controller Dashboard
+# set the default route
+mate config/routes.rb
+# write a trivial def index i.e. def index end
+mate app/controllers/dashboard_controller.rb
+# start the server
+bundle exec rails s -p3000
+# open in chrome this url 
+http://localhost:3000/
+# get errors; remember to create a blank index template to force html rendering
+touch app/views/dashboard/index.html.erb
+# mate app/views/dashboard/index.html.erb
+# get a blank page without any errors
+# get it into version control
+git add . 
+git commit -m &quot;Canonical initial commit message&quot;
+# goto git and create a private repo
+# add the origin
+# initial push
+# create first branch paralleling first ticket id
+git branch feature/1
+git co feature/1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And now its time for real work.  I personally believe that Rails development is always, always, always, always, always, always best done with N terminal windows where the beginning of them is as follows: Server, Database Terminal, Rails Console, General Command Line usage (add / commit / run tests / etc).  Your opinion may differ but that’s how I roll – keep all your tooling available at the same time.  And yes it is a Zorkian experience where you can be lost in a twisty maze of terminal windows all alike.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# onto Bootstrap configuration for some appearance
+mate Gemfile
+# add bootsnap
+# add bootstrap-saas
+# stop server with command + c / ctrl c
+bundle update
+# port 3000 is default so omit
+bundle exec rails s 
+# start second terminal tab - db window
+# cd development root
+cd slumgullion
+# start third terminal tab - console window
+# cd development root
+cd slumgullion
+bundle exec rails c
+# start fourth terminal window
+cd slumgullion
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Realize that after N late nights, even with examples you wrote yourself using Bootstrap, you do not know how to setup Bootstrap from scratch so sacrifice a small goat in the dark of the night whilst chanting around a firepit.  When that fails to produce results, grumble and then resume with Google while chanting &lt;a href=&quot;https://medium.freecodecamp.org/add-bootstrap-to-your-ruby-on-rails-project-8d76d70d0e3b&quot;&gt;Save Me FreeCodeCamp.  Save Me FreeCodeCamp&lt;/a&gt;.  And like magic you channel this set of commands:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git mv app/assets/stylesheets/application.css app/assets/stylesheets/application.scss
+# fix application.scss like url above directs
+mate app/assets/stylesheets/application.scss
+# fix application.js like url above directs
+mate app/assets/javascripts/application.js
+mate app/views/application.html.erb
+# add a jumbotron element to see if bootstrap works
+mate app/views/dashboard/index.html.erb
+# restart server as per above
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Success !&lt;/p&gt;
+
+&lt;p&gt;With thanks to Pete Jenney / Dataware for giving me the basis to make up that lyrical riff.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 21 May 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/slumgullion/2019/05/21/and-now-for-something-new.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/slumgullion/2019/05/21/and-now-for-something-new.html</guid>
+        
+        <category>rails</category>
+        
+        <category>slumgullion</category>
+        
+        
+        <category>slumgullion</category>
+        
+      </item>
     
       <item>
         <title>Using Ansible ec2.py Directly</title>
@@ -68,9 +167,7 @@
     
       <item>
         <title>A Mobile First Blogging Strategy</title>
-        <description>&lt;p&gt;A Mobile First Blogging Strategy&lt;/p&gt;
-
-&lt;p&gt;Not that anyone’s watching but if they were, they would notice that I’ve started blogging again both here and on my &lt;a href=&quot;https://www.fuzzyblog.io/recipes&quot;&gt;recipes&lt;/a&gt; site.  There were a few things that really made the difference in my starting again but the biggest was realizing that I could actually employ mobile devices in my blogging strategy.&lt;/p&gt;
+        <description>&lt;p&gt;Not that anyone’s watching but if they were, they would notice that I’ve started blogging again both here and on my &lt;a href=&quot;https://www.fuzzyblog.io/recipes&quot;&gt;recipes&lt;/a&gt; site.  There were a few things that really made the difference in my starting again but the biggest was realizing that I could actually employ mobile devices in my blogging strategy.&lt;/p&gt;
 
 &lt;p&gt;The interesting thing here is that I made zero changes in my blogging tool.  I’m still using Jekyll hosted on Github Pages.  These changes were purely in how I approached content.  You could use this with Jekyll, WordPress or any blogging tool.&lt;/p&gt;
 
@@ -96,7 +193,7 @@
   &lt;li&gt;I open the resulting post in my MarkDown editor of choice, TextMate.&lt;/li&gt;
   &lt;li&gt;I paste in the text and make any residual edits / adjustments.&lt;/li&gt;
   &lt;li&gt;If I don’t have the Jekyll Server running, I start it with jekyll s to generate the correct feed and such.&lt;/li&gt;
-  &lt;li&gt;In the command line, I do a git add / commit / push cycle. I also wrapped this into a shell command so I can just type ./postentries.sh “Foo” and have all of this handled for me (including step 9).&lt;/li&gt;
+  &lt;li&gt;In the command line, I do a git add / commit / push cycle. I also wrapped this into a shell command so I can just type ./postentries.sh “some description of what i’m posting” and have all of this handled for me (including step 9).&lt;/li&gt;
   &lt;li&gt;And then everything is online almost instantly.&lt;/li&gt;
 &lt;/ol&gt;
 
@@ -589,59 +686,6 @@ ok: [194.55.29.107] =&amp;gt;
         
         
         <category>phone</category>
-        
-      </item>
-    
-      <item>
-        <title>HTTPS And Your Custom Domain on Github Pages</title>
-        <description>&lt;p&gt;Github for sometime now has supported https for *.github.io (aka GitHub pages).  And they have allowed it for custom domains as well.  However I was never able to figure this out until yesterday.  Here was the magic process and well as some references.&lt;/p&gt;
-
-&lt;p&gt;My issue was that I had three “sites” hosted on GitHub pages:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.fuzzyblog.io/&quot;&gt;http://www.fuzzyblog.io/&lt;/a&gt; - my personal home page and resume&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.fuzzyblog.io/blog/&quot;&gt;http://www.fuzzyblog.io/blog/&lt;/a&gt; - my blog&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.fuzzyblog.io/recipes/&quot;&gt;http://www.fuzzyblog.io/recipes/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I tend to look at my online presence mostly as my blog / recipes.  I had actually forgotten that the root personal home page site even existed.  And the issues preventing me from having https working amounted to this:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Changing the A records on my DNS provider (Amazon’s Route 53)&lt;/li&gt;
-  &lt;li&gt;Waiting 24 hours for a certificate to be generated&lt;/li&gt;
-  &lt;li&gt;Clicking the Enforce Https option on the GitHub Settings for the repo that drives fuzzyblog.io.  This has to be done first&lt;/li&gt;
-  &lt;li&gt;Clicking the Enforce Https option on the GitHub Settings for all other GitHub Pages repos (for me this was blog and recipes)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;: If you can’t remember which git repo drives your GitHub Pages, look in the directory and file .git/config. It will be right there; look for a url / .git filename.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;: In case you were wondering why you want https, there are lots of reasons but the best is that it should give your content at least a small boost in page rank.&lt;/p&gt;
-
-&lt;h2 id=&quot;recommended-reading&quot;&gt;Recommended Reading&lt;/h2&gt;
-
-&lt;p&gt;Here are the recommended tech notes from Github on all this:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://help.github.com/en/articles/about-supported-custom-domains&quot;&gt;Supported Custom Domains&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://help.github.com/en/articles/adding-or-removing-a-custom-domain-for-your-github-pages-site&quot;&gt;Adding Custom Domains&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://help.github.com/en/articles/troubleshooting-custom-domains#https-errors&quot;&gt;Troubleshooting Custom Domains&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.blog/2018-05-01-github-pages-custom-domains-https/&quot;&gt;Press Release&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Tue, 07 May 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/https/2019/05/07/https-and-your-custom-domain-on-github-pages.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/https/2019/05/07/https-and-your-custom-domain-on-github-pages.html</guid>
-        
-        <category>https</category>
-        
-        <category>blogging</category>
-        
-        <category>GitHub</category>
-        
-        <category>git</category>
-        
-        
-        <category>https</category>
         
       </item>
     
