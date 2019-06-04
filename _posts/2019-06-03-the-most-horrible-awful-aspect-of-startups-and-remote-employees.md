@@ -18,4 +18,5 @@ This is three sets of state level paperwork with which you have to comply.  And 
 
 I have read that Stripe is trying to make creating startups easier with the [Stripe Atlas](https://stripe.com/atlas) program and I hope so but I am honestly dubious. 
 
+
 Bah!  States!  A pox upon them.  Begone!
