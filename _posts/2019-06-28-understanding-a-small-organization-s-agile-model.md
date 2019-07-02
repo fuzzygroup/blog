@@ -38,7 +38,7 @@ Pair Programming, apply two people to the same ticket at the same time, sharing 
 
 Here are the things about "agile" that I don't really believe in at all:
 
-* [Scrum / Scrum Master](https://www.cprime.com/resources/what-is-agile-what-is-scrum/) 
+* [Scrum / Scrum Master](https://www.cprime.com/resources/what-is-agile-what-is-scrum/).  Generally speaking I don't believe in scrum / scrum master because I work in very small teams and I find that very small teams simply get stuff done and there isn't the need for a formal "scrum master".  I also dislike the term "master" here for the same reason that I dislike "master bedroom"; it has bad connotations imho.  The definition from google for *scrum* is "a set of practices used in agile project management that emphasize daily communication and the flexible reassessment of plans that are carried out in short, iterative phases of work." and to me that's just simply agile.  
 * Agile Velocity - I find this to be complete hogwash.  An agile velocity is a metric that is typically calculated by your ticketing system and reflects some sort of "velocity" related to ticket completion.  The reason that I don't find this to be a valid concept is that when you have small teams, a single crappy ticket can entirely pork your "velocity" and since this is a metric, managers tend to take it way too seriously.  
 * Sprint - this one I kind of believe in, the idea of organizing your development around short lived goals and then executing on them.  I do get this but I find that when you have continuous deployment, the overall sprint concept is less relevant
 
