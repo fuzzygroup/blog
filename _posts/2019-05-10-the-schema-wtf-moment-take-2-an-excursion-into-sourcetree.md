@@ -44,4 +44,4 @@ And this brings us to SourceTree.  SourceTree is a Git user interface which make
 
 ## Thank You
 
-As always, thank you Sean Kennedy for teaching me this particular trick and also for editing this post for clarity.  Appreciated.
+As always, thank you [Sean Kennedy](https;//csphere.github.io/) for teaching me this particular trick and also for editing this post for clarity.  Appreciated.

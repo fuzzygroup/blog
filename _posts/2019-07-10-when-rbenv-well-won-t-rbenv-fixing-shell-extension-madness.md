@@ -37,7 +37,7 @@ Anyway here's the work around:
     cd /to/my/development/directory
     export PATH=/Users/sjohnson/.rbenv/shims:/Users/sjohnson/.rbenv/bin:$PATH
 
-My pairing partner Sean Kennedy corrected this to be:
+My pairing partner [Sean Kennedy](https;//csphere.github.io/) corrected this to be:
 
     export PATH=$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH
 

@@ -60,4 +60,4 @@ Here is the general git workflow I use:
 
 When you get yourself into a git badness state.  STOP.  Don't flail foolishly; swallow your pride and *ask* an expert.  
 
-Also this article was helped with by the usual reviewer, my buddy Sean Kennedy.  Any errors are mine not his.  His git-fu is substantially greater than mine -- he's my expert.  Thanks buddy!
+Also this article was helped with by the usual reviewer, my buddy [Sean Kennedy](https;//csphere.github.io/).  Any errors are mine not his.  His git-fu is substantially greater than mine -- he's my expert.  Thanks buddy!

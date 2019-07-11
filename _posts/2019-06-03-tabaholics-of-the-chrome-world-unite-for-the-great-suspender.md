@@ -22,4 +22,4 @@ And this brings us to, wait for it, *The Great Suspender*.  The Great Suspender 
 
 [View The Great Suspender on the Chrome Extension Store](https://chrome.google.com/webstore/detail/the-great-suspender/klbibkeccnjlkjkiokjodocebajanakg?hl=en)
 
-Kudos and thanks to my good buddy Sean Kennedy who clued me into this.  
+Kudos and thanks to my good buddy [Sean Kennedy](https;//csphere.github.io/) who clued me into this.  

@@ -31,4 +31,4 @@ The solution was to go thru every Terminal Window and Terminal Tab and execute:
 
 Note 1: This same type of thing exists for Python (virtual env) and many other languages.  And it is always the same type of fuckery.
 
-Note 2: As always kudos to my pairing partner, Sean Kennedy, who helping with this.  
+Note 2: As always kudos to my pairing partner, [Sean Kennedy](https;//csphere.github.io/), who helping with this.  

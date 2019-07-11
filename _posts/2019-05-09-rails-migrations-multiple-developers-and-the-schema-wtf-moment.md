@@ -8,7 +8,7 @@ I’ve been doing Rails now since 2007.  However for much of that time I was a p
 
 The consequence of this is that while Rails should handle any schema conflicts correctly, well, *should* is the operative term.  In practice we have found that depending on how you do your git pull and git branching, you often (like every damn branch you make) end up with a schema conflict.  And since our schema file is enormous (think over 3,000 lines in schema.rb), figuring this out can be brutal.  This moment where you realized that your schema is borked is what I call the *Schema WTF Moment*.
 
-While I’ve struggled with this for a while and never found a decent solution, today, I was speaking with another senior guy (my buddy Sean Kennedy) and he very cogently explained the issue in a way that made sense.  This is my write up of his description.  He described it thusly:
+While I’ve struggled with this for a while and never found a decent solution, today, I was speaking with another senior guy (my buddy [Sean Kennedy](https;//csphere.github.io/)) and he very cogently explained the issue in a way that made sense.  This is my write up of his description.  He described it thusly:
 
 “If you do a git pull, you should already have the latest schema, affected by any migrations that came in via the pull, but your database tables may not be updated. So, you do need to run the migrations after pulling, but this will often change db/schema.rb. If all you've done is pull and migrate, there's no reason you should be responsible for committing any of the resultant schema changes as they don't technically belong to you, and they may end up being extraneous/incorrect, so resetting the schema diff makes the most sense.”
 
