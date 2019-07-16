@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Rails, Migrations, Multiple Developers and the Schema WTF Moment</title>
-  <meta name="description" content="I’ve been doing Rails now since 2007.  However for much of that time I was a project lead and one of the tasks that I reserved for myself was all schema chan...">
+  <title>Your Daily Remote Worker Management Tip</title>
+  <meta name="description" content="Dear Manager of a Remote Employee,">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/rails/2019/05/09/rails-migrations-multiple-developers-and-the-schema-wtf-moment.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/startup/2019/07/16/your-daily-remote-worker-management-tip.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -39,11 +39,13 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Rails, Migrations, Multiple Developers and the Schema WTF Moment">
+  <meta name="twitter:title" content="Your Daily Remote Worker Management Tip">
 
   
     <meta name="twitter:description"
-      content="I’ve been doing Rails now since 2007.  However for much of that time I was a project lead and one of the tasks that I reserved for myself was all schema changes.  One of the benefits of that was th...">
+      content="Dear Manager of a Remote Employee,
+
+My apologies in advance that this is bitter and salty like the code brewed coffee that I just swilled in a frazzle but I find myself at the end of my rope. And s...">
   
 
   
@@ -149,42 +151,23 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Rails, Migrations, Multiple Developers and the Schema WTF Moment</h1>
-    <p class="I'll"><time datetime="2019-05-09T00:00:00-04:00" itemprop="datePublished">May 9, 2019</time> 
+    <h1 class="post-title" itemprop="name headline">Your Daily Remote Worker Management Tip</h1>
+    <p class="I'll"><time datetime="2019-07-16T00:00:00-04:00" itemprop="datePublished">Jul 16, 2019</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I’ve been doing Rails now since 2007.  However for much of that time I was a project lead and one of the tasks that I reserved for myself was <em>all</em> schema changes.  One of the benefits of that was that because I did all the primary schema changes, I rarely, if ever, had schema conflicts.  I am now on a project where, while I am a Senior Software Engineer, I am not the lead and the schema changes are done by everyone on the team, all the time.</p>
+    <p>Dear Manager of a Remote Employee,</p>
 
-<p>The consequence of this is that while Rails should handle any schema conflicts correctly, well, <em>should</em> is the operative term.  In practice we have found that depending on how you do your git pull and git branching, you often (like every damn branch you make) end up with a schema conflict.  And since our schema file is enormous (think over 3,000 lines in schema.rb), figuring this out can be brutal.  This moment where you realized that your schema is borked is what I call the <em>Schema WTF Moment</em>.</p>
+<p>My apologies in advance that this is bitter and salty like the code brewed coffee that I just swilled in a frazzle but I find myself at the end of my rope. And so I will give you a remote worker management tip.</p>
 
-<p>While I’ve struggled with this for a while and never found a decent solution, today, I was speaking with another senior guy (my buddy <a href="https;//csphere.github.io/">Sean Kennedy</a>) and he very cogently explained the issue in a way that made sense.  This is my write up of his description.  He described it thusly:</p>
+<p>When a remote worker, particularly when it is an individual who has worked for you for more than a year, says “we need to work on XYZ in person”, it basically amounts to “Oh my lord, we are so damn screwed”.  AND YOU PAY ATTENTION TO IT AND ARRANGE IT.</p>
 
-<p>“If you do a git pull, you should already have the latest schema, affected by any migrations that came in via the pull, but your database tables may not be updated. So, you do need to run the migrations after pulling, but this will often change db/schema.rb. If all you’ve done is pull and migrate, there’s no reason you should be responsible for committing any of the resultant schema changes as they don’t technically belong to you, and they may end up being extraneous/incorrect, so resetting the schema diff makes the most sense.”</p>
+<p>Sigh.</p>
 
-<p>To help you understand our approach to git, we use:</p>
-
-<ol>
-  <li>All work is done in a branch.</li>
-  <li>All branches are created from develop.</li>
-  <li>Once a branch is approved, it is merged into develop.</li>
-  <li>The develop branch is automatically deployed to staging with every merge.</li>
-  <li>A production deploy automatically merges develop into master.</li>
-  <li>The master branch is only deployed to production.</li>
-</ol>
-
-<p>Here is my step by step version of what to do before beginning a branch.</p>
-
-<ol>
-  <li>Switch your code base over to the develop branch.</li>
-  <li>Pull the latest code.</li>
-  <li>Run bundle exec rake db:migrate.  This updates your schema.rb file locally but you want to throw these changes away before beginning any work.</li>
-  <li>Do a git checkout db/schema.rb to throw away the changes</li>
-  <li>Create your new branch.</li>
-  <li>Change to your new branch and begin work</li>
-</ol>
+<p>Signed, 
+Your Remote Worker</p>
 
   </div>
   
@@ -196,16 +179,12 @@
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io//blog/tag.html#rails" >
-      #rails
+    <a href="http://fuzzyblog.io//blog/tag.html#startup" >
+      #startup
     </a>
     
-    <a href="http://fuzzyblog.io//blog/tag.html#schema" >
-      #schema
-    </a>
-    
-    <a href="http://fuzzyblog.io//blog/tag.html#migration" >
-      #migration
+    <a href="http://fuzzyblog.io//blog/tag.html#remote" >
+      #remote
     </a>
     
   </p>
@@ -216,20 +195,14 @@
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io//blog/tag.html#rails" class="link_button">
-         rails
+       <a href="http://fuzzyblog.io//blog/tag.html#startup" class="link_button">
+         startup
        </a>
      </li>
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io//blog/tag.html#schema" class="link_button">
-         schema
-       </a>
-     </li>
-     
-     <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io//blog/tag.html#migration" class="link_button">
-         migration
+       <a href="http://fuzzyblog.io//blog/tag.html#remote" class="link_button">
+         remote
        </a>
      </li>
      

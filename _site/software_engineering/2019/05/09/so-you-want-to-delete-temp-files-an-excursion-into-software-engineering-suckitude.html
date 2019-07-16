@@ -228,7 +228,7 @@ feature/ATT-1551-a - Debugging hooks for understanding this bit of madness
 <p>This is getting kind of long already so I’m going to cut to the chase and bullet point the issues as we hit them:</p>
 
 <ol>
-  <li>The first issue was that we kept defaulting to the if / else case where our environment variable wasn’t being set.  And since I was casting this to a constant for safety (remember this code deletes files on a file system so it is wise to be damn careful with it), this meant that the constant kept failing a defined? check.  We had put in a raise “Constant not defined” unless defined?(CONSTANT_NAME) check before anything got deleted as a safe guard and that one line of code entirely saved us.  Kudos to my coding partner, Sean Kennedy, for that.</li>
+  <li>The first issue was that we kept defaulting to the if / else case where our environment variable wasn’t being set.  And since I was casting this to a constant for safety (remember this code deletes files on a file system so it is wise to be damn careful with it), this meant that the constant kept failing a defined? check.  We had put in a raise “Constant not defined” unless defined?(CONSTANT_NAME) check before anything got deleted as a safe guard and that one line of code entirely saved us.  Kudos to my coding partner, <a href="https;//csphere.github.io/">Sean Kennedy</a>, for that.</li>
   <li>This first issue ultimately ended up being tied to recognizing that a Capistrano post deploy hook <em>DOES NOT RUN UNDER RAILS</em>!  And that means that anything loaded by a Rails initializer isn’t available — meaning the Figaro gem never executed so the values in our environment variable file weren’t even being seen.  But since our environment variable file syntax was read from using ENV[‘VARIABLE_NAME’] we weren’t getting failures due to ENV not existing (ENV always exists, even in an IRB environment).  We would just get a nil value instead of the expected string value of TRUE or FALSE.</li>
   <li>Figuring out that we weren’t in a Rails environment was one of those face palm moments — you’ve seen the meme, the one with Picard.  I’m more than a bit embarrassed to point out how long that took so we’re just going to move on past that issue.</li>
   <li>Once we recognized that Figaro wasn’t available and that we would never get a value for our environment variable key, it wasn’t hard to write our own YAML reading routine.  That went thru a deploy cycle and we were fairly certain that it would be solved any minute now — what a crock!</li>
@@ -338,7 +338,7 @@ ok: [194.55.29.107] =&gt;
 
 <h2 id="thank-yous">Thank Yous</h2>
 
-<p>A big shout out to Sean Kennedy who did a fantastic job debugging this with me and came up with a great final solution.  Kudos also to various friends who im’d with me over the course of the day and provided moral support on an extremely frustrating day.</p>
+<p>A big shout out to <a href="https;//csphere.github.io/">Sean Kennedy</a> who did a fantastic job debugging this with me and came up with a great final solution.  Kudos also to various friends who im’d with me over the course of the day and provided moral support on an extremely frustrating day.</p>
 
   </div>
   
