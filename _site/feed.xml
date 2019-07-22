@@ -6,8 +6,8 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 22 Jul 2019 17:57:52 -0400</pubDate>
-    <lastBuildDate>Mon, 22 Jul 2019 17:57:52 -0400</lastBuildDate>
+    <pubDate>Mon, 22 Jul 2019 18:59:25 -0400</pubDate>
+    <lastBuildDate>Mon, 22 Jul 2019 18:59:25 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
     
       <item>
@@ -169,6 +169,41 @@
         
         
         <category>writing</category>
+        
+      </item>
+    
+      <item>
+        <title>Backing Mac to Mac via scp / rsync</title>
+        <description>&lt;p&gt;I found myself turning my old Macbook Air over to my wife to use when the cursed butterfly keyboard on her new MacBook died.  And even tho I had theoretically used Dropbox to sync my data with other machines, a quick check on this machine revealed something like 200 top level directories in ~/Dropbox while a check against my “current” machine revealed only 148 top level directories.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;WHAT THE FERENGI Dropbox !!!!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;And that convinced me that I needed to run a backup on this machine before I turned it over to my wife.  Naturally I found that a Time Machine backup failed and, honestly, I found myself with little desire, inclination or will to fix Time Machine.&lt;/p&gt;
+
+&lt;p&gt;This led me to attempt to backup this Mac via an scp command to my big desktop Mac which has plenty of free disc space.  So I used this shell command:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scp -p -r ~/Downloads/* 192.168.1.25:/Users/sjohnson/backups/macbook_air/Downloads/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;as a test command to backup the ~/Downloads directory from one machine to another.  And, annoyingly, I found that after only a few gigabytes, my scp would fail with a networking error.  After trying this again (and again and again), I came to the conclusion that I was fighting an untenable battle that felt a lot like a land war in Asia.  And this led me to Google which, rapidly, led me to rsync, a tool I love but which I never seem to think to use.  Here was the command I finally came up with&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rsync -avh -e ssh Downloads/* 192.168.1.25:/Users/sjohnson/backups/macbook_air/Downloads/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In case you aren’t aware, the benefit to &lt;a href=&quot;https://linux.die.net/man/1/rsync&quot;&gt;rsync&lt;/a&gt; is that it will keep track of your progress to date and resume incomplete copies.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 22 Jul 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/osx/2019/07/22/backing-mac-to-mac-via-scp-rsync.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/osx/2019/07/22/backing-mac-to-mac-via-scp-rsync.html</guid>
+        
+        <category>osx</category>
+        
+        <category>backup</category>
+        
+        
+        <category>osx</category>
         
       </item>
     
@@ -519,55 +554,6 @@ export PATH=/Users/sjohnson/.rbenv/shims:/Users/sjohnson/.rbenv/bin:$PATH
         
         
         <category>ruby</category>
-        
-      </item>
-    
-      <item>
-        <title>RSpec - Uninitialized Constant Errors on Model Tests</title>
-        <description>&lt;p&gt;This one is an easy one but still tripped me up.  I’m working on a project where generators on RSpec stub files are turned off (don’t ask; disagreement about the utility of generators between two senior engineers and I lost) and I just got this error:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle exec rspec spec/models/metric_type_spec.rb
-
-An error occurred while loading ./spec/models/metric_type_spec.rb.
-Failure/Error:
-  RSpec.describe MetricType, type: :model do
-    describe &quot;#val_col&quot; do
-      it &quot;should return int_val for word_count&quot; do
-        h = FactoryBot.create(:metric_type_word_count)
-        expect(h.val_col).to eq :int_val
-      end
-
-      it &quot;should return float_val for weight&quot; do
-        h = FactoryBot.create(:metric_type_weight)
-        expect(h.val_col).to eq :float_val
-
-NameError:
-  uninitialized constant MetricType
-# ./spec/models/metric_type_spec.rb:1:in `&amp;lt;top (required)&amp;gt;'
-No examples found.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And the error turned out to be that this line was missing:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;require 'rails_helper'
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;That line is normally inserted by the generator but I built this spec file from scratch and just missed it.  I’ve stared at that line a thousand, thousand times over the years but I suspect I never realized that what it did was tell RSpec something like this:&lt;/p&gt;
-
-&lt;p&gt;“Read the Rails directory structure and autoload all classes in the directories below /app”.  Doh!&lt;/p&gt;
-</description>
-        <pubDate>Wed, 10 Jul 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2019/07/10/rspec-uninitialized-constant-errors-on-model-tests.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2019/07/10/rspec-uninitialized-constant-errors-on-model-tests.html</guid>
-        
-        <category>rails</category>
-        
-        <category>rspec</category>
-        
-        
-        <category>rails</category>
         
       </item>
     
