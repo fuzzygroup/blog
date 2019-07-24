@@ -32,6 +32,28 @@ Let's assume that you have this type of package:
 
 Now let's say that you were offered a compensation package of $10,000 per month -or- $120,000 on an annualized basis.  The question then becomes is the difference between $10,000 per month and $8,242.00 per month sufficient to cover health care?  And of course there are lots and lots of other things but let's talk about health care to start.
 
+# Fully Loaded Cost - An Alternate Way to Calculate Your Job's Worth
+
+The example above really only deals with salary plus vacation but a full time job has a lot of other "compensation" things like:
+
+* computer hardware
+* office space
+* sick days
+* etc
+
+The aggregate value of these non cash compensation items is what I have always referred to as the "fully loaded cost" of employing an engineer and my back of the envelope rule is that you need to allocate between 1.25 x salary to 1.5 x salary so that makes the original compensation package worth:
+
+* 1.25 * 103,000 = 128,750.00
+* 1.5 * 103,000 = 154,500.0
+
+# Hourly Rate - Another Way to Look at Your Offer
+
+So the offer that we are looking at is for "full time" work at a rate of $10,000 per month or $120,000 per year.  Let's assume that you are working 50 weeks out of the year and you are working 40 hours per week.  That means that we are talking about 2,000 hours per year.  So the hourly rate then becomes:
+
+120,000 / 2000 = $60 / hour
+
+As a consultant, I would argue that rate is low.  My last consulting gig went out the door at $125 / hour.  Now, on the other hand, bird in the hand versus bird in the bush.  This is for a long term project and guaranteed long term work really, really **counts**.  I suspect that most consultants never come close to making $120,000 / year.
+
 # Health Care Overview
 
 The bulk of this next bit of this came from a good friend, Lisa Meece, the Chairwoman of the local Star Base Indy science fiction convention.  Lisa has been a freelance worker for over a decade now and actually understands health care in a way I don't.  Oh and if you're in the Indianapolis area, consider going to StarBase Indy this coming Thanksgiving:
@@ -53,6 +75,9 @@ You'll want to pay attention to the covered physicians under each plan. This is 
 And that was her take on health care.  
 
 # Tax Implications 
+
+Oh, I read all of that last week...I think what's there all makes sense. The tax stuff... You can write off expenses as a consultant... So new computer and maybe even some of your home office expense / internet / cell phone becomes deductible.
+
 
 # Are You Happier in the Freelance Gig
 
