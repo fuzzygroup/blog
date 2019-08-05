@@ -6,7 +6,7 @@ tags: ["freelance", "startup"]
 ---
 This blog post takes addresses a common problem for technical workers - you have been offered a full time freelance gig and you don't know whether or not to take it based on its value versus your current compensation.  
 
-Note: Traditionally I have done a crap ass job at making these kind of assessments.  I'm writing this post to hopefully do a better / more "adult" take at this.
+**Note**: Traditionally I have done a crap ass job at making these kind of assessments.  I'm writing this post to hopefully do a better / more "adult" take at this.
 
 # What is Your Current Job Worth?
 
@@ -29,6 +29,7 @@ Let's assume that you have this type of package:
 * Weeks Worked per Year: 50
 * Gross Salary Per Week: 103025.00 / 50 (select 103025.00 / 50; 2060.50; 'coz sql is a calculator too)
 * Monthly Salary: select 2060.50 * 4; **8242.00**
+* Hourly Salary: $51.5125
 
 Now let's say that you were offered a compensation package of $10,000 per month -or- $120,000 on an annualized basis.  The question then becomes is the difference between $10,000 per month and $8,242.00 per month sufficient to cover health care?  And of course there are lots and lots of other things but let's talk about health care to start.
 
@@ -43,8 +44,8 @@ The example above really only deals with salary plus vacation but a full time jo
 
 The aggregate value of these non cash compensation items is what I have always referred to as the "fully loaded cost" of employing an engineer and my back of the envelope rule is that you need to allocate between 1.25 x salary to 1.5 x salary so that makes the original compensation package worth:
 
-* 1.25 * 103,000 = 128,750.00
-* 1.5 * 103,000 = 154,500.0
+* 1.25 * 103,000 = 128,750.00; hourly salary equivalent: $77.25
+* 1.5 * 103,000 = 154,500.0; hourly salary equivalent: $64.375
 
 # Hourly Rate - Another Way to Look at Your Offer
 
@@ -54,13 +55,17 @@ So the offer that we are looking at is for "full time" work at a rate of $10,000
 
 As a consultant, I would argue that rate is low.  My last consulting gig went out the door at $125 / hour.  Now, on the other hand, bird in the hand versus bird in the bush.  This is for a long term project and guaranteed long term work really, really **counts**.  I suspect that most consultants never come close to making $120,000 / year.
 
+The comparable hourly rates are listed above.
+
 # Health Care Overview
 
-The bulk of this next bit of this came from a good friend, Lisa Meece, the Chairwoman of the local Star Base Indy science fiction convention.  Lisa has been a freelance worker for over a decade now and actually understands health care in a way I don't.  Oh and if you're in the Indianapolis area, consider going to StarBase Indy this coming Thanksgiving:
+The bulk of this next bit of this came from a good friend, Lisa Meece, the Chairwoman of the local [Star Base Indy](https://www.starbaseindy.org) science fiction convention.  Lisa has been a freelance worker for over a decade now and actually understands health care in a way I don't.  Oh and if you're in the Indianapolis area, consider going to StarBase Indy this coming Thanksgiving:
 
 * I can guarantee it is a more fun time than your family weekend
-* There are klingons to spare including the ever popular singing klingon aka "The Klingon Pop Warrior"
+* There are klingons to spare including the ever popular singing Klingon aka "[The Klingon Pop Warrior](https://www.youtube.com/channel/UCkuSNmzNppTGu8Inx6e8ufQ)"; you haven't felt emotion until you've heard [Pat Benatar](https://www.youtube.com/watch?v=VHS9mgJfqSA) in the original Klingon
 * It is a damn good time
+
+## Healthcare.gov
 
 So here goes for some stuff on health care that I didn't write:
 
@@ -74,13 +79,32 @@ You'll want to pay attention to the covered physicians under each plan. This is 
 
 And that was her take on health care.  
 
+## Cobra
+
+When I asked my current employer for Cobra numbers so I had something to go by, here's what they said:
+
+Family Medical $1147.54
+Family Dental $116.32
+Family Vision $25.63
+
+This makes the monthly insurance premium: $1,289.49
+
 # Tax Implications 
 
-Oh, I read all of that last week...I think what's there all makes sense. The tax stuff... You can write off expenses as a consultant... So new computer and maybe even some of your home office expense / internet / cell phone becomes deductible.
+Clearly some portion of personal expenses could be written off if I was a consultant.  Specifically: 
 
+* New Computer
+* Home office
+* Internet (partial)
+* Cell phone (likely all)
 
-# Are You Happier in the Freelance Gig
+Thanks again to [Lisa Meece](https://www.starbaseindy.org/) for contributing also to this bit. 
 
+# Money and The Big Question - Will You Be Happier?
+
+So with the offer described above the previous monthly gross was: 8242.00 with insurance.  The new offer is $10,000 but you have to subtract $1,289.49 to arrive at: $8,710.51.  So technically there is a $500 bump in salary monthly but that is likely negligible given the loss of benefits.   
+
+So if the numbers are roughly the same then, to me, the big question is would you actually be happier being freelance?  Or to paraphrase Shakespeare, "To freelance or not to freelance; that is the question".
 
 
 

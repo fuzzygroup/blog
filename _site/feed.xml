@@ -6,9 +6,549 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 22 Jul 2019 18:59:25 -0400</pubDate>
-    <lastBuildDate>Mon, 22 Jul 2019 18:59:25 -0400</lastBuildDate>
+    <pubDate>Sun, 04 Aug 2019 22:32:35 -0400</pubDate>
+    <lastBuildDate>Sun, 04 Aug 2019 22:32:35 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Rails Migration Tips and Tricks</title>
+        <description>&lt;p&gt;A migration is the Rails facility which alters a database’s structure.  Migrations are an essential aspect of all database development with Rails and they generally work quite well with the default command:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle exec rake db:migrate
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;-or-&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle exec rails db:migrate
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;That command will cause Rails to execute all pending migrations.  A pending migration is one where the timestamp on the migration is &lt;strong&gt;not&lt;/strong&gt; stored in the table schema_migrations.&lt;/p&gt;
+
+&lt;p&gt;The trick with migrations is understanding how to manipulate them, replay them, etc when they fail.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-hard-way---the-schemamigrations-table&quot;&gt;The Hard Way - The schema_migrations Table&lt;/h2&gt;
+
+&lt;p&gt;Let’s start with the hard way - manipulating schema_migrations table directly.  Let’s say that you need to re-run the last 2 migrations.  Here’s what you need to do:&lt;/p&gt;
+
+&lt;p&gt;Start by getting the timestamps of the last two migrations.  You can do this with an ls -ltr db/migrations and pick them out of what might be a giant list of migrations (my current work project has 858 migrations) – and this can, well, &lt;strong&gt;suck&lt;/strong&gt;.  You can also be smart about it and use tail to get just the last few (default 8 on OSX) migrations.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ls -ltr db/migrate | tail
+-rw-r--r--  1 sjohnson  staff   201 Jul 18 04:44 20190717234458_create_units.rb
+-rw-r--r--  1 sjohnson  staff   120 Jul 18 04:44 20190717235922_add_unit_id_to_habits.rb
+-rw-r--r--@ 1 sjohnson  staff   154 Jul 18 04:44 20190718000145_add_unit_id_to_habit_tasks.rb
+-rw-r--r--@ 1 sjohnson  staff   129 Jul 18 04:44 20190718075945_add_unit_preferences_json_to_users.rb
+-rw-r--r--@ 1 sjohnson  staff   154 Jul 18 04:44 20190718080511_add_unit_type_to_units.rb
+-rw-r--r--@ 1 sjohnson  staff   131 Jul 18 09:28 20190718110444_fix_stupidity_with_float_val.rb
+-rw-r--r--  1 sjohnson  staff   164 Jul 18 13:33 20190718133051_add_options_to_habits.rb
+-rw-r--r--@ 1 sjohnson  staff   151 Jul 25 15:48 20190725100535_add_has_loggable_tasks_to_habits.rb
+-rw-r--r--@ 1 sjohnson  staff   257 Jul 26 15:21 20190726191446_add_plan_id_to_habits.rb
+-rw-r--r--@ 1 sjohnson  staff   523 Jul 27 03:29 20190726133807_create_plans.rb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now you can delete from schema_migrations using a database console or by using ActiveRecord in the Rails console so either:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;delete from schema_migrations where version in (20190726133807, 20190726191446);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;-or- in a Rails console:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ActiveRecord::Base.connection.execute(&quot;delete from schema_migrations where version in (20190726133807, 20190726191446)&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now you would also need to undo any changes your migrations might have partially implemented.  If this was table creation then this is a relatively simple “drop table foo” statement but if it was an index creation or something harder, you need to selectively alter individual tables.  And even a hard core SQL guy like myself generally doesn’t want to do that.  So let’s look at the easier options.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-easy-way&quot;&gt;The Easy Way&lt;/h2&gt;
+
+&lt;p&gt;Happily Rails provides some additional facilities for this allowing you to rollback the last migration or an individual migration.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rake db:rollback
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;gets rid of the last migration.  I do NOT, however, ever recommend that you do this.  I’m currently working on an active side project where pull requests are flowing and even when you might think that you know what the last migration &lt;strong&gt;you created&lt;/strong&gt; was, you may not realize that another developer slipped a migration in and &lt;em&gt;whammo&lt;/em&gt;, “Houston we have a problem”.&lt;/p&gt;
+
+&lt;p&gt;My recommendation is to always specify the version with:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rake db:migrate:down VERSION=20190726133807
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This is absolute and will only affect the migration in question.  Given that I’m a big damn fan of always understanding the state of my persistent storage, it isn’t surprising that I recommend this.&lt;/p&gt;
+
+&lt;h2 id=&quot;see-also&quot;&gt;See Also&lt;/h2&gt;
+
+&lt;p&gt;All of this can be easily referenced:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/4352848/how-to-rollback-just-one-step-using-rake-dbmigrate/21119193&quot;&gt;Stack Overflow&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://guides.rubyonrails.org/migrations.html#running-migrations&quot;&gt;Core Rails Docs on Migrations&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 31 Jul 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2019/07/31/rails-migration-tips-and-tricks.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2019/07/31/rails-migration-tips-and-tricks.html</guid>
+        
+        <category>rails</category>
+        
+        <category>migration</category>
+        
+        <category>db</category>
+        
+        <category>database</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Nerd Humor - When You Blog in Bright Sunlight in a Convertible</title>
+        <description>&lt;p&gt;Disclaimer: There is likely only one person on the planet who will find this funny.  Hi!&lt;/p&gt;
+
+&lt;p&gt;So I found myself last night in a convertible with my wife driving and I thought to myself, “I know; I’ll write something”.  And I began writing a screed on the use of the underlying Rails Migration commands that manipulate the state of your database.  Rails has a number of these commands that, after MORE THAN A DECADE of daily rails programming, I’ve never bothered to use.  I have known for a long time I need to master these and I finally have.&lt;/p&gt;
+
+&lt;p&gt;I finish up that post this morning and go to find it and publish it and a git status shows me &lt;strong&gt;nothing&lt;/strong&gt;.  Gulp.  This just doesn’t happen to me.  Scramble around looking for it – no love.  Confirm that it actually exists in my editor and I didn’t just have a surreal “out of keyboard” experience – yep.  It is there.  And then it hits me – I have multiple blogs, one for nerd writing and one for recipes.  Yep:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  recipes git:(gh-pages) ✗ git commit -m &quot;updates to pickle&quot;
+[gh-pages 0e34bce] updates to pickle
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+➜  recipes git:(gh-pages) git push origin gh-pages
+Counting objects: 4, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 568 bytes | 0 bytes/s, done.
+Total 4 (delta 3), reused 0 (delta 0)
+remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
+remote: 
+remote: GitHub found 7 vulnerabilities on fuzzygroup/recipes's default branch (1 critical, 1 high, 4 moderate, 1 low). To find out more, visit:
+remote:      https://github.com/fuzzygroup/recipes/network/alerts
+remote: 
+To github.com:fuzzygroup/recipes
+   9fc96ec..0e34bce  gh-pages -&amp;gt; gh-pages
+➜  recipes git:(gh-pages) jekyll post &quot;Rails Migration Tips and Tricks&quot;
+New post created at _posts/2019-07-30-rails-migration-tips-and-tricks.md.
+➜  recipes git:(gh-pages) ✗ mate _posts/2019-07-30-rails-migration-tips-and-tricks.md 
+➜  recipes git:(gh-pages) ✗   
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Moral of the story?  Don’t tech blog where you food blog.  Sigh.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 31 Jul 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/humor/2019/07/31/nerd-humor-when-you-blog-in-bright-sunlight-in-a-convertible.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/humor/2019/07/31/nerd-humor-when-you-blog-in-bright-sunlight-in-a-convertible.html</guid>
+        
+        <category>humor</category>
+        
+        <category>blogging</category>
+        
+        
+        <category>humor</category>
+        
+      </item>
+    
+      <item>
+        <title>Patterns and Anti-Patterns</title>
+        <description>&lt;p&gt;There times when I use terms so common to software engineering that I forget that there is a wide audience out there to whom these aren’t native concepts.  That’s my bad – using things before you define them is not a good thing.&lt;/p&gt;
+
+&lt;p&gt;Earlier today I referenced “&lt;a href=&quot;https://fuzzyblog.io/blog/anti_patterns/2019/07/26/development-anti-pattern-two-objects-with-almost-the-same-structure.html&quot;&gt;anti-patterns&lt;/a&gt;” but failed to define it.  The idea of an anti-pattern is intimately tied to the idea of a pattern and let’s let Wikipedia do the talking:&lt;/p&gt;
+
+&lt;p&gt;“In software engineering, a software design pattern is a general, reusable solution to a commonly occurring problem within a given context in software design. It is not a finished design that can be transformed directly into source or machine code. It is a description or template for how to solve a problem that can be used in many different situations. Design patterns are formalized best practices that the programmer can use to solve common problems when designing an application or system.” &lt;a href=&quot;https://en.wikipedia.org/wiki/Software_design_pattern&quot;&gt;Software Design Pattern&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So if a pattern is a best practice, something that you do then an anti-pattern is the inverse – it is something that you &lt;strong&gt;do not do&lt;/strong&gt;.  I’ll blog about another one soon – the going dark anti pattern.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 26 Jul 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/anti_patterns/2019/07/26/patterns-and-anti-patterns.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/anti_patterns/2019/07/26/patterns-and-anti-patterns.html</guid>
+        
+        <category>software_development</category>
+        
+        <category>anti_patterns</category>
+        
+        
+        <category>anti_patterns</category>
+        
+      </item>
+    
+      <item>
+        <title>Development Anti Pattern - Two Objects with Almost the Same Structure</title>
+        <description>&lt;p&gt;One of the beautiful things about greenfield development, that joyous process of starting anew on something, is that it lets you see errors that you make much more cleanly.  And this is a combination of a few things:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The Forest for the Trees.  In a big code base, any errors you make aren’t that visible because they are drowned out by all the other bits of code.&lt;/li&gt;
+  &lt;li&gt;Willingness to Get It Right.  When you start a new code base, it is like starting a new love affair – this time, you are going to get it &lt;strong&gt;right&lt;/strong&gt;.  This time, it will be &lt;strong&gt;different&lt;/strong&gt;.  So you are a bit more able to see errors then a lot more willing to rip apart something that is already working to make it right.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The specific example at hand is the anti pattern of two objects with almost the same structure.  Here’s an example from my current side project:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;desc habits;
++-----------------+--------------+------+-----+---------+----------------+
+| Field           | Type         | Null | Key | Default | Extra          |
++-----------------+--------------+------+-----+---------+----------------+
+| id              | bigint(20)   | NO   | PRI | NULL    | auto_increment |
+| created_at      | datetime     | NO   |     | NULL    |                |
+| updated_at      | datetime     | NO   |     | NULL    |                |
+| name            | varchar(255) | YES  | MUL | NULL    |                |
+| hardness        | int(11)      | YES  |     | NULL    |                |
+| frequency       | int(11)      | YES  |     | NULL    |                |
+| economic_value  | int(11)      | YES  |     | NULL    |                |
+| user_id         | int(11)      | YES  | MUL | NULL    |                |
+| description     | text         | YES  |     | NULL    |                |
+| shareable       | tinyint(1)   | YES  |     | NULL    |                |
+| habit_type_id   | int(11)      | YES  | MUL | NULL    |                |
+| master_habit_id | int(11)      | YES  | MUL | NULL    |                |
+| unit_id         | int(11)      | YES  |     | NULL    |                |
+| options         | text         | YES  |     | NULL    |                |
+| has_tasks       | tinyint(1)   | YES  |     | 0       |                |
++-----------------+--------------+------+-----+---------+----------------+
+15 rows in set (0.00 sec)
+
+desc habit_tasks;
++----------------------------+--------------+------+-----+---------+----------------+
+| Field                      | Type         | Null | Key | Default | Extra          |
++----------------------------+--------------+------+-----+---------+----------------+
+| id                         | bigint(20)   | NO   | PRI | NULL    | auto_increment |
+| created_at                 | datetime     | NO   |     | NULL    |                |
+| updated_at                 | datetime     | NO   |     | NULL    |                |
+| habit_id                   | int(11)      | YES  | MUL | NULL    |                |
+| name                       | varchar(255) | YES  |     | NULL    |                |
+| hardness                   | int(11)      | YES  |     | NULL    |                |
+| frequency                  | int(11)      | YES  |     | NULL    |                |
+| economic_value             | float        | YES  |     | NULL    |                |
+| user_id                    | int(11)      | YES  |     | NULL    |                |
+| metric_type_id             | int(11)      | YES  |     | NULL    |                |
+| unit_id                    | int(11)      | YES  |     | NULL    |                |
+| best_general_time_for_this | varchar(255) | YES  |     | NULL    |                |
+| options                    | text         | YES  |     | NULL    |                |
++----------------------------+--------------+------+-----+---------+----------------+
+13 rows in set (0.06 sec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;These are pretty close to the same and they represent an attempt to give a 1 level hierarchy (the habit_task) onto the parent object (habit).&lt;/p&gt;
+
+&lt;p&gt;And the simple answer here is that what I’m actually looking for are groups not a sub-object i.e. invent a group concept an then simply reduce all the habit_task objects to habits that are grouped together.  That achieves roughly 95% of what habit_tasks did and dramatically:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;reduces code duplication (the same routine to calculate economic_value is used multiple places)&lt;/li&gt;
+  &lt;li&gt;reduces complexity overall&lt;/li&gt;
+  &lt;li&gt;gets rid of a huge wart in the display views where nesting is needed&lt;/li&gt;
+  &lt;li&gt;improves performance by not having to constantly check if a habit has tasks&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The bottom line here is that whenever you have two objects with almost the same structure, start asking yourself is that really the same damn object somehow.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 26 Jul 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/anti_patterns/2019/07/26/development-anti-pattern-two-objects-with-almost-the-same-structure.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/anti_patterns/2019/07/26/development-anti-pattern-two-objects-with-almost-the-same-structure.html</guid>
+        
+        <category>software_development</category>
+        
+        <category>anti_patterns</category>
+        
+        
+        <category>anti_patterns</category>
+        
+      </item>
+    
+      <item>
+        <title>A Bootstrap 4 Two Column Example that Just Works</title>
+        <description>&lt;p&gt;I remain, alas, CSS Challenged.  I’m from an era where the height of HTML layout was tables and once upon a time I know all the tricks including images in the corners for that rounded corner effect.  But, as is all too often in technology, the tricks that once served you well – don’t.&lt;/p&gt;
+
+&lt;p&gt;Now we exist in a whole new world for layout i.e. CSS and for me that means &lt;a href=&quot;https://getbootstrap.com/docs/4.0/getting-started/introduction/&quot;&gt;bootstrap introduction&lt;/a&gt; or &lt;a href=&quot;https://getbootstrap.com/&quot;&gt;bootstrap main page&lt;/a&gt;.  Bootstrap isn’t perfect but I fully respect what it tries to do and the simple fact that, imho, Bootstrap made the Internet &lt;strong&gt;better&lt;/strong&gt;.  So when I want to make two columns and I naturally reach for a table tag, I need to come look this example up from &lt;a href=&quot;https://codepen.io/SitePoint/pen/WMYOxb&quot;&gt;CodePen&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;div class=&quot;container&quot;&amp;gt;
+  &amp;lt;div class=&quot;row header&quot;&amp;gt;
+    &amp;lt;div class=&quot;col-xs-12 text-center&quot;&amp;gt;
+      &amp;lt;h1&amp;gt;Bootstrap 4 2-Column Layout &amp;lt;/h1&amp;gt;
+    &amp;lt;/div&amp;gt;
+  &amp;lt;/div&amp;gt;
+  &amp;lt;div class=&quot;row&quot;&amp;gt;
+    &amp;lt;div class=&quot;col-sm-6 first-column&quot;&amp;gt;
+      &amp;lt;p&amp;gt;This column takes the full height as its sibling column thanks to Flexbox&amp;lt;/p&amp;gt;
+    &amp;lt;/div&amp;gt;
+    &amp;lt;div class=&quot;col-sm-6 second-column&quot;&amp;gt;
+      &amp;lt;p&amp;gt;
+        Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum 
+      &amp;lt;/p&amp;gt;
+    &amp;lt;/div&amp;gt; 
+  &amp;lt;/div&amp;gt;
+  &amp;lt;div class=&quot;row&quot;&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And I’m not pretending that this is hard or not but the shift from tables to a css grid isn’t exactly simple (or at least it isn’t for me).&lt;/p&gt;
+
+&lt;p&gt;I’m noting this particular example because I’ve tried several and this one just worked right out of the box.  The others should have – and maybe it was just my ham fisted approach – but this one did.  Recommended.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 26 Jul 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/bootstrap/2019/07/26/a-bootstrap-4-two-column-example-that-just-works.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/bootstrap/2019/07/26/a-bootstrap-4-two-column-example-that-just-works.html</guid>
+        
+        <category>boostrap</category>
+        
+        <category>css</category>
+        
+        
+        <category>bootstrap</category>
+        
+      </item>
+    
+      <item>
+        <title>Git Rebasing Old Migrations Easily When SourceTree Fails</title>
+        <description>&lt;p&gt;So I’ve written before about schema.rb changes, SourceTree and migrations and the problem with git rebase before:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://fuzzyblog.io/blog/rails/2019/05/09/rails-migrations-multiple-developers-and-the-schema-wtf-moment.html&quot;&gt;Schema WTF Take 1&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://fuzzyblog.io/blog/rails/2019/05/10/the-schema-wtf-moment-take-2-an-excursion-into-sourcetree.html&quot;&gt;Schema WTF Take 2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I just hit this again and my normal pairing partner is offline and while he has the patience to deal with the crazy ass error messages from SourceTree, I do not.  Personally I think Atlassian (the maker of SourceTree) should simply be killed with fire while my pagan friends dance naked around a drum circle but hey – that’s just me.&lt;/p&gt;
+
+&lt;p&gt;Anyway my tooling has let me down.  And, yes I could learn the specific range level commit commands that SourceTree is generating behind the scenes but I think there’s an easier way.  Here’s what I did:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Abort the git rebase with git rebase –abort&lt;/li&gt;
+  &lt;li&gt;Change back into my develop branch which is now current.&lt;/li&gt;
+  &lt;li&gt;Copy schema.rb to ~ i.e. cp db/schema.rb ~&lt;/li&gt;
+  &lt;li&gt;Look at my pull request to identify the specific migration that I ran.&lt;/li&gt;
+  &lt;li&gt;Roll back the specific migration with: rake db:migrate:down VERSION=20190610143443&lt;/li&gt;
+  &lt;li&gt;Copy in the schema.rb from ~ i.e. cp ~/schema.rb db&lt;/li&gt;
+  &lt;li&gt;Run the migration with bundle exec rake db:migrate&lt;/li&gt;
+  &lt;li&gt;Do the git add / commit / push dance&lt;/li&gt;
+  &lt;li&gt;Get someone to do the pull request review&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;And that, dear reader, should have worked swimmingly.  Alas, it did not.  And this was one of those software engineering cases where trying to understand something fully likely would have been a waste of time.  This change amounted to a few lines in a model, a migration to add an index and a small update to a spec file – I simply recreated the branch from the current develop as “-a” (on top of the original branch number) and then re-made the same damn changes.  Yeah that sucks but it worked.&lt;/p&gt;
+
+&lt;p&gt;Today was definitely a day in the trenches.  Sigh.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 24 Jul 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2019/07/24/git-rebasing-old-migrations-easily-when-sourcetree-fails.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2019/07/24/git-rebasing-old-migrations-easily-when-sourcetree-fails.html</guid>
+        
+        <category>rails</category>
+        
+        <category>ruby</category>
+        
+        <category>migrations</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Bullshite rsync Subtleties</title>
+        <description>&lt;p&gt;So yesterday or the day before &lt;a href=&quot;https://fuzzyblog.io/blog/osx/2019/07/22/backing-mac-to-mac-via-scp-rsync.html&quot;&gt;I blogged about rsync&lt;/a&gt; and how good it was.  And that’s true but rsync is notoriously tricky and today I became very, very aware of rsync’s trickiness.&lt;/p&gt;
+
+&lt;p&gt;So my scenario was that I had an old MacBook Air which I was trying to get all the data off of since DropBox seemed to have an incomplete sync.  And I figured that if I just got all the files copied up to my big desktop then I could reformat the machine and give it to my wife as a replacement for her laptop on which the keyboard died.&lt;/p&gt;
+
+&lt;p&gt;Note: Some of these things are perhaps known issues / not issues because I’m on OSX.  What I can say is that as a Mac user some of these things make no damn sense.&lt;/p&gt;
+
+&lt;h1 id=&quot;problem-the-first---directory-names-with-spaces&quot;&gt;Problem the First - Directory Names with Spaces&lt;/h1&gt;
+
+&lt;p&gt;So here was the first thing that I observed:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rsync -avh -e ssh Dropbox/&quot;Camera Uploads&quot;/ 192.168.1.25:/Users/sjohnson/backups/macbook_air/Dropbox/&quot;Camera Uploads&quot;
+Password:
+building file list ... done
+created directory /Users/sjohnson/backups/macbook_air/Dropbox/Camera
+./
+.DS_Store
+.dropbox
+2017-07-03 05.30.42.jpg
+2017-07-03 07.03.03.jpg
+2017-07-09 08.54.25.jpg
+2017-07-09 08.54.31.jpg
+2017-07-09 11.09.16.jpg
+2017-07-09 11.09.23.jpg
+2017-07-10 18.48.37.jpg
+2017-07-10 18.48.43.jpg
+2017-07-10 18.48.47.mov
+^Crsync error: received SIGINT, SIGTERM, or SIGHUP (code 20) at /BuildRoot/Library/Caches/com.apple.xbs/Sources/rsync/rsync-52.200.1/rsync/rsync.c(244) [sender=2.6.9]'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So what you’re seeing is that even tho the data came from “Camera Uploads”, it got moved to “Camera”.  The issue is obviously directory names with spaces.  And since I had started with an scp approach this meant that rsync was copying up data that it already had in place.  ARRGHH!&lt;/p&gt;
+
+&lt;p&gt;And here’s a second pass with a different approach to space encoded filenames:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rsync -avh -e ssh Dropbox/&quot;Camera Uploads&quot;/ 192.168.1.25:/Users/sjohnson/backups/macbook_air/Dropbox/Camera\ Uploads/
+Password:
+building file list ... done
+./
+2017-07-14 18.09.19.jpg
+2017-07-14 18.09.37.jpg
+2017-07-14 18.09.39.jpg
+2017-07-14 18.28.18.jpg
+[A bunch of filenames omitted for brevity]
+2017-07-30 09.27.13.jpg
+2017-07-30 09.27.23.jpg
+^Crsync error: received SIGINT, SIGTERM, or SIGHUP (code 20) at /BuildRoot/Library/Caches/com.apple.xbs/Sources/rsync/rsync-52.200.1/rsync/rsync.c(244) [sender=2.6.9] 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Before the second pass:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ls -ltr Camera | wc -l
+      15
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After the second pass&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ScottiMac:Dropbox sjohnson$ ls -ltr Camera | wc -l
+      36
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So even after changing how I handled the destination filename, it still went to “Camera”.  Double ARGH.&lt;/p&gt;
+
+&lt;p&gt;So what’s the obvious workaround when rsync seems to entirely fsck up OSX filenames with spaces?  I’m sure there are other options but my approach was drop dead simple, rename each folder on source and destination from:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Camera Uploads
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;to&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Camera_Uploads
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;and re-run the sync command:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rsync -avh -e ssh Dropbox/Camera_Uploads/ 192.168.1.25:/Users/sjohnson/backups/macbook_air/Dropbox/Camera_Uploads/
+Password:
+building file list ... done
+.DS_Store
+
+sent 18.87K bytes  received 1.64K bytes  8.21K bytes/sec
+total size is 4.57G  speedup is 222553.34
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;problem-the-second---excluded-directories&quot;&gt;Problem the Second - Excluded Directories&lt;/h1&gt;
+
+&lt;p&gt;My next issue was that I wanted to exclude the Library directory from the files being synced.  This would eliminate all the giant Docker files that are stored in Library (and Library mostly isn’t needed since it is Application level stuff; not really user data).&lt;/p&gt;
+
+&lt;p&gt;Here was my first attempt:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ rsync -avh --exclude '/Users/sjohnson/Library/' -e ssh ~ 192.168.1.25:/Users/sjohnson/backups/seas
+Password:
+building file list ... rsync: opendir &quot;/Users/sjohnson/Library/Application Support/CallHistoryTransactions&quot; failed: Operation not permitted (1)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So that clearly failed.  Now I’ve long been aware that Apple has old versions of core open source tools like rsync, so:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ rsync --version
+rsync  version 2.6.9  protocol version 29
+Copyright (C) 1996-2006 by Andrew Tridgell, Wayne Davison, and others.
+&amp;lt;http://rsync.samba.org/&amp;gt;
+Capabilities: 64-bit files, socketpairs, hard links, symlinks, batchfiles,
+              inplace, IPv6, 64-bit system inums, 64-bit internal inums
+
+rsync comes with ABSOLUTELY NO WARRANTY.  This is free software, and you
+are welcome to redistribute it under certain conditions.  See the GNU
+General Public Licence for details.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Clearly the 2006 copyright date is a problem.  This calls for brew!&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install rsync
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And, naturally, brew does &lt;a href=&quot;https://fuzzyblog.io/blog/ruby/2019/07/10/when-rbenv-well-won-t-rbenv-fixing-shell-extension-madness.html&quot;&gt;shell magic trickery&lt;/a&gt; that messed up for me.  Happily tho rsync is just an executable that I can fully path to (all brew executables always end up in /usr/local/bin):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/local/bin/rsync --version
+rsync  version 3.1.3  protocol version 31
+Copyright (C) 1996-2018 by Andrew Tridgell, Wayne Davison, and others.
+Web site: http://rsync.samba.org/
+Capabilities:
+    64-bit files, 64-bit inums, 64-bit timestamps, 64-bit long ints,
+    socketpairs, hardlinks, symlinks, IPv6, batchfiles, inplace,
+    append, ACLs, xattrs, iconv, symtimes, no prealloc, file-flags
+
+rsync comes with ABSOLUTELY NO WARRANTY.  This is free software, and you
+are welcome to redistribute it under certain conditions.  See the GNU
+General Public Licence for details.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;and that still failed but here was the magic (and Virginia, yes, the error was &lt;strong&gt;all damn mine&lt;/strong&gt;, not the version of rsync):&lt;/p&gt;
+
+&lt;p&gt;“Excluding a specific directory is same as excluding a file, just pass the relative path to the directory to the –exclude option” from &lt;a href=&quot;https://linuxize.com/post/how-to-exclude-files-and-directories-with-rsync/&quot;&gt;Rsync Exclusion&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So that made my rsync command this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rsync -avh --exclude 'Library/' -e ssh ~ 192.168.1.25:/Users/sjohnson/backups/seas
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And that worked like a charm.  Sigh.  Always read the docs well if at all possible.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 24 Jul 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/osx/2019/07/24/bullshite-rsync-subtleties.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/osx/2019/07/24/bullshite-rsync-subtleties.html</guid>
+        
+        <category>osx</category>
+        
+        <category>rsync</category>
+        
+        <category>mac</category>
+        
+        
+        <category>osx</category>
+        
+      </item>
+    
+      <item>
+        <title>Getting Around the Makara ActiveRecord Proxy</title>
+        <description>&lt;p&gt;One of the key approaches to database scalability is the use of a replica server so that read only queries (i.e. SELECT queries) get shunted away from the master database.  When you use a framework based approach to development such as Rails, this is generally implemented as an ActiveRecord connector that sits between your SQL and the server on which it gets executed.  One such example is &lt;a href=&quot;https://github.com/taskrabbit/makara&quot;&gt;Makara&lt;/a&gt; from TaskRabbit.&lt;/p&gt;
+
+&lt;p&gt;The problem here is that not all SELECT queries are created equally and not all select queries can run correctly on a replica.  I recently had the situation where a given query was complex enough (think 500+ lines of select query) that it could only execute on the replica server maybe 3 times out of 10 with a 45 plus second runtime.  I was assured by the query author that this would execute correctly on the production database.  And while I was absolutely dubious about this, I realized that there was literally no way to prove this without getting around Makara.&lt;/p&gt;
+
+&lt;p&gt;I looked at Makara and like a lot of gems, I didn’t find the documentation much to my liking (although I had a hint that if I got funky with it, it might work) but then I saw this little snippet:&lt;/p&gt;
+
+&lt;p&gt;“Calls inside a transaction will always be sent to the master (otherwise changes from within the transaction could not be read back on most transaction isolation levels)”&lt;/p&gt;
+
+&lt;p&gt;And that gave me this example (not the real sql; just something I had open in a db console):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;results = ActiveRecord::Base.transaction do 
+  ActiveRecord::Base.connection.select_rows
+  (&quot;
+  select user_id, date_created_at, sum(int_val) from metrics where habit_id = 2 
+  group by date_created_at order by date_created_at desc LIMIT 10;
+  &quot;) 
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And, sure enough, that worked.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 23 Jul 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2019/07/23/getting-around-the-makara-activerecord-proxy.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2019/07/23/getting-around-the-makara-activerecord-proxy.html</guid>
+        
+        <category>ruby</category>
+        
+        <category>rails</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>So You Need to Write</title>
@@ -204,356 +744,6 @@
         
         
         <category>osx</category>
-        
-      </item>
-    
-      <item>
-        <title>Employee Transitions - Don't Kill Your Organizational Memory</title>
-        <description>&lt;p&gt;A lot of companies have moved to organizational chat systems like Slack or the late, unlamented HipChat.  And, from what I have seen, none of those companies have ever dealt with employee transitions in a remotely rational fashion.  Here’s what generally happens:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Employee leaves.&lt;/li&gt;
-  &lt;li&gt;Slack / HipChat / whatever chat account is promptly deleted.&lt;/li&gt;
-  &lt;li&gt;I lose all access to ANY and ALL conversations with that previous employee forever.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;What.  The.  &lt;a href=&quot;https://en.wikipedia.org/wiki/Fsck&quot;&gt;Fsck&lt;/a&gt;*?  This makes no actual sense.  Chat has become the organizational memory for what happens in a company.  Now let’s move to an actual, specific example.  At my day job we just had a manager depart during a re-org.  These things happen and I really don’t know the specifics.  What I do know is that this was my damn manager and he was directly involved in the project I’m on.  If I hadn’t, &lt;strong&gt;painstakingly&lt;/strong&gt; copied every single slack message he and I ever had, all 20 odd plus pages of them, to a text file, I would have lost much of my knowledge of the project including important details like:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Who at the client I was supposed to speak with&lt;/li&gt;
-  &lt;li&gt;The API keys that define connectivity&lt;/li&gt;
-  &lt;li&gt;The schedule&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Now I might have been able to remember the people at the client and I do have a vague memory of the schedule but a high entropy api key like this:&lt;/p&gt;
-
-&lt;p&gt;afdjklfdsaj294u324,asdfmafrwae6435%1 (not the real api key; I’m annoyed but not an idiot)&lt;/p&gt;
-
-&lt;p&gt;I’ll never remember that.  And since I wasn’t ready to use it yet, I just left it in my chat client for the time being.  Is this the right place for an API key?   Nope.  But in the real world, chat is often the communications mechanism for delivery of things like API keys.&lt;/p&gt;
-
-&lt;h1 id=&quot;in-closing-email-versus-chat&quot;&gt;In Closing, Email versus Chat&lt;/h1&gt;
-
-&lt;p&gt;It is always interesting to me that organizations would never delete emails that were sent to me from employees who have left (I just confirmed that I have every email ever from employees who quit).  So why is chat different?&lt;/p&gt;
-
-&lt;p&gt;*Yes this is a slightly more polite, much, much more nerdy way of saying “fuck”.  It refers to the fsck utility which checks file system integrity and the fact that when you need to run fsck, you’re first word is generally “fuck”.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 20 Jul 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/startup/2019/07/20/employee-transitions-don-t-kill-your-organizational-memory.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/startup/2019/07/20/employee-transitions-don-t-kill-your-organizational-memory.html</guid>
-        
-        <category>startup</category>
-        
-        <category>hr</category>
-        
-        
-        <category>startup</category>
-        
-      </item>
-    
-      <item>
-        <title>Using redis-cli on An Encrypted AWS Redis Server</title>
-        <description>&lt;p&gt;So I find myself needing to use &lt;a href=&quot;https://redis.io/topics/rediscli&quot;&gt;redis-cli&lt;/a&gt; to modify the keys on a running Redis instance to deal with a few &lt;a href=&quot;https://github.com/mperham/sidekiq/blob/master/Changes.md#413&quot;&gt;Sidekiq issues&lt;/a&gt;.  And, much to my surprise, I can’t simply connect to it and make changes because I keep getting &lt;strong&gt;Error: Connection reset by peer&lt;/strong&gt; errors.  A bit of a deep dive taught me this:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Our redis instance is encrypted both at rest and in transit&lt;/li&gt;
-  &lt;li&gt;The way to do this is to connect to it via stunnel which builds a secure tunnel&lt;/li&gt;
-  &lt;li&gt;You have to supply the password on the command line to redis-cli; this surprised me because it leaves the password in the shell history and that’s fscking awful for security; grumble, grumble, grumble&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Here are some references that I followed:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/in-transit-encryption.html&quot;&gt;AWS Docs&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://datanextsolutions.com/blog/how-to-fix-redis-cli-error-connection-reset-by-peer/&quot;&gt;Data Next Docs&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Here are the steps I followed:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;I started by installing stunnnel.&lt;/li&gt;
-  &lt;li&gt;I continued by building a mapping for stunnel to the redis server I wanted to mess with.  This required getting the redis server url from our application’s settings.&lt;/li&gt;
-  &lt;li&gt;Start the tunnel&lt;/li&gt;
-  &lt;li&gt;Verify that the tunnel is running.&lt;/li&gt;
-  &lt;li&gt;I connected to redis-cli passing the -a password option.&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;I was able to then verify that redis-cli works correctly by doing a simple set / get:&lt;/p&gt;
-
-    &lt;p&gt;set a “hello”
-get a&lt;/p&gt;
-
-    &lt;p&gt;“hello”&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;And this positioned me for being able to run a redis-cli keys command.  Of course the keys routine I needed to run was error full but that’s another story …&lt;/p&gt;
-</description>
-        <pubDate>Thu, 18 Jul 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/redis/2019/07/18/using-redis-cli-on-an-encrypted-aws-redis-server.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/redis/2019/07/18/using-redis-cli-on-an-encrypted-aws-redis-server.html</guid>
-        
-        <category>redis</category>
-        
-        <category>aws</category>
-        
-        
-        <category>redis</category>
-        
-      </item>
-    
-      <item>
-        <title>Adding Quick and Dirty JSON Serialization to Database Objects</title>
-        <description>&lt;p&gt;So let’s say that you’re building a system where you need to configure things like measurements and you know that some people like pounds and some people like kilograms.  One option is to hard code a database structure where you have an attribute for each.  And while that works, there are always going to be some more measurement types in the world and this approach leads you to an endless array of sucking database column changes.&lt;/p&gt;
-
-&lt;p&gt;Another approach is to add a text column to your database and store a JSON blob in it.  Rails actually makes this pretty easy with a migration and a declaration:&lt;/p&gt;
-
-&lt;p&gt;Migration:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class AddUnitPreferencesJsonToUsers &amp;lt; ActiveRecord::Migration[5.2]
-  def change
-    add_column :users, :options, :text
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Declaration at the top of your class:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;serialize :options, JSON
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;This will now add an options column to your table where you can store anything.  And since there is a serialize call, it will even act like an attribute so you can say something like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;user = User.first
-user.options
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;and get back:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;length&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;inches&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;weight&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;pounds&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;time&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;hours&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And if you really, really like working on a REPL like I do then you can set this globally for all users with this snippet:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;users = User.all
-users.each do |user|
-  user.options = options = { &quot;length&quot; =&amp;gt; &quot;inches&quot;, &quot;weight&quot; =&amp;gt; &quot;pounds&quot;, &quot;time&quot; =&amp;gt; &quot;hours&quot; }
-  user.save
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Easy - no fuss, no muss, no need to write code in an editor for a one time, one off fix.&lt;/p&gt;
-
-&lt;p&gt;And just to be clear, you can do a better job with this by really following the instructions.  Here’s an &lt;a href=&quot;https://codeburst.io/json-serialized-columns-with-rails-a610a410fcdf&quot;&gt;example from CodeBurst&lt;/a&gt; which includes custom serializers.  Recommended&lt;/p&gt;
-</description>
-        <pubDate>Thu, 18 Jul 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2019/07/18/adding-quick-and-dirty-json-serialization-to-database-objects.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2019/07/18/adding-quick-and-dirty-json-serialization-to-database-objects.html</guid>
-        
-        <category>rails</category>
-        
-        <category>ruby</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Never Type Bundle Exec Again</title>
-        <description>&lt;p&gt;The command prefix “bundle exec” is something that I’ve typed probably a thousand, thousand, thousand times.  The bundle exec prefix goes in front of so many damn Rails commands and while I’ve seen other developers alias it to “be”, that never felt right to me.  And now there’s a workaround where I don’t even have to type that thanks to the miracle of &lt;a href=&quot;https://en.wikipedia.org/wiki/Z_shell&quot;&gt;Z-Shell&lt;/a&gt; and &lt;a href=&quot;https://ohmyz.sh/&quot;&gt;Oh My Zsh&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Edit your ~/.zshrc and add search for the word plugins and then change that line to this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;plugins=(git bundler brew gem heroku)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Then you and to do a source on it:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;source ~/.zshrc
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And then you can do this magic:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rails g migration add_frequency_and_economic_value_to_habits
-  invoke  active_record
-  create    db/migrate/20190717211807_add_frequency_and_economic_value_to_habits.rb
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And that makes my life better by 13 characters that I’m never going to have to type again.  Honest to the FSM, I’m mildly aroused right now …&lt;/p&gt;
-
-&lt;p&gt;And thank you to &lt;a href=&quot;https://coderwall.com/p/weixga/no-more-bundle-exec-with-oh-my-zsh&quot;&gt;CoderWall&lt;/a&gt; for publishing this originally.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 17 Jul 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/rails/2019/07/17/never-type-bundle-exec-again.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2019/07/17/never-type-bundle-exec-again.html</guid>
-        
-        <category>rails</category>
-        
-        <category>ruby</category>
-        
-        
-        <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Your Daily Remote Worker Management Tip</title>
-        <description>&lt;p&gt;Dear Manager of a Remote Employee,&lt;/p&gt;
-
-&lt;p&gt;My apologies in advance that this is bitter and salty like the code brewed coffee that I just swilled in a frazzle but I find myself at the end of my rope. And so I will give you a remote worker management tip.&lt;/p&gt;
-
-&lt;p&gt;When a remote worker, particularly when it is an individual who has worked for you for more than a year, says “we need to work on XYZ in person”, it basically amounts to “Oh my lord, we are so damn screwed”.  AND YOU PAY ATTENTION TO IT AND ARRANGE IT.&lt;/p&gt;
-
-&lt;p&gt;Sigh.&lt;/p&gt;
-
-&lt;p&gt;Signed, 
-Your Remote Worker&lt;/p&gt;
-</description>
-        <pubDate>Tue, 16 Jul 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/startup/2019/07/16/your-daily-remote-worker-management-tip.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/startup/2019/07/16/your-daily-remote-worker-management-tip.html</guid>
-        
-        <category>startup</category>
-        
-        <category>remote</category>
-        
-        
-        <category>startup</category>
-        
-      </item>
-    
-      <item>
-        <title>Getting Around Spotlight's Madness</title>
-        <description>&lt;p&gt;Spotlight is the Apple / OSX search engine and I find it absolutely, blindingly maddening.  The way Spotlight seems to work, when you use it from the OSX search icon, is that it tells you what it found but not &lt;strong&gt;where&lt;/strong&gt; it found it.  And I get that filesystems are passe and we are supposed to be in a post file world, blah, blah, blah.  And I call bullshite on that.  I’m a professional software developer and knowing where things actually exist is actually fricking important.&lt;/p&gt;
-
-&lt;p&gt;And here’s how to do that with Spotlight – use mdfind directly.  mdfind is the underlying  command line executable that also executes spotlight searches.  Earlier today I was struggling to remember the name of a Ruby gem and all I knew was that it had “icon” in its name.  So here’s what I did:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mdfind icon -onlyin /Users/sjohnson/Dropbox/fuzzygroup/ | grep Gemfile
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And this command looked for the string of characters “icon” but only in the directory where I keep all of my many, many Rails projects.  And then I fed it thru a grep command to find only the references to Gemfile.  And this very quickly led me to &lt;a href=&quot;https://github.com/victorgama/identicon&quot;&gt;identicon&lt;/a&gt; which is a gem which builds &lt;a href=&quot;https://meta.stackexchange.com/questions/17443/how-is-the-default-user-avatar-generated&quot;&gt;Stack Overflow like abstract user avatars&lt;/a&gt;.&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 16 Jul 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/osx/2019/07/16/getting-around-spotlight-s-madness.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/osx/2019/07/16/getting-around-spotlight-s-madness.html</guid>
-        
-        <category>osx</category>
-        
-        <category>spotlight</category>
-        
-        <category>mdfind</category>
-        
-        
-        <category>osx</category>
-        
-      </item>
-    
-      <item>
-        <title>Fixing ByeBug Madness</title>
-        <description>&lt;p&gt;I learned an interesting and subtle trick today.  As is all too true lately, my pairing partner, &lt;a href=&quot;https://csphere.github.io/&quot;&gt;Sean Kennedy&lt;/a&gt;, gets the credit for this one.  I had the ruby debugger, byebug, embedded in a view context and I noticed that while this should have brought up a breakpoint, it way, way, way, way overstepped the break point and shot beyond, going into core Rails stuff.  And then Sean told me this trick:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;%# a = 1; byebug; b = 2; %&amp;gt;
-&amp;lt;%= link_to &quot;Sign in with OAuth 2 provider&quot;, user_doorkeeper_omniauth_authorize_path, class: &quot;btn btn-primary&quot; %&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Apparently byebug has a known issue with execution context and wrapping the byebug call inside two assignment statements gives it enough of an execution context for it to stop properly.&lt;/p&gt;
-
-&lt;p&gt;And yes this is a sucky thing but all tools have issues and this one can be trivially worked around.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 16 Jul 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/ruby/2019/07/16/fixing-byebug-madness.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/ruby/2019/07/16/fixing-byebug-madness.html</guid>
-        
-        <category>ruby</category>
-        
-        <category>rails</category>
-        
-        
-        <category>ruby</category>
-        
-      </item>
-    
-      <item>
-        <title>When RbEnv, well, Won't RbEnv - Fixing Shell Extension Madness</title>
-        <description>&lt;p&gt;If you have ever used Ruby’s &lt;a href=&quot;https://github.com/rbenv/rbenv&quot;&gt;rbenv&lt;/a&gt;, or &lt;a href=&quot;https://rvm.io/&quot;&gt;rvm&lt;/a&gt; or &lt;a href=&quot;https://virtualenv.pypa.io/en/latest/&quot;&gt;Python’s virtual env&lt;/a&gt; or any of the different approaches to managing multiple editions of the same language binary on a machine, this post is for you.&lt;/p&gt;
-
-&lt;p&gt;All of these tools tend to work the same way – they inject their own pathing in front of the system path so that the correct version of a binary gets called.  Here’s an example from my development system when rbenv wasn’t working:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;which ruby
-/usr/bin/ruby
-
-ruby --version
-ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And when I made rbenv work, here’s what I got:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;which ruby
-/Users/sjohnson/.rbenv/shims/ruby
-
-ruby --version
-ruby 2.6.2p47 (2019-03-13 revision 67232) [x86_64-darwin18]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Technically I should have been able to fix this issue by using this rbenv command:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rbenv local 2.6.2
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And if that didn’t work then this should have:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rbenv rehash
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And either of those should have made things work by injecting into my path the correct values.  Sadly, albeit not surprisingly, it did not.  My personal development style seems to have a high entropy value and I suspect that’s why but that’s a different argument regarding excessive uptime, an abject refusal to reboot my machine, etc.&lt;/p&gt;
-
-&lt;p&gt;Anyway here’s the work around:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd /to/my/development/directory
-export PATH=/Users/sjohnson/.rbenv/shims:/Users/sjohnson/.rbenv/bin:$PATH
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;My pairing partner &lt;a href=&quot;https;//csphere.github.io/&quot;&gt;Sean Kennedy&lt;/a&gt; corrected this to be:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export PATH=$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And while he’s almost certainly right, I haven’t tested his version so both are here.  Pick and choose as you like.&lt;/p&gt;
-
-&lt;p&gt;The bottom line here is that shell extensions – which is what rbenv, rvm and virtualenv actually are – are fragile.  And if you understand what’s going on underneath them, fixing the issue actually is pretty simple.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 10 Jul 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/ruby/2019/07/10/when-rbenv-well-won-t-rbenv-fixing-shell-extension-madness.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/ruby/2019/07/10/when-rbenv-well-won-t-rbenv-fixing-shell-extension-madness.html</guid>
-        
-        <category>ruby</category>
-        
-        <category>rbenv</category>
-        
-        <category>rails</category>
-        
-        
-        <category>ruby</category>
         
       </item>
     
