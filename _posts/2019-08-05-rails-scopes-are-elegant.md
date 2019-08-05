@@ -41,3 +41,8 @@ and the scope into your view like this:
     <% end %>    
 
 And it will be sorted by name, easy peasy.  Now I've used scopes for **years** (prior to their current syntax actually) but their elegance has never struck me in quite the same way.  Perhaps it is just Monday ...
+
+## More on Rails Scopes:
+* [api.rubyonrails.org](https://api.rubyonrails.org/classes/ActiveRecord/Scoping/Named/ClassMethods.html)
+* [Scopes or Class Methods](https://www.justinweiss.com/articles/should-you-use-scopes-or-class-methods/)
+* [Named Scopes](https://medium.com/le-wagon/what-are-named-scopes-and-how-to-use-them-rails-5-5a0444d8b759)

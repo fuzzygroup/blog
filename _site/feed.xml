@@ -6,9 +6,81 @@
 </description>
     <link>http://fuzzyblog.io//blog/</link>
     <atom:link href="http://fuzzyblog.io//blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 04 Aug 2019 22:32:35 -0400</pubDate>
-    <lastBuildDate>Sun, 04 Aug 2019 22:32:35 -0400</lastBuildDate>
+    <pubDate>Mon, 05 Aug 2019 13:25:58 -0400</pubDate>
+    <lastBuildDate>Mon, 05 Aug 2019 13:25:58 -0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Rails Scopes are Elegant</title>
+        <description>&lt;p&gt;This post is obvious to any advanced Rails user (hell even any middling Rails user) but I know there are some readers who aren’t that sophisticated so here goes.&lt;/p&gt;
+
+&lt;p&gt;A scope is a Rails database query that operates much like a class method only it is much, much simpler to define.  Here’s a class method that finds the active elements in a table called habits:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def active
+  Habit.where(active: true)
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now that’s not bad but a Rails scope looks like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scope :active, -&amp;gt; { where(active: true) }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;But the real benefit here is that scopes are &lt;strong&gt;chainable&lt;/strong&gt; so they can be inserted into an overall “query pipeline” where you can easily extend things.  In my case I had a site listing habits and I realized that habits needed a state of active (if it was true it should be displayed and if it was false then it shouldn’t be).  Here was my initial view code:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;%plan.habits.each do |habit|%&amp;gt;
+  &amp;lt;li&amp;gt;&amp;lt;%=link_to(habit.name, habit_path(habit))%&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;% end %&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Once I had the scope defined then all I had to do was this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;%plan.habits.active.each do |habit|%&amp;gt;
+  &amp;lt;li&amp;gt;&amp;lt;%=link_to(habit.name, habit_path(habit))%&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;% end %&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And &lt;strong&gt;blammo&lt;/strong&gt; I had an active list of habits.&lt;/p&gt;
+
+&lt;p&gt;Now let’s carry the example further and let’s say that you want a list of habits sorted by name. You can define a scope called ordered_by_name like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scope :order_by_name, -&amp;gt; { order(&quot;name ASC&quot;)}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;and the scope into your view like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;%plan.habits.active.order_by_name.each do |habit|%&amp;gt;
+  &amp;lt;li&amp;gt;&amp;lt;%=link_to(habit.name, habit_path(habit))%&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;% end %&amp;gt;    
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And it will be sorted by name, easy peasy.  Now I’ve used scopes for &lt;strong&gt;years&lt;/strong&gt; (prior to their current syntax actually) but their elegance has never struck me in quite the same way.  Perhaps it is just Monday …&lt;/p&gt;
+
+&lt;h2 id=&quot;more-on-rails-scopes&quot;&gt;More on Rails Scopes:&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://api.rubyonrails.org/classes/ActiveRecord/Scoping/Named/ClassMethods.html&quot;&gt;api.rubyonrails.org&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.justinweiss.com/articles/should-you-use-scopes-or-class-methods/&quot;&gt;Scopes or Class Methods&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://medium.com/le-wagon/what-are-named-scopes-and-how-to-use-them-rails-5-5a0444d8b759&quot;&gt;Named Scopes&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 05 Aug 2019 00:00:00 -0400</pubDate>
+        <link>http://fuzzyblog.io//blog/rails/2019/08/05/rails-scopes-are-elegant.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io//blog/rails/2019/08/05/rails-scopes-are-elegant.html</guid>
+        
+        <category>rails</category>
+        
+        <category>database</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>Rails Migration Tips and Tricks</title>
@@ -709,41 +781,6 @@ end
         
         
         <category>writing</category>
-        
-      </item>
-    
-      <item>
-        <title>Backing Mac to Mac via scp / rsync</title>
-        <description>&lt;p&gt;I found myself turning my old Macbook Air over to my wife to use when the cursed butterfly keyboard on her new MacBook died.  And even tho I had theoretically used Dropbox to sync my data with other machines, a quick check on this machine revealed something like 200 top level directories in ~/Dropbox while a check against my “current” machine revealed only 148 top level directories.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;WHAT THE FERENGI Dropbox !!!!&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;And that convinced me that I needed to run a backup on this machine before I turned it over to my wife.  Naturally I found that a Time Machine backup failed and, honestly, I found myself with little desire, inclination or will to fix Time Machine.&lt;/p&gt;
-
-&lt;p&gt;This led me to attempt to backup this Mac via an scp command to my big desktop Mac which has plenty of free disc space.  So I used this shell command:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scp -p -r ~/Downloads/* 192.168.1.25:/Users/sjohnson/backups/macbook_air/Downloads/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;as a test command to backup the ~/Downloads directory from one machine to another.  And, annoyingly, I found that after only a few gigabytes, my scp would fail with a networking error.  After trying this again (and again and again), I came to the conclusion that I was fighting an untenable battle that felt a lot like a land war in Asia.  And this led me to Google which, rapidly, led me to rsync, a tool I love but which I never seem to think to use.  Here was the command I finally came up with&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rsync -avh -e ssh Downloads/* 192.168.1.25:/Users/sjohnson/backups/macbook_air/Downloads/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;In case you aren’t aware, the benefit to &lt;a href=&quot;https://linux.die.net/man/1/rsync&quot;&gt;rsync&lt;/a&gt; is that it will keep track of your progress to date and resume incomplete copies.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 22 Jul 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io//blog/osx/2019/07/22/backing-mac-to-mac-via-scp-rsync.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io//blog/osx/2019/07/22/backing-mac-to-mac-via-scp-rsync.html</guid>
-        
-        <category>osx</category>
-        
-        <category>backup</category>
-        
-        
-        <category>osx</category>
         
       </item>
     
