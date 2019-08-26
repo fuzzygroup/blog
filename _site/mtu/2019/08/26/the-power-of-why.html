@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Installing Rails 2.6 on OSX and a Creating New Application</title>
-  <meta name="description" content="So Rails 2.6 has been released and I just went thru the normal update dance.  Here’s how I handled upgrading my system.  Let’s start with the basics:">
+  <title>The Power of Why</title>
+  <meta name="description" content="Note: I wrote this as a section of an unfinished book about managing software engineers, “Managing the Unmanageables”, when you are not a software engineer. ...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io//blog/rails/2019/08/17/installing-rails-2-6-on-osx-and-a-creating-new-application.html">
+  <link rel="canonical" href="http://fuzzyblog.io//blog/mtu/2019/08/26/the-power-of-why.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io//blog/feed.xml">
   
   <!-- favicons -->
@@ -39,17 +39,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Installing Rails 2.6 on OSX and a Creating New Application">
+  <meta name="twitter:title" content="The Power of Why">
 
   
     <meta name="twitter:description"
-      content="So Rails 2.6 has been released and I just went thru the normal update dance.  Here’s how I handled upgrading my system.  Let’s start with the basics:
-
-
-  rvm
-  OSX Mojave
-  Ruby 2.5.1
-  MySQL (yeah...">
+      content="Note: I wrote this as a section of an unfinished book about managing software engineers, “Managing the Unmanageables”, when you are not a software engineer.  I keep copying it and pasting it to peo...">
   
 
   
@@ -155,90 +149,42 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Installing Rails 2.6 on OSX and a Creating New Application</h1>
-    <p class="I'll"><time datetime="2019-08-17T00:00:00-04:00" itemprop="datePublished">Aug 17, 2019</time> 
+    <h1 class="post-title" itemprop="name headline">The Power of Why</h1>
+    <p class="I'll"><time datetime="2019-08-26T00:00:00-04:00" itemprop="datePublished">Aug 26, 2019</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>So Rails 2.6 has been released and I just went thru the normal update dance.  Here’s how I handled upgrading my system.  Let’s start with the basics:</p>
+    <p><strong>Note:</strong> I wrote this as a section of an unfinished book about managing software engineers, “Managing the Unmanageables”, when you are <strong>not</strong> a software engineer.  I keep copying it and pasting it to people so I thought it should just live here.</p>
 
-<ul>
-  <li>rvm</li>
-  <li>OSX Mojave</li>
-  <li>Ruby 2.5.1</li>
-  <li>MySQL (yeah, yeah I know; not apologizing)</li>
-</ul>
+<h1 id="applying-psychology-the-power-of-why">Applying Psychology: The Power of Why</h1>
 
-<p>Here is what I did (you should know that I hit issues with older versions of Yarn and Node so I’ve included updating them as part of this):</p>
+<p>One of the powerful tools in your arsenal of management techniques for dealing with software engineers is three letters long — <strong>why</strong>.  As a manager, even as a non technical person managing technical people, you always have the ability to ask <strong>why</strong>.  I would argue that if you don’t ask why, at least some of the time, you’re not doing your job.  Understanding “why” is, after all, at the heart of management.
+The power of why taps into four of these psychological vectors: pride in his work, poor social skills, the desire to not explain his or her self and the belief that they are smarter than you.  So let’s posit a dialog between you and a software engineer:</p>
 
-<ol>
-  <li>Started a terminal session.</li>
-  <li>
-    <p>Verified my ruby version:</p>
+<p>Manager:  Bob — we need to get that download bug fixed today.  Its a big deal.
+Bob: Well that’s actually pretty hard.  I’d need to <em>nerd level gobbledygook gook speak here</em></p>
 
-    <p>ruby –version</p>
-  </li>
-  <li>
-    <p>Verified my rails version:</p>
+<p>A lot of times that’s where the dialog ends.  The software engineer throws up a wall and relies on you not understanding this.  Now let’s revisit that and add why to the mix:</p>
 
-    <p>rails –version</p>
-  </li>
-  <li>
-    <p>Upgrade Yarn:</p>
+<p>Manager:  Bob — we need to get that download bug fixed today.  Its a big deal.
+Bob: Well that’s actually pretty hard.  I’d need to <em>nerd level gobbledygook gook speak here</em>
+Manager: That’s interesting and I don’t understand everything you just said but I do know that our product used to be able to download data and now it can’t.  Can you explain why?</p>
 
-    <table>
-      <tbody>
-        <tr>
-          <td>curl -o- -L https://yarnpkg.com/install.sh</td>
-          <td>bash</td>
-        </tr>
-      </tbody>
-    </table>
-  </li>
-  <li>
-    <p>You can either start a new terminal to get your path exports correct (it is set on Terminal start) or simply do this:</p>
+<p>And this is the point where Bob either has to explain himself as a human being or do the work.  And, honestly, he’d rather do the work than talk to you.  Don’t take offense at this.  It is actually both what you and and to you advantage so its a good thing.  Bear in mind that Bob would rather talk to a computer than talk to you.  If he really wanted to talk to people, he’d have your job.  Finally if he really is smarter than you, or at least things he is, shouldn’t he be able to fix it?</p>
 
-    <p>export PATH=”$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH”</p>
-  </li>
-  <li>
-    <p>Upgrade node:</p>
+<p>One thing to know about technical people — we hide behind our jargon because it gives a way to make difficult social interactions go away.  If I use words that you don’t understand then it naturally intimidates you because it makes you feel stupid and me feel superior.</p>
 
-    <p>brew upgrade node</p>
-  </li>
-  <li>
-    <p>Upgrade Ruby to 2.6.2 (not required but I figured why not):</p>
+<p>The power of why is a very real thing.  I cannot tell you the number of times that simply asking “why” has resulted in the engineer saying “Fine!  I’ll just fix it”.</p>
 
-    <p>rvm install 2.6.2</p>
-  </li>
-  <li>
-    <p>Change to the new ruby:</p>
+<p>The other thing to understand about the power of why is that software can be intimidating as hell  even to the engineer who is working on it.  By forcing them to explain themselves, in a way that you can understand, you are inherently forcing them to work thru the issue at hand in their own head.  And, very often, you force them to realize where they went wrong.  Let me illustrate this with an anecdote.</p>
 
-    <p>rvm use ruby-2.6.2</p>
-  </li>
-  <li>
-    <p>Generate a new application:</p>
+<p>Once upon a time there was a software company that was making CD-ROM indexing software and an indexing operation just would not finish.  Finally I dragged the engineer in question over and made him watch how astonishingly, mind numbingly slow it was.  The very next day a 24 + hour process executed in 8 minutes.  What changed?  To this day I do not know.  All he said was “I was stupid[1]”.</p>
 
-    <p>rails new lauck –database=mysql</p>
-  </li>
-  <li>If you got anxious and generated a new application prior to installing a new ruby then, you would need to update the Gemfile to reflect the Ruby version and bundle install.</li>
-</ol>
+<p>This second example tapped into the engineer’s belief that his code was “fast”.  By confronting him with the real world where his code was not fast, I forced him to either admit that his code was slow (which conflicted with his pride) or just fix it or, worse, explain himself.  And the normal thing happened — he fixed his code.  And, just so you know, the engineer was not me.  I was the lowly user in this case.</p>
 
-<p><strong>Note</strong>: I’ve named this new test application after one of my favorite librarians.</p>
-
-<h1 id="references">References:</h1>
-
-<ul>
-  <li><a href="https://weblog.rubyonrails.org/2019/8/15/Rails-6-0-final-release/">Rails 6 Announcement</a></li>
-  <li><a href="https://edgeguides.rubyonrails.org/6_0_release_notes.html">Rails 6 Release Notes</a></li>
-  <li><a href="https://news.ycombinator.com/item?id=20717886">Rails 6 on Hacker News</a></li>
-  <li><a href="https://yarnpkg.com/lang/en/docs/install/#mac-stable">Installing Yarn</a></li>
-  <li><a href="https://rvm.io/rvm/basics">RVM Basics</a></li>
-  <li><a href="https://dev.to/grv19/installing-ruby-26-2dch">Installing Ruby 2.6</a></li>
-  <li><a href="https://selleo.com/blog/how-to-upgrade-to-rails-6">How to Upgrade to Rails 6</a></li>
-</ul>
-
+<p>[1] This actually operated on several emotional vectors — the desire to not have to explain himself coupled with pride in performance (every engineer thinks his or her code is fast).</p>
 
   </div>
   
@@ -250,8 +196,12 @@
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io//blog/tag.html#rails" >
-      #rails
+    <a href="http://fuzzyblog.io//blog/tag.html#software_engineering" >
+      #software_engineering
+    </a>
+    
+    <a href="http://fuzzyblog.io//blog/tag.html#chapter_02" >
+      #chapter_02
     </a>
     
   </p>
@@ -262,8 +212,14 @@
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io//blog/tag.html#rails" class="link_button">
-         rails
+       <a href="http://fuzzyblog.io//blog/tag.html#software_engineering" class="link_button">
+         software_engineering
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io//blog/tag.html#chapter_02" class="link_button">
+         chapter_02
        </a>
      </li>
      

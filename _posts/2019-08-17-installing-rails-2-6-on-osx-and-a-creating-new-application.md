@@ -55,6 +55,11 @@ Here is what I did (you should know that I hit issues with older versions of Yar
 * [Rails 6 Announcement](https://weblog.rubyonrails.org/2019/8/15/Rails-6-0-final-release/)
 * [Rails 6 Release Notes](https://edgeguides.rubyonrails.org/6_0_release_notes.html)
 * [Rails 6 on Hacker News](https://news.ycombinator.com/item?id=20717886)
+* [Installing Yarn](https://yarnpkg.com/lang/en/docs/install/#mac-stable)
+* [RVM Basics](https://rvm.io/rvm/basics)
+* [Installing Ruby 2.6](https://dev.to/grv19/installing-ruby-26-2dch)
+* [How to Upgrade to Rails 6](https://selleo.com/blog/how-to-upgrade-to-rails-6)
+
 
 
 
