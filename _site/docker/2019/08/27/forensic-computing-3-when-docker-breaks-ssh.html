@@ -176,8 +176,9 @@
 
 <p>The first step was to confirm that this problem still exists.  We did this by both of us pinging the Jenkins slave box. And sure enough:</p>
 
-<p>Me: worked
-ST: failed</p>
+<p><strong>Me</strong>: worked</p>
+
+<p><strong>ST</strong>: failed</p>
 
 <p>The fact that ping itself failed was very interesting because ping is such a core bit of Internet technology.  SSH can be mildly complicated but ping is <strong>simple</strong>.  Ping should always work.  Always.</p>
 
@@ -197,7 +198,7 @@ ST: failed</p>
 
 <p>So, for us, everyone could access the Jenkins Master box but only I could access the Jenkins Slave box.</p>
 
-<p>When you look at Linux networking issues, two key tools are UFW (another firewall) and iptables.  Here’s the result of ufw:</p>
+<p>When you look at Linux networking issues, two key tools are UFW (another firewall) and iptables (how to handle packets / networking).  Here’s the result of ufw:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>sudo ufw status verbose
 Status: inactive
@@ -249,9 +250,7 @@ RETURN     all  --  anywhere             anywhere
 </code></pre>
 </div>
 
-<p>And this is where ST came fully into play – he looked at the iptables and almost immediately seized on the 172-18 address as a key issue.</p>
-
-<p>And since the 172-18 issue was tied to  <a href="https://www.docker.com/">Docker</a>, we were on the hunt for how Docker might mess with networking that would break SSH.</p>
+<p>And this is where ST came fully into play – he looked at the iptables and almost immediately seized on the 172-18 address as a key issue.  Apparently this is part of how he has configured our VPN.  And since the 172-18 issue was tied to  <a href="https://www.docker.com/">Docker</a>, we were on the hunt for how Docker might mess with networking that would break SSH.</p>
 
 <h1 id="step-4-so-docker-">Step 4: So Docker …</h1>
 
@@ -261,6 +260,7 @@ RETURN     all  --  anywhere             anywhere
   <li>Docker is always running so it is a candidate for interfering with stuff</li>
   <li>Docker has pretty extensive networking facilities</li>
   <li>Docker modifies existing system stuff like the Routes table</li>
+  <li>Docker can be a furball of complexity because Docker gives you a computer within your computer (virtualization) and that means it is actually an operating system at its core.</li>
 </ul>
 
 <p>So, technically, Docker could mess with SSH even if it feels absolutely bizarre for this to even be possible.</p>
@@ -275,8 +275,9 @@ RETURN     all  --  anywhere             anywhere
 
 <p>And after that, we repeated the earlier ping test:</p>
 
-<p>Me: worked
-ST: worked</p>
+<p><strong>Me</strong>: worked</p>
+
+<p><strong>ST</strong>: worked</p>
 
 <p>And that told us that, Yes Virginia, Docker really can break SSH, DAMN IT!  At least for <strong>us</strong> and how we do networking / VPN.</p>
 
