@@ -1,7 +1,7 @@
 ---
 layout: post
 title: The Most Horrible, Awful Aspect of Startups and Remote Employees
-category: startup
+category: remote_work
 tags: ["remote", "startup"]
 ---
 I'm a firm believer in remote work -- I have spent the past 20 years as a remote employee for many different organizations and there's no way that you could ever convince me that remote work isn't the best way to structure an engineering organization.  Now, that said, there is one horrible, awful aspect of remote workers for startups -- the damn state.

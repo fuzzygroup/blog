@@ -6,6 +6,8 @@ tags: ["remote_work"]
 ---
 This is the second in an N part series of short, succinct articles about Remote Work that I'll be writing.
 
+[All Remote Articles](https://fuzzyblog.io/blog/category.html#remote-work)
+
 ## Faces Matter So Use Video Conferencing
 
 I know that the idea that your co-worker is a fellow human is **obvious** but I actually think that it is fairly important.  When you are a remote worker, so much of what you do is relating to people through labels, an email address, an instant message handle or a username.  These text based labels are inherently dehumanizing and that makes it much, much easier to engage in bad types of online behavior -- trolling, flaming, etc.

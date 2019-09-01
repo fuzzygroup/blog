@@ -4,13 +4,13 @@ title: Finding Your Rhythm As a Remote Worker
 category: remote_work
 tags: ["remote", "work_from_home"]
 ---
-I have been, with one 9 month exception, a remote worker since 1999.  Heading into 2017 that puts me at almost 20 years of solid, day in and day out remote work and, I'll admit, that I know a thing or two about remote work.  I've both been a remote worker, managed remote workers and I think all possible permutations.  This post attempts to summarize what works for **me**.  What works for **you** will almost certainly be different but I suspect the same meta principles will apply.
+I have been, with one 9 month exception, a fully remote worker since 1999 and a manager of remote work since 1996.  Heading into 2019 that puts me at over 20 years of solid, day in and day out remote work and, I'll admit, that I know a thing or two about remote work.  I've both been a remote worker, managed remote workers and I think all possible permutations.  This post attempts to summarize what works for **me**.  What works for **you** will almost certainly be different but I suspect the same meta principles will apply.
 
 # Routine, Routine, Routine
 
 Day in and day out my days look remarkably similar:
 
-* roll out of bed around 3 am 
+* roll out of bed sometime between 3 am and 6 am
 * shower, shave, dress, etc.  Even tho the only people that ever see me are my wife, kids and cat I still dress like I was going into an office every day.
 * hit [meh](http://www.meh.com/) while it hasn't sold out and see if there is something cheap I can treat myself to
 * hit the hardest code immediately and get my momentum going
@@ -25,7 +25,7 @@ The single biggest mistake that everyone, and that has included me in the past, 
 
 # You Don't Have Colleagues So Figure Out How to Do Everything Alone
 
-When you are a remote worker you do have colleagues but when you are the odd man out in the remote wilderness you may find that, ahem, they aren't always helpful.  
+When you are a remote worker you do have colleagues but when you are the odd man out in the remote wilderness you may find that, ahem, they aren't always helpful.  Being able and willing to figure things out on your own is a key skill.
 
 # Gear - You Never Know
 
@@ -40,11 +40,9 @@ If I stay in my cozy home environment, even if I'm rooting thru a cable bin for 
 
 If you don't keep a gear box where you toss old hard drives, cables, an odd network hub, etc then I strongly encourage you to do so.  Odds are that this pack rat tendency will drive your spouse mad but the productivity benefits are real.  
 
-# Know When to Have Distractions and Not
-
 # Engineer Invest In Thyself
 
-I don't thinK I'm wrong in saying that engineers are notoriously cheap.  We all look at technology and think to ourselves "I could build that" -- even when it is normally untrue.  One of the very best decisions you can make is to invest in yourself.  There are three great purchases that I've made over the years that really, truly improved my productivity:
+I don't think I'm wrong in saying that engineers are notoriously cheap.  We all look at technology and think to ourselves "I could build that" -- even when it is normally untrue.  One of the very best decisions you can make is to invest in yourself.  There are three great purchases that I've made over the years that really, truly improved my productivity:
 
 * [an Aeron chair](https://fuzzygroup.github.io/blog/startup/2016/10/21/startup-learnings-what-francois-schiettecatte-taught-me.html)
 * Bose Quiet Comfort Headphones
@@ -67,15 +65,15 @@ All total I spent less than 8 hours in rough carpentry from start to finish on t
 
 The only sad thing about making my own desk is that my wife recently got me [Nick Offerman's Good Clean Fun](https://www.amazon.com/Good-Clean-Fun-Misadventures-Offerman/dp/1101984651/ref=sr_1_1?ie=UTF8&qid=1480930872&sr=8-1&keywords=nick+offerman) book and now I really want to make another one this time as a trestle table.  Sigh.  If you are a woodworker and you haven't read Offerman yet then I highly recommend it.  You would never believe that an actor could teach you wood working but he does a credible job and spins a wonderful tale in the doing.
 
+# Embrace Social Punctuation
+
+When you are a remote worker what you will find is that the normal social cues that cause you to *stop working* are gone.  Things like going to the fridge for a soda or stopping by a co-worker's cubicle have just up and disappeared from your life.  I refer to these as "social punctuation".
+
+# Know When to Have Distractions and Not
+
 # Know When to Stop and Move Off the Keyboard
-
-# Embrace Punctuation
-
-When you are a remote worker what you will find is that the normal social cues that cause you to *stop working* are gone.  Things like going to the fridge for a soda or stopping by a co-worker's cubicle have just up and disappeared from your life.  
 
 # Communicate
 
 # Backup and Synchronization 
-
-
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Your Daily Remote Worker Management Tip
-category: startup
+category: remote_work
 tags: ["startup", "remote"]
 ---
 Dear Manager of a Remote Employee, 

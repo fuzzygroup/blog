@@ -6,6 +6,8 @@ tags: ["remote_work"]
 ---
 This is the first in an N part series of short, succinct articles about Remote Work that I'll be writing.  I'm taking a new remote gig and I'm finding that codifying my thoughts on remote work is useful both for me and for people that I will likely end up managing.
 
+[All Remote Articles](https://fuzzyblog.io/blog/category.html#remote-work)
+
 What I have found is that successful remote work cultures are ones of **documentation** or as I would say "Write It Down".  In a classical work environment, you can always pop your head over the cubicle and ask the person next door.  In a remote work environment, not only is that not an option but you are often working asynchronously from your co-workers so they may not even be awake when you need something.  
 
 I don't personally care whether the writing mechanism is a blog, a wiki, a shared Google doc, or a paid Slack environment where messages are never deleted -- it simply needs to be:
