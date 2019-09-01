@@ -12,11 +12,13 @@ I wrote this as a regularly updated document so I have a place to stick new voca
 
 A lot of this is the names of libraries and tools because learning any language isn't just the language, it is the constellation of stuff that make it useful for a given task.  The focus here is clearly on scientific computing and machine learning.
 
+You should also likely see [Python Glossary](https://www.pythonforbeginners.com/cheatsheet/python-glossary).
+
 
 # A 
 * **Anaconda** - A packaged distribution of Python and R aimed at Data Science.  [More...](https://www.anaconda.com/distribution/
 #download-section).  Includes multiple bits of tooling such as Jupyter.
-
+*** Anaconda Cloud** - A platform for sharing notebooks and packages.
 
 # B
 * **Bokeh** - Bokeh is an interactive visualization library that targets modern web browsers for presentation.  [More...](https://bokeh.pydata.org/en/latest/index.html)
@@ -68,7 +70,7 @@ A lot of this is the names of libraries and tools because learning any language 
 * **Pandas** - pandas is a software library written for the Python programming language for data manipulation and analysis. In particular, it offers data structures and operations for manipulating numerical tables and time series.  [More...](https://pandas.pydata.org/)
 * **Pip** - A Python package installer.  Example for python 3: python3 -m pip install --upgrade pip
 * 
-    * 
+* **PyCharm** - an ide for Python from the JetBrains folk.
 * **Pythonic** - something that is done in a very Python like way.
 * **PyTorch** - PyTorch is an open source machine learning library based on the Torch library, used for applications such as computer vision and natural language processing. It is primarily developed by Facebook's artificial intelligence research group. It is free and open-source software released under the Modified BSD license. [More...](https://en.wikipedia.org/wiki/PyTorch)
 
