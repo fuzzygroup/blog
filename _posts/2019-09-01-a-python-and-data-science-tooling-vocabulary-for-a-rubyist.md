@@ -21,6 +21,7 @@ You should also likely see [Python Glossary](https://www.pythonforbeginners.com/
 *** Anaconda Cloud** - A platform for sharing notebooks and packages.
 
 # B
+* Bert - Bert or Bidirectional Encoder Representation from Transformers is a state of the art (2018) language model for natural language processing (NLP).  Bert is based on a Google paper which shows that a language model which is bidirectionally trained can have a deeper sense of language context and flow than single-direction language models. [More...](https://towardsdatascience.com/bert-explained-state-of-the-art-language-model-for-nlp-f8b21a9b6270)
 * **Bokeh** - Bokeh is an interactive visualization library that targets modern web browsers for presentation.  [More...](https://bokeh.pydata.org/en/latest/index.html)
 
 
@@ -77,7 +78,9 @@ You should also likely see [Python Glossary](https://www.pythonforbeginners.com/
 # Q
 
 # R
-* **Repl** - This is short for Read Evaluate Print Loop and it is the result of what you get when you type python at your command prompt.  A repl gives you a place to type Python code you want executed. Type quit() to exit the Python repl -- the () are required as quit is a method not a statement.  Think irb or "rails c"
+* **Repl** - This is short for Read Evaluate Print Loop and it is the result of what you get when you type python at your command prompt.  A repl gives you a place to type Python code you want executed. Type quit() to exit the Python repl -- the () are required as quit is a method not a statement.  Think irb or "rails c".
+
+* **Roberta** - A robustly optimized method for pretraining natural language processing (NLP) systems that improves on Bidirectional Encoder Representations from Transformers, or BERT, the self-supervised method released by Google in 2018. [More...](https://ai.facebook.com/blog/roberta-an-optimized-method-for-pretraining-self-supervised-nlp-systems/)
 
 # S
 * **Scikit-learn** (formerly scikits.learn) is a free software machine learning library for the Python programming language.   It features various classification, regression and clustering algorithms including support vector machines, random forests, gradient boosting, k-means and DBSCAN, and is designed to interoperate with the Python numerical and scientific libraries NumPy and SciPy.[More...](https://scikit-learn.org/stable/)
