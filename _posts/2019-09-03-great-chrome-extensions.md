@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Great Chrome Extensions - Tab Switcher and 
+title: Great Chrome Extensions - Tab Switcher and The Great Suspender
 category: chrome
 tags: chrome
 ---
