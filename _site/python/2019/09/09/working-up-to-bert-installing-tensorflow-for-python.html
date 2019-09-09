@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Working Up to Bert - Installing TensorFlow for Python</title>
+  <meta name="description" content="I’m gearing myself up mentally for a bunch of upcoming machine learning worth using Bert / Roberta and that means getting my head around just working with Py...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/python/2019/09/09/working-up-to-bert-installing-tensorflow-for-python.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="Working Up to Bert - Installing TensorFlow for Python">
+
+  
+    <meta name="twitter:description"
+      content="I’m gearing myself up mentally for a bunch of upcoming machine learning worth using Bert / Roberta and that means getting my head around just working with Python as a tool.  So today’s exercise is ...">
+  
+
+  
+    <meta name="twitter:image"
+      content="http://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div style="width: 70%; float:left; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed red">
+              <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound: Make applying for tech jobs suck less!</a>
+            </p>
+        </div>
+        <!--
+        <div style="width: 75%; float:left; ">&nbsp;&nbsp;&nbsp;</div>
+        -->
+          <!--
+        <div style="width: 20%; float:right; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+              <a href="http://www.fuzzyblog.io/" class="cta-button-blue">Hire Me!</a>
+            </p>
+        </div>
+            -->
+        <div style="clear: both;"></div>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Working Up to Bert - Installing TensorFlow for Python</h1>
+    <p class="I'll"><time datetime="2019-09-09T00:00:00-04:00" itemprop="datePublished">Sep 9, 2019</time> 
+      </p> 
+  </header>
+  
+
+  <div class="post-content" itemprop="articleBody">
+    <p>I’m gearing myself up mentally for a bunch of upcoming machine learning worth using Bert / Roberta and that means getting my head around just working with Python as a tool.  So today’s exercise is installing TensorFlow for Python since Bert / Roberta have TensorFlow as a dependency.</p>
+
+<p>I worked from the <a href="https://www.tensorflow.org/install/pip">official TensorFlow instructions using pip</a>.</p>
+
+<h2 id="step-1---validating-requirements">Step 1 - Validating Requirements</h2>
+
+<p>Whenever you are on the cutting edge (and TensorFlow is cutting edge) then you generally need the latest tools so:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>python3 --version
+Python 3.7.4
+
+pip3 --version
+pip 19.2.3 from /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/pip (python 3.7)
+
+virtualenv --version
+15.1.0
+</code></pre>
+</div>
+
+<p>All of those are actually recent.  To translate these for myself and the one or two other rubyists out there:</p>
+
+<ul>
+  <li>python3 is the Python language executable; think ruby</li>
+  <li>pip3 is the equivalent of bundler (and your Gemfile is named requirements.txt); but pip is also partial equivalent of the gem executable (as opposed to the gem itself)</li>
+  <li>virtualenv is the equivalent of rvm or rbenv</li>
+</ul>
+
+<p>If you don’t have current versions of those then you might want to check out the <a href="https://www.anaconda.com/distribution/">Anaconda distribution of Python</a> although some of my <a href="https://eethomp.github.io">python friends</a> would curse mightily to hear me say that; I don’t savvy the differences enough yet to know.</p>
+
+<h2 id="create-a-virtual-environment">Create a Virtual Environment</h2>
+
+<p>The next step is to create a virtual environment where you’re planning to work.</p>
+
+<p><strong>Note</strong>: Given the quantity of terminal windows I survive in, the first thing I actually did was to load the nu shell in my terminal so I had a distinct environment to separate Python from my Ruby (“You got python in my Ruby; No you got Ruby in my python”; anyone out there get that old joke).  I also created and changed into a new directory where this will all be installed into since I wasn’t sure exactly where / how the python virtual environment was going to work.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>mkdir ~/fuzzygroup/adl/tensorflow
+cd ~/fuzzygroup/adl/tensorflow
+virtualenv --system-site-packages -p python3 ./venv
+</code></pre>
+</div>
+
+<p>What this shows me is that virtualenv creates a single directory called “venv” in your current directory (presumably holding dependencies):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ls
+------+-----------+----------+-------+-------------+-------------+-------------
+ name | type      | readonly | size  | created     | accessed    | modified
+------+-----------+----------+-------+-------------+-------------+-------------
+ venv | Directory |          | 224 B | an hour ago | an hour ago | an hour ago
+------+-----------+----------+-------+-------------+-------------+-------------
+</code></pre>
+</div>
+
+<p>and here’s a look into venv itself:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>ls venv/
+---+-------------------------+-----------+----------+-------+-------------+-------------+-------------
+ # | name                    | type      | readonly | size  | created     | accessed    | modified
+---+-------------------------+-----------+----------+-------+-------------+-------------+-------------
+ 0 | venv/.Python            | Symlink   |          | 56 B  | an hour ago | an hour ago | an hour ago
+ 1 | venv/bin                | Directory |          | 512 B | an hour ago | an hour ago | an hour ago
+ 2 | venv/include            | Directory |          | 96 B  | an hour ago | an hour ago | an hour ago
+ 3 | venv/lib                | Directory |          | 96 B  | an hour ago | an hour ago | an hour ago
+ 4 | venv/pip-selfcheck.json | File      |          | 61 B  | an hour ago | an hour ago | an hour ago
+---+-------------------------+-----------+----------+-------+-------------+-------------+-------------
+</code></pre>
+</div>
+
+<p><strong>Sidebar</strong>: And isn’t the <a href="https://www.jonathanturner.org/2019/08/introducing-nushell.html">nu shell</a> cool as hell?</p>
+
+<p>Once you have venv setup then you need to activate it:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>source ./venv/bin/activate
+</code></pre>
+</div>
+
+<p>In Ruby this would be done just by changing into the directory thru .ruby-version and .ruby-gemfile.</p>
+
+<p>The next step is to make sure that pip is upgraded:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>pip install --upgrade pip
+</code></pre>
+</div>
+
+<p>In the Ruby world, this is equivalent to upgrading bundler.</p>
+
+<p>Run a:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>pip list
+</code></pre>
+</div>
+
+<p>to see what’s installed.</p>
+
+<p>In the Ruby world this would be ‘gem list’.</p>
+
+<p>Now in the Ruby world where you automagically have your environment setup for you (and taken down) when you change in and out of directories, virtualenv requires you to manually deactivate:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>deactivate
+</code></pre>
+</div>
+
+<p>Given my personal problems with <a href="https://fuzzyblog.io/blog/ruby/2019/07/10/when-rbenv-well-won-t-rbenv-fixing-shell-extension-madness.html">Shell Extension Madness</a>, I’m not certain that being explicit about virtualenv activation / deactivation is all that bad.</p>
+
+<p><strong>Note</strong>: I’m a consultant and a serious ruby hobbyist so I have WAY more environments than is normal; I’m not saying that rbenv / rvm don’t work in general, more specifically, that they don’t always work for <strong>me</strong>.</p>
+
+<p>## Actually Installing TensorFlow</p>
+
+<p>And now, finally, we can actually install TensorFlow:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> pip install --upgrade tensorflow
+</code></pre>
+</div>
+
+<p>This would be the equivalent of a gem install command without a Gemfile.</p>
+
+<p>To verify the installation we can pass a Python script into Python with the -c argument:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>python3 -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
+</code></pre>
+</div>
+
+<p>Interestingly the TensorFlow docs had the above as just “python -c” despite referencing python3 earlier.  I thought perhaps that virtualenv aliased python3 to python but that seems not to be the case; bad on Google Documents; sigh.</p>
+
+<p>Here’s what I got as a result:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>python3 -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
+/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:516: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:517: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:518: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:519: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:520: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:525: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:541: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:542: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:543: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:544: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:545: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:550: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+Tensor("Sum:0", shape=(), dtype=float32)
+</code></pre>
+</div>
+
+<p>This seems to be a bunch of deprecation warnings but the final output seems to be:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Tensor("Sum:0", shape=(), dtype=float32)
+</code></pre>
+</div>
+
+<p>And I guess that’s right… I mean it did some kind of math; I just don’t understand it yet.  And they don’t actually show what should happen.  Again bad on the Google documenters.</p>
+
+<p>So the next step here is to move onto the <a href="https://www.tensorflow.org/tutorials">tutorials</a>…</p>
+
+  </div>
+  
+  <!--
+    http://fuzzyblog.io/blog/tag.html#aws
+    http://localhost:5000/blog/category.html#facebook
+  -->
+  
+  <hr/><br/>
+  <p><strong>Posted In:</strong>
+  
+    <a href="http://fuzzyblog.io/blog/tag.html#python" >
+      #python
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#tensorflow" >
+      #tensorflow
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#pip" >
+      #pip
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#virtualenv" >
+      #virtualenv
+    </a>
+    
+  </p>
+  
+  <!--
+  <hr/><br/>
+  <div style="text-align: center;">
+      <ul class="list-inline tags" >       
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#python" class="link_button">
+         python
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#tensorflow" class="link_button">
+         tensorflow
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#pip" class="link_button">
+         pip
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#virtualenv" class="link_button">
+         virtualenv
+       </a>
+     </li>
+     
+    </ul>
+
+  </div>
+-->  
+
+
+  
+  
+  
+
+</article>
+
+<div class="just-comments" data-apikey="2fb5b93f-dad4-41c0-a9c4-645079ddc541"></div>
+<script async src="https://just-comments.com/w.js"></script>
+
+
+      </div>
+    </div>
+
+    <div class="wrapper">
+  <div style="">
+    <!--
+    <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+      <a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Never be surprised by your kid's Xbox spending again!</a>
+    </p>
+      -->
+      <p style="text-align: center; padding: 10px; border: 2px dashed red">
+        <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound: Make applying for tech jobs suck less!</a>
+      </p>
+      
+  </div>
+</div>
+
+<footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
