@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Working with ZSTD Files</title>
-  <meta name="description" content="I love open source developers but there are times when I question their damn naming practices.  I’m currently working with a giant data repository started as...">
+  <title>Building a Python requirements.txt File</title>
+  <meta name="description" content="So one of my first tasks in my new job is getting a code base into readiness from its state as “works on the original developer’s laptop”.  And, naturally, t...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/linux/2019/09/09/working-with-zst-files.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/python/2019/09/10/building-a-python-requirements-txt-file.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,11 +39,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Working with ZSTD Files">
+  <meta name="twitter:title" content="Building a Python requirements.txt File">
 
   
     <meta name="twitter:description"
-      content="I love open source developers but there are times when I question their damn naming practices.  I’m currently working with a giant data repository started as a “Z Standard” or “zstd” compressed fil...">
+      content="So one of my first tasks in my new job is getting a code base into readiness from its state as “works on the original developer’s laptop”.  And, naturally, this process is hindered by the fact that...">
   
 
   
@@ -149,72 +149,102 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Working with ZSTD Files</h1>
-    <p class="I'll"><time datetime="2019-09-09T00:00:00-04:00" itemprop="datePublished">Sep 9, 2019</time> 
+    <h1 class="post-title" itemprop="name headline">Building a Python requirements.txt File</h1>
+    <p class="I'll"><time datetime="2019-09-10T00:00:00-04:00" itemprop="datePublished">Sep 10, 2019</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I love open source developers but there are times when I question their damn naming practices.  I’m currently working with a giant data repository started as a “Z Standard” or “zstd” compressed file.  And while I know that means “Z Standard”, I can’t help but look at it as “Z std”.  Oy.</p>
+    <p>So one of my first tasks in my new job is getting a code base into readiness from its state as “works on the original developer’s laptop”.  And, naturally, this process is hindered by the fact that it is a Python codebase and I’m a Ruby guy.  Still this is software development 101 – release management – and I do know how to do that.</p>
 
-<p>Anyway.  Zstd is a <a href="https://github.com/facebook/zstd">Facebook standard for data compression</a> and it is strikingly effective.  I’ve got over 100 gigs of JSON encoded data stored in a 13.7 gig file.  Now I am aware that text compresses actually quite well but still 100 gigs in 13.7 gigs of space feels like <strong>wow</strong>.</p>
+<p>A python requirements.txt file is the equivalent of a Ruby Gemfile – an ASCII text file that identifies the libraries to load into an application.</p>
 
-<h2 id="tools">Tools</h2>
+<p>Here’s an example of a Gemfile:</p>
 
-<p>If you’re on a Mac then brew, as always, is your very best friend:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>brew install zstd
+<div class="highlighter-rouge"><pre class="highlight"><code>gem 'rails', '~&gt; 6'
+gem 'puma', '~&gt; 3.11'
+gem 'mysql2', '&gt;= 0.4.4', '&lt; 0.6.0'
+gem 'bootsnap', '&gt;= 1.1.0', require: false    
 </code></pre>
 </div>
 
-<h2 id="useful-command-lines">Useful Command Lines</h2>
+<p>And here’s a Python requirements.txt file:</p>
 
-<p>Assume that pol.zst is the name of the archive and it is located in your current directory.</p>
-
-<p>Examining a handful of records:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>zstd -cd pol.zst | head -n100
+<div class="highlighter-rouge"><pre class="highlight"><code>Pygments==1.4
+SQLAlchemy==0.7.1
+South==0.7.3
+amqplib==0.6.1
+anyjson==0.3
 </code></pre>
 </div>
 
-<p>this dumps a stream of records out that are then fed into head which limits the quantity to 100.</p>
+<p>The syntax is different but they are clearly the same type of thing – a package name and a version number.  The reason that the version number is important is that this locks a package down to a specific version number.  I’ll write later why this is so damn important these days but for now please accept that it is (its a security thing).</p>
 
-<p>The zstd -c and -d options mean:</p>
+<p>So the questions become:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>-c     : force write to standard output, even if it is the console
--d     : decompression
+<ul>
+  <li>How do you know what package names to put there?</li>
+  <li>How do you know what version number to use?</li>
+</ul>
+
+<p>The first one is easy – you look for lines at the start of your Python program that begin like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  import iso8601
+  import ujson as json
+  import zstandard as zstd
+  import numpy as np
+  
+  -or-
+  
+  from fire import Fire
 </code></pre>
 </div>
 
-<p>Integrating the often useful jq (which just gets a single json element out):</p>
+<p>Do I understand the difference between it beginning with “from” and “import”?  Nope.  Nor do I need to at this point.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>zstd -cd pol.zst | jq '.timestamp'
+<p>So my first entry in this requirements.txt file might be:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>zstandard==9999
 </code></pre>
 </div>
 
-<p>And like all good *nix pipelines, this is composable (this example would extract the first 1000 records and then reduce them to only the comment element from the json):</p>
+<p>My guess was that Python would either give me an error message that helped me or let me know what was going on when I gave a crazy version number.  This is done with a command line like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>zstd -cd pol.zst | head -n1000 | jq '.comment'
+<div class="highlighter-rouge"><pre class="highlight"><code>pip install -r requirements.txt
 </code></pre>
 </div>
 
-<p>To count the total records in the zst file:</p>
+<p>Here’s what happened:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>zstd -cd pol.zst | wc -l
+<div class="highlighter-rouge"><pre class="highlight"><code>Collecting zstandard==9999 (from -r requirements.txt (line 17))
+  ERROR: Could not find a version that satisfies the requirement zstandard==9999 
+  (from -r requirements.txt (line 17)) (from versions: 0.0.1, 0.1, 0.2, 0.2.1, 0.2.2,
+     0.3.0, 0.3.1, 0.3.2, 0.3.3, 0.4.0, 0.5.0, 0.5.1, 0.5.2, 0.6.0, 0.7.0, 0.8.0, 
+     0.8.1, 0.8.2, 0.9.0, 0.9.1, 0.10.0, 0.10.1, 0.10.2, 0.11.0, 0.11.1)
+ERROR: No matching distribution found for zstandard==9999 (from -r requirements.txt 
+  (line 17))
 </code></pre>
 </div>
 
-<p>Happily help is also available with:</p>
+<p>And that tells us that 0.11.1 is a valid version number so our requirements line becomes:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>zstd --help
+<div class="highlighter-rouge"><pre class="highlight"><code>zstandard==0.11.1
 </code></pre>
 </div>
 
-<h2 id="thank-yous">Thank You’s</h2>
+<p>The final trick is to build this up one dependency at a time.  That way you resolve everything as you go instead of N conflicts all at once.</p>
 
-<p>Kudos to Facebook for another great bit of Open Source contributed back to the world.  Also thanks to <a href="https://grantrvd.github.io/">Grant Vousden-Dishington</a>, the contributor of these command lines. He’s been doing Zstd for a while; I’m the noob here.</p>
+<p>In closing there are also some standard libraries that follow the same from / import calls but don’t actually need to be in requirements.txt.  Here are some seeming examples:</p>
 
+<div class="highlighter-rouge"><pre class="highlight"><code>import re 
+from sys import stdin
+</code></pre>
+</div>
+
+<p>My best advice here is play around with the 9999 trick and see if a version number appears.  If it does then put it in requirements.txt and if not, well, kill it since then it is likely a Python built in.</p>
+
+<p>And while I suspect there are more subtleties buried deep within Python’s requirements.txt facility, this is a pretty good stopping place.</p>
 
   </div>
   
@@ -226,12 +256,16 @@
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#linux" >
-      #linux
+    <a href="http://fuzzyblog.io/blog/tag.html#python" >
+      #python
     </a>
     
-    <a href="http://fuzzyblog.io/blog/tag.html#zstd" >
-      #zstd
+    <a href="http://fuzzyblog.io/blog/tag.html#requirements" >
+      #requirements
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#pip" >
+      #pip
     </a>
     
   </p>
@@ -242,14 +276,20 @@
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#linux" class="link_button">
-         linux
+       <a href="http://fuzzyblog.io/blog/tag.html#python" class="link_button">
+         python
        </a>
      </li>
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#zstd" class="link_button">
-         zstd
+       <a href="http://fuzzyblog.io/blog/tag.html#requirements" class="link_button">
+         requirements
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#pip" class="link_button">
+         pip
        </a>
      </li>
      

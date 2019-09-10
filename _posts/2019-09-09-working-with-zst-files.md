@@ -37,6 +37,10 @@ And like all good *nix pipelines, this is composable (this example would extract
 
     zstd -cd pol.zst | head -n1000 | jq '.comment'
 
+To count the total records in the zst file:
+
+    zstd -cd pol.zst | wc -l
+
 Happily help is also available with:
 
     zstd --help
