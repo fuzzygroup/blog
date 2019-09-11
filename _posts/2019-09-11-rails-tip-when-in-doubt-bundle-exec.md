@@ -4,6 +4,9 @@ title: Rails Tip - When in Doubt Bundle Exec
 category: rails
 tags: ["rails"]
 ---
+{:.center}
+![charlie_brown_lucy.jpg](/blog/assets/charlie_brown_lucy.jpg)
+
 I recently brought a newbie up into Rails the other day and their experience was that using:
 
     bundle exec command
@@ -54,5 +57,3 @@ And then when bundle exec is used, we get the normal frothy Rails goodness:
           
 There are times when being a software developer feels a striking amount like being Charlie Brown when Lucy keeps taking the ball away.  Oy.
 
-{:.center}
-![charlie_brown_lucy.png](/blog/assets/charlie_brown_lucy.png)
