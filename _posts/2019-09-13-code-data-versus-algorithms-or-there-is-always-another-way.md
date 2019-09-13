@@ -60,3 +60,5 @@ And this gives me:
 ```
 
 **Note**: by using created_at, I need to call this as part of an after_create or after_save since otherwise created_at wouldn't be set.
+
+Oh and as far as finding out when a particular Thanksgiving was, Google proved amply up to the task.  Just google for Thanksgiving 2024 and you'll see what I mean.  Sadly Google stops at 2024 which means my threshold of 5 years is probably about right.
