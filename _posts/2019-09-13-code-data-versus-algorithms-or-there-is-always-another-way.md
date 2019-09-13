@@ -8,7 +8,7 @@ I'm currently writing an active side project.  I describe active as something th
 
 A simple Ruby solution is to construct a date range - Nov 1 and Nov 30 and then walk up, counting the Thursdays when you go.  And I'm certain there are better / more elegant ways but I'm not a whizbang date math kinda engineer.  But this is a method which gets called for every single metric that the system captures (for just a few months of data, there are over 700 metrics for my usage alone).  So I don't want that much iteration.  I looked at the [Holidays gem](https://github.com/holidays/holidays) and considered it but I only, for now, need simple holidays.  
 
-And then it struck me -- this is a side project, damn it.  The odds on any side project surviving for more than a year are low (although [Job Hound](https://www.jobhound.io) has now beaten the odds at about 1.5 years old).  And Data is (generally) faster than code no matter how you cut it -- so why not just hard code 5 years of Thanksgivings into the app.
+And then it struck me -- this is a side project, damn it.  The odds on any side project surviving for more than a year are low (although [Job Hound](https://www.jobhound.io) has now beaten the odds at about 1.5 years old).  And Data is (generally) faster than code no matter how you cut it -- so why not just hard code 5 years of Thanksgivings into the app.  I don't need a generalized solution that works for all time.  I just need a solution that is good enough to find out if there's a market for my side project.
 
 ```ruby
 class DateCommon
