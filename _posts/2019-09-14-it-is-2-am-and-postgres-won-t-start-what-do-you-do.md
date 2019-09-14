@@ -4,6 +4,8 @@ title: It Is 2 AM and Postgres Won't Start - What Do You Do?
 category: postgres
 tags: ["postgres", "brew"]
 ---
+{:.center}
+![IMG_8820.jpeg](/blog/assets/IMG_8820.jpeg)
 So I find myself awake, once again, in the wee hours and I went to work on my second side project; yeah, I know, I know.  So I started by writing a Rails migration and then when I went to execute it, I got:
 
     bundle exec rake db:migrate
