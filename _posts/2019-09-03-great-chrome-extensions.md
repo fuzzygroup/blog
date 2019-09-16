@@ -2,7 +2,7 @@
 layout: post
 title: Great Chrome Extensions - Tab Switcher and The Great Suspender
 category: chrome
-tags: chrome
+tags: ["chrome", "chrome_extension"]
 ---
 A buddy just turned me onto [Tab Switcher](https://chrome.google.com/webstore/detail/tab-switcher/gcilookdakgpccpbcjgnpaecofklimck?hl=en), a tool that gives the ability to SEARCH THE TITLES OF YOUR TABS !!!!  How the hell doesn't this exist in Chrome already?  
 
