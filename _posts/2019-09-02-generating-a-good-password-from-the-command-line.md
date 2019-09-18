@@ -4,6 +4,8 @@ title: Generating a Good Password from the Command Line
 category: linux
 tags: ["linux", "password", "security"]
 ---
+Note: There is a more secure technique here that is more poorly written up.
+
 I saw my pairing partner do this about six months ago and the elegance of it just struck me.  Here's the command line:
 
     date +%s | sha256sum | base64 | head -c 8 ; echo
