@@ -6,6 +6,9 @@ tags: ["rails", "ruby"]
 ---
 {:.center}
 ![IMG_8940.jpeg](/blog/assets/IMG_8940.jpeg)
+{:.center}
+Daddy - Can I haz a byebug?
+
 The Ruby gem byebug is the Ruby debugger and this is normally installed into your Gemfile in this way:
 
     group :development, :test do
