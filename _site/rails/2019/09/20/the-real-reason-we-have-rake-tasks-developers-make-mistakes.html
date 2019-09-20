@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>The Real Reason We Have Rake Tasks - Developers Make Mistakes</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2019/09/20/the-real-reason-we-have-rake-tasks-developers-make-mistakes.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="The Real Reason We Have Rake Tasks - Developers Make Mistakes">
+
+  
+    <meta name="twitter:description"
+      content="
+
+If you are a rails developer, you are likely aware of Rake tasks.  Rake tasks provide a very easy way to write a command line task that ties into your overall system.  And command line tools are ...">
+  
+
+  
+    <meta name="twitter:image"
+      content="http://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div style="width: 70%; float:left; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed red">
+              <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound: Make applying for tech jobs suck less!</a>
+            </p>
+        </div>
+        <!--
+        <div style="width: 75%; float:left; ">&nbsp;&nbsp;&nbsp;</div>
+        -->
+          <!--
+        <div style="width: 20%; float:right; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+              <a href="http://www.fuzzyblog.io/" class="cta-button-blue">Hire Me!</a>
+            </p>
+        </div>
+            -->
+        <div style="clear: both;"></div>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">The Real Reason We Have Rake Tasks - Developers Make Mistakes</h1>
+    <p class="I'll"><time datetime="2019-09-20T00:00:00-04:00" itemprop="datePublished">Sep 20, 2019</time> 
+      </p> 
+  </header>
+  
+
+  <div class="post-content" itemprop="articleBody">
+    <p class="center"><img src="/blog/assets/IMG_8992.jpeg" alt="IMG_8992.jpeg" /></p>
+
+<p>If you are a rails developer, you are likely aware of Rake tasks.  Rake tasks provide a very easy way to write a command line task that ties into your overall system.  And command line tools are really, really useful of course but I often think that Rake tasks were invented mainly as a way for developers to easily clean up errors they make.</p>
+
+<p>Here’s an example:</p>
+
+<ol>
+  <li>I’m working on a system where I’ve heavily built in gamification in the form of earned badges in response to user metrics.</li>
+  <li>I recently added the ability to import your RSS feed as a way of tracking word counts (one of the metrics is the words you write).</li>
+  <li>Yesterday I triggered an RSS import for the first time and I discovered that, in one day, I earned 521 badges.</li>
+  <li>Gulp.</li>
+</ol>
+
+<p>Clearly something has gone awry – majorly awry.  And the way that I tackle issues like this is, well, <strong>a rake task</strong>.</p>
+
+<p>My rake tasks are named two ways:</p>
+
+<ul>
+  <li>functionally for what they do “spider_app_store”</li>
+  <li>tied to the data object that needs cleanup i.e. “user_badge”</li>
+</ul>
+
+<p>I have three tables in question:</p>
+
+<ul>
+  <li>badges</li>
+  <li>user_badges</li>
+  <li>metrics</li>
+</ul>
+
+<p>There is a callback on metrics that calls add_user_badges and it is an after_create callback.  This routine takes the individual metric and passes it into the badge routine which has a rule which is dynamically evaluated.  And then the output of that rule, if it succeeds, is the creation of a user_badge.</p>
+
+<p>Let’s start by looking at the metric in question:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>select id, created_at, date_created_at, name, metric_type_id, user_id, habit_id, habit_type_id, int_val, url from metrics where id=1516\G
+*************************** 1. row ***************************
+             id: 1516
+     created_at: 2009-12-14 00:00:00
+date_created_at: 2009-12-14
+           name: word_count
+ metric_type_id: 1
+        user_id: 1
+       habit_id: 41
+  habit_type_id: 11
+        int_val: 107
+            url: https://fuzzyblog.io/recipes/main_course/2009/12/14/bacon-salisbury-steak.html                
+</code></pre>
+</div>
+
+<p>Somehow this event, way back in 2009, triggered a badge creation on 9/19:</p>
+
+<p class="center"><img src="/blog/assets/user_badge.png" alt="user_badge.png" /></p>
+
+<p>So now we need to look at the data driving that badge to figure this out:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>select * from user_badges where id=550\G
+*************************** 1. row ***************************
+             id: 550
+     created_at: 2019-09-19 19:49:21.346148
+     updated_at: 2019-09-19 19:49:21.346148
+date_created_at: NULL
+        user_id: 1
+       badge_id: 3
+       habit_id: 41
+        plan_id: 1
+      metric_id: 1516
+ custom_message: NULL
+         active: 1
+</code></pre>
+</div>
+
+<p>What this shows us is that we have a disparity between the created_at date on the user_badge object and the metric.  So the fix is actually pretty damn simple.  Here’s the creation code:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>    <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="ss">badge_id: </span><span class="n">badge</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> 
+      <span class="ss">metric_id: </span><span class="n">metric</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+      <span class="ss">user_id: </span><span class="n">metric</span><span class="p">.</span><span class="nf">user_id</span><span class="p">,</span>
+      <span class="ss">habit_id: </span><span class="n">metric</span><span class="p">.</span><span class="nf">habit_id</span><span class="p">,</span>
+      <span class="ss">plan_id: </span><span class="n">metric</span><span class="p">.</span><span class="nf">habit</span><span class="p">.</span><span class="nf">plan_id</span><span class="p">,</span>
+      <span class="ss">active: </span><span class="kp">true</span>
+    <span class="p">}</span>
+    <span class="n">user_badge</span> <span class="o">=</span> <span class="no">UserBadge</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>and what it needs is this:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>    <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="ss">badge_id: </span><span class="n">badge</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> 
+      <span class="ss">metric_id: </span><span class="n">metric</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
+      <span class="ss">user_id: </span><span class="n">metric</span><span class="p">.</span><span class="nf">user_id</span><span class="p">,</span>
+      <span class="ss">habit_id: </span><span class="n">metric</span><span class="p">.</span><span class="nf">habit_id</span><span class="p">,</span>
+      <span class="ss">plan_id: </span><span class="n">metric</span><span class="p">.</span><span class="nf">habit</span><span class="p">.</span><span class="nf">plan_id</span><span class="p">,</span>
+      <span class="ss">created_at: </span><span class="n">metric</span><span class="p">.</span><span class="nf">created_at</span><span class="p">,</span>
+      <span class="ss">date_created_at: </span><span class="n">metric</span><span class="p">.</span><span class="nf">date_created_at</span><span class="p">,</span>
+      <span class="ss">active: </span><span class="kp">true</span>
+    <span class="p">}</span>
+    <span class="n">user_badge</span> <span class="o">=</span> <span class="no">UserBadge</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p><strong>Note</strong>: Are there better, cleaner ways to accomplish that?  I’m sure but that isn’t the issue at this stage in an MVP.  At this stage we’re going for clarity even if it isn’t entirely DRY.</p>
+
+<p>But this blog post was actually about rake tasks and here’s where we come back to that.  I have two options facing me:</p>
+
+<ul>
+  <li>Delete the data and reload</li>
+  <li>Fix the data</li>
+</ul>
+
+<p>I personally really enjoy writing rake tasks and one of the reasons is that I’ve always found that errors that occur once tend to occur multiple times.  And even i the exact error doesn’t occur again, similar errors often do and then your one off rake task becomes something you can quickly and easily compose into an alternate fix routine.</p>
+
+<p><strong>Note</strong>: This is why I tend to name my rake tasks for the data object they operate on; it makes finding them trivial.</p>
+
+<p>Here’s the rake task to fix this bit of personal idiocy:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">namespace</span> <span class="ss">:user_badge</span> <span class="k">do</span>
+  <span class="c1"># bundle exec rake user_badge:fix_idiocy --trace</span>
+  <span class="n">task</span> <span class="ss">:fix_idiocy</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span> 
+    <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">username: </span><span class="s1">'fuzzygroup'</span><span class="p">).</span><span class="nf">first</span>
+    <span class="n">user</span><span class="p">.</span><span class="nf">user_badges</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">user_badge</span><span class="o">|</span>
+      <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="ss">created_at: </span><span class="n">user_badge</span><span class="p">.</span><span class="nf">metric</span><span class="p">.</span><span class="nf">created_at</span><span class="p">,</span>
+        <span class="ss">date_created_at: </span><span class="n">user_badge</span><span class="p">.</span><span class="nf">metric</span><span class="p">.</span><span class="nf">date_created_at</span>
+      <span class="p">}</span>
+      <span class="n">user_badge</span><span class="p">.</span><span class="nf">update_attributes</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+<p>You’ll notice that I have a bundle exec execution line there as a comment.  Well, there’s a reason for that.  I’ve been doing Rails with large scale live systems now since 2007 and I’ve seen the amazing quantity of data specific errors that can happen when you’re in a:</p>
+
+<ul>
+  <li>poorly funded</li>
+  <li>fast paced</li>
+  <li>get the job done</li>
+</ul>
+
+<p>type startup.  Errors like these (getting the date wrong) tend to slip into even production systems and when a founder / CEO notices them in the wee hours of the night and you happen to be the on goal idiot, well, it is much easier to copy and paste in a commented out bundle exec execution line than it is to figure it out on the fly.  This is even more true when the rake task takes some number of command line arguments.</p>
+
+<p>So I ran this and it seemed to work but the real proof is whether or not the result makes sense.  Here’s the look and feel before and after (focus on the left most date column):</p>
+
+<p class="center"><img src="/blog/assets/user_badges_before.png" alt="user_badges_before.png" /><br />Before</p>
+
+<p class="center"><img src="/blog/assets/user_badges_after.png" alt="user_badges_after.png" /><br />After</p>
+
+<p>And there you have it – the real reason that rake tasks exist – developers make mistakes and rake tasks make fixing those mistakes really, really easy.</p>
+
+
+  </div>
+  
+  <!--
+    http://fuzzyblog.io/blog/tag.html#aws
+    http://localhost:5000/blog/category.html#facebook
+  -->
+  
+  <hr/><br/>
+  <p><strong>Posted In:</strong>
+  
+    <a href="http://fuzzyblog.io/blog/tag.html#rails" >
+      #rails
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#rake" >
+      #rake
+    </a>
+    
+  </p>
+  
+  <!--
+  <hr/><br/>
+  <div style="text-align: center;">
+      <ul class="list-inline tags" >       
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#rails" class="link_button">
+         rails
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#rake" class="link_button">
+         rake
+       </a>
+     </li>
+     
+    </ul>
+
+  </div>
+-->  
+
+
+  
+  
+  
+
+</article>
+
+<div class="just-comments" data-apikey="2fb5b93f-dad4-41c0-a9c4-645079ddc541"></div>
+<script async src="https://just-comments.com/w.js"></script>
+
+
+      </div>
+    </div>
+
+    <div class="wrapper">
+  <div style="">
+    <!--
+    <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+      <a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Never be surprised by your kid's Xbox spending again!</a>
+    </p>
+      -->
+      <p style="text-align: center; padding: 10px; border: 2px dashed red">
+        <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound: Make applying for tech jobs suck less!</a>
+      </p>
+      
+  </div>
+</div>
+
+<footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
