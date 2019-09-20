@@ -4,6 +4,10 @@ title: So You Have to Make a Meta Schema
 category: software_engineering
 tags: ["software_engineering", "schema"]
 ---
+{:.center}
+![IMG_8992.jpeg](/blog/assets/IMG_8992.jpeg)
+
+
 I find myself, once again, needing to make a "meta schema".  This is a database schema by which you map data from N external sources into a single repository.  The challenge here is that you need to:
 
 * define a set of tables into which incoming objects can be decomposed

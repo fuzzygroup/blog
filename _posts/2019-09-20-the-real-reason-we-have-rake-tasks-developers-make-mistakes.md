@@ -19,6 +19,8 @@ Here's an example:
 
 Clearly something has gone awry -- majorly awry.  And the way that I tackle issues like this is, well, **a rake task**.
 
+**Sidebar**: If you're a newbie Rails person, rake tasks live in the directory lib/tasks and they have a syntax like that shown below (they begin with namespace and then there are a series of task lines; if the task references environment then the entire Rails environment is available to the rake task otherwise it is just plain old Ruby and none of the Rails niceties).
+
 My rake tasks are named two ways: 
 
 * functionally for what they do "spider_app_store"
@@ -135,13 +137,19 @@ You'll notice that I have a bundle exec execution line there as a comment.  Well
 
 type startup.  Errors like these (getting the date wrong) tend to slip into even production systems and when a founder / CEO notices them in the wee hours of the night and you happen to be the on goal idiot, well, it is much easier to copy and paste in a commented out bundle exec execution line than it is to figure it out on the fly.  This is even more true when the rake task takes some number of command line arguments.
 
-So I ran this and it seemed to work but the real proof is whether or not the result makes sense.  Here's the look and feel before and after (focus on the left most date column):
+So I ran this and it seemed to work but the real proof is whether or not the result makes sense.  Here's the look and feel before and after (focus on the left most date column).
 
-{:.center}
-![user_badges_before.png](/blog/assets/user_badges_before.png)<br/>Before
 
+## Before
 {:.center}
-![user_badges_after.png](/blog/assets/user_badges_after.png)<br/>After
+![user_badges_before.png](/blog/assets/user_badges_before.png)
+
+
+## After
+{:.center}
+![user_badges_after.png](/blog/assets/user_badges_after.png)
+
+## Conclusion
 
 And there you have it -- the real reason that rake tasks exist -- developers make mistakes and rake tasks make fixing those mistakes really, really easy.
 

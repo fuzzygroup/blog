@@ -173,6 +173,8 @@ If you are a rails developer, you are likely aware of Rake tasks.  Rake tasks pr
 
 <p>Clearly something has gone awry – majorly awry.  And the way that I tackle issues like this is, well, <strong>a rake task</strong>.</p>
 
+<p><strong>Sidebar</strong>: If you’re a newbie Rails person, rake tasks live in the directory lib/tasks and they have a syntax like that shown below (they begin with namespace and then there are a series of task lines; if the task references environment then the entire Rails environment is available to the rake task otherwise it is just plain old Ruby and none of the Rails niceties).</p>
+
 <p>My rake tasks are named two ways:</p>
 
 <ul>
@@ -300,11 +302,15 @@ date_created_at: NULL
 
 <p>type startup.  Errors like these (getting the date wrong) tend to slip into even production systems and when a founder / CEO notices them in the wee hours of the night and you happen to be the on goal idiot, well, it is much easier to copy and paste in a commented out bundle exec execution line than it is to figure it out on the fly.  This is even more true when the rake task takes some number of command line arguments.</p>
 
-<p>So I ran this and it seemed to work but the real proof is whether or not the result makes sense.  Here’s the look and feel before and after (focus on the left most date column):</p>
+<p>So I ran this and it seemed to work but the real proof is whether or not the result makes sense.  Here’s the look and feel before and after (focus on the left most date column).</p>
 
-<p class="center"><img src="/blog/assets/user_badges_before.png" alt="user_badges_before.png" /><br />Before</p>
+<h2 class="center" id="before">Before</h2>
+<p><img src="/blog/assets/user_badges_before.png" alt="user_badges_before.png" /></p>
 
-<p class="center"><img src="/blog/assets/user_badges_after.png" alt="user_badges_after.png" /><br />After</p>
+<h2 class="center" id="after">After</h2>
+<p><img src="/blog/assets/user_badges_after.png" alt="user_badges_after.png" /></p>
+
+<h2 id="conclusion">Conclusion</h2>
 
 <p>And there you have it – the real reason that rake tasks exist – developers make mistakes and rake tasks make fixing those mistakes really, really easy.</p>
 
