@@ -5,7 +5,7 @@ category: rails
 tags: ["rails", "rake"]
 ---
 {:.center}
-![IMG_8992.jpeg](/blog/assets/IMG_8992.jpeg)
+![IMG_8762.jpeg](/blog/assets/IMG_8762.jpeg)
 
 
 If you are a rails developer, you are likely aware of Rake tasks.  Rake tasks provide a very easy way to write a command line task that ties into your overall system.  And command line tools are really, really useful of course but I often think that Rake tasks were invented mainly as a way for developers to easily clean up errors they make.
@@ -137,7 +137,7 @@ You'll notice that I have a bundle exec execution line there as a comment.  Well
 
 type startup.  Errors like these (getting the date wrong) tend to slip into even production systems and when a founder / CEO notices them in the wee hours of the night and you happen to be the on goal idiot, well, it is much easier to copy and paste in a commented out bundle exec execution line than it is to figure it out on the fly.  This is even more true when the rake task takes some number of command line arguments.
 
-So I ran this and it seemed to work but the real proof is whether or not the result makes sense.  Here's the look and feel before and after (focus on the left most date column).
+So I ran this and it seemed to work but the real proof is whether or not the result makes sense.  Here's the look and feel before and after (focus on the habit column; you'll see that it goes from a succession of recipes to a more varied set of habits).
 
 
 ## Before
