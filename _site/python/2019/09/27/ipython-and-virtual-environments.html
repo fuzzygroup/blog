@@ -177,41 +177,40 @@ IPython inside the virtualenv.
   <li>iPython is likely coming in from the system layer so I’m probably getting a Python 2.x instead of a Python 3.x.</li>
 </ol>
 
-<p>A bunch of googles left me scratching my head until I found this <a href="https://stackoverflow.com/questions/20327621/calling-ipython-from-a-virtualenv">Stack Overflow page</a> with about a half dozen approaches.  Hmmmph - this calls <a href="https://wiki.python.org/moin/TOOWTDI">TOOWTDI</a> very much into question, imho.</p>
+<p>A bunch of googles left me scratching my head until I found this <a href="https://stackoverflow.com/questions/20327621/calling-ipython-from-a-virtualenv">Stack Overflow page</a> with about a half dozen approaches.  Hmmmph - this calls <a href="https://wiki.python.org/moin/TOOWTDI">TOOWTDI</a> very much into question, imho.  And then that seemed to work and I wrote the first draft of this blog post.  And then it near immediately stopped working.  <em>grumble</em>.</p>
+
+<p>A spate of more googling occurred and I found this <a href="https://coderwall.com/p/xdox9a/running-ipython-cleanly-inside-a-virtualenv">alias approach</a> – which seemed to work nicely.</p>
 
 <p>Here turned out to be the approach for fixing it:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># activate your virtual environment
-source venv/bin/activate
-mkdir ~/.ipython/profile_default/startups
-vi ~/.ipython/profile_default/startups/00-virtualenv.py
+<div class="highlighter-rouge"><pre class="highlight"><code># edit your .bashrc or .zshrc (I use zsh)
+vi ~/.zshrc
+
+# add this alias statement
+alias ipy="python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"
+
+# make the alias active by sourcing it
+source ~/.zshrc
 </code></pre>
 </div>
 
-<p>Add this code to the file:</p>
+<p>You now need to use the ipy alias whenever you want iPython:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-
-<span class="k">if</span> <span class="s">'VIRTUAL_ENV'</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
-    <span class="n">py_version</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="c"># formatted as X.Y</span>
-    <span class="n">py_infix</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">'lib'</span><span class="p">,</span> <span class="p">(</span><span class="s">'python</span><span class="si">%</span><span class="s">d.</span><span class="si">%</span><span class="s">d'</span> <span class="o">%</span> <span class="n">py_version</span><span class="p">))</span>
-    <span class="n">virtual_site</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'VIRTUAL_ENV'</span><span class="p">),</span> <span class="n">py_infix</span><span class="p">,</span> <span class="s">'site-packages'</span><span class="p">)</span>
-    <span class="n">dist_site</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">'/usr'</span><span class="p">,</span> <span class="n">py_infix</span><span class="p">,</span> <span class="s">'dist-packages'</span><span class="p">)</span>
-
-    <span class="c"># OPTIONAL: exclude debian-based system distributions sites</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">dist_site</span><span class="p">),</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-
-    <span class="c"># add virtualenv site</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">virtual_site</span><span class="p">)</span>
+<div class="highlighter-rouge"><pre class="highlight"><code>cat jsons/reddit.json| ipy template_expert.py
 </code></pre>
 </div>
 
-<p>I’m still not entirely sure why I need iPython but the cool kids seem to use it so …</p>
+<p>While, I’m still not entirely sure why I need iPython but the cool kids seem to use it and the color coding and back traces are much better:</p>
 
-<p><strong>Note 1</strong>: The ipy .zshrc / .bashrc approach did not work for me.  But that’s not terribly surprising.</p>
+<p class="center"><img src="/blog/assets/without_ipython.png" alt="without_ipython.png" /></p>
 
-<p><strong>Note 2</strong>: I’m intrigued by the idea of <a href="https://github.com/asdf-vm/asdf">ASDF</a> possibly fixing shell extension madness by at least making this uniform across languages.  Anyone tried this yet?  I need a single solution for at least Python and Ruby (and preferably Elixir / Rust).</p>
+<p>Note: This is without iPython.</p>
+
+<p class="center"><img src="/blog/assets/with_ipython.png" alt="with_ipython.png" /></p>
+
+<p>Note: This is with iPython.</p>
+
+<p><strong>Note</strong>: I’m intrigued by the idea of <a href="https://github.com/asdf-vm/asdf">ASDF</a> possibly fixing shell extension madness by at least making this uniform across languages.  Anyone tried this yet?  I need a single solution for at least Python and Ruby (and preferably Elixir / Rust).</p>
 
   </div>
   

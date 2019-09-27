@@ -20,36 +20,37 @@ This starts with at least one problem -- what the hell is iPython.  Apparently i
 1.  I'm in the virtual environment from VENV.
 2.  iPython is likely coming in from the system layer so I'm probably getting a Python 2.x instead of a Python 3.x.
 
-A bunch of googles left me scratching my head until I found this [Stack Overflow page](https://stackoverflow.com/questions/20327621/calling-ipython-from-a-virtualenv) with about a half dozen approaches.  Hmmmph - this calls [TOOWTDI](https://wiki.python.org/moin/TOOWTDI) very much into question, imho.
+A bunch of googles left me scratching my head until I found this [Stack Overflow page](https://stackoverflow.com/questions/20327621/calling-ipython-from-a-virtualenv) with about a half dozen approaches.  Hmmmph - this calls [TOOWTDI](https://wiki.python.org/moin/TOOWTDI) very much into question, imho.  And then that seemed to work and I wrote the first draft of this blog post.  And then it near immediately stopped working.  *grumble*.
+
+A spate of more googling occurred and I found this [alias approach](https://coderwall.com/p/xdox9a/running-ipython-cleanly-inside-a-virtualenv) -- which seemed to work nicely.
 
 Here turned out to be the approach for fixing it:
 
-    # activate your virtual environment
-    source venv/bin/activate
-    mkdir ~/.ipython/profile_default/startups
-    vi ~/.ipython/profile_default/startups/00-virtualenv.py
+    # edit your .bashrc or .zshrc (I use zsh)
+    vi ~/.zshrc
     
-Add this code to the file:
+    # add this alias statement
+    alias ipy="python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"
+    
+    # make the alias active by sourcing it
+    source ~/.zshrc
+    
 
-```python
-import os
-import sys
+You now need to use the ipy alias whenever you want iPython:
 
-if 'VIRTUAL_ENV' in os.environ:
-    py_version = sys.version_info[:2] # formatted as X.Y
-    py_infix = os.path.join('lib', ('python%d.%d' % py_version))
-    virtual_site = os.path.join(os.environ.get('VIRTUAL_ENV'), py_infix, 'site-packages')
-    dist_site = os.path.join('/usr', py_infix, 'dist-packages')
+    cat jsons/reddit.json| ipy template_expert.py
 
-    # OPTIONAL: exclude debian-based system distributions sites
-    sys.path = filter(lambda p: not p.startswith(dist_site), sys.path)
+While, I'm still not entirely sure why I need iPython but the cool kids seem to use it and the color coding and back traces are much better:
 
-    # add virtualenv site
-    sys.path.insert(0, virtual_site)
-```
+{:.center}
+![without_ipython.png](/blog/assets/without_ipython.png)
 
-I'm still not entirely sure why I need iPython but the cool kids seem to use it so ...
+Note: This is without iPython.
 
-**Note 1**: The ipy .zshrc / .bashrc approach did not work for me.  But that's not terribly surprising.
 
-**Note 2**: I'm intrigued by the idea of [ASDF](https://github.com/asdf-vm/asdf) possibly fixing shell extension madness by at least making this uniform across languages.  Anyone tried this yet?  I need a single solution for at least Python and Ruby (and preferably Elixir / Rust).
+{:.center}
+![with_ipython.png](/blog/assets/with_ipython.png)
+
+Note: This is with iPython.
+
+**Note**: I'm intrigued by the idea of [ASDF](https://github.com/asdf-vm/asdf) possibly fixing shell extension madness by at least making this uniform across languages.  Anyone tried this yet?  I need a single solution for at least Python and Ruby (and preferably Elixir / Rust).
