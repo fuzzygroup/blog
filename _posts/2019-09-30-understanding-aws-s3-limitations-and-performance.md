@@ -4,6 +4,9 @@ title: Understanding AWS S3 Limitations and Performance
 category: aws
 tags: ["aws", "s3"]
 ---
+{:.center}
+![IMG_6579.jpeg](/blog/assets/IMG_6579.jpeg)
+
 I'm in the process of planning out a large scale system and one of the things I find myself worrying is obvious but still complex -- **storage**.  This is a data processing system where literally tens of millions of "objects" will be flowing thru the system and one of the design criteria is the need to take any "object" and re-process it from start to finish.  And, as this data is transitory in nature, this means that we need to be able to store the original inputs in the system on an ongoing basis.
 
 **Note**: By "object" I mean something as simple as a comment or as complex as a social media post or a web page.
