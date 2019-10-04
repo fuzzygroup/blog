@@ -39,7 +39,7 @@ And, not surprisingly, cursing followed.  Sadly my normal approach of:
 1.  Go outside.
 2.  Start fire.
 2.  Take off clothes.
-3.  Dance a pagan chant, naked in the firelight, while praising the patron saint Guido
+3.  Dance naked in the firelight while chanting and praising the patron saint of Python "The Great Guido".
 
 did not work.  In the absence of this working, I turned, disappointingly, to Google.  I discovered that there appeared to be a spacy-langdetect module so I added that to requirements.txt and did the pip dance:
 
