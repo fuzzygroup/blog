@@ -4,7 +4,7 @@ title: Get it Right Spacy, Get it Right
 category: python
 tags: ["python", "nlp", "spacy"]
 ---
-**Note**: I'm wirting this at 4:53 am and I'm tired hence the humor.  No disrespect intended towards any of my pagan friends; I love you all; this is tongue in cheek.
+**Note**: I'm writing this at 4:53 am and I'm tired hence the humor.  No disrespect intended towards any of my pagan friends; I love you all; this is tongue in cheek.
 
 I fully admit to being a damn python noob but I can follow directions. I was attempting to use the [Spacy](https://spacy.io/) library to detect the language of a string of text.  I started from the [example here](https://spacy.io/universe/project/spacy-langdetect) as replicated below:
 
