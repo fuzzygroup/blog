@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>How a Software Engineer Cuts Video Down to Size</title>
-  <meta name="description" content="">
+  <title>OSX argument list too long; Sigh</title>
+  <meta name="description" content="The longer you do computing, the more you find that the same out issues come up.  I’m currently working on a machine with 16 gigs of RAM and a terabyte of SS...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/video/2019/09/23/how-a-software-engineer-cuts-video-down-to-size.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/bash/2019/10/02/osx-argument-list-too-long-sigh.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,15 +39,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="How a Software Engineer Cuts Video Down to Size">
+  <meta name="twitter:title" content="OSX argument list too long; Sigh">
 
   
     <meta name="twitter:description"
-      content="
-
-Note: Editing videos makes me feel this old …
-
-I can do a lot of things with a computer – a lot.  But one skill that has been eluding me since the mid 1990s is that of editing video.  I don’t kno...">
+      content="The longer you do computing, the more you find that the same out issues come up.  I’m currently working on a machine with 16 gigs of RAM and a terabyte of SSD storage but when I list files in a dir...">
   
 
   
@@ -153,30 +149,32 @@ I can do a lot of things with a computer – a lot.  But one skill that has been
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">How a Software Engineer Cuts Video Down to Size</h1>
-    <p class="I'll"><time datetime="2019-09-23T00:00:00-04:00" itemprop="datePublished">Sep 23, 2019</time> 
+    <h1 class="post-title" itemprop="name headline">OSX argument list too long; Sigh</h1>
+    <p class="I'll"><time datetime="2019-10-02T00:00:00-04:00" itemprop="datePublished">Oct 2, 2019</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_7373.jpeg" alt="IMG_7373.jpeg" /></p>
+    <p>The longer you do computing, the more you find that the same out issues come up.  I’m currently working on a machine with 16 gigs of RAM and a terabyte of SSD storage but when I list files in a directory, I still get “argument list too long”.  The problem here is that I have a series of directories that collectively have 552 gigs of data in them (a crawler I wrote either worked successfully or ran amok; your opinion may vary).</p>
 
-<p><strong>Note</strong>: Editing videos makes me feel this old …</p>
+<p>I woke up this morning and realized that I couldn’t move over to my machine the zst archive I needed since it was 15 gigs in size and I had only 24 gigs total (too close to my threshold for my taste).</p>
 
-<p>I can do a lot of things with a computer – a lot.  But one skill that has been eluding me since the mid 1990s is that of editing video.  I don’t know what it is about non linear editing (NLE) but I just can’t master it.  I recently had to help the <a href="https://www.starbaseindy.org">StarbaseIndy folks</a> with some video editing and they asked me to trip a video clip from seconds 8 to 15 and I said “Sure!” and then began sweating.</p>
+<p>I ended up coming up with this command line snippet to address this:</p>
 
-<p>I started with ScreenFlow figuring that of course ScreenFlow can import an MP4 file – NOPE!.  Sigh.  I continued onto QuickTime which has a really easy to use Trim feature but while I was able to trim from the left of the video, trimming from the right seemed, well, sketchy.</p>
-
-<p>I finally thought to google for “Command Line Video Cutter” and found an excellent <a href="https://askubuntu.com/questions/59383/extract-part-of-a-video-with-a-one-line-command">Stack* forum</a>.</p>
-
-<p>Here is what ended up being the command:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>ffmpeg -ss 00:00:08 -i VID_20190717_214004.mp4 -t 00:00:07 -vcodec copy -acodec copy starbase_indy_cmd_line.mp4
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>find . -maxdepth 1 -name <span class="s1">'*.html'</span> -delete
 </code></pre>
 </div>
 
-<p>Basically you tell it the starting point and then the duration.  And you’ll get a great clip of someone saying something in Klingon about Starbase Indy!</p>
+<p>I had to change into each directory where these files existed and run it one by one.</p>
+
+<p>If I wanted to make this recursive then I could have started in the parent directory tree with this:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>find . -name <span class="s1">'*.html'</span> -exec rm -f <span class="o">{}</span> <span class="se">\;</span>
+</code></pre>
+</div>
+
+<p>but that felt riskier…  Here’s a relevant <a href="https://stackoverflow.com/questions/11289551/argument-list-too-long-error-for-rm-cp-mv-commands">Stack Overflow</a> on this.</p>
 
   </div>
   
@@ -188,12 +186,12 @@ I can do a lot of things with a computer – a lot.  But one skill that has been
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#video" >
-      #video
+    <a href="http://fuzzyblog.io/blog/tag.html#osx" >
+      #osx
     </a>
     
-    <a href="http://fuzzyblog.io/blog/tag.html#starbase_indy" >
-      #starbase_indy
+    <a href="http://fuzzyblog.io/blog/tag.html#bash" >
+      #bash
     </a>
     
   </p>
@@ -204,14 +202,14 @@ I can do a lot of things with a computer – a lot.  But one skill that has been
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#video" class="link_button">
-         video
+       <a href="http://fuzzyblog.io/blog/tag.html#osx" class="link_button">
+         osx
        </a>
      </li>
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#starbase_indy" class="link_button">
-         starbase_indy
+       <a href="http://fuzzyblog.io/blog/tag.html#bash" class="link_button">
+         bash
        </a>
      </li>
      

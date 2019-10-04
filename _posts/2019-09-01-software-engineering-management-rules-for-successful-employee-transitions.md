@@ -18,7 +18,7 @@ No matter how much you don't want them to, the simple fact is that employees lea
 
 As a manager, when someone tells you they are about to leave, if they have been a good employee then your natural reaction is to try and save it, to convince them to stay.  Don't, Just **don't**.  What 30 plus years of hiring technical people has shown me is that the decision to leave an organization is **terribly hard** for technical professionals.  A big part of the reason for this is that if the technical person is any good, they tend to bond to their code base -- even if it is a bad code base.  We don't make this decision lightly and once it is made, well, it tends to be done.  Of all the people I've tried to save, I think I succeeded once -- and they left within the next six months anyway.
 
-Here is a good [Harvard Business Review article on Considering Your Boss's Counteroffer](https://hbr.org/2019/01/if-youre-about-to-take-a-new-job-should-you-consider-your-bosss-counteroffer) that talks about whether or not to try and convince people to stay.  Thanks to reader [Lisa Meece of StarBase Indy](https://www.starbaseindy.org/) fame for the contribution.
+Here is a good [Harvard Business Review article on Considering Your Boss's Counteroffer](https://hbr.org/2019/01/if-youre-about-to-take-a-new-job-should-you-consider-your-bosss-counteroffer) that talks about whether or not to try and convince people to stay.  Thanks to reader [Lisa Meece of Starbase Indy](https://www.starbaseindy.org/) fame for the contribution.
 
 # Consulting
 

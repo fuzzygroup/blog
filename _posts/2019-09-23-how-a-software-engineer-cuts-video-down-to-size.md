@@ -9,7 +9,7 @@ tags: ["video", "starbase_indy"]
 
 **Note**: Editing videos makes me feel this old ...
 
-I can do a lot of things with a computer -- a lot.  But one skill that has been eluding me since the mid 1990s is that of editing video.  I don't know what it is about non linear editing (NLE) but I just can't master it.  I recently had to help the [StarBaseIndy folks](https://www.starbaseindy.org) with some video editing and they asked me to trip a video clip from seconds 8 to 15 and I said "Sure!" and then began sweating. 
+I can do a lot of things with a computer -- a lot.  But one skill that has been eluding me since the mid 1990s is that of editing video.  I don't know what it is about non linear editing (NLE) but I just can't master it.  I recently had to help the [StarbaseIndy folks](https://www.starbaseindy.org) with some video editing and they asked me to trip a video clip from seconds 8 to 15 and I said "Sure!" and then began sweating. 
 
 I started with ScreenFlow figuring that of course ScreenFlow can import an MP4 file -- NOPE!.  Sigh.  I continued onto QuickTime which has a really easy to use Trim feature but while I was able to trim from the left of the video, trimming from the right seemed, well, sketchy.
 
