@@ -80,3 +80,4 @@ So even though I would argue strongly that if you are a Rubyist, Elixir is the l
 
 * If you are doing data science work then you want to use Python.  I've been immersing myself in data science stuff and the Python ecosystem for data science is truly splendid.
 * If you are doing machine learning work then you want to use Python.  Again the Python ecosystem for machine learning is truly splendid.
+
