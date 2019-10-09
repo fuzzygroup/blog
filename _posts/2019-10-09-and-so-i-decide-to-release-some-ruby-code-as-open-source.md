@@ -14,3 +14,5 @@ One approach would be to try and figure out what they are worth and bill the cli
 So the easiest approach here is to simply open source them, likely MIT license, and then put them on Github.  That way I can just pull them down and incorporate them into whatever I choose to use them on.  It is likely a crappy decision economically but a good decision overall.
 
 And, so, [sync.rake is open sourced](https://github.com/fuzzygroup/sync-dot-rake) (turns out I did this way, way back in April 2017 but I think I forgot to blog it).  **Chuckle**.
+
+
