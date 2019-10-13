@@ -66,3 +66,9 @@ From a rubyist's perspective here, the surprising things are
 * the amount of casting that is going on
 * the fact that set() is what converted an array to a set instead of calling .to_set on the array (admittedly after you did a require 'set')
 * needing to print the result in Python instead of Ruby's default return
+
+## References
+
+* [Ruby Sets](https://ruby-doc.org/stdlib-2.6.5/libdoc/set/rdoc/Set.html)
+* [Stack Overflow on Python List Subtraction](https://stackoverflow.com/questions/3462143/get-difference-between-two-lists)
+* [Stack Overflow Again on List Subtraction](https://stackoverflow.com/questions/534855/subtracting-2-lists-in-python) (less helpful; more confusing)
