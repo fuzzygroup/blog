@@ -64,4 +64,6 @@ I've always known about [TOOWTDI being sort of the python philosophy](https://wi
 {:.center}
 ![aquaman.jpg](/blog/assets/aquaman.jpg)
 
-The Python community is very big on the term [Pythonic](https://stackoverflow.com/questions/25011078/what-does-pythonic-mean) as a way to indicate that you are doing it the right, the **pythonic** way.  My 18 year old son has been watching me learn Python (and picking up a few tips along the way) and he made the observation that the Python community saying Pythonic is like Aquaman in Batman the Brave and the Bold saying [Outrageous](https://www.youtube.com/watch?v=tc_C1JRclDY)! (very end of the linked clip).
+The Python community is very big on the term [Pythonic](https://stackoverflow.com/questions/25011078/what-does-pythonic-mean) as a way to indicate that you are doing it the right, the **pythonic** way.  My 18 year old son has been watching me learn Python (and picking up a few tips along the way) and he made the observation that the Python community saying Pythonic is like Aquaman in Batman the Brave and the Bold saying [Outrageous]()! (very end of the linked clip).
+
+[![Outrageous](https://img.youtube.com/vi/tc_C1JRclDY/0.jpg)](https://www.youtube.com/watch?v=tc_C1JRclDY "Outrageous!")
