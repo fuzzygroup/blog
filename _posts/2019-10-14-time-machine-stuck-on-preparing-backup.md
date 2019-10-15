@@ -8,7 +8,7 @@ tags: ["osx", "time_machine"]
 ![IMG_9474.peg](/blog/assets/IMG_9474.jpeg)
 
 {:.center}
-Disapproving cat finds Time Machine annoying
+**Disapproving cat finds Time Machine annoying**
 
 Embarrassingly for a computer professional, I spent much of the past 12 months with a personal laptop that wasn't backed up.  And I don't mean "I backed it up infrequently", I mean there was no backup -- period.  I use OSX and Time Machine would simply churn on "Preparing Backup" for days on end -- one time I even let it run for a full weekend -- to no avail.
 
