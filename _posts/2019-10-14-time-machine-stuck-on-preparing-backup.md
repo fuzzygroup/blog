@@ -5,7 +5,7 @@ category: osx
 tags: ["osx", "time_machine"]
 ---
 {:.center}
-![IMG_9474.jpg](/blog/assets/IMG_9474.jpg)
+![IMG_9474.peg](/blog/assets/IMG_9474.jpeg)
 
 {:.center}Disapproving cat finds Time Machine annoying
 
