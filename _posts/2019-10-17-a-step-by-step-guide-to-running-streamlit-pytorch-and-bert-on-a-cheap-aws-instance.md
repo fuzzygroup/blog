@@ -25,10 +25,12 @@ This isn't written with the exact step by step process but more "if you are mode
 5. Install python with: **sudo apt install python3**
 6. Install pip with: **sudo apt install python3-pip**
 7. Install your python dependencies with: **pip3 install -r requirements.txt**
-8.  Run Streamlit in the background with the & operator after your python script or:  
-
-    streamlit run dashboard.py &
+8.  Run Streamlit in the background with the & operator after your python script or:  **streamlit run dashboard.py &**
 
 This allows Streamlit to detach and run even after you log out.  After Streamlit starts up, it will give you the url that you can give out to let people test it.
 
-Note: I haven't yet put all of this into an Ansible playbook for installing Streamlit but I'm not far from doing that because this whole process, well, SUCKED!  *chuckle*
+If you find the & trick doesn't work then instead start the process with nohup: **nohup streamlit run dashboard.py**
+
+**Note 1**: I haven't yet put all of this into an Ansible playbook for installing Streamlit but I'm not far from doing that because this whole process, well, SUCKED!  *chuckle*
+
+**Note 2**: More details on [running background processes](https://www.tecmint.com/keep-remote-ssh-sessions-running-after-disconnection/).

@@ -185,16 +185,16 @@ Streamlit is an ideal tool for taking machine learning prototypes and building q
   <li>Install python with: <strong>sudo apt install python3</strong></li>
   <li>Install pip with: <strong>sudo apt install python3-pip</strong></li>
   <li>Install your python dependencies with: <strong>pip3 install -r requirements.txt</strong></li>
-  <li>
-    <p>Run Streamlit in the background with the &amp; operator after your python script or:</p>
-
-    <p>streamlit run dashboard.py &amp;</p>
-  </li>
+  <li>Run Streamlit in the background with the &amp; operator after your python script or:  <strong>streamlit run dashboard.py &amp;</strong></li>
 </ol>
 
 <p>This allows Streamlit to detach and run even after you log out.  After Streamlit starts up, it will give you the url that you can give out to let people test it.</p>
 
-<p>Note: I haven’t yet put all of this into an Ansible playbook for installing Streamlit but I’m not far from doing that because this whole process, well, SUCKED!  <em>chuckle</em></p>
+<p>If you find the &amp; trick doesn’t work then instead start the process with nohup: <strong>nohup streamlit run dashboard.py</strong></p>
+
+<p><strong>Note 1</strong>: I haven’t yet put all of this into an Ansible playbook for installing Streamlit but I’m not far from doing that because this whole process, well, SUCKED!  <em>chuckle</em></p>
+
+<p><strong>Note 2</strong>: More details on <a href="https://www.tecmint.com/keep-remote-ssh-sessions-running-after-disconnection/">running background processes</a>.</p>
 
   </div>
   
