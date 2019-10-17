@@ -4,7 +4,10 @@ title: Git Large File Support Silently Skips Over Checkouts When Git LFS Isn't I
 category: git
 tags: ["git", "python", "pytorch", "streamlit"]
 ---
-This error bit me and a coworker **hard** yesterday and I haven't seen it well documented anywhere so I wanted to make this very, very clear.  When you have large files checked into git and you are using git-lfs (git large file support), if you don't have the git large file support extensions installed on the machine where you do the checkout, you get what appears to be a correct checkout but the large files end up being, well, not missing but simply placeholders.  
+{:.center}
+![IMG_9503.jpeg](/blog/assets/IMG_9503.jpeg)
+
+This error bit me and a coworker **hard** yesterday and I haven't seen it well documented anywhere so I wanted to make this very, very clear.  When you have large files checked into git and you are using git-lfs (git large file support), if you don't have the git large file support extensions installed on the machine where you do the checkout, you get what appears to be a correct checkout but the large files end up being, well, not missing but simply placeholders. 
 
 In our case we had a machine learning model using Bert and PyTorch and the model file, in models/bertASmodel.pt appeared to check out correctly but here was what we actually got:
 

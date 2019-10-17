@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Git Large File Support Silently Skips Over Checkouts When Git LFS Isn&#39;t Installed</title>
-  <meta name="description" content="This error bit me and a coworker hard yesterday and I haven’t seen it well documented anywhere so I wanted to make this very, very clear.  When you have larg...">
+  <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/git/2019/10/17/git-large-file-support-silently-fails.html">
@@ -43,7 +43,9 @@
 
   
     <meta name="twitter:description"
-      content="This error bit me and a coworker hard yesterday and I haven’t seen it well documented anywhere so I wanted to make this very, very clear.  When you have large files checked into git and you are usi...">
+      content="
+
+This error bit me and a coworker hard yesterday and I haven’t seen it well documented anywhere so I wanted to make this very, very clear.  When you have large files checked into git and you are u...">
   
 
   
@@ -156,7 +158,9 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>This error bit me and a coworker <strong>hard</strong> yesterday and I haven’t seen it well documented anywhere so I wanted to make this very, very clear.  When you have large files checked into git and you are using git-lfs (git large file support), if you don’t have the git large file support extensions installed on the machine where you do the checkout, you get what appears to be a correct checkout but the large files end up being, well, not missing but simply placeholders.</p>
+    <p class="center"><img src="/blog/assets/IMG_9503.jpeg" alt="IMG_9503.jpeg" /></p>
+
+<p>This error bit me and a coworker <strong>hard</strong> yesterday and I haven’t seen it well documented anywhere so I wanted to make this very, very clear.  When you have large files checked into git and you are using git-lfs (git large file support), if you don’t have the git large file support extensions installed on the machine where you do the checkout, you get what appears to be a correct checkout but the large files end up being, well, not missing but simply placeholders.</p>
 
 <p>In our case we had a machine learning model using Bert and PyTorch and the model file, in models/bertASmodel.pt appeared to check out correctly but here was what we actually got:</p>
 

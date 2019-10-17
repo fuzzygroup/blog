@@ -4,6 +4,9 @@ title: A Step by Step Guide to Running Streamlit, PyTorch and Bert on a Cheap AW
 category: python
 tags: ["python", "streamlit", "pytorch", "aws"]
 ---
+{:.center}
+![IMG_9507.jpeg](/blog/assets/IMG_9507.jpeg)
+
 [Streamlit](https://streamlit.io/) is an ideal tool for taking machine learning prototypes and building quick and dirty web front ends to them.  Yesterday in about a half hour, I:
 
 * Created an aws instance
