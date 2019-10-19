@@ -56,7 +56,7 @@ Not a one of the different markdown gems or techniques worked:
 * [https://github.com/ytbryan/emd](https://github.com/ytbryan/emd)
 * [https://bloggie.io/@kinopyo/rails-render-markdown-views-and-partials](https://bloggie.io/@kinopyo/rails-render-markdown-views-and-partials)
 * [https://stackoverflow.com/questions/4163560/how-can-i-automatically-render-partials-using-markdown-in-rails-3/10131299#10131299](https://stackoverflow.com/questions/4163560/how-can-i-automatically-render-partials-using-markdown-in-rails-3/10131299#10131299)
-* 
+* [https://stackoverflow.com/questions/56715152/using-erb-in-markdown-with-redcarpet](https://stackoverflow.com/questions/56715152/using-erb-in-markdown-with-redcarpet)
 
 Rails 6 changed the render template call from 1 parameter to two parameter and I suspect that's at the heart of this.
 
