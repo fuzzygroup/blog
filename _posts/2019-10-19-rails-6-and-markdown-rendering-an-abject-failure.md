@@ -4,6 +4,9 @@ title: Rails 6 and Markdown Rendering - An Abject Personal Failure
 category: rails
 tags: ["rails"]
 ---
+{:.center}
+![IMG_9517.jpeg](/blog/assets/IMG_9517.jpeg)
+
 **Note**: I am not bitching here about the quality of Rails, High Voltage or any of the Markdown gems.  This is all open source software and I am delighted to have the abundance of free tools available to me.  And, trust me, I know that when people bitch, they should put on their big boy pants and contribute a pull request back to fix things.  And, if I had been capable of fixing this, I would have.  Alas I failed at fixing this.
 
 Since I am a software engineer, I am experienced at failure.  One of the absolutely soul diminishing aspects of being a software engineer that none of us talk about is that we **fail**.  We fail **a lot**.  Last night, for example, I spent about four hours in engaged in a soul crushing battle to get the High Voltage gem to work with Rails 6.
