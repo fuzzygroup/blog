@@ -66,3 +66,7 @@ View configuration details with:
 ## Importing Your Development Data
 
 See this [blog post](https://fuzzyblog.io/blog/heroku/2019/10/16/importing-your-local-mysql-database-into-heroku.html) if you want to import your development data.
+
+## References
+
+This is a [good article](https://devcenter.heroku.com/articles/getting-started-with-rails5) on Heroku.

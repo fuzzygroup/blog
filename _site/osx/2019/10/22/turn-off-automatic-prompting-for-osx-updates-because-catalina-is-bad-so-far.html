@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Getting Used to Heroku and Rails</title>
-  <meta name="description" content="">
+  <title>Turn Off Automatic Prompting for OSX Updates Because Catalina is Bad So Far</title>
+  <meta name="description" content="Between Riccardo Mori’s piece on Catalina and Michael Tsai’s excellent writings, I flat out don’t want to update to Catalina.  But I’m also tired of Apple pr...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2019/10/22/getting-used-to-heroku.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/osx/2019/10/22/turn-off-automatic-prompting-for-osx-updates-because-catalina-is-bad-so-far.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,13 +39,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Getting Used to Heroku and Rails">
+  <meta name="twitter:title" content="Turn Off Automatic Prompting for OSX Updates Because Catalina is Bad So Far">
 
   
     <meta name="twitter:description"
-      content="
-
-I remember using Heroku in its very infancy when it was mostly a web based user interface for authoring Rails apps.  I looked at it, thought “why would you want to author code in a browser; that’...">
+      content="Between Riccardo Mori’s piece on Catalina and Michael Tsai’s excellent writings, I flat out don’t want to update to Catalina.  But I’m also tired of Apple prompting (harassing) me to update.   Here...">
   
 
   
@@ -151,96 +149,26 @@ I remember using Heroku in its very infancy when it was mostly a web based user 
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Getting Used to Heroku and Rails</h1>
+    <h1 class="post-title" itemprop="name headline">Turn Off Automatic Prompting for OSX Updates Because Catalina is Bad So Far</h1>
     <p class="I'll"><time datetime="2019-10-22T00:00:00-04:00" itemprop="datePublished">Oct 22, 2019</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_9604.jpeg" alt="IMG_9604.jpeg" /></p>
+    <p>Between <a href="http://morrick.me/archives/8599">Riccardo Mori’s</a> piece on Catalina and <a href="https://mjtsai.com/blog/2019/10/15/catalina-system-issues/">Michael Tsai’s excellent writings</a>, I flat out don’t want to update to Catalina.  But I’m also tired of Apple prompting (harassing) me to update.   Here’s how to stop it</p>
 
-<p>I remember using <a href="https://www.heroku.com">Heroku</a> in its very infancy when it was mostly a web based user interface for authoring Rails apps.  I looked at it, thought “why would you want to author code in a browser; that’s dumb af” and promptly moved on.  Now, more than a decade later, I find myself using Heroku daily for my latest side project – and absolutely loving it.  This blog post lays out some tips and tricks that I’ve learned.</p>
+<ol>
+  <li>Apple menu.</li>
+  <li>System Preferences</li>
+  <li>Software Update</li>
+  <li>Advanced</li>
+  <li>Turn off Check for Updates</li>
+</ol>
 
-<p>All of this assumes you have a Rails application and it is configured to use Heroku.  If you don’t have the heroku executable then you can use brew on OSX to install it:</p>
+<p>This is the first time I’ve ever turned these options off.  Normally I just say no to it until it is time to do an update; this time I don’t have any clue when that might be.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>brew tap heroku/brew &amp;&amp; brew install heroku
-</code></pre>
-</div>
-
-<h2 id="getting-help">Getting Help</h2>
-
-<p>Just use the –help flag to the heroku command.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>heroku --help
-</code></pre>
-</div>
-
-<h2 id="running-the-rails-console">Running the Rails Console</h2>
-
-<p>To load up a Rails console for your project, change into the product directory and:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>heroku run rails console
-</code></pre>
-</div>
-
-<h2 id="accessing-your-sql-database">Accessing Your SQL Database</h2>
-
-<p>Just use the host parameter of your sql database’s client software and connect to it directly.  Here’s an example from mine (details changed):</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code> mysql -uUSERNAME -pPASSWORD DB_NAME --host=HOSTNAME
-</code></pre>
-</div>
-
-<p>Get the details of what to connect to with:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>heroku config | grep CLEARDB_DATABASE_URL
-</code></pre>
-</div>
-
-<h2 id="running-migrations">Running Migrations</h2>
-
-<p>Migrations should run automatically on deployment.  Apparently, however, that is not always true and they can be run manually with:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>heroku run rake --trace db:migrate
-</code></pre>
-</div>
-
-<p>Thank you to the very first user of my new side project for finding this.  Hat Tip.</p>
-
-<h2 id="tailing-your-logs">Tailing Your Logs</h2>
-
-<p>Heroku only gives you access to the last 1500 lines of your logs:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>heroku logs
-</code></pre>
-</div>
-
-<p>For access to more logging into then I strongly, strongly, strongly recommend <a href="https://fuzzyblog.io/blog/rails/2019/10/21/honeybadger-even-more-awesome-than-ever.html">HoneyBadger</a>.</p>
-
-<h2 id="listing-all-time-zones-or-running-any-damn-rake-task">Listing All Time Zones (or Running Any Damn Rake Task)</h2>
-
-<p>You can see your time zones or run any rake task with:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>heroku rake time:zones:all
-</code></pre>
-</div>
-
-<h2 id="to-view-your-configuration">To View Your Configuration</h2>
-
-<p>View configuration details with:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code> heroku config
-</code></pre>
-</div>
-
-<h2 id="importing-your-development-data">Importing Your Development Data</h2>
-
-<p>See this <a href="https://fuzzyblog.io/blog/heroku/2019/10/16/importing-your-local-mysql-database-into-heroku.html">blog post</a> if you want to import your development data.</p>
-
-<h2 id="references">References</h2>
-
-<p>This is a <a href="https://devcenter.heroku.com/articles/getting-started-with-rails5">good article</a> on Heroku.</p>
+<p>Note: Apple has changed this from 2017.  If you aren’t running Mojave then <a href="https://gadgets.ndtv.com/laptops/features/how-to-enable-or-disable-automatic-updates-on-mac-1681435">this</a> may help you.</p>
 
   </div>
   
@@ -252,12 +180,8 @@ I remember using Heroku in its very infancy when it was mostly a web based user 
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#rails" >
-      #rails
-    </a>
-    
-    <a href="http://fuzzyblog.io/blog/tag.html#heroku" >
-      #heroku
+    <a href="http://fuzzyblog.io/blog/tag.html#osx" >
+      #osx
     </a>
     
   </p>
@@ -268,14 +192,8 @@ I remember using Heroku in its very infancy when it was mostly a web based user 
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#rails" class="link_button">
-         rails
-       </a>
-     </li>
-     
-     <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#heroku" class="link_button">
-         heroku
+       <a href="http://fuzzyblog.io/blog/tag.html#osx" class="link_button">
+         osx
        </a>
      </li>
      
