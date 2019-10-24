@@ -213,4 +213,15 @@ jobs:
 
 ```
 
+**Note**: A lot of this is cribbed from [this article on Ember](https://www.freecodecamp.org/news/first-steps-into-continuous-integration-with-circle-ci-emberjs-and-github-1e273ea62f0c/).  
+
+1. The next step is to go into the [Github Marketplace](https://github.com/marketplace/circleci) and add a Free CircleCI plan to your Github account.  
+2. Go into CircleCI and [authenticate with your Github credentials](https://circleci.com/vcs-authorize/).
+3. Go to the Add Project section where you will see a list of all your GitHub repositories.
+4. Click Setup Project on your repo.
+5. Select Linux as the operating system and Ruby as the language (or whatever).
+6. Click Start Building and watch it fly along.
+
 **Note**: This blog post is currently incomplete; I'm still finishing the CI / CD portion but I had to deploy it immediately to share with a coworker.
+
+

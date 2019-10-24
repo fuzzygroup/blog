@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Tiny Rails Tip - Don't Let byebug into Production
+title: Tiny Rails Tip - Don't Let byebug into Production using Git Hooks and precommit
 category: rails
-tags: ["rails", "ruby"]
+tags: ["rails", "ruby", "git"]
 ---
 {:.center}
 ![IMG_8940.jpeg](/blog/assets/IMG_8940.jpeg)
