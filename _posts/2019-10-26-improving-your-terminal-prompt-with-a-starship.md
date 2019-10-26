@@ -59,7 +59,7 @@ Now if you're not a hard core developer nerd, and even then one that spends a lo
 Starship.  Wow.  Just plain wow.  This one thing has done more to convince me to look into Rust than all the damn tutorials / blog posts I've ever seen.  Fricking outstanding.
 
 {:center}
-[sbi_logo.jpg](/blog/assets/sbi_logo.jpg)
+![sbi_logo.jpg](/blog/assets/sbi_logo.jpg)
 
 And since we're talking about Starships, if you are in the Midwest / Indiana area, I'd like to point out that **Starbase Indy is coming up soon**.  I'm actually Head of Engineering for this fan run convention and I hope to see any local readers there.  Head over to [StarbaseIndy.org](https://www.starbaseindy.org/) to buy your ticket today.  Starbase Indy happens over Thanksgiving weekend and it is the best way in Indiana to run away from difficult relatives!  
 
