@@ -45,12 +45,21 @@ I haven't delved too deeply into customization but the fact that I can use emoji
 {:.center}
 ![prompt_starship_configuration.png](/blog/assets/prompt_starship_configuration.png)
 
-Note: I tried the customization quickly and it worked flawlessly.  My git prompt now shrugs at me with indifference when I add new files to a project.  w00t!!!
+Now if you're not a hard core developer nerd, and even then one that spends a lot of time in a terminal, the picture above likely looks like line noise.  Here's just some of what you learn from it:
+
+* current directory
+* git branch name
+* that the git branch isn't pushed yet
+* git status
+* ruby version
+* aws region
+
+**Note**: I tried the customization quickly and it worked flawlessly.  My git prompt now shrugs at me with indifference when I add new files to a project.  w00t!!!  I love me some snarky software...
 
 Starship.  Wow.  Just plain wow.  This one thing has done more to convince me to look into Rust than all the damn tutorials / blog posts I've ever seen.  Fricking outstanding.
 
 {:center}
-["starbase indy"](/blog/assets/sbi_logo.jpg)
+[sbi_logo.jpg](/blog/assets/sbi_logo.jpg)
 
 And since we're talking about Starships, if you are in the Midwest / Indiana area, I'd like to point out that **Starbase Indy is coming up soon**.  I'm actually Head of Engineering for this fan run convention and I hope to see any local readers there.  Head over to [StarbaseIndy.org](https://www.starbaseindy.org/) to buy your ticket today.  Starbase Indy happens over Thanksgiving weekend and it is the best way in Indiana to run away from difficult relatives!  
 
