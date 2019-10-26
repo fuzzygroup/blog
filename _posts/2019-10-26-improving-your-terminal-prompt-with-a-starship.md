@@ -56,6 +56,14 @@ Now if you're not a hard core developer nerd, and even then one that spends a lo
 
 **Note**: I tried the customization quickly and it worked flawlessly.  My git prompt now shrugs at me with indifference when I add new files to a project.  w00t!!!  I love me some snarky software...
 
+Here are two more pictures showing my prompt when I move to a different terminal window to work in Python (it shows the difference between Python 2 and 3 which is incredibly helpful):
+
+{:.center}
+![prompt_starship_python_2.png](/blog/assets/prompt_starship_python_2.png)
+
+{:.center}
+![prompt_starship_python_3.png](/blog/assets/prompt_starship_python_3.png)
+
 Starship.  Wow.  Just plain wow.  This one thing has done more to convince me to look into Rust than all the damn tutorials / blog posts I've ever seen.  Fricking outstanding.
 
 {:.center}
