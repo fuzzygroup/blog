@@ -14,11 +14,11 @@ I am a member of an 8 person team that is:
 
 * part of a non profit
 * distributed all over the country
-* trying to get started and find our footing
+* trying to get started on a new initiative and find our footing; we are about 1 year old (I've only been here for 2 months)
 * just had our first offsite
 * juggling way too much work hence the need to prioritize
 
-At the offsite I witnessed a fascinating exercises in setting priorities that my boss, Dave Sifry, orchestrated.  I haven't seen prioritization done quite this way in the past so I wanted to write down how to was done.  I also made one important contribution during the process 
+At the offsite I witnessed a fascinating exercises in setting priorities that my boss, Dave Sifry, orchestrated.  I haven't seen prioritization done quite this way in the past so I wanted to write down how this was done.  I also made one important contribution during the process 
 
 ## Step 1 - Terms
 
