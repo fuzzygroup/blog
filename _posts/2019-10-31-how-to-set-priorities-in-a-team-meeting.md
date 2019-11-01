@@ -2,7 +2,7 @@
 layout: post
 title: Running a P1, P2, P3 Team Prioritization Meeting
 category: management
-tags: ["management", "startup", "offsite", "team"]
+tags: ["management", "startup", "offsite", "team", "meetings"]
 ---
 {:.center}
 ![IMG_9749.jpeg](/blog/assets/IMG_9749.jpeg)

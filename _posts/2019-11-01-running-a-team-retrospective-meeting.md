@@ -74,4 +74,4 @@ The final step in all this is to a group discussion.  This too should be time bo
 
 ## Conclusion
 
-I've now done this twice with Dave Sifry and both times it turned the normal process of a retrospective from something painful, lengthy and annoying into a less than hour meeting with a detailed, useful takeaway -- the spreadsheet.  Any process that makes meetings better, imho, is awesome. 
+I've now done this twice with Dave Sifry and both times it turned the normal process of a retrospective from something painful, lengthy and annoying into a less than hour meeting with a detailed, useful takeaway -- the spreadsheet.  While in previous career incarnations, I have been dubbed "The Antiprocess", any process that makes meetings better, imho, is beyond awesome.   Thank you Dave!
