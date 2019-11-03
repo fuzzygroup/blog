@@ -29,7 +29,7 @@ From a Rails perspective, what this means, is that we need a data model, persist
 Let's look at the issue in question:
 
 {:.center} 
-![learning_rails_from_commits_01_issue.png](/blog/assets/learning_rails_from_commit_01_issue.png)
+![learning_rails_from_commits_01_issue.png](/blog/assets/learning_rails_from_commits_01_issue.png)
 
 There are a few notes on the issue here:
 
