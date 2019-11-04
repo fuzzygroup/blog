@@ -27,10 +27,19 @@ There are also roughly a dozen volunteer resources that are supposed to show up 
 
 ## Dates that Have to Be Met
 
-When you ship software, dates are rarely "hard".  Software can almost always slip into the future 
+When you ship software, dates are rarely "hard".  Software can almost always slip into the future but when you have an event, well, the dates are **absolute** and have to be met.
+
+
 * **Dates**
 
-The final output of all this is something really, really simple -- a single printed 
+## Tasks
+
+## Dollars
+
+
+## Publishing This
+
+The final output of all this is something really, really simple -- a single printed calendar of the month leading up to the event.  I find that this isn't a computer printed thing
 
 
 https://www.macobserver.com/tmo/article/printing_blank_calendars_from_ical
