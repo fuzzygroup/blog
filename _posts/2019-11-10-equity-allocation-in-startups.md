@@ -49,9 +49,12 @@ The equity allocation for that CEO, bear in mind that this was 16 years ago so m
 
 If you contrast these numbers with the 1/3 equity split mentioned above, it is considerably less and the reason was that an awful lot of the risk had already been addressed (functional technology, working product, site with traffic, no capital investment, etc).
 
-## Disclaimer
+## Disclaimers
 
-I should note that equity allocation is a particularly sensitive topic for me because, even though I was the founder, I was forced out by the people I hired and then voted off the board.  And while I am over it (somewhat), had the equity allocations been handled differently, that might not have happened.
+There are two important disclaimers to understand here:
+
+1.  I am not a lawyer (IANAL) and my focus is always on making great technology NOT on the best personal economic return.  This means that there are aspects of capital raising and equity allocation that I don't now and likely never will fully understand.
+2.  I should also note that equity allocation is a particularly sensitive topic for me because, even though I was the founder, I was forced out by the people I hired and then voted off the board.  And while I am over it (somewhat), had the equity allocations been handled differently, that might not have happened.
 
 ## What Should This Founder Do?
 
@@ -72,5 +75,5 @@ Lest you think that I'm pulling this information out of thin air, I did try and 
 
 None of the numbers are exactly the same as the Feedster situation but that's normal.  Every startup is different.  As the founder of this company, they need to examine the risk that this VP of Engineering candidate is taking and assess whether or not a 1/3 stake is actually warranted (example - is the VP of Engineering writing the prototype that is used to raise capital).
 
-And you can always run a google search for Startup Equity Allocation.
+And you can always run a [google search for Startup Equity Allocation](https://www.google.com/search?q=startup+equity+allocation&oq=startup+equity+allocation&aqs=chrome..69i57j69i60.6023j0j4&sourceid=chrome&ie=UTF-8).
 
