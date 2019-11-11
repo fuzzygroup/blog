@@ -482,6 +482,81 @@ Something bad happened. Cannot deploy cts-home-page at captain-01.
 
 <p>I am really, really impressed with CapRover and I intend to return to it.  While I didn’t get everything working, what did work was <strong>impressive</strong> and the fact that Rails doesn’t deploy is mostly a documentation issue, not a failing, at all, of CapRover.  The issues I had with AWS are also documentation issues.</p>
 
+<h2 id="take-2">Take 2</h2>
+
+<p>I wrote the above a few hours ago, caught some sleep and then woke up and in the process of closing tabs about CapRover, I found out that you can use a standard Dockerfile by changing your captain-definition to:</p>
+
+<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"schemaVersion"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"dockerfilePath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./Dockerfile"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>and then here’s a valid albeit simple Rails Dockerfile to run on an Ubuntu instance:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>#FROM ruby:2.6.5-ubuntu
+FROM ubuntu:latest
+FROM ruby:2.6.5-stretch
+
+#RUN apk update &amp;&amp; apk add build-base nodejs mariadb-dev tzdata git libxml2-dev
+
+RUN apt-get update
+RUN apt-get install -y tzdata
+RUN apt-get install -y git
+RUN apt-get install -y ruby
+RUN apt-get install -y build-essential patch ruby-dev zlib1g-dev liblzma-dev
+RUN apt-get install -y nodejs
+
+RUN mkdir /app
+WORKDIR /app
+
+COPY Gemfile Gemfile.lock ./
+RUN bundle install --binstubs
+
+COPY . .
+
+# The ENV variables simply need to be set for Rails to correctly pre-compile
+# your assets. They do not need to be populated by real values.
+RUN bundle exec rake RAILS_ENV=production DATABASE_URL=mysql2://user:pass@127.0.0.1/dbname SECRET_TOKEN=dummytoken assets:precompile
+
+CMD puma -C config/puma.rb
+</code></pre>
+</div>
+
+<p>Now, let’s run thru the deployment process once again, in full:</p>
+
+<ol>
+  <li>Add the captain-definition file.</li>
+  <li>Add the Dockerfile</li>
+  <li>Do a git add .</li>
+  <li>Do a git commit -m “updated captain stuff”</li>
+  <li>Everything has to be added and committed (but not pushed) since CapRover reads from the local git repo.  If its not added and committed, CapRover won’t see it (and they warn you about this but I don’t feel the warning is strenuous enough).</li>
+  <li>If this is a new app for you then goto your equivalent url to http://captain.caprover.com and define a new app.</li>
+  <li>On the first time Do a caprover deploy and use the up and down arrows to select the machine and the app.</li>
+  <li>Watch the Docker stuff build.</li>
+  <li>Try to goto the final url and it is likely going to fail with a 502 gateway error.  In this case it is because your Rails app is running in development mode and thus puma is defaulting to 3000.  You can adjust this with the Container HTTP Port setting on your equivalent url to:  https://captain.cartazzi.com/#/apps/details/cts-home-page2</li>
+  <li>Try going again to the domain and it should come up.</li>
+  <li>The next time you deploy you should be use: <strong>caprover deploy –default</strong> and have it simply remember all the deployment settings.</li>
+</ol>
+
+<h2 id="references">References</h2>
+
+<p>Here are some good links for CapRover:</p>
+
+<ul>
+  <li><a href="https://caprover.com/">CapRover Home Page</a></li>
+  <li><a href="https://caprover.com/docs/get-started.html">Getting Started Page</a></li>
+  <li><a href="https://github.com/caprover/caprover/blob/master/captain-sample-apps/">CapRover Example Apps</a></li>
+  <li><a href="https://caprover.com/docs/troubleshooting.html">CapRover Troubleshooting</a></li>
+  <li><a href="https://caprover.com/docs/app-scaling-and-cluster.html#more-than-one-registry">Scaling with CapRover</a></li>
+  <li><a href="https://medium.com/@kindlysendme/i-found-this-tool-that-helps-you-migrate-your-apps-from-heroku-to-digitalocean-in-10min-and-save-ca097a6e0d72">Medium Overview</a></li>
+  <li><a href="https://caprover.com/docs/captain-definition-file.html">Captain Definition File</a></li>
+  <li><a href="https://github.com/caprover/caprover-cli/issues/8">Github Issue About Rails App</a></li>
+  <li><a href="https://github.com/caprover/caprover/issues/324">Another Github Issue About Rails App</a></li>
+  <li><a href="https://app.slack.com/client/TC283H40M/CC241KRK4">Slack Forum about CapRover</a></li>
+</ul>
+
   </div>
   
   <!--

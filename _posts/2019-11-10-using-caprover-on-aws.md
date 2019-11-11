@@ -296,3 +296,74 @@ And, alas, this dies with errors:
 ## Conclusion
 
 I am really, really impressed with CapRover and I intend to return to it.  While I didn't get everything working, what did work was **impressive** and the fact that Rails doesn't deploy is mostly a documentation issue, not a failing, at all, of CapRover.  The issues I had with AWS are also documentation issues.
+
+## Take 2
+
+I wrote the above a few hours ago, caught some sleep and then woke up and in the process of closing tabs about CapRover, I found out that you can use a standard Dockerfile by changing your captain-definition to:
+
+```json
+{
+  "schemaVersion": 2,
+  "dockerfilePath": "./Dockerfile"
+}
+```
+
+and then here's a valid albeit simple Rails Dockerfile to run on an Ubuntu instance:
+
+    #FROM ruby:2.6.5-ubuntu
+    FROM ubuntu:latest
+    FROM ruby:2.6.5-stretch
+
+    #RUN apk update && apk add build-base nodejs mariadb-dev tzdata git libxml2-dev
+
+    RUN apt-get update
+    RUN apt-get install -y tzdata
+    RUN apt-get install -y git
+    RUN apt-get install -y ruby
+    RUN apt-get install -y build-essential patch ruby-dev zlib1g-dev liblzma-dev
+    RUN apt-get install -y nodejs
+
+    RUN mkdir /app
+    WORKDIR /app
+
+    COPY Gemfile Gemfile.lock ./
+    RUN bundle install --binstubs
+
+    COPY . .
+
+    # The ENV variables simply need to be set for Rails to correctly pre-compile
+    # your assets. They do not need to be populated by real values.
+    RUN bundle exec rake RAILS_ENV=production DATABASE_URL=mysql2://user:pass@127.0.0.1/dbname SECRET_TOKEN=dummytoken assets:precompile
+
+    CMD puma -C config/puma.rb
+
+Now, let's run thru the deployment process once again, in full:
+
+1.  Add the captain-definition file.
+2.  Add the Dockerfile
+3.  Do a git add . 
+4.  Do a git commit -m "updated captain stuff"
+5.  Everything has to be added and committed (but not pushed) since CapRover reads from the local git repo.  If its not added and committed, CapRover won't see it (and they warn you about this but I don't feel the warning is strenuous enough).
+6. If this is a new app for you then goto your equivalent url to http://captain.caprover.com and define a new app.
+7. On the first time Do a caprover deploy and use the up and down arrows to select the machine and the app.
+8. Watch the Docker stuff build.
+9. Try to goto the final url and it is likely going to fail with a 502 gateway error.  In this case it is because your Rails app is running in development mode and thus puma is defaulting to 3000.  You can adjust this with the Container HTTP Port setting on your equivalent url to:  https://captain.cartazzi.com/#/apps/details/cts-home-page2
+10. Try going again to the domain and it should come up.
+11. The next time you deploy you should be use: **caprover deploy --default** and have it simply remember all the deployment settings.
+
+    
+
+## References
+
+Here are some good links for CapRover:
+
+* [CapRover Home Page](https://caprover.com/)
+* [Getting Started Page](https://caprover.com/docs/get-started.html)
+* [CapRover Example Apps](https://github.com/caprover/caprover/blob/master/captain-sample-apps/)
+* [CapRover Troubleshooting](https://caprover.com/docs/troubleshooting.html)
+* [Scaling with CapRover](https://caprover.com/docs/app-scaling-and-cluster.html#more-than-one-registry)
+* [Medium Overview](https://medium.com/@kindlysendme/i-found-this-tool-that-helps-you-migrate-your-apps-from-heroku-to-digitalocean-in-10min-and-save-ca097a6e0d72)
+* [Captain Definition File](https://caprover.com/docs/captain-definition-file.html)
+* [Github Issue About Rails App](https://github.com/caprover/caprover-cli/issues/8)
+* [Another Github Issue About Rails App](https://github.com/caprover/caprover/issues/324)
+* [Slack Forum about CapRover](https://app.slack.com/client/TC283H40M/CC241KRK4)
