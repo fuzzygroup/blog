@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Using CapRover on AWS</title>
+  <meta name="description" content="I am a Ruby on Rails guy and I censored hate deploying Ruby stuff.  I’ve been deploying Rails stuff now since 2007 and, quite honestly, it sucked in 2007 and...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/caprover/2019/11/10/using-caprover-on-aws.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="Using CapRover on AWS">
+
+  
+    <meta name="twitter:description"
+      content="I am a Ruby on Rails guy and I censored hate deploying Ruby stuff.  I’ve been deploying Rails stuff now since 2007 and, quite honestly, it sucked in 2007 and it sucks today.  The only way I’ve ever...">
+  
+
+  
+    <meta name="twitter:image"
+      content="http://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div style="width: 70%; float:left; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed red">
+              <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound: Make applying for tech jobs suck less!</a>
+            </p>
+        </div>
+        <!--
+        <div style="width: 75%; float:left; ">&nbsp;&nbsp;&nbsp;</div>
+        -->
+          <!--
+        <div style="width: 20%; float:right; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+              <a href="http://www.fuzzyblog.io/" class="cta-button-blue">Hire Me!</a>
+            </p>
+        </div>
+            -->
+        <div style="clear: both;"></div>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Using CapRover on AWS</h1>
+    <p class="I'll"><time datetime="2019-11-10T00:00:00-05:00" itemprop="datePublished">Nov 10, 2019</time> 
+      </p> 
+  </header>
+  
+
+  <div class="post-content" itemprop="articleBody">
+    <p>I am a Ruby on Rails guy and I <strong>censored</strong> hate deploying Ruby stuff.  I’ve been deploying Rails stuff now since 2007 and, quite honestly, it sucked in 2007 and it sucks today.  The only way I’ve ever found Rails deployment to not suck is by using Heroku which is absolutely magical and wonderful – but expensive.  Now I’ve recently become hooked on Heroku and the ease of its Git push based deployment structure.  The problem is that I need more power / flexibility with respect to what I’m deploying and this has let me to the <a href="https://caprover.com/">CapRover</a> open source project.</p>
+
+<p>This project aims to give you a version of Heroku but running on your own hardware.  Given that I’m an AWS guy, I wanted to use CapRover on AWS EC2 instances.</p>
+
+<h2 id="setup---1">Setup - 1</h2>
+
+<p>I started by installing the CapRover software and here was the first problem that I hit:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo docker run -p 80:80 -p 443:443 -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain caprover/caprover
+docker: Error response from daemon: driver failed programming external connectivity on endpoint quizzical_snyder (f72be52bf809d139cc012debeadb87b813e02e8fd2ada6fbba97d4503d624c43): Error starting userland proxy: listen tcp 0.0.0.0:80: bind: address already in use.
+ERRO[0000] error waiting for container: context canceled
+</code></pre>
+</div>
+
+<p>The issue here is that one of these 3 ports is already in use.  And the easiest way to figure this out is to run a succession of netstat commands:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo netstat -pna | grep 3000
+</code></pre>
+</div>
+
+<p>That returned nothing.  So onto the next one, 443:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo netstat -pna | grep 443
+</code></pre>
+</div>
+
+<p>Again this returned nothing, onto 80:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo netstat -pna | grep 80
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      21331/nginx: master
+tcp6       0      0 :::80                   :::*                    LISTEN      21331/nginx: master
+unix  2      [ ACC ]     STREAM     LISTENING     16380    1/init               @ISCSIADM_ABSTRACT_NAMESPACE
+unix  3      [ ]         STREAM     CONNECTED     22180    949/dockerd
+unix  3      [ ]         STREAM     CONNECTED     38086    4225/python3
+unix  2      [ ]         DGRAM                    18052    1010/systemd-logind
+unix  3      [ ]         STREAM     CONNECTED     18081    954/dbus-daemon      /var/run/dbus/system_bus_socket
+unix  3      [ ]         STREAM     CONNECTED     38087    4225/python3
+unix  3      [ ]         STREAM     CONNECTED     18880    954/dbus-daemon
+unix  3      [ ]         STREAM     CONNECTED     18080    1010/systemd-logind    
+</code></pre>
+</div>
+
+<p>So the issue here is that I already have Nginx on this box listening on port 80.  This is clearly <strong>my issue</strong> and related to my initial work on using Capistrano to partially deploy a Ruby app.</p>
+
+<p>I solved this by creating a new instance and working there.</p>
+
+<h2 id="setup---2">Setup - 2</h2>
+
+<p>I then installed docker using Snap and that led me to this error:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo docker run -p 80:80 -p 443:443 -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain caprover/caprover
+docker: Error response from daemon: error while creating mount source path '/captain': mkdir /captain: read-only file system.
+ERRO[0000] error waiting for container: context canceled    
+</code></pre>
+</div>
+
+<p>I’ve now used Docker for a bunch of years and this led to the typical, crap ass Docker troubleshooting approach of roaming thru Google, looking for a github issue that explains things.  I found one from a <a href="https://github.com/moby/moby/issues/34427">January 19, 2019</a> issue which said “don’t use the snap version of Docker”.</p>
+
+<h2 id="setup---3">Setup - 3</h2>
+
+<p>I’m personally an apt-get fan and I don’t even know what we have Snaps but they are the new hotness so I did try them out.  Apparently this is my bad.</p>
+
+<p>Ok then:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>snap remove docker  
+</code></pre>
+</div>
+
+<p>And then I reinstalled docker using <a href="https://phoenixnap.com/kb/how-to-install-docker-on-ubuntu-18-04">this guide</a>.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get update
+sudo apt-get remove docker docker-engine docker.io
+sudo apt install docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
+</code></pre>
+</div>
+
+<p>At this point you need to log out and log back in and then do a:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>docker --version
+</code></pre>
+</div>
+
+<p>At this point docker should be cleanly installed.</p>
+
+<p>You probably want to be able to use docker without having to use sudo, so:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo groupadd docker
+usermod -a -G docker ubuntu
+</code></pre>
+</div>
+
+<h2 id="setup---4">Setup - 4</h2>
+
+<p>If you are using AWS then your next likely problem will be this error:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>docker run -p 80:80 -p 443:443 -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain caprover/caprover
+
+&gt; caprover@0.0.0 start /usr/src/app
+&gt; node ./bin/www
+
+Captain Starting ...
+Installing Captain Service ...
+
+ Installation of CapRover is starting...
+For troubleshooting, please see: https://caprover.com/docs/troubleshooting.html
+
+ &gt;&gt;&gt; Checking System Compatibility &lt;&lt;&lt;
+   Docker Version passed.
+   Ubuntu detected.
+   X86 CPU detected.
+   Total RAM 8363 MB
+
+Are your trying to run CapRover on a local machine or a machine without public IP?
+In that case, you need to add this to your installation command:
+    -e MAIN_NODE_IP_ADDRESS='127.0.0.1'
+
+Otherwise, if you are running CapRover on a VPS with public IP:
+Your firewall may have been blocking an in-use port: 3000
+A simple solution on Ubuntu systems is to run "ufw disable" (security risk)
+Or [recommended] just allowing necessary ports:
+ufw allow 80,443,3000,996,7946,4789,2377/tcp; ufw allow 7946,4789,2377/udp;
+
+See docs for more details on how to fix firewall issues
+
+Finally, if you are an advanced user, and you want to bypass this check (NOT RECOMMENDED),
+you can append the docker command with an addition flag: -e BY_PASS_PROXY_CHECK='TRUE'
+
+Installation failed.
+Error: Port timed out: 3000
+    at Timeout._onTimeout (/usr/src/app/built/utils/CaptainInstaller.js:136:20)
+    at ontimeout (timers.js:436:11)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+</code></pre>
+</div>
+
+<h2 id="setup---5">Setup - 5</h2>
+
+<p>And this needs to be solved by adding to your AWS security group, a hole for port 3000.  Do this with the normal AWS user interface for security groups.  You should future proof yourself by allowing for by ipv4 and ipv6 addresses.</p>
+
+<p>Once this is done then you can run:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>docker run -p 80:80 -p 443:443 -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain caprover/caprover        
+</code></pre>
+</div>
+
+<p>And have it actually get CapRover up and running.  And, yes, I actually did a happy dance when this worked.  I might have been holding hands with the cat while I did this.  The cat was not amused.</p>
+
+<h2 id="setup---6">Setup - 6</h2>
+
+<p>At this point you need to install the local CapRover tooling to setup the server component.  So, on your own machine, do this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>npm install -g caprover    
+</code></pre>
+</div>
+
+<p>And then:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>caprover serversetup
+</code></pre>
+</div>
+
+<p>which walks you thru this process:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>------------
+CapRover CLI has recently been refactored. Please report potential bugs here: https://github.com/caprover/caprover-cli/issues
+------------
+
+Setup CapRover machine on your server...
+
+? have you already started CapRover container on your server? Yes
+? IP address of your server: 18.216.143.180
+? CapRover server root domain: cartazzi.com
+? new CapRover password (min 8 characters): [hidden]
+? enter new CapRover password again: [hidden]
+? "valid" email address to get certificate and enable HTTPS: fuzzygroup@gmail.com
+? CapRover machine name, with whom the login credentials are stored locally: captain-01
+
+CapRover server setup completed: it is available as captain-01 at https://captain.cartazzi.com
+
+For more details and docs see CapRover.com  
+</code></pre>
+</div>
+
+<h2 id="setup---7">Setup - 7</h2>
+
+<p>You will need an actual domain that you can bind to your ip address.  And you need to make sure that you assign *.domain.com (or whatever) to it.</p>
+
+<p>Since I’m an AWS guy, I went to the Route 53 domain manager and found an unused domain of mine, cartazzi.com and bound it to the ip address above.  I then added a *.cartazzi.com wildcard dns entry onto it.</p>
+
+<h2 id="setup---8">Setup - 8</h2>
+
+<p>Once all this is done then you can to: https://captain.cartazzi.com.  This gives you a web based ui where you can create an app that you can then use a heroku style push deploy to take your code live.  And all of this is magically hooked up to Lets Encrypt for proper https.</p>
+
+<h2 id="setup---9">Setup - 9</h2>
+
+<p>The magic of all this is tied to the Captain Definition file or captain-definition which is essentially a JSON formatted Dockerfile that defines how the application is built.  And this is where my Docker knowledge failed me.  Here’s as far as I got:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cat captain-definition
+{
+  "schemaVersion": 2,
+  "dockerfileLines": [
+	"FROM ubuntu:latest",
+  "FROM ruby:2.6.5-stretch",
+  "RUN rm /etc/localtime",
+	"RUN echo 'Etc/UTC' &gt; /etc/timezone",
+	"RUN ln -s /usr/share/zoneinfo/Etc/UTC /etc/localtime",
+	"RUN apt-get update",
+	"RUN apt-get install -y tzdata",
+	"RUN apt-get install -y git",
+	"RUN apt-get install -y ruby",
+	"RUN apt-get install -y postgresql",
+	"RUN apt-get install -y libpq-dev",
+	"RUN apt-get install -y build-essential patch ruby-dev zlib1g-dev liblzma-dev",
+	"RUN apt-get install -y nodejs",
+	"RUN mkdir -p /usr/src/app",
+	"WORKDIR /usr/src/app",
+	"RUN gem install bundler",
+	"ADD ./src/Gemfile /usr/src/app/",
+	"ADD ./src/Gemfile.lock /usr/src/app/",
+	"RUN bundle install",
+	"COPY ./src /usr/src/app",
+	"ENV RACK_ENV production",
+	"EXPOSE 80",
+	"CMD [\"rackup\", \"config.ru\", \"--host\", \"0.0.0.0\", \"--port\", \"80\"]"
+  ]
+}
+</code></pre>
+</div>
+
+<p>Once you have written your captain-definition file, you deploy it with:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>caprover deploy --default
+</code></pre>
+</div>
+
+<p>And, alas, this dies with errors:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>❯ caprover deploy --default
+
+
+------------
+CapRover CLI has recently been refactored. Please report potential bugs here: https://github.com/caprover/caprover-cli/issues
+------------
+
+
+Preparing deployment to CapRover...
+
+Ensuring authentication...
+Saving tar file to: "/Users/sjohnson/Sync/fuzzygroup/adl/antihate/cts_home_page/temporary-captain-to-deploy.tar"
+Using last commit on "caprover": 2541bb79b9c936a4f624823ddb8a7544a7a0cc42
+
+Deploying cts-home-page to captain-01...
+
+Uploading [====================] 100%  (ETA 0.0s)
+Upload done.
+
+This might take several minutes. PLEASE BE PATIENT...
+
+⠸ Building your source code...
+------------------------- Mon Nov 11 2019 04:30:15 GMT+0000 (Coordinated Universal Time)
+⠇ Building your source code...
+[[ TRUNCATED ]]
+---&gt; Using cache
+---&gt; e876ce01f153
+Step 7/23 : RUN apt-get install -y tzdata
+
+---&gt; Using cache
+---&gt; b2527a3e63c8
+Step 8/23 : RUN apt-get install -y git
+
+---&gt; Using cache
+---&gt; cba1d4e5691e
+Step 9/23 : RUN apt-get install -y ruby
+
+---&gt; Using cache
+---&gt; a5aa1c013480
+Step 10/23 : RUN apt-get install -y postgresql
+
+---&gt; Using cache
+---&gt; 6667fca6acaa
+Step 11/23 : RUN apt-get install -y libpq-dev
+
+---&gt; Using cache
+---&gt; b2f1f9d578da
+Step 12/23 : RUN apt-get install -y build-essential patch ruby-dev zlib1g-dev liblzma-dev
+
+---&gt; Using cache
+---&gt; 698c0e61c945
+Step 13/23 : RUN apt-get install -y nodejs
+
+---&gt; Using cache
+---&gt; a9e2578c2dab
+Step 14/23 : RUN mkdir -p /usr/src/app
+
+---&gt; Using cache
+---&gt; 30f161f073b3
+Step 15/23 : WORKDIR /usr/src/app
+
+---&gt; Using cache
+---&gt; 241cfd1f23d4
+Step 16/23 : RUN gem install bundler
+
+---&gt; Using cache
+---&gt; 1c3707fa9dc1
+Step 17/23 : ADD ./src/Gemfile /usr/src/app/
+
+{"message":"ADD failed: stat /var/lib/docker/tmp/docker-builder803139007/src/Gemfile: no such file or directory"}
+ADD failed: stat /var/lib/docker/tmp/docker-builder803139007/src/Gemfile: no such file or directory
+Build has failed!
+----------------------
+Deploy failed!
+Error: {"message":"ADD failed: stat /var/lib/docker/tmp/docker-builder803139007/src/Gemfile: no such file or directory"}
+ADD failed: stat /var/lib/docker/tmp/docker-builder803139007/src/Gemfile: no such file or directory
+
+Something bad happened. Cannot deploy cts-home-page at captain-01.
+</code></pre>
+</div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I am really, really impressed with CapRover and I intend to return to it.  While I didn’t get everything working, what did work was <strong>impressive</strong> and the fact that Rails doesn’t deploy is mostly a documentation issue, not a failing, at all, of CapRover.  The issues I had with AWS are also documentation issues.</p>
+
+  </div>
+  
+  <!--
+    http://fuzzyblog.io/blog/tag.html#aws
+    http://localhost:5000/blog/category.html#facebook
+  -->
+  
+  <hr/><br/>
+  <p><strong>Posted In:</strong>
+  
+    <a href="http://fuzzyblog.io/blog/tag.html#caprover" >
+      #caprover
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#aws" >
+      #aws
+    </a>
+    
+  </p>
+  
+  <!--
+  <hr/><br/>
+  <div style="text-align: center;">
+      <ul class="list-inline tags" >       
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#caprover" class="link_button">
+         caprover
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#aws" class="link_button">
+         aws
+       </a>
+     </li>
+     
+    </ul>
+
+  </div>
+-->  
+
+
+  
+  
+  
+
+</article>
+
+<div class="just-comments" data-apikey="2fb5b93f-dad4-41c0-a9c4-645079ddc541"></div>
+<script async src="https://just-comments.com/w.js"></script>
+
+
+      </div>
+    </div>
+
+    <div class="wrapper">
+  <div style="">
+    <!--
+    <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+      <a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Never be surprised by your kid's Xbox spending again!</a>
+    </p>
+      -->
+      <p style="text-align: center; padding: 10px; border: 2px dashed red">
+        <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound: Make applying for tech jobs suck less!</a>
+      </p>
+      
+  </div>
+</div>
+
+<footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
