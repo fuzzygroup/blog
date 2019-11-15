@@ -9,6 +9,8 @@ tags: ["python", "streamlit", "systemd", "linux"]
 
 As I [documented recently](https://fuzzyblog.io/blog/python/2019/10/17/a-step-by-step-guide-to-running-streamlit-pytorch-and-bert-on-a-cheap-aws-instance.html), I've become quite the fan of [Streamlit](https://streamlit.io) for taking Machine Learning applications written in Python and making them easily available on the web.  Streamlit is a very cool toolkit for taking a Python Machine Learning app and adding a simple UI to it and then hosting it via a built in web server.  I haven't seen anything really like in the Ruby world and I'm quite impressed by its elegance and simplicity.
 
+**Note**: Before you start down the path of implementing this the way I did, see the last section titled "Note: " after the Jenkins section.
+
 So we have a custom internal app using Streamlit and I am, at present, the only person who can deploy it.  That's, well, stupid.  Deployment always needs to be something that anyone on the technical team should be able to do.  This became increasingly obvious to me when I had to pull over, on Monday afternoon, and deploy fixes to it -- in the first snow of the season.  And, yes, I've been a consultant for a lot of my career so I'm ok with this but it still is sub optimal.
 
 Here's what a deploy using Streamlit onto an Ubuntu server looks like:
@@ -384,3 +386,5 @@ Right now our application can be deployed by any developer who has:
 * ansible installed locally
 
 The real goal here is actually to make it so anyone on our team can deploy this.  And that means that we need a web based user interface that can be wrapped around the Ansible scripting.  In my next bit of writing on this topic, I'll walk thru Jenkins and how to do all that.
+
+**Note**: This ended up being considerably more tricky than is addressed above.  My email is fuzzygroup at gmail.com and you are welcome to reach out to me if you want clarification.  I spent a lot of time writing this up and I can't put more time into it right now but if anyone really needs this, I'll make it a priority.
