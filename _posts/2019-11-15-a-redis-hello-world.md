@@ -9,6 +9,8 @@ tags: ["redis", "ruby", "python"]
 
 A colleague just IM'd me and asked if I have a Hello World for redis and my thought was "No but I can damn well blog one together quick as all get out" so ...
 
+**Note**: If the word Redis means nothing to you then may I direct you to the [quick start](https://redis.io/topics/quickstart)?
+
 The thing to understand about Redis is that you can use it in two ways:
 
 1. As a simple key value store, a nosql database if you like.
