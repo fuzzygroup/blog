@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Getting Local Development Data for Rails from Your Production Site using Heroku</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2019/11/16/getting-local-development-data-for-rails-from-your-production-site-using-heroku.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="Getting Local Development Data for Rails from Your Production Site using Heroku">
+
+  
+    <meta name="twitter:description"
+      content="
+
+One of the worst aspects of doing Rails development, although this is not limited to Rails in any way, is getting data to use for development work once your site starts getting users.  Yes I know...">
+  
+
+  
+    <meta name="twitter:image"
+      content="http://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+          
+          <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div style="width: 70%; float:left; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed red">
+              <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound: Make applying for tech jobs suck less!</a>
+            </p>
+        </div>
+        <!--
+        <div style="width: 75%; float:left; ">&nbsp;&nbsp;&nbsp;</div>
+        -->
+          <!--
+        <div style="width: 20%; float:right; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+              <a href="http://www.fuzzyblog.io/" class="cta-button-blue">Hire Me!</a>
+            </p>
+        </div>
+            -->
+        <div style="clear: both;"></div>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Getting Local Development Data for Rails from Your Production Site using Heroku</h1>
+    <p class="I'll"><time datetime="2019-11-16T00:00:00-05:00" itemprop="datePublished">Nov 16, 2019</time> 
+      </p> 
+  </header>
+  
+
+  <div class="post-content" itemprop="articleBody">
+    <p class="center"><img src="/blog/assets/IMG_9986.jpeg" alt="IMG_9986.jpeg" /></p>
+
+<p>One of the worst aspects of doing Rails development, although this is not limited to Rails in any way, is getting data to use for development work once your site starts getting users.  Yes I know that you should always have full test coverage and that local data shouldn’t be necessary – <strong>but it absolutely is</strong>.  There is always a class of errors that you simply can’t diagnose with a set of data with which to work.</p>
+
+<p>The happy truth though is that you actually can pretty easily move data from production to development at will (at least as long as the database isn’t too massive; when your site gets large it is a different matter).</p>
+
+<h2 id="the-approach">The Approach</h2>
+
+<p>The approach here is actually pretty simple.  My examples all center around using MySQL as a data store but any database that has solid import / export will work.</p>
+
+<ol>
+  <li>To start you should backup your local data just in case you need it back afterwards.</li>
+  <li>You then connect to your remote datastore and use mysqldump to export your data to a local data dump.</li>
+  <li>You then import this local data dump.</li>
+  <li>You debug your site using a much richer set of data.</li>
+</ol>
+
+<h2 id="making-this-easy-with-a-rake-task">Making this Easy with a Rake Task</h2>
+
+<p>Here’s a rake task that I wrote that gives you a lot of tasks for dealing with your local / remote databases.  Drop this into lib/tasks and you can see the tasks it offers with:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake -T | grep database
+</code></pre>
+</div>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>
+<span class="n">namespace</span> <span class="ss">:database</span> <span class="k">do</span>
+  <span class="n">namespace</span> <span class="ss">:development</span> <span class="k">do</span>
+    
+    <span class="c1"># Generates a mysql load command</span>
+    <span class="c1"># bundle exec rake database:development:mysql_load_data_command --trace</span>
+    <span class="n">task</span> <span class="ss">:mysql_load_data_command</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
+      <span class="c1">#username, password, database </span>
+      <span class="n">db_params</span> <span class="o">=</span> <span class="n">get_local_database_params</span>
+      <span class="n">command</span> <span class="o">=</span> <span class="n">make_mysql_command</span><span class="p">(</span><span class="s1">'mysql'</span><span class="p">,</span> <span class="n">db_params</span><span class="p">,</span> <span class="s1">' &lt; lib/tasks/data/db_dumps/'</span><span class="p">)</span>
+      <span class="nb">puts</span> <span class="s2">"Add the load file into the below command "</span>
+      <span class="nb">puts</span> <span class="s2">"  once you copy and paste it back into the terminal"</span>
+      <span class="nb">puts</span> <span class="n">command</span>
+    <span class="k">end</span>
+
+    <span class="c1"># generates a mysql command to get into the database</span>
+    <span class="c1"># bundle exec rake database:development_mysql_command --trace</span>
+    <span class="n">task</span> <span class="ss">:mysql_command</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
+      <span class="n">db_params</span> <span class="o">=</span> <span class="n">get_local_database_params</span>
+      <span class="n">command</span> <span class="o">=</span> <span class="s2">"mysql -u</span><span class="si">#{</span><span class="n">username</span><span class="si">}</span><span class="s2"> -p</span><span class="si">#{</span><span class="n">password</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">database</span><span class="si">}</span><span class="s2"> "</span>
+      <span class="nb">puts</span> <span class="n">command</span>
+    <span class="k">end</span>
+
+    <span class="c1"># generates a dump data command that puts the data into lib/tasks/data/db_dumps/</span>
+    <span class="c1"># bundle exec rake database:development:mysql_dump_data --trace</span>
+    <span class="n">task</span> <span class="ss">:mysql_dump_data</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
+      <span class="n">db_params</span> <span class="o">=</span> <span class="n">get_local_database_params</span>
+      <span class="n">dump_dest</span> <span class="o">=</span> <span class="s2">" &gt; lib/tasks/data/db_dumps/</span><span class="si">#{</span><span class="n">db_params</span><span class="p">[</span><span class="s1">'database'</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">#{</span><span class="no">Date</span><span class="p">.</span><span class="nf">today</span><span class="p">.</span><span class="nf">to_s</span><span class="p">(</span><span class="ss">:db</span><span class="p">)</span><span class="si">}</span><span class="s2">.sql"</span>
+      <span class="n">command</span> <span class="o">=</span> <span class="n">make_mysql_command</span><span class="p">(</span><span class="s1">'mysqldump'</span><span class="p">,</span> <span class="n">db_params</span><span class="p">,</span> <span class="n">dump_dest</span><span class="p">)</span>
+      <span class="sb">`</span><span class="si">#{</span><span class="n">command</span><span class="si">}</span><span class="sb">`</span>
+    <span class="k">end</span>
+
+  <span class="k">end</span>
+  
+  <span class="n">namespace</span> <span class="ss">:production</span> <span class="k">do</span>
+    <span class="c1"># bundle exec rake database:production:mysql_dump_data --trace</span>
+    <span class="n">task</span> <span class="ss">:mysql_dump_data</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
+      <span class="nb">puts</span> <span class="s2">"About to dump data in 10 seconds (or press CTRL+C) ...."</span>
+      <span class="nb">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+      <span class="n">db_params</span> <span class="o">=</span> <span class="n">get_heroku_database_params</span>
+      <span class="n">dump_dest</span> <span class="o">=</span> <span class="s2">" &gt; lib/tasks/data/db_dumps/</span><span class="si">#{</span><span class="n">db_params</span><span class="p">[</span><span class="s1">'database'</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">#{</span><span class="no">Date</span><span class="p">.</span><span class="nf">today</span><span class="p">.</span><span class="nf">to_s</span><span class="p">(</span><span class="ss">:db</span><span class="p">)</span><span class="si">}</span><span class="s2">.sql"</span>
+      <span class="n">command</span> <span class="o">=</span> <span class="n">make_mysql_command</span><span class="p">(</span><span class="s1">'mysqldump'</span><span class="p">,</span> <span class="n">db_params</span><span class="p">,</span> <span class="n">dump_dest</span><span class="p">)</span>
+      <span class="sb">`</span><span class="si">#{</span><span class="n">command</span><span class="si">}</span><span class="sb">`</span>
+      
+    <span class="k">end</span>
+
+    <span class="c1"># bundle exec rake database:production:mysql_load_data_command --trace</span>
+    <span class="n">task</span> <span class="ss">:mysql_load_data_command</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
+      <span class="n">db_params</span> <span class="o">=</span> <span class="n">get_heroku_database_params</span>
+      <span class="n">command</span> <span class="o">=</span> <span class="n">make_mysql_command</span><span class="p">(</span><span class="s1">'mysql'</span><span class="p">,</span> <span class="n">db_params</span><span class="p">,</span> <span class="s1">'&lt; '</span><span class="p">)</span>
+      <span class="nb">puts</span> <span class="n">command</span>
+    <span class="k">end</span>
+    
+    <span class="c1"># bundle exec rake database:production:mysql_command --trace</span>
+    <span class="n">task</span> <span class="ss">:mysql_command</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
+      <span class="n">db_params</span> <span class="o">=</span> <span class="n">get_heroku_database_params</span>
+      <span class="n">command</span> <span class="o">=</span> <span class="n">make_mysql_command</span><span class="p">(</span><span class="s1">'mysql'</span><span class="p">,</span> <span class="n">db_params</span><span class="p">)</span>
+      <span class="nb">puts</span> <span class="n">command</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+  
+  <span class="k">def</span> <span class="nf">make_mysql_command</span><span class="p">(</span><span class="n">base_command</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">post_command</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">'username'</span><span class="p">]</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">'password'</span><span class="p">]</span>
+    <span class="n">database</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">'database'</span><span class="p">]</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">'host'</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">host</span>
+      <span class="n">cmd</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">base_command</span><span class="si">}</span><span class="s2"> -u</span><span class="si">#{</span><span class="n">username</span><span class="si">}</span><span class="s2"> -p</span><span class="si">#{</span><span class="n">password</span><span class="si">}</span><span class="s2"> -h </span><span class="si">#{</span><span class="n">host</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">database</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">post_command</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">else</span>
+      <span class="n">cmd</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">base_command</span><span class="si">}</span><span class="s2"> -u</span><span class="si">#{</span><span class="n">username</span><span class="si">}</span><span class="s2"> -p</span><span class="si">#{</span><span class="n">password</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">database</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">post_command</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">cmd</span>
+  <span class="k">end</span>
+
+  <span class="c1"># this is how heroku used to work a few months ago, now, not so much...</span>
+  <span class="k">def</span> <span class="nf">get_heroku_database_params_classic</span>
+    <span class="nb">require</span> <span class="s1">'open3'</span>
+    <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="no">Open3</span><span class="p">.</span><span class="nf">capture3</span><span class="p">(</span><span class="s2">"heroku config"</span><span class="p">)</span>
+    <span class="n">stdout_lines</span> <span class="o">=</span> <span class="n">stdout</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="n">db_params</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">stdout_lines</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">stdout_line</span><span class="o">|</span>
+      <span class="k">if</span> <span class="n">stdout_line</span> <span class="o">=~</span> <span class="sr">/^DB_/</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">parse_stdout_line</span><span class="p">(</span><span class="n">stdout_line</span><span class="p">)</span>
+        <span class="n">db_params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="n">db_params</span>
+  <span class="k">end</span>
+  
+  <span class="k">def</span> <span class="nf">get_heroku_database_params</span>
+    <span class="nb">require</span> <span class="s1">'open3'</span>
+    <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="no">Open3</span><span class="p">.</span><span class="nf">capture3</span><span class="p">(</span><span class="s2">"heroku config"</span><span class="p">)</span>
+    <span class="n">stdout_lines</span> <span class="o">=</span> <span class="n">stdout</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="n">db_params</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">database_url</span> <span class="o">=</span> <span class="kp">nil</span>
+    <span class="n">stdout_lines</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">stdout_line</span><span class="o">|</span>
+      <span class="k">if</span> <span class="n">stdout_line</span> <span class="o">=~</span> <span class="sr">/^DATABASE_URL:/</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">database_url</span> <span class="o">=</span> <span class="n">parse_stdout_line</span><span class="p">(</span><span class="n">stdout_line</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    
+    <span class="n">parts</span> <span class="o">=</span> <span class="no">URI</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">database_url</span><span class="p">)</span>
+
+    <span class="c1"># build up a hash of db_params</span>
+    <span class="n">db_params</span><span class="p">[</span><span class="s1">'username'</span><span class="p">]</span> <span class="o">=</span> <span class="n">parts</span><span class="p">.</span><span class="nf">user</span>
+    <span class="c1"># the database itself is stored as the path in the url but the / needs to be stripped</span>
+    <span class="n">db_params</span><span class="p">[</span><span class="s1">'database'</span><span class="p">]</span> <span class="o">=</span> <span class="n">parts</span><span class="p">.</span><span class="nf">path</span><span class="p">[</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">255</span><span class="p">]</span>
+    <span class="n">db_params</span><span class="p">[</span><span class="s1">'password'</span><span class="p">]</span> <span class="o">=</span> <span class="n">parts</span><span class="p">.</span><span class="nf">password</span>
+    <span class="n">db_params</span><span class="p">[</span><span class="s1">'host'</span><span class="p">]</span> <span class="o">=</span> <span class="n">parts</span><span class="p">.</span><span class="nf">host</span>
+    
+    <span class="n">db_params</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">get_local_database_params</span>
+    <span class="n">db_config</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">configuration</span><span class="p">.</span><span class="nf">database_configuration</span>
+    <span class="n">db_params</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">db_params</span><span class="p">[</span><span class="s1">'username'</span><span class="p">]</span> <span class="o">=</span> <span class="n">db_config</span><span class="p">[</span><span class="s2">"development"</span><span class="p">][</span><span class="s2">"username"</span><span class="p">]</span>
+    <span class="n">db_params</span><span class="p">[</span><span class="s1">'host'</span><span class="p">]</span> <span class="o">=</span> <span class="n">db_config</span><span class="p">[</span><span class="s2">"development"</span><span class="p">][</span><span class="s2">"host"</span><span class="p">]</span>
+    <span class="n">db_params</span><span class="p">[</span><span class="s1">'password'</span><span class="p">]</span> <span class="o">=</span> <span class="n">db_config</span><span class="p">[</span><span class="s2">"development"</span><span class="p">][</span><span class="s2">"password"</span><span class="p">]</span>
+    <span class="n">db_params</span><span class="p">[</span><span class="s1">'database'</span><span class="p">]</span> <span class="o">=</span> <span class="n">db_config</span><span class="p">[</span><span class="s2">"development"</span><span class="p">][</span><span class="s2">"database"</span><span class="p">]</span>
+    <span class="n">db_params</span>
+  <span class="k">end</span>
+  
+  <span class="k">def</span> <span class="nf">parse_stdout_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">strip</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sr">/:\s+/</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span>
+  <span class="k">end</span>
+  
+<span class="k">end</span>
+</code></pre>
+</div>
+
+<h2 id="dumping-from-production-and-loading-to-development">Dumping from Production and Loading to Development</h2>
+
+<p>Here’s how to dump the data:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake database:production:mysql_dump_data --trace
+</code></pre>
+</div>
+
+<p>And here’s how to load this in:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake database:development:mysql_load_data_command --trace
+** Invoke database:development:mysql_load_data_command (first_time)
+** Invoke environment (first_time)
+** Execute environment
+** Execute database:development:mysql_load_data_command
+Add the load file into the below command
+  once you copy and paste it back into the terminal
+mysql -uroot -pADFD!@# change_me_now_development  &lt; lib/tasks/data/db_dumps/
+</code></pre>
+</div>
+
+<p>(note - I changed the password above).  And then you need to actually run this command with the correct database file that came from the dump:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>mysql -uroot -pADFD!@# change_me_now_development  &lt; lib/tasks/data/db_dumps/d3rbmdakuvgkjfkv_2019-11-16.sql
+</code></pre>
+</div>
+
+<p><strong>Note</strong>: The database name you get from Heroku is very much a randomized string so don’t expect it to be the normal Rails like “_production” style database name.</p>
+
+  </div>
+  
+  <!--
+    http://fuzzyblog.io/blog/tag.html#aws
+    http://localhost:5000/blog/category.html#facebook
+  -->
+  
+  <hr/><br/>
+  <p><strong>Posted In:</strong>
+  
+    <a href="http://fuzzyblog.io/blog/tag.html#rails" >
+      #rails
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#heroku" >
+      #heroku
+    </a>
+    
+  </p>
+  
+  <!--
+  <hr/><br/>
+  <div style="text-align: center;">
+      <ul class="list-inline tags" >       
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#rails" class="link_button">
+         rails
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#heroku" class="link_button">
+         heroku
+       </a>
+     </li>
+     
+    </ul>
+
+  </div>
+-->  
+
+
+  
+  
+  
+
+</article>
+
+<div class="just-comments" data-apikey="2fb5b93f-dad4-41c0-a9c4-645079ddc541"></div>
+<script async src="https://just-comments.com/w.js"></script>
+
+
+      </div>
+    </div>
+
+    <div class="wrapper">
+  <div style="">
+    <!--
+    <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+      <a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Never be surprised by your kid's Xbox spending again!</a>
+    </p>
+      -->
+      <p style="text-align: center; padding: 10px; border: 2px dashed red">
+        <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound: Make applying for tech jobs suck less!</a>
+      </p>
+      
+  </div>
+</div>
+
+<footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

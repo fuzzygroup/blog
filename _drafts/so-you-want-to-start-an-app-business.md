@@ -4,14 +4,21 @@ title: So You Want to Start an App Business
 category: startup
 tags: ["startup", "apps"]
 ---
+**Note**: I'm actually not going to blog this (or at least not until you tell me you can).  I think being specific about this opportunity is likely to be more useful for you.  Bits and pieces of this tho may end up blogged.  
+
 I saw something online the other day about a person wanting to start some type of location centric online social network based around an app front end, without raising any funding initially, and my immediate thoughts were:
 
 * Interesting
+* Has possibility
 * Oy vey
+
+The idea at hand was sort of an "Dating without Sex" idea.  Call the app "I'd Like a Friend To" (ILAFT)
+
+* A
 
 The person who had written this had a very interesting concept but wasn't a startup person / wasn't a technologist so I thought I'd write up my thoughts about starting an app business.
 
-Disclaimer: I write this as someone who hasn't ever built an app or app business but I am an extremely solid, working engineer and I did spend a decade writing AppData -- a now defunct SAAS business that indexed the different app stores and sold analytics on them.  So I've got a pretty solid handle on trends and the overall app ecosystem.
+**Disclaimer**: I write this as someone who hasn't ever built an app or app business but I am an extremely solid, working engineer and I did spend a decade writing AppData -- a now defunct SAAS business that indexed the different app stores and sold analytics on them.  So I've got a pretty solid handle on trends and the overall app ecosystem.
 
 ## Rule 1: It Isn't About the Technology, It Is About the Marketing
 
@@ -35,5 +42,12 @@ Just think about that for a second -- if there are almost 3 million apps for And
 ## Rule 3: Understanding App Development
 
 And now we come to the technology that drives any app business.  
+
+## From the Founder of DropBox
+
+An interesting way to look at this is from the perspective of the founder of DropBox who, in a presentation at YCombinator, argued that to succeed, you need:
+
+* A huge market
+* Founder to Market Fit
 
 ## References
