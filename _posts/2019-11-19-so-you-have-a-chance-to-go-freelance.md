@@ -4,6 +4,9 @@ title: So You Have A Chance to Go Freelance
 category: startup
 tags: ["freelance", "startup"]
 ---
+{:.center}
+![IMG_9359.jpeg](/blog/assets/IMG_9359.jpeg)
+
 This blog post takes addresses a common problem for technical workers - you have been offered a full time freelance gig and you don't know whether or not to take it based on its value versus your current compensation.  
 
 **Note**: Traditionally I have done a crap ass job at making these kind of assessments.  I'm writing this post to hopefully do a better / more "adult" take at this.
@@ -106,4 +109,3 @@ Thanks again to [Lisa Meece](https://www.starbaseindy.org/) for contributing als
 So with the offer described above the previous monthly gross was: 8242.00 with insurance.  The new offer is $10,000 but you have to subtract $1,289.49 to arrive at: $8,710.51.  So technically there is a $500 bump in salary monthly but that is likely negligible given the loss of benefits.   
 
 So if the numbers are roughly the same then, to me, the big question is would you actually be happier being freelance?  Or to paraphrase Shakespeare, "*To freelance or not to freelance; that is the question*".
-
