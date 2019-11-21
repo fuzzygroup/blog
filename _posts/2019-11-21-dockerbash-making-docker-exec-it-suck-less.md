@@ -43,4 +43,12 @@ fi
 
 Save the lines above as dockerbash and make it executable.  After that you can much more easily get a shell prompt inside your docker containers.
 
-**Note**: You cannot store dockerbash in the project that you are deploying via Docker because it needs to exist **on the** machine that runs your Docker containers, not within your Docker container.  My recommendation is that you have your DevOps tooling such as Ansible install this script.
+## Bash References
+
+* [Bash Cheat Sheet](https://www.andreafortuna.org/2018/07/02/bash-scripting-my-own-cheatsheet/)
+* [How to Set a Variable in Bash](https://stackoverflow.com/questions/4651437/how-do-i-set-a-variable-to-the-output-of-a-command-in-bash)
+* [How to Use Awk to Get the First Variable](https://linuxhint.com/20_awk_examples/#a16)
+
+## Where Does dockerbash Live?
+
+You cannot store dockerbash in the project that you are deploying via Docker because it needs to exist **on the** machine that runs your Docker containers, not within your Docker container.  My recommendation is that you have your DevOps tooling such as Ansible install this script.
