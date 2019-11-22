@@ -86,6 +86,15 @@ Marketing 101. Consulting 101. PHP Consulting. Random geeky stuff. I Blog Theref
     ga('send', 'pageview');
 
   </script>
+    
+  <script type="text/javascript">
+    function do_search() {
+      var searchForm = document.getElementById('search');
+      var q = document.getElementById('q');
+      var searchQuery = "site:fuzzyblog.io " + q.value;
+      document.location = "https://www.google.com/search?q=" + searchQuery;
+    }
+  </script>
   
 </head>
 
@@ -141,6 +150,10 @@ Marketing 101. Consulting 101. PHP Consulting. Random geeky stuff. I Blog Theref
           <a class="page-link" href="/blog/tag.html">Tag</a>
           
         
+          
+          <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
+          
+        
       </div>
     </nav>
 
@@ -151,11 +164,20 @@ Marketing 101. Consulting 101. PHP Consulting. Random geeky stuff. I Blog Theref
 
     <div class="page-content">
       <div class="wrapper">
-        <div style="width: 70%; float:left; ">
+        <div style="width: 50%; float:left; ">
             <p style="text-align: center; padding: 10px; border: 2px dashed red">
-              <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound: Make applying for tech jobs suck less!</a>
+              <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound:<br/>Make applying for tech jobs suck less!</a>
             </p>
         </div>
+        <div style="width: 40%; float:right; text-align: center; valign: center; padding: 10px; border: 2px dashed blue">
+
+            <form id="search" action="https://www.google.com/search">
+              <input id="q" name="q" size=40>
+              <button type="submit" form="form1" value="Search" onclick="do_search();">Search</button><br/>&nbsp;
+            </form>
+
+        </div>
+        
         <!--
         <div style="width: 75%; float:left; ">&nbsp;&nbsp;&nbsp;</div>
         -->
@@ -575,7 +597,7 @@ The FuzzyBlog!</a></b></font>
     </p>
       -->
       <p style="text-align: center; padding: 10px; border: 2px dashed red">
-        <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound: Make applying for tech jobs suck less!</a>
+        <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound:<br/>Make applying for tech jobs suck less!</a>
       </p>
       
   </div>
