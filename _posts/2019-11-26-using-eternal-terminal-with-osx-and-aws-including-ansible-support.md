@@ -88,7 +88,7 @@ If you have more than one server on AWS, you should be using a DevOps tool like 
 
     ---
 
-    - name: Configure servers with ruby support for single user
+    - name: Configure servers for use with Eternal Terminal
       hosts: all
       become: true
       remote_user: ubuntu
