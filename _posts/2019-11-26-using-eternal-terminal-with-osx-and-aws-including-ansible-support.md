@@ -11,6 +11,8 @@ I know, I know -- it is 2019 and we're not supposed to be SSH'ing into boxes -- 
 
 [Eternal Terminal](https://eternalterminal.dev/), ET, is a mature Open Source project that purports to solve SSH disconnects.  I say "purports" because I have only just installed it and this blog post is my proof of concept to see how well it works.  I'm essentially SSH'd into some box or another roughly 10 to 12 hours a day, 5 to 7 days a week.
 
+**Note**: You can strike purports in the above paragraph.  I've now been using Eternal Terminal though a variety of network conditions including changing my wifi connection with long running processes and it works great. I do not understand the deviltry that drives this pretty damn amazing bit of software but I sure do like it.
+
 ## Overview
 
 Here's what you need to do to use ET on a local OSX to remote AWS context:
