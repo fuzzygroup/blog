@@ -131,6 +131,10 @@ This tip is stupid simple but it actually makes a difference.  When you are maki
 
 I will admit that this uses a lot of physical space and you may see it as a pain in the neck.  The advantage of this is that you will never forget to cook something because there is a physical reminder that you simply can't ignore.  This means, for example, that Aunt Edna will get her beloved green bean casserole.
 
+## Check the Microwave Before You Sit Down
+
+The very last thing we cook every year is we put a can of corn in the microwave and put it on 1 minute.  We then scurry around like frenetic hobbits chanting "Foods!  The Foods are coming" and sit down at the table.  And we promptly forget about the damn corn.  Sigh.  
+
 ## Buy Extra Tupperware To Send Leftovers Away
 
 When you make as much food as I do, one of the better tricks to avoid "Fridge Capacity Crisis" is to buy a bunch of extra Tupperware and then send people home with food i.e. "Enjoyed the Mashed Potatoes, Great!  Here you go!". If you are really creative, you can make up mini meal plates for each guest and and them home with all of it.
