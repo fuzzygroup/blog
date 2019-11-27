@@ -59,7 +59,9 @@ Consider the problem of the turkey and the pies.  All of these require the oven 
 {:.center}
 ![IMG_7931.jpeg](/blog/assets/IMG_7931.jpeg)
 
-**Note**: An outdoor grill can be used to keep food warm if needed.  And outdoor grills with side burner are an additional burner!
+**Note 1**: An outdoor grill can be used to keep food warm if needed.  And outdoor grills with side burner are an additional burner!
+
+**Note 2**: Reviewer Ariane Woods made the cogent observation "I'll also add that smoking my turkey has been a game changer as it frees up an oven".  As someone who is a recovered member of the "Cult of the Smoked Turkey", I can attest to the truth of this statement.  Another option in this vein is the (insanely dangerous) deep fried turkey.
 
 ## The Longest Cooking Time is Your Biggest Constraint
 
