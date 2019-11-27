@@ -1,16 +1,22 @@
 ---
 layout: post
-title: How to Win the Thanksgiving Meal
+title: How to Win the Thanksgiving Meal War
 category: cooking
-tags: ["cooking", "thanksgiving"]
+tags: ["cooking", "thanksgiving", "holiday"]
 ---
+{:.center}
+![IMG_0476.jpeg](/blog/assets/IMG_0476.jpeg)
+
+**Disclaimer**: I'm a software engineer by profession with a history of large scale project management and a focus on dependency management.  I'm also a food nerd so I take the holiday meal seriously; perhaps too damn seriously.  Apologies ???  But seriously, just one of these tips may make your holiday meal cooking easier.  See the second bulleted list for the tldr ("too long; did not read").
+
 There's no question in my mind that cooking the Thanksgiving meal is the *World War II* of holiday meals.  When you have other holidays there is a focus besides the food: 
 
 * Christmas has presents
 * Easter has religious significance
+* Passover has religious significance
 * Fourth of July has patriotism and parades
 
-But Thanksgiving is a celebration that is about the food, it is a [harvest festival](https://en.wikipedia.org/wiki/Harvest_festival).  And with the propensity that people have for wanting their particular, favorite side dish, that only increases the focus on cooking.  And that's why, every year, I feel as if making the Thanksgiving meal is my "go to war" meal (and I don't mind that; it is my favorite meal to cook all year long).
+But Thanksgiving is a celebration that is about the food as it is a [harvest festival](https://en.wikipedia.org/wiki/Harvest_festival).  And with the propensity that people have for wanting their particular, favorite side dish, that only increases the focus on cooking.  And that's why, every year, I feel as if making the Thanksgiving meal is my "go to war" meal (and I don't mind that; it is my favorite meal to cook all year long).
 
 As I write this, I'm preparing to make my 16th consecutive Thanksgiving meal for my wife and children.  And, over, these many, many years, I have developed a number of techniques that make cooking the Thanksgiving meal much, much easier.
 
