@@ -56,7 +56,7 @@ Here's what I'd change for next year:
 * The holodeck arch needs a better light diffuser than the piece of white butchers paper I shoved into it at the 11th hour.
 * I'd add black pinstripe tape to the vertical line where the zip ties go so we don't have to paint them furiously at the last minute.
 * We need to tell volunteers to bring work gloves.
-* Make public facebook events for setup and teardown to encourage participation.
+* Make public facebook events for setup and teardown to encourage participation.  Thank you Sooz for this idea.
 
 ## Thank You's
 
