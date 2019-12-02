@@ -18,7 +18,7 @@ This document is a "post mortem".  I generally write these after any significant
 ![IMG_0407.jpeg](/blog/assets/IMG_0407.jpeg)
 
 {:.center}
-![IMG_0441.jpg](/blog/assets/IMG_0441.jpg)
+![IMG_0441-2.jpg](/blog/assets/IMG_0441-2.jpg)
 
 This last pic is courtesy of Samantha Waltz; Thank you!
 
