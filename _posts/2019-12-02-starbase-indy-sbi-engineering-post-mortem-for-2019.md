@@ -22,8 +22,6 @@ This document is a "post mortem".  I generally write these after any significant
 
 This last pic is courtesy of Samantha Waltz; Thank you!
 
-
-
 **Note**: This document was written with assistance from my wife Shelley.  I could not have done this without her support and competent assistance.  Thank you.
 
 ## What Worked
@@ -56,3 +54,22 @@ Here's what I'd change for next year:
 * The holodeck arch is a disaster to assemble.  Either documentation or improvements are needed.  Having a set of videos that volunteers could watch before hand would be great.
 * The holodeck arch needs a better light diffuser than the piece of white butchers paper I shoved into it at the 11th hour.
 * I'd add black pinstripe tape to the vertical line where the zip ties go so we don't have to paint them furiously at the last minute.
+* We need to tell volunteers to bring work gloves.
+
+## Thank You's
+
+In an epic management fail on my part, I do not have everyone's name to thank them but here's a try.  Thank you to:
+
+* Shelley Johnson
+* Timo Von Burkowski "The Superstar At the Last Minute"
+* Dave Mott
+* Johnny
+* Matt "Dr. Picardo"
+* Donna
+* Andy Sams
+* Chris Topher
+* Casey Huber
+
+My apologies to anyone I left out.  These are mostly the people who struck the set and did load out since my memory of setup is largely gone at this point.  If your name should be here and isn't then please reach out to me and I'll add it.
+
+
