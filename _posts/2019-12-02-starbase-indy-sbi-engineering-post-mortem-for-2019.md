@@ -31,6 +31,7 @@ Here's what worked:
 * The new bridge looked amazing.
 * Attaching the bridge panels by zip ties was generally a huge success
 * Attaching the screens in front of the panels (as opposed to a cut thru, behind) was a success.  And it preserves our ability to upgrade / replace monitors if something happens to the current ones. 
+* Applying gaffers tape to the intersection of the bridge panels was essential (thanks Dave).
 * The new decals for the bridge panels were lovely; thanks go out to Emily Grumble for design and implementation and Lillian Sams for the donation to fund them.
 * Joseph Campbell of "Signs from the Emissary" was a huge assistance in getting the bridge decals in place at the very last minute; thank you Joe!
 * Assembling the initial bridge components goes faster if you put them on their back.
