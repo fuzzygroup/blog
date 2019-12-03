@@ -4,6 +4,9 @@ title: What is the President's Role in a Stage Zero Startup?
 category: startup
 tags: ["startup"]
 ---
+{:.center}
+![IMG_9167.jpeg](/blog/assets/IMG_9167.jpeg)
+
 This is another one of those "Tales from the Past" blog posts where something kicked off a memory.  In this case, I was at a conference and talking with someone who was President of a startup and they weren't quite sure what to do.  They had found themselves, at a very early stage, sidelined in their own venture and pigeon holed into a tiny portion of the business.  And, keep in mind, that they did have specialized domain knowledge of that portion but still ...
 
 As I listened to them talk, I had a terribly blunt and not politically correct message for them.  They encouraged me to be direct and so, I'm going to be mildly offensive here (bear in mind that I was talking to a woman when I said this a bunch of years ago):
@@ -62,4 +65,4 @@ On any given morning in a startup, the President's tasks might include:
 * Having a conversation with a new hire about something uncomfortable like the fact that they smell and other staffers have complained (this actually happened to me)
 * Recruiting the next hire(s)
 
-Getting a startup out of Stage Zero means solving a thousand, thousand problems both small and large.  And classical business training says that management is a specialized skill where you get to worry mostly about the big picture.  That simply isn't the case in a Stage Zero startup.
+Getting a startup out of Stage Zero means solving a thousand, thousand problems both small and large.  And classical business training says that management is a specialized skill where you get to worry mostly about the big picture.  That simply isn't the case in a Stage Zero startup.  
