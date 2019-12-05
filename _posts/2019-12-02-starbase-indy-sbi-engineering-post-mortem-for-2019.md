@@ -57,6 +57,7 @@ Here's what I'd change for next year:
 * I'd add black pinstripe tape to the vertical line where the zip ties go so we don't have to paint them furiously at the last minute.
 * We need to tell volunteers to bring work gloves.
 * Make public facebook events for setup and teardown to encourage participation.  Thank you Sooz for this idea.
+* A hand truck or dolly HAS TO GO TO THE STORAGE UNIT for load out / load in. We forgot this for load out and it was painful.
 
 ## Thank You's
 

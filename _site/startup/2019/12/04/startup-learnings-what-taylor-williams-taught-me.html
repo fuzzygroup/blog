@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Starbase Indy / SBI Engineering Post Mortem for 2019</title>
+  <title>Startup Learnings - What Taylor Williams Taught Me</title>
   <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/sbi/2019/12/02/starbase-indy-sbi-engineering-post-mortem-for-2019.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/startup/2019/12/04/startup-learnings-what-taylor-williams-taught-me.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,13 +39,15 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Starbase Indy / SBI Engineering Post Mortem for 2019">
+  <meta name="twitter:title" content="Startup Learnings - What Taylor Williams Taught Me">
 
   
     <meta name="twitter:description"
       content="
 
-This document is a “post mortem”.  I generally write these after any significant project I’m involved in ends.  The idea is to capture the good (What Worked), the bad (What Didn’t Work) and the n...">
+Note: Code Cat watches disapprovingly as I work …
+
+The bulk of my career has been spent at the small scale of the startup universe – companies with 15 people or less; often a lot less; more than ...">
   
 
   
@@ -173,88 +175,78 @@ This document is a “post mortem”.  I generally write these after any signifi
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Starbase Indy / SBI Engineering Post Mortem for 2019</h1>
-    <p class="I'll"><time datetime="2019-12-02T00:00:00-05:00" itemprop="datePublished">Dec 2, 2019</time> 
+    <h1 class="post-title" itemprop="name headline">Startup Learnings - What Taylor Williams Taught Me</h1>
+    <p class="I'll"><time datetime="2019-12-04T00:00:00-05:00" itemprop="datePublished">Dec 4, 2019</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_9451.jpeg" alt="IMG_9451.jpeg" /></p>
+    <p><img src="/blog/assets/IMG_0469.jpeg" alt="IMG_0469.jpeg" /></p>
 
-<p>This document is a “post mortem”.  I generally write these after any significant project I’m involved in ends.  The idea is to capture the good (What Worked), the bad (What Didn’t Work) and the next (Changes for Next Year).  I am writing this as a public document on my personal blog so that it is accessible for next year.</p>
+<p><strong>Note</strong>: Code Cat watches disapprovingly as I work …</p>
 
-<p><strong>Note</strong>: If the very term SBI means nothing to you, dear reader, then just move on.  SBI is short for Starbase Indy, a local to Indianapolis, science fiction / star trek / STEM convention (con) held annually over Thanksgiving.  I headed up engineering for the con for 2019 when we deployed a new “bridge” (stage backdrop that looks like a starship bridge.  Here are some pictures for reference:</p>
+<p>The bulk of my career has been spent at the <strong>small</strong> scale of the startup universe – companies with 15 people or less; often a lot less; more than a few times, I’ve been the <em>only</em> engineer. I have done three stints with companies at or near the three figure number of employees: Dataware, Mascot Network and Seas Education.  One of the characteristics of working at the small scale of startups is that what matters is <em>results</em>.  How you do it generally doesn’t matter – that you do it <em>does matter</em>.</p>
 
-<p class="center"><img src="/blog/assets/IMG_0443.jpeg" alt="IMG_0443.jpeg" /></p>
+<p>And, perhaps unsurprisingly, this can lead to some bad things when it comes to <em>engineering processes</em>.  To this point, I’ve actually been dubbed “the anti process” in at least one organization I spent some time at.  So keep that in mind as you read on …</p>
 
-<p class="center"><img src="/blog/assets/IMG_0407.jpeg" alt="IMG_0407.jpeg" /></p>
+<p>I’m actively working on an (unlaunched) side project and I noticed this today:</p>
 
-<p class="center"><img src="/blog/assets/IMG_0441-2.jpg" alt="IMG_0441-2.jpg" /></p>
+<p class="center"><img src="/blog/assets/500_pull_requests.png" alt="500_pull_requests.png" /></p>
 
-<p>This last pic is courtesy of Samantha Waltz; Thank you!</p>
+<p>That’s from the repo on my side project and it indicates that I’ve created <em>500</em> pull requests (this was tied to issue #444 which only got merged this morning; the current issue number is 501.  Issue 444 was a major refactor that has been a long coming.</p>
 
-<p><strong>Note</strong>: This document was written with assistance from my wife Shelley.  I could not have done this without her support and competent assistance.  Thank you.</p>
+<p>I’d like to joke that aggressively using pull requests, even on an unlaunched, personal side project, is “how Mother Johnson taught me to do open source” but that would be an untruth.  This is a <a href="https://fuzzyblog.io/blog/tag.html#learnings">Startup Learnings</a> post and I learned this from <strong>Taylor Williams</strong>.</p>
 
-<h2 id="what-worked">What Worked</h2>
+<p>Taylor Williams is currently the head of software engineering for <a href="https://www.seaseducation.com">Seas Education</a>, a SAAS product focused on record keeping for special education.  I worked for Seas for about 18 months during which time I focused on AWS infrastructure, deployment, Ansible and back end features.  When I came into Seas, Taylor was still a bit on the junior side but I watched him grow and develop as he took on a larger and larger role, culminating in a promotion where he took on leadership of all software engineering, across all product lines.</p>
 
-<p>Here’s what worked:</p>
-
-<ul>
-  <li>The new bridge looked amazing.</li>
-  <li>Attaching the bridge panels by zip ties was generally a huge success</li>
-  <li>Attaching the screens in front of the panels (as opposed to a cut thru, behind) was a success.  And it preserves our ability to upgrade / replace monitors if something happens to the current ones.</li>
-  <li>Applying gaffers tape to the intersection of the bridge panels was essential (thanks Dave).</li>
-  <li>The new decals for the bridge panels were lovely; thanks go out to Emily Grumble for design and implementation and Lillian Sams for the donation to fund them.</li>
-  <li>Joseph Campbell of “Signs from the Emissary” was a huge assistance in getting the bridge decals in place at the very last minute; thank you Joe!</li>
-  <li>Assembling the initial bridge components goes faster if you put them on their back.</li>
-  <li>Tear down was fast with a speed of 4 hours and 13 minutes from start to return of the U-Haul.</li>
-  <li>The 26 foot U-Haul truck is actually needed to transport everything.  Never rent smaller.</li>
-</ul>
-
-<h2 id="what-didnt-work">What Didn’t Work</h2>
-
-<p>Here is what didn’t work:</p>
+<p>What Taylor taught me was git discipline, specifically:</p>
 
 <ul>
-  <li>The holes for attaching the bridge panels via zip ties aren’t positioned well so getting them in in a few places kinda sucks; I doubt this can be fixed now but its annoying.</li>
-  <li>Knowing the order to attach the bridge panels in is key.  Our first attempt to assemble the panels was a complete fail.  Here is the right order: Keyboard Panels, Bottom Panels, Top Panels, Screen Panels (after the monitors have been affixed).</li>
-  <li>A 26 foot truck cannot be backed into the loading dock of the Indianapolis Wyndam East Ballroom.  Don’t even try; just carry stuff down the ramp.</li>
-  <li>More people for the tear down would have been useful.</li>
+  <li>All development is done in feature branches tied to a ticket number</li>
+  <li>Feature branches should be atomic and only include changes specific to that ticket</li>
+  <li>The develop branch accepts changes from a feature branch once the tests pass</li>
+  <li>The master branch is always pristine and can be deployed at any time</li>
+  <li>Pull requests are how you merge your feature branch into develop</li>
 </ul>
 
-<h2 id="changes-for-next-year">Changes for Next Year</h2>
+<p><strong>Note</strong>: I actually believe in this process so thoroughly that I <a href="https://fuzzyblog.io/blog/git/2019/06/27/understanding-a-small-organization-s-git-development-model.html">documented it</a> for anyone who works on my side project.  And I’ve brought it into my current consulting engagement.</p>
 
-<p>Here’s what I’d change for next year:</p>
+<p>Now I’ve been using version control for a long time (I started with <a href="https://en.wikipedia.org/wiki/PVCS">PVCS</a>) but I’ve <strong>never</strong> had this kind of discipline before my time at Seas.  Taylor had no problem saying to me what amounted to “Dude - you’re doing it wrong; we do it this way.”  And I’ll admit that I didn’t like hearing that because I’m a pretty senior technical guy and criticism can be hard.  But Taylor did it well and I listened and <strong>he was right</strong>.</p>
 
-<ul>
-  <li>Write assembly documentation / shoot assembly videos; only 1 person, for example, knew how to assemble the turbolift doors.</li>
-  <li>The holodeck arch is a disaster to assemble.  Either documentation or improvements are needed.  Having a set of videos that volunteers could watch before hand would be great.</li>
-  <li>The holodeck arch needs a better light diffuser than the piece of white butchers paper I shoved into it at the 11th hour.</li>
-  <li>I’d add black pinstripe tape to the vertical line where the zip ties go so we don’t have to paint them furiously at the last minute.</li>
-  <li>We need to tell volunteers to bring work gloves.</li>
-  <li>Make public facebook events for setup and teardown to encourage participation.  Thank you Sooz for this idea.</li>
-  <li>A hand truck or dolly HAS TO GO TO THE STORAGE UNIT for load out / load in. We forgot this for load out and it was painful.</li>
-</ul>
+<p>I’ve now brought over 7,000 lines of brand new code into the world using this approach so I think I’ve pretty firmly adopted it.</p>
 
-<h2 id="thank-yous">Thank You’s</h2>
+<div class="highlighter-rouge"><pre class="highlight"><code>❯ bundle exec rake stats
++----------------------+--------+--------+---------+---------+-----+-------+
+| Name                 |  Lines |    LOC | Classes | Methods | M/C | LOC/M |
++----------------------+--------+--------+---------+---------+-----+-------+
+| Controllers          |   1757 |   1155 |      28 |     136 |   4 |     6 |
+| Helpers              |    490 |    382 |       0 |      49 |   0 |     5 |
+| Jobs                 |      2 |      2 |       1 |       0 |   0 |     0 |
+| Models               |   2980 |   1709 |      27 |     189 |   7 |     7 |
+| Mailers              |      4 |      4 |       1 |       0 |   0 |     0 |
+| Channels             |      8 |      8 |       2 |       0 |   0 |     0 |
+| JavaScripts          |   4351 |   3599 |       0 |     183 |   0 |    17 |
+| Libraries            |   1446 |    929 |       0 |       9 |   0 |   101 |
++----------------------+--------+--------+---------+---------+-----+-------+
+| Total                |  11038 |   7788 |      59 |     566 |   9 |    11 |
++----------------------+--------+--------+---------+---------+-----+-------+
+  Code LOC: 7788     Test LOC: 0     Code to Test Ratio: 1:0.0
+</code></pre>
+</div>
 
-<p>In an epic management fail on my part, I do not have everyone’s name to thank them but here’s a try.  Thank you to:</p>
+<p><strong>Note</strong>: There are tests; rspec tests don’t show up here; my test ratio isn’t great yet but it is a work in progress:</p>
 
-<ul>
-  <li>Shelley Johnson</li>
-  <li>Timo Von Burkowski “The Superstar At the Last Minute”</li>
-  <li>Dave Mott</li>
-  <li>Johnny</li>
-  <li>Matt “Dr. Picardo”</li>
-  <li>Donna</li>
-  <li>Andy Sams</li>
-  <li>Chris Topher</li>
-  <li>Casey Huber</li>
-</ul>
+<div class="highlighter-rouge"><pre class="highlight"><code>find . -name '*.rb' | xargs wc -l
+     115 ./spec_helper.rb
+  ...
+    1720 total
+</code></pre>
+</div>
 
-<p>My apologies to anyone I left out.  These are mostly the people who struck the set and did load out since my memory of setup is largely gone at this point.  If your name should be here and isn’t then please reach out to me and I’ll add it.</p>
+<p>So thank you Taylor for breaking my “anti process” tendencies.  I am much, much happier with my code management practices now.</p>
 
+<p>And, in closing, I would be remiss in not thanking my former pairing partner, <a href="https;//csphere.github.io/">Sean Kennedy</a> for fixing some of the git mishaps that occurred on the way down this learning process.  Thanks Sean!</p>
 
   </div>
   
@@ -266,12 +258,20 @@ This document is a “post mortem”.  I generally write these after any signifi
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#sbi" >
-      #sbi
+    <a href="http://fuzzyblog.io/blog/tag.html#startup" >
+      #startup
     </a>
     
-    <a href="http://fuzzyblog.io/blog/tag.html#con" >
-      #con
+    <a href="http://fuzzyblog.io/blog/tag.html#learnings" >
+      #learnings
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#git" >
+      #git
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#taylor_williams" >
+      #taylor_williams
     </a>
     
   </p>
@@ -282,14 +282,26 @@ This document is a “post mortem”.  I generally write these after any signifi
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#sbi" class="link_button">
-         sbi
+       <a href="http://fuzzyblog.io/blog/tag.html#startup" class="link_button">
+         startup
        </a>
      </li>
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#con" class="link_button">
-         con
+       <a href="http://fuzzyblog.io/blog/tag.html#learnings" class="link_button">
+         learnings
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#git" class="link_button">
+         git
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#taylor_williams" class="link_button">
+         taylor_williams
        </a>
      </li>
      
