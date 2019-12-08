@@ -7,7 +7,7 @@ tags: ["change", "weight_loss", "whole30"]
 {:.center}
 ![IMG_9141.jpeg](/blog/assets/IMG_9141.jpeg)
 
-My eldest son needs to lose abut 15 pounds before he leaves for boot camp in the Marines.  So here is a week of Whole 30 Meals planned out for him.
+My eldest son needs to lose abut 15 pounds before he leaves for boot camp in the Marines.  So here is a week of Whole 30 Meals planned out for him.  Here are [more details on Whole 30](IMG_9141.jpeg) (scroll down about 1/2 way).
 
 ## Monday
 
