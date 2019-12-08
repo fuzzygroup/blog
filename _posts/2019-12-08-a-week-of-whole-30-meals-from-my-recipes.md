@@ -11,7 +11,7 @@ My eldest son needs to lose abut 15 pounds before he leaves for boot camp in the
 
 ## Monday
 
-* Breakfast: 3 Squishy Eggs, Black Coffee 
+* Breakfast: 3 [Squishy Eggs](https://fuzzyblog.io/recipes/eggs/2017/03/07/squishy-eggs.html), Black Coffee 
 * Lunch: Hard boiled eggs, nuts, fruit
 * Dinner: Grilled Chicken Breast, Baked potato with Olive Oil (no dairy), Salad with homemade dressing
 * Snack: handful of cashews
@@ -23,7 +23,7 @@ My eldest son needs to lose abut 15 pounds before he leaves for boot camp in the
 
 * Breakfast: 2 Fried Eggs
 * Lunch: Hard boiled eggs, nuts, fruit
-* Dinner: Garlicky Pork Chops, Roasted Carrots, Salad
+* Dinner: Garlicky Pork Chops, [Roasted Carrots](https://fuzzyblog.io/recipes/side_dish/2017/03/10/gluten-free-havilah-s-roasted-carrots-with-changes-by-scott.html), Salad
 * Snack: Mixed Nuts; no Peanuts
 * Sweet: Lara bar
 * Reward: Dates
