@@ -2,7 +2,7 @@
 layout: post
 title: Scott's Approach to Weight Loss
 category: change
-tags: ["change", "weight_loss"]
+tags: ["change", "weight_loss", "whole30"]
 ---
 {:.center}
 ![IMG_4203.jpeg](/blog/assets/IMG_4203.jpeg)
