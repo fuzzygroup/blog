@@ -5,6 +5,7 @@ title: Multi Cooking - Christmas Candy Edition
 
 Clean Kitchen 
 Empty Fridge
+Combine all the things in the fridge that can be combined; throw out the things with 1/4 " in them
 Empty Freezer
 Get a Sharpie
 Get Aluminum Foil Trays
