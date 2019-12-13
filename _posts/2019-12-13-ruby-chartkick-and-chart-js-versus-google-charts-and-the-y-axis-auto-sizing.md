@@ -13,7 +13,7 @@ Today I'm talking about the [ChartKick](https://github.com/ankane/chartkick) lib
 
 ## ChartKick Can Use Different Graphing Engines
 
-I have always used ChartKick in the past just with the default Google Charts engine.  Much to my surprise, ChartKick can use chart.js underneath.  This is surprising to me and **utterly awesome**.
+I have always used ChartKick in the past just with the default Google Charts engine.  Much to my surprise, ChartKick can use chart.js underneath.  This is surprising to me and **utterly awesome**.  [Here's where I learned this](https://www.ruby-forum.com/t/trying-to-change-chartkick-to-chart-js/251938).
 
 ### Using ChartKick with chart.js
 
