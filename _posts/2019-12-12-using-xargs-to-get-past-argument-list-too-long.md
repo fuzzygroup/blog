@@ -4,6 +4,9 @@ title: Using Xargs to Get Past Argument List Too Long
 category: linux
 tags: ["linux"]
 ---
+{:.center}
+![IMG_9162.jpeg](/blog/assets/IMG_9162.jpeg)
+
 This one is a quick one.  I have about 25,000 files in a directory that I need to grep across.  I tried:
 
     grep '"class":0' *.json | more

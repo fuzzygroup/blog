@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Using Xargs to Get Past Argument List Too Long</title>
+  <title>Ruby, ChartKick and chart.js versus Google Charts and the Y Axis Auto Sizing</title>
   <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/linux/2019/12/12/using-xargs-to-get-past-argument-list-too-long.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/ruby/2019/12/13/ruby-chartkick-and-chart-js-versus-google-charts-and-the-y-axis-auto-sizing.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,20 +39,13 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Using Xargs to Get Past Argument List Too Long">
+  <meta name="twitter:title" content="Ruby, ChartKick and chart.js versus Google Charts and the Y Axis Auto Sizing">
 
   
     <meta name="twitter:description"
       content="
 
-This one is a quick one.  I have about 25,000 files in a directory that I need to grep across.  I tried:
-
-grep '&quot;class&quot;:0' *.json | more
-zsh: argument list too long: grep
-
-
-
-That’s a pr...">
+Like a lot of people in the Open Source world, I rarely know actual people in the Open Source world – but I do know github usernames.  And one of those names that I truly respect is ankane.  I’ve...">
   
 
   
@@ -180,69 +173,77 @@ That’s a pr...">
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Using Xargs to Get Past Argument List Too Long</h1>
-    <p class="I'll"><time datetime="2019-12-12T00:00:00-05:00" itemprop="datePublished">Dec 12, 2019</time> 
+    <h1 class="post-title" itemprop="name headline">Ruby, ChartKick and chart.js versus Google Charts and the Y Axis Auto Sizing</h1>
+    <p class="I'll"><time datetime="2019-12-13T00:00:00-05:00" itemprop="datePublished">Dec 13, 2019</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_9162.jpeg" alt="IMG_9162.jpeg" /></p>
+    <p class="center"><img src="/blog/assets/IMG_9948.jpeg" alt="IMG_9948.jpeg" /></p>
 
-<p>This one is a quick one.  I have about 25,000 files in a directory that I need to grep across.  I tried:</p>
+<p>Like a lot of people in the Open Source world, I rarely know actual people in the Open Source world – but I do know github usernames.  And one of those names that I truly respect is <a href="https://github.com/ankane">ankane</a>.  I’ve rarely found a bit of code he wrote that I don’t like or use.  And while I’m not a big open source creator, I’d like to think that I give back by writing documentation like this blog post.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>grep '"class":0' *.json | more
-zsh: argument list too long: grep
+<p>Today I’m talking about the <a href="https://github.com/ankane/chartkick">ChartKick</a> library by ankane.  ChartKick is an easy way to build JavaScript charts with a single line of Ruby.  I’ve used ChartKick on and off for years but how it works has always been a bit of a mystery.  Hopefully this blog post de-mystifies it a bit.</p>
+
+<h2 id="chartkick-can-use-different-graphing-engines">ChartKick Can Use Different Graphing Engines</h2>
+
+<p>I have always used ChartKick in the past just with the default Google Charts engine.  Much to my surprise, ChartKick can use chart.js underneath.  This is surprising to me and <strong>utterly awesome</strong>.</p>
+
+<h3 id="using-chartkick-with-chartjs">Using ChartKick with chart.js</h3>
+
+<p>In application.js, you need both of these:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>//= require Chart.bundle
+//= require chartkick
 </code></pre>
 </div>
 
-<p>That’s a problem because when the argument list is too long, nothing can happen.  The solution here is a combination of find and xargs, specifically:</p>
+<p><strong>Note 1</strong>: This assumes that you aren’t using yarn / webpacker.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>find . -name '*.json' | xargs grep '"class":0'
+<p><strong>Note 2</strong>: If you change application.js, you need to restart your development server.</p>
+
+<p>Here’s a picture of a graph using chart.js:</p>
+
+<p class="center"><img src="/blog/assets/chartkick_chart_js.png" alt="chartkick_chart_js.png" /></p>
+
+<h3 id="using-chartkick-with-google-charts">Using ChartKick with Google Charts</h3>
+
+<p>If you are using ChartKick with Google Charts then you need to remove the line below from application.js:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>//= require Chart.bundle
 </code></pre>
 </div>
 
-<p>Here’s the output from this:</p>
+<p>and then you need to add, into your layout or your html template:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>./davidson-data-266118b4178f11ea80474c3275928de7.json:{"count":3,"hate_speech":3,"offensive_speech":0,"neither":0,"class":0,"tweet":"\"@JPantsdotcom @Todd__Kincannon @the__realtony I'm partial
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %&gt;
 </code></pre>
 </div>
 
-<p>You should be able to use an approach like this:</p>
+<p>Here’s a picture of a graph using Google Charts:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>find -name '*.json' -exec grep '"class":0' 
+<p class="center"><img src="/blog/assets/chartkick_google_charts.png" alt="chartkick_google_charts.png" /></p>
+
+<h2 id="y-axis-auto-sizing--setting-axis-minimums-dynamically">Y Axis Auto Sizing / Setting Axis Minimums Dynamically</h2>
+
+<p>The Y axis on my graphs, for years, has always been zero.  I had a friend complain about this to me and a <a href="https://chartkick.com/">documentation</a> grovel (ok I read it more closely than I ever had before) revealed this:</p>
+
+<blockquote>
+  <p>min defaults to 0 for charts with non-negative values. Use nil to let the charting library decide.</p>
+</blockquote>
+
+<h2 id="adding-a-bit-of-color-to-your-graph">Adding a Bit of Color to Your Graph</h2>
+
+<p>I haven’t used this in quite a while, so here’s a reminder on how to use colors:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;%= line_chart data, colors: ["#b00", "#666"] %&gt;
 </code></pre>
 </div>
 
-<p>but the embedded grep in find doesn’t accept that and fails with this error:</p>
+<h2 id="conclusion">Conclusion</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>find: illegal option -- n
-usage: find [-H | -L | -P] [-EXdsx] [-f path] path ... [expression]
-       find [-H | -L | -P] [-EXdsx] -f path [path ...] [expression]
-</code></pre>
-</div>
-
-<p>The closest that I can get to make this work is:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>find . -name '*.json' -exec grep 'class' {} +
-</code></pre>
-</div>
-
-<p>and that’s not an exact match so, sigh.</p>
-
-<p>If we return to the original approach and add a -l option flag then we can list only filenames:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>find . -name '*.json' | xargs grep -l '"class":0'
-</code></pre>
-</div>
-
-<h2 id="see-also">See Also</h2>
-
-<ul>
-  <li><a href="https://askubuntu.com/questions/833128/what-does-xargs-grep-do">Stack Overflow on Xargs</a></li>
-  <li><a href="https://stackoverflow.com/questions/6637882/how-can-i-use-grep-to-show-just-filenames-on-linux">Stack Overflow on Grep</a></li>
-  <li><a href="https://unix.stackexchange.com/questions/128559/solving-mv-argument-list-too-long">Argument List Too Long</a></li>
-</ul>
+<p>Thank you ankane!</p>
 
   </div>
   
@@ -254,8 +255,28 @@ usage: find [-H | -L | -P] [-EXdsx] [-f path] path ... [expression]
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#linux" >
-      #linux
+    <a href="http://fuzzyblog.io/blog/tag.html#rails" >
+      #rails
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#ruby" >
+      #ruby
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#chartkick" >
+      #chartkick
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#chartjs" >
+      #chartjs
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#google_charts" >
+      #google_charts
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#yaxis" >
+      #yaxis
     </a>
     
   </p>
@@ -266,8 +287,38 @@ usage: find [-H | -L | -P] [-EXdsx] [-f path] path ... [expression]
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#linux" class="link_button">
-         linux
+       <a href="http://fuzzyblog.io/blog/tag.html#rails" class="link_button">
+         rails
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#ruby" class="link_button">
+         ruby
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#chartkick" class="link_button">
+         chartkick
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#chartjs" class="link_button">
+         chartjs
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#google_charts" class="link_button">
+         google_charts
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#yaxis" class="link_button">
+         yaxis
        </a>
      </li>
      
