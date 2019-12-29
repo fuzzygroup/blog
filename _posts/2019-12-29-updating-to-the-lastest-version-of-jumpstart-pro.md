@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Updating to the Lastest Version of JumpStart Pro
+title: Updating to the Latest Version of JumpStart Pro
 category: rails
 tags: ["rails", "jumpstart"]
 ---
