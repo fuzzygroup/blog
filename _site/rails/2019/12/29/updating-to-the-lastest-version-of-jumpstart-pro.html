@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Jumpstart and GoRails Has Outstanding Tech Support - Go Chris Oliver Go - Recommended</title>
-  <meta name="description" content="Technical support gets a bad rap in the industry but there are time when technical support proves just how good a product or service can be – and this is one...">
+  <title>Updating to the Lastest Version of JumpStart Pro</title>
+  <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2019/08/17/jumpstart-and-gorails-has-outstanding-tech-support-go-chris-oliver-go-recommended.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2019/12/29/updating-to-the-lastest-version-of-jumpstart-pro.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,13 +39,13 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Jumpstart and GoRails Has Outstanding Tech Support - Go Chris Oliver Go - Recommended">
+  <meta name="twitter:title" content="Updating to the Lastest Version of JumpStart Pro">
 
   
     <meta name="twitter:description"
-      content="Technical support gets a bad rap in the industry but there are time when technical support proves just how good a product or service can be – and this is one of those times.
+      content="
 
-I’m very much a Rails ...">
+So I’ve been using JumpStart Pro to  build a new side project and in a discussion with Chris Oliver, the creator of JumpStart Pro, I reported a bug which he said “Oh - you should update to the la...">
   
 
   
@@ -173,49 +173,44 @@ I’m very much a Rails ...">
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Jumpstart and GoRails Has Outstanding Tech Support - Go Chris Oliver Go - Recommended</h1>
-    <p class="I'll"><time datetime="2019-08-17T00:00:00-04:00" itemprop="datePublished">Aug 17, 2019</time> 
+    <h1 class="post-title" itemprop="name headline">Updating to the Lastest Version of JumpStart Pro</h1>
+    <p class="I'll"><time datetime="2019-12-29T00:00:00-05:00" itemprop="datePublished">Dec 29, 2019</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>Technical support gets a bad rap in the industry but there are time when technical support proves <strong>just how good a product or service can be</strong> – and this is one of those times.</p>
+    <p class="center"><img src="/blog/assets/IMG_0939.jpeg" alt="IMG_0939.jpeg" /></p>
 
-<p>I’m very much a Rails guy and I’ve been debating trying <a href="https://jumpstartrails.com/">Jumpstart Pro</a> for some time.  I finally have a crappy little SAAS idea and this is likely the perfect time for me to try it – because I have written <strong>zero</strong> code so far.  Now JumpStart is a paid product that amounts to a pre-build starting Rails app with all the necessary cruft for a SAAS app already built.  So it really only works when you are in a pure greenfield state.  So this is perfect for JumpStart Pro.</p>
+<p>So I’ve been using JumpStart Pro to  build a new side project and in a discussion with Chris Oliver, the creator of JumpStart Pro, I reported a bug which he said “Oh - you should update to the latest”.  He viewed the update process as something seamless and I, honestly, didn’t get it.  And, in researching this, I discovered that I made a fatal mistake.  The rest of this blog post covers that mistake and explains how you update JumpStart Pro.  Here’s the tldr (too long; did not read):</p>
 
-<p>But since it is a paid product, I wanted to try before I buy which made me try the <a href="https://github.com/excid3/jumpstart">free version on Git</a>.  And that, well, that was a disaster.  I ended up with all kinds of issues, mostly related to railties and Rails 6.  If you’ve been around a while, you’ve seen this and, well, you know it sucks.  So after an hour of mucking about, I finally threw my hands up and said “I’ll just email Chris”.  Now I am a paid subscriber to Chris’ Rails Cast service, <a href="https://gorails.com/">GoRails</a>, which, I will admit, does give me an advantage in talking to him.  I’m not an active user of the service but I do pay for it monthly.</p>
+<ul>
+  <li>ALWAYS, ALWAYS, ALWAYS create a new app based on JumpStart Pro by cloning it from the GitLab source i.e. you start with: “git clone git@gitlab.com:gorails/jumpstart-pro.git YOUR_PROJECT_NAME”</li>
+  <li>Go to github and create a repo for YOUR_PROJECT_NAME</li>
+  <li>Copy the github clone info and add it as a separate remote: git remote add YOUR_PROJECT_NAME git@github.com:YOUR_GITHUB_USERNAME/YOUR_PROJECT_NAME.git</li>
+  <li>Make a change like updating the README.md and do the add / commit dance and push to your repo as  git push YOUR_PROJECT_NAME master</li>
+</ul>
 
-<p>So I sent him an email around 3 in the morning on a Friday night and I had an answer back by 10:50 am on a Saturday:</p>
+<p>Even though I’ve worked with Git for more than a decade now, I’ve previously only worked with Heroku as a git remote so I missed the implications of this when I originally cloned my first JumpStart Pro app.  Sigh.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Hey Scott,
+<p>The critical mistake I made was that I had started my second JumpStart Pro project by copying from the first JumpStart Pro project I had made and the NOT moving over the .git folder.  This meant that my new project was now disconnected from the original remote so I couldn’t just do a git pull to update it.</p>
 
-The free template has no shared code whatsoever with the Pro template. The Pro 
-template is actually a pre-built Rails 6 app you clone because as you can see 
-here the Rails generators are an absolute mess to maintain.
+<h2 id="fixing-my-own-stupidity">Fixing My Own Stupidity</h2>
 
-We built a bunch of classes with Tailwind to make it much more familiar to any 
-Bootstrap users. It's pretty freeing once you get used to it.
+<p>Here’s what I did to fix this:</p>
 
-It looks like it installed Devise 1.5.4 on your first error log. Devise is currently 
-4.6.2 lol. That I'm sure is part of the issue. They updated the git to support 
-Rails 6 a couple months ago, but haven't cut a release for it yet.
+<ol>
+  <li>I started by creating a new application cloning into a new location: git clone git@gitlab.com:gorails/jumpstart-pro.git okrsnow</li>
+  <li>I created a new git repo for my app</li>
+  <li>I added the new repo with: git remote add okrsnow git@github.com:fuzzygroup/okrsnow.git</li>
+  <li>I made a change and pushed to git push okrsnow master</li>
+  <li>I manually copied over all the code from my original JumpStart pro repo.  Given that Rails apps have such a clearly defined directory structure, this was tedious but not insurmountable.</li>
+  <li>I had to adapt my normal development practices so that I remember to always use the remote when workign with branches.</li>
+</ol>
 
-All stems from a stupid nuance in gem versioning. Devise is set to &lt; 6.0 
-and technically 6.0.0.rc2 is less than 6.0 final, so the current gem version 
-worked, but not with the final release.
+<h2 id="oh-and-about-that-bug">Oh and About that Bug</h2>
 
-Just updated the template to use Devise from git for now. Works like a charm.
-
-Chris
-</code></pre>
-</div>
-
-<p>Not only did he understand the issue but he perfectly explained it and fixed it.  And in just a few hours on a Saturday.  This is extraordinary support and, to me, it illustrates just how good JumpStart Pro likely is (and how good Go Rails is).  People don’t take this much care with products that aren’t good.</p>
-
-<p>So if you are in the startup business and you look at support as a cost center, you are flat out wrong at least some of the time.  In this case support was an absolute win and will get another copy of JumpStart Pro bought (I haven’t done it yet because I’m headed out the door shortly; only reason).</p>
-
-<p>Chris Oliver, Go Rails and Jumpstart Pro – recommended.</p>
+<p>I noticed that Chris fixed it within a few hours of my reporting it.  Thanks Chris!</p>
 
   </div>
   

@@ -2,7 +2,7 @@
 layout: post
 title: Jumpstart and GoRails Has Outstanding Tech Support - Go Chris Oliver Go - Recommended
 category: rails
-tags: ["rails"]
+tags: ["rails", "jumpstart"]
 ---
 Technical support gets a bad rap in the industry but there are time when technical support proves **just how good a product or service can be** -- and this is one of those times.  
 

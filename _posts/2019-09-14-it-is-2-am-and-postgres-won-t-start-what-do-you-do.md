@@ -2,7 +2,7 @@
 layout: post
 title: It Is 2 AM and Postgres Won't Start - What Do You Do?
 category: postgres
-tags: ["postgres", "brew"]
+tags: ["postgres", "brew", "jumpstart"]
 ---
 {:.center}
 ![IMG_8820.jpeg](/blog/assets/IMG_8820.jpeg)

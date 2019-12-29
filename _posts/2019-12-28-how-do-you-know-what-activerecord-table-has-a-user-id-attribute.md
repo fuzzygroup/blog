@@ -2,7 +2,7 @@
 layout: post
 title: How Do You Know What ActiveRecord Table Has a user_id Attribute?
 category: rails
-tags: ["rails", "active_record", "metaprogramming"]
+tags: ["rails", "active_record", "metaprogramming", "jumpstart"]
 ---
 {:.center}
 ![IMG_0903.jpeg](/blog/assets/IMG_0903.jpeg)
