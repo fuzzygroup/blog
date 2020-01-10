@@ -50,7 +50,10 @@ The file .zshrc is your zsh configuration file.  Edit it as follows:
 
 1. Open this file in an editor. 
 2. Comment out the robbyrussell theme line by prefixing it with a # character.
-3. Add the following lines after the robbyrussell theme line (change the username csphere to your own):
+3. Add the following lines after the robbyrussell theme line (change the username csphere to your own).
+
+Here are the cahnges to make:
+
 
     # Oh My Zsh
     export SPACESHIP_GIT_SYMBOL=''
