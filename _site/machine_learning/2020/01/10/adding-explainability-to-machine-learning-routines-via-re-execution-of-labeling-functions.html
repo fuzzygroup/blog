@@ -182,9 +182,9 @@ I am spending much of my time these days in the world of machine learning and I'
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_0928.jpeg" alt="IMG_0928.jpeg" /></p>
 
-<p>I am spending much of my time these days in the world of machine learning and I'm finding that it is <strong>profoundly interesting</strong>.  One of the most interesting aspects of machine learning, for me, is the black box nature of machine learning's output.  What we typically learn whether from a tensor flow model that did image segmentation or a bert / roberta / albert model that did text processing is what the model thinks but not how it arrived at that result.</p>
+<p>I am spending much of my time these days in the world of machine learning and I'm finding that it is <strong>profoundly interesting</strong>.  One of the most interesting aspects of machine learning, for me, is the <em>black box</em> nature of machine learning's output.  What we typically get from a machine learning model what the model thinks but not how it arrived at that result.  And this lack of explainability is true for machine learning whether the underlying technology is Tensor Flow for image segmentation or Bert / Roberta / Albert for text processing.</p>
 
-<p><strong>Note</strong>:  bert / roberta / alberta are machine learning tools that generate linguistically savvy models that understand English language content.</p>
+<p><strong>Note</strong>:  Bert / Roberta / Albert are machine learning tools that generate linguistically savvy models that understand English language content.</p>
 
 <p>As a side note, given how hard it is for most people to understand why they think what they think, is the black box nature of machine learning actually all that surprising?</p>
 
@@ -222,11 +222,13 @@ I am spending much of my time these days in the world of machine learning and I'
 
 <h2 id="leveraging-the-labeling-functions">Leveraging the Labeling Functions</h2>
 
-<p>It is important to understand that the labeling functions aren't a part of the machine learning model – they simply generate the training data that create the machine learning model.  So when you process a chunk of data through the machine learning model, it can tell you the result but it can't tell you why.  But, and here's the new thing, you could take the chunk of data you processed through the machine learning model and run it through the labeling functions at runtime to get back a set of matches from the labeling functions.  These matches can make the output of the model explainable.</p>
+<p>It is important to understand that the labeling functions aren't a part of the machine learning model – they simply generate the training data that create the machine learning model.  To draw in a metaphor, labeling functions are like the loom which <em>creates</em> the blanket but is <em>not itself</em> part of the blanket.  Because the labeling functions aren't actually part of the model, they don't actually run on the data that model processes.  So when you process a chunk of data through the machine learning model, it can tell you the result but it can't tell you why.</p>
+
+<p>But, and here's the <em>new thing</em>, you could take the chunk of data you processed through the machine learning model and run it through the labeling functions at <strong>runtime</strong> to get back a set of matches from the labeling functions.  These matches can make the output of the model explainable.  Labeling functions, even though they are thought solely to a part of the training process, can still be used at runtime.</p>
 
 <h3 id="practical-implementation">Practical Implementation</h3>
 
-<p>Here's how this might be implemented practically:</p>
+<p>Here's how this might be implemented in a web based online system which processes data though a model that has users:</p>
 
 <ol>
   <li>Write a set of labeling functions.</li>
@@ -239,9 +241,9 @@ I am spending much of my time these days in the world of machine learning and I'
 
 <h3 id="the-counter-speech-issue">The Counter Speech Issue</h3>
 
-<p>My work on this is generally in a hate speech context which means that a problem is counter speech (speech that attempts to address hate speech / fight hate speech).  Given that counter speech tends to use the same words as hate speech, labeling functions that attempt to explain counter speech tend to explain it as hateful (where as the machine learning model tends to identify counter speech as non hateful) .</p>
+<p>My machine learning work is specifically in the arena of identifying / measuring hate speech on public social platforms.  When you work in the hate speech arena, a key consideration is <em>counter speech</em>.  Counter speech is speech that attempts to address hate speech / fight hate speech.  Now the typical mechanism for counter speech is that it often quotes the hateful speech and then attempts to defuse it.  Counter speech when processed through a well defined machine learning model tends to <strong>not</strong> be identified as hateful because the underlying model technology (Bert / Roberta / Albert) understands the linguistic nature of the speech and discount the specific nouns inside it.</p>
 
-<p>The issue here is that regular expressions don't understand the linguistic subtleties that a machine learning model based on bert / roberta / albert does understand.</p>
+<p>Now, given that counter speech tends to use the same words as hate speech, labeling functions that attempt to explain counter speech tend to explain it as hateful (where as the machine learning model tends to identify counter speech as non hateful).  The issue here is that regular expressions don't understand the linguistic subtleties that a machine learning model based on bert / roberta / albert does understand.  A possible way to address this is to enable the explain function to only operate for things are hateful not things that aren't hateful.</p>
 
 <h2 id="references">References</h2>
 

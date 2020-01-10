@@ -7,9 +7,9 @@ tags: ["machine_learning", "python", "snorkel"]
 {:.center}
 ![IMG_0928.jpeg](/blog/assets/IMG_0928.jpeg)
 
-I am spending much of my time these days in the world of machine learning and I'm finding that it is **profoundly interesting**.  One of the most interesting aspects of machine learning, for me, is the black box nature of machine learning's output.  What we typically learn whether from a tensor flow model that did image segmentation or a bert / roberta / albert model that did text processing is what the model thinks but not how it arrived at that result.
+I am spending much of my time these days in the world of machine learning and I'm finding that it is **profoundly interesting**.  One of the most interesting aspects of machine learning, for me, is the *black box* nature of machine learning's output.  What we typically get from a machine learning model what the model thinks but not how it arrived at that result.  And this lack of explainability is true for machine learning whether the underlying technology is Tensor Flow for image segmentation or Bert / Roberta / Albert for text processing.
 
-**Note**:  bert / roberta / alberta are machine learning tools that generate linguistically savvy models that understand English language content.
+**Note**:  Bert / Roberta / Albert are machine learning tools that generate linguistically savvy models that understand English language content.
 
 As a side note, given how hard it is for most people to understand why they think what they think, is the black box nature of machine learning actually all that surprising?
 
@@ -45,11 +45,13 @@ A labeling function is often nothing more than a regular expression that returns
 
 ## Leveraging the Labeling Functions
 
-It is important to understand that the labeling functions aren't a part of the machine learning model -- they simply generate the training data that create the machine learning model.  So when you process a chunk of data through the machine learning model, it can tell you the result but it can't tell you why.  But, and here's the new thing, you could take the chunk of data you processed through the machine learning model and run it through the labeling functions at runtime to get back a set of matches from the labeling functions.  These matches can make the output of the model explainable.
+It is important to understand that the labeling functions aren't a part of the machine learning model -- they simply generate the training data that create the machine learning model.  To draw in a metaphor, labeling functions are like the loom which *creates* the blanket but is *not itself* part of the blanket.  Because the labeling functions aren't actually part of the model, they don't actually run on the data that model processes.  So when you process a chunk of data through the machine learning model, it can tell you the result but it can't tell you why.  
+
+But, and here's the *new thing*, you could take the chunk of data you processed through the machine learning model and run it through the labeling functions at **runtime** to get back a set of matches from the labeling functions.  These matches can make the output of the model explainable.  Labeling functions, even though they are thought solely to a part of the training process, can still be used at runtime.
 
 ### Practical Implementation
 
-Here's how this might be implemented practically:
+Here's how this might be implemented in a web based online system which processes data though a model that has users:
 
 1. Write a set of labeling functions.
 2. Process the data set through the labeling functions and generate a model.
@@ -60,9 +62,9 @@ Here's how this might be implemented practically:
 
 ### The Counter Speech Issue 
 
-My work on this is generally in a hate speech context which means that a problem is counter speech (speech that attempts to address hate speech / fight hate speech).  Given that counter speech tends to use the same words as hate speech, labeling functions that attempt to explain counter speech tend to explain it as hateful (where as the machine learning model tends to identify counter speech as non hateful) .
+My machine learning work is specifically in the arena of identifying / measuring hate speech on public social platforms.  When you work in the hate speech arena, a key consideration is *counter speech*.  Counter speech is speech that attempts to address hate speech / fight hate speech.  Now the typical mechanism for counter speech is that it often quotes the hateful speech and then attempts to defuse it.  Counter speech when processed through a well defined machine learning model tends to **not** be identified as hateful because the underlying model technology (Bert / Roberta / Albert) understands the linguistic nature of the speech and discount the specific nouns inside it. 
 
-The issue here is that regular expressions don't understand the linguistic subtleties that a machine learning model based on bert / roberta / albert does understand.
+Now, given that counter speech tends to use the same words as hate speech, labeling functions that attempt to explain counter speech tend to explain it as hateful (where as the machine learning model tends to identify counter speech as non hateful).  The issue here is that regular expressions don't understand the linguistic subtleties that a machine learning model based on bert / roberta / albert does understand.  A possible way to address this is to enable the explain function to only operate for things are hateful not things that aren't hateful.
 
 ## References
 
