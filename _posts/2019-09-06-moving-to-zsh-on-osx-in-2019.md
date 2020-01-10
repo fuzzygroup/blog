@@ -52,7 +52,7 @@ The file .zshrc is your zsh configuration file.  Edit it as follows:
 2. Comment out the robbyrussell theme line by prefixing it with a # character.
 3. Add the following lines after the robbyrussell theme line (change the username csphere to your own).
 
-Here are the cahnges to make:
+Here are the changes to make:
 
 
     # Oh My Zsh

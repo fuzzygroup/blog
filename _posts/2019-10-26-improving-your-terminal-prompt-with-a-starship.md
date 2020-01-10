@@ -30,7 +30,7 @@ But, and this is a big but -- if you have to customize it with bash, we can do b
 Here's how to get going with it on OSX:
 
 1. Install it with HomeBrew:  **brew install starship**
-2. Add the following to the END of ~/.zshrc: **eval "$(starship init zsh)"**
+2. Add the following to the END  of ~/.zshrc: **eval "$(starship init zsh)"**
 3. Source it with: source ~/.zshrc
 
 One of the reasons the prompt is so damn important isn't your local box but when you're logged into remote boxes such as AWS EC2 instances.  I cannot say just how much I wish this had existed when I was maintaining a large cluster of EC2 instances that I used to log into daily.  Sigh.  
