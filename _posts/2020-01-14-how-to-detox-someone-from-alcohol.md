@@ -48,7 +48,7 @@ This is what I did.  I was sneaky:
 In the grand tradition of a 4th Grade Arts and Crafts project, I picked up a tray table from Good Will and mounted a set of shot glasses on it that correspond to the amount of alcohol consumed during that 24 hour period.  I then presented it to the detoxee. And, lo and behold, math is kinda hard to refute:
 
 {:.center}
-![IMG_1418.jpeg](/blog/assets/IMG_1418.jpeg)
+![IMG_1418a.jpeg](/blog/assets/IMG_1418a.jpeg)
 
 Note: Shot glasses generally are 1.5 ounces.  So take the maximum amount consumed in ounces and then divide by 1.5.  That's the number of shot glasses you need to mount.  Construction adhesive works particularly well for thais.
 
@@ -82,7 +82,7 @@ My friend, you are in a shitty ride.  I remember this process with searing inten
 * Send kids, if you have them, away to stay with relatives
 * Buy your favorite food(s) in bulk and stockpile them so there are treats for you
 * Nap whenever you can.  You are effectively an unpaid nurse who has to clean up vomit buckets, prepare food, be an emotional punching bag, etc.  Sleep helps.
-* Realize that the detoxee isn't actually mad at you; they are mad at themselves and you are just a convenient target.  The emotional abuse that will be leveled at you is beyond toxic and is the single hardest part
+* Realize that the detoxee isn't actually mad at you; they are mad at themselves and you are just a convenient target.  The emotional abuse that will be leveled at you is beyond toxic and this is the single hardest part.
 
 And you can survive this.  I did and so have many, many others since the dawn of time.
 
