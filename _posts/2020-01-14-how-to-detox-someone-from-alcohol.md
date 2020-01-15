@@ -1,6 +1,6 @@
 ---
 layout: post
-title: How to Detox Someone from Alcohol
+title: How to Do Something Hard
 category: alcohol
 tags: ["alcohol", "life"]
 ---
