@@ -9,9 +9,13 @@ tags: ["machine_learning"]
 
 I have written a number of posts about different aspects of Machine Learning but, it occurs to me, not a single one that actually says "Machine Learning is xyz and here are the definitions" so here goes.
 
-> Machine Learning is a technology that allows a computer ("the Machine")  to take a "corpus" of "labeled" "training data" and then "learn" how to do something that the training data teaches the computer.
+> Machine Learning is a technology that allows a computer ("the Machine")  to take a "corpus" of "labeled" "training data" and then "learn" how to do something that the training data teaches the computer. 
 
-And, while it is a simplification, the underlying thing idea driving machine learning is that of *pattern recognition* that is driven by a **neural network**.
+So the above is my definition but let's look at Wikipedia:
+
+> Machine learning (ML) is the scientific study of algorithms and statistical models that computer systems use to perform a specific task without using explicit instructions, relying on patterns and inference instead. It is seen as a subset of artificial intelligence. Machine learning algorithms build a mathematical model based on sample data, known as "training data", in order to make predictions or decisions without being explicitly programmed to perform the task.[1][2]:2 Machine learning algorithms are used in a wide variety of applications, such as email filtering and computer vision, where it is difficult or infeasible to develop a conventional algorithm for effectively performing the task.[Wikipedia](https://en.wikipedia.org/wiki/Machine_learning)
+
+And, while it is a simplification, the underlying thing idea driving machine learning is that of *data driven pattern recognition*.
 
 Basically the Machine Learning process amounts to:
 
