@@ -1,10 +1,13 @@
 ---
 layout: post
-title: How to Do Something Hard
+title: 
 category: alcohol
 tags: ["alcohol", "life"]
 ---
+Immer
 **Note 1**: I write this from real world, personal experience a number of years ago (1998) and it is, to this day, one of the most painful personal memories I have.  If you are taking the time to read this then a) my heart goes out to you because you are almost certainly reading this from a position of need not idle curiosity and b) if you need someone to talk to, my contact info is public and you can reach out.
+
+
 
 **Note 2**: I am not a doctor.  I am not a biologist.  You do this **at your own risk** and there are dedicated alcohol treatment facilities that do this professionally.  Detoxing a serious drinker is risky to their health but it can be done at home and for a fraction of the cost of the alcohol treatment facilities.  But you pay the cost in emotional energy, loss of sleep, etc.
 
