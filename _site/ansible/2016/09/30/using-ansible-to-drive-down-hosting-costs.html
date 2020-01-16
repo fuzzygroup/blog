@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Using Ansible to Drive Down Hosting Costs</title>
-  <meta name="description" content="Ever since the Fall of 2014 I have been trapped in an dysfunctional relationship that I have been unable to leave.  No I’m not talking about a spouse, a boyf...">
+  <meta name="description" content="Ever since the Fall of 2014 I have been trapped in an dysfunctional relationship that I have been unable to leave.  No I'm not talking about a spouse, a boyf...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/ansible/2016/09/30/using-ansible-to-drive-down-hosting-costs.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="Ever since the Fall of 2014 I have been trapped in an dysfunctional relationship that I have been unable to leave.  No I’m not talking about a spouse, a boyfriend or a girlfriend.  I’m talking abou...">
+      content="Ever since the Fall of 2014 I have been trapped in an dysfunctional relationship that I have been unable to leave.  No I'm not talking about a spouse, a boyfriend or a girlfriend.  I'm talking abou...">
   
 
   
@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>Ever since the Fall of 2014 I have been trapped in an <strong>dysfunctional relationship</strong> that I have been unable to leave.  No I’m not talking about a spouse, a boyfriend or a girlfriend.  I’m talking about my hosting company where all my Rails applications live.  And, while I’m talking about Rails, it doesn’t have to be Rails.  It could be PHP, Python, Go, Elixir or anything.</p>
+    <p>Ever since the Fall of 2014 I have been trapped in an <strong>dysfunctional relationship</strong> that I have been unable to leave.  No I'm not talking about a spouse, a boyfriend or a girlfriend.  I'm talking about my hosting company where all my Rails applications live.  And, while I'm talking about Rails, it doesn't have to be Rails.  It could be PHP, Python, Go, Elixir or anything.</p>
 
 <p>Here is what I refer to the <strong><em>economic paradox of hosting</em></strong>:</p>
 
@@ -187,15 +187,15 @@
   <li>Your bills almost always go UP not DOWN.</li>
 </ol>
 
-<p>The issue at hand here is that your hosting company knows that the longer you have a box with them, the more valuable that box becomes to you.  And the paradox is that the value of hardware falls over time.  That 24 gig of RAM box that you contracted for in 2014?  Well it should likely be a 36 gig of RAM box in 2015.  And it would be if you bought it again.  But you didn’t buy it again – you stayed with the machine you had – and your hosting company knows this.  So even tho the machine you’re renting today is worth less than it was when you started with it, your price per month hasn’t gone done.</p>
+<p>The issue at hand here is that your hosting company knows that the longer you have a box with them, the more valuable that box becomes to you.  And the paradox is that the value of hardware falls over time.  That 24 gig of RAM box that you contracted for in 2014?  Well it should likely be a 36 gig of RAM box in 2015.  And it would be if you bought it again.  But you didn't buy it again – you stayed with the machine you had – and your hosting company knows this.  So even tho the machine you're renting today is worth less than it was when you started with it, your price per month hasn't gone done.</p>
 
 <h1 id="servers-should-never-be-unique-snowflakes">Servers Should Never Be Unique Snowflakes</h1>
 
-<p>One of the single best concepts that I’ve learned from cloud computing and all the time I’ve spent doing AWS is that servers should never be unique snowflakes. Servers should be identical resources that you just have.  They should be something that you <strong>generate</strong> and build dynamically as needed.  Need a web server – just generate one.  Need a worker box?  Just generate another one.  And, you know what, even if you have your own infrastructure, its <strong>still true</strong>.</p>
+<p>One of the single best concepts that I've learned from cloud computing and all the time I've spent doing AWS is that servers should never be unique snowflakes. Servers should be identical resources that you just have.  They should be something that you <strong>generate</strong> and build dynamically as needed.  Need a web server – just generate one.  Need a worker box?  Just generate another one.  And, you know what, even if you have your own infrastructure, its <strong>still true</strong>.</p>
 
 <h1 id="ansible-versus-chef">Ansible Versus Chef</h1>
 
-<p>I’ve spent the past week deeply immersed in devops using Ansible.  Ansible is a declarative approach to machine configuration and it is far, far beyond procedural approaches to machine configuration like puppet or chef – the tools I had used previously.  In 2014 I and one other engineer used Chef to provision a data center for 3 applications and over a 45 day period we never actually finished.  We took Chef as far as we were able to and then we had to finish the process manually and every time we needed to make a change to a box, after things were “setup”, we had to do it manually.  Here’s a comment from the other engineer:</p>
+<p>I've spent the past week deeply immersed in devops using Ansible.  Ansible is a declarative approach to machine configuration and it is far, far beyond procedural approaches to machine configuration like puppet or chef – the tools I had used previously.  In 2014 I and one other engineer used Chef to provision a data center for 3 applications and over a 45 day period we never actually finished.  We took Chef as far as we were able to and then we had to finish the process manually and every time we needed to make a change to a box, after things were "setup", we had to do it manually.  Here's a comment from the other engineer:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>with chef, I had no idea after all that time, where I should put what file
 </code></pre>
@@ -215,13 +215,13 @@
   <li>All the tools I rely on are there</li>
   <li>I can add new boxes just by modifying a single inventory file</li>
   <li>Even things I used to have to do manually I can now automate</li>
-  <li>I’ve improved security my adopting elements of the <a href="https://12factor.net">12 factor approach</a></li>
+  <li>I've improved security my adopting elements of the <a href="https://12factor.net">12 factor approach</a></li>
   <li>It works</li>
 </ul>
 
 <h1 id="how-does-this-bring-down-our-costs">How Does this Bring Down Our Costs?</h1>
 
-<p>Well if machines aren’t unique snowflakes, if they are things you can regenerate then you have the ability to better negotiate your rates.  When you’re prepared to go elsewhere, you’ll have the confidence to actually explore your alternatives.  I’ve never even considered moving from the hosting company I went to in 2014 purely because of the amount of effort it would entail.  Now that I can programmatically build the infrastructure I need?  You can bet that I’ll either be asking for lower rates or moving on.</p>
+<p>Well if machines aren't unique snowflakes, if they are things you can regenerate then you have the ability to better negotiate your rates.  When you're prepared to go elsewhere, you'll have the confidence to actually explore your alternatives.  I've never even considered moving from the hosting company I went to in 2014 purely because of the amount of effort it would entail.  Now that I can programmatically build the infrastructure I need?  You can bet that I'll either be asking for lower rates or moving on.</p>
 
   </div>
   

@@ -186,11 +186,11 @@ Note: I am not bitching here about the quality of Rails, High Voltage or any of 
 
 <p>Since I am a software engineer, I am experienced at failure.  One of the absolutely soul diminishing aspects of being a software engineer that none of us talk about is that we <strong>fail</strong>.  We fail <strong>a lot</strong>.  Last night, for example, I spent about four hours in engaged in a soul crushing battle to get the High Voltage gem to work with Rails 6.</p>
 
-<p>The <a href="https://github.com/thoughtbot/high_voltage">High Voltage gem</a> is a gem that lets you put a series of pages like about, support, faq, etc in a directory and it injects into your application a “pseudo controller” that handles the display.  And then, if you aren’t running Rails 6, you can add a markdown gem like <a href="https://github.com/chrisroberts/kramdown-rails">kramdown-rails</a> and then have a directory of files like about.md, faq.md and have these be part of your application.  High voltage, along with a markdown gem, makes static pages an absolute delight.</p>
+<p>The <a href="https://github.com/thoughtbot/high_voltage">High Voltage gem</a> is a gem that lets you put a series of pages like about, support, faq, etc in a directory and it injects into your application a "pseudo controller" that handles the display.  And then, if you aren't running Rails 6, you can add a markdown gem like <a href="https://github.com/chrisroberts/kramdown-rails">kramdown-rails</a> and then have a directory of files like about.md, faq.md and have these be part of your application.  High voltage, along with a markdown gem, makes static pages an absolute delight.</p>
 
-<p>And then came Rails 6.  I put an alpha release of a side project live last night and my buddy <a href="https://nickjanetakis.com/blog/">Nick Janetakis</a> helpfully clicked on the Faq link only to get a 500 error.  “Oh yeah I commented, I’ve got an <a href="https://github.com/thoughtbot/high_voltage/issues/289">issue</a> open on this”.  I checked the issue and even tho I reported it 24 days ago, it was lying fallow.</p>
+<p>And then came Rails 6.  I put an alpha release of a side project live last night and my buddy <a href="https://nickjanetakis.com/blog/">Nick Janetakis</a> helpfully clicked on the Faq link only to get a 500 error.  "Oh yeah I commented, I've got an <a href="https://github.com/thoughtbot/high_voltage/issues/289">issue</a> open on this".  I checked the issue and even tho I reported it 24 days ago, it was lying fallow.</p>
 
-<p>I figured, well, it is 2:30 in the morning and I had a craptacular night, why not dig into a complicated technical issue?  I mean how hard can this be – it is just a pseudo controller, right?  Well that was the beginning of a multiple hour session of low level gem debugging complete with a full round of Tourette’s style cursing that I’m not real proud of but at least no one else was around.</p>
+<p>I figured, well, it is 2:30 in the morning and I had a craptacular night, why not dig into a complicated technical issue?  I mean how hard can this be – it is just a pseudo controller, right?  Well that was the beginning of a multiple hour session of low level gem debugging complete with a full round of Tourette's style cursing that I'm not real proud of but at least no one else was around.</p>
 
 <p>Here are the branch names I created during this fiasco:</p>
 
@@ -207,7 +207,7 @@ Note: I am not bitching here about the quality of Rails, High Voltage or any of 
   <li>throw out fucking markdown insanity and rewrite pages into html erb</li>
 </ul>
 
-<p>And I’d like to point out that no matter how pissed I got, I still followed good engineering practices:</p>
+<p>And I'd like to point out that no matter how pissed I got, I still followed good engineering practices:</p>
 
 <ul>
   <li>all code was always in a branch so I could always revert</li>
@@ -243,7 +243,7 @@ mate /Users/sjohnson/.rvm/gems/ruby-2.6.3/gems/high_voltage-3.1.2
   <li><a href="https://stackoverflow.com/questions/56715152/using-erb-in-markdown-with-redcarpet">https://stackoverflow.com/questions/56715152/using-erb-in-markdown-with-redcarpet</a></li>
 </ul>
 
-<p>Rails 6 changed the render template call from 1 parameter to two parameter and I suspect that’s at the heart of this.</p>
+<p>Rails 6 changed the render template call from 1 parameter to two parameter and I suspect that's at the heart of this.</p>
 
 <p>And there were a few other things I tried.  I got fairly close at the end but I kept getting Markdown issues and, ultimately, I felt it was wiser to just, well, <strong>stop</strong>.</p>
 
@@ -256,7 +256,7 @@ mate /Users/sjohnson/.rvm/gems/ruby-2.6.3/gems/high_voltage-3.1.2
   <li>A cool routing trick</li>
 </ul>
 
-<p>And to make it easier for me, I added a dynamic index template which handles giving me a list of all static pages so I can easily review them. This was a dead simple (and mildy crappy) view but at this point I was about dead on my feet and I just wanted it done.  Here’s the view syntax:</p>
+<p>And to make it easier for me, I added a dynamic index template which handles giving me a list of all static pages so I can easily review them. This was a dead simple (and mildy crappy) view but at this point I was about dead on my feet and I just wanted it done.  Here's the view syntax:</p>
 
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Index</span><span class="o">&lt;</span><span class="sr">/h1&gt;
 &lt;ul&gt;
@@ -272,11 +272,11 @@ mate /Users/sjohnson/.rvm/gems/ruby-2.6.3/gems/high_voltage-3.1.2
 </span></code></pre>
 </div>
 
-<p>This could obviously be quite a bit better but this is one of those features that you write solely for yourself.  It isn’t linked to from anywhere on the site and the only one using it should be me or people on the project.</p>
+<p>This could obviously be quite a bit better but this is one of those features that you write solely for yourself.  It isn't linked to from anywhere on the site and the only one using it should be me or people on the project.</p>
 
 <h1 id="conclusion">Conclusion</h1>
 
-<p>If you do this stuff long enough, you are bound to fail at things.  I mean a software engineer’s entire day basically amounts to “try stuff over and over and stop when it starts working”. And, if you are lucky, then you get to take the time to make it better and maybe improve it.  An embarrassingly large amount of the time that first working bit gets shipped.</p>
+<p>If you do this stuff long enough, you are bound to fail at things.  I mean a software engineer's entire day basically amounts to "try stuff over and over and stop when it starts working". And, if you are lucky, then you get to take the time to make it better and maybe improve it.  An embarrassingly large amount of the time that first working bit gets shipped.</p>
 
   </div>
   

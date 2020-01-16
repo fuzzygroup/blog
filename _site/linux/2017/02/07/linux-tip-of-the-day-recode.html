@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Linux Tip Of The Day - recode</title>
-  <meta name="description" content="As I discussed yesterday, I’m currently talking about the dependencies in John Graham Cummings, hncomments bash script.  At the end of this I’m hoping that I...">
+  <meta name="description" content="As I discussed yesterday, I'm currently talking about the dependencies in John Graham Cummings, hncomments bash script.  At the end of this I'm hoping that I...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/linux/2017/02/07/linux-tip-of-the-day-recode.html">
@@ -178,17 +178,17 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>As I discussed <a href="http://fuzzyblog.io/blog/linux/2017/02/06/linux-tip-of-the-day-jq.html">yesterday</a>, I’m currently talking about the dependencies in John Graham Cummings, <a href="https://github.com/jgrahamc/hncomments/blob/master/hncomments">hncomments</a> bash script.  At the end of this I’m hoping that I have all the pieces that I can actually run this myself.</p>
+    <p>As I discussed <a href="http://fuzzyblog.io/blog/linux/2017/02/06/linux-tip-of-the-day-jq.html">yesterday</a>, I'm currently talking about the dependencies in John Graham Cummings, <a href="https://github.com/jgrahamc/hncomments/blob/master/hncomments">hncomments</a> bash script.  At the end of this I'm hoping that I have all the pieces that I can actually run this myself.</p>
 
-<p>The recode tool, a utility I had never even heard of, converts files between various character sets.  Given all the troubles I’ve had over the years with crawling the different app stores and encodings, I’m glad to learn about this.</p>
+<p>The recode tool, a utility I had never even heard of, converts files between various character sets.  Given all the troubles I've had over the years with crawling the different app stores and encodings, I'm glad to learn about this.</p>
 
-<p>If you’re on Linux then you can install recode with:</p>
+<p>If you're on Linux then you can install recode with:</p>
 
 <blockquote>
   <p>sudo apt-get install recode</p>
 </blockquote>
 
-<p>If you’re on OSX then install recode with:</p>
+<p>If you're on OSX then install recode with:</p>
 
 <blockquote>
   <p>brew install recode</p>
@@ -239,12 +239,12 @@ Fine tuning:
   <table>
     <tbody>
       <tr>
-        <td>jq -r ‘.hits</td>
+        <td>jq -r '.hits</td>
         <td>.[]</td>
-        <td>.author + “\nhttps://news.ycombinator.com/item?id=” + .objectID + “\n\n” + .comment_text + “\n\n—\n\n”’ &lt;(echo $j)</td>
-        <td>sed -e ‘s/&lt;[^&gt;]*&gt;/ /g;’</td>
+        <td>.author + "\nhttps://news.ycombinator.com/item?id=" + .objectID + "\n\n" + .comment_text + "\n\n—\n\n"' &lt;(echo $j)</td>
+        <td>sed -e 's/&lt;[^&gt;]*&gt;/ /g;'</td>
         <td><strong>recode</strong> -f html..ascii</td>
-        <td>mail -s “Latest $q HN comments” $e</td>
+        <td>mail -s "Latest $q HN comments" $e</td>
       </tr>
     </tbody>
   </table>

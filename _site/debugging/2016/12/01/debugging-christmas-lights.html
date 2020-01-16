@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>In any family, over time, you specialize in your roles.  This is similar to a work environment where one person gets good at an aspect of the code base and then that person gets tasked with it on a regular basis.  In an ideal world everyone would always be 100% capable at all aspects of the code but we all know that’s generally not the case.  In our family, Dad (me) puts up the Christmas lights.  Part of it is that I don’t mind heights terribly, not the same as saying I like them but you get it but the other part of it is that <em>debugging crap that doesn’t work</em> is really my very job definition.  And, a few days ago I wanted this:</p>
+    <p>In any family, over time, you specialize in your roles.  This is similar to a work environment where one person gets good at an aspect of the code base and then that person gets tasked with it on a regular basis.  In an ideal world everyone would always be 100% capable at all aspects of the code but we all know that's generally not the case.  In our family, Dad (me) puts up the Christmas lights.  Part of it is that I don't mind heights terribly, not the same as saying I like them but you get it but the other part of it is that <em>debugging crap that doesn't work</em> is really my very job definition.  And, a few days ago I wanted this:</p>
 
 <p><img src="/blog/assets/debugging_xmas_lights.jpg" alt="debugging_xmas_lights.jpg" /></p>
 
@@ -186,15 +186,15 @@
 
 <p><img src="/blog/assets/debugging_xmas_lights2.jpg" alt="debugging_xmas_lights2.jpg" /></p>
 
-<p>And while I was initially reminded of the Bob Rivers / Twisted Christmas album - “I plug in one light and THEY ALL #$#(<em>$</em>#) go OUT”, that wasn’t this.  Everything worked perfectly – until it all stopped.  Sigh.</p>
+<p>And while I was initially reminded of the Bob Rivers / Twisted Christmas album - "I plug in one light and THEY ALL #$#(<em>$</em>#) go OUT", that wasn't this.  Everything worked perfectly – until it all stopped.  Sigh.</p>
 
-<p>The very essence of debugging is the quest for understanding and your key tool is <em>persistence</em>.  I’ve worked with a lot of smart people in my life, many of them dramatically smarter than I am but I haven’t worked with many people who are as persistent.  Whether you are debugging software, hardware or even christmas lights, <em>persistence</em> is what you want.  If you just think of yourself as a dog with a bone, that’s the right image.</p>
+<p>The very essence of debugging is the quest for understanding and your key tool is <em>persistence</em>.  I've worked with a lot of smart people in my life, many of them dramatically smarter than I am but I haven't worked with many people who are as persistent.  Whether you are debugging software, hardware or even christmas lights, <em>persistence</em> is what you want.  If you just think of yourself as a dog with a bone, that's the right image.</p>
 
 <p>Ok then.  The first step was to get out the tools.  Happily I recently bought a <a href="https://www.amazon.com/gp/product/B019EJXUJU/ref=oh_aui_search_detailpage?ie=UTF8&amp;psc=1">non-contact AC voltage tester from Amazon</a>:</p>
 
 <p><img src="/blog/assets/non_contact_tester.jpg" alt="debugging_xmas_lights2.jpg" /></p>
 
-<p>What this does is essentially <em>sniff</em> electricity.  I’m not enough of a hardware guy to really understand it but I tried it and it works!  Given that I was doing this on a rainy day, not having to manipulate two test leads or a digital volt ohm meter was a huge, huge win.  This little gadget is actually sensitive enough that you can touch it to the end of a lightning cable and it will detect the voltage there so, apparently, it does both DC and AC.  Oh and did I mention it has an LED pen light built into it?  This thing rocks!</p>
+<p>What this does is essentially <em>sniff</em> electricity.  I'm not enough of a hardware guy to really understand it but I tried it and it works!  Given that I was doing this on a rainy day, not having to manipulate two test leads or a digital volt ohm meter was a huge, huge win.  This little gadget is actually sensitive enough that you can touch it to the end of a lightning cable and it will detect the voltage there so, apparently, it does both DC and AC.  Oh and did I mention it has an LED pen light built into it?  This thing rocks!</p>
 
 <p>Whenever you have something, related to electricity, that happens after a period of latency, the natural suspect is somehow thermal or load related.  But here was the aggregate load:</p>
 
@@ -206,7 +206,7 @@
 
 <p>Two of the strings and the projector were all plugged into a contractor grade, 20 amp, thick as hell extension cord coming from a GFCI outlet.  Call this one Big Green.  The remaining two strings were plugged into a separate contractor grade cord but one that was only 15 amp.  And call this Little Orange.  Both of these have served me thru tree house building, home remodeling, etc.</p>
 
-<p>This isn’t sufficient load to trip a breaker.  I grew up doing AC wiring stuff so I have no issues stating that as a fact.</p>
+<p>This isn't sufficient load to trip a breaker.  I grew up doing AC wiring stuff so I have no issues stating that as a fact.</p>
 
 <p>So if we think of this in terms of debugging here are the different components at hand:</p>
 
@@ -221,11 +221,11 @@
   <li>GFCI outlet</li>
 </ul>
 
-<p>Any one of these, or any combination of these, could be leading to this problem.  And since it only happened after 10 minutes, I knew that at a worst case I was looking at N * 10 minutes in terms of potential maximum time that I’d be trouble shooting this where N was the number of components, 8.  So this was potentially at least a 90 minute plus exercise.  Given that the amount of time involved was now known to be non trivial, it was time to start by eliminating things outright.</p>
+<p>Any one of these, or any combination of these, could be leading to this problem.  And since it only happened after 10 minutes, I knew that at a worst case I was looking at N * 10 minutes in terms of potential maximum time that I'd be trouble shooting this where N was the number of components, 8.  So this was potentially at least a 90 minute plus exercise.  Given that the amount of time involved was now known to be non trivial, it was time to start by eliminating things outright.</p>
 
-<p>Note: My worst case estimate was actually incorrect.  If the problem was combinatorial in nature like string 1 interacting with string 3 and causing the outage, well, I’m glad I didn’t realize this – its a lot more options.</p>
+<p>Note: My worst case estimate was actually incorrect.  If the problem was combinatorial in nature like string 1 interacting with string 3 and causing the outage, well, I'm glad I didn't realize this – its a lot more options.</p>
 
-<p>My first task was to remove the power strip.  My wife had wanted to add more lasers to the mix so that was there to support the end goal – but we don’t have them yet so it was a case of over-engineering.  So, remove powerstrip, rejigger wires, try again.  <strong>10 minute and darkness!</strong></p>
+<p>My first task was to remove the power strip.  My wife had wanted to add more lasers to the mix so that was there to support the end goal – but we don't have them yet so it was a case of over-engineering.  So, remove powerstrip, rejigger wires, try again.  <strong>10 minute and darkness!</strong></p>
 
 <p>My next step was to look at this in terms of overall complexity.  The most complex component is generally the one most likely to fail.  That meant that I should pull the laser projector from the mix.  Even though it was brand, stinking new, it is definitely more complex than christmas lights so out it goes.  And, once again, <strong>10 minute and darkness!</strong></p>
 
@@ -238,9 +238,9 @@
   <li><strong>10 minute and darkness!</strong></li>
 </ul>
 
-<p><em>Grumble</em>.  Ok then so what’s left.  At this point we’re down to two extensions cords.  Little Orange isn’t as robust as big green so let’s take that out of the loop - <strong>10 minute and darkness!</strong></p>
+<p><em>Grumble</em>.  Ok then so what's left.  At this point we're down to two extensions cords.  Little Orange isn't as robust as big green so let's take that out of the loop - <strong>10 minute and darkness!</strong></p>
 
-<p>Hm… The message seems clear – we’re down to Big Green so let’s un plug it and substitute another one:</p>
+<p>Hm… The message seems clear – we're down to Big Green so let's un plug it and substitute another one:</p>
 
 <ul>
   <li><strong>10 minute and LIGHT!</strong></li>
@@ -248,20 +248,20 @@
   <li><strong>10 more minute and still LIGHT!</strong></li>
 </ul>
 
-<p>So we’re good now but what went wrong?  To some extent if you debug something and you don’t actually understand the failure cause at the end then you may have won the battle but you have perhaps lost the war as the real goal should always be understanding.</p>
+<p>So we're good now but what went wrong?  To some extent if you debug something and you don't actually understand the failure cause at the end then you may have won the battle but you have perhaps lost the war as the real goal should always be understanding.</p>
 
 <p>When I look a more detailed look at my Big Green extension cord I saw this:</p>
 
 <p><img src="/blog/assets/big_green_big_culprit.jpg" alt="big_green_big_culprit.jpg" /></p>
 
-<p>Apparently I’ve fixed this extension cord in the past – and then it all made sense.  If you remember I have this all going into a GFCI outlet and I also mentioned that I was doing all this in the rain.  And that was the vital clue.  GFCI stands for Ground Fault Circuit Interrupter and it is a way for an electrical outlet to automatically shut down in dangerous conditions.  Since a GFCI outlet is more expensive than a standard outlet you don’t see them everywhere but they are <strong>required</strong> for use in commercial bathrooms due to the potential issues with respect to water and electricity.  And if your home builder was any good you likely have them in your home bathrooms for the same reason.</p>
+<p>Apparently I've fixed this extension cord in the past – and then it all made sense.  If you remember I have this all going into a GFCI outlet and I also mentioned that I was doing all this in the rain.  And that was the vital clue.  GFCI stands for Ground Fault Circuit Interrupter and it is a way for an electrical outlet to automatically shut down in dangerous conditions.  Since a GFCI outlet is more expensive than a standard outlet you don't see them everywhere but they are <strong>required</strong> for use in commercial bathrooms due to the potential issues with respect to water and electricity.  And if your home builder was any good you likely have them in your home bathrooms for the same reason.</p>
 
 <p>So what seems to have been happening was that moisture was slowly affecting the Big Green extension cord.  After about 10 minutes it caused a GFCI issue which led to a power shut down.  Strangely it seemed to clear itself up almost immediately.  Odder still is that when I checked the extension cord with a circuit tester designed to catch GFCI wiring errors it reported just fine.</p>
 
 <p>The morals of the story seem to be:</p>
 
 <ul>
-  <li>Don’t fix your extension cord – just replace it</li>
+  <li>Don't fix your extension cord – just replace it</li>
   <li>Debugging is the same when its software, hardware or christmas mights – it call comes down to persistence</li>
   <li>Anything can be debugged, you just have to take it step by step, bit by bit</li>
 </ul>

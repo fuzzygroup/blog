@@ -188,7 +188,7 @@
 </code></pre>
 </div>
 
-<p>and you’ll get back a per database assessment of disc space used.  That’s the easiest way to get this information.  Here’s what it looks like:</p>
+<p>and you'll get back a per database assessment of disc space used.  That's the easiest way to get this information.  Here's what it looks like:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>| seira_crawler_development         | 354.68750000 |
 | seira_crawler_test                |   0.23437500 |
@@ -207,7 +207,7 @@
 </code></pre>
 </div>
 
-<p>You’ll see something like this:</p>
+<p>You'll see something like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>mysql -uUSER -p -e 'SHOW VARIABLES WHERE Variable_Name LIKE "%dir"'
 Enter password:
@@ -243,7 +243,7 @@ Enter password:
 </code></pre>
 </div>
 
-<p>That’s the metric for my backing crawler data archive.  The data for a single user instance is:</p>
+<p>That's the metric for my backing crawler data archive.  The data for a single user instance is:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>du -hc /usr/local/var/mysql/seira_watch_web_app_1_development/
  12M    /usr/local/var/mysql/seira_watch_web_app_1_development/
@@ -257,7 +257,7 @@ Enter password:
 
 <h1 id="adding-the-numbers-to-a-dashboard">Adding the Numbers to a Dashboard</h1>
 
-<p>If your SAAS app supports an admin tool of any type then you want to watch the growth of this number pretty carefully since unexpected database growth can lead to system outages and the like.  Here’s a quick Ruby snippet to get this information as a float which you could log, graph, etc:</p>
+<p>If your SAAS app supports an admin tool of any type then you want to watch the growth of this number pretty carefully since unexpected database growth can lead to system outages and the like.  Here's a quick Ruby snippet to get this information as a float which you could log, graph, etc:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>def self.database_size
   sql = "select table_schema, sum((data_length+index_length)/1024/1024) AS MB from information_schema.tables where table_schema='#{Rails.configuration.database_configuration[Rails.env]["database"]}' group by 1;"
@@ -267,9 +267,9 @@ end
 </code></pre>
 </div>
 
-<p>I’m getting the name of the current database in an environment agnostic way using: <strong>Rails.configuration.database_configuration[Rails.env][“database”]</strong>.  That value was read from the configuration file.  You could also get it from: <strong>ActiveRecord::Base.connection.current_database</strong> (which to use depends on whether or not you are using ActiveRecord or a different storage abstraction).</p>
+<p>I'm getting the name of the current database in an environment agnostic way using: <strong>Rails.configuration.database_configuration[Rails.env]["database"]</strong>.  That value was read from the configuration file.  You could also get it from: <strong>ActiveRecord::Base.connection.current_database</strong> (which to use depends on whether or not you are using ActiveRecord or a different storage abstraction).</p>
 
-<p>Note: I’m feed this, via a JSON feed, to my new Cartazzi engine and I’m pretty pleased with this as an admin tool.</p>
+<p>Note: I'm feed this, via a JSON feed, to my new Cartazzi engine and I'm pretty pleased with this as an admin tool.</p>
 
 <h1 id="references">References</h1>
 

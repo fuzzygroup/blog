@@ -204,22 +204,22 @@ That covers literally 99% of what I...">
   <li>git diff</li>
 </ul>
 
-<p>That covers literally 99% of what I have to do with git on a daily basis.  So when you need to do something more complex it can be a bit disconcerting.  Today I had to revert to a previous git hash and make that commit, from 2 days ago, master.  Here’s the process:</p>
+<p>That covers literally 99% of what I have to do with git on a daily basis.  So when you need to do something more complex it can be a bit disconcerting.  Today I had to revert to a previous git hash and make that commit, from 2 days ago, master.  Here's the process:</p>
 
 <p>Note 1: If you want to preserve your previous master then do a git checkout from the pushed repo into a separate directory on your machine.  Without this the git repo actually loses all the changes between the start and end of the hash you reverted to.</p>
 
 <ol>
   <li>Use github to find the commit you want to revert to.  This will be referred to as COMMIT_HASH</li>
-  <li>Commit everything currently in progress so you don’t get any error messages about it.  Or delete everything (I have a git trash alias which does checkout -f).</li>
+  <li>Commit everything currently in progress so you don't get any error messages about it.  Or delete everything (I have a git trash alias which does checkout -f).</li>
   <li>Change back to master with <strong>git co master</strong></li>
   <li>Use this command: <strong>git reset –hard COMMIT_HASH</strong></li>
   <li>Verify your changes are there with <strong>git log</strong></li>
-  <li>This makes COMMIT_HASH your local master.  However you will NOT be able to push because you have “time traveled” to the past.  The secret here is to do a -f push so your changes are forced to the serve.  Use this command: <strong>git push -f origin master</strong></li>
+  <li>This makes COMMIT_HASH your local master.  However you will NOT be able to push because you have "time traveled" to the past.  The secret here is to do a -f push so your changes are forced to the serve.  Use this command: <strong>git push -f origin master</strong></li>
 </ol>
 
-<p>Note 2: In this case I didn’t even try to preserve the changes made within that 2 day period.  That’s possible but definitely harder.</p>
+<p>Note 2: In this case I didn't even try to preserve the changes made within that 2 day period.  That's possible but definitely harder.</p>
 
-<p>Note 3: The -f overwrites what’s on the server since COMMIT_HASH so it will never be available.  <strong>Please understand this well before doing this.</strong></p>
+<p>Note 3: The -f overwrites what's on the server since COMMIT_HASH so it will never be available.  <strong>Please understand this well before doing this.</strong></p>
 
 <p>Note 4: My pairing buddy, <a href="http://www.dasari.me">Dv</a>, helped out with this.  Thanks man!</p>
 

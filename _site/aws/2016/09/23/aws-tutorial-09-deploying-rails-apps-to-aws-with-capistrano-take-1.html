@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>AWS Tutorial 09 - Deploying Rails Apps With Capistrano Take 1</title>
-  <meta name="description" content="In this tutorial we’re going to use the latest version of Capistrano to deploy your Rails app onto one or more EC2 instances.  I’m dividing this tutorial int...">
+  <meta name="description" content="In this tutorial we're going to use the latest version of Capistrano to deploy your Rails app onto one or more EC2 instances.  I'm dividing this tutorial int...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/aws/2016/09/23/aws-tutorial-09-deploying-rails-apps-to-aws-with-capistrano-take-1.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="In this tutorial we’re going to use the latest version of Capistrano to deploy your Rails app onto one or more EC2 instances.  I’m dividing this tutorial into two parts:
+      content="In this tutorial we're going to use the latest version of Capistrano to deploy your Rails app onto one or more EC2 instances.  I'm dividing this tutorial into two parts:
 
 
   Take 1 where a static s...">
@@ -181,7 +181,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>In this tutorial we’re going to use the latest version of Capistrano to deploy your Rails app onto one or more EC2 instances.  I’m dividing this tutorial into two parts:</p>
+    <p>In this tutorial we're going to use the latest version of Capistrano to deploy your Rails app onto one or more EC2 instances.  I'm dividing this tutorial into two parts:</p>
 
 <ul>
   <li>Take 1 where a static set of boxes is encoded into your deploy/production.rb file</li>
@@ -192,7 +192,7 @@
 
 <h1 id="tools">Tools</h1>
 
-<p>In this tutorial I’m going to be specific to:</p>
+<p>In this tutorial I'm going to be specific to:</p>
 
 <ul>
   <li>Capistrano</li>
@@ -201,11 +201,11 @@
   <li>RVM</li>
 </ul>
 
-<p>That’s my standard Rails stack and while other configurations will work, NGINX is a favorite of people, that’s the only stack I personally understand end to end.</p>
+<p>That's my standard Rails stack and while other configurations will work, NGINX is a favorite of people, that's the only stack I personally understand end to end.</p>
 
 <h1 id="getting-started---add-capistrano-to-your-gemfile">Getting Started - Add Capistrano to Your Gemfile</h1>
 
-<p>You’re going to want to use Capistrano 3.6 or later.  Earlier versions of Capistrano should work but, in my experience, Capistrano 3.6 is a much better release - it took me away from Vlad finally and for that I was glad.</p>
+<p>You're going to want to use Capistrano 3.6 or later.  Earlier versions of Capistrano should work but, in my experience, Capistrano 3.6 is a much better release - it took me away from Vlad finally and for that I was glad.</p>
 
 <p>If your Gemfile you want something like this:</p>
 
@@ -264,7 +264,7 @@ set :deploy_to, '/var/www/apps/banks'
 
 <h1 id="modifying-configdeployproductionrb">Modifying config/deploy/production.rb</h1>
 
-<p>The file config/deploy/production.rb covers the servers you are deploying to in the production environment. If you’re setting up a staging server then there is a similar file in config/deploy/staging.rb.</p>
+<p>The file config/deploy/production.rb covers the servers you are deploying to in the production environment. If you're setting up a staging server then there is a similar file in config/deploy/staging.rb.</p>
 
 <p>Before you start does this section I strongly, strong, strongly advice you to read my <a href="https://fuzzygroup.github.io/blog/aws/2016/09/20/aws-tutorial-08-using-ssh-s-config-file-with-your-aws-boxes.html">AWS Tutorial on the SSH Config file</a>.  You can use the approach in that file to identify your boxes.  If you do then this line:</p>
 
@@ -278,7 +278,7 @@ set :deploy_to, '/var/www/apps/banks'
 </code></pre>
 </div>
 
-<p>Not only is this simpler to understand but it centralizes all your EC2 machine addresses in one place.  That’s a huge win.</p>
+<p>Not only is this simpler to understand but it centralizes all your EC2 machine addresses in one place.  That's a huge win.</p>
 
 <p>Regardless of the approach you decide to take, you need one line in this file for each EC2 instance along with the roles the instance provides.</p>
 

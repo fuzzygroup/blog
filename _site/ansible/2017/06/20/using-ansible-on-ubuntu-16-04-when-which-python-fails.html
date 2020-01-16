@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Using Ansible on Ubuntu 16.04 When which python Fails</title>
-  <meta name="description" content="Ansible is my favorite devops tool.  I’ve used Chef extensively and despite my Ruby background, well, I hated it.  I’ve slutted around with TerraForm; I’ve p...">
+  <meta name="description" content="Ansible is my favorite devops tool.  I've used Chef extensively and despite my Ruby background, well, I hated it.  I've slutted around with TerraForm; I've p...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/ansible/2017/06/20/using-ansible-on-ubuntu-16-04-when-which-python-fails.html">
@@ -178,11 +178,11 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p><a href="https://www.ansible.com">Ansible</a> is my favorite devops tool.  I’ve used <a href="https://www.chef.io/chef/">Chef</a> extensively and despite my Ruby background, well, I hated it.  I’ve slutted around with <a href="https://www.terraform.io">TerraForm</a>; I’ve played with <a href="https://puppet.com">Puppet</a> and I’ve put <a href="https://saltstack.com">Salt</a> on my food and servers but time in and time out, I always come back to Ansible.  I even like Ansible enough that I wrote about it recently on <a href="https://www.quora.com/What-do-I-need-to-study-before-studying-Ansible-Im-from-a-networking-background-and-we-like-to-do-automation-via-Ansible/answer/Scott-Johnson-16">a Quora post</a>.</p>
+    <p><a href="https://www.ansible.com">Ansible</a> is my favorite devops tool.  I've used <a href="https://www.chef.io/chef/">Chef</a> extensively and despite my Ruby background, well, I hated it.  I've slutted around with <a href="https://www.terraform.io">TerraForm</a>; I've played with <a href="https://puppet.com">Puppet</a> and I've put <a href="https://saltstack.com">Salt</a> on my food and servers but time in and time out, I always come back to Ansible.  I even like Ansible enough that I wrote about it recently on <a href="https://www.quora.com/What-do-I-need-to-study-before-studying-Ansible-Im-from-a-networking-background-and-we-like-to-do-automation-via-Ansible/answer/Scott-Johnson-16">a Quora post</a>.</p>
 
 <p>One of the beautiful things about Ansible is that it <strong>does not</strong> require a server side agent.  Ansible works via SSH purely and that means that as long as you can login to the server then you can use Ansible to provision it, update it, deploy stuff, etc.</p>
 
-<p>I just deployed my first ever Ubuntu 16.04 LTS box on AWS the other day and one of my surprises was that a which python <strong>failed</strong>.  Oy vey.  This means that you can’t use Ansible without installing Python – or so I thought.  Happily a bit of googling and I discovered the <a href="https://docs.ansible.com/ansible/python_3_support.html">ansible_python_interpreter</a> option which lets you override the default of Python 2 and use Python 3.  This gets, oddly, embedded in the inventories file:</p>
+<p>I just deployed my first ever Ubuntu 16.04 LTS box on AWS the other day and one of my surprises was that a which python <strong>failed</strong>.  Oy vey.  This means that you can't use Ansible without installing Python – or so I thought.  Happily a bit of googling and I discovered the <a href="https://docs.ansible.com/ansible/python_3_support.html">ansible_python_interpreter</a> option which lets you override the default of Python 2 and use Python 3.  This gets, oddly, embedded in the inventories file:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>[web]
 site1 ansible_ssh_host=foo.com

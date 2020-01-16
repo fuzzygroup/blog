@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Understanding Docker Multi Stage Builds - Installing Python and Ruby in the Same Dockerfile</title>
-  <meta name="description" content="Now that I’ve come up to speed on Python, I have an application in production that uses both Python and Ruby.  What it does isn’t really important but gettin...">
+  <meta name="description" content="Now that I've come up to speed on Python, I have an application in production that uses both Python and Ruby.  What it does isn't really important but gettin...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/docker/2019/11/22/understanding-docker-overlays-multiple-from-statements.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="Now that I’ve come up to speed on Python, I have an application in production that uses both Python and Ruby.  What it does isn’t really important but getting it live posed an interesting deploymen...">
+      content="Now that I've come up to speed on Python, I have an application in production that uses both Python and Ruby.  What it does isn't really important but getting it live posed an interesting deploymen...">
   
 
   
@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>Now that I’ve come up to speed on Python, I have an application in production that uses both Python and Ruby.  What it does isn’t really important but getting it live posed an interesting deployment challenge due to the need to have both Python and Ruby concurrently.</p>
+    <p>Now that I've come up to speed on Python, I have an application in production that uses both Python and Ruby.  What it does isn't really important but getting it live posed an interesting deployment challenge due to the need to have both Python and Ruby concurrently.</p>
 
 <p>My initial attempt to make this was work was a native install using Python 3.7 and a fairly large set of Python dependencies on an Ubuntu 18.04 AWS instance.  Unfortunately I kept hitting issues where, well, things just went to hell.  This had me turn to Docker and my thinking was that I should be able to easily build a Dockerfile that supported both Python and Rails.  <em>chuckle</em>.  Nothing in Docker is actually easy but I got there.</p>
 
@@ -186,7 +186,7 @@
 
 <h2 id="python-dockerfile-attempt-1">Python Dockerfile Attempt 1</h2>
 
-<p>I don’t have a full record of this but I tried to pull in a traditional Python install using apt-get.  This worked fairly horribly for reasons that escape me.</p>
+<p>I don't have a full record of this but I tried to pull in a traditional Python install using apt-get.  This worked fairly horribly for reasons that escape me.</p>
 
 <h2 id="welcome-to-overlays-and-multiple-from-statements">Welcome to Overlays and Multiple From Statements</h2>
 
@@ -200,9 +200,9 @@ FROM ruby:2.6.4-stretch
 </code></pre>
 </div>
 
-<p>The term for this is a <a href="https://dev.to/brpaz/using-docker-multi-stage-builds-during-development-35bc">Docker Multi Stage Build</a>.  The trick here is that the output from each FROM statement is logically isolated from each other.  The reason for this is actually pretty simple – standard directory structures.  Given that most *nix environments use similar top level structures like /opt, you simply can’t combine things blindly – it needs to be an intentional choice using, <strong>drumroll</strong>, <strong>copy</strong>!</p>
+<p>The term for this is a <a href="https://dev.to/brpaz/using-docker-multi-stage-builds-during-development-35bc">Docker Multi Stage Build</a>.  The trick here is that the output from each FROM statement is logically isolated from each other.  The reason for this is actually pretty simple – standard directory structures.  Given that most *nix environments use similar top level structures like /opt, you simply can't combine things blindly – it needs to be an intentional choice using, <strong>drumroll</strong>, <strong>copy</strong>!</p>
 
-<p>Here’s what this multi stage build stuff looked like:</p>
+<p>Here's what this multi stage build stuff looked like:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>FROM continuumio/miniconda3:latest AS python
 RUN apt-get update &amp;&amp; apt-get install build-essential python3-dev -y
@@ -221,14 +221,14 @@ COPY --from=python /opt/conda/bin/python /opt/conda/bin/python
 </code></pre>
 </div>
 
-<p>The last block of lines above show the process of copying from python (the FROM line at the top is named with the “AS python”) and there are two copy statements that were really necessary:</p>
+<p>The last block of lines above show the process of copying from python (the FROM line at the top is named with the "AS python") and there are two copy statements that were really necessary:</p>
 
 <ul>
   <li>The twint executable needed to be copied to something in the path.  I chose /usr/bin.</li>
-  <li>Since the twint “executable” is written in python, the entire python supporting libraries needed to come with it.  Since this was located in /opt/conda originally and nothing in Ruby used that path, I could simply copy all of it from the python container over to the ruby container.</li>
+  <li>Since the twint "executable" is written in python, the entire python supporting libraries needed to come with it.  Since this was located in /opt/conda originally and nothing in Ruby used that path, I could simply copy all of it from the python container over to the ruby container.</li>
 </ul>
 
-<p><strong>Note</strong>: I tried a few different ways to do the copy and I never narrowed it down to which copy statement was exactly needed.  Apologies.  I suspect it should be nothing but “COPY –from=python /opt/conda /opt/conda/” but Docker’s documentation on COPY was less than helpful.</p>
+<p><strong>Note</strong>: I tried a few different ways to do the copy and I never narrowed it down to which copy statement was exactly needed.  Apologies.  I suspect it should be nothing but "COPY –from=python /opt/conda /opt/conda/" but Docker's documentation on COPY was less than helpful.</p>
 
 <h2 id="figuring-out-where-twint-existed">Figuring Out Where twint Existed</h2>
 
@@ -240,7 +240,7 @@ COPY --from=python /opt/conda/bin/python /opt/conda/bin/python
   <li>Shell into it and then use ls and which to find things</li>
 </ul>
 
-<p>Here’s how I did this:</p>
+<p>Here's how I did this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>mkdir ~/twint
 touch ~/twint/Dockerfile
@@ -332,7 +332,7 @@ CMD puma -C config/puma.rb
 
 <h2 id="ubuntu-not-alpine">Ubuntu Not Alpine</h2>
 
-<p>Yes, yes, yes, I know that I really should have used Alpine.  I started from Ubuntu because I know it well and the additional overhead of Ubuntu wasn’t an issue for this product (a small internal application).</p>
+<p>Yes, yes, yes, I know that I really should have used Alpine.  I started from Ubuntu because I know it well and the additional overhead of Ubuntu wasn't an issue for this product (a small internal application).</p>
 
   </div>
   

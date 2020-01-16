@@ -178,15 +178,15 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p><strong>Disclaimer 1</strong>: Recently at ElixirConf I met Pete Gamache, the CTO of an Internet company and he showed me his Fuzzyurl Gem which is implemented in Ruby, JavaScript and Elixir.  Given my propensity for implementing crawlers / scrapers / content processors, I was immediately intrigued and it is a <strong>quality</strong> bit of software.  Unfortunately in assessing it for our production use, I found a bug.  I have reported it as an issue and I’m sure it will get addressed, and there is an easy work around, but finding this bug raises the question of “How do you know if a gem is ready for production use?”  So I wanted to write this NOT to slam Pete’s work – which, again, is excellent – but to teach the point that you don’t blindly assume that code on the Internet always works.</p>
+    <p><strong>Disclaimer 1</strong>: Recently at ElixirConf I met Pete Gamache, the CTO of an Internet company and he showed me his Fuzzyurl Gem which is implemented in Ruby, JavaScript and Elixir.  Given my propensity for implementing crawlers / scrapers / content processors, I was immediately intrigued and it is a <strong>quality</strong> bit of software.  Unfortunately in assessing it for our production use, I found a bug.  I have reported it as an issue and I'm sure it will get addressed, and there is an easy work around, but finding this bug raises the question of "How do you know if a gem is ready for production use?"  So I wanted to write this NOT to slam Pete's work – which, again, is excellent – but to teach the point that you don't blindly assume that code on the Internet always works.</p>
 
-<p><strong>Disclaimer 2</strong>: Before I even could finish this post, Pete responded to the <a href="https://github.com/gamache/fuzzyurl.rb/issues/2">Github Issue</a> I raised and it looks like he’s going to fix it.  Thanks man!</p>
+<p><strong>Disclaimer 2</strong>: Before I even could finish this post, Pete responded to the <a href="https://github.com/gamache/fuzzyurl.rb/issues/2">Github Issue</a> I raised and it looks like he's going to fix it.  Thanks man!</p>
 
-<p><strong>Disclaimer 3</strong>: Having added a new engineer recently this post is written for him so he understands that before you grab a new gem and rely on it willy, nilly, you put some consideration into it.  I actually think he knows this already but the engineer we hire after him?  Well that’s unknown so …</p>
+<p><strong>Disclaimer 3</strong>: Having added a new engineer recently this post is written for him so he understands that before you grab a new gem and rely on it willy, nilly, you put some consideration into it.  I actually think he knows this already but the engineer we hire after him?  Well that's unknown so …</p>
 
-<p>So I recently found the ruby Gem <a href="https://github.com/gamache/fuzzyurl.rb/">Fuzzyurl</a> by Pete Gamache and I am intrigued.  As part of my current work I am the mildly unhappy maintainer of massive class - roughly 5K lines dealing with nothing but url parsing and handling.  What you find, the moment you say “I’ll write a crawler”, is that most of the Internet is non RFC compliant and you’re dealing with a witches brew of nastiness.  Standard tools like URI.parse, <em>snort</em>, well I might have some choice words for the author.  So when I found Pete’s work, the fact that it was implemented in Ruby, JavaScript and Elixir was intriguing to say the least.  Perhaps I might not have to port my url code to Elixir – that would be a huge win.  And since I’m pretty sure that Pete actually <em>designed</em> this as opposed to the organic “here a problem; there a routine” approach I used to write my library, I’m pretty close to certain that it has to be better than mine.  Mine might handle a ton of weird edge cases but it was never designed – just implemented in a “<a href="https://en.wikipedia.org/wiki/Root_hog,_or_die">root, hog or die</a>” fashion.</p>
+<p>So I recently found the ruby Gem <a href="https://github.com/gamache/fuzzyurl.rb/">Fuzzyurl</a> by Pete Gamache and I am intrigued.  As part of my current work I am the mildly unhappy maintainer of massive class - roughly 5K lines dealing with nothing but url parsing and handling.  What you find, the moment you say "I'll write a crawler", is that most of the Internet is non RFC compliant and you're dealing with a witches brew of nastiness.  Standard tools like URI.parse, <em>snort</em>, well I might have some choice words for the author.  So when I found Pete's work, the fact that it was implemented in Ruby, JavaScript and Elixir was intriguing to say the least.  Perhaps I might not have to port my url code to Elixir – that would be a huge win.  And since I'm pretty sure that Pete actually <em>designed</em> this as opposed to the organic "here a problem; there a routine" approach I used to write my library, I'm pretty close to certain that it has to be better than mine.  Mine might handle a ton of weird edge cases but it was never designed – just implemented in a "<a href="https://en.wikipedia.org/wiki/Root_hog,_or_die">root, hog or die</a>" fashion.</p>
 
-<p>So let’s return to the title of this blog post – How Do You Know if a Gem is Ready for Production Use?  There are a bunch of ways:</p>
+<p>So let's return to the title of this blog post – How Do You Know if a Gem is Ready for Production Use?  There are a bunch of ways:</p>
 
 <ul>
   <li>read the code</li>
@@ -195,9 +195,9 @@
   <li>try and use it exhaustively</li>
 </ul>
 
-<p>The first thing to understand here is that this is a case where you absolutely need to <em>time bound</em> things.  Time bounding is the practice where you decide, before you start, how much time you should allocate to something.  We all know that tasks involving computers tend to expand to fill the time available.  In my case I decided that this task, assessing if we could use Fuzzyurl in production, was worth an hour.  And I do know that’s light but it was what felt right.</p>
+<p>The first thing to understand here is that this is a case where you absolutely need to <em>time bound</em> things.  Time bounding is the practice where you decide, before you start, how much time you should allocate to something.  We all know that tasks involving computers tend to expand to fill the time available.  In my case I decided that this task, assessing if we could use Fuzzyurl in production, was worth an hour.  And I do know that's light but it was what felt right.</p>
 
-<p>In an hour I can’t possibly read and understand parsing code.  I’ve written too much of it and I know how detailed it can get.  Reading the tests is another option and a better one.  Generally speaking if a gem is well tested, that bodes well for it being quality.  But I know how bad my input set of urls is.  I can guarantee that the random ass crap I have to encounter isn’t covered by tests.  So I’m left with either try and use it or try and use it exhaustively.</p>
+<p>In an hour I can't possibly read and understand parsing code.  I've written too much of it and I know how detailed it can get.  Reading the tests is another option and a better one.  Generally speaking if a gem is well tested, that bodes well for it being quality.  But I know how bad my input set of urls is.  I can guarantee that the random ass crap I have to encounter isn't covered by tests.  So I'm left with either try and use it or try and use it exhaustively.</p>
 
 <h2 id="try-and-use-it">Try and Use It</h2>
 
@@ -217,7 +217,7 @@
 </code></pre>
 </div>
 
-<p>And that’s perfect.  Here’s a 1:1 comparison with URI.parse:</p>
+<p>And that's perfect.  Here's a 1:1 comparison with URI.parse:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>2.3.1 :009 &gt; fu = URI.parse("http://www.foo.com/")
 #&lt;URI::HTTP http://www.foo.com/&gt;
@@ -247,13 +247,13 @@ nil
 </code></pre>
 </div>
 
-<p>The only change that I would make here is that I would add an alias method on <em>protocol</em> to <em>scheme</em> which is what URI.parse calls protocol (personally I think Pete is actually right here – protocol is a better word – but if you added scheme as an alias – then you’re closer to being a drop in replacement for URI.parse).  Maybe I’ll submit a pull request perhaps.</p>
+<p>The only change that I would make here is that I would add an alias method on <em>protocol</em> to <em>scheme</em> which is what URI.parse calls protocol (personally I think Pete is actually right here – protocol is a better word – but if you added scheme as an alias – then you're closer to being a drop in replacement for URI.parse).  Maybe I'll submit a pull request perhaps.</p>
 
 <p>So now I know that Fuzzyurl works but anyone can type out a url - what about a real test case.</p>
 
 <h2 id="try-and-use-it-exhaustively">Try and Use it Exhaustively</h2>
 
-<p>One of the best and worst things about my job is that I’m never lacking for data.  We’re currently crawling about 1/4 terabyte of data monthly so at any given point I have access to N million urls.  So why not just try to feed say 250,000 urls thru Fuzzyurl and see what happens.  This gives this simple rake task:</p>
+<p>One of the best and worst things about my job is that I'm never lacking for data.  We're currently crawling about 1/4 terabyte of data monthly so at any given point I have access to N million urls.  So why not just try to feed say 250,000 urls thru Fuzzyurl and see what happens.  This gives this simple rake task:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>task :verify_fuzzy_url =&gt; :environment do
   pages = Page.order("id asc").select("id, url, long_url_id").limit(250000)
@@ -267,7 +267,7 @@ end
 </code></pre>
 </div>
 
-<p>Since all of these urls are supposed to be absolute urls we should always have a hostname and we’ll stop if we don’t.  Now we’ll need to examine the stop and make sure that the input wasn’t bad.  When we run this thru we hit a failure like this:</p>
+<p>Since all of these urls are supposed to be absolute urls we should always have a hostname and we'll stop if we don't.  Now we'll need to examine the stop and make sure that the input wasn't bad.  When we run this thru we hit a failure like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>fu = Fuzzyurl.from_string(p.url)
 ArgumentError: Couldn't parse url string: http://www.theintelligencer.net
@@ -275,9 +275,9 @@ from /var/www/apps/banks/shared/bundle/ruby/2.3.0/gems/fuzzyurl-0.9.0/lib/fuzzyu
 </code></pre>
 </div>
 
-<p>p in this case was a page which a url which looked like “http://www.theintelligencer.net “.  That trailing space there is the reason for the failure.  I submitted a github issue and the author has agreed to address it when he has the time.  That’s a great response - even tho this isn’t technically a bug - since space characters are allowed as part of urls but since it does cause a failure, I appreciated him being willing to fix it.</p>
+<p>p in this case was a page which a url which looked like "http://www.theintelligencer.net ".  That trailing space there is the reason for the failure.  I submitted a github issue and the author has agreed to address it when he has the time.  That's a great response - even tho this isn't technically a bug - since space characters are allowed as part of urls but since it does cause a failure, I appreciated him being willing to fix it.</p>
 
-<p>Now that I’ve used this a fair bit, a few of the errors I’ve seen with url processing comes back to my memory.  Here are a few common things you see in the wild that break URI.parse cold:</p>
+<p>Now that I've used this a fair bit, a few of the errors I've seen with url processing comes back to my memory.  Here are a few common things you see in the wild that break URI.parse cold:</p>
 
 <ol>
   <li>trailing spaces</li>
@@ -287,7 +287,7 @@ from /var/www/apps/banks/shared/bundle/ruby/2.3.0/gems/fuzzyurl-0.9.0/lib/fuzzyu
   <li>Bad encoding</li>
 </ol>
 
-<p>Let’s try a few of these:</p>
+<p>Let's try a few of these:</p>
 
 <h3 id="embedded-space">Embedded Space</h3>
 
@@ -331,7 +331,7 @@ from /var/www/apps/banks/shared/bundle/ruby/2.3.0/gems/fuzzyurl-0.9.0/lib/fuzzyu
 
 <ul>
   <li>Add an alias method called parse for from_string  That lets Fuzzyurl be used as a drop in replacement for URI.parse</li>
-  <li>Add support for a call back function so you could register your own pre-processor to clean up a url before it gets parsed.  When implementing this type of library I understand the desire to follow the standards and only modify them slightly for common edge cases.  But there are so many ways to craft a crappy url in this Internet of ours that if you simply allow for a pre-processor routine then you can always say “there’s an api for extending this, use it.”</li>
+  <li>Add support for a call back function so you could register your own pre-processor to clean up a url before it gets parsed.  When implementing this type of library I understand the desire to follow the standards and only modify them slightly for common edge cases.  But there are so many ways to craft a crappy url in this Internet of ours that if you simply allow for a pre-processor routine then you can always say "there's an api for extending this, use it."</li>
 </ul>
 
   </div>

@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-I know, I know – it is 2019 and we’re not supposed to be SSH’ing into boxes – but, really, you’re going to do it anyway.  And if you are going to ssh into boxes then, for heaven’s sake, let’s get...">
+I know, I know – it is 2019 and we're not supposed to be SSH'ing into boxes – but, really, you're going to do it anyway.  And if you are going to ssh into boxes then, for heaven's sake, let's get...">
   
 
   
@@ -182,15 +182,15 @@ I know, I know – it is 2019 and we’re not supposed to be SSH’ing into boxe
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_9163.jpeg" alt="IMG_9163.jpeg" /></p>
 
-<p>I know, I know – it is 2019 and we’re not supposed to be SSH’ing into boxes – but, really, you’re going to do it anyway.  And if you are going to ssh into boxes then, for heaven’s sake, let’s get rid of that stupidity that is your SSH terminal disconnecting whenever there is a simple blip in connectivity.</p>
+<p>I know, I know – it is 2019 and we're not supposed to be SSH'ing into boxes – but, really, you're going to do it anyway.  And if you are going to ssh into boxes then, for heaven's sake, let's get rid of that stupidity that is your SSH terminal disconnecting whenever there is a simple blip in connectivity.</p>
 
-<p><a href="https://eternalterminal.dev/">Eternal Terminal</a>, ET, is a mature Open Source project that purports to solve SSH disconnects.  I say “purports” because I have only just installed it and this blog post is my proof of concept to see how well it works.  I’m essentially SSH’d into some box or another roughly 10 to 12 hours a day, 5 to 7 days a week.</p>
+<p><a href="https://eternalterminal.dev/">Eternal Terminal</a>, ET, is a mature Open Source project that purports to solve SSH disconnects.  I say "purports" because I have only just installed it and this blog post is my proof of concept to see how well it works.  I'm essentially SSH'd into some box or another roughly 10 to 12 hours a day, 5 to 7 days a week.</p>
 
-<p><strong>Note</strong>: You can strike purports in the above paragraph.  I’ve now been using Eternal Terminal though a variety of network conditions including changing my wifi connection with long running processes and it works great. I do not understand the deviltry that drives this pretty damn amazing bit of software but I sure do like it.</p>
+<p><strong>Note</strong>: You can strike purports in the above paragraph.  I've now been using Eternal Terminal though a variety of network conditions including changing my wifi connection with long running processes and it works great. I do not understand the deviltry that drives this pretty damn amazing bit of software but I sure do like it.</p>
 
 <h2 id="overview">Overview</h2>
 
-<p>Here’s what you need to do to use ET on a local OSX to remote AWS context:</p>
+<p>Here's what you need to do to use ET on a local OSX to remote AWS context:</p>
 
 <ol>
   <li>You need to install ET (client) on your OSX box.</li>
@@ -203,7 +203,7 @@ I know, I know – it is 2019 and we’re not supposed to be SSH’ing into boxe
 
 <h3 id="installing-et-on-osx">Installing ET on OSX</h3>
 
-<p>Here’s how to install ET on OSX:</p>
+<p>Here's how to install ET on OSX:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>brew install MisterTea/et/et
 </code></pre>
@@ -211,7 +211,7 @@ I know, I know – it is 2019 and we’re not supposed to be SSH’ing into boxe
 
 <h3 id="installing-et-on-your-server">Installing ET on your Server</h3>
 
-<p>Here’s how to install ET on Ubuntu:</p>
+<p>Here's how to install ET on Ubuntu:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get install -y software-properties-common
 sudo add-apt-repository ppa:jgmath2000/et
@@ -247,7 +247,7 @@ Nov 26 21:37:24 ip-172-31-3-194 systemd[1]: Started Eternal Terminal.
 
 <h3 id="opening-port-2022-on-your-security-group">Opening Port 2022 on Your Security Group</h3>
 
-<p>Eternal Terminal on the server relies on port 2022 being open.  This needs to be done at your AWS security group.  Here’s how to do this:</p>
+<p>Eternal Terminal on the server relies on port 2022 being open.  This needs to be done at your AWS security group.  Here's how to do this:</p>
 
 <ol>
   <li>Log into console.aws.amazon.com in a browser.</li>
@@ -269,7 +269,7 @@ Nov 26 21:37:24 ip-172-31-3-194 systemd[1]: Started Eternal Terminal.
 </code></pre>
 </div>
 
-<p>To use ET, you need to have a “ssh statement” like this:</p>
+<p>To use ET, you need to have a "ssh statement" like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>et ubuntu@xx.yy.zz.aa -i "~/Downloads/adl_fuzzygroup.pem"
 </code></pre>
@@ -277,7 +277,7 @@ Nov 26 21:37:24 ip-172-31-3-194 systemd[1]: Started Eternal Terminal.
 
 <h3 id="an-ansible-playbook-to-automate-server-setup">An Ansible Playbook to Automate Server Setup</h3>
 
-<p>If you have more than one server on AWS, you should be using a DevOps tool like Ansible to automate machine setup.  Here’s a sample playbook:</p>
+<p>If you have more than one server on AWS, you should be using a DevOps tool like Ansible to automate machine setup.  Here's a sample playbook:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>---
 

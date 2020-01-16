@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-I’m in the process of working out security for a new side project (yes, yes, yes - I know; I have too many of these but they are such a good teaching tool for one’s self) and I wanted to use pund...">
+I'm in the process of working out security for a new side project (yes, yes, yes - I know; I have too many of these but they are such a good teaching tool for one's self) and I wanted to use pund...">
   
 
   
@@ -182,7 +182,7 @@ I’m in the process of working out security for a new side project (yes, yes, y
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_6430.jpeg" alt="IMG_6430.jpeg" /></p>
 
-<p>I’m in the process of working out security for a new side project (yes, yes, yes - I know; I have too many of these but they are such a good teaching tool for one’s self) and I wanted to use <a href="https://github.com/varvet/pundit">pundit</a>.  Pundit, for those who haven’t played with it, is a Ruby gem which makes authorization at the controller level easier.</p>
+<p>I'm in the process of working out security for a new side project (yes, yes, yes - I know; I have too many of these but they are such a good teaching tool for one's self) and I wanted to use <a href="https://github.com/varvet/pundit">pundit</a>.  Pundit, for those who haven't played with it, is a Ruby gem which makes authorization at the controller level easier.</p>
 
 <h2 id="authorization-authentication-oh-my">Authorization, Authentication, Oh My</h2>
 
@@ -213,13 +213,13 @@ I’m in the process of working out security for a new side project (yes, yes, y
   </li>
 </ul>
 
-<p>So when I started down this path, I immediately started getting a Pundit error that I’ve never seen before and that I didn’t understand:</p>
+<p>So when I started down this path, I immediately started getting a Pundit error that I've never seen before and that I didn't understand:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>Pundit::NotDefinedError: unable to find policy `HashPolicy` for `{}`    
 </code></pre>
 </div>
 
-<p>And this error sent me through the normal spiral of google results only to find relatively few results.  This <a href="https://github.com/ankane/groupdate/issues/94">one</a>, which I didn’t read well, however, was prescient.  And I continued down the path of debugging this at a lower and lower level until I found myself dropping byebug into Pundit itself in this method:</p>
+<p>And this error sent me through the normal spiral of google results only to find relatively few results.  This <a href="https://github.com/ankane/groupdate/issues/94">one</a>, which I didn't read well, however, was prescient.  And I continued down the path of debugging this at a lower and lower level until I found myself dropping byebug into Pundit itself in this method:</p>
 
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">policy</span>
   <span class="n">klass</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">object</span><span class="p">)</span>
@@ -228,7 +228,7 @@ I’m in the process of working out security for a new side project (yes, yes, y
 </code></pre>
 </div>
 
-<p>And what I found was that the “object” that Pundit had was just {} which made no sense to me.  And then I looked at my controller and saw what I was doing:</p>
+<p>And what I found was that the "object" that Pundit had was just {} which made no sense to me.  And then I looked at my controller and saw what I was doing:</p>
 
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">index</span>
   <span class="vi">@objectives</span> <span class="o">=</span> <span class="n">current_user</span><span class="p">.</span><span class="nf">organization</span><span class="p">.</span><span class="nf">objectives</span><span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="s1">'quarter_id ASC, name ASC'</span><span class="p">).</span><span class="nf">group_by</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:quarter_id</span><span class="p">)</span>

@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-Note: If you’re not a Rails user, on OSX, then just nope the heck out of reading this post.  This is some serious nerdery here.
+Note: If you're not a Rails user, on OSX, then just nope the heck out of reading this post.  This is some serious nerdery here.
 
 One of the single most frustrating things about the Rails ecosyste...">
   
@@ -184,11 +184,11 @@ One of the single most frustrating things about the Rails ecosyste...">
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_9140.jpeg" alt="IMG_9140.jpeg" /></p>
 
-<p><strong>Note</strong>: If you’re not a Rails user, on OSX, then just nope the heck out of reading this post.  This is some serious nerdery here.</p>
+<p><strong>Note</strong>: If you're not a Rails user, on OSX, then just nope the heck out of reading this post.  This is some serious nerdery here.</p>
 
-<p>One of the single most frustrating things about the Rails ecosystem is when you can’t get a bundle install operation to finish.  The bundle install, of course, is the process of getting the software tools, “gems”, identified in Gemfile to install.  When you can’t get bundle install to finish, you are effectively entirely blocked from continuing with a project.  A friend hit a serious problem recently with bundle install and the mysql2 gem.  I gave some online help via chat and while they solved it without me, I volunteered to write it down so there’s a decent explanation / write up.</p>
+<p>One of the single most frustrating things about the Rails ecosystem is when you can't get a bundle install operation to finish.  The bundle install, of course, is the process of getting the software tools, "gems", identified in Gemfile to install.  When you can't get bundle install to finish, you are effectively entirely blocked from continuing with a project.  A friend hit a serious problem recently with bundle install and the mysql2 gem.  I gave some online help via chat and while they solved it without me, I volunteered to write it down so there's a decent explanation / write up.</p>
 
-<p>Here’s the error:</p>
+<p>Here's the error:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ld: library not found for -lssl
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
@@ -196,9 +196,9 @@ make: *** [mysql2.bundle] Error 1
 </code></pre>
 </div>
 
-<p>My first suggestion was to try a “brew install mariadb” (mariadb is a fully compatible, <strong>better</strong> version of MySQL, written by the creator of MySQL).  It turned out that mariadb was already installed.</p>
+<p>My first suggestion was to try a "brew install mariadb" (mariadb is a fully compatible, <strong>better</strong> version of MySQL, written by the creator of MySQL).  It turned out that mariadb was already installed.</p>
 
-<p>So this led me to this <em>blink</em> and then I asked for “paste me the whole disgustingly long error message on bundle install”.</p>
+<p>So this led me to this <em>blink</em> and then I asked for "paste me the whole disgustingly long error message on bundle install".</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>Installing mysql2 0.5.2 with native extensions
 Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
@@ -273,15 +273,15 @@ succeeds before bundling.
 </code></pre>
 </div>
 
-<p>My comment was pretty that it simply can’t find the libraries, almost certainly the header files for openssl.  This is actually a common install problem for gems.  Happily my friend found the <a href="https://github.com/brianmario/mysql2/issues/795">answer</a> (and without me which is awesome).  Here is what turned out to be needed:</p>
+<p>My comment was pretty that it simply can't find the libraries, almost certainly the header files for openssl.  This is actually a common install problem for gems.  Happily my friend found the <a href="https://github.com/brianmario/mysql2/issues/795">answer</a> (and without me which is awesome).  Here is what turned out to be needed:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
 </code></pre>
 </div>
 
-<p>This the kind of thing that differs across people’s systems / environments so I get why it is an issue despite the mysql2 gem being what – a decade plus old?  But I wish that the build ecosystem for Rails better allowed for things like this because, well, when you can’t bundle install, you effectively can’t rails.</p>
+<p>This the kind of thing that differs across people's systems / environments so I get why it is an issue despite the mysql2 gem being what – a decade plus old?  But I wish that the build ecosystem for Rails better allowed for things like this because, well, when you can't bundle install, you effectively can't rails.</p>
 
-<p><strong>Note</strong>: And I get the open source ethos that if I want this, I should fix it myself.  I’m also aware of how deep a rabbit hole that would be and I don’t have the mental energy to even contemplate solving this. So, yeah, I’m going to whine but I’m also massively thankful for the mysql2 gem so thank you brianmario.  Appreciated.  At least I hopefully gave back a bit by explaining this well.</p>
+<p><strong>Note</strong>: And I get the open source ethos that if I want this, I should fix it myself.  I'm also aware of how deep a rabbit hole that would be and I don't have the mental energy to even contemplate solving this. So, yeah, I'm going to whine but I'm also massively thankful for the mysql2 gem so thank you brianmario.  Appreciated.  At least I hopefully gave back a bit by explaining this well.</p>
 
   </div>
   

@@ -178,9 +178,9 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>So this morning I was working on my side project and I realized that one aspect of it alone is now 26 plus PORO (plain old ruby objects) models and growing rapidly.  Given that I’m building this along the lines of a service oriented architeture where I want to be able to replace components prototyped in Ruby down the road with Elixir this would make sense so it was time to isolate it into a standalone http service as a separate Rails API stack.</p>
+    <p>So this morning I was working on my side project and I realized that one aspect of it alone is now 26 plus PORO (plain old ruby objects) models and growing rapidly.  Given that I'm building this along the lines of a service oriented architeture where I want to be able to replace components prototyped in Ruby down the road with Elixir this would make sense so it was time to isolate it into a standalone http service as a separate Rails API stack.</p>
 
-<p>And this brings up the need to generate a stack with RSpec from the start.  Here’s how to do this:</p>
+<p>And this brings up the need to generate a stack with RSpec from the start.  Here's how to do this:</p>
 
 <blockquote>
   <p>rails new hyde_page_parser -T –skip-active-record –skip-action-cable –skip-spring –api</p>
@@ -195,10 +195,10 @@
   <li>Spring so –skip-spring</li>
 </ul>
 
-<p>That gets me a baseline project to which I can add RSpec.  Using <a href="http://nrakochy.github.io/rspec/rails/2015/05/27/How-To-Setup-Rspec-Instead-Of-Test-Unit-Rails/">Nrakochy’s</a> instructions, all you need to do is:</p>
+<p>That gets me a baseline project to which I can add RSpec.  Using <a href="http://nrakochy.github.io/rspec/rails/2015/05/27/How-To-Setup-Rspec-Instead-Of-Test-Unit-Rails/">Nrakochy's</a> instructions, all you need to do is:</p>
 
 <ol>
-  <li>Add gem ‘rspec-rails’ to a development, test group in Gemfile</li>
+  <li>Add gem 'rspec-rails' to a development, test group in Gemfile</li>
   <li>Run bundle install</li>
   <li>Run bundle exec rails g rspec:install</li>
 </ol>

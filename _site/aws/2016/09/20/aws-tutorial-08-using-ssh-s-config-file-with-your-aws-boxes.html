@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>AWS Tutorial 08 - Using SSH&#39;s Config File with Your AWS Boxes</title>
-  <meta name="description" content="Disclaimer: If you’re a hard core Unix head then this can easily be skipped. However if your knowledge of SSH extends to “config file – what?” then it likely...">
+  <meta name="description" content="Disclaimer: If you're a hard core Unix head then this can easily be skipped. However if your knowledge of SSH extends to "config file – what?" then it likely...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/aws/2016/09/20/aws-tutorial-08-using-ssh-s-config-file-with-your-aws-boxes.html">
@@ -43,9 +43,9 @@
 
   
     <meta name="twitter:description"
-      content="Disclaimer: If you’re a hard core Unix head then this can easily be skipped. However if your knowledge of SSH extends to “config file – what?” then it likely is worth a read.
+      content="Disclaimer: If you're a hard core Unix head then this can easily be skipped. However if your knowledge of SSH extends to &quot;config file – what?&quot; then it likely is worth a read.
 
-SSH is one of those c...">
+SSH is one ...">
   
 
   
@@ -180,11 +180,11 @@ SSH is one of those c...">
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>Disclaimer: If you’re a hard core Unix head then this can easily be skipped. However if your knowledge of SSH extends to “config file – what?” then it likely is worth a read.</p>
+    <p>Disclaimer: If you're a hard core Unix head then this can easily be skipped. However if your knowledge of SSH extends to "config file – what?" then it likely is worth a read.</p>
 
-<p>SSH is one of those core bits of the modern computing world that we all rely on and don’t even think about.  And, like all such technologies, there is a lot to SSH under the hood.  The aspect I’m going to focus on here is the SSH config file and how it can make your AWS development life easier.</p>
+<p>SSH is one of those core bits of the modern computing world that we all rely on and don't even think about.  And, like all such technologies, there is a lot to SSH under the hood.  The aspect I'm going to focus on here is the SSH config file and how it can make your AWS development life easier.</p>
 
-<p>Let’s start with how I first logged into one of my production AWS boxes:</p>
+<p>Let's start with how I first logged into one of my production AWS boxes:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ssh -i ~/.ssh/my_pem_file.pem ubuntu@ec2-52-39-100-178.us-west-2.compute.amazonaws.com
 </code></pre>
@@ -198,13 +198,13 @@ SSH is one of those c...">
 
 <h1 id="the-ssh-config-file">The SSH Config file</h1>
 
-<p>In your ~/.ssh directory there is a file named, simply enough, <strong>config</strong>.  The config file stores a series of entries related to the the host you want to log into.  Here’s an example of what logging in using a config file is like:</p>
+<p>In your ~/.ssh directory there is a file named, simply enough, <strong>config</strong>.  The config file stores a series of entries related to the the host you want to log into.  Here's an example of what logging in using a config file is like:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ssh mariadb
 </code></pre>
 </div>
 
-<p>And here is an example of scp’ing a file down to your local box:</p>
+<p>And here is an example of scp'ing a file down to your local box:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>scp mariadb:/tmp/foo.txt ~/Downloads
 </code></pre>
@@ -228,7 +228,7 @@ SSH is one of those c...">
 </code></pre>
 </div>
 
-<p>Here’s an actual example for one of my EC2 boxes:</p>
+<p>Here's an actual example for one of my EC2 boxes:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>Host mariadb
   Hostname ec2-52-39-100-178.us-west-2.compute.amazonaws.com
@@ -244,7 +244,7 @@ SSH is one of those c...">
   <li>identify everything by mariadb</li>
   <li>when called log into the hostname ec2-52-39-100-178.us-west-2.compute.amazonaws.com</li>
   <li>when called use the username ubuntu</li>
-  <li>when called use the /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem to establish the user’s identity</li>
+  <li>when called use the /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem to establish the user's identity</li>
   <li>when called use port 22</li>
 </ul>
 

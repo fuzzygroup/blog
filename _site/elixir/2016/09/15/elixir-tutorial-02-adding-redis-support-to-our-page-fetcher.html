@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="In my last elixir post I documented how to generate a standalone Elixir project for a page fetcher.  Technically that would have been Elixir Tutorial 01 but I’m too tired right now to go back and r...">
+      content="In my last elixir post I documented how to generate a standalone Elixir project for a page fetcher.  Technically that would have been Elixir Tutorial 01 but I'm too tired right now to go back and r...">
   
 
   
@@ -178,9 +178,9 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>In my <a href="https://fuzzygroup.github.io/blog/rails2elixir/2016/09/15/generating-a-new-elixir-project.html">last elixir post</a> I documented how to generate a standalone Elixir project for a page fetcher.  Technically that would have been Elixir Tutorial 01 but I’m too tired right now to go back and rename it since this is my middle of the night, can’t sleep coding time while on vacation.</p>
+    <p>In my <a href="https://fuzzygroup.github.io/blog/rails2elixir/2016/09/15/generating-a-new-elixir-project.html">last elixir post</a> I documented how to generate a standalone Elixir project for a page fetcher.  Technically that would have been Elixir Tutorial 01 but I'm too tired right now to go back and rename it since this is my middle of the night, can't sleep coding time while on vacation.</p>
 
-<p>Let’s start with a description of what we’re planning to build.  What is a page fetcher?</p>
+<p>Let's start with a description of what we're planning to build.  What is a page fetcher?</p>
 
 <blockquote>
   <p>A page fetcher is a bit of software that pulls content (pages) from the Internet and stores them some where for processing by something else.</p>
@@ -190,13 +190,13 @@
 
 <ol>
   <li>A bit of software that runs reliably</li>
-  <li>And doesn’t require writing low level libraries as we’re just not there yet with our Elixir skills</li>
+  <li>And doesn't require writing low level libraries as we're just not there yet with our Elixir skills</li>
   <li>And pulls content from Redis that describes what to fetch</li>
   <li>And fetches a page off from a url</li>
   <li>And stores it away for processing.  Likely in a database or some such place</li>
 </ol>
 
-<p>That doesn’t sound so hard, does it?  Here’s the <a href="https://github.com/artemeff/exredis">redis library</a> we’re going to use.  Let’s start by adding redis support to what we generated last time.</p>
+<p>That doesn't sound so hard, does it?  Here's the <a href="https://github.com/artemeff/exredis">redis library</a> we're going to use.  Let's start by adding redis support to what we generated last time.</p>
 
 <p>Change into your working directory.  For me that is:</p>
 
@@ -216,7 +216,7 @@
 </span></code></pre>
 </div>
 
-<p>This needs to go between the [] in the defp deps routine.  Think of it this way – you are updating Gemfile.  That’s all this is.  Only its a more reliable Gemfile without the cruft and crap of bundler.  I love you Ruby but good lord the packaging infrastructure lately blows monkey chunks.  Not a day goes by that I don’t hit some Gemfile / bundler crap.</p>
+<p>This needs to go between the [] in the defp deps routine.  Think of it this way – you are updating Gemfile.  That's all this is.  Only its a more reliable Gemfile without the cruft and crap of bundler.  I love you Ruby but good lord the packaging infrastructure lately blows monkey chunks.  Not a day goes by that I don't hit some Gemfile / bundler crap.</p>
 
 <p>Now run mix test again:</p>
 
@@ -224,7 +224,7 @@
 </code></pre>
 </div>
 
-<p>And you’re going to see a failure like this:</p>
+<p>And you're going to see a failure like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>sjohnson@ScottJohnsonMacbookAir:~/me/fuzzygroup/elixir/page_fetcher$ mix test
 Unchecked dependencies for environment test:
@@ -234,13 +234,13 @@ Unchecked dependencies for environment test:
 </code></pre>
 </div>
 
-<p>So you’re going to do what I think of as the <em>deps dance</em> and type:</p>
+<p>So you're going to do what I think of as the <em>deps dance</em> and type:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>mix deps.get
 </code></pre>
 </div>
 
-<p>And you’ll see something like this:</p>
+<p>And you'll see something like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>A new Hex version is available (0.13.0), please update with `mix local.hex`
 Running dependency resolution
@@ -256,7 +256,7 @@ Dependency resolution completed
 </code></pre>
 </div>
 
-<p>Your mileage may vary with respect to the “please update …” stuff.  Please bear in mind that Hex isn’t perfect at present.  I’ve see issues but they are few and far between at least in my experience.</p>
+<p>Your mileage may vary with respect to the "please update …" stuff.  Please bear in mind that Hex isn't perfect at present.  I've see issues but they are few and far between at least in my experience.</p>
 
 <p>The next step up is to modify your project to talk to your Redis server.  Do that by modifying config/config.exs with your server params.  Here are mine:</p>
 
@@ -270,9 +270,9 @@ Dependency resolution completed
 </code></pre>
 </div>
 
-<p>Since we’re connecting on 127.0.0.1 you need to run this on the same machine where your redis server lives or adjust the ip address.</p>
+<p>Since we're connecting on 127.0.0.1 you need to run this on the same machine where your redis server lives or adjust the ip address.</p>
 
-<p>As always when you change anything run your test suite which will compile your code and show you any errors.  Here’s what mine looks like:</p>
+<p>As always when you change anything run your test suite which will compile your code and show you any errors.  Here's what mine looks like:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>mix test
 ==&gt; eredis (compile)
@@ -298,7 +298,7 @@ Randomized with seed 697093
 </code></pre>
 </div>
 
-<p>So at this point we have an elixir application with a supervision tree for reliability and a redis client.  Given that I’m a strong believer in “deploy early; deploy often”, I’ll handle getting all this deployed onto an Ubuntu server.  After that I’ll tackle getting this to run continuously popping things from the redis queue.</p>
+<p>So at this point we have an elixir application with a supervision tree for reliability and a redis client.  Given that I'm a strong believer in "deploy early; deploy often", I'll handle getting all this deployed onto an Ubuntu server.  After that I'll tackle getting this to run continuously popping things from the redis queue.</p>
 
 <p>All code can be found here: <a href="https://github.com/fuzzygroup/elixir_page_fetcher">https://github.com/fuzzygroup/elixir_page_fetcher</a></p>
 

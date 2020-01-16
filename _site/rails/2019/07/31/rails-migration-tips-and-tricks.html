@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Rails Migration Tips and Tricks</title>
-  <meta name="description" content="A migration is the Rails facility which alters a database’s structure.  Migrations are an essential aspect of all database development with Rails and they ge...">
+  <meta name="description" content="A migration is the Rails facility which alters a database's structure.  Migrations are an essential aspect of all database development with Rails and they ge...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2019/07/31/rails-migration-tips-and-tricks.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="A migration is the Rails facility which alters a database’s structure.  Migrations are an essential aspect of all database development with Rails and they generally work quite well with the default...">
+      content="A migration is the Rails facility which alters a database's structure.  Migrations are an essential aspect of all database development with Rails and they generally work quite well with the default...">
   
 
   
@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>A migration is the Rails facility which alters a database’s structure.  Migrations are an essential aspect of all database development with Rails and they generally work quite well with the default command:</p>
+    <p>A migration is the Rails facility which alters a database's structure.  Migrations are an essential aspect of all database development with Rails and they generally work quite well with the default command:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake db:migrate
 </code></pre>
@@ -196,7 +196,7 @@
 
 <h2 id="the-hard-way---the-schemamigrations-table">The Hard Way - The schema_migrations Table</h2>
 
-<p>Let’s start with the hard way - manipulating schema_migrations table directly.  Let’s say that you need to re-run the last 2 migrations.  Here’s what you need to do:</p>
+<p>Let's start with the hard way - manipulating schema_migrations table directly.  Let's say that you need to re-run the last 2 migrations.  Here's what you need to do:</p>
 
 <p>Start by getting the timestamps of the last two migrations.  You can do this with an ls -ltr db/migrations and pick them out of what might be a giant list of migrations (my current work project has 858 migrations) – and this can, well, <strong>suck</strong>.  You can also be smart about it and use tail to get just the last few (default 8 on OSX) migrations.</p>
 
@@ -226,7 +226,7 @@
 </code></pre>
 </div>
 
-<p>Now you would also need to undo any changes your migrations might have partially implemented.  If this was table creation then this is a relatively simple “drop table foo” statement but if it was an index creation or something harder, you need to selectively alter individual tables.  And even a hard core SQL guy like myself generally doesn’t want to do that.  So let’s look at the easier options.</p>
+<p>Now you would also need to undo any changes your migrations might have partially implemented.  If this was table creation then this is a relatively simple "drop table foo" statement but if it was an index creation or something harder, you need to selectively alter individual tables.  And even a hard core SQL guy like myself generally doesn't want to do that.  So let's look at the easier options.</p>
 
 <h2 id="the-easy-way">The Easy Way</h2>
 
@@ -236,7 +236,7 @@
 </code></pre>
 </div>
 
-<p>gets rid of the last migration.  I do NOT, however, ever recommend that you do this.  I’m currently working on an active side project where pull requests are flowing and even when you might think that you know what the last migration <strong>you created</strong> was, you may not realize that another developer slipped a migration in and <em>whammo</em>, “Houston we have a problem”.</p>
+<p>gets rid of the last migration.  I do NOT, however, ever recommend that you do this.  I'm currently working on an active side project where pull requests are flowing and even when you might think that you know what the last migration <strong>you created</strong> was, you may not realize that another developer slipped a migration in and <em>whammo</em>, "Houston we have a problem".</p>
 
 <p>My recommendation is to always specify the version with:</p>
 
@@ -244,7 +244,7 @@
 </code></pre>
 </div>
 
-<p>This is absolute and will only affect the migration in question.  Given that I’m a big damn fan of always understanding the state of my persistent storage, it isn’t surprising that I recommend this.</p>
+<p>This is absolute and will only affect the migration in question.  Given that I'm a big damn fan of always understanding the state of my persistent storage, it isn't surprising that I recommend this.</p>
 
 <h2 id="see-also">See Also</h2>
 

@@ -189,13 +189,13 @@
   <li>A watchdog process needs to look out for processes using too many resources and shut them down so that the underlying init / service system can restart them</li>
 </ul>
 
-<p><a href="https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html">Mike Perham</a> helpfully pointed out the right approach to solving this - use a systems monitoring tool like <a href="https://github.com/mperham/inspeqtor">Inspeqtor</a> or <a href="https://mmonit.com/monit/">Monit</a>.  I don’t normally do devops to the level that I am now so getting this perspective was key.  Given that its a 50 / 50 choice, I flipped a coin and chose Monit.</p>
+<p><a href="https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html">Mike Perham</a> helpfully pointed out the right approach to solving this - use a systems monitoring tool like <a href="https://github.com/mperham/inspeqtor">Inspeqtor</a> or <a href="https://mmonit.com/monit/">Monit</a>.  I don't normally do devops to the level that I am now so getting this perspective was key.  Given that its a 50 / 50 choice, I flipped a coin and chose Monit.</p>
 
-<p>In the rest of this post, I’ll go over how I used Ansible to configure Monit.</p>
+<p>In the rest of this post, I'll go over how I used Ansible to configure Monit.</p>
 
 <h1 id="the-role">The Role</h1>
 
-<p>The first thing we need is a role for monit so we’re going to build out our role structure as follows:</p>
+<p>The first thing we need is a role for monit so we're going to build out our role structure as follows:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>mkdir -p your_ansible_root_path/roles/monit/tasks
 mkdir -p your_ansible_root_path/roles/monit/templates
@@ -203,7 +203,7 @@ touch your_ansible_root_path/roles/monit/tasks/main.yml
 </code></pre>
 </div>
 
-<p>Then we’re going to need a few things in our role (main.yml):</p>
+<p>Then we're going to need a few things in our role (main.yml):</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>---
 - name: install monit
@@ -217,7 +217,7 @@ touch your_ansible_root_path/roles/monit/tasks/main.yml
 </code></pre>
 </div>
 
-<p>Our template for monitoring sidekiq is going to rely on a handful of variables that for simplicity’s sake, I’ve defined in the file all in groupvars:</p>
+<p>Our template for monitoring sidekiq is going to rely on a handful of variables that for simplicity's sake, I've defined in the file all in groupvars:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>app_base: /var/www/apps/banks/
 app_path: /var/www/apps/banks/current/
@@ -233,7 +233,7 @@ ficrawler3 ansible_ssh_host=BLAH2.compute.amazonaws.com ansible_ssh_private_key_
 </code></pre>
 </div>
 
-<p>Here’s what that template looks like:</p>
+<p>Here's what that template looks like:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>check process sidekiq
   with pidfile shared/tmp/pids/sidekiq.pid
@@ -246,23 +246,23 @@ ficrawler3 ansible_ssh_host=BLAH2.compute.amazonaws.com ansible_ssh_private_key_
 </code></pre>
 </div>
 
-<p>And here’s the playbook routine which calls the monit role:</p>
+<p>And here's the playbook routine which calls the monit role:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>- { role: monit, tags: monit}
 </code></pre>
 </div>
 
-<p>Once you put that all together, you’ll have monit watching the sidekiq process on a regular basis.  One thing I didn’t cover above is that we need to modify the config/sidekiq.yml file in the Rails root directory to use the right number of threads.  This is left as an exercise for the reader.</p>
+<p>Once you put that all together, you'll have monit watching the sidekiq process on a regular basis.  One thing I didn't cover above is that we need to modify the config/sidekiq.yml file in the Rails root directory to use the right number of threads.  This is left as an exercise for the reader.</p>
 
 <h1 id="conclusion-to-this-series-of-posts-on-ssh-trauma-and-thank-you-time-2">Conclusion to this Series of Posts on SSH Trauma and Thank You Time 2</h1>
 
-<p>When I started this series of posts, 16 days ago, I really didn’t think all that much about SSH.  To an Internet developer, ssh is like <em>oxygen</em>, you only notice it when it is <strong>gone</strong>.  By having such a fundamental part of the infrastructure go away unexpectedly, it brought me new depths of understanding.  And, all of this occurred, while daily data processing and data crunching was going on.  Even with all the failures, our boxes stopped working.  Yes they would die periodically but I would just restart them while I explored my next hypothesis.  In the real world, business needs don’t stop even though things aren’t working correctly – you still have to get the job done.  And I did.</p>
+<p>When I started this series of posts, 16 days ago, I really didn't think all that much about SSH.  To an Internet developer, ssh is like <em>oxygen</em>, you only notice it when it is <strong>gone</strong>.  By having such a fundamental part of the infrastructure go away unexpectedly, it brought me new depths of understanding.  And, all of this occurred, while daily data processing and data crunching was going on.  Even with all the failures, our boxes stopped working.  Yes they would die periodically but I would just restart them while I explored my next hypothesis.  In the real world, business needs don't stop even though things aren't working correctly – you still have to get the job done.  And I did.</p>
 
 <p>Two people were absolutely essential to sorting this all out:</p>
 
 <ul>
-  <li><a href="http://nickjanetakis.com">Nick Janetakis</a>.  I initially met Nick thru his outstandingly excellent <a href="http://www.udemy.com">Udemy</a> <a href="http://nickjanetakis.com/courses/">course on Docker</a> and I’ve since gotten to know him a bit and hired him twice for <a href="https://fuzzygroup.github.io/blog/aws/2016/10/06/aws-tutorial-14-diagnosing-ssh-failures-take-2.html">ad hoc consulting</a>.  Nick is a smart guy, knows Docker like the back of his hand and can think.  Thinking always sounds easy but it never is.  Recommended.</li>
-  <li><a href="http://www.mikeperham.com">Mike Perham</a>.  I’ve known of Mike Perham’s work intellectually for years and years and always described him as <em>the best guy in known space for Ruby threading</em>.  I only met him recently when we adopted sidekiq as a partial solution for this problem.  In Mike’s weekly Happy Hour where he provides <em>free</em> support to the Ruby community for Sidekiq, <a href="https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html">he correctly analyzed the problem and suggested a solution</a>.  And you can bet that I’ve made sure that we purchased the <a href="http://sidekiq.org/products/pro">commercial version of Sidekiq</a> in order to ensure that we have access to Mike should any future Sidekiq issues come up.  And don’t forget that the commercial version of Sidekiq includes more features as well as support.  Recommended as well.</li>
+  <li><a href="http://nickjanetakis.com">Nick Janetakis</a>.  I initially met Nick thru his outstandingly excellent <a href="http://www.udemy.com">Udemy</a> <a href="http://nickjanetakis.com/courses/">course on Docker</a> and I've since gotten to know him a bit and hired him twice for <a href="https://fuzzygroup.github.io/blog/aws/2016/10/06/aws-tutorial-14-diagnosing-ssh-failures-take-2.html">ad hoc consulting</a>.  Nick is a smart guy, knows Docker like the back of his hand and can think.  Thinking always sounds easy but it never is.  Recommended.</li>
+  <li><a href="http://www.mikeperham.com">Mike Perham</a>.  I've known of Mike Perham's work intellectually for years and years and always described him as <em>the best guy in known space for Ruby threading</em>.  I only met him recently when we adopted sidekiq as a partial solution for this problem.  In Mike's weekly Happy Hour where he provides <em>free</em> support to the Ruby community for Sidekiq, <a href="https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html">he correctly analyzed the problem and suggested a solution</a>.  And you can bet that I've made sure that we purchased the <a href="http://sidekiq.org/products/pro">commercial version of Sidekiq</a> in order to ensure that we have access to Mike should any future Sidekiq issues come up.  And don't forget that the commercial version of Sidekiq includes more features as well as support.  Recommended as well.</li>
 </ul>
 
 <p>Thank you Nick; thank you Mike.</p>

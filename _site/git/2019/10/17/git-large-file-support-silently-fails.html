@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-This error bit me and a coworker hard yesterday and I haven’t seen it well documented anywhere so I wanted to make this very, very clear.  When you have large files checked into git and you are u...">
+This error bit me and a coworker hard yesterday and I haven't seen it well documented anywhere so I wanted to make this very, very clear.  When you have large files checked into git and you are u...">
   
 
   
@@ -182,7 +182,7 @@ This error bit me and a coworker hard yesterday and I haven’t seen it well doc
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_9503.jpeg" alt="IMG_9503.jpeg" /></p>
 
-<p>This error bit me and a coworker <strong>hard</strong> yesterday and I haven’t seen it well documented anywhere so I wanted to make this very, very clear.  When you have large files checked into git and you are using git-lfs (git large file support), if you don’t have the git large file support extensions installed on the machine where you do the checkout, you get what appears to be a correct checkout but the large files end up being, well, not missing but simply placeholders.</p>
+<p>This error bit me and a coworker <strong>hard</strong> yesterday and I haven't seen it well documented anywhere so I wanted to make this very, very clear.  When you have large files checked into git and you are using git-lfs (git large file support), if you don't have the git large file support extensions installed on the machine where you do the checkout, you get what appears to be a correct checkout but the large files end up being, well, not missing but simply placeholders.</p>
 
 <p>In our case we had a machine learning model using Bert and PyTorch and the model file, in models/bertASmodel.pt appeared to check out correctly but here was what we actually got:</p>
 
@@ -191,7 +191,7 @@ This error bit me and a coworker hard yesterday and I haven’t seen it well doc
 </code></pre>
 </div>
 
-<p>Yep.  That’s a 134 byte machine learning model!  W00t!  <strong>Snark</strong>. But when we look at it:</p>
+<p>Yep.  That's a 134 byte machine learning model!  W00t!  <strong>Snark</strong>. But when we look at it:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>cat models/bertASmodel.pt
 
@@ -209,13 +209,13 @@ total 427780
 </code></pre>
 </div>
 
-<p>Yep.  That’s now 400 odd megs.</p>
+<p>Yep.  That's now 400 odd megs.</p>
 
 <p>If you need to install git lfs then the instructions are <a href="https://github.com/git-lfs/git-lfs/wiki/Installation">here</a>.</p>
 
 <h2 id="pytorch-errors-when-the-model-is-present-but-missing">Pytorch Errors When The Model is Present but Missing</h2>
 
-<p>Now the really, really interesting thing here was the error that PyTorch came up with when the model file was just this 138 byte file.  Because the model file wasn’t actually missing, it seems like PyTorch went a tiny bit insane:</p>
+<p>Now the really, really interesting thing here was the error that PyTorch came up with when the model file was just this 138 byte file.  Because the model file wasn't actually missing, it seems like PyTorch went a tiny bit insane:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>UnpicklingError: invalid load key, 'v'.
 File "/home/ubuntu/.local/lib/python3.6/site-packages/streamlit/ScriptRunner.py", line 310, in _run_script exec(code, module.__dict__)

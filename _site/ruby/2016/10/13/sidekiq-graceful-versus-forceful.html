@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Sidekiq - Graceful Versus Forceful</title>
-  <meta name="description" content="So now that I’m using Sidekiq for background processes, I need to be able to start it up, shut it down and I need to understand the difference between forcef...">
+  <meta name="description" content="So now that I'm using Sidekiq for background processes, I need to be able to start it up, shut it down and I need to understand the difference between forcef...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/ruby/2016/10/13/sidekiq-graceful-versus-forceful.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="So now that I’m using Sidekiq for background processes, I need to be able to start it up, shut it down and I need to understand the difference between forceful and graceful.
+      content="So now that I'm using Sidekiq for background processes, I need to be able to start it up, shut it down and I need to understand the difference between forceful and graceful.
 
 Running Sidekiq Intera...">
   
@@ -180,7 +180,7 @@ Running Sidekiq Intera...">
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>So now that I’m using Sidekiq for background processes, I need to be able to start it up, shut it down and I need to understand the difference between forceful and graceful.</p>
+    <p>So now that I'm using Sidekiq for background processes, I need to be able to start it up, shut it down and I need to understand the difference between forceful and graceful.</p>
 
 <h1 id="running-sidekiq-interactively">Running Sidekiq Interactively</h1>
 
@@ -199,24 +199,24 @@ bundle exec sidekiq
 
 <h1 id="forceful-versus-graceful">Forceful versus Graceful</h1>
 
-<p>Forceful versus Graceful defines how you want Sidekiq to shut down and it basically boils down to the speed of the shutdown.  Sidekiq runs “jobs” which basically means “long running methods” and here’s the difference:</p>
+<p>Forceful versus Graceful defines how you want Sidekiq to shut down and it basically boils down to the speed of the shutdown.  Sidekiq runs "jobs" which basically means "long running methods" and here's the difference:</p>
 
 <ul>
   <li>forceful – shut down NOW; abandon all work in process</li>
   <li>graceful – tell sidekiq to shut down when each of its threads is done processing</li>
 </ul>
 
-<p>Let’s use an analogy here to make this clear.  Imagine that sidekiq was a hitchhiker you picked up on the side of the road.  Forceful would be you opening the door and kicking the hitchhiker out while the car is still moving.  Graceful would be you saying “I think you need to get out at the next exit and the hitchhiker saying - <em>I’m sorry but I need a bit more time; I’ll get out when I’m ready</em>”.</p>
+<p>Let's use an analogy here to make this clear.  Imagine that sidekiq was a hitchhiker you picked up on the side of the road.  Forceful would be you opening the door and kicking the hitchhiker out while the car is still moving.  Graceful would be you saying "I think you need to get out at the next exit and the hitchhiker saying - <em>I'm sorry but I need a bit more time; I'll get out when I'm ready</em>".</p>
 
-<p>There isn’t a right answer here whether or not to use Forceful or Graceful – it really depends on your context.  If you use Sidekiq to handle short lived asynchronous tasks like, say, sending a welcome email then you probably want to use Graceful since it shouldn’t take that long for each thread to idle down.  I, on the other hand, use sidekiq to handle tasks that might take hours or even a whole day to finish so I usually use Forceful.  Given that my tasks have their own journal, this isn’t terrible.  It isn’t great but it isn’t terrible.</p>
+<p>There isn't a right answer here whether or not to use Forceful or Graceful – it really depends on your context.  If you use Sidekiq to handle short lived asynchronous tasks like, say, sending a welcome email then you probably want to use Graceful since it shouldn't take that long for each thread to idle down.  I, on the other hand, use sidekiq to handle tasks that might take hours or even a whole day to finish so I usually use Forceful.  Given that my tasks have their own journal, this isn't terrible.  It isn't great but it isn't terrible.</p>
 
-<p>Here’s an example of a Forceful shutdown:</p>
+<p>Here's an example of a Forceful shutdown:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ps -ef | grep sidekiq | grep -v grep | awk '{print $2}' | xargs kill -9
 </code></pre>
 </div>
 
-<p>Here’s an example of a Graceful shutdown:</p>
+<p>Here's an example of a Graceful shutdown:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ps auwwx | grep sidekiq  # and give the pid value to the next command where &lt;pid&gt; is
 sidekiqctl stop &lt;pid&gt; 

@@ -290,14 +290,14 @@
 From: A Geeky Scott<br />
 Re1: Engineering a Large Scale Application in PHP<br />
 Re2: System Constraints<br />
-Date: Sometime in August, 2002 (see the blog entry date since I don’t know when this will be posted)<br />
+Date: Sometime in August, 2002 (see the blog entry date since I don't know when this will be posted)<br />
 Where: Starbucks</p>
 
-<p>NOTE: I hope this will be the last FuzzyOffice without at least _some_ code for a while.  That probably won’t be the case but I hope so.</p>
+<p>NOTE: I hope this will be the last FuzzyOffice without at least _some_ code for a while.  That probably won't be the case but I hope so.</p>
 
-<p>Constraints, constraints, constraints. This is the set of initial decisions that you make – with terror, fear and loathing – that ultimately come to define your system.  Now the single best lesson I learned while studing engineering (before I became a management droid) was that you need to clearly define constraints <strong>up front</strong>.  And, in my fairly typical overachieving fashion, I’ve carried it into lots of different areas.  For example – whenever I’m working at someone else’s home, the first question I ask, usually within 15 minutes of arrival, is “How long are we working?”  That’s a constraint.  That way I can figure out what needs to get done within that time period. </p>
+<p>Constraints, constraints, constraints. This is the set of initial decisions that you make – with terror, fear and loathing – that ultimately come to define your system.  Now the single best lesson I learned while studing engineering (before I became a management droid) was that you need to clearly define constraints <strong>up front</strong>.  And, in my fairly typical overachieving fashion, I've carried it into lots of different areas.  For example – whenever I'm working at someone else's home, the first question I ask, usually within 15 minutes of arrival, is "How long are we working?"  That's a constraint.  That way I can figure out what needs to get done within that time period. </p>
 
-<p>Now the hardest part here is that you always, always make wrong choices when you choose constraints.  We all know that we’re going to make the wrong choices when we decide on constraints, so we don’t want to do it and then the overall system design suffers.  And this project is even more terrifying since it’s being engineered in the open and publicly.  This means that when I screw up, and I will, people will call me on it.  Ah well… That’s just plain life in the blogosphere.</p>
+<p>Now the hardest part here is that you always, always make wrong choices when you choose constraints.  We all know that we're going to make the wrong choices when we decide on constraints, so we don't want to do it and then the overall system design suffers.  And this project is even more terrifying since it's being engineered in the open and publicly.  This means that when I screw up, and I will, people will call me on it.  Ah well… That's just plain life in the blogosphere.</p>
 
 <p>Here then are the constraints that I am making for FuzzyOffice:</p>
 
@@ -316,10 +316,10 @@ Where: Starbucks</p>
   </li>
   <li>Platform
     <ul>
-      <li>The target platform will be Apache 1.3 or later, PHP 4.2 or later (although 4.1 should work fine) and MySQL + a “data database” (clarified below)</li>
-      <li>The supported “data” databases, those databases that store user data, will be either MySQL or Postgres. Initial support will be intentionally bound to MySQL with the introduction of an abstraction layer later in the process.  Why? This approach gives working functionality sooner since I know MySQL quite well and do not have Postgres configured today.  Right now I actually have real production customre data inside FuzzyOffice and implementing an abstraction layer would slow me from building the tools that I really, really need on a daily basis.</li>
+      <li>The target platform will be Apache 1.3 or later, PHP 4.2 or later (although 4.1 should work fine) and MySQL + a "data database" (clarified below)</li>
+      <li>The supported "data" databases, those databases that store user data, will be either MySQL or Postgres. Initial support will be intentionally bound to MySQL with the introduction of an abstraction layer later in the process.  Why? This approach gives working functionality sooner since I know MySQL quite well and do not have Postgres configured today.  Right now I actually have real production customre data inside FuzzyOffice and implementing an abstraction layer would slow me from building the tools that I really, really need on a daily basis.</li>
       <li>The server platform is intended to be a relatively light load on an industry standard 1U box.</li>
-      <li>We’re targeting a cross platform browser model as much as possible.  We ourselves use Windows, OSX and Linux daily.  We need it for ourselves.</li>
+      <li>We're targeting a cross platform browser model as much as possible.  We ourselves use Windows, OSX and Linux daily.  We need it for ourselves.</li>
     </ul>
   </li>
   <li>Installation
@@ -330,16 +330,16 @@ Where: Starbucks</p>
   </li>
   <li>Sharing and Privacy
     <ul>
-      <li>The system needs to be highly shareable yet still clearly preserve user privacy (hey just as an example we all bookmark things that we don’t want others to see).</li>
-      <li>The granularity of sharing needs to be down to the level of a single “object” (term loosely used intentionally). </li>
-      <li>Sharing needs to be implemented thru simple urls that can be emailed or IM’d.</li>
+      <li>The system needs to be highly shareable yet still clearly preserve user privacy (hey just as an example we all bookmark things that we don't want others to see).</li>
+      <li>The granularity of sharing needs to be down to the level of a single "object" (term loosely used intentionally). </li>
+      <li>Sharing needs to be implemented thru simple urls that can be emailed or IM'd.</li>
       <li>Sharing needs to be supported within and across organizational lines while still preserving intellectual property</li>
       <li>Sharing needs to be time bound (example – This url is only good for 10 days)</li>
     </ul>
   </li>
   <li>Security
     <ul>
-      <li>This is NOT a high, high, high security application.  It’s not Groove. </li>
+      <li>This is NOT a high, high, high security application.  It's not Groove. </li>
       <li>Still the ability to function in https mode is desired</li>
       <li>Security needs to function at the:
         <ul>
@@ -374,27 +374,27 @@ Where: Starbucks</p>
       <li>There are two aspects to the user model: Users and Organizations
         <ul>
           <li>A user is just that – a person with a login for FuzzyOfice</li>
-          <li>An organization is a collection of users with a common purpose (and yes that’s very, very vague)</li>
+          <li>An organization is a collection of users with a common purpose (and yes that's very, very vague)</li>
         </ul>
       </li>
       <li>The user model needs to be very, very flexible to allow for users working with different people in MULTIPLE organizations</li>
       <li>The basic user model is that a single user can:
         <ul>
           <li>Have multiple ways of being identified</li>
-          <li>Belong to different “organizations”</li>
+          <li>Belong to different "organizations"</li>
         </ul>
       </li>
     </ul>
   </li>
 </ul>
 
-<p>As I write this, I realize that there is another constraint on FuzzyOffice.  A significant constraint: <strong>Time</strong>.  Right now there is exactly one developer on FuzzyOffice (and I’m not asking for more; just stating a fact).  There are a lot of implications of time being a constraint.  You’ll see me make decisions that, perhaps, defy normal logic.  Here’s an example – I will probably just dump all development files and images into 1 honkingly large directory.  Why?  It makes the installation process just plain easy.  There are less settings for inexperienced people to screw up and that means less technical support email.</p>
+<p>As I write this, I realize that there is another constraint on FuzzyOffice.  A significant constraint: <strong>Time</strong>.  Right now there is exactly one developer on FuzzyOffice (and I'm not asking for more; just stating a fact).  There are a lot of implications of time being a constraint.  You'll see me make decisions that, perhaps, defy normal logic.  Here's an example – I will probably just dump all development files and images into 1 honkingly large directory.  Why?  It makes the installation process just plain easy.  There are less settings for inexperienced people to screw up and that means less technical support email.</p>
 
-<p>Here’s another constraint: We’re already using it and extending it daily.  This means that things like the data models we’re using are going to be very, very rough initially and that we’ll fine tune them over time.   When you look at my table structures, you may well laugh.  Perhaps even laugh a lot.  Bear in mind that we’re whipping this out and will go back and normalize stuff later.  And if you think that this doesn’t happen in real companies all the time then you’ve never worked on a deadline in a software development company.  It happens all the time.  We all design stuff and then start working and, ahem, flexibility happens.</p>
+<p>Here's another constraint: We're already using it and extending it daily.  This means that things like the data models we're using are going to be very, very rough initially and that we'll fine tune them over time.   When you look at my table structures, you may well laugh.  Perhaps even laugh a lot.  Bear in mind that we're whipping this out and will go back and normalize stuff later.  And if you think that this doesn't happen in real companies all the time then you've never worked on a deadline in a software development company.  It happens all the time.  We all design stuff and then start working and, ahem, flexibility happens.</p>
 
-<p>Here’s another constraint: <strong>Readable Code</strong>.  I am far, far, far more concerned that the code be readable and extensible by non-experts than I am about perfect, optimized code.  For example – if there is an if statement that could be handled by a single negative test, I’m likely to write that as an if statement with nothing in the body of the if and then an else statement where the logic exists.  Why?  Because negative logic can be difficult to follow.</p>
+<p>Here's another constraint: <strong>Readable Code</strong>.  I am far, far, far more concerned that the code be readable and extensible by non-experts than I am about perfect, optimized code.  For example – if there is an if statement that could be handled by a single negative test, I'm likely to write that as an if statement with nothing in the body of the if and then an else statement where the logic exists.  Why?  Because negative logic can be difficult to follow.</p>
 
-<p>Here’s another constraint: <strong>Practicality</strong>.  My ultimate goal is a system where the HTML and ALL STRINGS AND OTHER TEXT MESSAGES are cleanly isolated from the source code.  This will take time.  It will not be done initially.  What will happen is that we’ll build the application and then do it over time.  This means that there will be working code significantly sooner but we will be doing “refits” along the way.  So be it.</p>
+<p>Here's another constraint: <strong>Practicality</strong>.  My ultimate goal is a system where the HTML and ALL STRINGS AND OTHER TEXT MESSAGES are cleanly isolated from the source code.  This will take time.  It will not be done initially.  What will happen is that we'll build the application and then do it over time.  This means that there will be working code significantly sooner but we will be doing "refits" along the way.  So be it.</p>
 
 <p>NOTE: As you can get tell from the writing in this section, it evolved over a period of days with constraints continually being added as I sought to explain (or justify) my approach.</p>
 

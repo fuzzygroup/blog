@@ -182,7 +182,7 @@
 
 <p><strong>Note</strong>: This is mildly AWS specific but there should be enough goodness in here for any organization.</p>
 
-<p>This is particularly acute when the engineer in question is a senior engineer as senior engineers tend to have “the keys to the kingdom”.  At the role I just left, I was responsible for deployment of our application which means I had access to:</p>
+<p>This is particularly acute when the engineer in question is a senior engineer as senior engineers tend to have "the keys to the kingdom".  At the role I just left, I was responsible for deployment of our application which means I had access to:</p>
 
 <ul>
   <li>Passwords</li>
@@ -194,11 +194,11 @@
 <p>Here is the advice I gave my former company about how to handle this:</p>
 
 <ol>
-  <li>Start by eliminating access to all github or bitbucket repos.  This preserves source code integrity and ensures that post leaving commit isn’t snuck into a repo with some nefarious means.  This should be done before the engineer leaves the building.</li>
+  <li>Start by eliminating access to all github or bitbucket repos.  This preserves source code integrity and ensures that post leaving commit isn't snuck into a repo with some nefarious means.  This should be done before the engineer leaves the building.</li>
   <li>Eliminate VPN Access.  This should be done before the engineer leaves the building.</li>
   <li>Eliminate Gmail / Google Docs access.</li>
   <li>Eliminate Slack Access (but bear in mind that this is a loss of institutional memory; <a href="https://fuzzyblog.io/blog/startup/2019/07/20/employee-transitions-don-t-kill-your-organizational-memory.html">see here</a>).</li>
-  <li>If all your AWS boxes are fronted thru a VPN then you can lessen the priority on this one.  Eliminate SSH access to all public boxes.  If you don’t have a VPN then lock down SSH access almost immediately.  This requires going into the /home/username/.ssh/authorized_keys file for EVERY account and eliminating all ssh keys.  Do not simply check only the user’s ~/.ssh/ directory because if the departing employee had admin access, he might have attached his public ssh key onto another account.  You should note that this is sometimes done by people as a deliberate, good faith, backdoor in the event of problems.  I’ve done this myself on problematic boxes.</li>
+  <li>If all your AWS boxes are fronted thru a VPN then you can lessen the priority on this one.  Eliminate SSH access to all public boxes.  If you don't have a VPN then lock down SSH access almost immediately.  This requires going into the /home/username/.ssh/authorized_keys file for EVERY account and eliminating all ssh keys.  Do not simply check only the user's ~/.ssh/ directory because if the departing employee had admin access, he might have attached his public ssh key onto another account.  You should note that this is sometimes done by people as a deliberate, good faith, backdoor in the event of problems.  I've done this myself on problematic boxes.</li>
   <li>Rotate your AWS credentials.  This should be done almost immediately after the engineer leaves.  Once you rotate them, they need to be refreshed on all boxes in the ~/.aws/credentials file.</li>
   <li>Eliminate access to third party development tools such as <a href="https://www.datadoghq.com/">Data Dog</a>, <a href="https://newrelic.com/">New Relic</a>, <a href="https://www.timber.io">Timber.io</a> or <a href="https://www.honeybadger.com/">HoneyBadger</a></li>
   <li>Eliminate FTP Access.</li>

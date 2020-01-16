@@ -186,7 +186,7 @@ Note: Cron is the standard *nix technology for running tasks on a recurring basi
 
 <p>Despite cron being an age old *nix technology, it alway seems like  scheduling tasks is an annoying thing.</p>
 
-<p><strong>Note</strong>: <a href="https://crontab.guru/">Cron</a> is the standard *nix technology for running tasks on a recurring basis like “every monday at 5 am execute this program”.</p>
+<p><strong>Note</strong>: <a href="https://crontab.guru/">Cron</a> is the standard *nix technology for running tasks on a recurring basis like "every monday at 5 am execute this program".</p>
 
 <p>We are now doing things like running tasks within containers and that raises the question of where does cron exist:</p>
 
@@ -196,7 +196,7 @@ Note: Cron is the standard *nix technology for running tasks on a recurring basi
   <li>what about multiple instances of the container across different machines?</li>
 </ul>
 
-<p>I’m not going to try and address the bigger picture questions here like multiple instances but I can show you how to use cron at the OS level to drive a rake task within a container.</p>
+<p>I'm not going to try and address the bigger picture questions here like multiple instances but I can show you how to use cron at the OS level to drive a rake task within a container.</p>
 
 <h2 id="how-do-you-run-something-within-in-a-container">How Do You Run Something Within in a Container</h2>
 
@@ -210,7 +210,7 @@ Note: Cron is the standard *nix technology for running tasks on a recurring basi
 
 <h2 id="how-to-run-a-rake-task">How to Run a Rake Task</h2>
 
-<p>And if you can run a shell like /bin/bash within a container from the outside then, <em>drum roll please</em>, you can easily run anything from outside including a Rake task.  And if you have that then you can easily schedule it.  Here’s an example:</p>
+<p>And if you can run a shell like /bin/bash within a container from the outside then, <em>drum roll please</em>, you can easily run anything from outside including a Rake task.  And if you have that then you can easily schedule it.  Here's an example:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>docker exec -it 8d76da4ab481  bundle exec rake data_source:update_or_initial_load --trace
 </code></pre>
@@ -220,9 +220,9 @@ Note: Cron is the standard *nix technology for running tasks on a recurring basi
 
 <h2 id="but-docker-container-hashes-change">But Docker Container Hashes Change…</h2>
 
-<p>If you think about this a bit there is one real problem – that damn CONTAINER_HASH isn’t consistent.  It changes every time the container is restarted.  The trick to making a cron job that runs your rake task is to use a shell script which pulls the container hash dynamically.  And to figure that you we are going to start with my <a href="https://fuzzyblog.io/blog/docker/2019/11/21/dockerbash-making-docker-exec-it-suck-less.html">dockerbash blog post</a>.</p>
+<p>If you think about this a bit there is one real problem – that damn CONTAINER_HASH isn't consistent.  It changes every time the container is restarted.  The trick to making a cron job that runs your rake task is to use a shell script which pulls the container hash dynamically.  And to figure that you we are going to start with my <a href="https://fuzzyblog.io/blog/docker/2019/11/21/dockerbash-making-docker-exec-it-suck-less.html">dockerbash blog post</a>.</p>
 
-<p>Here’s the shell script from the dockerbash post:</p>
+<p>Here's the shell script from the dockerbash post:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
 <span class="k">if</span> <span class="o">[</span> -z <span class="nv">$1</span> <span class="o">]</span>; <span class="k">then
@@ -235,7 +235,7 @@ Note: Cron is the standard *nix technology for running tasks on a recurring basi
 </code></pre>
 </div>
 
-<p>Let’s create another shell script calling it, say, docker_datasource_update:</p>
+<p>Let's create another shell script calling it, say, docker_datasource_update:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
 <span class="nv">pid</span><span class="o">=</span><span class="sb">`</span>docker ps | grep police | awk <span class="s1">'{print $1}'</span><span class="sb">`</span>
@@ -243,9 +243,9 @@ docker <span class="nb">exec</span> -it <span class="nv">$pid</span> bundle <spa
 </code></pre>
 </div>
 
-<p><strong>Note</strong>: This is for an application which has the word ‘police’ in its name hence the above grep for the word police.</p>
+<p><strong>Note</strong>: This is for an application which has the word 'police' in its name hence the above grep for the word police.</p>
 
-<p>Let’s say that this is now stored in /usr/local/bin/docker_datasource_update.  You then need to write a cron job to call it:</p>
+<p>Let's say that this is now stored in /usr/local/bin/docker_datasource_update.  You then need to write a cron job to call it:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code># m h  dom mon dow   command
 0 7 * * * /usr/local/bin/docker_datasource_update

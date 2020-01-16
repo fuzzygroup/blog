@@ -181,19 +181,19 @@
     <p>I attended the Indianapolis Ansible meetup last night and it was a wonderful, albeit amusing, success.  The thrust of the meetup was watching an Ansible Fest video on TDD and Ansible.  And, well, it was a hoot!  I have rarely, if ever, watched a conference video that got something so damn wrong.  All the videos are <a href="https://www.ansible.com/videos-ansiblefest-sf-2016">here</a> and most looked excellent.  The video we watched and that I mocked mercilessly is <a href="https://www.ansible.com/beginners-guide-to-testing-infrastructure-as-code">here</a>.  The problems with it were many including:</p>
 
 <ul>
-  <li>The date on the video was 2016 but it felt like we had time traveled back a decade or more “there’s this thing called extreme programming”</li>
-  <li>The guy who made it terms himself a “Agile Coach” which confirms everything I’ve ever thought about methodologies</li>
-  <li>He advocated that you test not your main ansible playbook but a playbook specifically designed for being tested.  Sheesh.  That’s ludicrous.</li>
+  <li>The date on the video was 2016 but it felt like we had time traveled back a decade or more "there's this thing called extreme programming"</li>
+  <li>The guy who made it terms himself a "Agile Coach" which confirms everything I've ever thought about methodologies</li>
+  <li>He advocated that you test not your main ansible playbook but a playbook specifically designed for being tested.  Sheesh.  That's ludicrous.</li>
 </ul>
 
-<p>All problems aside, Jason and Nick did a great job hosting a meetup and I’ll definitely be back.  While the video was laughable, here’s some of the things I learned:</p>
+<p>All problems aside, Jason and Nick did a great job hosting a meetup and I'll definitely be back.  While the video was laughable, here's some of the things I learned:</p>
 
 <ul>
-  <li>If you’re going to test Ansible stuff then use <a href="http://serverspec.org">ServerSpec</a> which is basically RSpec for machine configuration.</li>
-  <li>I’m not the only one who despises the RSpec expect syntax - ServerSpec is using .should also.  Yay!</li>
+  <li>If you're going to test Ansible stuff then use <a href="http://serverspec.org">ServerSpec</a> which is basically RSpec for machine configuration.</li>
+  <li>I'm not the only one who despises the RSpec expect syntax - ServerSpec is using .should also.  Yay!</li>
   <li><a href="http://www.cloudone.com">CloudOne</a> is doing really interesting things with IOT right here in Indianapolis about 10 minutes from my house.  Bizarre!</li>
   <li>Brixx Pizza is not particularly good (the post meetup food).  Good flavor but horrible crust.</li>
-  <li>I’m not the only one who finds almost everything on Ansible Galaxy to be poorly done and barely usable.</li>
+  <li>I'm not the only one who finds almost everything on Ansible Galaxy to be poorly done and barely usable.</li>
   <li>
     <p>Understanding the scope of your variables in Ansible is confusing to everyone not just me.  I recommended:</p>
 
@@ -534,9 +534,9 @@
 </code></pre>
 </div>
 
-<p>Which isn’t anything about the variables in my playbook but I think I have a much better handle on how to use ansible system level variables like the machine’s memory size which would let me dynamically adjust my sidekiq thread count for example.</p>
+<p>Which isn't anything about the variables in my playbook but I think I have a much better handle on how to use ansible system level variables like the machine's memory size which would let me dynamically adjust my sidekiq thread count for example.</p>
 
-<p>Here’s an example of the dumpall approach:</p>
+<p>Here's an example of the dumpall approach:</p>
 
 <p>create a playbook called playbook_dump_variables.yml and put this in it:</p>
 
@@ -567,7 +567,7 @@ PLAYBOOK VARS:
 </code></pre>
 </div>
 
-<p>Unfortunately this results in a low level python error (“RepresenterError: cannot represent an object: 172.31.36.55”) at the Yaml class level as described <a href="https://github.com/openshift/openshift-ansible/issues/2401">here</a> which seems to be tied to Ansible’s Unicode implementation.</p>
+<p>Unfortunately this results in a low level python error ("RepresenterError: cannot represent an object: 172.31.36.55") at the Yaml class level as described <a href="https://github.com/openshift/openshift-ansible/issues/2401">here</a> which seems to be tied to Ansible's Unicode implementation.</p>
 
 <p>This is really a pity since I think it is exactly what is needed but people seem to be actively working on the bug which is at least good.</p>
 
@@ -577,7 +577,7 @@ PLAYBOOK VARS:
 </code></pre>
 </div>
 
-<p>Sheesh!  This shouldn’t be all that hard.  Sigh.</p>
+<p>Sheesh!  This shouldn't be all that hard.  Sigh.</p>
 
   </div>
   

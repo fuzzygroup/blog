@@ -49,7 +49,7 @@
   You know the problem with your blog – you write so much and its not searchable.
 
 
-Poppycock.  Balderdash.  Fizzle Sticks.  Ok. Maybe.  Yes there’s not sear...">
+Poppycock.  Balderdash.  Fizzle Sticks.  Ok. Maybe.  Yes there's not sear...">
   
 
   
@@ -190,25 +190,25 @@ Poppycock.  Balderdash.  Fizzle Sticks.  Ok. Maybe.  Yes there’s not sear...">
   <p>You know the problem with your blog – you write so much and its not searchable.</p>
 </blockquote>
 
-<p>Poppycock.  Balderdash.  Fizzle Sticks.  Ok. Maybe.  Yes there’s not search box at the top of my blog but anything on the Internet that has a distinct domain name is actually easily searchable just by using Google.  For example, here’s how you’d find anything I ever wrote about MySQL:</p>
+<p>Poppycock.  Balderdash.  Fizzle Sticks.  Ok. Maybe.  Yes there's not search box at the top of my blog but anything on the Internet that has a distinct domain name is actually easily searchable just by using Google.  For example, here's how you'd find anything I ever wrote about MySQL:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>site:fuzzyblog.io mysql
 </code></pre>
 </div>
 
-<p>If you copy and paste that into google then you’re get a search of my site for anything I ever wrote about mysql.</p>
+<p>If you copy and paste that into google then you're get a search of my site for anything I ever wrote about mysql.</p>
 
-<p>If we wanted to make this a “feature” of my blog then we would need to do the following:</p>
+<p>If we wanted to make this a "feature" of my blog then we would need to do the following:</p>
 
 <ol>
   <li>Create an HTML form which has a search box and a search button.</li>
-  <li>We’d need some JavaScript to handle assembling the query and sending it to Google.</li>
-  <li>We’d need to integrate it with Jekyll</li>
+  <li>We'd need some JavaScript to handle assembling the query and sending it to Google.</li>
+  <li>We'd need to integrate it with Jekyll</li>
 </ol>
 
 <h2 id="step-1-a-basic-html-form">Step 1: A Basic HTML Form</h2>
 
-<p>Here’s a basic html form:</p>
+<p>Here's a basic html form:</p>
 
 <div class="language-html highlighter-rouge"><pre class="highlight"><code>  <span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">"search"</span> <span class="na">action=</span><span class="s">"https://www.google.com/search"</span><span class="nt">&gt;</span>
     <span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"q"</span> <span class="na">name=</span><span class="s">"q"</span> <span class="na">size=</span><span class="s">50</span><span class="nt">&gt;</span>
@@ -219,7 +219,7 @@ Poppycock.  Balderdash.  Fizzle Sticks.  Ok. Maybe.  Yes there’s not sear...">
 
 <h2 id="step-2-javascript">Step 2: JavaScript</h2>
 
-<p>Here’s the JavaScript:</p>
+<p>Here's the JavaScript:</p>
 
 <div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"text/javascript"</span><span class="o">&gt;</span>
   <span class="kd">function</span> <span class="nx">do_search</span><span class="p">()</span> <span class="p">{</span>
@@ -231,7 +231,7 @@ Poppycock.  Balderdash.  Fizzle Sticks.  Ok. Maybe.  Yes there’s not sear...">
 </span></code></pre>
 </div>
 
-<p>What this does is take the query in the search field and assign it to a variable.  It then merges it with the “site:fuzzyblog.io” bit of Google syntax.  And, yes, there might be an issue with multi word queries needing to be joined with the + character (that’s how HTML rolls but Google is generally pretty flexible).  I’d test this now and rewrite the query but I’m in an aluminum tube at 35,000 feet without any access to Google (or most developer documentation). The final step is to set document.location to the google url for the search.  That forces the query to execute and positions the user on the Google results page.</p>
+<p>What this does is take the query in the search field and assign it to a variable.  It then merges it with the "site:fuzzyblog.io" bit of Google syntax.  And, yes, there might be an issue with multi word queries needing to be joined with the + character (that's how HTML rolls but Google is generally pretty flexible).  I'd test this now and rewrite the query but I'm in an aluminum tube at 35,000 feet without any access to Google (or most developer documentation). The final step is to set document.location to the google url for the search.  That forces the query to execute and positions the user on the Google results page.</p>
 
 <h2 id="step-3-jekyll-integration">Step 3: Jekyll Integration</h2>
 
@@ -244,11 +244,11 @@ Poppycock.  Balderdash.  Fizzle Sticks.  Ok. Maybe.  Yes there’s not sear...">
 
 <p>The _includes directory holds html templates for the html HEAD element, the header of every page and the footer of every page.  The file head.html needed to be modified to include the JavaScript.</p>
 
-<p>The _layouts directory holds the html layout files used for content display so that’s where the search form needs to be displayed.</p>
+<p>The _layouts directory holds the html layout files used for content display so that's where the search form needs to be displayed.</p>
 
 <h2 id="step-4-success">Step 4: Success!</h2>
 
-<p>Here’s how it looks without much work at all on usability:</p>
+<p>Here's how it looks without much work at all on usability:</p>
 
 <p class="center"><img src="/blog/assets/search.png" alt="search.png" /></p>
 

@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-I don’t claim to be an expert when it comes to Python.  At best I’m an apprentice striving to be a journey man.  One of the interesting tools in the Python / Data Science ecosystem is the Jupyter...">
+I don't claim to be an expert when it comes to Python.  At best I'm an apprentice striving to be a journey man.  One of the interesting tools in the Python / Data Science ecosystem is the Jupyter...">
   
 
   
@@ -182,24 +182,24 @@ I don’t claim to be an expert when it comes to Python.  At best I’m an appre
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_9429.jpeg" alt="IMG_9429.jpeg" /></p>
 
-<p>I don’t claim to be an expert when it comes to Python.  At best I’m an apprentice striving to be a journey man.  One of the interesting tools in the Python / Data Science ecosystem is the Jupyter Notebook which gives a cell based representation of code, visualizations, documentation and execution flow and allows you to package things up for distribution i.e. hand your work, in a complete fashion, from say Data Scientist 1 (“Rebekah”) to Data Scientist 2 (“Dawn”).  This is a laudable goal and one that I theoretically agree with.</p>
+<p>I don't claim to be an expert when it comes to Python.  At best I'm an apprentice striving to be a journey man.  One of the interesting tools in the Python / Data Science ecosystem is the Jupyter Notebook which gives a cell based representation of code, visualizations, documentation and execution flow and allows you to package things up for distribution i.e. hand your work, in a complete fashion, from say Data Scientist 1 ("Rebekah") to Data Scientist 2 ("Dawn").  This is a laudable goal and one that I theoretically agree with.</p>
 
-<p><strong>Note</strong>: Jupyter Notebooks do NOT include data so that’s still external to the notebook, something that can easily bite you (as it is currently biting me).</p>
+<p><strong>Note</strong>: Jupyter Notebooks do NOT include data so that's still external to the notebook, something that can easily bite you (as it is currently biting me).</p>
 
-<p>I know a lot of pythonistas simply install libraries to their local machine and just have a collection of tools that the throw at problems.  This, however, is a terrible practice due to code deprecation, version conflicts, etc.  I say this with authority because I’ve been through this in the Ruby world before we all regularly started using Ruby virtual environments / Ruby version managers like RBENV / RVM which manage dependencies on a per project basis.  Knowing this, my first practice with Python, is to always create a virtual environment, generally using Virtual ENV (VENV).</p>
+<p>I know a lot of pythonistas simply install libraries to their local machine and just have a collection of tools that the throw at problems.  This, however, is a terrible practice due to code deprecation, version conflicts, etc.  I say this with authority because I've been through this in the Ruby world before we all regularly started using Ruby virtual environments / Ruby version managers like RBENV / RVM which manage dependencies on a per project basis.  Knowing this, my first practice with Python, is to always create a virtual environment, generally using Virtual ENV (VENV).</p>
 
-<p>So, when I set out today to use a Jupyter Notebook, my first approach was to make this work with a Jupyter Notebook.  And, alas, I haven’t been so lucky as to make this work cleanly with a Python virtual environment like VENV.  Here are some of the things I tried:</p>
+<p>So, when I set out today to use a Jupyter Notebook, my first approach was to make this work with a Jupyter Notebook.  And, alas, I haven't been so lucky as to make this work cleanly with a Python virtual environment like VENV.  Here are some of the things I tried:</p>
 
 <ul>
   <li>Installing jupyter into the virtual env and running from bin/jupyter notebook</li>
-  <li><a href="https://anbasile.github.io/programming/2017/06/25/jupyter-venv/">Following Angelo Basille’s Directions</a></li>
-  <li><a href="https://janakiev.com/blog/jupyter-virtual-envs/">Following Janakiev’s Directions</a></li>
+  <li><a href="https://anbasile.github.io/programming/2017/06/25/jupyter-venv/">Following Angelo Basille's Directions</a></li>
+  <li><a href="https://janakiev.com/blog/jupyter-virtual-envs/">Following Janakiev's Directions</a></li>
   <li><a href="https://stackoverflow.com/questions/44586234/how-to-change-kernel-when-jupyter-notebook-shows-only-one-python?rq=1">Changing the Kernel</a></li>
 </ul>
 
-<p>If you’re curious about how to use Python Virtual Environments, I wrote a <a href="https://fuzzyblog.io/blog/python/2019/09/09/working-up-to-bert-installing-tensorflow-for-python.html">solid tutorial back in September</a> that I used to get a full installation of Tensor Flow up and running.  I’ve referred back to this over and over, each time I needed a Python Virtual Environment, so I know it works.</p>
+<p>If you're curious about how to use Python Virtual Environments, I wrote a <a href="https://fuzzyblog.io/blog/python/2019/09/09/working-up-to-bert-installing-tensorflow-for-python.html">solid tutorial back in September</a> that I used to get a full installation of Tensor Flow up and running.  I've referred back to this over and over, each time I needed a Python Virtual Environment, so I know it works.</p>
 
-<p>I’m sure there is a way to mess about with virtual environments and Jupyter Notebooks to make them work but, honestly, I’m skeptical on notebooks and how they obfuscate code and data together anyway so I thought “How do I just make this a Python script”.  I took this approach because I was absolutely certain that I could make a virtual environment work with just Python.  And, thanks to my pairing partner, Grant, there is, indeed, a way.</p>
+<p>I'm sure there is a way to mess about with virtual environments and Jupyter Notebooks to make them work but, honestly, I'm skeptical on notebooks and how they obfuscate code and data together anyway so I thought "How do I just make this a Python script".  I took this approach because I was absolutely certain that I could make a virtual environment work with just Python.  And, thanks to my pairing partner, Grant, there is, indeed, a way.</p>
 
 <h2 id="making-a-jupyter-notebook-into-a-python-script-with-a-virtual-env">Making a Jupyter Notebook into a Python Script with a Virtual Env</h2>
 
@@ -207,9 +207,9 @@ I don’t claim to be an expert when it comes to Python.  At best I’m an appre
   <li>Follow the instructions <a href="https://fuzzyblog.io/blog/python/2019/09/09/working-up-to-bert-installing-tensorflow-for-python.html">here</a> to setup VENV for a new project in a new directory.</li>
   <li>Use File menu, Export as Python to write a single Python script representing the notebook.</li>
   <li>Create a requirements.txt file as per the instructions <a href="https://fuzzyblog.io/blog/python/2019/09/10/building-a-python-requirements-txt-file.html">here</a>.</li>
-  <li>Go through the Python code that was exported and convert the import / from instructions to the right <a href="http://packages.pypy.org/">PyPy package index</a> name entry in the requirements.txt file.  Be aware that there isn’t a straight correspondence between the import statements and the package names.  For example you import from “metal” in the notebook I’m porting but the package name is actually “snorkel-metal” and you import from sklearn but the package name is actually scikit-learn.  Python’s there’s only one way to do this mantra, in the area of package management, is just plain crap.  Sigh.</li>
+  <li>Go through the Python code that was exported and convert the import / from instructions to the right <a href="http://packages.pypy.org/">PyPy package index</a> name entry in the requirements.txt file.  Be aware that there isn't a straight correspondence between the import statements and the package names.  For example you import from "metal" in the notebook I'm porting but the package name is actually "snorkel-metal" and you import from sklearn but the package name is actually scikit-learn.  Python's there's only one way to do this mantra, in the area of package management, is just plain crap.  Sigh.</li>
   <li>Run pip3 install -r requirements.txt</li>
-  <li>Run your python script and then adjust the requirements.txt file accordingly.  You will almost certainly need to change some things but, by and large, I’m finding that this process does work.</li>
+  <li>Run your python script and then adjust the requirements.txt file accordingly.  You will almost certainly need to change some things but, by and large, I'm finding that this process does work.</li>
 </ol>
 
   </div>

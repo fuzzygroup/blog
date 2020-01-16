@@ -192,7 +192,7 @@
 
 <p>In my own experience, I ran a data center for 5 years without having to worry about process monitoring and tools like Monit or Inspeqtor but the very first time I put my AWS data center under heavy load, I found things <a href="https://fuzzygroup.github.io/blog/tag.html#ssh">crashing right, left and center</a>.  All of my problems were magically solved simply by the addition of <a href="https://mmonit.com/monit/">Monit</a> to watch dog the sidekiq process and restart it when it gets too large.  And while this solved my sidekiq problem, two nights ago, I ran out of disc space on a key resource – my MariaDB instance.</p>
 
-<p>One approach would be to continue to use Monit and add rules to it for disc space monitoring but I’ve been intrigued by the <em>simple</em> configuration that <a href="http://www.mikeperham.com">Mike Perham’s</a> <a href="https://github.com/mperham/inspeqtor">Inspeqtor</a> offers.  Sidekiq has served me well as of late and Mike’s support, even <a href="https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html">the free community support</a>, he offers is fantastic.  So rather than double down on Monit, I’m going to branch out and use Inspeqtor.</p>
+<p>One approach would be to continue to use Monit and add rules to it for disc space monitoring but I've been intrigued by the <em>simple</em> configuration that <a href="http://www.mikeperham.com">Mike Perham's</a> <a href="https://github.com/mperham/inspeqtor">Inspeqtor</a> offers.  Sidekiq has served me well as of late and Mike's support, even <a href="https://fuzzygroup.github.io/blog/ruby/2016/10/10/a-conversation-with-mike-perham.html">the free community support</a>, he offers is fantastic.  So rather than double down on Monit, I'm going to branch out and use Inspeqtor.</p>
 
 <h1 id="goals">Goals</h1>
 
@@ -211,7 +211,7 @@
 
 <h1 id="inspeqtor-vs-monit">Inspeqtor vs Monit</h1>
 
-<p>Monit and Inspeqtor are two very different animals.  Whereas Monit is a general purpose monitoring tool, Inspeqtor is specialized focusing on process that are run thru <a href="https://github.com/mperham/inspeqtor/wiki/Initd">init.d / upstart</a> as well as generalized machine configuration.  So while you can technically do more with Monit, you’ll have a much easier time doing what you generally need with Inspeqtor.</p>
+<p>Monit and Inspeqtor are two very different animals.  Whereas Monit is a general purpose monitoring tool, Inspeqtor is specialized focusing on process that are run thru <a href="https://github.com/mperham/inspeqtor/wiki/Initd">init.d / upstart</a> as well as generalized machine configuration.  So while you can technically do more with Monit, you'll have a much easier time doing what you generally need with Inspeqtor.</p>
 
 <h1 id="configuring-sendmail">Configuring Sendmail</h1>
 
@@ -249,9 +249,9 @@ send alerts via email with
 </code></pre>
 </div>
 
-<p>I’ve got the other approaches commented out just showing the local smtp_server (in my case sendmail).</p>
+<p>I've got the other approaches commented out just showing the local smtp_server (in my case sendmail).</p>
 
-<p>Here’s an ansible role to configure sendmail:</p>
+<p>Here's an ansible role to configure sendmail:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>mkdir -p ansible_root/roles/sendmail/tasks
 touch ansible_root/roles/sendmail/tasks/main.yml
@@ -271,13 +271,13 @@ touch ansible_root/roles/sendmail/tasks/main.yml
 </code></pre>
 </div>
 
-<p>Here’s how to verify if your local sendmail instance is actually running:</p>
+<p>Here's how to verify if your local sendmail instance is actually running:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>echo "ficrawler1 My test email being sent from sendmail" | /usr/sbin/sendmail fuzzygroup@gmail.com
 </code></pre>
 </div>
 
-<p>Check your inbox for the message.  You may find that you need to check a spam or junk folder since this isn’t a modern mail server using SPIF / DKIM standards.  If the message didn’t arrive then you need to troubleshoot and figure out why.</p>
+<p>Check your inbox for the message.  You may find that you need to check a spam or junk folder since this isn't a modern mail server using SPIF / DKIM standards.  If the message didn't arrive then you need to troubleshoot and figure out why.</p>
 
 <h1 id="configuring-inspeqtor-with-ansible">Configuring Inspeqtor with Ansible</h1>
 
@@ -444,7 +444,7 @@ check service mysql
 
 <h2 id="configuring-inspeqtor-with-ansible-1">Configuring Inspeqtor with Ansible</h2>
 
-<p>Rather than write out a playbook, roles and template files manually, I hosted it on <a href="https://github.com/fuzzygroup/ansible_inspeqtor">github</a>.  Clone it from there and adapt it for your needs.  But, in case you’re curious, here is the overall structure:</p>
+<p>Rather than write out a playbook, roles and template files manually, I hosted it on <a href="https://github.com/fuzzygroup/ansible_inspeqtor">github</a>.  Clone it from there and adapt it for your needs.  But, in case you're curious, here is the overall structure:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>tree
 .
@@ -474,7 +474,7 @@ check service mysql
 </code></pre>
 </div>
 
-<p>The setup task exists to register an ansible variable that gives the instance-id so it can be used in alerting.  This is handled by calling the <a href="https://fuzzygroup.github.io/blog/aws/2016/09/07/aws-tutorial-getting-your-instance-id.html">instance id api</a> which I covered previously.  While there is an instance_ids method in the <a href="http://docs.ansible.com/ansible/ec2_module.html">Ansible EC2 module</a>, this approach means you don’t have your security keys as its a private API you only call from inside the instance itself.</p>
+<p>The setup task exists to register an ansible variable that gives the instance-id so it can be used in alerting.  This is handled by calling the <a href="https://fuzzygroup.github.io/blog/aws/2016/09/07/aws-tutorial-getting-your-instance-id.html">instance id api</a> which I covered previously.  While there is an instance_ids method in the <a href="http://docs.ansible.com/ansible/ec2_module.html">Ansible EC2 module</a>, this approach means you don't have your security keys as its a private API you only call from inside the instance itself.</p>
 
 <h1 id="managing-inspeqtor-on-a-daily-basis">Managing Inspeqtor on a Daily Basis</h1>
 

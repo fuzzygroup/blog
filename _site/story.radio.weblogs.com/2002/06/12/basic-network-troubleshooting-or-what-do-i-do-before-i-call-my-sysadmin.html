@@ -281,33 +281,33 @@
 
 <font size="+1"><b>Basic Network Troubleshooting or What Do I Do Before I Call My SysAdmin ?</b></font>
 
-<p>I was troubleshooting some network connectivity problems recently with a box in a remote data center that wasn’t responding and I thought this technique would come in handy to someone.  There isn’t any magic here and I’m not pretending that there is.  Still, if you are new to doing network stuff this is useful.</p>
+<p>I was troubleshooting some network connectivity problems recently with a box in a remote data center that wasn't responding and I thought this technique would come in handy to someone.  There isn't any magic here and I'm not pretending that there is.  Still, if you are new to doing network stuff this is useful.</p>
 
-<p><strong>NOTE:</strong> SysAdmin is short hand for “Systems Administrator”.  Generally this is the guy who keeps everything running and in order.  He’s also the guy who will save you time and again.  As a general rule, be nice to your SysAdmin.</p>
+<p><strong>NOTE:</strong> SysAdmin is short hand for "Systems Administrator".  Generally this is the guy who keeps everything running and in order.  He's also the guy who will save you time and again.  As a general rule, be nice to your SysAdmin.</p>
 
-<p><strong>NOTE 2</strong> : I ran these by my friend Kjartan who’s a much better *nix admin than I am and he added some great points.  I agree with all of them and, rather than rewriting them, I thought I’d give full credit but leaving them intact as a final section.</p>
+<p><strong>NOTE 2</strong> : I ran these by my friend Kjartan who's a much better *nix admin than I am and he added some great points.  I agree with all of them and, rather than rewriting them, I thought I'd give full credit but leaving them intact as a final section.</p>
 
 <h2 id="basics">Basics</h2>
 
-<p>There are two core network troubleshooting tools for Internet style networking (i.e. TCP/IP networking).  They are Ping and TraceRt (pronounced “Trace Route”).  Here’s what they do:</p>
+<p>There are two core network troubleshooting tools for Internet style networking (i.e. TCP/IP networking).  They are Ping and TraceRt (pronounced "Trace Route").  Here's what they do:</p>
 
 <ul>
-  <li>ping – Contact a machine between 1 and N times (N might be infinite) sending it one “chunk” of information to see if it responds.</li>
-  <li>tracert – Trace the “route” over (generally) 30 hops between your machine and the remote machine.</li>
+  <li>ping – Contact a machine between 1 and N times (N might be infinite) sending it one "chunk" of information to see if it responds.</li>
+  <li>tracert – Trace the "route" over (generally) 30 hops between your machine and the remote machine.</li>
 </ul>
 
-<p>Here’s a pretty good assumption when you have a machine in a data center and THEY gave you the machine’s IP address:</p>
+<p>Here's a pretty good assumption when you have a machine in a data center and THEY gave you the machine's IP address:</p>
 
 <blockquote>
-  <p>Machines in data centers generally have consecutive IP addresses.  Let’s say for example that your machine has the IP address: 216.40.225.70.  It’s a pretty good bet that 216.40.225.71 will be another machine in that SAME data center.  What I do when troubleshooting failures is alter the IP address I am looking at by 1 or 2 digits on the last set of numbers.  This tells me whether or not the failure is the entire data center or just a machine or group of machines.
+  <p>Machines in data centers generally have consecutive IP addresses.  Let's say for example that your machine has the IP address: 216.40.225.70.  It's a pretty good bet that 216.40.225.71 will be another machine in that SAME data center.  What I do when troubleshooting failures is alter the IP address I am looking at by 1 or 2 digits on the last set of numbers.  This tells me whether or not the failure is the entire data center or just a machine or group of machines.
 ## How to Troubleshoot a Remote Machine</p>
 </blockquote>
 
 <p>This is one of those things that there are as many different opinions on as there are SysAdmins.  I tend to use this approach.</p>
 
 <ol>
-  <li>Ping the remote machine by dns name such as “ping example.com”.  If this fails, proceed to step 2.</li>
-  <li>Ping the remote machine by IP address such as “ping 192.0.34.72”.  Don’t know your machine’s IP address?  Pinging it will reveal it to you.  WRITE IT DOWN NOW.  Don’t lose it.  If DNS fails you can often reach your machine by IP address. 
+  <li>Ping the remote machine by dns name such as "ping example.com".  If this fails, proceed to step 2.</li>
+  <li>Ping the remote machine by IP address such as "ping 192.0.34.72".  Don't know your machine's IP address?  Pinging it will reveal it to you.  WRITE IT DOWN NOW.  Don't lose it.  If DNS fails you can often reach your machine by IP address. 
     <ul>
       <li>If this succeeds then your machine is still on the Internet but you have a DNS failure.  Contact your SysAdmin immediately.</li>
       <li>If this fails then proceed to step 3.</li>
@@ -334,7 +334,7 @@
 </code></pre>
 </div>
 
-<p>This tells you that on hop 21 to the destination it found an error.  It’s a pretty good certainty that if you can’t get to your machine via ping to it’s name, ping to its IP address or tracert to its IP address you need to call your SysAdmin.</p>
+<p>This tells you that on hop 21 to the destination it found an error.  It's a pretty good certainty that if you can't get to your machine via ping to it's name, ping to its IP address or tracert to its IP address you need to call your SysAdmin.</p>
 
 <h2 id="feedback-from-kjartan">Feedback from Kjartan</h2>
 
@@ -343,7 +343,7 @@
 <ol>
   <li>tracert is called traceroute in linux systems. The tracert is a relic from the days when DOS/Windows only supported 8.3 file names.</li>
   <li>It really helps to know the route from your location to the server.  Not being able to reach a server can be your ISPs problem. I have a copy of traceroutes too all my servers saved on file so I can guess where the failure is. I can usually tell if the failure is my isp, the hosting company or somewhere in between. Ofcoz routes change so its not an exact science, but with some experience its not that hard.</li>
-  <li>Make sure there are no firewalls blocking pings/traceroutes.  ISPs/hosting companies have a nasty habit of modifying the rules at will. So when the web server is down make sure you can’t contact the server via ssh (or telnet if you still run that).</li>
+  <li>Make sure there are no firewalls blocking pings/traceroutes.  ISPs/hosting companies have a nasty habit of modifying the rules at will. So when the web server is down make sure you can't contact the server via ssh (or telnet if you still run that).</li>
 </ol>
 
 <script language="JavaScript" type="text/javascript"><!--

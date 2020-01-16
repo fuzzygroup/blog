@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-For my current side project, cmn, I’m using a version control model of issue branches as described here back in June (about when I started this).  Basically the model is:
+For my current side project, cmn, I'm using a version control model of issue branches as described here back in June (about when I started this).  Basically the model is:
 
 
   The master branch is...">
@@ -185,7 +185,7 @@ For my current side project, cmn, I’m using a version control model of issue b
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_9456.jpeg" alt="IMG_9456.jpeg" /></p>
 
-<p>For my current side project, cmn, I’m using a version control model of issue branches as described <a href="https://fuzzyblog.io/blog/git/2019/06/27/understanding-a-small-organization-s-git-development-model.html">here</a> back in June (about when I started this).  Basically the model is:</p>
+<p>For my current side project, cmn, I'm using a version control model of issue branches as described <a href="https://fuzzyblog.io/blog/git/2019/06/27/understanding-a-small-organization-s-git-development-model.html">here</a> back in June (about when I started this).  Basically the model is:</p>
 
 <ul>
   <li>The master branch is always pristine and always deployable.</li>
@@ -193,11 +193,11 @@ For my current side project, cmn, I’m using a version control model of issue b
   <li>Anything you work on, no matter how small, gets a github issue and goes thru a pull request approach.</li>
 </ul>
 
-<p>I’ve never been a real big fan of structured engineering approaches and my last boss, Taylor Williams, did a fantastic job of teaching us this and – <strong>he was right</strong>.  Even on a small side project, there are definite benefits to solid, well defined workflow processes.</p>
+<p>I've never been a real big fan of structured engineering approaches and my last boss, Taylor Williams, did a fantastic job of teaching us this and – <strong>he was right</strong>.  Even on a small side project, there are definite benefits to solid, well defined workflow processes.</p>
 
-<p>One disadvantage when you work this way is that you end up with a <strong>lot of branches</strong>.  And since branches tend to be named for the issue, it isn’t always apparent the difference between say 444 and 445.  When branches are transitory such as “fix this bug”, that isn’t a big deal.  But when a branch is longer lived, because it just can’t be completed in a short period of time, you are likely to simply <em>forget</em> the branch name.</p>
+<p>One disadvantage when you work this way is that you end up with a <strong>lot of branches</strong>.  And since branches tend to be named for the issue, it isn't always apparent the difference between say 444 and 445.  When branches are transitory such as "fix this bug", that isn't a big deal.  But when a branch is longer lived, because it just can't be completed in a short period of time, you are likely to simply <em>forget</em> the branch name.</p>
 
-<p>As an example, last Thursday night, I started work on a pretty complex enhancement and then a new bug came up Friday morning.  My response was to do an add / commit and then change back to develop and create a new issue and fix that bug.  And, somehow, between Friday morning and tonight, Monday night, the issue number has jumped by 30 issues (if you work this way then you make a lot of issues).  So I went to find the branch and I simply couldn’t.  I was at 480 and I looked back at the Github Issues page and I thought it might have been 460 but that turned out not to be it.</p>
+<p>As an example, last Thursday night, I started work on a pretty complex enhancement and then a new bug came up Friday morning.  My response was to do an add / commit and then change back to develop and create a new issue and fix that bug.  And, somehow, between Friday morning and tonight, Monday night, the issue number has jumped by 30 issues (if you work this way then you make a lot of issues).  So I went to find the branch and I simply couldn't.  I was at 480 and I looked back at the Github Issues page and I thought it might have been 460 but that turned out not to be it.</p>
 
 <p>As I thought about it, I realized that I knew when I last worked on it, the preceding Thursday, and there had to be a way to to look at branches by date created.  A bit of <a href="https://stackoverflow.com/questions/2255416/how-to-determine-when-a-git-branch-was-created">Internet research</a> led me to the <strong>git reflog</strong> command:</p>
 
@@ -205,7 +205,7 @@ For my current side project, cmn, I’m using a version control model of issue b
 </code></pre>
 </div>
 
-<p>Here is an example of reflog’s output:</p>
+<p>Here is an example of reflog's output:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>e95bf81 HEAD@{Fri Nov 22 09:14:34 2019}: checkout: moving from 460 to develop
 fdf7336 HEAD@{Fri Nov 22 09:13:09 2019}: commit: rollup commit

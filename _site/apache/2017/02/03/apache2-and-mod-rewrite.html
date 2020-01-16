@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Apache2 and Mod Rewrite and Automatic Redirect to https</title>
-  <meta name="description" content="Note: If you’re using AWS and an Elastic Load Balancer (ELB) this is actually tricky and will not work.  I documented that process in my AWS Redirection post.">
+  <meta name="description" content="Note: If you're using AWS and an Elastic Load Balancer (ELB) this is actually tricky and will not work.  I documented that process in my AWS Redirection post.">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/apache/2017/02/03/apache2-and-mod-rewrite.html">
@@ -43,9 +43,9 @@
 
   
     <meta name="twitter:description"
-      content="Note: If you’re using AWS and an Elastic Load Balancer (ELB) this is actually tricky and will not work.  I documented that process in my AWS Redirection post.
+      content="Note: If you're using AWS and an Elastic Load Balancer (ELB) this is actually tricky and will not work.  I documented that process in my AWS Redirection post.
 
-Note: You’ll need to use sudo for alm...">
+Note: You'll need to use sudo for alm...">
   
 
   
@@ -180,9 +180,9 @@ Note: You’ll need to use sudo for alm...">
   
 
   <div class="post-content" itemprop="articleBody">
-    <p><strong>Note:</strong> If you’re using AWS and an Elastic Load Balancer (ELB) this is actually tricky and will not work.  I documented that process in my <a href="http://fuzzyblog.io/blog/aws/2017/02/03/redirecting-http-to-https-with-aws-and-elb.html">AWS Redirection</a> post.</p>
+    <p><strong>Note:</strong> If you're using AWS and an Elastic Load Balancer (ELB) this is actually tricky and will not work.  I documented that process in my <a href="http://fuzzyblog.io/blog/aws/2017/02/03/redirecting-http-to-https-with-aws-and-elb.html">AWS Redirection</a> post.</p>
 
-<p><strong>Note:</strong> You’ll need to use sudo for almost all the commands here.  Keep that in mind.</p>
+<p><strong>Note:</strong> You'll need to use sudo for almost all the commands here.  Keep that in mind.</p>
 
 <p>With Lets Encrypt making https actually free for the first time, there is a greater desire to use SSL than there used to be.  This blog post explains how to enable / disable the mod_rewrite aspect of Apache and also defines a simple rule for transforming all inbound requests to https from http:</p>
 
@@ -192,7 +192,7 @@ Note: You’ll need to use sudo for alm...">
   <p>a2enmod rewrite</p>
 </blockquote>
 
-<p>Here’s a <a href="http://stackoverflow.com/questions/869092/how-to-enable-mod-rewrite-for-apache-2-2">Stack Overflow on enabling mod_rewrite</a>.</p>
+<p>Here's a <a href="http://stackoverflow.com/questions/869092/how-to-enable-mod-rewrite-for-apache-2-2">Stack Overflow on enabling mod_rewrite</a>.</p>
 
 <p>To disable mod_rewrite:</p>
 
@@ -200,7 +200,7 @@ Note: You’ll need to use sudo for alm...">
   <p>a2dismod rewrite</p>
 </blockquote>
 
-<p>The a2dismod is something I’ve never seen before.  Thanks to <a href="http://james.lin.net.nz/2010/07/28/ubuntu-apache-enabledisable-modrewrite/">James Lin</a> who wrote about it on his blog.</p>
+<p>The a2dismod is something I've never seen before.  Thanks to <a href="http://james.lin.net.nz/2010/07/28/ubuntu-apache-enabledisable-modrewrite/">James Lin</a> who wrote about it on his blog.</p>
 
 <p>A simple rule to transform http to https:</p>
 
@@ -210,7 +210,7 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI}
 </code></pre>
 </div>
 
-<p>Here’s the <a href="http://stackoverflow.com/questions/16200501/http-to-https-apache-redirection">Stack Overflow</a> where I got this redirect from.</p>
+<p>Here's the <a href="http://stackoverflow.com/questions/16200501/http-to-https-apache-redirection">Stack Overflow</a> where I got this redirect from.</p>
 
 <p>That needs to go into your vhost configuration.  After that you need to restart apache:</p>
 
@@ -232,9 +232,9 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI}
   <p>curl -v http://foo.bar.com</p>
 </blockquote>
 
-<p>Here’s a <a href="http://stackoverflow.com/questions/3252851/how-to-display-request-headers-with-command-line-curl">Stack Overflow</a> on curl and request headers that was helpful.</p>
+<p>Here's a <a href="http://stackoverflow.com/questions/3252851/how-to-display-request-headers-with-command-line-curl">Stack Overflow</a> on curl and request headers that was helpful.</p>
 
-<p>I always <strong>strongly recommend</strong> testing this kind of change with wget or curl because then you actually see the http header values.  Here’s an example showing the http to https auto redirect with wget:</p>
+<p>I always <strong>strongly recommend</strong> testing this kind of change with wget or curl because then you actually see the http header values.  Here's an example showing the http to https auto redirect with wget:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>wget http://foo.bar.com/
 --2017-02-03 15:06:25--  http://foo.bar.com/

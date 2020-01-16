@@ -180,17 +180,17 @@
   <div class="post-content" itemprop="articleBody">
     <p>There are lots and lots of things that can go wrong with an AWS instance but I have always found that the single most common problem is nothing more than running out of disc space – log files fill up, too many things get deployed, etc.  And with low end AWS instances being only 8 gigs of free disc space, well, this is bound to happen.</p>
 
-<p>The expensive solution is simple – buy more disc space – but I’m <strong>cheap</strong> and that means that the real solution is <strong>monitoring</strong> and <strong>alerting</strong>.  Here’s what this means:</p>
+<p>The expensive solution is simple – buy more disc space – but I'm <strong>cheap</strong> and that means that the real solution is <strong>monitoring</strong> and <strong>alerting</strong>.  Here's what this means:</p>
 
 <ul>
-  <li>You need a way to configure monitoring, <strong>automatically</strong>, on <strong>not</strong> just one server but <strong>all</strong> servers you have.  We’ll use <a href="http://www.ansible.com/">Ansible</a> for this.</li>
-  <li>You need a monitoring daemon, a piece of software which looks for error conditions and sends email when they occur.  We’ll use <a href="https://github.com/arnaudsj/monit">monit</a> for this.</li>
-  <li>You need an email server to send the messages through.  We’ll use <a href="http://www.sparkpost.com/">SparkPost</a> for this.</li>
+  <li>You need a way to configure monitoring, <strong>automatically</strong>, on <strong>not</strong> just one server but <strong>all</strong> servers you have.  We'll use <a href="http://www.ansible.com/">Ansible</a> for this.</li>
+  <li>You need a monitoring daemon, a piece of software which looks for error conditions and sends email when they occur.  We'll use <a href="https://github.com/arnaudsj/monit">monit</a> for this.</li>
+  <li>You need an email server to send the messages through.  We'll use <a href="http://www.sparkpost.com/">SparkPost</a> for this.</li>
 </ul>
 
 <h1 id="step-1-installation-of-monit-with-ansible">Step 1: Installation of Monit with Ansible</h1>
 
-<p>Ansible, which I’ve <a href="http://fuzzyblog.io/blog/category.html#ansible">written a lot about</a>, is a configuration tool for servers, your laptop, etc – essentially any device that you want to configure can be managed by Ansible.</p>
+<p>Ansible, which I've <a href="http://fuzzyblog.io/blog/category.html#ansible">written a lot about</a>, is a configuration tool for servers, your laptop, etc – essentially any device that you want to configure can be managed by Ansible.</p>
 
 <p>Here is a basic Ansible role which installs monit along with a configuration file:</p>
 
@@ -216,7 +216,7 @@
 
 <h1 id="step-2-monit-configuration">Step 2: Monit Configuration</h1>
 
-<p>We do need a simple Monit configuration file to tell it about our email server, credentials and the monitoring rules.  Monit is very powerful and can monitor for all kinds of issues but I’m only going to configure free disc space checking.  Where you see things in UPPERCASE then you need to configure them for your settings.</p>
+<p>We do need a simple Monit configuration file to tell it about our email server, credentials and the monitoring rules.  Monit is very powerful and can monitor for all kinds of issues but I'm only going to configure free disc space checking.  Where you see things in UPPERCASE then you need to configure them for your settings.</p>
 
 <p>This configuration file will be installed into /etc/monit/monitrc by your Ansible playbook.</p>
 
@@ -238,7 +238,7 @@ check filesystem "root" with path /dev/xvda1
 </code></pre>
 </div>
 
-<p>And that’s it.  Here is the english language explanation of the Monit configuration:</p>
+<p>And that's it.  Here is the english language explanation of the Monit configuration:</p>
 
 <ul>
   <li>Set the daemon to monitor every 2 minutes (120 seconds) with a delay of 60 seconds for checking on startup</li>
@@ -250,7 +250,7 @@ check filesystem "root" with path /dev/xvda1
 
 <h1 id="step-3-email-configuration">Step 3: Email Configuration</h1>
 
-<p><a href="http://www.sparkpost.com">SparkPost</a> is a provider of email sending services and they have an incredibly generous free plan with up to 10,000 emails per month for free.  And while I could have used SES or another email service, I’ve had wonderful success using SparkPost to power my Rails ActionMailer routines so I just reused the same email credentials for Monit and it worked like a charm.  Here’s what you need to do:</p>
+<p><a href="http://www.sparkpost.com">SparkPost</a> is a provider of email sending services and they have an incredibly generous free plan with up to 10,000 emails per month for free.  And while I could have used SES or another email service, I've had wonderful success using SparkPost to power my Rails ActionMailer routines so I just reused the same email credentials for Monit and it worked like a charm.  Here's what you need to do:</p>
 
 <ol>
   <li>To get a SparkPost account, sign up <a href="https://app.sparkpost.com/account/credentials">here</a>.</li>

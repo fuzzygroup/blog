@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Using Chrome Driver with Docker, Rails and Selenium on AWS</title>
-  <meta name="description" content="I’ve done a lot of crawling in my professional career and I mean a lot.  The recent trend towards JavaScript based sites, however, has wreaked havoc on my tr...">
+  <meta name="description" content="I've done a lot of crawling in my professional career and I mean a lot.  The recent trend towards JavaScript based sites, however, has wreaked havoc on my tr...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/docker/2017/09/30/using-chrome-driver-with-docker-rails-and-selenium-on-aws.html">
@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I’ve done a lot of crawling in my professional career and I mean a <strong>lot</strong>.  The recent trend towards JavaScript based sites, however, has wreaked havoc on my traditional approach of low level html parsing.  For a new product I’m launching, I recently had to make the switch to using <a href="https://github.com/SeleniumHQ/">Selenium</a> for crawling.  Selenium, commonly known as a testing tool, can be used in an embedded fashion where you use code like this:</p>
+    <p>I've done a lot of crawling in my professional career and I mean a <strong>lot</strong>.  The recent trend towards JavaScript based sites, however, has wreaked havoc on my traditional approach of low level html parsing.  For a new product I'm launching, I recently had to make the switch to using <a href="https://github.com/SeleniumHQ/">Selenium</a> for crawling.  Selenium, commonly known as a testing tool, can be used in an embedded fashion where you use code like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>browser = Selenium::WebDriver.for :chrome
 browser.get "https://www.google.com"
@@ -186,7 +186,7 @@ html = browser.page_source
 </code></pre>
 </div>
 
-<p>Here’s a rough equivalent in Mechanize:</p>
+<p>Here's a rough equivalent in Mechanize:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>agent = Mechanize.new
 page = agent.get("https://www.google.com")
@@ -198,15 +198,15 @@ html = page.body
 
 <h1 id="doing-this-server-side">Doing this Server Side</h1>
 
-<p>If you’re going to use Selenium for a server side crawling process then what you actually needs is called ChromeDriver which is the embedded chrome executable that represents a browser.  One approach is to locally install ChromeDriver on each of your compute nodes but the better approach is to Dockerize everything and run ChromeDriver as a container.  Here are the steps to do just that.</p>
+<p>If you're going to use Selenium for a server side crawling process then what you actually needs is called ChromeDriver which is the embedded chrome executable that represents a browser.  One approach is to locally install ChromeDriver on each of your compute nodes but the better approach is to Dockerize everything and run ChromeDriver as a container.  Here are the steps to do just that.</p>
 
 <h2 id="add-chromedriver-to-your-docker-compose-file">Add ChromeDriver to Your Docker Compose File</h2>
 
-<p>You’ll likely need to implement both Step 1 and Step 2.</p>
+<p>You'll likely need to implement both Step 1 and Step 2.</p>
 
 <h3 id="step-1">Step 1</h3>
 
-<p>Here’s what you’ll need for docker-compose.yml or docker-compose.production.yml:</p>
+<p>Here's what you'll need for docker-compose.yml or docker-compose.production.yml:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>chromedriver:
   image: 'robcherry/docker-chromedriver'
@@ -221,7 +221,7 @@ html = page.body
 
 <h3 id="step-2">Step 2</h3>
 
-<p>A docker container is dramatically lighter than a full computer and you’ll find that Chrome will start.  The specific error you are likely to hit is:</p>
+<p>A docker container is dramatically lighter than a full computer and you'll find that Chrome will start.  The specific error you are likely to hit is:</p>
 
 <blockquote>
   <p>Selenium::WebDriver::Error::UnknownError: unknown error: Chrome failed to start: crashed</p>
@@ -241,7 +241,7 @@ html = page.body
 </code></pre>
 </div>
 
-<p>Yes I’m aware that I use 1G in the first example and 2g in the second.  This is how I currently have it working and I’m leaving it alone until I play with it more.  I suspect you could sync these but I don’t know that definitively.</p>
+<p>Yes I'm aware that I use 1G in the first example and 2g in the second.  This is how I currently have it working and I'm leaving it alone until I play with it more.  I suspect you could sync these but I don't know that definitively.</p>
 
 <h3 id="step-3">Step 3</h3>
 
@@ -255,7 +255,7 @@ html = page.body
   <p>UnknownError: session deleted because of page crash from tab crashed</p>
 </blockquote>
 
-<p>The solution to each of these is how you invoke the core browser object.  Here’s what I used:</p>
+<p>The solution to each of these is how you invoke the core browser object.  Here's what I used:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>browser = Selenium::WebDriver.for :chrome, url: "http://chromedriver:4444", :prefs =&gt; {:password_manager_enable =&gt; false, :credentials_enable_service =&gt; false}, :switches =&gt; ["disable-infobars", "no-sandbox"]
 </code></pre>
@@ -263,11 +263,11 @@ html = page.body
 
 <h1 id="security-issues">Security Issues</h1>
 
-<p>Here’s an interesting security note:</p>
+<p>Here's an interesting security note:</p>
 
 <p>Note: ChromeDriver restricts access to local connections by default. To allow external connections, you can pass in a custom CHROMEDRIVER_WHITELISTED_IPS environment variable. By default, this is set to 127.0.0.1, but this can by any comma separated list of IP addresses. Setting the value as empty will allow all remote connections.</p>
 
-<p>AWS security groups really save you on this one.  By setting CHROMEDRIVER_WHITELISTED_IPS=””, I am able to use ChromeDriver from any other container but nothing else can execute them.  An embedded browser like Selenium is akin to an open proxy so you do not want that.</p>
+<p>AWS security groups really save you on this one.  By setting CHROMEDRIVER_WHITELISTED_IPS="", I am able to use ChromeDriver from any other container but nothing else can execute them.  An embedded browser like Selenium is akin to an open proxy so you do not want that.</p>
 
 <h1 id="references">References</h1>
 <ul>

@@ -285,7 +285,7 @@
 From: Scott<br />
 Re: Understanding Our Whacky Site and Template Architecture</p>
 
-<p>Disclaimer: This document is part of the “From Design Geek to Web Geek” series of articles that I am writing to train my consulting partner, Gretchen, in core web technologies.  She would currently be described as a design geek that gets more and more technical as our business grows.  <a href="http://radio.weblogs.com/0103807/stories/2002/07/19/fromDesignGeekToWebGeekPart0Introduction.html">More…</a>  Even though it’s an internal training document, there is enough reusable content here to make it generally applicable hence the decision to blog these as I write them.</p>
+<p>Disclaimer: This document is part of the "From Design Geek to Web Geek" series of articles that I am writing to train my consulting partner, Gretchen, in core web technologies.  She would currently be described as a design geek that gets more and more technical as our business grows.  <a href="http://radio.weblogs.com/0103807/stories/2002/07/19/fromDesignGeekToWebGeekPart0Introduction.html">More…</a>  Even though it's an internal training document, there is enough reusable content here to make it generally applicable hence the decision to blog these as I write them.</p>
 
 <h2 id="background">Background</h2>
 
@@ -293,7 +293,7 @@ Re: Understanding Our Whacky Site and Template Architecture</p>
 
 <h2 id="what-is-scp">What is SCP?</h2>
 
-<p>SCP stands for “secure copy” (the “cp” is the Unix copy command).   SCP, unlike FTP, is “secure” which means that passwords aren’t sent over the Internet, unencrypted.  Even though passwords are rarely sniffed, security is DAMN important hence the advent of SCP.  SCP functions similarly to a DOS copy command although the syntax is different.  The nice thing about SCP is that it lets you move large groups of files to and from systems with just a few keystrokes.</p>
+<p>SCP stands for "secure copy" (the "cp" is the Unix copy command).   SCP, unlike FTP, is "secure" which means that passwords aren't sent over the Internet, unencrypted.  Even though passwords are rarely sniffed, security is DAMN important hence the advent of SCP.  SCP functions similarly to a DOS copy command although the syntax is different.  The nice thing about SCP is that it lets you move large groups of files to and from systems with just a few keystrokes.</p>
 
 <h2 id="where-do-i-get-scp-for-windows">Where Do I Get SCP for Windows?</h2>
 
@@ -316,7 +316,7 @@ Re: Understanding Our Whacky Site and Template Architecture</p>
 <p>Notes:</p>
 
 <ul>
-  <li>PSCP is used from a DOS command line which you get under Windows 2000 by typing “CMD” into the Run command from the Start Menu. It’s also available as an Icon but I have no idea where it’s located.</li>
+  <li>PSCP is used from a DOS command line which you get under Windows 2000 by typing "CMD" into the Run command from the Start Menu. It's also available as an Icon but I have no idea where it's located.</li>
   <li>The first time you use PSCP on a given computer for a given domain, it will ask you if the encryption key is valid. The general answer is yes.</li>
   <li>After you press ENTER when using PSCP you will be asked for your password. Type it in and press ENTER to begin transfering files.</li>
   <li>In the examples below the website blogsafe.com is implemented as a normal Unix user with a /home/blogsafe.com/ user directory and a standard htdocs directory below that</li>
@@ -325,23 +325,23 @@ Re: Understanding Our Whacky Site and Template Architecture</p>
 <p>Examples:</p>
 
 <blockquote>
-  <p>To copy the file c:index.php to a Unix host named “blogsafe.com” with the “gcahaly” account and place it in the /htdocs/test directory you would use:</p>
+  <p>To copy the file c:index.php to a Unix host named "blogsafe.com" with the "gcahaly" account and place it in the /htdocs/test directory you would use:</p>
 
   <p>pscp c:index.php gcahaly@blogsafe.com:/home/blogsafe.com/htdocs/test</p>
 
-  <p>To copy the file index.php in the current directory to a unix host named “blogsafe.com” with the “gcahaly” account and place it in the /htdocs/test directory you would use:</p>
+  <p>To copy the file index.php in the current directory to a unix host named "blogsafe.com" with the "gcahaly" account and place it in the /htdocs/test directory you would use:</p>
 
   <p>pscp index.php gcahaly@blogsafe.com:/home/blogsafe.com/htdocs/test</p>
 
-  <p>To copy the file index.php in the current directory, AND preserve the file date and time, you need to use the -p (preserve) option, to a unix host named “blogsafe.com” with the “gcahaly” account and place it in the /htdocs/test directory you would use:</p>
+  <p>To copy the file index.php in the current directory, AND preserve the file date and time, you need to use the -p (preserve) option, to a unix host named "blogsafe.com" with the "gcahaly" account and place it in the /htdocs/test directory you would use:</p>
 
   <p>pscp -p index.php gcahaly@blogsafe.com:/home/blogsafe.com/htdocs/test</p>
 
-  <p>To copy all .JPG files in the current directory in the current directory, AND preserve the file date and time, you need to use the -p (preserve) option, to a unix host named “blogsafe.com” with the “gcahaly” account and place it in the /htdocs/test directory you would use:</p>
+  <p>To copy all .JPG files in the current directory in the current directory, AND preserve the file date and time, you need to use the -p (preserve) option, to a unix host named "blogsafe.com" with the "gcahaly" account and place it in the /htdocs/test directory you would use:</p>
 
   <p>pscp -p *.jpg gcahaly@blogsafe.com:/home/blogsafe.com/htdocs/test</p>
 
-  <p>To copy all files in the in the current directory and all subdirectories, AND preserve the file date and time, you need to use the -P (preserve) and -R (recurse) options, to a unix host named “blogsafe.com” with the “gcahaly” account and place it in the /htdocs/test directory you would use:</p>
+  <p>To copy all files in the in the current directory and all subdirectories, AND preserve the file date and time, you need to use the -P (preserve) and -R (recurse) options, to a unix host named "blogsafe.com" with the "gcahaly" account and place it in the /htdocs/test directory you would use:</p>
 
   <p>pscp <em>.</em> -p -r gcahaly@blogsafe.com:/home/blogsafe.com/htdocs/test
 ## How do I Copy Files from Unix to Windows?</p>

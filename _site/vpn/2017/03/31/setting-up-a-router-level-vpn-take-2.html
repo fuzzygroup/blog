@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Setting Up a Router LeveL VPN Take 2</title>
-  <meta name="description" content="Three days ago I wrote up how to configure a Router level vpn to secure your Internet browsing so your ISP can’t know where you’re visiting and sell your Int...">
+  <meta name="description" content="Three days ago I wrote up how to configure a Router level vpn to secure your Internet browsing so your ISP can't know where you're visiting and sell your Int...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/vpn/2017/03/31/setting-up-a-router-level-vpn-take-2.html">
@@ -178,11 +178,11 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>Three days ago <a href="http://fuzzyblog.io/blog/vpn/2017/03/29/setting-up-a-router-level-vpn-to-secure-your-browsing.html">I wrote up how to configure a Router level vpn</a> to secure your Internet browsing so your ISP can’t know where you’re visiting and sell your Internet history.  That tutorial is still very relevant but the commercial VPN provider I used, <a href="http://www.strongvpn.com/">StrongVPN</a>, prevented me from using Netflix.  My initial plan had been to turn the VPN on / off at the router level when we wanted to use Netflix but my kids apparently use Netflix very regularly when I’m at work so that’s kind of a non starter.  This meant that I needed a different VPN solution – one that I ran myself and not a commercial provider.</p>
+    <p>Three days ago <a href="http://fuzzyblog.io/blog/vpn/2017/03/29/setting-up-a-router-level-vpn-to-secure-your-browsing.html">I wrote up how to configure a Router level vpn</a> to secure your Internet browsing so your ISP can't know where you're visiting and sell your Internet history.  That tutorial is still very relevant but the commercial VPN provider I used, <a href="http://www.strongvpn.com/">StrongVPN</a>, prevented me from using Netflix.  My initial plan had been to turn the VPN on / off at the router level when we wanted to use Netflix but my kids apparently use Netflix very regularly when I'm at work so that's kind of a non starter.  This meant that I needed a different VPN solution – one that I ran myself and not a commercial provider.</p>
 
-<p>The reason that Netflix blocks VPN access is that they don’t want customers in other countries buying the US version of Netflix to get around country specific content licensing.  And since any VPN provider is an ongoing business with a persistent set of IP ranges, Netflix can easily block any centralized VPN provider just by noting “Ok - StrongVPN is using xxx.yyy.vvv.zzz” so using any commercial provider is always going to play cat and mouse.  The one I used, StrongVPN, had a history of being Netflix compliant but that’s apparently no longer the case.</p>
+<p>The reason that Netflix blocks VPN access is that they don't want customers in other countries buying the US version of Netflix to get around country specific content licensing.  And since any VPN provider is an ongoing business with a persistent set of IP ranges, Netflix can easily block any centralized VPN provider just by noting "Ok - StrongVPN is using xxx.yyy.vvv.zzz" so using any commercial provider is always going to play cat and mouse.  The one I used, StrongVPN, had a history of being Netflix compliant but that's apparently no longer the case.</p>
 
-<p>The approach that I took is one that’s currently popular among networking folk that I know online:</p>
+<p>The approach that I took is one that's currently popular among networking folk that I know online:</p>
 
 <ul>
   <li>Take a cheap cloud computing instance like an AWS t2.micro or a Digital Ocean droplet</li>
@@ -210,25 +210,25 @@
   <li><a href="http://www.tinc-vpn.org">Tinc</a></li>
 </ul>
 
-<p>Of the options above I tried three of them: Streisand, Algo and openvpn-install.  Streisand was very promising but it failed to install completely on either Google Cloud or AWS.  Worse it left a dangling cloud instance on AWS meaning that had I not been watchful, I’d have been paying for that until I noticed.  Algo did far, far better on installation but its post install documentation left me confused enough that I had to file a <a href="https://github.com/trailofbits/algo/issues/320">Github issue</a> to find out what to do next (which someone answered almost immediately – thank you!).</p>
+<p>Of the options above I tried three of them: Streisand, Algo and openvpn-install.  Streisand was very promising but it failed to install completely on either Google Cloud or AWS.  Worse it left a dangling cloud instance on AWS meaning that had I not been watchful, I'd have been paying for that until I noticed.  Algo did far, far better on installation but its post install documentation left me confused enough that I had to file a <a href="https://github.com/trailofbits/algo/issues/320">Github issue</a> to find out what to do next (which someone answered almost immediately – thank you!).</p>
 
-<p>Of the options above I ended up using Algo and openvpn-install.  This is likely confusing and, to a VPN expert, actually stupid but here’s why:</p>
+<p>Of the options above I ended up using Algo and openvpn-install.  This is likely confusing and, to a VPN expert, actually stupid but here's why:</p>
 
 <ul>
-  <li>Algo handled provisioning the AWS instance and securing it perfectly.  It also generated VPN configurations specific to iOS devices which is useful since we’re an Apple household.</li>
-  <li>Algo is a deliberately cut down VPN system focused solely on the IKEv2 spec.  Sadly while this works client side on OSX devices, my router only supports OpenVPN, PPTP and L2TP vpn protocols so I can’t use Algo at the router level.  Please be aware that this is a feature not a limitation – the real solution is for my router vendor, Asus, to support IKEv2.</li>
-  <li>Once I had an AWS instance running, there is nothing stopping you from running openvpn-install directly on that AWS instance so you have an OpenVPN protocol that works on a router that only supports OpenVPN – and that’s what I did.</li>
+  <li>Algo handled provisioning the AWS instance and securing it perfectly.  It also generated VPN configurations specific to iOS devices which is useful since we're an Apple household.</li>
+  <li>Algo is a deliberately cut down VPN system focused solely on the IKEv2 spec.  Sadly while this works client side on OSX devices, my router only supports OpenVPN, PPTP and L2TP vpn protocols so I can't use Algo at the router level.  Please be aware that this is a feature not a limitation – the real solution is for my router vendor, Asus, to support IKEv2.</li>
+  <li>Once I had an AWS instance running, there is nothing stopping you from running openvpn-install directly on that AWS instance so you have an OpenVPN protocol that works on a router that only supports OpenVPN – and that's what I did.</li>
   <li>And since this VPN is now running on my own box, not a commercial provider, it actually does support Netflix which makes my kids happy.</li>
-  <li>This should end up being quite a bit cheaper than a commercial provider since a t2.micro not is pretty minimal but untiL i see a bill I won’t really know.</li>
+  <li>This should end up being quite a bit cheaper than a commercial provider since a t2.micro not is pretty minimal but untiL i see a bill I won't really know.</li>
 </ul>
 
 <h1 id="process">Process</h1>
 
-<p>Here’s what to do.  Please bear in mind that this requires a full Ansible dev stack complete with Boto so if you’re not a Linux or OSX person who’s fairly technical, well, you’re likely out of luck.</p>
+<p>Here's what to do.  Please bear in mind that this requires a full Ansible dev stack complete with Boto so if you're not a Linux or OSX person who's fairly technical, well, you're likely out of luck.</p>
 
 <ol>
   <li>Start by going to <a href="http://github.com/trailofbits/algo">Algo</a> and downloading it per the instructions.</li>
-  <li>Run the Algo setup process and answer all the questions.  You likely want to pick a data center for your VPN closest to you for best performance.  It will take a fair bit (roughly 20 minutes to run).  At the end you’ll get a nicely formatted although mildly unclear set of instructions.  If you don’t want to use openvpn-install also then you can stop here and just configure your local vpn.  Or you can continue to install openvpn-install.</li>
+  <li>Run the Algo setup process and answer all the questions.  You likely want to pick a data center for your VPN closest to you for best performance.  It will take a fair bit (roughly 20 minutes to run).  At the end you'll get a nicely formatted although mildly unclear set of instructions.  If you don't want to use openvpn-install also then you can stop here and just configure your local vpn.  Or you can continue to install openvpn-install.</li>
   <li>Ssh into the algo box:
 &gt; ssh -i config/algos.pem ubuntu@xxx.yyy.vvv.zzz</li>
   <li>Become root:
@@ -240,7 +240,7 @@
 
 <h1 id="post-installation-steps">Post Installation Steps</h1>
 
-<p>After you install, you should goto <a href="https://whoer.net">whoer.net</a> and check your params.  My local ISP is in Indiana but here’s my whoer report once my VPN was running on my router:</p>
+<p>After you install, you should goto <a href="https://whoer.net">whoer.net</a> and check your params.  My local ISP is in Indiana but here's my whoer report once my VPN was running on my router:</p>
 
 <p><img src="/blog/assets/whoer.png" alt="/blog/assets/whoer.png" /></p>
 
@@ -248,12 +248,12 @@
 
 <h1 id="comments">Comments</h1>
 
-<p>Please bear in mind that this is a sub optimal approach – I’m running two separate VPN servers now (thought I could shut down the Algo one) but it supports my use case which boiled down to:</p>
+<p>Please bear in mind that this is a sub optimal approach – I'm running two separate VPN servers now (thought I could shut down the Algo one) but it supports my use case which boiled down to:</p>
 
 <ul>
-  <li>Securing my family’s Internet browsing</li>
+  <li>Securing my family's Internet browsing</li>
   <li>Fast and easy installation – I spent much more time writing these two blog posts than I did dealing with VPN configuration</li>
-  <li>Worked router side with a router that didn’t support Algo’s protocols; ideally I’d have replaced my router with something that ran IKEv2 directly but I didn’t feel like that pain right now</li>
+  <li>Worked router side with a router that didn't support Algo's protocols; ideally I'd have replaced my router with something that ran IKEv2 directly but I didn't feel like that pain right now</li>
   <li>Supported Netflix which made my kids happy</li>
 </ul>
 

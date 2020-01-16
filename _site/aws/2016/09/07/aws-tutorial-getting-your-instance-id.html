@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>AWS Tutorial 06 - Getting Your Instance ID and Why It Matters</title>
-  <meta name="description" content="In the world of AWS, your server is referred to as an EC2 instance and it is uniquely identified by a “instance-id”, a unique alpha numeric identifier that y...">
+  <meta name="description" content="In the world of AWS, your server is referred to as an EC2 instance and it is uniquely identified by a "instance-id", a unique alpha numeric identifier that y...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/aws/2016/09/07/aws-tutorial-getting-your-instance-id.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="In the world of AWS, your server is referred to as an EC2 instance and it is uniquely identified by a “instance-id”, a unique alpha numeric identifier that you can use to reference your server.  Yo...">
+      content="In the world of AWS, your server is referred to as an EC2 instance and it is uniquely identified by a &quot;instance-id&quot;, a unique alpha numeric identifier that you can use to reference your s...">
   
 
   
@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>In the world of AWS, your server is referred to as an EC2 instance and it is uniquely identified by a “instance-id”, a unique alpha numeric identifier that you can use to reference your server.  Your instance id can be used in all kinds of ways including:</p>
+    <p>In the world of AWS, your server is referred to as an EC2 instance and it is uniquely identified by a "instance-id", a unique alpha numeric identifier that you can use to reference your server.  Your instance id can be used in all kinds of ways including:</p>
 
 <ul>
   <li>log files</li>
@@ -186,7 +186,7 @@
   <li>security analysis</li>
 </ul>
 
-<p>In my case I’m using AWS to crawl different websites and one of the things I’m encountering is that it is very, very hard to know what AWS instance ty;e is the best value.  Specifically do I optimize for more memory, more CPU, more disk and so on.  One thing you can do is push your instance id right down to the unit of work.  In my case that’s a database transaction so I can do things like this:</p>
+<p>In my case I'm using AWS to crawl different websites and one of the things I'm encountering is that it is very, very hard to know what AWS instance ty;e is the best value.  Specifically do I optimize for more memory, more CPU, more disk and so on.  One thing you can do is push your instance id right down to the unit of work.  In my case that's a database transaction so I can do things like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>select instance_id, count(*) from page2016_q3s where instance_id is not null group by instance_id;
 +---------------------+----------+
@@ -199,9 +199,9 @@
 </code></pre>
 </div>
 
-<p>So if these 3 different instance types, and they were all started at the same time, I can see that, well, they’re all doing roughly the same amount of work so maybe the instance type doesn’t matter all that much and I should just buy the cheapest.</p>
+<p>So if these 3 different instance types, and they were all started at the same time, I can see that, well, they're all doing roughly the same amount of work so maybe the instance type doesn't matter all that much and I should just buy the cheapest.</p>
 
-<p>Here’s how you fetch the instance id – and its brilliantly simple – you can just use wget or curl.  Here’s an example:</p>
+<p>Here's how you fetch the instance id – and its brilliantly simple – you can just use wget or curl.  Here's an example:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>curl http://169.254.169.254/latest/meta-data/instance-id
 </code></pre>
@@ -213,15 +213,15 @@
 </code></pre>
 </div>
 
-<p>And if you’re looking to understand what’s available then just call:</p>
+<p>And if you're looking to understand what's available then just call:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>curl http://169.254.169.254/latest/meta-data/
 </code></pre>
 </div>
 
-<p>And  you can walk down each of the options one by one looking at what’s available.</p>
+<p>And  you can walk down each of the options one by one looking at what's available.</p>
 
-<p>Here’s a ruby implementation of how to get this info and cache it for faster retrieval.  This is in our common module which is a generic set of class methods we use all over the place.</p>
+<p>Here's a ruby implementation of how to get this info and cache it for faster retrieval.  This is in our common module which is a generic set of class methods we use all over the place.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>def self.instance_id
   #

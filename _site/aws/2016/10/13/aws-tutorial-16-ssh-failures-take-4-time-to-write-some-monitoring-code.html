@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-My apologies to the Good Doctor but when OOM is failing you, you have to make an OOD joke.  We’re nerdy over here.  Every one of us.
+My apologies to the Good Doctor but when OOM is failing you, you have to make an OOD joke.  We're nerdy over here.  Every one of us.
 
 Well crap.  I just ran my ansible df -h test which checks to ...">
   
@@ -184,7 +184,7 @@ Well crap.  I just ran my ansible df -h test which checks to ...">
   <div class="post-content" itemprop="articleBody">
     <p><img src="/blog/assets/ood_not_oom.jpg" alt="ood_not_oom.jpg" /></p>
 
-<p>My apologies to the <a href="https://en.wikipedia.org/wiki/Tenth_Doctor">Good Doctor</a> but when <a href="https://linux-mm.org/OOM_Killer">OOM</a> is failing you, you have to make an <a href="https://en.wikipedia.org/wiki/Ood">OOD</a> joke.  We’re nerdy over here.  Every one of us.</p>
+<p>My apologies to the <a href="https://en.wikipedia.org/wiki/Tenth_Doctor">Good Doctor</a> but when <a href="https://linux-mm.org/OOM_Killer">OOM</a> is failing you, you have to make an <a href="https://en.wikipedia.org/wiki/Ood">OOD</a> joke.  We're nerdy over here.  Every one of us.</p>
 
 <p>Well crap.  I just ran my ansible df -h test which checks to make sure my boxes are up and running and I got complete failure:</p>
 
@@ -246,18 +246,18 @@ ficrawler10 | UNREACHABLE! =&gt; {
 </code></pre>
 </div>
 
-<p>Curiouser and curiouser said Alice.  The interesting thing here is that two of these boxes ARE NOT running our crawler code.  They’re actually doing nothing at all.  So what does this tell us:</p>
+<p>Curiouser and curiouser said Alice.  The interesting thing here is that two of these boxes ARE NOT running our crawler code.  They're actually doing nothing at all.  So what does this tell us:</p>
 
 <ol>
   <li>Perhaps the issue has nothing to do with our code at all.</li>
   <li>Perhaps it is an underlying Linux problem on AWS w/ Ubuntu.</li>
-  <li>It seems to be related to resource consumption but that’s a guess not a true statement.</li>
+  <li>It seems to be related to resource consumption but that's a guess not a true statement.</li>
   <li>There is no damn way to monitor this (&amp;$#($<em>#()$</em>#)) problem since it no one monitors SSH failures.  Sigh.</li>
 </ol>
 
 <h1 id="writing-your-own-monitoring-tool">Writing Your Own Monitoring Tool</h1>
 
-<p>And so I now get to time travel back to 2007, the first time I wrote a monitoring tool in Ruby.  I was working for the late, not-lamented eduFire and there wasn’t money to sign up for a monitoring tool.  Ah life in startup land.  My children can and do tell the tale of Dad’s computer waking up in the middle of the night screaming “eduFire IS DOWN!!!”.  And then there was the incarnation that, a few years later, would plain Billy Idol’s White Wedding at top volume.  So this is old territory for me.  But maybe we can do a bit better.  So what do we need to do?</p>
+<p>And so I now get to time travel back to 2007, the first time I wrote a monitoring tool in Ruby.  I was working for the late, not-lamented eduFire and there wasn't money to sign up for a monitoring tool.  Ah life in startup land.  My children can and do tell the tale of Dad's computer waking up in the middle of the night screaming "eduFire IS DOWN!!!".  And then there was the incarnation that, a few years later, would plain Billy Idol's White Wedding at top volume.  So this is old territory for me.  But maybe we can do a bit better.  So what do we need to do?</p>
 
 <ol>
   <li>Run forever</li>
@@ -273,7 +273,7 @@ ficrawler10 | UNREACHABLE! =&gt; {
 
 <h2 id="run-forever">Run Forever</h2>
 
-<p>This can be nothing more than a while(true) loop construct.  It isn’t elegant but it will work.</p>
+<p>This can be nothing more than a while(true) loop construct.  It isn't elegant but it will work.</p>
 
 <h2 id="run-reliably">Run Reliably</h2>
 
@@ -281,7 +281,7 @@ ficrawler10 | UNREACHABLE! =&gt; {
 
 <h2 id="read-from-ansible-hosts-file">Read from Ansible Hosts file</h2>
 
-<p>This can be done with any of a number of gems which read from an INI file.  No matter what we use, the Ansible INI syntax is funky so we’re likely to need some parsing.</p>
+<p>This can be done with any of a number of gems which read from an INI file.  No matter what we use, the Ansible INI syntax is funky so we're likely to need some parsing.</p>
 
 <h2 id="loop-over-the-hosts">Loop Over The Hosts</h2>
 
@@ -296,15 +296,15 @@ ficrawler10 | UNREACHABLE! =&gt; {
 <p>This is the core of a monitoring tool and where crap gets tricky:</p>
 
 <ul>
-  <li>You have to make sure you actually have outbound connectivity so you need something to test against that NEVER goes down.  Hm… 8.8.8.8 is perfect – it is Google’s DNS server and it can be ping’d so I don’t have to test via SSH.  There must be a ping gem.  <strong>More Furious Googling</strong>.  Yep.</li>
-  <li>You have to alert.  Yep.  That means I’m going to use Twilio again.  Twilio is fantastic.</li>
-  <li>In the event of a failure you have to get my attention and no alert needs to be sent if I’m already at the computer.  I’ll yank out the old white wedding play routine I used for my second monitoring tool (which indirectly was this same damn code base) and I’ll just reuse it.</li>
-  <li>You need a machine which is 24x7 connected to the Internet and never goes away.  Well my Macbook Air travels everywhere I go these days but my Macbook Pro is constantly on.  So I’ll use that.</li>
+  <li>You have to make sure you actually have outbound connectivity so you need something to test against that NEVER goes down.  Hm… 8.8.8.8 is perfect – it is Google's DNS server and it can be ping'd so I don't have to test via SSH.  There must be a ping gem.  <strong>More Furious Googling</strong>.  Yep.</li>
+  <li>You have to alert.  Yep.  That means I'm going to use Twilio again.  Twilio is fantastic.</li>
+  <li>In the event of a failure you have to get my attention and no alert needs to be sent if I'm already at the computer.  I'll yank out the old white wedding play routine I used for my second monitoring tool (which indirectly was this same damn code base) and I'll just reuse it.</li>
+  <li>You need a machine which is 24x7 connected to the Internet and never goes away.  Well my Macbook Air travels everywhere I go these days but my Macbook Pro is constantly on.  So I'll use that.</li>
 </ul>
 
 <h1 id="the-code">The Code</h1>
 
-<p>Listed below is a rake task which encapsulates the bulk of it.  This is actually only the <strong>first draft</strong> of it.  The actual <a href="https://github.com/fuzzygroup/aws_monitor">github</a> code is better but I’ve been up all night so I don’t think trying to write a good description of it is wise.  The detailed stuff is handled by aws_monitor.rb which is a short class of static methods just to simplify the rake task and make them testable.  The only bad thing I can ever say about Jim Weirich is that Rake tasks aren’t really testable.  Other than that I wish he was still with us.  Right now this code is a bit of a rough draft as the failure hasn’t happened again yet and things like error handling always need to get addressed but it looks something like this:</p>
+<p>Listed below is a rake task which encapsulates the bulk of it.  This is actually only the <strong>first draft</strong> of it.  The actual <a href="https://github.com/fuzzygroup/aws_monitor">github</a> code is better but I've been up all night so I don't think trying to write a good description of it is wise.  The detailed stuff is handled by aws_monitor.rb which is a short class of static methods just to simplify the rake task and make them testable.  The only bad thing I can ever say about Jim Weirich is that Rake tasks aren't really testable.  Other than that I wish he was still with us.  Right now this code is a bit of a rough draft as the failure hasn't happened again yet and things like error handling always need to get addressed but it looks something like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>namespace :monitor_aws do
   # bundle exec rake monitor_aws:ansible_hosts --trace
@@ -348,7 +348,7 @@ end
 </code></pre>
 </div>
 
-<p>And that’s about all there is to it.  The complicated version, which is also written, but not yet published has some other tricks like using ping to make sure my local connectivity didn’t fail.  I don’t want to publish that yet since I don’t understand if my failure condition is going to be a  Net::SSH::AuthenticationFailed or a session.error message or what.</p>
+<p>And that's about all there is to it.  The complicated version, which is also written, but not yet published has some other tricks like using ping to make sure my local connectivity didn't fail.  I don't want to publish that yet since I don't understand if my failure condition is going to be a  Net::SSH::AuthenticationFailed or a session.error message or what.</p>
 
 <h2 id="postscript">Postscript</h2>
 
@@ -368,7 +368,7 @@ Success!  The box ficrawler10 is still alive and has been for: 9300 seconds!!!
 
 <h2 id="postscript-2">Postscript 2</h2>
 
-<p>I had wanted to make this work with Twilio for alerting but I just ran out of time.  If anyone needs help with that reach out to me and I’ll get it in.  Its not hard and Twilio is an awesome, awesome company to work with.</p>
+<p>I had wanted to make this work with Twilio for alerting but I just ran out of time.  If anyone needs help with that reach out to me and I'll get it in.  Its not hard and Twilio is an awesome, awesome company to work with.</p>
 
 <h2 id="postscript-3">Postscript 3</h2>
 

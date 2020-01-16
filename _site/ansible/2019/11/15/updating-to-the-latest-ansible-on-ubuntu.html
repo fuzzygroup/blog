@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Updating to the Latest Ansible on Ubuntu</title>
-  <meta name="description" content="One of the tricky bits about Ansible is that new features in the “language” always require the latest version of Ansible itself.  And, while logical, this ca...">
+  <meta name="description" content="One of the tricky bits about Ansible is that new features in the "language" always require the latest version of Ansible itself.  And, while logical, this ca...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/ansible/2019/11/15/updating-to-the-latest-ansible-on-ubuntu.html">
@@ -43,9 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="One of the tricky bits about Ansible is that new features in the “language” always require the latest version of Ansible itself.  And, while logical, this can easily bite you.  Here’s an example:
-
-...">
+      content="One of the tricky bits about Ansible is that new features in the &quot;language&quot; always require the latest version of Ansible itself.  And, while logical, this can easily bite you.  Here's an ...">
   
 
   
@@ -180,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>One of the tricky bits about Ansible is that new features in the “language” always require the latest version of Ansible itself.  And, while logical, this can easily bite you.  Here’s an example:</p>
+    <p>One of the tricky bits about Ansible is that new features in the "language" always require the latest version of Ansible itself.  And, while logical, this can easily bite you.  Here's an example:</p>
 
 <div class="language-yaml highlighter-rouge"><pre class="highlight"><code>    <span class="s">TASK [deploy_hate-language-modeling_systemd_start</span> <span class="pi">:</span> <span class="s">just force systemd to re-execute itself (2.8 and above)] ***</span>
     <span class="s">fatal</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">aws_master2</span><span class="pi">]:</span> <span class="s">FAILED! =&gt; {"changed"</span><span class="pi">:</span> <span class="s">false, "msg"</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Unsupported</span><span class="nv"> </span><span class="s">parameters</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">(systemd)</span><span class="nv"> </span><span class="s">module:</span><span class="nv"> </span><span class="s">daemon_reexec</span><span class="nv"> </span><span class="s">Supported</span><span class="nv"> </span><span class="s">parameters</span><span class="nv"> </span><span class="s">include:</span><span class="nv"> </span><span class="s">daemon_reload,</span><span class="nv"> </span><span class="s">enabled,</span><span class="nv"> </span><span class="s">masked,</span><span class="nv"> </span><span class="s">name,</span><span class="nv"> </span><span class="s">no_block,</span><span class="nv"> </span><span class="s">state,</span><span class="nv"> </span><span class="s">user"</span><span class="err">}</span>
@@ -188,9 +186,9 @@
 </code></pre>
 </div>
 
-<p>What that translates to is that Ansible itself doesn’t know how to use the parameter <strong>daemon_reexec</strong>.  And when you’ve been using an Ansible feature successfully and then it doesn’t work on the server, that usually is a rock solid signal “update ansible”.</p>
+<p>What that translates to is that Ansible itself doesn't know how to use the parameter <strong>daemon_reexec</strong>.  And when you've been using an Ansible feature successfully and then it doesn't work on the server, that usually is a rock solid signal "update ansible".</p>
 
-<p>Here’s how to do this on Ubuntu:</p>
+<p>Here's how to do this on Ubuntu:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>sudo apt update
 sudo apt install software-properties-common

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Rails Tutorial - Making Font Awesome Work with Rails 5</title>
-  <meta name="description" content="Like a lot of back end folks I suspect I’m not alone when I look at a project like Font Awesome and go “Great Work; damn if I know how to actually use that.”...">
+  <meta name="description" content="Like a lot of back end folks I suspect I'm not alone when I look at a project like Font Awesome and go "Great Work; damn if I know how to actually use that."...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2017/01/24/rails-tutorial-making-font-awesome-work-with-rails-5.html">
@@ -178,31 +178,31 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>Like a lot of back end folks I suspect I’m not alone when I look at a project like Font Awesome and go “Great Work; damn if I know how to actually use that.”  I’d normally toss it over the wall to a front end guy like my buddy <a href="http://dv2.dasari.me">Dv</a> but this is for my side project so I’m all alone on this one.  Since I really, really don’t feel that I understand the world of front end work and CSS / SCSS very well I thought I’d write it all down for you (and myself).</p>
+    <p>Like a lot of back end folks I suspect I'm not alone when I look at a project like Font Awesome and go "Great Work; damn if I know how to actually use that."  I'd normally toss it over the wall to a front end guy like my buddy <a href="http://dv2.dasari.me">Dv</a> but this is for my side project so I'm all alone on this one.  Since I really, really don't feel that I understand the world of front end work and CSS / SCSS very well I thought I'd write it all down for you (and myself).</p>
 
-<h1 id="heres-what-not-to-do">Here’s what not to do</h1>
+<h1 id="heres-what-not-to-do">Here's what not to do</h1>
 
 <p>I took a number of wrong steps:</p>
 
 <ul>
-  <li>I watched this <a href="https://www.youtube.com/watch?v=RC_jIGABW-E">video</a> and it is really good – except for the specific steps he gave me didn’t work.  I really don’t understand why and it might have been me.</li>
+  <li>I watched this <a href="https://www.youtube.com/watch?v=RC_jIGABW-E">video</a> and it is really good – except for the specific steps he gave me didn't work.  I really don't understand why and it might have been me.</li>
   <li>I used the <a href="https://github.com/FortAwesome/font-awesome-sass">font-awesome-sass gem</a> and it too failed me hard.</li>
-  <li>Don’t follow the Stack Overflow post <a href="http://stackoverflow.com/questions/37581599/rails-assets-is-having-issues-with-my-fonts">here</a>.</li>
+  <li>Don't follow the Stack Overflow post <a href="http://stackoverflow.com/questions/37581599/rails-assets-is-having-issues-with-my-fonts">here</a>.</li>
 </ul>
 
-<p>In all of the above cases I got the error <strong>No route matches [GET] “/assets/fontawesome-webfont.ttf”</strong> and I just couldn’t get past it.  The Stack Overflow post might have ultimately gotten me there but it did take me to a different gem – font-awesome-rails discussed in the next section.</p>
+<p>In all of the above cases I got the error <strong>No route matches [GET] "/assets/fontawesome-webfont.ttf"</strong> and I just couldn't get past it.  The Stack Overflow post might have ultimately gotten me there but it did take me to a different gem – font-awesome-rails discussed in the next section.</p>
 
-<p>You should note that I don’t meant to malign any of the urls in the above material – I’m not a css / front end guy by any means.  All I did was some simple googles and the processes I was taken through ultimately didn’t work and I blew over an hour of development time to find that out.</p>
+<p>You should note that I don't meant to malign any of the urls in the above material – I'm not a css / front end guy by any means.  All I did was some simple googles and the processes I was taken through ultimately didn't work and I blew over an hour of development time to find that out.</p>
 
-<h1 id="heres-what-to-do">Here’s What To Do</h1>
+<h1 id="heres-what-to-do">Here's What To Do</h1>
 
 <p>What you actually need is to do the following:</p>
 
 <ol>
-  <li>Install the <a href="https://github.com/bokmann/font-awesome-rails">font-awesome-rails</a> gem.  Just add <strong>gem “font-awesome-rails”</strong> to your Gemfile and then do the bundle install dance.</li>
-  <li>In your application.css.scss file add the line: <strong>@import “font-awesome”;</strong></li>
+  <li>Install the <a href="https://github.com/bokmann/font-awesome-rails">font-awesome-rails</a> gem.  Just add <strong>gem "font-awesome-rails"</strong> to your Gemfile and then do the bundle install dance.</li>
+  <li>In your application.css.scss file add the line: <strong>@import "font-awesome";</strong></li>
   <li>Stop and start your rails server.</li>
-  <li>Add to a test .html.erb view file this line**: fa_icon “camera-retro” ** (you’ll probably need to enclose that in output tags using %= and angle braces)</li>
+  <li>Add to a test .html.erb view file this line**: fa_icon "camera-retro" ** (you'll probably need to enclose that in output tags using %= and angle braces)</li>
   <li>Render that test .html.erb view file in your browser and you should see a camera icon.  What this is doing behind the scenes is outputting this html: <i class="fa fa-camera-retro"></i></li>
 </ol>
 

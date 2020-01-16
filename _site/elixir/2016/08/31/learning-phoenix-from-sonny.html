@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Learning Phoenix from Sonny</title>
-  <meta name="description" content="OverviewBelow are my roughly stream of consciousness notes from Sonny Scrogson’s Taking off With Phoenix class.  Sonny did a fantastic job on this class and ...">
+  <meta name="description" content="OverviewBelow are my roughly stream of consciousness notes from Sonny Scrogson's Taking off With Phoenix class.  Sonny did a fantastic job on this class and ...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/elixir/2016/08/31/learning-phoenix-from-sonny.html">
@@ -44,7 +44,7 @@
   
     <meta name="twitter:description"
       content="Overview
-Below are my roughly stream of consciousness notes from Sonny Scrogson’s Taking off With Phoenix class.  Sonny did a fantastic job on this class and he is to be absolutely commended for it...">
+Below are my roughly stream of consciousness notes from Sonny Scrogson's Taking off With Phoenix class.  Sonny did a fantastic job on this class and he is to be absolutely commended for it...">
   
 
   
@@ -180,11 +180,11 @@ Below are my roughly stream of consciousness notes from Sonny Scrogson’s Takin
 
   <div class="post-content" itemprop="articleBody">
     <h1 id="overview">Overview</h1>
-<p>Below are my roughly stream of consciousness notes from <a href="https://github.com/scrogson/taking-off-with-phoenix/">Sonny Scrogson’s Taking off With Phoenix</a> class.  Sonny did a fantastic job on this class and he is to be absolutely commended for it.  Any errors below, and I know they exist, are mine not his.  He earned every bit of the applause he got.  Thanks to <a href="https://co.linkedin.com/in/esbanarango/en">Esteban</a> for pushing me to post this publicly.  Some notes were omitted due to markdown conflicts; I’ll get them up when I can.</p>
+<p>Below are my roughly stream of consciousness notes from <a href="https://github.com/scrogson/taking-off-with-phoenix/">Sonny Scrogson's Taking off With Phoenix</a> class.  Sonny did a fantastic job on this class and he is to be absolutely commended for it.  Any errors below, and I know they exist, are mine not his.  He earned every bit of the applause he got.  Thanks to <a href="https://co.linkedin.com/in/esbanarango/en">Esteban</a> for pushing me to post this publicly.  Some notes were omitted due to markdown conflicts; I'll get them up when I can.</p>
 
 <h1 id="update">Update</h1>
 
-<p>My version of the class repo is here: <a href="https://github.com/fuzzygroup/taking-off-with-phoenix">https://github.com/fuzzygroup/taking-off-with-phoenix</a>  I put JSJ in the code where there was something I thought important enough to remember.  Bear in mind that I’m still new to Elixir.</p>
+<p>My version of the class repo is here: <a href="https://github.com/fuzzygroup/taking-off-with-phoenix">https://github.com/fuzzygroup/taking-off-with-phoenix</a>  I put JSJ in the code where there was something I thought important enough to remember.  Bear in mind that I'm still new to Elixir.</p>
 
 <p>I added screenshots at the bottom for all of the screen shots showing errors / surprising things.  When you see big blanks that means that nothing was output.</p>
 
@@ -323,7 +323,7 @@ Below are my roughly stream of consciousness notes from Sonny Scrogson’s Takin
   <li>not a lot of mocks in elixir</li>
   <li>not objects with data; just data structures you feed into functions</li>
   <li>no compromise - high productivity and high performance</li>
-  <li>Don’t just port ruby to Elixir; Think Different</li>
+  <li>Don't just port ruby to Elixir; Think Different</li>
   <li>Performance - at times 17x faster than rails</li>
   <li>no stop the world garbage collection</li>
 </ul>
@@ -352,33 +352,33 @@ Below are my roughly stream of consciousness notes from Sonny Scrogson’s Takin
 
 <p>Processing by Workshop.PageController.index/2</p>
 
-<p>/2 is the “ARITY OF THE FUNCTION” arity = number of arguments that the function accepts</p>
+<p>/2 is the "ARITY OF THE FUNCTION" arity = number of arguments that the function accepts</p>
 
 <p>2 top level directories - lib, web  The web directory is likely to go to lib down the road</p>
 
 <p>This is a list of two tuples:</p>
 
-<p>[“ecto.setup”: [“ecto.create”, “ecto.migrate”, “run priv/repo/seeds.exs”],
-   “ecto.reset”: [“ecto.drop”, “ecto.setup”],
-   “test”: [“ecto.create –quiet”, “ecto.migrate”, “test”]]</p>
+<p>["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+   "ecto.reset": ["ecto.drop", "ecto.setup"],
+   "test": ["ecto.create –quiet", "ecto.migrate", "test"]]</p>
 
 <p>toople  &lt;== correct pronunciation is toople (according to Sonny at least)</p>
 
 <p>tuple</p>
 
-<p>elem {:key, “value”}, 0
+<p>elem {:key, "value"}, 0
    :key</p>
 
-<p>elem {:key, “value”}, 1
-   “value”</p>
+<p>elem {:key, "value"}, 1
+   "value"</p>
 
-<p>[{:key, “value”}] &lt;== keyword list</p>
+<p>[{:key, "value"}] &lt;== keyword list</p>
 
-<p>[{:key, “value”}]</p>
+<p>[{:key, "value"}]</p>
 
-<p>[“key”:, “value”]  &lt;== the : makes it an atom.  THE : MUST GO AT THE END</p>
+<p>["key":, "value"]  &lt;== the : makes it an atom.  THE : MUST GO AT THE END</p>
 
-<p>[“key.value”:, “value”] &lt;== the . would change things to a method send so you have to</p>
+<p>["key.value":, "value"] &lt;== the . would change things to a method send so you have to</p>
 
 <p>keyword lists are preferred over maps because you can omit the braces for the last argument</p>
 
@@ -386,7 +386,7 @@ Below are my roughly stream of consciousness notes from Sonny Scrogson’s Takin
 
 <p>maps are easier to pattern match on so used more</p>
 
-<p>(A few examples omitted here due to escaping issues; there’s irony in that due to Tom Preston Warner’s ruby orientation)
+<p>(A few examples omitted here due to escaping issues; there's irony in that due to Tom Preston Warner's ruby orientation)
    <strong>COFFEE BREAK</strong></p>
 
 <h1 id="building-blocks">Building blocks</h1>
@@ -502,7 +502,7 @@ end   end
 
 <p>plug Plug.Parsers, 
   parsers: [:urlencoded, :multipart, :json],
-  pass: [“<em>/</em>”],
+  pass: ["<em>/</em>"],
   json_decoder: Poison</p>
 
 <p>…</p>
@@ -514,10 +514,10 @@ end   end
 <p>defmodule Myapp.Router do 
   use Myapp.Web, :router</p>
 
-<p>scope “/”, Myapp do
-    get “/”, PageController, :index
-    resources “/rooms”, RoomController do
-    resources “/users”, UserController
+<p>scope "/", Myapp do
+    get "/", PageController, :index
+    resources "/rooms", RoomController do
+    resources "/users", UserController
     end
   end
 end</p>
@@ -526,11 +526,11 @@ end</p>
 
 <p>this</p>
 
-<p>get “/”, PageController, :index</p>
+<p>get "/", PageController, :index</p>
 
 <p>compiles to this (showing full function definition)</p>
 
-<p>defp match(conn, “GET”, [], _) do
+<p>defp match(conn, "GET", [], _) do
   conn
   |&gt; Plug.conn.put_private(:phoenix_pipelines, [:browser])
   |&gt; Plug.conn
@@ -557,7 +557,7 @@ end</p>
 <p>Router Pipelines</p>
 
 <p>pipeline :browser do
-  plug :accepts, [“html”]
+  plug :accepts, ["html"]
   plug :fetch_session
   plug :fetch_flash
   plg
@@ -591,7 +591,7 @@ end</p>
 
 <p>mix ecto.gen.migration create_users</p>
 
-<p>priv is an ERLANG thing and represents “files private to the application”</p>
+<p>priv is an ERLANG thing and represents "files private to the application"</p>
 
 <p>mix ecto.migrate</p>
 
@@ -607,7 +607,7 @@ end</p>
 
 <p>In the future will be more small apps that are composed up to bigger apps</p>
 
-<p>“dunder” means “__” (its short for double underscore)</p>
+<p>"dunder" means "__" (its short for double underscore)</p>
 
 <p>in mix.exs you define the name Workshop (initial name to the directory structure)</p>
 
@@ -681,7 +681,7 @@ end</p>
 
 <p>Workshop.User.changeset</p>
 
-<p>Workshop.Repo.get_by([email: “fuzzygroup@gmail.com”])</p>
+<p>Workshop.Repo.get_by([email: "fuzzygroup@gmail.com"])</p>
 
 <h1 id="screenshots">Screenshots</h1>
 

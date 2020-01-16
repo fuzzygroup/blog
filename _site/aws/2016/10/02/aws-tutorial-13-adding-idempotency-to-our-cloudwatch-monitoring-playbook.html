@@ -182,9 +182,9 @@
 
 <h1 id="ansible-is-all-about-idempotency-and-this-was-not">Ansible is All About Idempotency and This Was Not</h1>
 
-<p>So in Ansible the core idea is that you only want to make changes one time.  If a box has redis installed then it doesn’t need it again.  That’s the idea of idempotency – do the same thing over and over and always get the same result.  In this case we used shell actions for all of installing CloudWatch Memory Management and, well, that’s not idempotent.  The second time you run it, it’s trying to do it all over again.</p>
+<p>So in Ansible the core idea is that you only want to make changes one time.  If a box has redis installed then it doesn't need it again.  That's the idea of idempotency – do the same thing over and over and always get the same result.  In this case we used shell actions for all of installing CloudWatch Memory Management and, well, that's not idempotent.  The second time you run it, it's trying to do it all over again.</p>
 
-<p>The trick to making this idempotent is to register an ansible variable based on something we did and then check that variable at every stage.  Here’s how I revised my previous playbook:</p>
+<p>The trick to making this idempotent is to register an ansible variable based on something we did and then check that variable at every stage.  Here's how I revised my previous playbook:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>- name: Install CloudWatch libraries
   apt: pkg=
@@ -241,7 +241,7 @@
 </code></pre>
 </div>
 
-<p>What this does is use the stat module to check if a given path, where we’re put the scripts, already exists.  If this exists then we know that we’ve already done it.  We then check it at every subsequent change:</p>
+<p>What this does is use the stat module to check if a given path, where we're put the scripts, already exists.  If this exists then we know that we've already done it.  We then check it at every subsequent change:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>- name: download scripts
   get_url: url=http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip dest=/tmp/CloudWatchMonitoringScripts.zip
@@ -249,7 +249,7 @@
 </code></pre>
 </div>
 
-<p>And that’s all it takes to make this something that you can run over and over every time a box is updated.</p>
+<p>And that's all it takes to make this something that you can run over and over every time a box is updated.</p>
 
 <h1 id="references">References</h1>
 

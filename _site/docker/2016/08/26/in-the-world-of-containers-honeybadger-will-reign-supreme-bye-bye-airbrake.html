@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>In the World of Containers HoneyBadger Will Reign Supreme - Bye Bye AirBrake</title>
-  <meta name="description" content="I spent all day yesterday immersed in AwsLand and I have to say that its an intriguing, fascinating place.  I’ve resisted AWS like the black plague for years...">
+  <meta name="description" content="I spent all day yesterday immersed in AwsLand and I have to say that its an intriguing, fascinating place.  I've resisted AWS like the black plague for years...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/docker/2016/08/26/in-the-world-of-containers-honeybadger-will-reign-supreme-bye-bye-airbrake.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="I spent all day yesterday immersed in AwsLand and I have to say that its an intriguing, fascinating place.  I’ve resisted AWS like the black plague for years and now I find myself more intrigued by...">
+      content="I spent all day yesterday immersed in AwsLand and I have to say that its an intriguing, fascinating place.  I've resisted AWS like the black plague for years and now I find myself more intrigued by...">
   
 
   
@@ -178,27 +178,27 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I spent all day yesterday immersed in <a href="http://aws.amazon.com">AwsLand</a> and I have to say that its an intriguing, fascinating place.  I’ve resisted AWS like the black plague for years and now I find myself more intrigued by back end computing that I have been for a long time – and I really am only a back end guy.</p>
+    <p>I spent all day yesterday immersed in <a href="http://aws.amazon.com">AwsLand</a> and I have to say that its an intriguing, fascinating place.  I've resisted AWS like the black plague for years and now I find myself more intrigued by back end computing that I have been for a long time – and I really am only a back end guy.</p>
 
 <h2 id="back-to-multithreaded-debugging-hell">Back to Multithreaded Debugging Hell</h2>
 
-<p>Anyway to return the ongoing tale of woe and lack of <a href="https://fuzzygroup.github.io/blog/2016/08/21/multi-threaded-debugging-hell.html">idempotency</a>.  A long, long run cycle coupled with exhaustion induced stupidity made tracking the inputs across categorization jobs tedious (how often do you find errors because you’re overflowing an int related to the size of a file; sheesh) but I finally resolved everything and I now know that the inputs across at least 2 jobs are not varying.  This points the issue towards some kind of runtime failure.</p>
+<p>Anyway to return the ongoing tale of woe and lack of <a href="https://fuzzygroup.github.io/blog/2016/08/21/multi-threaded-debugging-hell.html">idempotency</a>.  A long, long run cycle coupled with exhaustion induced stupidity made tracking the inputs across categorization jobs tedious (how often do you find errors because you're overflowing an int related to the size of a file; sheesh) but I finally resolved everything and I now know that the inputs across at least 2 jobs are not varying.  This points the issue towards some kind of runtime failure.</p>
 
-<p>About a week ago we finally brought back monitoring on some of the nodes in the cluster.  I know, I know.  It was a money thing.  Yesterday after I started off a categorization run I started getting constant alerts from <a href="http://www.wormly.com">Wormly</a>.  Now since our infrastructure right now is unreliable – hence the migration to AWS – I really didn’t pay much attention but even I get tired of my phone going off constantly.  What I discovered was that one of our web boxes had a load of 1700 or something.  Utter madness.  I ultimately traced it down to <a href="http://www.sphinxsearch.com">SphinxSearch</a>.  Now do not, under any circumstances, think this is a sphinx issue.  Its not – I love those guys.  I’m a paid support customer and Adrian in specific, my support rep, <strong>rocks</strong>.</p>
+<p>About a week ago we finally brought back monitoring on some of the nodes in the cluster.  I know, I know.  It was a money thing.  Yesterday after I started off a categorization run I started getting constant alerts from <a href="http://www.wormly.com">Wormly</a>.  Now since our infrastructure right now is unreliable – hence the migration to AWS – I really didn't pay much attention but even I get tired of my phone going off constantly.  What I discovered was that one of our web boxes had a load of 1700 or something.  Utter madness.  I ultimately traced it down to <a href="http://www.sphinxsearch.com">SphinxSearch</a>.  Now do not, under any circumstances, think this is a sphinx issue.  Its not – I love those guys.  I'm a paid support customer and Adrian in specific, my support rep, <strong>rocks</strong>.</p>
 
-<p>The issue here is I’ve got 8 workers running 20 threads each firing queries at Sphinx as fast as possible and I only just today have monitoring in place.  Yep.  That’s right.  The problem here is, well, me.  Shocker I know.  We’re simply overloading our compute resources and its doing the best damn job it can.  Moving to AWS lets me go from a single sphinx box to a cluster of sphinx boxes and that’s likely the solution.</p>
+<p>The issue here is I've got 8 workers running 20 threads each firing queries at Sphinx as fast as possible and I only just today have monitoring in place.  Yep.  That's right.  The problem here is, well, me.  Shocker I know.  We're simply overloading our compute resources and its doing the best damn job it can.  Moving to AWS lets me go from a single sphinx box to a cluster of sphinx boxes and that's likely the solution.</p>
 
-<p>My suspicion is that this failure has been a part of our “architecture” since day 1 and I never knew since begin / rescue blocks cover a multitude of sins including this one.</p>
+<p>My suspicion is that this failure has been a part of our "architecture" since day 1 and I never knew since begin / rescue blocks cover a multitude of sins including this one.</p>
 
 <h2 id="honeybadger-containers-and-airbrake">HoneyBadger, Containers and AirBrake</h2>
 
-<p>How you may ask is this possibly related to HoneyBadger, AirBrake and Containers?  Well one of the things about larger, container based architectures is things like error notification are vastly more important.  AirBrake ties <a href="https://airbrake.io/pricing">pricing</a> to volume of errors / unit of time.  So your $99 / month plan for 15 engineers covers 75 errors/min.  Well that’s great for them (and I understand the issues about huge numbers of inbound messages) but in a situation like this – a back end job tossing likely a metric crap ton of errors due to circumstances that were very unforeseen – you could easily hit that number and more.</p>
+<p>How you may ask is this possibly related to HoneyBadger, AirBrake and Containers?  Well one of the things about larger, container based architectures is things like error notification are vastly more important.  AirBrake ties <a href="https://airbrake.io/pricing">pricing</a> to volume of errors / unit of time.  So your $99 / month plan for 15 engineers covers 75 errors/min.  Well that's great for them (and I understand the issues about huge numbers of inbound messages) but in a situation like this – a back end job tossing likely a metric crap ton of errors due to circumstances that were very unforeseen – you could easily hit that number and more.</p>
 
-<p>HoneyBadger is instead <a href="https://www.honeybadger.io/plans/">pricing</a> on the number of apps (I suspect this means git repos) and has “Unlimited users, no monthly caps and fast helpful support”.</p>
+<p>HoneyBadger is instead <a href="https://www.honeybadger.io/plans/">pricing</a> on the number of apps (I suspect this means git repos) and has "Unlimited users, no monthly caps and fast helpful support".</p>
 
 <h2 id="a-code-snippet-too">A Code Snippet Too</h2>
 
-<p>Here’s how I’m handling this – I’m calling HoneyBadger directly from my rescue blocks.  Apologies if the code isn’t elegant - I had to do some patches a few minutes ago.</p>
+<p>Here's how I'm handling this – I'm calling HoneyBadger directly from my rescue blocks.  Apologies if the code isn't elegant - I had to do some patches a few minutes ago.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>def self.honeybadger_notify(e, context = nil)
   return unless DEBUGGING_LOG_EXCEPTIONS_TO_HONEYBADGER
@@ -243,7 +243,7 @@ end
 </code></pre>
 </div>
 
-<p>There might be an error or two (this hasn’t gone live yet) but you get the essence.</p>
+<p>There might be an error or two (this hasn't gone live yet) but you get the essence.</p>
 
 <h2 id="takeaways">Takeaways</h2>
 
@@ -252,7 +252,7 @@ end
 <ol>
   <li>Always monitor your infrastructure.</li>
   <li>Problems are never where you think they are; I thought this was a code issue; it was a  devops issue.</li>
-  <li>In this new world of dynamic computing keep an eye on capacity limits when you sign up for services.  Capacity limits can really mess you up – what does Airbrake do when you exceed its threshold?  Stop collecting?  Shut down?  Notify you?  Charge you more?  I have no idea and while you think “I’ll never exceed 200 errors / minute”.  Yeah maybe but if it happens would you want the errors lost?</li>
+  <li>In this new world of dynamic computing keep an eye on capacity limits when you sign up for services.  Capacity limits can really mess you up – what does Airbrake do when you exceed its threshold?  Stop collecting?  Shut down?  Notify you?  Charge you more?  I have no idea and while you think "I'll never exceed 200 errors / minute".  Yeah maybe but if it happens would you want the errors lost?</li>
   <li>A massive shout out for <a href="https://www.honeybadger.io/humans.txt">developer nerdiness</a> to the HoneyBadger team.  I have to duplicate this asap.</li>
 </ol>
 

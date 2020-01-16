@@ -191,20 +191,20 @@ It is the second day of the New Year – welcome to 2020 – and I have still fa
   <li>Etc</li>
 </ul>
 
-<p>So my New Year’s Resolution(s) is:</p>
+<p>So my New Year's Resolution(s) is:</p>
 
 <ol>
   <li>Launch by end of Q1, 2020</li>
   <li>Not have deployment eat my brain</li>
-  <li>Launch with Something that I’m Visually Proud Of</li>
+  <li>Launch with Something that I'm Visually Proud Of</li>
   <li>Launch with SAAS billing features from day 1 and Get paying Customers</li>
 </ol>
 
-<p>That last item, SAAS billing features, is a sticky point.  I’ve actually implemented this myself before – I wrote all the back end code for the AppData SAAS engine which successfully processed over 3.1 million dollars in revenue over a 5 year period (BrainTree api).  And I really, really, really don’t want to rewrite that.  Nor do I want to use a third party service and lose another percentage chunk over baseline Stripe fees.</p>
+<p>That last item, SAAS billing features, is a sticky point.  I've actually implemented this myself before – I wrote all the back end code for the AppData SAAS engine which successfully processed over 3.1 million dollars in revenue over a 5 year period (BrainTree api).  And I really, really, really don't want to rewrite that.  Nor do I want to use a third party service and lose another percentage chunk over baseline Stripe fees.</p>
 
 <p>And all of this means that I need to use the <a href="https://jumpstartrails.com/">Jumpstart Rails</a> application framework.  I already have a license for it anyway and the issue is that I need to port an existing, almost complete Rails app into it.  All of the blog posts starting with Jumpstart Rails Tutorial nn will cover this process.  While there is <a href="https://jumpstartrails.com/docs/">good documentation for Jumpstart Rails</a>, it is reference material rather than how to material.</p>
 
-<p><strong>Note</strong>: If anything I write during this series comes off as critical of Chris Oliver, the man behind Jumpstart Rails, it isn’t.  I am an unabashed fan of the <strong>damn fine</strong> work that Chris Oliver does.</p>
+<p><strong>Note</strong>: If anything I write during this series comes off as critical of Chris Oliver, the man behind Jumpstart Rails, it isn't.  I am an unabashed fan of the <strong>damn fine</strong> work that Chris Oliver does.</p>
 
 <h2 id="step-1---getting-started-with-jumpstart-rails---clone-the-repo">Step 1 - Getting Started with Jumpstart Rails - Clone the Repo</h2>
 
@@ -230,7 +230,7 @@ It is the second day of the New Year – welcome to 2020 – and I have still fa
 
 <h2 id="step-2---add-your-local-version-to-github">Step 2 - Add Your Local Version to Github</h2>
 
-<p>I then went to github (I’m a staunch github user instead of gitlib) and created a new repo named:</p>
+<p>I then went to github (I'm a staunch github user instead of gitlib) and created a new repo named:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>web_change_me_now2
 </code></pre>
@@ -242,7 +242,7 @@ It is the second day of the New Year – welcome to 2020 – and I have still fa
 </code></pre>
 </div>
 
-<p>My next step is to push.  Now I need to be careful here since I can’t push back to the gitlab remote since I don’t have permissions for that (and any changes I make are to <strong>my application</strong> not the template).  Here’s the push syntax:</p>
+<p>My next step is to push.  Now I need to be careful here since I can't push back to the gitlab remote since I don't have permissions for that (and any changes I make are to <strong>my application</strong> not the template).  Here's the push syntax:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>/* make some silly ass change; I messed about with README.md */
 git add .
@@ -251,7 +251,7 @@ git push web_change_me_now2 master
 </code></pre>
 </div>
 
-<p>I don’t use remotes all that much – and I suspect outside of Heroku, you don’t either – so here’s the syntax:</p>
+<p>I don't use remotes all that much – and I suspect outside of Heroku, you don't either – so here's the syntax:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>git push ORIGIN_NAME BRANCH_NAME
 </code></pre>
@@ -265,7 +265,7 @@ git push web_change_me_now2 master
 
 <h2 id="step-3---getting-a-develop-branch-in-place">Step 3 - Getting a develop Branch in Place</h2>
 
-<p>I’m a firm believer in a simple, branch based approach to git.  I’ve talked about this before and, specifically:</p>
+<p>I'm a firm believer in a simple, branch based approach to git.  I've talked about this before and, specifically:</p>
 
 <ol>
   <li>Always work in a branch tied to an issue number.</li>
@@ -274,7 +274,7 @@ git push web_change_me_now2 master
   <li>Master is then deployed.</li>
 </ol>
 
-<p>This is simple, straight forward and clean.  I’ve now worked on teams up to 10 people in size and in Rails code bases of several hundred thousand lines using this with nary a hitch so it is an excellent model for small startups.</p>
+<p>This is simple, straight forward and clean.  I've now worked on teams up to 10 people in size and in Rails code bases of several hundred thousand lines using this with nary a hitch so it is an excellent model for small startups.</p>
 
 <p>This needs to be done in your terminal and then in Github itself:</p>
 
@@ -283,7 +283,7 @@ git push web_change_me_now2 master
   <li>In your terminal, change into that branch with: <strong>git co develop</strong></li>
   <li>Again update the README.md so you have something to push.</li>
   <li>Add with: <strong>git add .</strong></li>
-  <li>Commit with: <strong>git commit -m “readme change”</strong></li>
+  <li>Commit with: <strong>git commit -m "readme change"</strong></li>
   <li>Push with: git push web_change_me_now2 develop</li>
   <li>Go into github and pull up your repository.</li>
   <li>Go into the settings link.  Mine is here: https://github.com/gochangeme/web_change_me_now2/settings</li>

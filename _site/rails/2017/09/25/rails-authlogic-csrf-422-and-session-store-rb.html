@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Rails, AuthLogic, CSRF, 422 and session_store.rb</title>
-  <meta name="description" content="When you’re a professional developer, you come to recognize a category of problems that I refer to as “Pair Programming Required”.  These are those mysteriou...">
+  <meta name="description" content="When you're a professional developer, you come to recognize a category of problems that I refer to as "Pair Programming Required".  These are those mysteriou...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2017/09/25/rails-authlogic-csrf-422-and-session-store-rb.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="When you’re a professional developer, you come to recognize a category of problems that I refer to as “Pair Programming Required”.  These are those mysterious failures where you know damn well that...">
+      content="When you're a professional developer, you come to recognize a category of problems that I refer to as &quot;Pair Programming Required&quot;.  These are those mysterious failures where you know damn...">
   
 
   
@@ -178,9 +178,9 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>When you’re a professional developer, you come to recognize a category of problems that I refer to as “Pair Programming Required”.  These are those mysterious failures where you know damn well that something should work but <em>nothing</em> and I repeat <strong><em>nothing</em></strong> works.  In this situation, you really want to bring another set of eyes to bear on the problem.</p>
+    <p>When you're a professional developer, you come to recognize a category of problems that I refer to as "Pair Programming Required".  These are those mysterious failures where you know damn well that something should work but <em>nothing</em> and I repeat <strong><em>nothing</em></strong> works.  In this situation, you really want to bring another set of eyes to bear on the problem.</p>
 
-<p>I’m in the process of bringing a new Rails powered application online and I discovered around 3:53 am this morning that login, which works perfectly in development, completely fails in production with the wonderfully helpful error message:</p>
+<p>I'm in the process of bringing a new Rails powered application online and I discovered around 3:53 am this morning that login, which works perfectly in development, completely fails in production with the wonderfully helpful error message:</p>
 
 <blockquote>
   <p>Rails 5 ActionController::InvalidAuthenticityToken error</p>
@@ -188,7 +188,7 @@
 
 <p>When I dug into it, I saw that was a CSRF error and, oddly, I was getting a 422 error message returned to me.</p>
 
-<p>The mystery of all this was that this wasn’t new login code – it was code that I’ve been using in another application for months and it has been flawless.</p>
+<p>The mystery of all this was that this wasn't new login code – it was code that I've been using in another application for months and it has been flawless.</p>
 
 <p>Here are just a few of the things that I tried to address this:</p>
 
@@ -203,7 +203,7 @@
   <li>change, deploy, test, change again, Lather, Rinse Repeat N times where N is &gt; 10 and less than 50</li>
 </ul>
 
-<p>Once I exhausted all these possibilities, I reached out to a <a href="http://www.nickjanetakis.com/">friend</a> and he and I paired on it.  And that’s where the power of pair programming really illustrated itself.  We fairly quickly discovered that the issue was that session_store.rb didn’t match the production domain.  I find it unbelievable that the error message wasn’t actually useful but since I’ve been guilty of that sin more than a few times, well, karma I guess.</p>
+<p>Once I exhausted all these possibilities, I reached out to a <a href="http://www.nickjanetakis.com/">friend</a> and he and I paired on it.  And that's where the power of pair programming really illustrated itself.  We fairly quickly discovered that the issue was that session_store.rb didn't match the production domain.  I find it unbelievable that the error message wasn't actually useful but since I've been guilty of that sin more than a few times, well, karma I guess.</p>
 
 <p>Documented here for the next time that I hit this (in the spirit of being a good Internet citizen, I did add it to the Stack Overflow as well).</p>
 

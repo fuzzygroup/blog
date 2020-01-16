@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Rails Scopes are Elegant</title>
-  <meta name="description" content="This post is obvious to any advanced Rails user (hell even any middling Rails user) but I know there are some readers who aren’t that sophisticated so here g...">
+  <meta name="description" content="This post is obvious to any advanced Rails user (hell even any middling Rails user) but I know there are some readers who aren't that sophisticated so here g...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2019/08/05/rails-scopes-are-elegant.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="This post is obvious to any advanced Rails user (hell even any middling Rails user) but I know there are some readers who aren’t that sophisticated so here goes.
+      content="This post is obvious to any advanced Rails user (hell even any middling Rails user) but I know there are some readers who aren't that sophisticated so here goes.
 
 A scope is a Rails database query ...">
   
@@ -180,9 +180,9 @@ A scope is a Rails database query ...">
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>This post is obvious to any advanced Rails user (hell even any middling Rails user) but I know there are some readers who aren’t that sophisticated so here goes.</p>
+    <p>This post is obvious to any advanced Rails user (hell even any middling Rails user) but I know there are some readers who aren't that sophisticated so here goes.</p>
 
-<p>A scope is a Rails database query that operates much like a class method only it is much, much simpler to define.  Here’s a class method that finds the active elements in a table called habits:</p>
+<p>A scope is a Rails database query that operates much like a class method only it is much, much simpler to define.  Here's a class method that finds the active elements in a table called habits:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>def active
   Habit.where(active: true)
@@ -190,13 +190,13 @@ end
 </code></pre>
 </div>
 
-<p>Now that’s not bad but a Rails scope looks like this:</p>
+<p>Now that's not bad but a Rails scope looks like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>scope :active, -&gt; { where(active: true) }
 </code></pre>
 </div>
 
-<p>But the real benefit here is that scopes are <strong>chainable</strong> so they can be inserted into an overall “query pipeline” where you can easily extend things.  In my case I had a site listing habits and I realized that habits needed a state of active (if it was true it should be displayed and if it was false then it shouldn’t be).  Here was my initial view code:</p>
+<p>But the real benefit here is that scopes are <strong>chainable</strong> so they can be inserted into an overall "query pipeline" where you can easily extend things.  In my case I had a site listing habits and I realized that habits needed a state of active (if it was true it should be displayed and if it was false then it shouldn't be).  Here was my initial view code:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>&lt;%plan.habits.each do |habit|%&gt;
   &lt;li&gt;&lt;%=link_to(habit.name, habit_path(habit))%&gt;&lt;/li&gt;
@@ -214,7 +214,7 @@ end
 
 <p>And <strong>blammo</strong> I had an active list of habits.</p>
 
-<p>Now let’s carry the example further and let’s say that you want a list of habits sorted by name. You can define a scope called ordered_by_name like this:</p>
+<p>Now let's carry the example further and let's say that you want a list of habits sorted by name. You can define a scope called ordered_by_name like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>scope :order_by_name, -&gt; { order("name ASC")}
 </code></pre>
@@ -228,7 +228,7 @@ end
 </code></pre>
 </div>
 
-<p>And it will be sorted by name, easy peasy.  Now I’ve used scopes for <strong>years</strong> (prior to their current syntax actually) but their elegance has never struck me in quite the same way.  Perhaps it is just Monday …</p>
+<p>And it will be sorted by name, easy peasy.  Now I've used scopes for <strong>years</strong> (prior to their current syntax actually) but their elegance has never struck me in quite the same way.  Perhaps it is just Monday …</p>
 
 <h2 id="more-on-rails-scopes">More on Rails Scopes:</h2>
 <ul>

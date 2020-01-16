@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>MySQL and Time Machine Woes Part 2</title>
-  <meta name="description" content="So I’m not alone with MySQL Time Machine woes.  My buddy Dv skyped me last night along the lines of “how do I get my MySQL stuff off Time Machine”.  Sheesh –...">
+  <meta name="description" content="So I'm not alone with MySQL Time Machine woes.  My buddy Dv skyped me last night along the lines of "how do I get my MySQL stuff off Time Machine".  Sheesh –...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/mysql/2016/12/03/mysql-and-time-machine-woes-part-2.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="So I’m not alone with MySQL Time Machine woes.  My buddy Dv skyped me last night along the lines of “how do I get my MySQL stuff off Time Machine”.  Sheesh – it is an epidemic.  He is having the sa...">
+      content="So I'm not alone with MySQL Time Machine woes.  My buddy Dv skyped me last night along the lines of &quot;how do I get my MySQL stuff off Time Machine&quot;.  Sheesh – it is an epidemic.  He is hav...">
   
 
   
@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>So I’m not alone with MySQL Time Machine woes.  My buddy <a href="http://dasari.me">Dv</a> skyped me last night along the lines of “how do I get my MySQL stuff off Time Machine”.  Sheesh – it is an epidemic.  He is having the same type of virtual environment woes that I am where rvm / rbenv / chruby seem to cause nothing but OSX issues and he is looking to Vagrant for an answer.  This means that he’s likely doing the re-install dance.  And since he has been a stellar trooper in assisting me for years with all kinds of random ass crap, it is my turn.</p>
+    <p>So I'm not alone with MySQL Time Machine woes.  My buddy <a href="http://dasari.me">Dv</a> skyped me last night along the lines of "how do I get my MySQL stuff off Time Machine".  Sheesh – it is an epidemic.  He is having the same type of virtual environment woes that I am where rvm / rbenv / chruby seem to cause nothing but OSX issues and he is looking to Vagrant for an answer.  This means that he's likely doing the re-install dance.  And since he has been a stellar trooper in assisting me for years with all kinds of random ass crap, it is my turn.</p>
 
 <h1 id="where-are-my-mysql-databases">Where Are My MySQL Databases?</h1>
 
@@ -201,7 +201,7 @@
 </code></pre>
 </div>
 
-<p>So we now know that our databases are supposed to be stored in /usr/local/var/mysql/.  That’s what we need to get them back from Time Machine.</p>
+<p>So we now know that our databases are supposed to be stored in /usr/local/var/mysql/.  That's what we need to get them back from Time Machine.</p>
 
 <h1 id="important-stop-mysql-first">Important STOP MYSQL First</h1>
 
@@ -232,9 +232,9 @@
 </code></pre>
 </div>
 
-<p>As best I can tell, I have lost every mysql database I’ve built since 2011 on my main development system and the only reason I’m not raging further is that I just don’t have the mental energy given everything else I’m juggling.  I do think that if I do this approach then when Apple gets stupid in the future with Time Machine that this will protect me.</p>
+<p>As best I can tell, I have lost every mysql database I've built since 2011 on my main development system and the only reason I'm not raging further is that I just don't have the mental energy given everything else I'm juggling.  I do think that if I do this approach then when Apple gets stupid in the future with Time Machine that this will protect me.</p>
 
-<p>If you’re going to this then you need to follow the steps below.  Alas I am getting a bit theoretical here since I haven’t had time to do this for myself yet.</p>
+<p>If you're going to this then you need to follow the steps below.  Alas I am getting a bit theoretical here since I haven't had time to do this for myself yet.</p>
 
 <h2 id="finding-mycnf">Finding my.cnf</h2>
 
@@ -245,7 +245,7 @@
 </code></pre>
 </div>
 
-<p>This file tells mysql where to store its data and you’re going to need to:</p>
+<p>This file tells mysql where to store its data and you're going to need to:</p>
 
 <ul>
   <li>stop mysql</li>
@@ -253,7 +253,7 @@
   <li>edit /etc/my.cnf which also seems to store this location</li>
 </ul>
 
-<p>I don’t know which is the primary and which is the default so personally I’d edit both.  You would then need to:</p>
+<p>I don't know which is the primary and which is the default so personally I'd edit both.  You would then need to:</p>
 
 <ul>
   <li>adjust permissions and groups accordingly</li>

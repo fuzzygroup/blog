@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Archiving HTML Pages to the Database with Compression Using Rails</title>
-  <meta name="description" content="I’ve done this now like 15 times and every single time there is one or more serious gotchas that hold up my implementation so I thought I’d write it all out ...">
+  <meta name="description" content="I've done this now like 15 times and every single time there is one or more serious gotchas that hold up my implementation so I thought I'd write it all out ...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/mysql/2014/09/12/archiving-html-pages-to-the-database-with-compression-using-rails.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="I’ve done this now like 15 times and every single time there is one or more serious gotchas that hold up my implementation so I thought I’d write it all out once and for all.  The problem at hand i...">
+      content="I've done this now like 15 times and every single time there is one or more serious gotchas that hold up my implementation so I thought I'd write it all out once and for all.  The problem at hand i...">
   
 
   
@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I’ve done this now like 15 times and every single time there is one or more serious gotchas that hold up my implementation so I thought I’d write it all out once and for all.  The problem at hand is:</p>
+    <p>I've done this now like 15 times and every single time there is one or more serious gotchas that hold up my implementation so I thought I'd write it all out once and for all.  The problem at hand is:</p>
 
 <ul>
   <li>storing variable length HTML chunks</li>
@@ -186,7 +186,7 @@
   <li>with compression</li>
   <li>with seamless access to the content</li>
   <li>without absolutely nuking the space usage of your database</li>
-  <li>without MySQL Dump’s errors causing you to swear like a sailor</li>
+  <li>without MySQL Dump's errors causing you to swear like a sailor</li>
 </ul>
 
 <h2 id="model">1.  Model</h2>
@@ -197,7 +197,7 @@
 bundle exec rails g model PageBody
 </pre>
 
-<p>Here’s your table definition in SQL:</p>
+<p>Here's your table definition in SQL:</p>
 
 <pre>
 CREATE TABLE `page_bodies` (
@@ -209,7 +209,7 @@ CREATE TABLE `page_bodies` (
 ) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8
 </pre>
 
-<p>Here’s a Rails migration to create that:</p>
+<p>Here's a Rails migration to create that:</p>
 
 <pre>
 class CreatePageBodies &lt; ActiveRecord::Migration
@@ -229,7 +229,7 @@ end
 bundle exec rake db:migrate
 </pre>
 
-<p>I’m sure there’s a better way to do the mediumblob / utf8 change but that’s what I’m comfortable with.  I still regard SQL as the assembly language of the web and if you don’t know it then you’re going to be hosed at some point.  Keeping your hands dirty with SQL is a way to always stay aware of it.  And, yes, I’m old.</p>
+<p>I'm sure there's a better way to do the mediumblob / utf8 change but that's what I'm comfortable with.  I still regard SQL as the assembly language of the web and if you don't know it then you're going to be hosed at some point.  Keeping your hands dirty with SQL is a way to always stay aware of it.  And, yes, I'm old.</p>
 
 <p>What this gives us is a model which can store HTML as a binary blob.  The next step is compression.</p>
 
@@ -241,7 +241,7 @@ bundle exec rake db:migrate
 gem 'bzip2-ruby'
 </pre>
 
-<p>Now bundle install and I’d argue for deploying to a server immediately.  Why?  I’ve found that bzip2 can be a real bear to get installed and better to get past that now.  And I’m not an expert when Gems don’t install.  I curse like a sailor and then ask Jared for help.  We generally solve it often by hook or by crook.</p>
+<p>Now bundle install and I'd argue for deploying to a server immediately.  Why?  I've found that bzip2 can be a real bear to get installed and better to get past that now.  And I'm not an expert when Gems don't install.  I curse like a sailor and then ask Jared for help.  We generally solve it often by hook or by crook.</p>
 
 <p>##3.  Generate a ZlibColumn model</p>
 
@@ -251,7 +251,7 @@ gem 'bzip2-ruby'
 bundle exec rails g model ZlibColumn
 </pre>
 
-<p>Delete the factory and the migration.  Here’s the whole class:</p>
+<p>Delete the factory and the migration.  Here's the whole class:</p>
 
 <pre>
 class ZlibColumn
@@ -276,7 +276,7 @@ class ZlibColumn
 end
 </pre>
 
-<p>Here’s a simple class with a convert to UTF-8 method that’s been pretty battle tested (i.e. we’ve run it on over probably half a million pages at least)</p>
+<p>Here's a simple class with a convert to UTF-8 method that's been pretty battle tested (i.e. we've run it on over probably half a million pages at least)</p>
 
 <pre>
 class TextCommon
@@ -296,7 +296,7 @@ class TextCommon
 end
 </pre>
 
-<p>As with the migration, I’m sure there are better ways to do this but this works for us at least.</p>
+<p>As with the migration, I'm sure there are better ways to do this but this works for us at least.</p>
 
 <p>Now to your model you need to add the utf-8 encoding at the top:</p>
 
@@ -314,7 +314,7 @@ serialize :html, ZlibColumn.new
 
 <p>Space Usage at the DB Level</p>
 
-<p>If you’re going to use this technique and you haven’t turned on per file innodb table spaces then you absolutely should.  Here’s the directive to use in your my.cnf:</p>
+<p>If you're going to use this technique and you haven't turned on per file innodb table spaces then you absolutely should.  Here's the directive to use in your my.cnf:</p>
 
 <pre>
 [mysqld]
@@ -325,11 +325,11 @@ innodb_file_per_table
 
 <p>##MySQL Dump</p>
 
-<p>Every single time I store html pages as ASCII content to the db, when I have to move the table using mysqldump and then reload it, what I find happens is that mysqldump generates incorrectly encoded files so they cannot be reloaded.  I don’t know if this is a mysqldump problem or an activerecord issue but its very, very real.  I recently had to recrawl 89,413 pages due to this and it is a bear.  By storing the pages as compressed binary blobs, you completely skirt over this.</p>
+<p>Every single time I store html pages as ASCII content to the db, when I have to move the table using mysqldump and then reload it, what I find happens is that mysqldump generates incorrectly encoded files so they cannot be reloaded.  I don't know if this is a mysqldump problem or an activerecord issue but its very, very real.  I recently had to recrawl 89,413 pages due to this and it is a bear.  By storing the pages as compressed binary blobs, you completely skirt over this.</p>
 
 <p>##Warning</p>
 
-<p>Like a Rails, this is a “magical” solution.  I’ve done this a number of times and its always been “extract this bit from here, extract that bit from there; add salt; curse; repeat” and then it sometimes works.  This is the first time I’ve tried to get it all documented in one place.  I think its actually right but I won’t 100% know until I try it again on a project.  Right now I need to go back to vacation.</p>
+<p>Like a Rails, this is a "magical" solution.  I've done this a number of times and its always been "extract this bit from here, extract that bit from there; add salt; curse; repeat" and then it sometimes works.  This is the first time I've tried to get it all documented in one place.  I think its actually right but I won't 100% know until I try it again on a project.  Right now I need to go back to vacation.</p>
 
   </div>
   

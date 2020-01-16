@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Using Git Commits to Learn to Program Ruby on Rails</title>
-  <meta name="description" content="I’ve been actively working on a side project for the past several months and one of the people who has been helping out a bit around the edges wants to learn...">
+  <meta name="description" content="I've been actively working on a side project for the past several months and one of the people who has been helping out a bit around the edges wants to learn...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2019/11/03/using-git-commits-to-learn-to-program-ruby-on-rails.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="I’ve been actively working on a side project for the past several months and one of the people who has been helping out a bit around the edges wants to learn how to program Ruby on Rails.  Since th...">
+      content="I've been actively working on a side project for the past several months and one of the people who has been helping out a bit around the edges wants to learn how to program Ruby on Rails.  Since th...">
   
 
   
@@ -178,21 +178,21 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I’ve been actively working on a side project for the past several months and one of the people who has been helping out a bit around the edges wants to learn how to program Ruby on Rails.  Since this, like everything I always do, is a distributed, remote effort, an in person teaching effort just doesn’t work.</p>
+    <p>I've been actively working on a side project for the past several months and one of the people who has been helping out a bit around the edges wants to learn how to program Ruby on Rails.  Since this, like everything I always do, is a distributed, remote effort, an in person teaching effort just doesn't work.</p>
 
-<p>When they pushed back on the feature set I was making and said that it wouldn’t work for them, I said “Well that’s fine, tell me what <strong>you</strong> want”.  And they responded with a detailed set of Agile User Stories.  I took a look at these and I realized that if I mapped them into Github issues (aka tickets) and then Github Pull Requests that this might be exactly the right tool to get this person past the learning hump.</p>
+<p>When they pushed back on the feature set I was making and said that it wouldn't work for them, I said "Well that's fine, tell me what <strong>you</strong> want".  And they responded with a detailed set of Agile User Stories.  I took a look at these and I realized that if I mapped them into Github issues (aka tickets) and then Github Pull Requests that this might be exactly the right tool to get this person past the learning hump.</p>
 
-<p><strong>Note</strong>: Just to be clear, it doesn’t matter what the side project is.  Yes it is live on the Internet but it is buggy as hell.  And this is a major new feature.  The whole point of this blog post is to talk about a new learning technique not “Scott’s (current) Crazy Side Project”.</p>
+<p><strong>Note</strong>: Just to be clear, it doesn't matter what the side project is.  Yes it is live on the Internet but it is buggy as hell.  And this is a major new feature.  The whole point of this blog post is to talk about a new learning technique not "Scott's (current) Crazy Side Project".</p>
 
 <h2 id="learning-from-code-commits">Learning from Code Commits</h2>
 
-<p>The hard part with learning any new development framework is making the leap from “here’s what I want” (the story) to “here’s what to do to make that” (the code and tooling steps).  Now if you use Github <a href="https://fuzzyblog.io/blog/git/2019/06/27/understanding-a-small-organization-s-git-development-model.html">how we do, with a simple branch based development model</a>, where 1 issue maps to 1 branch, this means that you can actually look at a user story and then see all the changes.</p>
+<p>The hard part with learning any new development framework is making the leap from "here's what I want" (the story) to "here's what to do to make that" (the code and tooling steps).  Now if you use Github <a href="https://fuzzyblog.io/blog/git/2019/06/27/understanding-a-small-organization-s-git-development-model.html">how we do, with a simple branch based development model</a>, where 1 issue maps to 1 branch, this means that you can actually look at a user story and then see all the changes.</p>
 
-<p>This is a weird enough learning concept that I’m going to illustrate this step by step.</p>
+<p>This is a weird enough learning concept that I'm going to illustrate this step by step.</p>
 
 <h2 id="beginning-with-the-story">Beginning With the Story</h2>
 
-<p>Let’s start with the agile user story:</p>
+<p>Let's start with the agile user story:</p>
 
 <p><strong>As a user, I want a currency system (ChangeCoins - CC) that is awarded to me for doing stuff.</strong></p>
 
@@ -200,43 +200,43 @@
 
 <h2 id="continuing-to-the-issue">Continuing to the Issue</h2>
 
-<p>Let’s look at the issue in question:</p>
+<p>Let's look at the issue in question:</p>
 
 <p class="center"><img src="/blog/assets/learning_rails_from_commits_01_issue.png" alt="learning_rails_from_commits_01_issue.png" /></p>
 
 <p>There are a few notes on the issue here:</p>
 
 <ul>
-  <li>“Needs to tie back to user_id, metric_id, habit_id” - this indicates foreign key relationships back to other data models in the project</li>
-  <li>“bundle exec **rails g model **ChangeCoin” - this is a Rails generator command which scaffolds up a new data model and all associated files</li>
-  <li>“mate db/migrate/20191101144038_create_change_coins.rb” - this is just opening the migration (a migration is a set of DDL commands to create a table or change something in the database)</li>
-  <li>“bundle exec r<strong>ake db:migrate</strong>” - this executes the migration</li>
+  <li>"Needs to tie back to user_id, metric_id, habit_id" - this indicates foreign key relationships back to other data models in the project</li>
+  <li>"bundle exec **rails g model **ChangeCoin" - this is a Rails generator command which scaffolds up a new data model and all associated files</li>
+  <li>"mate db/migrate/20191101144038_create_change_coins.rb" - this is just opening the migration (a migration is a set of DDL commands to create a table or change something in the database)</li>
+  <li>"bundle exec r<strong>ake db:migrate</strong>" - this executes the migration</li>
 </ul>
 
-<p>A big reason for the notes on the issue is that if I don’t put notes into the issue, how would you know that there are commands like:</p>
+<p>A big reason for the notes on the issue is that if I don't put notes into the issue, how would you know that there are commands like:</p>
 
 <ul>
   <li>rail g model</li>
   <li>rake db:migrate</li>
 </ul>
 
-<p>These commands don’t exist in the pull request so they have to be manually documented.</p>
+<p>These commands don't exist in the pull request so they have to be manually documented.</p>
 
-<p><strong>Note</strong>: If you’re going to use this approach then I strongly, strongly advise you to add a label to your issues so that all issues can be logically grouped together.  Even though you think “Oh I’ll just work on this one thing”, something else will come up (I got 2 issues into Change Coins and then found 4 other bugs, each of which was its own issue).</p>
+<p><strong>Note</strong>: If you're going to use this approach then I strongly, strongly advise you to add a label to your issues so that all issues can be logically grouped together.  Even though you think "Oh I'll just work on this one thing", something else will come up (I got 2 issues into Change Coins and then found 4 other bugs, each of which was its own issue).</p>
 
 <h2 id="the-branch">The Branch</h2>
 
 <p>Now we need to turn to the Github branch and the pull request.  A pull request is a set of changes that, for this project, represent what happened in the branch.</p>
 
-<p>Let’s start with the changed files in this branch:</p>
+<p>Let's start with the changed files in this branch:</p>
 
 <p class="center"><img src="/blog/assets/learning_rails_from_commits_02_overview.png" alt="learning_rails_from_commits_02_overview.png" /></p>
 
-<p>This shows that 4 files changed.  Now of these four files, one was automatically generated by the system (schema.rb) and isn’t ever touched by the user and the other (reward_spec.rb) is just a skeleton file at this point so neither of these files will be shown.</p>
+<p>This shows that 4 files changed.  Now of these four files, one was automatically generated by the system (schema.rb) and isn't ever touched by the user and the other (reward_spec.rb) is just a skeleton file at this point so neither of these files will be shown.</p>
 
 <p class="center"><img src="/blog/assets/learning_rails_from_commits_03_model.png" alt="learning_rails_from_commits_03_model.png" /></p>
 
-<p>This is a Rails model file.  The source code comments beginning with pound symbols organize the model and illustrate where required things should be placed.  This isn’t a Rails convention, this is a “Scott” convention as I find it helps me avoid making mistakes.</p>
+<p>This is a Rails model file.  The source code comments beginning with pound symbols organize the model and illustrate where required things should be placed.  This isn't a Rails convention, this is a "Scott" convention as I find it helps me avoid making mistakes.</p>
 
 <p class="center"><img src="/blog/assets/learning_rails_from_commits_04_migration.png" alt="learning_rails_from_commits_04_migration.png" /></p>
 
@@ -244,15 +244,15 @@
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>This isn’t a perfect approach to learning, specifically:</p>
+<p>This isn't a perfect approach to learning, specifically:</p>
 
 <ul>
   <li>Issues need to map 1:1 to agile user stories</li>
-  <li>Commands aren’t captured by the git commit so you have to manually update the issue to capture them</li>
-  <li>It is mildly challenging to go back into a closed issue and find the changes related to the pull request because the request doesn’t automatically track to the issue number but instead to the git commit hash; this might be a problem with me and how I name the pull requests; tbd.</li>
+  <li>Commands aren't captured by the git commit so you have to manually update the issue to capture them</li>
+  <li>It is mildly challenging to go back into a closed issue and find the changes related to the pull request because the request doesn't automatically track to the issue number but instead to the git commit hash; this might be a problem with me and how I name the pull requests; tbd.</li>
 </ul>
 
-<p>Even with these problems, I think there might be something interesting here.  I’ll keep you posted if any real learning occurs from this.</p>
+<p>Even with these problems, I think there might be something interesting here.  I'll keep you posted if any real learning occurs from this.</p>
 
   </div>
   

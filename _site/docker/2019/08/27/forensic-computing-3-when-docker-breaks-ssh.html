@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Forensic Computing 3 - When Docker Breaks SSH</title>
-  <meta name="description" content="I’ve written a few of these now.  I term it “forensic computing” when I’ve been given a problem to solve that I really have no idea how to approach and it is...">
+  <meta name="description" content="I've written a few of these now.  I term it "forensic computing" when I've been given a problem to solve that I really have no idea how to approach and it is...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/docker/2019/08/27/forensic-computing-3-when-docker-breaks-ssh.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="I’ve written a few of these now.  I term it “forensic computing” when I’ve been given a problem to solve that I really have no idea how to approach and it is just a damn mystery.  The problem here ...">
+      content="I've written a few of these now.  I term it &quot;forensic computing&quot; when I've been given a problem to solve that I really have no idea how to approach and it is just a damn mystery.  The pro...">
   
 
   
@@ -178,17 +178,17 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I’ve written a few of these now.  I term it “forensic computing” when I’ve been given a problem to solve that I really have no idea how to approach and it is just a damn mystery.  The problem here was that for my day job:</p>
+    <p>I've written a few of these now.  I term it "forensic computing" when I've been given a problem to solve that I really have no idea how to approach and it is just a damn mystery.  The problem here was that for my day job:</p>
 
 <ul>
   <li>We are an AWS shop and all of this happens on AWS</li>
   <li>We moved from OpenVPN as a VPN client to something called TunnelBlick</li>
   <li>We lost the ability to ssh in - or ping - our Jenkins slave box.  Not any other box.  Even the Jenkins master box was fine.  This only affected the Jenkins slave box.</li>
   <li>Of all the computers we own, only I had the ability to SSH in / ping the Jenkins slave box</li>
-  <li>Given that I’m a cranky, old engineer, of all the people we had, only I refused to install the new VPN client (in my defense; I saw that a number of people had problems with it and I <em>have</em> to have VPN access at all time).</li>
+  <li>Given that I'm a cranky, old engineer, of all the people we had, only I refused to install the new VPN client (in my defense; I saw that a number of people had problems with it and I <em>have</em> to have VPN access at all time).</li>
 </ul>
 
-<p><strong>Note 1</strong>: I should note that even though I’m the one writing this up, our Director of Cloud Operations (ST) was instrumental to solving this and his assistance was greatly appreciated.</p>
+<p><strong>Note 1</strong>: I should note that even though I'm the one writing this up, our Director of Cloud Operations (ST) was instrumental to solving this and his assistance was greatly appreciated.</p>
 
 <p><strong>Note 2</strong>: Yes the answer is in the title but keep reading, it gets interesting.</p>
 
@@ -210,17 +210,17 @@
 
 <p>This left us with the conclusion that it was something about the actual box itself – but what???</p>
 
-<h1 id="step-3-so-whats-different-about-the-jenkins-slave">Step 3: So What’s Different About the Jenkins Slave???</h1>
+<h1 id="step-3-so-whats-different-about-the-jenkins-slave">Step 3: So What's Different About the Jenkins Slave???</h1>
 
-<p>A brief description here of Jenkins is likely necessary as not everyone who reads my stuff is, “Engineer Nerdy AF”, which is the description of the (few) readers I generally have.</p>
+<p>A brief description here of Jenkins is likely necessary as not everyone who reads my stuff is, "Engineer Nerdy AF", which is the description of the (few) readers I generally have.</p>
 
-<p><a href="https://jenkins.io/">Jenkins</a> is described as:: “The leading open source automation server, Jenkins provides hundreds of plugins to support building, deploying and automating any project.”</p>
+<p><a href="https://jenkins.io/">Jenkins</a> is described as:: "The leading open source automation server, Jenkins provides hundreds of plugins to support building, deploying and automating any project."</p>
 
 <p>Jenkins is a big Java program that runs as both the Master node which controls everything and then as Slave nodes which do the actual work.</p>
 
 <p>So, for us, everyone could access the Jenkins Master box but only I could access the Jenkins Slave box.</p>
 
-<p>When you look at Linux networking issues, two key tools are UFW (another firewall) and iptables (how to handle packets / networking).  Here’s the result of ufw:</p>
+<p>When you look at Linux networking issues, two key tools are UFW (another firewall) and iptables (how to handle packets / networking).  Here's the result of ufw:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>sudo ufw status verbose
 Status: inactive
@@ -276,7 +276,7 @@ RETURN     all  --  anywhere             anywhere
 
 <h1 id="step-4-so-docker-">Step 4: So Docker …</h1>
 
-<p>A good friend of mine is a <a href="https://nickjanetakis.com/">Docker instructor</a> so I’m pretty familiar with Docker.  Here are some things about Docker:</p>
+<p>A good friend of mine is a <a href="https://nickjanetakis.com/">Docker instructor</a> so I'm pretty familiar with Docker.  Here are some things about Docker:</p>
 
 <ul>
   <li>Docker is always running so it is a candidate for interfering with stuff</li>
@@ -333,7 +333,7 @@ RETURN     all  --  anywhere             anywhere
 </code></pre>
 </div>
 
-<p>and we discovered that by default, it simply isn’t there.  Here’s what we started with from the Internet:</p>
+<p>and we discovered that by default, it simply isn't there.  Here's what we started with from the Internet:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
   </span><span class="nt">"bip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.5/24"</span><span class="p">,</span><span class="w">
@@ -347,7 +347,7 @@ RETURN     all  --  anywhere             anywhere
 </span></code></pre>
 </div>
 
-<p>And here’s what ended up working:</p>
+<p>And here's what ended up working:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
   </span><span class="nt">"default-address-pools"</span><span class="p">:[</span><span class="w">
@@ -358,11 +358,11 @@ RETURN     all  --  anywhere             anywhere
 </span></code></pre>
 </div>
 
-<p>And we were certain that we were <strong>right</strong> and all would be good – only it didn’t <em>censored</em> work.  Now I have been using Docker on and off for a bunch of years and this experience made me remember my opinion of Docker’s engineering practices.  Docker often seems to run engineering as if they are dirty, lazy teenagers.  Specifically Docker doesn’t seem to clean up after itself (example - tickets stay open way too long; things are poorly documented, etc).</p>
+<p>And we were certain that we were <strong>right</strong> and all would be good – only it didn't <em>censored</em> work.  Now I have been using Docker on and off for a bunch of years and this experience made me remember my opinion of Docker's engineering practices.  Docker often seems to run engineering as if they are dirty, lazy teenagers.  Specifically Docker doesn't seem to clean up after itself (example - tickets stay open way too long; things are poorly documented, etc).</p>
 
 <p><strong>Note</strong>: I am a parent to teenagers.  I can say this.</p>
 
-<p>So my suspicion was that Docker had modified something at the machine level and I needed to find out what that change was and delete it.  At this point, I’m going to cut to the chase now because this is way too long.  The short answer was a change was left behind by Docker in the routes table that needed to be deleted.  A quick look at routes gave us:</p>
+<p>So my suspicion was that Docker had modified something at the machine level and I needed to find out what that change was and delete it.  At this point, I'm going to cut to the chase now because this is way too long.  The short answer was a change was left behind by Docker in the routes table that needed to be deleted.  A quick look at routes gave us:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>sudo ip route show
 
@@ -384,7 +384,7 @@ default via 172.31.16.1 dev ens5 proto dhcp src 172.31.23.113 metric 100
 
 <h1 id="but-what-about-verifying-the-fix">But What About Verifying the Fix</h1>
 
-<p>I can’t explain why the first time we turned Docker off, we were able to verify that it worked but yet there was a permanent route left in at the machine level.  My suspicion is some kind of edge case glitch but who knows.  I mean when you use teenager style engineering practices …</p>
+<p>I can't explain why the first time we turned Docker off, we were able to verify that it worked but yet there was a permanent route left in at the machine level.  My suspicion is some kind of edge case glitch but who knows.  I mean when you use teenager style engineering practices …</p>
 
 <h1 id="thank-you">Thank You</h1>
 

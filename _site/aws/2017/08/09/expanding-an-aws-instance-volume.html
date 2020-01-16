@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Expanding an AWS Instance Volume</title>
-  <meta name="description" content="One of the true promises of cloud computing is freeing you from resource limits.  In an ideal world you’d be able to easily example:">
+  <meta name="description" content="One of the true promises of cloud computing is freeing you from resource limits.  In an ideal world you'd be able to easily example:">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/aws/2017/08/09/expanding-an-aws-instance-volume.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="One of the true promises of cloud computing is freeing you from resource limits.  In an ideal world you’d be able to easily example:
+      content="One of the true promises of cloud computing is freeing you from resource limits.  In an ideal world you'd be able to easily example:
 
 
   ram
@@ -187,7 +187,7 @@ And while this is somewha...">
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>One of the true promises of cloud computing is freeing you from resource limits.  In an ideal world you’d be able to easily example:</p>
+    <p>One of the true promises of cloud computing is freeing you from resource limits.  In an ideal world you'd be able to easily example:</p>
 
 <ul>
   <li>ram</li>
@@ -196,13 +196,13 @@ And while this is somewha...">
   <li>cpu</li>
 </ul>
 
-<p>And while this is somewhat true, the reality is always a bit trickier.  I’ve had a new project underway for a while and I’ve been plagued by constant disc space issues.  And while this is a multi container project, my core /var/lib/docker/containers directory is only 1.1 gigs according to a du -sh /var/lib/docker/containers and /var/lib/docker/volumes is only 288K but my /var/lib/docker/aufs directory is 14 + gigs.  Despite diving deeply into the <a href="https://github.com/spotify/docker-gc">spotify-gc project</a> and the <a href="https://github.com/moby/issues/22207">open issue on Moby</a>, none of these actually solved the issue.</p>
+<p>And while this is somewhat true, the reality is always a bit trickier.  I've had a new project underway for a while and I've been plagued by constant disc space issues.  And while this is a multi container project, my core /var/lib/docker/containers directory is only 1.1 gigs according to a du -sh /var/lib/docker/containers and /var/lib/docker/volumes is only 288K but my /var/lib/docker/aufs directory is 14 + gigs.  Despite diving deeply into the <a href="https://github.com/spotify/docker-gc">spotify-gc project</a> and the <a href="https://github.com/moby/issues/22207">open issue on Moby</a>, none of these actually solved the issue.</p>
 
-<p>So it was time to just suck it up and add more disc space – even though I am an admitted cheap bastard and this bothers the hell out of me.  I’ve done this in the past and while it wasn’t <a href="http://fuzzyblog.io/blog/aws/2016/11/26/fear-and-loathing-in-awsville-or-adventures-in-partition-resizing.html">as bad as the last time</a>, it still wasn’t obvious.</p>
+<p>So it was time to just suck it up and add more disc space – even though I am an admitted cheap bastard and this bothers the hell out of me.  I've done this in the past and while it wasn't <a href="http://fuzzyblog.io/blog/aws/2016/11/26/fear-and-loathing-in-awsville-or-adventures-in-partition-resizing.html">as bad as the last time</a>, it still wasn't obvious.</p>
 
 <h1 id="how-to-expand-your-aws-volume-on-a-running-instance">How to Expand Your AWS Volume on a Running Instance</h1>
 
-<p>I’ve broken this into two stages.  Here is stage 1 - using the web UI.  <strong>Keep in mind that you are going to need to do a reboot at the end and that means some level of downtime so plan this out accordingly.</strong></p>
+<p>I've broken this into two stages.  Here is stage 1 - using the web UI.  <strong>Keep in mind that you are going to need to do a reboot at the end and that means some level of downtime so plan this out accordingly.</strong></p>
 
 <ol>
   <li>Start at your dashboard on <a href="http://console.aws.amazon.com">console.aws.amazon.com</a> or however you log in and go into the EC2 section.</li>
@@ -212,11 +212,11 @@ And while this is somewha...">
   <li>Change the disc space to whatever you want and click ok.</li>
 </ol>
 
-<p>This starts the process of AWS reallocating your disc.  If you’re on Linux you now need to proceed to stage two:</p>
+<p>This starts the process of AWS reallocating your disc.  If you're on Linux you now need to proceed to stage two:</p>
 
 <ol>
   <li>Log into your box.</li>
-  <li>Run a df -h and see if the new space shows up.  It almost certainly won’t but you can always try.</li>
+  <li>Run a df -h and see if the new space shows up.  It almost certainly won't but you can always try.</li>
   <li>Run a lsblk to list your blog devices and you need to note the one that your system is using.  The default is /dev/xvda1</li>
   <li>Run a sudo resize2fs /dev/xvda1</li>
   <li>Reboot the box with /sbin/reboot</li>
@@ -225,7 +225,7 @@ And while this is somewha...">
 
 <h1 id="commentary">Commentary</h1>
 
-<p>As a computer scientist I entirely understand why you have to reboot.  But as a consumer of cloud services it feels to me like we should be past this at this stage of the using cloud services.  All of my AWS experience is generally using Ubuntu and if Amazon was to tell me that this wasn’t necessary on the AWS Linux, well, that alone would be enough to make me switch distros.</p>
+<p>As a computer scientist I entirely understand why you have to reboot.  But as a consumer of cloud services it feels to me like we should be past this at this stage of the using cloud services.  All of my AWS experience is generally using Ubuntu and if Amazon was to tell me that this wasn't necessary on the AWS Linux, well, that alone would be enough to make me switch distros.</p>
 
 <h1 id="links">Links</h1>
 

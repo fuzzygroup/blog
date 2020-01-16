@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Git Rebasing Old Migrations Easily When SourceTree Fails</title>
-  <meta name="description" content="So I’ve written before about schema.rb changes, SourceTree and migrations and the problem with git rebase before:">
+  <meta name="description" content="So I've written before about schema.rb changes, SourceTree and migrations and the problem with git rebase before:">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2019/07/24/git-rebasing-old-migrations-easily-when-sourcetree-fails.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="So I’ve written before about schema.rb changes, SourceTree and migrations and the problem with git rebase before:
+      content="So I've written before about schema.rb changes, SourceTree and migrations and the problem with git rebase before:
 
 
   Schema WTF Take 1
@@ -185,16 +185,16 @@ I just hit this again and my normal pai...">
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>So I’ve written before about schema.rb changes, SourceTree and migrations and the problem with git rebase before:</p>
+    <p>So I've written before about schema.rb changes, SourceTree and migrations and the problem with git rebase before:</p>
 
 <ul>
   <li><a href="https://fuzzyblog.io/blog/rails/2019/05/09/rails-migrations-multiple-developers-and-the-schema-wtf-moment.html">Schema WTF Take 1</a></li>
   <li><a href="https://fuzzyblog.io/blog/rails/2019/05/10/the-schema-wtf-moment-take-2-an-excursion-into-sourcetree.html">Schema WTF Take 2</a></li>
 </ul>
 
-<p>I just hit this again and my normal pairing partner is offline and while he has the patience to deal with the crazy ass error messages from SourceTree, I do not.  Personally I think Atlassian (the maker of SourceTree) should simply be killed with fire while my pagan friends dance naked around a drum circle but hey – that’s just me.</p>
+<p>I just hit this again and my normal pairing partner is offline and while he has the patience to deal with the crazy ass error messages from SourceTree, I do not.  Personally I think Atlassian (the maker of SourceTree) should simply be killed with fire while my pagan friends dance naked around a drum circle but hey – that's just me.</p>
 
-<p>Anyway my tooling has let me down.  And, yes I could learn the specific range level commit commands that SourceTree is generating behind the scenes but I think there’s an easier way.  Here’s what I did:</p>
+<p>Anyway my tooling has let me down.  And, yes I could learn the specific range level commit commands that SourceTree is generating behind the scenes but I think there's an easier way.  Here's what I did:</p>
 
 <ol>
   <li>Abort the git rebase with git rebase –abort</li>
@@ -208,7 +208,7 @@ I just hit this again and my normal pai...">
   <li>Get someone to do the pull request review</li>
 </ol>
 
-<p>And that, dear reader, should have worked swimmingly.  Alas, it did not.  And this was one of those software engineering cases where trying to understand something fully likely would have been a waste of time.  This change amounted to a few lines in a model, a migration to add an index and a small update to a spec file – I simply recreated the branch from the current develop as “-a” (on top of the original branch number) and then re-made the same damn changes.  Yeah that sucks but it worked.</p>
+<p>And that, dear reader, should have worked swimmingly.  Alas, it did not.  And this was one of those software engineering cases where trying to understand something fully likely would have been a waste of time.  This change amounted to a few lines in a model, a migration to add an index and a small update to a spec file – I simply recreated the branch from the current develop as "-a" (on top of the original branch number) and then re-made the same damn changes.  Yeah that sucks but it worked.</p>
 
 <p>Today was definitely a day in the trenches.  Sigh.</p>
 

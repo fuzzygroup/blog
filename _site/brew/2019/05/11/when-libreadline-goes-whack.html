@@ -184,7 +184,7 @@
 
 <h2 id="the-environment--context">The Environment / Context</h2>
 
-<p>I’m running a MacBook on OSX (Sierra; yes I’m a luddite on OS upgrades) with <a href="https://brew.sh/">HomeBrew</a> 1.7.0.</p>
+<p>I'm running a MacBook on OSX (Sierra; yes I'm a luddite on OS upgrades) with <a href="https://brew.sh/">HomeBrew</a> 1.7.0.</p>
 
 <h2 id="the-error">The Error</h2>
 
@@ -198,15 +198,15 @@ sh: line 1: 36440 Abort trap: 6
 </code></pre>
 </div>
 
-<p>libreadline is a core library used by almost any open source tool that ends up reading input from the standard in.  In this case I’m trying to feed a sql file into the pg (postgres) executable.</p>
+<p>libreadline is a core library used by almost any open source tool that ends up reading input from the standard in.  In this case I'm trying to feed a sql file into the pg (postgres) executable.</p>
 
-<p>This is one of those errors that I’ve seen a dozen or so times and I always fix it with some crazy combination of jiggery-pokery / goat sacrificing.  This time I thought I’d document it for, well, the next damn time.</p>
+<p>This is one of those errors that I've seen a dozen or so times and I always fix it with some crazy combination of jiggery-pokery / goat sacrificing.  This time I thought I'd document it for, well, the next damn time.</p>
 
 <h2 id="the-solution">The Solution</h2>
 
 <p>The answer appears, courtesy of Google via a <a href="https://github.com/Homebrew/homebrew-core/issues/5799">Github Issue</a>, appears to be an update of bash.  Sigh.  While I love the power of command shells, I truly, truly hate messing with them.</p>
 
-<p>Here’s the process I followed:</p>
+<p>Here's the process I followed:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>brew update
 </code></pre>
@@ -240,7 +240,7 @@ Copyright (C) 2007 Free Software Foundation, Inc.
 </code></pre>
 </div>
 
-<p>After adding this line, do the CTRL+W and then CTRL+Q dance to exit the editor.  That essentially tells OSX “Ok this is a valid shell that someone can now tell us they want to use”.  The next step is to use the chsh command to make this permanent.</p>
+<p>After adding this line, do the CTRL+W and then CTRL+Q dance to exit the editor.  That essentially tells OSX "Ok this is a valid shell that someone can now tell us they want to use".  The next step is to use the chsh command to make this permanent.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>chsh -s /usr/local/bin/bash $USER
 </code></pre>
@@ -248,26 +248,26 @@ Copyright (C) 2007 Free Software Foundation, Inc.
 
 <p><strong>Note:</strong> Much of what I know about changing an OSX shell comes from this <a href="https://apple.stackexchange.com/questions/224511/how-to-use-bash-as-default-shell">Stack Exchange post</a>.</p>
 
-<p>At this point you have set your system up to use the new shell but it won’t take effect until you restart your terminal.  Given that I use iTerm and I have about 70 terminals open at any point, restarting a terminal is a big deal.  But what I can do is validate this by using the Apple Terminal.  So I start up Apple Terminal and do a:</p>
+<p>At this point you have set your system up to use the new shell but it won't take effect until you restart your terminal.  Given that I use iTerm and I have about 70 terminals open at any point, restarting a terminal is a big deal.  But what I can do is validate this by using the Apple Terminal.  So I start up Apple Terminal and do a:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>echo $BASH_VERSION
 5.0.7(1)-release
 </code></pre>
 </div>
 
-<p>And, unfortunately, I still get the error when I try again.  Sigh.  At this point with the new Bash in place, I’m able to try:</p>
+<p>And, unfortunately, I still get the error when I try again.  Sigh.  At this point with the new Bash in place, I'm able to try:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>brew upgrade libreadline
 </code></pre>
 </div>
 
-<p>And that begins the process.  Now since libreadline is used by almost everyone that HomeBrew has installed for me, it is a long, long process.  I can watch it upgrade Postgres, Maple, etc.  When it is finally done, I try again only to find that my pg executable isn’t there anymore.  This takes a moment of thought but I realize that it is simply moved since the previous directory included a version number.  When I finally reconstruct a path to the correct version of pg, it now executes flawlessly:</p>
+<p>And that begins the process.  Now since libreadline is used by almost everyone that HomeBrew has installed for me, it is a long, long process.  I can watch it upgrade Postgres, Maple, etc.  When it is finally done, I try again only to find that my pg executable isn't there anymore.  This takes a moment of thought but I realize that it is simply moved since the previous directory included a version number.  When I finally reconstruct a path to the correct version of pg, it now executes flawlessly:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>/usr/local/Cellar/postgresql@9.5/9.5.15/bin/psq
 </code></pre>
 </div>
 
-<p>Success!  And, in closing, yes I do actually know that I shouldn’t have to specify the exact pathing.  A big part of homebrew’s advantage is that this isn’t needed.  But for some reason, on this particular box, it is needed.  And I’ve just never bothered to figure out why.</p>
+<p>Success!  And, in closing, yes I do actually know that I shouldn't have to specify the exact pathing.  A big part of homebrew's advantage is that this isn't needed.  But for some reason, on this particular box, it is needed.  And I've just never bothered to figure out why.</p>
 
   </div>
   

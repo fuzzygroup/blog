@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-Note: I’m about 4 weeks into the learning python stage and I could be fairly wrong about some of this.  I apologize for any stupidity but learning languages is a subtle process and I have found t...">
+Note: I'm about 4 weeks into the learning python stage and I could be fairly wrong about some of this.  I apologize for any stupidity but learning languages is a subtle process and I have found t...">
   
 
   
@@ -182,7 +182,7 @@ Note: I’m about 4 weeks into the learning python stage and I could be fairly w
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_9415.jpeg" alt="IMG_9415.jpeg" /></p>
 
-<p><strong>Note</strong>: I’m about 4 weeks into the learning python stage and I could be fairly wrong about some of this.  I apologize for any stupidity but learning languages is a subtle process and I have found that writing things like this helps the process.</p>
+<p><strong>Note</strong>: I'm about 4 weeks into the learning python stage and I could be fairly wrong about some of this.  I apologize for any stupidity but learning languages is a subtle process and I have found that writing things like this helps the process.</p>
 
 <p>Leaving a good job where you like the product, like the team and like your co-workers is a hard thing to navigate.  I recently did this and got this message today from my former boss:</p>
 
@@ -190,7 +190,7 @@ Note: I’m about 4 weeks into the learning python stage and I could be fairly w
   <p>How ru liking python? I’ve been thinking about spending some free time on it or elixir. Got your shirt ordered btw.</p>
 </blockquote>
 
-<p>My response to him was that I liked Python and I’d send him some thoughts on Python / Elixir (since I did a solid dive into Elixir a few years ago).  And that’s how this article came into being.</p>
+<p>My response to him was that I liked Python and I'd send him some thoughts on Python / Elixir (since I did a solid dive into Elixir a few years ago).  And that's how this article came into being.</p>
 
 <h2 id="python">Python</h2>
 
@@ -204,14 +204,14 @@ Note: I’m about 4 weeks into the learning python stage and I could be fairly w
   <li>use def to define methods</li>
 </ul>
 
-<p>A fundamental difference between Ruby and Python is Python’s approach of “invisible semantics”.  I am referring here to the use of indentation as a structural mechanism for formatting code – get your indentation wrong and your code doesn’t work.  This is particularly a problem with copy and paste from online code sites / blogs.  I find that this as well as the use of the : to indicate the start of a control structure are the two constant mistakes I make.</p>
+<p>A fundamental difference between Ruby and Python is Python's approach of "invisible semantics".  I am referring here to the use of indentation as a structural mechanism for formatting code – get your indentation wrong and your code doesn't work.  This is particularly a problem with copy and paste from online code sites / blogs.  I find that this as well as the use of the : to indicate the start of a control structure are the two constant mistakes I make.</p>
 
 <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">print_log</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 </code></pre>
 </div>
 
-<p>One of the things that I have found most irritating about python is that imported modules referenced in a main script are not available to “sub scripts” (i.e. other imported modules).  Here’s an example:</p>
+<p>One of the things that I have found most irritating about python is that imported modules referenced in a main script are not available to "sub scripts" (i.e. other imported modules).  Here's an example:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>cat jsons/4chan_pol_has_slur.json | python3 expert_slurs.py --source=4chan
 Template Expert
@@ -232,7 +232,7 @@ NameError: name 'sys' is not defined
 </code></pre>
 </div>
 
-<p>At the top of my expert_slurs.py file, it isn’t available in common_expert.py (which comes <strong>after</strong> the inclusion) and has to be imported again at the top of common_expert.py.</p>
+<p>At the top of my expert_slurs.py file, it isn't available in common_expert.py (which comes <strong>after</strong> the inclusion) and has to be imported again at the top of common_expert.py.</p>
 
 <p>Variables in a python method lack the block locality that they have in Ruby.  Coming from a ruby context, this is massively strange.  Apparently you can sort of achieve this by <a href="https://stackoverflow.com/questions/6167923/block-scope-in-python">defining functions within functions</a> but, well, <strong>no</strong>.</p>
 
@@ -254,19 +254,19 @@ NameError: name 'sys' is not defined
 <ul>
   <li>I came in at the 1.3 about to be released version of Phoenix which took longer to finish than that expected and that cost me momentum</li>
   <li>Pattern matching is at the heart of Elixir and it is hard to master</li>
-  <li>Most of what I build is web apps and when I looked into it there wasn’t an equivalent to Devise or AuthLogic and I never wanted to write this so …</li>
+  <li>Most of what I build is web apps and when I looked into it there wasn't an equivalent to Devise or AuthLogic and I never wanted to write this so …</li>
 </ul>
 
 <p>What I took away from Elixir was a number of changes to my coding style in Ruby including a focus on class methods and an increased use of multiple return values.</p>
 
 <h2 id="choosing-a-next-language">Choosing a Next Language</h2>
 
-<p>One of the guidelines I use for choosing a next language is that it is always best to learn your next language by picking one with a fundamentally <strong>different orientation</strong> than your last language.  So going from Ruby to Elixir is a big change because it means going from object-oriented to functional.  I find that going from Ruby to Python isn’t a big change because the languages are just so similar.  In fact I have actually found that Python’s many similarities to Ruby make it harder to grok the learning process.  Elixir is so clearly different from Ruby that the differences are easier to learn.</p>
+<p>One of the guidelines I use for choosing a next language is that it is always best to learn your next language by picking one with a fundamentally <strong>different orientation</strong> than your last language.  So going from Ruby to Elixir is a big change because it means going from object-oriented to functional.  I find that going from Ruby to Python isn't a big change because the languages are just so similar.  In fact I have actually found that Python's many similarities to Ruby make it harder to grok the learning process.  Elixir is so clearly different from Ruby that the differences are easier to learn.</p>
 
 <p>So even though I would argue strongly that if you are a Rubyist, Elixir is the logical next step, there are two caveats:</p>
 
 <ul>
-  <li>If you are doing data science work then you want to use Python.  I’ve been immersing myself in data science stuff and the Python ecosystem for data science is truly splendid.</li>
+  <li>If you are doing data science work then you want to use Python.  I've been immersing myself in data science stuff and the Python ecosystem for data science is truly splendid.</li>
   <li>If you are doing machine learning work then you want to use Python.  Again the Python ecosystem for machine learning is truly splendid.</li>
 </ul>
 

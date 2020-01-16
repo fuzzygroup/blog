@@ -186,9 +186,9 @@
   <p>sudo apt-get install inotify-tools</p>
 </blockquote>
 
-<p>Since inotify is a Linux api this doesn’t exist for OSX but you can use an open source tool called notifywait available <a href="https://github.com/ggreer/fsevents-tools">here</a>.  Alternatively there is fswatch which can be easily installed with <strong>brew fswatch</strong>.  Please note that I didn’t try either.</p>
+<p>Since inotify is a Linux api this doesn't exist for OSX but you can use an open source tool called notifywait available <a href="https://github.com/ggreer/fsevents-tools">here</a>.  Alternatively there is fswatch which can be easily installed with <strong>brew fswatch</strong>.  Please note that I didn't try either.</p>
 
-<p>The inotifywait utility takes a few command line parameters and then tells you all file accesses that go on in that directory.  This sounds a bit obscure but here’s how I tested it last night:</p>
+<p>The inotifywait utility takes a few command line parameters and then tells you all file accesses that go on in that directory.  This sounds a bit obscure but here's how I tested it last night:</p>
 
 <blockquote>
   <p>inotifywait ~ -mr</p>
@@ -196,15 +196,15 @@
 
 <p>This tells inotifywait to run on the ~ or home directory and monitor it forever (the m flag) and r tells it to monitor recursively on all directories below the current.</p>
 
-<p>Here’s an example of its output once I set it monitoring in one shell window on a server after I logged into the same box in a different shell window and then touched the file foo.txt:</p>
+<p>Here's an example of its output once I set it monitoring in one shell window on a server after I logged into the same box in a different shell window and then touched the file foo.txt:</p>
 
 <p><img src="/blog/assets/inotifywait.png" alt="inotifywait.png" /></p>
 
-<p>The really interesting here is that while I sort of know that the bash prompt initialization pattern is .profile and then  .bashrc but I’ve never <strong>seen</strong> it before.  I have a feeling that I’ll understand this better from now on.</p>
+<p>The really interesting here is that while I sort of know that the bash prompt initialization pattern is .profile and then  .bashrc but I've never <strong>seen</strong> it before.  I have a feeling that I'll understand this better from now on.</p>
 
 <p>Not only is this useful for sysadmin / devops work but I can see it being highly useful for application developers. Sometimes the files you are touching or your io access patterns are not always apparent.  Using inotifywait makes them obvious.</p>
 
-<p>Different events can even be monitored with the –e flag.  Here’s what you can monitor for:</p>
+<p>Different events can even be monitored with the –e flag.  Here's what you can monitor for:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>Events:
 	access		file or directory contents were read

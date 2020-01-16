@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Scott&#39;s Rule of API Development</title>
-  <meta name="description" content="So on Tuesday I wrote a new api that allows an Ansible playbook to register an AWS instance with an internal service I’m writing.  This is for the purpose of...">
+  <meta name="description" content="So on Tuesday I wrote a new api that allows an Ansible playbook to register an AWS instance with an internal service I'm writing.  This is for the purpose of...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/software_engineering/2017/01/05/scott-s-rule-of-api-development.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="So on Tuesday I wrote a new api that allows an Ansible playbook to register an AWS instance with an internal service I’m writing.  This is for the purpose of monitoring large jobs (think tens if no...">
+      content="So on Tuesday I wrote a new api that allows an Ansible playbook to register an AWS instance with an internal service I'm writing.  This is for the purpose of monitoring large jobs (think tens if no...">
   
 
   
@@ -178,31 +178,31 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>So on Tuesday I wrote a new api that allows an <a href="https://www.ansible.com/">Ansible</a> playbook to register an AWS instance with an internal service I’m writing.  This is for the purpose of monitoring large jobs (think tens if not hundreds of lightweight EC2 instances) so that they can be shut down programmatically when they are done.</p>
+    <p>So on Tuesday I wrote a new api that allows an <a href="https://www.ansible.com/">Ansible</a> playbook to register an AWS instance with an internal service I'm writing.  This is for the purpose of monitoring large jobs (think tens if not hundreds of lightweight EC2 instances) so that they can be shut down programmatically when they are done.</p>
 
-<p>In some kind of alternate universe I’d just do all this with <a href="https://aws.amazon.com/lambda/">AWS Lambda</a> but I’m working in a monolithic rails code base so I used my <a href="https://fuzzygroup.github.io/blog/rails/2017/01/03/processing-large-datasets-on-aws-using-ruby-rails-and-sidekiq.html">Large Datasets approach</a> I documented earlier this week.</p>
+<p>In some kind of alternate universe I'd just do all this with <a href="https://aws.amazon.com/lambda/">AWS Lambda</a> but I'm working in a monolithic rails code base so I used my <a href="https://fuzzygroup.github.io/blog/rails/2017/01/03/processing-large-datasets-on-aws-using-ruby-rails-and-sidekiq.html">Large Datasets approach</a> I documented earlier this week.</p>
 
-<p>My ansible playbook creates the EC2 instances, binds the whole process together and initiates everything – I can literally run one playbook and have 40 workers (or really N workers) created and an entire data set start processing along with getting an internal record of all the instances and the job so that I can do proper cost accounting, dynamic instance shut down and the whole nine yards.  This is a big step for me.  I am getting close to a technical goal that I’ve been working towards either for six months or about 7 years depending on how you measure it.</p>
+<p>My ansible playbook creates the EC2 instances, binds the whole process together and initiates everything – I can literally run one playbook and have 40 workers (or really N workers) created and an entire data set start processing along with getting an internal record of all the instances and the job so that I can do proper cost accounting, dynamic instance shut down and the whole nine yards.  This is a big step for me.  I am getting close to a technical goal that I've been working towards either for six months or about 7 years depending on how you measure it.</p>
 
-<p>So <a href="http://nickjanetaks.com/">Nick</a> and I did all this fancy, fancy EC2 automation – AMI creation, instance creation, job launching – and the thing that <strong><em>failed</em></strong> was a simple <em>http post API</em> call using the <a href="http://docs.ansible.com/ansible/uri_module.html">Ansible URI module</a>.  Like everyone else in the industry I’ve written a post API, I don’t know – 50 times? 100 times? — and they always fail the first time.  And this brings me to what I’m going to immodestly call Scott’s Rule of API Development:</p>
+<p>So <a href="http://nickjanetaks.com/">Nick</a> and I did all this fancy, fancy EC2 automation – AMI creation, instance creation, job launching – and the thing that <strong><em>failed</em></strong> was a simple <em>http post API</em> call using the <a href="http://docs.ansible.com/ansible/uri_module.html">Ansible URI module</a>.  Like everyone else in the industry I've written a post API, I don't know – 50 times? 100 times? — and they always fail the first time.  And this brings me to what I'm going to immodestly call Scott's Rule of API Development:</p>
 
 <blockquote>
-  <p><strong>Scott’s Rule of API Development</strong>.  Always, always, always test your APIs with <a href="https://curl.haxx.se/">curl</a> from an external box before you actually try and use them.</p>
+  <p><strong>Scott's Rule of API Development</strong>.  Always, always, always test your APIs with <a href="https://curl.haxx.se/">curl</a> from an external box before you actually try and use them.</p>
 </blockquote>
 
-<p>Seriously – I hit this problem six months ago at <a href="http://www.therachat.io">TheraChat</a> when I wrote their MVP.  I hit it yesterday.  I seemingly hit it every single damn time I make an API.  Hence Scott’s Rule of API Development.  Now, that said, what does using curl to test an api actually mean / how do you do it:</p>
+<p>Seriously – I hit this problem six months ago at <a href="http://www.therachat.io">TheraChat</a> when I wrote their MVP.  I hit it yesterday.  I seemingly hit it every single damn time I make an API.  Hence Scott's Rule of API Development.  Now, that said, what does using curl to test an api actually mean / how do you do it:</p>
 
 <ol>
   <li>Create your API.</li>
-  <li>Write your curl statement. Here’s a sample which I used once upon a time for an authorization API (the -d tells curl to post it): <em>curl -i -d “api_key=forceawakens13928534aY&amp;&amp;mobile_number=317-531-4853&amp;password=BLAH” “http://app.foo.com/api/authorize”</em></li>
+  <li>Write your curl statement. Here's a sample which I used once upon a time for an authorization API (the -d tells curl to post it): <em>curl -i -d "api_key=forceawakens13928534aY&amp;&amp;mobile_number=317-531-4853&amp;password=BLAH" "http://app.foo.com/api/authorize"</em></li>
   <li>Test it locally against your development system.  Fix any bugs.  Lather / Rinse / Repeat.</li>
   <li>Deploy your code.</li>
-  <li>Run it on another box that isn’t your actual API to make sure that there are no security glitches / remote code issues / etc.</li>
-  <li>If this API is part of a full stack Rails app then don’t forget to disable forgery protection in Application Controller with <em>protect_from_forgery with: :null_session</em>.</li>
+  <li>Run it on another box that isn't your actual API to make sure that there are no security glitches / remote code issues / etc.</li>
+  <li>If this API is part of a full stack Rails app then don't forget to disable forgery protection in Application Controller with <em>protect_from_forgery with: :null_session</em>.</li>
   <li>For bonus points store the curl commands that exercise your API as part of your code base and always try them before a release.  APIs can be tricky little buggers and they are both difficult to get and seem to break easily.  Regularly testing with curl prevents that and makes users of your API much, much happier.</li>
 </ol>
 
-<p>Yes test coverage should prevent what’s described in #7 but I’d strongly recommend belt and suspenders on this one.  When the people who rely on your API have issues you can always give them a curl statement and say “Well this works for me – what about you”.  You can’t do that we test coverage as APIs are often used from a variety of languages and environments but curl is absolutely <strong>universal</strong>.</p>
+<p>Yes test coverage should prevent what's described in #7 but I'd strongly recommend belt and suspenders on this one.  When the people who rely on your API have issues you can always give them a curl statement and say "Well this works for me – what about you".  You can't do that we test coverage as APIs are often used from a variety of languages and environments but curl is absolutely <strong>universal</strong>.</p>
 
   </div>
   

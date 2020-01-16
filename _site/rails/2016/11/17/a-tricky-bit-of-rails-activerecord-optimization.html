@@ -192,17 +192,17 @@
 <p>this is actually common.  It is often what I think of as The Forrest Gump school of working with indices:</p>
 
 <blockquote>
-  <p>Indices are like a box of chocolate; you never know what you’re going to get.
+  <p>Indices are like a box of chocolate; you never know what you're going to get.
 <a href="https://en.wiktionary.org/wiki/life_is_like_a_box_of_chocolates">Source</a></p>
 </blockquote>
 
-<p>The ActiveRecord operation in question was a check to see if a row already existed in the table.  Here’s the SQL that the ORM was generating:</p>
+<p>The ActiveRecord operation in question was a check to see if a row already existed in the table.  Here's the SQL that the ORM was generating:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>SELECT  `link2016_q1s`.* FROM `link2016_q1s` WHERE `link2016_q1s`.`site_id` = 215345 AND `link2016_q1s`.`page_id` = 2401963 AND `link2016_q1s`.`url_no_www_sha1` = 'fe9f2487051ac4ab2a86bdf5c501336c2bda315b'  ORDER BY `link2016_q1s`.`id` ASC LIMIT 1\G
 </code></pre>
 </div>
 
-<p>And here’s the explain showing the query plan:</p>
+<p>And here's the explain showing the query plan:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>explain SELECT  `link2016_q1s`.* FROM `link2016_q1s` WHERE `link2016_q1s`.`site_id` = 215345 AND `link2016_q1s`.`page_id` = 2401963 AND `link2016_q1s`.`url_no_www_sha1` = 'fe9f2487051ac4ab2a86bdf5c501336c2bda315b'  ORDER BY `link2016_q1s`.`id` ASC LIMIT 1\G *************************** 1. row ***************************
        id: 1   select_type: SIMPLE
@@ -218,7 +218,7 @@
 
 <p>As you can see this is damn near a worst case as the only index being used is the PRIMARY meaning that none of our indices are being used.  <em>Grumble</em>.</p>
 
-<p>As with any optimization problem in computing – any – you have to understand what your tool does in order to solve it.  You may not like the constraints placed on you but you have to live with them because you rarely solve optimization problems in production by changing stack components.  In this case we’re using MariaDB which is a mysql variant.  Here are some quick basics on MySQL index usage:</p>
+<p>As with any optimization problem in computing – any – you have to understand what your tool does in order to solve it.  You may not like the constraints placed on you but you have to live with them because you rarely solve optimization problems in production by changing stack components.  In this case we're using MariaDB which is a mysql variant.  Here are some quick basics on MySQL index usage:</p>
 
 <ul>
   <li>there is one and only one index per query</li>
@@ -226,7 +226,7 @@
   <li>the same index is used to order results as the query</li>
 </ul>
 
-<p>The first thing that I noticed here was that ActiveRecord was appending an order construct to the query, the “order by id asc” crap – I didn’t put that into ActiveRecord where statement.  <em>more grumbling</em>.  So what happens to our query plan if we remove that?  Here you go:</p>
+<p>The first thing that I noticed here was that ActiveRecord was appending an order construct to the query, the "order by id asc" crap – I didn't put that into ActiveRecord where statement.  <em>more grumbling</em>.  So what happens to our query plan if we remove that?  Here you go:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>explain SELECT  `link2016_q1s`.* FROM `link2016_q1s` WHERE `link2016_q1s`.`site_id` = 215345 AND `link2016_q1s`.`page_id` = 2401963 AND `link2016_q1s`.`url_no_www_sha1` = 'fe9f2487051ac4ab2a86bdf5c501336c2bda315b'  LIMIT 1\G   *************************** 1. row ***************************
          id: 1
@@ -241,20 +241,20 @@ select_type: SIMPLE
 </code></pre>
 </div>
 
-<p>Hm… We’re now at least using an index.  Even if it isn’t the right index, I’d regard that as progress towards a positive direction.  There are times when the mysql query planner is damn hard to convince of changes so this is good.</p>
+<p>Hm… We're now at least using an index.  Even if it isn't the right index, I'd regard that as progress towards a positive direction.  There are times when the mysql query planner is damn hard to convince of changes so this is good.</p>
 
-<p>Fixing this default ordering is actually fairly easy, just add <em>.order(“”)</em> to the where statement.  If this code base wasn’t so large then I’d dig into how to prevent this on an ongoing basis but, as always, this is hurry up and rush style work so there’s no time for that.  Yes there will be a cost for that later – there always is.</p>
+<p>Fixing this default ordering is actually fairly easy, just add <em>.order("")</em> to the where statement.  If this code base wasn't so large then I'd dig into how to prevent this on an ongoing basis but, as always, this is hurry up and rush style work so there's no time for that.  Yes there will be a cost for that later – there always is.</p>
 
-<p>Looking at the explain statement above still bothers me as we’re dealing with 16K rows.  There has to be something better than that.  So digging into the possible indices shows this:</p>
+<p>Looking at the explain statement above still bothers me as we're dealing with 16K rows.  There has to be something better than that.  So digging into the possible indices shows this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>UNIQUE KEY `s_c_p_u` (`site_id`,`crawl_id`,`page_id`,`crawler_id`,`url_no_www_sha1`) USING BTREE,
 KEY `s_c_d_p` (`site_id`,`crawl_id`,`domain_id`,`page_id`) USING BTREE
 </code></pre>
 </div>
 
-<p>Looking at these two indices, knowing that one of them is a UNIQUE key means that there will be less data in it – and it is <em>always</em> faster, even with indices, to deal with less data.  I remember debating this point at length with my Feedster cofounder back in the day when we were building our 64 bit XML search engine.  He took the position that the indices would be efficient enough that the amount of data wouldn’t matter.  I took the position that it is always faster, even with an index, to have less data to sift through.</p>
+<p>Looking at these two indices, knowing that one of them is a UNIQUE key means that there will be less data in it – and it is <em>always</em> faster, even with indices, to deal with less data.  I remember debating this point at length with my Feedster cofounder back in the day when we were building our 64 bit XML search engine.  He took the position that the indices would be efficient enough that the amount of data wouldn't matter.  I took the position that it is always faster, even with an index, to have less data to sift through.</p>
 
-<p>So, ideally, it would be great to use the s_c_p_u index if at all possible.  This should dramatically reduce the amount of data in the index and thus lower the ROWS.  The problem here is that I don’t know what’s in the crawl_id column and I don’t care about it at all.  The crawl_id column was originally used to disambiguate between different crawl runs when we stored all page data, irrespective of crawl run, in a single table.  We’ve since moved to a per table sharded architecture but that never got removed (note to self – deal with that for our upcoming crawl).</p>
+<p>So, ideally, it would be great to use the s_c_p_u index if at all possible.  This should dramatically reduce the amount of data in the index and thus lower the ROWS.  The problem here is that I don't know what's in the crawl_id column and I don't care about it at all.  The crawl_id column was originally used to disambiguate between different crawl runs when we stored all page data, irrespective of crawl run, in a single table.  We've since moved to a per table sharded architecture but that never got removed (note to self – deal with that for our upcoming crawl).</p>
 
 <p>Thinking about this for a few minutes made realize that we can leverage both indices to support the underlying goal of quickly checking if this row already existed.  Why not leverage the s_c_d_p index to get the list of crawl_ids and then push that into the next query.  This fulfills the constraint of MySQL wanting the parameters in the index to all be fulfilled.  And after a few minutes of tinkering led to this method:</p>
 
@@ -275,7 +275,7 @@ end
 </code></pre>
 </div>
 
-<p>The only reason that I’m not having this method compute the no_www_sha1 value is that if we continue we’re going to use it anyway so its better to pass it in directly.  I could have computed it in the method and then returned it back as a second parameter but then it should really be exists not exists? since my preference is that a ? postfixed method should really only return a single value either true or false.</p>
+<p>The only reason that I'm not having this method compute the no_www_sha1 value is that if we continue we're going to use it anyway so its better to pass it in directly.  I could have computed it in the method and then returned it back as a second parameter but then it should really be exists not exists? since my preference is that a ? postfixed method should really only return a single value either true or false.</p>
 
 <p>Not bad for a bit of late Wednesday night hacking.  And, yes, I did just now fix the schema for our next crawl.  Ah the wonderful fast bliss of ALTER TABLE on tables without any data in them.</p>
 

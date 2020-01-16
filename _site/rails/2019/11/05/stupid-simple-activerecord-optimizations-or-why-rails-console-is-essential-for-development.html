@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-Ever since 2008 when my pairing partner at the time, Jared, pushed me to basically live in the Rails console, I’ve been heavily, heavily dependent on the console as an essential developer tool.  ...">
+Ever since 2008 when my pairing partner at the time, Jared, pushed me to basically live in the Rails console, I've been heavily, heavily dependent on the console as an essential developer tool.  ...">
   
 
   
@@ -182,9 +182,9 @@ Ever since 2008 when my pairing partner at the time, Jared, pushed me to basical
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_9823.jpeg" alt="IMG_9823.jpeg" /></p>
 
-<p>Ever since 2008 when my pairing partner at the time, Jared, pushed me to basically live in the Rails console, I’ve been heavily, heavily dependent on the console as an essential developer tool.  I just watched something that pointed out to me just why it is so damn important.</p>
+<p>Ever since 2008 when my pairing partner at the time, Jared, pushed me to basically live in the Rails console, I've been heavily, heavily dependent on the console as an essential developer tool.  I just watched something that pointed out to me just why it is so damn important.</p>
 
-<p>Here’s what I observed:</p>
+<p>Here's what I observed:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>2.6.3 :057 &gt; m.change_pct_today_over_goal?
   Goal Load (65.2ms)  SELECT `goals`.* FROM `goals` WHERE `goals`.`habit_id` = 39 ORDER BY `goals`.`id` ASC LIMIT 1
@@ -195,7 +195,7 @@ true
 </code></pre>
 </div>
 
-<p>I simply can’t think that the fact that we’re loading the goal from the database 3 times is an optimal use of computing resources.  So I dug into the code and here’s what I saw:</p>
+<p>I simply can't think that the fact that we're loading the goal from the database 3 times is an optimal use of computing resources.  So I dug into the code and here's what I saw:</p>
 
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># original</span>
 <span class="k">def</span> <span class="nf">change_pct_today_over_goal?</span>
@@ -238,7 +238,7 @@ true
 </code></pre>
 </div>
 
-<p>Now it is possible that with the right caching strategy server side, this change wouldn’t be necessary but caching is always problem.  It is simply better to solve this without caching because not only will that speed things in production but it will also speed things in development.</p>
+<p>Now it is possible that with the right caching strategy server side, this change wouldn't be necessary but caching is always problem.  It is simply better to solve this without caching because not only will that speed things in production but it will also speed things in development.</p>
 
 <p>And, yes, this would have been obvious if I had been tailing log files but the beauty of Rails console is that all this information is present if you simply pay a small bit of attention.</p>
 

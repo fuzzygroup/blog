@@ -294,7 +294,7 @@
 
 <p>{This story is written for those very patient people who used my PHP Beginner security code and found out that there were things missing from the article.  I tried to make it entertaining at least to make up for the apparent frustration that this as caused folks and I do apologize.}</p>
 
-<p>Once upon a time (hey!  all good geek stories begin with “once upon a time” or “a long, long time ago, in a galaxy far, far away”), there was a lad*.  A lad who said “I know, I know… I’ll use PHP to make web security just plain easy.  And then my buddy Maxim will distribute it as far as the wires can reach.  To the ends of the land people will be able to authenticate and it will be good.”   Little did that lad know that an evil wizard would cloud his mind at the last minute and cause the answers to critical questions to just disappear.  And, because the wizard was mighty indeed, he also clouded the vision of Maxim and the other fine, fine editors at <a href="http://www.phpbeginner.com/">www.phpbeginner.com</a>.  Hopefully the new counter magic that a powerful mage named Libby cast upon our lad will allow the answers to finally be disclosed.  If not, please direct counter magic to <a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;">&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;</a>.  And, so …</p>
+<p>Once upon a time (hey!  all good geek stories begin with "once upon a time" or "a long, long time ago, in a galaxy far, far away"), there was a lad*.  A lad who said "I know, I know… I'll use PHP to make web security just plain easy.  And then my buddy Maxim will distribute it as far as the wires can reach.  To the ends of the land people will be able to authenticate and it will be good."   Little did that lad know that an evil wizard would cloud his mind at the last minute and cause the answers to critical questions to just disappear.  And, because the wizard was mighty indeed, he also clouded the vision of Maxim and the other fine, fine editors at <a href="http://www.phpbeginner.com/">www.phpbeginner.com</a>.  Hopefully the new counter magic that a powerful mage named Libby cast upon our lad will allow the answers to finally be disclosed.  If not, please direct counter magic to <a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;">&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;</a>.  And, so …</p>
 
 <h2 id="references">References</h2>
 
@@ -307,11 +307,11 @@
 
 <h2 id="the-answers">The Answers</h2>
 
-<p>Covered below are answers that I hope address people’s questions adequately.</p>
+<p>Covered below are answers that I hope address people's questions adequately.</p>
 
 <h3 id="where-does-the-user-go-after-login">Where Does the User Go After Login?</h3>
 
-<p>The first answer that was missing from the article was “Where does the user go after they login?”.  Here’s the code from the original article (original as on my website, not sure what code appeared where):</p>
+<p>The first answer that was missing from the article was "Where does the user go after they login?".  Here's the code from the original article (original as on my website, not sure what code appeared where):</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>if ($encryptedpassword == $passwordfromdb) {#set our cookies for our future security checks   setcookie ("ck_username", $username);  setcookie("ck_password", $password);  setcookie("ck_user_id", $user_id);#Create our results page showing them they are logged in  print "&lt;HTML&gt;";  print "&lt;HEAD&gt;";  print "&lt;TITLE&gt;";  print "You're Logged In!";  print "&lt;/TITLE&gt;";  print "&lt;BODY&gt;";  print "You're Logged In";#This needs to have a link added of course#If you wanted to automatically take them to the main screen#then use the header function to redirect them# NEW CODE HERE  print "Click Here to Continue";  print "&lt;/BODY&gt;";  print "&lt;/HTML&gt;";
 
@@ -327,7 +327,7 @@
 
 <h3 id="how-to-check-access-on-a-per-page-level">How to Check Access on a Per Page Level</h3>
 
-<p>The second answer that was missing from the article addressed the question “Ok.  Now that a user has logged in, NOW WHAT!!!”.  In other words, the articles above show you what code is needed to handle authentication but NOT what to do on any pages after the user is authenticated.  For example, with a secure application, you generally want to check if a user should or shouldn’t have access to a particular page.  The way I handle this is to have every single page in my site but a .PHP file which calls a function like check_security() right at the start of the page.  The checksecurity() function verifies some aspect of our login cookies, $ck_username / $ck_password $ck_user_id.  It might just check that they exist.  It might check that they are valid based on a date / time criteria (you can create cookies that auto expire when the browser exits for example), it might even do a database level check for every page view.  How secure you want to be is what really determines what you do here.  Shown below is a very simple check_security() function.</p>
+<p>The second answer that was missing from the article addressed the question "Ok.  Now that a user has logged in, NOW WHAT!!!".  In other words, the articles above show you what code is needed to handle authentication but NOT what to do on any pages after the user is authenticated.  For example, with a secure application, you generally want to check if a user should or shouldn't have access to a particular page.  The way I handle this is to have every single page in my site but a .PHP file which calls a function like check_security() right at the start of the page.  The checksecurity() function verifies some aspect of our login cookies, $ck_username / $ck_password $ck_user_id.  It might just check that they exist.  It might check that they are valid based on a date / time criteria (you can create cookies that auto expire when the browser exits for example), it might even do a database level check for every page view.  How secure you want to be is what really determines what you do here.  Shown below is a very simple check_security() function.</p>
 
 <p>At the top of every .PHP page, put this function call.  It should go after any include routines since you probably want to store it in 1 place (i.e. in your include file) so it can be maintained in 1 place.</p>
 
@@ -335,7 +335,7 @@
 </code></pre>
 </div>
 
-<p>The code for the function is shown below.  This is not really a very secure approach but it does handle basic security.  Security is very difficult to get right and the rule of thumb that I recommend is to spend time on security proportional to the importance of the information in the application.  If it’s credit card information then <strong>DO IT RIGHT</strong>.  If it’s someone’s bookmarks that you are guarding then it might be less important and make the right decision.</p>
+<p>The code for the function is shown below.  This is not really a very secure approach but it does handle basic security.  Security is very difficult to get right and the rule of thumb that I recommend is to spend time on security proportional to the importance of the information in the application.  If it's credit card information then <strong>DO IT RIGHT</strong>.  If it's someone's bookmarks that you are guarding then it might be less important and make the right decision.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>function check_security() {// the global statement imports global variables from elsewhere in the script// since functions are local   global $ck_username;  global $ck_password;  global $ck_user_id;  if (empty($ck_username)) {    header("Location: accessdenied.htm");  }
 </code></pre>
@@ -353,7 +353,7 @@
 
 <p>Beyond the mage Libby, the sorceress Ashanda and many other patient folk.  I do apologize for both the problems and the delays.</p>
 
-<p>* Ok lad is pushing it but cut me a wee bit of slack.  I’m still youthful at least.</p>
+<p>* Ok lad is pushing it but cut me a wee bit of slack.  I'm still youthful at least.</p>
 
 <script language="JavaScript" type="text/javascript"><!--
 	var imageUrl = "http://radio.xmlstoragesystem.com/weblogStats/count.gif";

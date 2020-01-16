@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-So I’ve been using JumpStart Pro to  build a new side project and in a discussion with Chris Oliver, the creator of JumpStart Pro, I reported a bug which he said “Oh - you should update to the la...">
+So I've been using JumpStart Pro to  build a new side project and in a discussion with Chris Oliver, the creator of JumpStart Pro, I reported a bug which he said &quot;Oh - you should update to t...">
   
 
   
@@ -182,22 +182,22 @@ So I’ve been using JumpStart Pro to  build a new side project and in a discuss
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_0939.jpeg" alt="IMG_0939.jpeg" /></p>
 
-<p>So I’ve been using JumpStart Pro to  build a new side project and in a discussion with Chris Oliver, the creator of JumpStart Pro, I reported a bug which he said “Oh - you should update to the latest”.  He viewed the update process as something seamless and I, honestly, didn’t get it.  And, in researching this, I discovered that I made a fatal mistake.  The rest of this blog post covers that mistake and explains how you update JumpStart Pro.  Here’s the tldr (too long; did not read):</p>
+<p>So I've been using JumpStart Pro to  build a new side project and in a discussion with Chris Oliver, the creator of JumpStart Pro, I reported a bug which he said "Oh - you should update to the latest".  He viewed the update process as something seamless and I, honestly, didn't get it.  And, in researching this, I discovered that I made a fatal mistake.  The rest of this blog post covers that mistake and explains how you update JumpStart Pro.  Here's the tldr (too long; did not read):</p>
 
 <ul>
-  <li>ALWAYS, ALWAYS, ALWAYS create a new app based on JumpStart Pro by cloning it from the GitLab source i.e. you start with: “git clone git@gitlab.com:gorails/jumpstart-pro.git YOUR_PROJECT_NAME”</li>
+  <li>ALWAYS, ALWAYS, ALWAYS create a new app based on JumpStart Pro by cloning it from the GitLab source i.e. you start with: "git clone git@gitlab.com:gorails/jumpstart-pro.git YOUR_PROJECT_NAME"</li>
   <li>Go to github and create a repo for YOUR_PROJECT_NAME</li>
   <li>Copy the github clone info and add it as a separate remote: git remote add YOUR_PROJECT_NAME git@github.com:YOUR_GITHUB_USERNAME/YOUR_PROJECT_NAME.git</li>
   <li>Make a change like updating the README.md and do the add / commit dance and push to your repo as  git push YOUR_PROJECT_NAME master</li>
 </ul>
 
-<p>Even though I’ve worked with Git for more than a decade now, I’ve previously only worked with Heroku as a git remote so I missed the implications of this when I originally cloned my first JumpStart Pro app.  Sigh.</p>
+<p>Even though I've worked with Git for more than a decade now, I've previously only worked with Heroku as a git remote so I missed the implications of this when I originally cloned my first JumpStart Pro app.  Sigh.</p>
 
-<p>The critical mistake I made was that I had started my second JumpStart Pro project by copying from the first JumpStart Pro project I had made and the NOT moving over the .git folder.  This meant that my new project was now disconnected from the original remote so I couldn’t just do a git pull to update it.</p>
+<p>The critical mistake I made was that I had started my second JumpStart Pro project by copying from the first JumpStart Pro project I had made and the NOT moving over the .git folder.  This meant that my new project was now disconnected from the original remote so I couldn't just do a git pull to update it.</p>
 
 <h2 id="fixing-my-own-stupidity">Fixing My Own Stupidity</h2>
 
-<p>Here’s what I did to fix this:</p>
+<p>Here's what I did to fix this:</p>
 
 <ol>
   <li>I started by creating a new application cloning into a new location: git clone git@gitlab.com:gorails/jumpstart-pro.git okrsnow</li>

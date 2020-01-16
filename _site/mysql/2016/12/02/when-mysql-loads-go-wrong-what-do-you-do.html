@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>When MySQL Loads Go Wrong - What Do You Do?</title>
-  <meta name="description" content="This piece is the natural follow on to my Adventures in Partition Resizing epic.  At this point our systems still aren’t fully back up yet and, well, it tast...">
+  <meta name="description" content="This piece is the natural follow on to my Adventures in Partition Resizing epic.  At this point our systems still aren't fully back up yet and, well, it tast...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/mysql/2016/12/02/when-mysql-loads-go-wrong-what-do-you-do.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="This piece is the natural follow on to my Adventures in Partition Resizing epic.  At this point our systems still aren’t fully back up yet and, well, it tastes like ashes.  Like a lot of hard core ...">
+      content="This piece is the natural follow on to my Adventures in Partition Resizing epic.  At this point our systems still aren't fully back up yet and, well, it tastes like ashes.  Like a lot of hard core ...">
   
 
   
@@ -178,19 +178,19 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>This piece is the natural follow on to my <a href="https://fuzzygroup.github.io/blog/aws/2016/11/26/fear-and-loathing-in-awsville-or-adventures-in-partition-resizing.html">Adventures in Partition Resizing</a> epic.  At this point our systems still aren’t fully back up yet and, well, it tastes like ashes.  Like a lot of hard core techies I tend to internalize the state of my system and when its not right, well, things suck for me.</p>
+    <p>This piece is the natural follow on to my <a href="https://fuzzygroup.github.io/blog/aws/2016/11/26/fear-and-loathing-in-awsville-or-adventures-in-partition-resizing.html">Adventures in Partition Resizing</a> epic.  At this point our systems still aren't fully back up yet and, well, it tastes like ashes.  Like a lot of hard core techies I tend to internalize the state of my system and when its not right, well, things suck for me.</p>
 
-<p>The current state of things is that out of 187 tables that needed to be migrated over, we’re down to the last one – big number 187 and nothing appears to be happening.  All I see at the console is the same thing I’ve seen for over 24 hours:</p>
+<p>The current state of things is that out of 187 tables that needed to be migrated over, we're down to the last one – big number 187 and nothing appears to be happening.  All I see at the console is the same thing I've seen for over 24 hours:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ubuntu@ip-172-31-43-176:~$ mysql -uappdata -pSOMEPASSWORD foo_production &lt; /mnt/old2/foo2016_m2s.sql
 </code></pre>
 </div>
 
-<p>And it just sits there.  Sigh.  Figuring out the next logical step means that you need to wrap your head around the quirky aspects of the MySQL load architecture.  Happily this isn’t the first time for me so here goes.</p>
+<p>And it just sits there.  Sigh.  Figuring out the next logical step means that you need to wrap your head around the quirky aspects of the MySQL load architecture.  Happily this isn't the first time for me so here goes.</p>
 
 <h1 id="step-1---show-full-process-list">Step 1 - SHOW FULL PROCESS LIST;</h1>
 
-<p>When you have a large table coming in the command line like this, well, MySQL gets seriously weird.  You can’t select a row to see the status.  The best you can do is a SHOW FULL PROCESS LIST which makes the system go nuts.  Seriously - try it sometime.  What you get is an enormous SQL dump showing what’s being loaded and since it scrolls by at like 90 miles per hour, well, that’s not helpful.  Here’s a little trick tho:</p>
+<p>When you have a large table coming in the command line like this, well, MySQL gets seriously weird.  You can't select a row to see the status.  The best you can do is a SHOW FULL PROCESS LIST which makes the system go nuts.  Seriously - try it sometime.  What you get is an enormous SQL dump showing what's being loaded and since it scrolls by at like 90 miles per hour, well, that's not helpful.  Here's a little trick tho:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>pager less;
 SHOW FULL PROCESS LIST\G
@@ -211,9 +211,9 @@ SHOW FULL PROCESS LIST\G
 </code></pre>
 </div>
 
-<p>Given that there 927,040 records in this table what this has shown us is that after 36 hours or so we’re only 1/4 of the way thru.  Press ESC and run SHOW FULL PROCESS LIST a few times to make sure that id value keeps changing to get confirmation that the load is continuing.</p>
+<p>Given that there 927,040 records in this table what this has shown us is that after 36 hours or so we're only 1/4 of the way thru.  Press ESC and run SHOW FULL PROCESS LIST a few times to make sure that id value keeps changing to get confirmation that the load is continuing.</p>
 
-<p>The only problem is that what I just wrote above may <strong>NOT</strong> be reliable – emphasis on the <strong>NOT</strong>.  Here’s what I just got when I ran it again:</p>
+<p>The only problem is that what I just wrote above may <strong>NOT</strong> be reliable – emphasis on the <strong>NOT</strong>.  Here's what I just got when I ran it again:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>Id: 257
     User: appdata
@@ -226,7 +226,7 @@ SHOW FULL PROCESS LIST\G
 </code></pre>
 </div>
 
-<p>There’s no way that roughly 200K records went in while I was writing two paragraphs so what we now know is that SHOW FULL PROCESS LIST tells you that the load is proceeding but it may be <strong>utterly useless</strong> as a monitoring tool.  Deep, Deep Sigh.</p>
+<p>There's no way that roughly 200K records went in while I was writing two paragraphs so what we now know is that SHOW FULL PROCESS LIST tells you that the load is proceeding but it may be <strong>utterly useless</strong> as a monitoring tool.  Deep, Deep Sigh.</p>
 
 <h1 id="step-2---desc-foo2016m2s">Step 2 - DESC foo2016_m2s</h1>
 
@@ -242,7 +242,7 @@ SHOW FULL PROCESS LIST\G
 </code></pre>
 </div>
 
-<p>My guess is that you won’t learn anything from these operations but this is step by step, high value debugging so you check everything.</p>
+<p>My guess is that you won't learn anything from these operations but this is step by step, high value debugging so you check everything.</p>
 
 <h1 id="step-3---options">Step 3 - Options</h1>
 
@@ -256,7 +256,7 @@ SHOW FULL PROCESS LIST\G
   <li>re-import</li>
 </ul>
 
-<p>If, Great Ghu Help Us, we find that stopping the load means that there isn’t any data in the table then the next step would be:</p>
+<p>If, Great Ghu Help Us, we find that stopping the load means that there isn't any data in the table then the next step would be:</p>
 
 <ul>
   <li>Export from the original source in say 100K record chunks</li>
@@ -267,7 +267,7 @@ SHOW FULL PROCESS LIST\G
 
 <h1 id="step-4---patience">Step 4 - Patience</h1>
 
-<p>Happily, whilst writing this screed, I looked up and noticed “oh hell – it finished!”.  And that’s the happiest of all results.  Hopefully what this post illustrates is how to tackle long running load processes even if I didn’t have to act on any of them.</p>
+<p>Happily, whilst writing this screed, I looked up and noticed "oh hell – it finished!".  And that's the happiest of all results.  Hopefully what this post illustrates is how to tackle long running load processes even if I didn't have to act on any of them.</p>
 
   </div>
   

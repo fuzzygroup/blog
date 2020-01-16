@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Ansible Tutorial 02 - Configuring a Sidekiq Upstart Job on Ubuntu 14.04</title>
-  <meta name="description" content="As I’ve now noted a number of times, I’m in the process of a large scale AWS migration and we’ve had stability problems.  Unlike previous times in my life wh...">
+  <meta name="description" content="As I've now noted a number of times, I'm in the process of a large scale AWS migration and we've had stability problems.  Unlike previous times in my life wh...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/ansible/2016/10/13/ansible-tutorial-02-configuring-a-sidekiq-upstart-job-on-ubuntu-14-04.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="As I’ve now noted a number of times, I’m in the process of a large scale AWS migration and we’ve had stability problems.  Unlike previous times in my life where I threw my hands up, got tired with ...">
+      content="As I've now noted a number of times, I'm in the process of a large scale AWS migration and we've had stability problems.  Unlike previous times in my life where I threw my hands up, got tired with ...">
   
 
   
@@ -178,35 +178,35 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>As I’ve now noted a number of times, I’m in the process of a large scale AWS migration and we’ve had stability problems.  Unlike previous times in my life where I threw my hands up, got tired with devops and just hacked something together, I’m determined that, this time, things will be different.  At the heart of our issues has been ballooning memory use in Ruby.  Whether the issue is in our code, a gem, an interaction or something else entirely is, at present, unknown.</p>
+    <p>As I've now noted a number of times, I'm in the process of a large scale AWS migration and we've had stability problems.  Unlike previous times in my life where I threw my hands up, got tired with devops and just hacked something together, I'm determined that, this time, things will be different.  At the heart of our issues has been ballooning memory use in Ruby.  Whether the issue is in our code, a gem, an interaction or something else entirely is, at present, unknown.</p>
 
-<p>The solution I’ve opted to go with for solving this is:</p>
+<p>The solution I've opted to go with for solving this is:</p>
 
 <ol>
   <li>Remove our own threading code</li>
-  <li>Use <a href="http://www.mikeperham.com">Mike Perham</a>’s astonishingly wonderful <a href="http://sidekiq.org">Sidekiq</a></li>
+  <li>Use <a href="http://www.mikeperham.com">Mike Perham</a>'s astonishingly wonderful <a href="http://sidekiq.org">Sidekiq</a></li>
   <li>Sign up for paid support / <a href="http://sidekiq.org/products/pro">Sidekiq Pro</a> so any assistance that we need is possible.</li>
   <li>Move to an upstart job to run sidekiq</li>
   <li>Use <a href="https://mmonit.com/monit/">Monit</a> or <a href="https://github.com/mperham/inspeqtor">inspeqtor</a> to Monitor Sidekiq</li>
 </ol>
 
-<p>In this blog post I’m going to focus on #4 – using an Upstart Job to Run Sidekiq and define that job with Ansible.  The very first thing to know is that my previous ansible task, <a href="https://fuzzygroup.github.io/blog/ansible/2016/10/09/ansible-quickie-fixing-a-poorly-designed-galaxy-role.html">here</a>, is absolute crap as best I can tell.  Even with my fixes, like so many things on <a href="https://galaxy.ansible.com">Ansible Galaxy</a>, it was just plain wrong.  Where Galaxy is good, its excellent, but that’s rare in my experience.</p>
+<p>In this blog post I'm going to focus on #4 – using an Upstart Job to Run Sidekiq and define that job with Ansible.  The very first thing to know is that my previous ansible task, <a href="https://fuzzygroup.github.io/blog/ansible/2016/10/09/ansible-quickie-fixing-a-poorly-designed-galaxy-role.html">here</a>, is absolute crap as best I can tell.  Even with my fixes, like so many things on <a href="https://galaxy.ansible.com">Ansible Galaxy</a>, it was just plain wrong.  Where Galaxy is good, its excellent, but that's rare in my experience.</p>
 
-<p>Just a disclaimer - any errors here are mine, not Mike’s or Sidekiq’s.  I own the responsibility here.</p>
+<p>Just a disclaimer - any errors here are mine, not Mike's or Sidekiq's.  I own the responsibility here.</p>
 
 <h1 id="using-ansible-to-install-a-sidekiq-service">Using Ansible to Install a Sidekiq Service</h1>
 
-<p>Here are our assumptions that we’re basing our ansible code on:</p>
+<p>Here are our assumptions that we're basing our ansible code on:</p>
 
 <ul>
   <li>Ubuntu 14.04</li>
   <li>Upstart</li>
   <li>Single, global ruby per server</li>
-  <li>RVM (even though it isn’t strictly necessary)</li>
+  <li>RVM (even though it isn't strictly necessary)</li>
   <li>One ruby app per server</li>
 </ul>
 
-<p>Let’s begin with the structure of our role:</p>
+<p>Let's begin with the structure of our role:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>cd ~/whatever_your_ansible_root_is
 mkdir -p roles/software_licenses/tasks
@@ -218,7 +218,7 @@ mkdir roles/servies/templates
 
 <h2 id="optional---adding-your-sidekiq-pro-software-license">Optional - Adding Your Sidekiq Pro Software License</h2>
 
-<p>Sidekiq Pro is commercial software, not open source, so if you’re using it instead of the open source version, you’ll need to authorize it.  Here’s how to do this.  Here’s what goes in your roles/software_licenses/tasks/main.yml:</p>
+<p>Sidekiq Pro is commercial software, not open source, so if you're using it instead of the open source version, you'll need to authorize it.  Here's how to do this.  Here's what goes in your roles/software_licenses/tasks/main.yml:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="gd">--- 
 - name: set the licensing for sidekiq pro
@@ -229,7 +229,7 @@ mkdir roles/servies/templates
 
 <h2 id="defining-your-group-vars">Defining Your Group Vars</h2>
 
-<p>Here’s what goes in your group_vars context.  I had these in all but you may choose a different approach:</p>
+<p>Here's what goes in your group_vars context.  I had these in all but you may choose a different approach:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>app_name: banks
 app_base: /var/www/apps/banks/
@@ -244,7 +244,7 @@ rvm_path: /usr/local/rvm/bin/rvm
 
 <h2 id="your-template-for-the-upstart-job">Your Template for the Upstart Job</h2>
 
-<p>Here’s what goes in roles/services/templates/sidekiq_perham_init.j2:</p>
+<p>Here's what goes in roles/services/templates/sidekiq_perham_init.j2:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code># /etc/init/sidekiq.conf - Sidekiq config
 # source: https://github.com/mperham/sidekiq/blob/master/examples/upstart/sidekiq.conf
@@ -324,11 +324,11 @@ end script
 </code></pre>
 </div>
 
-<p>Please note that the template above comes directly from Mike Perham’s Sidekiq Wiki, <a href="https://github.com/mperham/sidekiq/blob/master/examples/upstart/sidekiq.conf">here</a>.  I modified it slightly to incorporate ansible variables and to remove the index parameter which didn’t function, at least for me, on Ubuntu 14.04.</p>
+<p>Please note that the template above comes directly from Mike Perham's Sidekiq Wiki, <a href="https://github.com/mperham/sidekiq/blob/master/examples/upstart/sidekiq.conf">here</a>.  I modified it slightly to incorporate ansible variables and to remove the index parameter which didn't function, at least for me, on Ubuntu 14.04.</p>
 
 <h2 id="pulling-the-template-and-service-together">Pulling the Template and Service Together</h2>
 
-<p>Here’s what goes in roles/services/tasks/main.yml:</p>
+<p>Here's what goes in roles/services/tasks/main.yml:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>- name: prevent sidekiq init from running if it has already been done
   stat: path=/etc/init/sidekiq.conf
@@ -348,18 +348,18 @@ end script
 
 <h2 id="calling-everything-from-the-playbook">Calling Everything from the Playbook</h2>
 
-<p>The final step here is to pull the roles into the playbook so it can run.  Here’s how:</p>
+<p>The final step here is to pull the roles into the playbook so it can run.  Here's how:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>- { role: software_licenses, tags: software_licenses }
 - { role: services, tags: services }
 </code></pre>
 </div>
 
-<p>Because the service depends on the gem it is important that the software_licenses role run first so the gem is authorized.  Otherwise Sidekiq won’t start and the service will be borked.</p>
+<p>Because the service depends on the gem it is important that the software_licenses role run first so the gem is authorized.  Otherwise Sidekiq won't start and the service will be borked.</p>
 
-<h2 id="optional---your-ruby-apps-gemfile">Optional - Your Ruby App’s Gemfile</h2>
+<h2 id="optional---your-ruby-apps-gemfile">Optional - Your Ruby App's Gemfile</h2>
 
-<p>If you’re using Sidekiq Pro, you’ll need to update your gem file with the stuff you got from Sidekiq support.</p>
+<p>If you're using Sidekiq Pro, you'll need to update your gem file with the stuff you got from Sidekiq support.</p>
 
 <h2 id="running-the-playbook">Running the Playbook</h2>
 
@@ -369,7 +369,7 @@ end script
 </code></pre>
 </div>
 
-<p>Here’s the output from running just the services role on a single one of my boxes:</p>
+<p>Here's the output from running just the services role on a single one of my boxes:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/ficrawler3 playbook_crawler.yml --tags="services"
 
@@ -415,13 +415,13 @@ ficrawler3                 : ok=6    changed=1    unreachable=0    failed=0
 </code></pre>
 </div>
 
-<p>I’ll return to that in a later Ansible tutorial when I configure cross server log management with Graylog.  For my work, sidekiq logs are critical so I added a bash command to the shells on all my boxes so I can tail them easily.  All it takes is to drop alias tailsidekiq=’tail -f /var/log/upstart/sidekiq_0.log’ into the .bashrc on all your boxes.</p>
+<p>I'll return to that in a later Ansible tutorial when I configure cross server log management with Graylog.  For my work, sidekiq logs are critical so I added a bash command to the shells on all my boxes so I can tail them easily.  All it takes is to drop alias tailsidekiq='tail -f /var/log/upstart/sidekiq_0.log' into the .bashrc on all your boxes.</p>
 
-<p>And, yes, I’m am showing off here.  This points out just how awesome automatically provisioning your boxes with ansible is.  When you can make changes across a farm of boxes with a single command, you can apply the same types of refactoring / continuous improvement that you do with code to devops.  In years past if I wanted this I’d have had to do it manually.  Now its a change to a template file and running an ansible playbook.  Tomorrow I’ll likely pipe all log files over the network to Graylog but until then I have my tailsidekiq command.</p>
+<p>And, yes, I'm am showing off here.  This points out just how awesome automatically provisioning your boxes with ansible is.  When you can make changes across a farm of boxes with a single command, you can apply the same types of refactoring / continuous improvement that you do with code to devops.  In years past if I wanted this I'd have had to do it manually.  Now its a change to a template file and running an ansible playbook.  Tomorrow I'll likely pipe all log files over the network to Graylog but until then I have my tailsidekiq command.</p>
 
 <h1 id="sidebar-why-use-rvm-with-a-single-ruby">Sidebar: Why Use RVM With a Single Ruby?</h1>
 
-<p>I know someone’s going to ask this so I may as well answer it.  RVM is the easiest way, that I’ve found, to get Ruby installed anywhere.  Even with a single Ruby, RVM makes getting it installed better.</p>
+<p>I know someone's going to ask this so I may as well answer it.  RVM is the easiest way, that I've found, to get Ruby installed anywhere.  Even with a single Ruby, RVM makes getting it installed better.</p>
 
   </div>
   

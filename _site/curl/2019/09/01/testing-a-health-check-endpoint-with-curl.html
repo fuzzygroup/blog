@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Testing A Health Check Endpoint with Curl</title>
-  <meta name="description" content="Given the move to auto scaling architectures front ended by load balancers, it is increasingly important to build into your application what is called a “hea...">
+  <meta name="description" content="Given the move to auto scaling architectures front ended by load balancers, it is increasingly important to build into your application what is called a "hea...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/curl/2019/09/01/testing-a-health-check-endpoint-with-curl.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="Given the move to auto scaling architectures front ended by load balancers, it is increasingly important to build into your application what is called a “health check”.  This is nothing more than a...">
+      content="Given the move to auto scaling architectures front ended by load balancers, it is increasingly important to build into your application what is called a &quot;health check&quot;.  This is nothing m...">
   
 
   
@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>Given the move to auto scaling architectures front ended by load balancers, it is increasingly important to build into your application what is called a “health check”.  This is nothing more than a known url that some external service can monitor to ensure that your application is “up”.  A health check does nothing more than return an HTTP 200 (and sometimes it returns a JSON representation).  Here’s a simple Rails controller that I use for health checks:</p>
+    <p>Given the move to auto scaling architectures front ended by load balancers, it is increasingly important to build into your application what is called a "health check".  This is nothing more than a known url that some external service can monitor to ensure that your application is "up".  A health check does nothing more than return an HTTP 200 (and sometimes it returns a JSON representation).  Here's a simple Rails controller that I use for health checks:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>class HealthController &lt; ApplicationController
   def index
@@ -195,7 +195,7 @@ end
 </code></pre>
 </div>
 
-<p>Here’s how to test this with curl and get the headers you’d want to see:</p>
+<p>Here's how to test this with curl and get the headers you'd want to see:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>curl -s -I https://foo.bar.something.com/health_check        
 </code></pre>
@@ -205,7 +205,7 @@ end
 
 <ul>
   <li>-I, –head          Show document info only</li>
-  <li>-s, –silent        Silent mode (don’t output anything)</li>
+  <li>-s, –silent        Silent mode (don't output anything)</li>
 </ul>
 
 <p><strong>Note</strong>: The -s is silencing the normal curl output of what it fetched from the url.</p>
@@ -230,7 +230,7 @@ strict-transport-security: max-age=15552000; includeSubDomains
 <h2 id="references">References</h2>
 
 <p>Here are some great curl references:
-* <a href="https://jvns.ca/blog/2019/08/27/curl-exercises/">JVNS.CA - I can’t recommend her work strongly enough</a>
+* <a href="https://jvns.ca/blog/2019/08/27/curl-exercises/">JVNS.CA - I can't recommend her work strongly enough</a>
 * <a href="https://unix.stackexchange.com/questions/84814/health-check-of-web-page-using-curl">Stack Exchange</a></p>
 
 

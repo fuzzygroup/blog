@@ -189,7 +189,7 @@ SELECT id FROM posts WHERE name LIKE '%foo%'
 </code></pre>
 </div>
 
-<p><strong>Note</strong>: A 30 year old thank you goes out to InfoWorld and <a href="https://www.amazon.com/Joe-Celkos-SQL-Smarties-Programming/dp/0123820227">Joe Celko</a> who beat into his reader’s brains the concept of capitalizing SQL statements for better legibility.  Thank you Joe.</p>
+<p><strong>Note</strong>: A 30 year old thank you goes out to InfoWorld and <a href="https://www.amazon.com/Joe-Celkos-SQL-Smarties-Programming/dp/0123820227">Joe Celko</a> who beat into his reader's brains the concept of capitalizing SQL statements for better legibility.  Thank you Joe.</p>
 
 <p>A seemingly solid <a href="https://stackoverflow.com/questions/26094430/safe-activerecord-like-query">StackOverflow post</a> gives this recommendation:</p>
 
@@ -198,9 +198,9 @@ SELECT id FROM posts WHERE name LIKE '%foo%'
 </code></pre>
 </div>
 
-<p>Please note that Model needs to be replaced with the name of your table.  Let’s say that our table was named Metric and we have a normal simple_form object for Metric coming into our Rails app with a parameter named q and we have a real world Rails app with a limit clause and pagination.</p>
+<p>Please note that Model needs to be replaced with the name of your table.  Let's say that our table was named Metric and we have a normal simple_form object for Metric coming into our Rails app with a parameter named q and we have a real world Rails app with a limit clause and pagination.</p>
 
-<p>Here’s how this would look:</p>
+<p>Here's how this would look:</p>
 
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="vi">@q</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:metric</span><span class="p">][</span><span class="ss">:q</span><span class="p">]</span>
 <span class="n">note</span> <span class="o">=</span> <span class="no">Metric</span><span class="p">.</span><span class="nf">arel_table</span><span class="p">[</span><span class="ss">:note</span><span class="p">]</span>
@@ -213,7 +213,7 @@ SELECT id FROM posts WHERE name LIKE '%foo%'
 <ul>
   <li>@q represents the incoming query</li>
   <li>note represents the field in our Metrics table that we want to search agains</li>
-  <li>@metrics is the collection of data returned by the search and the where clause is “note.matches(“%#{@q}%”)” to find any instances of the term @q within the note field</li>
+  <li>@metrics is the collection of data returned by the search and the where clause is "note.matches("%#{@q}%")" to find any instances of the term @q within the note field</li>
 </ul>
 
   </div>

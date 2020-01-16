@@ -197,15 +197,15 @@ end
 </code></pre>
 </div>
 
-<p>What that says in people speak is “for the environments development and test, install the following gems”.</p>
+<p>What that says in people speak is "for the environments development and test, install the following gems".</p>
 
-<p>To use byebug, you simply put the byebug command into whatever bit of code you need to debug – controller, model, background job, view, etc.  But here’s how most of us embed byebug:</p>
+<p>To use byebug, you simply put the byebug command into whatever bit of code you need to debug – controller, model, background job, view, etc.  But here's how most of us embed byebug:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>  byebug
 </code></pre>
 </div>
 
-<p>And, at some point, that is going to wend its way thru development, thru test, dodge past a code review and WHAM! arrive onto production – where things will quickly grind to a halt since the gem isn’t available for production.</p>
+<p>And, at some point, that is going to wend its way thru development, thru test, dodge past a code review and WHAM! arrive onto production – where things will quickly grind to a halt since the gem isn't available for production.</p>
 
 <p>There are two easy ways to solve this:</p>
 
@@ -216,7 +216,7 @@ end
 
 <h2 id="method-1-invoke-byebug-conditionally">Method 1: Invoke byebug Conditionally</h2>
 
-<p>One of the most elegant idioms in the Ruby world is the right hand if.  Here’s how to apply it in this case:</p>
+<p>One of the most elegant idioms in the Ruby world is the right hand if.  Here's how to apply it in this case:</p>
 
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code>  <span class="n">byebug</span> <span class="k">if</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">development?</span> <span class="o">||</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">test?</span>
 </code></pre>
@@ -230,22 +230,22 @@ end
 </code></pre>
 </div>
 
-<p>I know it is only two additional lines but you spend enough time in code and that additional “visual cruft” really comes to annoy.</p>
+<p>I know it is only two additional lines but you spend enough time in code and that additional "visual cruft" really comes to annoy.</p>
 
 <h2 id="method-2-a-git-hook">Method 2: A Git Hook</h2>
 
 <p>A git hook is a script file that is run automatically by git when an action happens like <strong>pre-commit</strong>.  My personal favorite git hook is always pre-commit because that action prevents badness from getting into the repository.  A pre-commit script is simply an executable shell file which runs before the commit action and if it returns any output then the commit is halted.</p>
 
-<p>What is below is a ruby script which I’ve been using for ages and ages.  My former employee DV Suresh first wrote it for me and then I rewrote it from memory when I moved on from that position.  This script:</p>
+<p>What is below is a ruby script which I've been using for ages and ages.  My former employee DV Suresh first wrote it for me and then I rewrote it from memory when I moved on from that position.  This script:</p>
 
 <ul>
   <li>Checks for syntax errors</li>
   <li>Looks for byebug calls without guard clauses</li>
 </ul>
 
-<p>The byebug functionality is new and was written just for this blog post.  It doesn’t seem to be dodgy but, well, late night coding and all that.</p>
+<p>The byebug functionality is new and was written just for this blog post.  It doesn't seem to be dodgy but, well, late night coding and all that.</p>
 
-<p>Here’s an example of the output:</p>
+<p>Here's an example of the output:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>➜  web_change_me_now git:(247-badges) ✗ git add app/models/habit.rb
 ➜  web_change_me_now git:(247-badges) ✗ git commit -m "revised habit.rb to check byebug"
@@ -258,7 +258,7 @@ app/models/habit.rb:
 
 <p>What just happened was I added a single file, a model.  The add will always happen cleanly since this is a pre-commit not a pre-add.  But when the commit happens, the code is checked for a naked byebug and the commit process is then halted and a todo note is generated.</p>
 
-<p>Here’s the whole script:</p>
+<p>Here's the whole script:</p>
 
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code>
 <span class="c1">#!/usr/bin/env ruby</span>
@@ -375,7 +375,7 @@ app/models/habit.rb:
 </code></pre>
 </div>
 
-<p><strong>Note</strong>: The files in .git/hooks are NOT checked into your repo with a commit.  They need to be manually distributed to each team member (or that’s how it was a few years ago at least; that may have changed.)</p>
+<p><strong>Note</strong>: The files in .git/hooks are NOT checked into your repo with a commit.  They need to be manually distributed to each team member (or that's how it was a few years ago at least; that may have changed.)</p>
 
   </div>
   

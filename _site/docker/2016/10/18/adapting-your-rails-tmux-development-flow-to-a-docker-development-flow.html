@@ -178,15 +178,15 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I first experimented with Docker back in summer of 2014 when I was bringing up a new data center and experimenting with development tools.  My buddy <a href="http://dasari.me">Dv</a> remembers this all too well. This was back in the days where compose was still called fig and nothing actually worked all that well.  And since it didn’t work all that well, I quickly noped away.  But, even then, Docker had the feel of something important, something seminal.  Fast forward two years and Docker is all the rage and a bright luminary in the tech world.</p>
+    <p>I first experimented with Docker back in summer of 2014 when I was bringing up a new data center and experimenting with development tools.  My buddy <a href="http://dasari.me">Dv</a> remembers this all too well. This was back in the days where compose was still called fig and nothing actually worked all that well.  And since it didn't work all that well, I quickly noped away.  But, even then, Docker had the feel of something important, something seminal.  Fast forward two years and Docker is all the rage and a bright luminary in the tech world.</p>
 
-<p>As a long time engineer, and yes you can translate that to “old guy”, I’m naturally conservative.  And, as such, I haven’t moved to Docker as part of my primary development flow.  To this point I’ve been using Docker as a way to treat applications as APIs and I’ve had a lot of success with that.  However, after a recent <a href="https://fuzzygroup.github.io/blog/ruby/2016/10/15/brew-xz-and-nokogiri-and-tmux-an-unmitigated-disaster.html">unmitigated disaster</a>, involving the wonderful but troubled Nokogiri, I’m far more willing to explore Docker.</p>
+<p>As a long time engineer, and yes you can translate that to "old guy", I'm naturally conservative.  And, as such, I haven't moved to Docker as part of my primary development flow.  To this point I've been using Docker as a way to treat applications as APIs and I've had a lot of success with that.  However, after a recent <a href="https://fuzzygroup.github.io/blog/ruby/2016/10/15/brew-xz-and-nokogiri-and-tmux-an-unmitigated-disaster.html">unmitigated disaster</a>, involving the wonderful but troubled Nokogiri, I'm far more willing to explore Docker.</p>
 
-<p>In this blog post I’m going to use my open source <a href="https://github.com/fuzzygroup/aws_monitor">AWS Monitor</a> codebase as the example.  This is a Rails application that is basically a Rake task which monitors a series of Ansible hosts to make sure that you can ssh into them.  It was written as part of my <a href="https://fuzzygroup.github.io/blog/tag.html#ssh">AWS / SSH hell period</a> where I had a large application on AWS where the SSH servers would stay alive no longer than about 30 minutes.</p>
+<p>In this blog post I'm going to use my open source <a href="https://github.com/fuzzygroup/aws_monitor">AWS Monitor</a> codebase as the example.  This is a Rails application that is basically a Rake task which monitors a series of Ansible hosts to make sure that you can ssh into them.  It was written as part of my <a href="https://fuzzygroup.github.io/blog/tag.html#ssh">AWS / SSH hell period</a> where I had a large application on AWS where the SSH servers would stay alive no longer than about 30 minutes.</p>
 
 <h1 id="my-personal-development-flow">My Personal Development Flow</h1>
 
-<p>I have a personal development flow that could essentially be described as “Lots and lots of terminal windows”.  I use a terminal window to represent each of the “stages” of Rails development:</p>
+<p>I have a personal development flow that could essentially be described as "Lots and lots of terminal windows".  I use a terminal window to represent each of the "stages" of Rails development:</p>
 
 <ul>
   <li>running server</li>
@@ -197,17 +197,17 @@
   <li>database sql window</li>
 </ul>
 
-<p>I used to manage all this with tabs in a terminal window but as I added more and more rails projects to my workflow that tended not to scale up.  Now my approach is to use the combination of <a href="https://tmux.github.io">Tmux</a> and <a href="https://github.com/tmuxinator/tmuxinator">Tmuxinator</a>, two open source projects.  Tmux acts as a virtual window manager allowing one terminal to front any number of character applications and Tmuxinator acts as an easy to use configuration manager for Tmux.  Here’s a picture of my typical approach to development:</p>
+<p>I used to manage all this with tabs in a terminal window but as I added more and more rails projects to my workflow that tended not to scale up.  Now my approach is to use the combination of <a href="https://tmux.github.io">Tmux</a> and <a href="https://github.com/tmuxinator/tmuxinator">Tmuxinator</a>, two open source projects.  Tmux acts as a virtual window manager allowing one terminal to front any number of character applications and Tmuxinator acts as an easy to use configuration manager for Tmux.  Here's a picture of my typical approach to development:</p>
 
 <p><img src="/blog/assets/tmux_rails_dev_flow.png" alt="tmux_rails_dev_flow.png" /></p>
 
-<p>I can call this interface up with ` (my meta key) and then go up and down between the different virtual terminal windows.  If you’re really sophisticated with Tmux / Tmuxinator you can actually compose up a real IDE but that’s a level of terminal nerdery that I don’t go to (at least for now).</p>
+<p>I can call this interface up with ` (my meta key) and then go up and down between the different virtual terminal windows.  If you're really sophisticated with Tmux / Tmuxinator you can actually compose up a real IDE but that's a level of terminal nerdery that I don't go to (at least for now).</p>
 
 <p>Given that all Rails apps are essentially the same architecture, this approach serves me well – it makes all the resources I need for Rails development no more than a few arrow keys away.</p>
 
 <h1 id="adapting-this-for-docker">Adapting this for Docker</h1>
 
-<p>If you think about how Docker works then adapting this isn’t readily apparent.  And then you talk with a <a href="http://www.nickjanetakis.com/">Docker expert</a> and he teaches you how to <a href="https://docs.docker.com/engine/reference/commandline/attach/">attach to a running container</a> and you start to get a glimmer of how to do this.  But then, when you stop for lunch, it might all fly out of your head.  That’s ok – it happened to me – but then I woke out of a dead sleep at 2 am two nights ago with all of this crystal clear.  And that’s when I wrote most of this.</p>
+<p>If you think about how Docker works then adapting this isn't readily apparent.  And then you talk with a <a href="http://www.nickjanetakis.com/">Docker expert</a> and he teaches you how to <a href="https://docs.docker.com/engine/reference/commandline/attach/">attach to a running container</a> and you start to get a glimmer of how to do this.  But then, when you stop for lunch, it might all fly out of your head.  That's ok – it happened to me – but then I woke out of a dead sleep at 2 am two nights ago with all of this crystal clear.  And that's when I wrote most of this.</p>
 
 <p>The realization that I had at 2 am was as follows:</p>
 
@@ -218,7 +218,7 @@
 
 <h1 id="example-1-for-aws-monitor---my-local-awsmonitorlocalyml">Example 1 for Aws Monitor - My Local aws_monitor_local.yml</h1>
 
-<p>My <a href="https://github.com/fuzzygroup/aws_monitor">AWS Monitor code base</a> is the one I chose to adapt for this.  Here’s the local Tmuxinator file I use to run this (note since this is is such a minimal rails app, it only has two terminal windows):</p>
+<p>My <a href="https://github.com/fuzzygroup/aws_monitor">AWS Monitor code base</a> is the one I chose to adapt for this.  Here's the local Tmuxinator file I use to run this (note since this is is such a minimal rails app, it only has two terminal windows):</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code># http://projectidealism.com/posts/2013/9/20/my-tmux-configuration-with-tmuxinator
 # ~/.tmuxinator/tula.yml
@@ -238,7 +238,7 @@ windows:
 
 <h1 id="example-2-for-aws-monitor---my-local-awsmonitordockeryml">Example 2 for Aws Monitor - My Local aws_monitor_docker.yml</h1>
 
-<p>Here’s the equivalent for Docker:</p>
+<p>Here's the equivalent for Docker:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code># http://projectidealism.com/posts/2013/9/20/my-tmux-configuration-with-tmuxinator
 # ~/.tmuxinator/tula.yml
@@ -258,17 +258,17 @@ windows:
 
 <h1 id="dockerfile">Dockerfile</h1>
 
-<p>My Dockerfile file for the aws_monitor app isn’t terribly interesting but it does have one interesting thing – it ends with a CMD statement which runs a rake task:</p>
+<p>My Dockerfile file for the aws_monitor app isn't terribly interesting but it does have one interesting thing – it ends with a CMD statement which runs a rake task:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>CMD rake aws_monitor:ansible_hosts --trace 
 </code></pre>
 </div>
 
-<p>Since all we’re looking for aws_monitor to do is run continuously checking the ability to ssh into boxes, this is fine.</p>
+<p>Since all we're looking for aws_monitor to do is run continuously checking the ability to ssh into boxes, this is fine.</p>
 
 <h1 id="docker-composeyml">docker-compose.yml</h1>
 
-<p>Here’s the docker-compose.yml file</p>
+<p>Here's the docker-compose.yml file</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>version: '2'
 
@@ -342,11 +342,11 @@ volumes:
 </code></pre>
 </div>
 
-<p>What this does is map my mac’s host filesytem into the Docker filesystem.  The reason I’m doing this is that my aws_monitor code needs access to my PEM certificate for the SSH login (among other files).  By mapping this in as a logical volume I don’t have to have have my PEM file as a part of my git repo.  I also don’t have to worry about Figaro or another approach to environment configuration.</p>
+<p>What this does is map my mac's host filesytem into the Docker filesystem.  The reason I'm doing this is that my aws_monitor code needs access to my PEM certificate for the SSH login (among other files).  By mapping this in as a logical volume I don't have to have have my PEM file as a part of my git repo.  I also don't have to worry about Figaro or another approach to environment configuration.</p>
 
 <h1 id="conclusion">Conclusion</h1>
 
-<p>Docker is still new to me and I’m still fine tuning this but I do think it has real potential.</p>
+<p>Docker is still new to me and I'm still fine tuning this but I do think it has real potential.</p>
 
   </div>
   

@@ -194,36 +194,36 @@
 
 <h1 id="overview">Overview</h1>
 
-<p>Tenancy in database application development refers to using a separate storage system (think a partition within a database) or a whole separate database per “user” (note that user might mean a group of people).  The idea behind tenancy is to:</p>
+<p>Tenancy in database application development refers to using a separate storage system (think a partition within a database) or a whole separate database per "user" (note that user might mean a group of people).  The idea behind tenancy is to:</p>
 
 <ul>
   <li>Isolate one user from another; this tends to provide a much more secure approach</li>
-  <li>Isolate storage so that the capacity needs of one user don’t affect other users</li>
+  <li>Isolate storage so that the capacity needs of one user don't affect other users</li>
 </ul>
 
-<p>Tenancy is something that we don’t often think about but examples of it abound on the Internet.  The best known example is Wordpress.com where every user’s data is stored in a separate database.</p>
+<p>Tenancy is something that we don't often think about but examples of it abound on the Internet.  The best known example is Wordpress.com where every user's data is stored in a separate database.</p>
 
-<p>I’ve been developing a new product for sometime now and I went into it knowing that if I was successful, storage was going to be a huge issue.  When I first developed <a href="https://web.archive.org/web/20100610030143/http://www.appdata.com:80/">AppData</a> I had no idea that I was beginning a near [decade long]*https://web.archive.org/web/20160905051931/http://www.appdata.com/ cycle of struggling with storage.  As with all engineers, I was determined to at least not hit the same errors (better to make different ones) so I knew that I needed a tenancy solution for my development platform, Rails, and that led me to the <a href="https://github.com/influitive/apartment">Apartment gem</a>.  Apartment views tenancy as a problem of managing the underlying database connection so that when you goto foo.app.com, foo generally represents the underlying database or “tenant”.</p>
+<p>I've been developing a new product for sometime now and I went into it knowing that if I was successful, storage was going to be a huge issue.  When I first developed <a href="https://web.archive.org/web/20100610030143/http://www.appdata.com:80/">AppData</a> I had no idea that I was beginning a near [decade long]*https://web.archive.org/web/20160905051931/http://www.appdata.com/ cycle of struggling with storage.  As with all engineers, I was determined to at least not hit the same errors (better to make different ones) so I knew that I needed a tenancy solution for my development platform, Rails, and that led me to the <a href="https://github.com/influitive/apartment">Apartment gem</a>.  Apartment views tenancy as a problem of managing the underlying database connection so that when you goto foo.app.com, foo generally represents the underlying database or "tenant".</p>
 
 <h1 id="enter-sidekiq-enter-tenancy-problems">Enter Sidekiq; Enter Tenancy Problems</h1>
 
-<p>When you develop a web application you are quickly going to discover the need for asynchronous processing.  This is a fancy term that could be defined as “don’t make the user wait while a long running operation completes”.  Let’s consider the very simple case of sending an email with account details once a user signs up.  Sending that email might be instantaneous or the email server might have problems and might take a few seconds.  By handling this operation asynchronously, the email is send by a separate process and control to the user returns instantly.  In the Rails world the leading technology for this is an open source tool called Sidekiq and Sidekiq is a fantastic bit of code.  It runs as a background daemon coupled to your application through Redis and its multi threading scalably handles all kinds of asynchronous needs.  In the past I’ve used it to handle email deliveries, data imports, whole site crawling and more.</p>
+<p>When you develop a web application you are quickly going to discover the need for asynchronous processing.  This is a fancy term that could be defined as "don't make the user wait while a long running operation completes".  Let's consider the very simple case of sending an email with account details once a user signs up.  Sending that email might be instantaneous or the email server might have problems and might take a few seconds.  By handling this operation asynchronously, the email is send by a separate process and control to the user returns instantly.  In the Rails world the leading technology for this is an open source tool called Sidekiq and Sidekiq is a fantastic bit of code.  It runs as a background daemon coupled to your application through Redis and its multi threading scalably handles all kinds of asynchronous needs.  In the past I've used it to handle email deliveries, data imports, whole site crawling and more.</p>
 
-<p>The problem I’ve been struggling with for sometime now is handling back data imports.  My new product has a cool feature – you sign up and the back history for your account is imported from a central data archive.  I wanted to avoid the problems with a data tool where data builds over time.  My goal was for people to sign up and then be instantly product, not productive after a week of data acquisition, at which point they might have stopped caring due to the waiting.  This was clearly a job for Sidekiq but how could that work since the underlying database connection changed for every single user?</p>
+<p>The problem I've been struggling with for sometime now is handling back data imports.  My new product has a cool feature – you sign up and the back history for your account is imported from a central data archive.  I wanted to avoid the problems with a data tool where data builds over time.  My goal was for people to sign up and then be instantly product, not productive after a week of data acquisition, at which point they might have stopped caring due to the waiting.  This was clearly a job for Sidekiq but how could that work since the underlying database connection changed for every single user?</p>
 
 <p>My tenancy solution was a Ruby gem called Apartment and there is actually an extension gem called <a href="https://github.com/influitive/apartment-sidekiq">Apartment-Sidekiq</a>.  What apartment sidekiq purports to do is push into the redis stream a reference to the tenant and then patch sidekiq so that every time it processes the redis data it will connect to the right tenant.  The problem here is that this seems to only sort of work.  For the past two weeks or so my asynchronous code has worked – but with errors.  Sometime I would see 1 error related to tenancy when a back data import was processed and sometimes I would see 26 errors per import.</p>
 
-<h2 id="the-solution---dont-use-apartment-sidekiq">The Solution - Don’t Use Apartment Sidekiq</h2>
+<h2 id="the-solution---dont-use-apartment-sidekiq">The Solution - Don't Use Apartment Sidekiq</h2>
 
-<p>This problem was on my radar for quite a while and then I finally said “Ok I can’t ship until this is addressed” and I’ve been working it for the past two days.  Understanding the solution came from this <a href="https://github.com/mperham/sidekiq/issues/3005">Github Issue</a>.  The key bit of wisdom is here:</p>
+<p>This problem was on my radar for quite a while and then I finally said "Ok I can't ship until this is addressed" and I've been working it for the past two days.  Understanding the solution came from this <a href="https://github.com/mperham/sidekiq/issues/3005">Github Issue</a>.  The key bit of wisdom is here:</p>
 
 <blockquote>
   <p>Just as a side note, passing the tenant as a job argument is a hack. The correct way to implement a cross-cutting concern (like tenant) is with client and server middleware. You just need to copy and configure the two bits of code <a href="https://github.com/influitive/apartment-sidekiq/tree/master/lib/apartment/sidekiq/middleware">here</a>.</p>
 </blockquote>
 
-<p>When you work with an open source project like Sidekiq, understanding who the people involved are is key because it tells you who to trust.  I’ve now used Sidekiq for years and years and I trust Mike implicitly when it comes to these matters.  When Mike Perham, the author of Sidekiq, describes something as a <strong>hack</strong>, well, that tells me there might be real issues.</p>
+<p>When you work with an open source project like Sidekiq, understanding who the people involved are is key because it tells you who to trust.  I've now used Sidekiq for years and years and I trust Mike implicitly when it comes to these matters.  When Mike Perham, the author of Sidekiq, describes something as a <strong>hack</strong>, well, that tells me there might be real issues.</p>
 
-<p>I looked at the related <a href="https://stackoverflow.com/questions/41229392/why-is-apartment-sidekiq-not-finding-the-tenant/41471241#41471241">Stack Overflow</a> but no where did I have a problem with my environment and that also didn’t mesh which Mikes comment about passing the tenant as a job argument.  Sorting through all kinds of tenancy issues took me different places:</p>
+<p>I looked at the related <a href="https://stackoverflow.com/questions/41229392/why-is-apartment-sidekiq-not-finding-the-tenant/41471241#41471241">Stack Overflow</a> but no where did I have a problem with my environment and that also didn't mesh which Mikes comment about passing the tenant as a job argument.  Sorting through all kinds of tenancy issues took me different places:</p>
 
 <ul>
   <li><a href="https://github.com/influitive/apartment-sidekiq/issues/10">Possible Version Conflicts</a></li>
@@ -234,14 +234,14 @@
 <p>In the More Perham Commentary, I found this bit of wisdom:</p>
 
 <blockquote>
-  <p>@andrba the intention cannot be done safely. You need to explicitly switch and cleanup any connections. I hate that callback and wish I’d never implemented it.</p>
+  <p>@andrba the intention cannot be done safely. You need to explicitly switch and cleanup any connections. I hate that callback and wish I'd never implemented it.</p>
 </blockquote>
 
-<p>When something like the <em>underlying callback</em> on which Apartment-Sidekiq is described in this way it made me realize, “Hm… this isn’t going to work, is it”.</p>
+<p>When something like the <em>underlying callback</em> on which Apartment-Sidekiq is described in this way it made me realize, "Hm… this isn't going to work, is it".</p>
 
 <h2 id="correctly-implementing-sidekiq-with-apartment">Correctly Implementing Sidekiq with Apartment</h2>
 
-<p>Once I accepted that I couldn’t use the Apartment-Sidekiq gem, the solution was pretty obvious:</p>
+<p>Once I accepted that I couldn't use the Apartment-Sidekiq gem, the solution was pretty obvious:</p>
 
 <h3 id="step-1-remove-apartment-sidekiq-from-gemfile">Step 1: Remove Apartment-Sidekiq from Gemfile</h3>
 
@@ -272,7 +272,7 @@ end
 
 <h3 id="step-3-switching-to-the-right-tenant">Step 3: Switching to the Right Tenant</h3>
 
-<p>Here’s what the underlying Sidekiq worker class looks like:</p>
+<p>Here's what the underlying Sidekiq worker class looks like:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>class InstructorImportBackHistoryWorker
   include Sidekiq::Worker
@@ -290,7 +290,7 @@ end
 </code></pre>
 </div>
 
-<p>All this does is invoke Apartment::Tenant.switch!(tenant) at the start of the asynchronous processing and that ensures that the correct tenant is used.  After that the import proceeds as normal.  The reason that I have a wrapper approach (import_back_history versus import_back_history_sidekiq) is that I have cases where I use these calls in batch process routines where I don’t invoke Sidekiq.</p>
+<p>All this does is invoke Apartment::Tenant.switch!(tenant) at the start of the asynchronous processing and that ensures that the correct tenant is used.  After that the import proceeds as normal.  The reason that I have a wrapper approach (import_back_history versus import_back_history_sidekiq) is that I have cases where I use these calls in batch process routines where I don't invoke Sidekiq.</p>
 
 <p>Using this approach to managing tenancy and Sidekiq, I went from multiple tenancy connection errors tracked thru <a href="http://fuzzyblog.io/blog/aws/2017/08/11/using-errbit-to-host-your-own-error-tracker-on-aws-for-rails-apps.html">Errbit</a> to zero errors.</p>
 

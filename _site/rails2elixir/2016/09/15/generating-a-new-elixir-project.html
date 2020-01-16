@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Rails2Elixir - Generating a New Elixir Project</title>
-  <meta name="description" content="This is one of those things where there isn’t a direct equivalent in the Rails world.  To generate a new Rails project you, of course, use:">
+  <meta name="description" content="This is one of those things where there isn't a direct equivalent in the Rails world.  To generate a new Rails project you, of course, use:">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/rails2elixir/2016/09/15/generating-a-new-elixir-project.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="This is one of those things where there isn’t a direct equivalent in the Rails world.  To generate a new Rails project you, of course, use:
+      content="This is one of those things where there isn't a direct equivalent in the Rails world.  To generate a new Rails project you, of course, use:
 
 rails new
 
@@ -184,27 +184,27 @@ But that brings in, well, Rails.  And all o...">
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>This is one of those things where there isn’t a direct equivalent in the Rails world.  To generate a new Rails project you, of course, use:</p>
+    <p>This is one of those things where there isn't a direct equivalent in the Rails world.  To generate a new Rails project you, of course, use:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>rails new
 </code></pre>
 </div>
 
-<p>But that brings in, well, Rails.  And all of the plethora of stuff that entails.  What if you just wanted to generate a standalone application say a page fetcher that talked to Redis and got back a url to fetch so you could store it away.  In that case you wouldn’t want all of the whole Rails stack.  You might want say just redis or just rake but not everything.</p>
+<p>But that brings in, well, Rails.  And all of the plethora of stuff that entails.  What if you just wanted to generate a standalone application say a page fetcher that talked to Redis and got back a url to fetch so you could store it away.  In that case you wouldn't want all of the whole Rails stack.  You might want say just redis or just rake but not everything.</p>
 
-<p>As discussed previously, mix is the integrated version of rails, rake and bundler and that’s what we’re going to use:</p>
+<p>As discussed previously, mix is the integrated version of rails, rake and bundler and that's what we're going to use:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>mix new page_fetcher
 </code></pre>
 </div>
 
-<p>Now that will work but if you really want something reliable – and if you don’t, why would you bother with Elixir at all – then you really want to add a supervision tree which makes this an OTP application.  OTP is the core Erlang libraries that related to building distributed, reliable code.  Here’s how to do this:</p>
+<p>Now that will work but if you really want something reliable – and if you don't, why would you bother with Elixir at all – then you really want to add a supervision tree which makes this an OTP application.  OTP is the core Erlang libraries that related to building distributed, reliable code.  Here's how to do this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>mix new page_fetcher --sup
 </code></pre>
 </div>
 
-<p>Here’s the official reference to <a href="http://elixir-lang.org/docs/stable/mix/Mix.Tasks.New.html">mix new</a> in this context.</p>
+<p>Here's the official reference to <a href="http://elixir-lang.org/docs/stable/mix/Mix.Tasks.New.html">mix new</a> in this context.</p>
 
   </div>
   

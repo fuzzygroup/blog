@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Bullshite rsync Subtleties</title>
-  <meta name="description" content="So yesterday or the day before I blogged about rsync and how good it was.  And that’s true but rsync is notoriously tricky and today I became very, very awar...">
+  <meta name="description" content="So yesterday or the day before I blogged about rsync and how good it was.  And that's true but rsync is notoriously tricky and today I became very, very awar...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/osx/2019/07/24/bullshite-rsync-subtleties.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="So yesterday or the day before I blogged about rsync and how good it was.  And that’s true but rsync is notoriously tricky and today I became very, very aware of rsync’s trickiness.
+      content="So yesterday or the day before I blogged about rsync and how good it was.  And that's true but rsync is notoriously tricky and today I became very, very aware of rsync's trickiness.
 
 So my scenario...">
   
@@ -180,11 +180,11 @@ So my scenario...">
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>So yesterday or the day before <a href="https://fuzzyblog.io/blog/osx/2019/07/22/backing-mac-to-mac-via-scp-rsync.html">I blogged about rsync</a> and how good it was.  And that’s true but rsync is notoriously tricky and today I became very, very aware of rsync’s trickiness.</p>
+    <p>So yesterday or the day before <a href="https://fuzzyblog.io/blog/osx/2019/07/22/backing-mac-to-mac-via-scp-rsync.html">I blogged about rsync</a> and how good it was.  And that's true but rsync is notoriously tricky and today I became very, very aware of rsync's trickiness.</p>
 
 <p>So my scenario was that I had an old MacBook Air which I was trying to get all the data off of since DropBox seemed to have an incomplete sync.  And I figured that if I just got all the files copied up to my big desktop then I could reformat the machine and give it to my wife as a replacement for her laptop on which the keyboard died.</p>
 
-<p>Note: Some of these things are perhaps known issues / not issues because I’m on OSX.  What I can say is that as a Mac user some of these things make no damn sense.</p>
+<p>Note: Some of these things are perhaps known issues / not issues because I'm on OSX.  What I can say is that as a Mac user some of these things make no damn sense.</p>
 
 <h1 id="problem-the-first---directory-names-with-spaces">Problem the First - Directory Names with Spaces</h1>
 
@@ -210,9 +210,9 @@ created directory /Users/sjohnson/backups/macbook_air/Dropbox/Camera
 </code></pre>
 </div>
 
-<p>So what you’re seeing is that even tho the data came from “Camera Uploads”, it got moved to “Camera”.  The issue is obviously directory names with spaces.  And since I had started with an scp approach this meant that rsync was copying up data that it already had in place.  ARRGHH!</p>
+<p>So what you're seeing is that even tho the data came from "Camera Uploads", it got moved to "Camera".  The issue is obviously directory names with spaces.  And since I had started with an scp approach this meant that rsync was copying up data that it already had in place.  ARRGHH!</p>
 
-<p>And here’s a second pass with a different approach to space encoded filenames:</p>
+<p>And here's a second pass with a different approach to space encoded filenames:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>rsync -avh -e ssh Dropbox/"Camera Uploads"/ 192.168.1.25:/Users/sjohnson/backups/macbook_air/Dropbox/Camera\ Uploads/
 Password:
@@ -243,9 +243,9 @@ building file list ... done
 </code></pre>
 </div>
 
-<p>So even after changing how I handled the destination filename, it still went to “Camera”.  Double ARGH.</p>
+<p>So even after changing how I handled the destination filename, it still went to "Camera".  Double ARGH.</p>
 
-<p>So what’s the obvious workaround when rsync seems to entirely fsck up OSX filenames with spaces?  I’m sure there are other options but my approach was drop dead simple, rename each folder on source and destination from:</p>
+<p>So what's the obvious workaround when rsync seems to entirely fsck up OSX filenames with spaces?  I'm sure there are other options but my approach was drop dead simple, rename each folder on source and destination from:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>Camera Uploads
 </code></pre>
@@ -271,7 +271,7 @@ total size is 4.57G  speedup is 222553.34
 
 <h1 id="problem-the-second---excluded-directories">Problem the Second - Excluded Directories</h1>
 
-<p>My next issue was that I wanted to exclude the Library directory from the files being synced.  This would eliminate all the giant Docker files that are stored in Library (and Library mostly isn’t needed since it is Application level stuff; not really user data).</p>
+<p>My next issue was that I wanted to exclude the Library directory from the files being synced.  This would eliminate all the giant Docker files that are stored in Library (and Library mostly isn't needed since it is Application level stuff; not really user data).</p>
 
 <p>Here was my first attempt:</p>
 
@@ -281,7 +281,7 @@ building file list ... rsync: opendir "/Users/sjohnson/Library/Application Suppo
 </code></pre>
 </div>
 
-<p>So that clearly failed.  Now I’ve long been aware that Apple has old versions of core open source tools like rsync, so:</p>
+<p>So that clearly failed.  Now I've long been aware that Apple has old versions of core open source tools like rsync, so:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>➜ rsync --version
 rsync  version 2.6.9  protocol version 29
@@ -321,7 +321,7 @@ General Public Licence for details.
 
 <p>and that still failed but here was the magic (and Virginia, yes, the error was <strong>all damn mine</strong>, not the version of rsync):</p>
 
-<p>“Excluding a specific directory is same as excluding a file, just pass the relative path to the directory to the –exclude option” from <a href="https://linuxize.com/post/how-to-exclude-files-and-directories-with-rsync/">Rsync Exclusion</a></p>
+<p>"Excluding a specific directory is same as excluding a file, just pass the relative path to the directory to the –exclude option" from <a href="https://linuxize.com/post/how-to-exclude-files-and-directories-with-rsync/">Rsync Exclusion</a></p>
 
 <p>So that made my rsync command this:</p>
 

@@ -182,9 +182,9 @@
 
 <p>The problem here is that not all SELECT queries are created equally and not all select queries can run correctly on a replica.  I recently had the situation where a given query was complex enough (think 500+ lines of select query) that it could only execute on the replica server maybe 3 times out of 10 with a 45 plus second runtime.  I was assured by the query author that this would execute correctly on the production database.  And while I was absolutely dubious about this, I realized that there was literally no way to prove this without getting around Makara.</p>
 
-<p>I looked at Makara and like a lot of gems, I didn’t find the documentation much to my liking (although I had a hint that if I got funky with it, it might work) but then I saw this little snippet:</p>
+<p>I looked at Makara and like a lot of gems, I didn't find the documentation much to my liking (although I had a hint that if I got funky with it, it might work) but then I saw this little snippet:</p>
 
-<p>“Calls inside a transaction will always be sent to the master (otherwise changes from within the transaction could not be read back on most transaction isolation levels)”</p>
+<p>"Calls inside a transaction will always be sent to the master (otherwise changes from within the transaction could not be read back on most transaction isolation levels)"</p>
 
 <p>And that gave me this example (not the real sql; just something I had open in a db console):</p>
 

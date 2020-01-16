@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="One of the better ways to understand code is to figure out how exactly something runs.  And this can be done from the outside to the inside.
 
-So I’m starting with a command line that looks like thi...">
+So I'm starting with a command line that looks like thi...">
   
 
   
@@ -182,13 +182,13 @@ So I’m starting with a command line that looks like thi...">
   <div class="post-content" itemprop="articleBody">
     <p>One of the better ways to understand code is to figure out how exactly something runs.  And this can be done from the outside to the inside.</p>
 
-<p>So I’m starting with a command line that looks like this:</p>
+<p>So I'm starting with a command line that looks like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>python3 pol.py timeline
 </code></pre>
 </div>
 
-<p>And I open up the Python script and search for a def timeline and there isn’t one.  Sigh.  The module Fire was mentioned to me during conversations with another developer so I do a quick code search for File and, at the very bottom, I find:</p>
+<p>And I open up the Python script and search for a def timeline and there isn't one.  Sigh.  The module Fire was mentioned to me during conversations with another developer so I do a quick code search for File and, at the very bottom, I find:</p>
 
 <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
     <span class="n">Fire</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
@@ -202,9 +202,9 @@ So I’m starting with a command line that looks like thi...">
 </code></pre>
 </div>
 
-<p>So we’ve got an if statement which is checking <strong>name</strong> which I guess is some kind of python special thing because double __ are damn ugly so they must be special to make us notice them.  The colon seems to indicate that the next bit of code is attached to the if (I do know that it does; explaining it helps me at least).  And then we get to the Fire statement which is defining a dict, which I assume is a hash, so that the keyword timeline is mapped to ‘hatebase_timeline’ which is a method inside this.  And if nothing in the dict is matched, I assume that it falls thru to “raise SystemExit” which causes the program to terminate.</p>
+<p>So we've got an if statement which is checking <strong>name</strong> which I guess is some kind of python special thing because double __ are damn ugly so they must be special to make us notice them.  The colon seems to indicate that the next bit of code is attached to the if (I do know that it does; explaining it helps me at least).  And then we get to the Fire statement which is defining a dict, which I assume is a hash, so that the keyword timeline is mapped to 'hatebase_timeline' which is a method inside this.  And if nothing in the dict is matched, I assume that it falls thru to "raise SystemExit" which causes the program to terminate.</p>
 
-<p>The nice thing about Fire is that it seems to automagically handle things like the user giving the wrong input.  Here’s an example:</p>
+<p>The nice thing about Fire is that it seems to automagically handle things like the user giving the wrong input.  Here's an example:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>python3 pol.py foo
 ERROR: Cannot find key: foo
@@ -244,7 +244,7 @@ COMMANDS
 </code></pre>
 </div>
 
-<p>Python’s Fire library comes from Google and is on <a href="https://github.com/google/python-fire">github</a>.  <strong>Recommended</strong>.</p>
+<p>Python's Fire library comes from Google and is on <a href="https://github.com/google/python-fire">github</a>.  <strong>Recommended</strong>.</p>
 
 <h2 id="so-what-did-i-learn">So What Did I Learn?</h2>
 
@@ -254,7 +254,7 @@ COMMANDS
   <li>A __ is something special in python</li>
   <li>A : handles assigning code to a label or structure</li>
   <li>Fire makes command line interfaces</li>
-  <li>The execution order of a python script is likely top down and, I suspect, that this wouldn’t have worked if the if statement was at the top because the methods wouldn’t have yet been in memory (I’m unclear on this final point)</li>
+  <li>The execution order of a python script is likely top down and, I suspect, that this wouldn't have worked if the if statement was at the top because the methods wouldn't have yet been in memory (I'm unclear on this final point)</li>
   <li>There is an implicit C like concept of main only it is called <strong>main</strong> and is simply code not inside a def structure</li>
 </ul>
 

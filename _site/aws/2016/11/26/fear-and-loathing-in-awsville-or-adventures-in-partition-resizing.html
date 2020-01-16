@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Fear and Loathing in AWS or Adventures in Partition Resizing</title>
-  <meta name="description" content="Note - This is very, very long.  It is isn’t done yet and it is 3,589 words when I thought to add this note.  At my normal metric of 250 words per page, that...">
+  <meta name="description" content="Note - This is very, very long.  It is isn't done yet and it is 3,589 words when I thought to add this note.  At my normal metric of 250 words per page, that...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/aws/2016/11/26/fear-and-loathing-in-awsville-or-adventures-in-partition-resizing.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="Note - This is very, very long.  It is isn’t done yet and it is 3,589 words when I thought to add this note.  At my normal metric of 250 words per page, that I learned in college, that’s 14.5 print...">
+      content="Note - This is very, very long.  It is isn't done yet and it is 3,589 words when I thought to add this note.  At my normal metric of 250 words per page, that I learned in college, that's 14.5 print...">
   
 
   
@@ -178,13 +178,13 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p><strong>Note</strong> - This is very, very long.  It is isn’t done yet and it is 3,589 words when I thought to add this note.  At my normal metric of 250 words per page, that I learned in college, that’s <strong>14.5</strong> printed pages.  The reason for not splitting it up is that if you ever have these issues then you want all of this in here in one place.</p>
+    <p><strong>Note</strong> - This is very, very long.  It is isn't done yet and it is 3,589 words when I thought to add this note.  At my normal metric of 250 words per page, that I learned in college, that's <strong>14.5</strong> printed pages.  The reason for not splitting it up is that if you ever have these issues then you want all of this in here in one place.</p>
 
-<p>A few days ago I made a mistake – a significant one.  I had a large data load running into a MySQL database and I wasn’t really thinking about the storage implications of it.  To make matters worse this was the only box in the cluster that wasn’t running the monitoring software I like – <a href="https://github.com/mperham/inspeqtor">Inspeqtor</a>.  The db server had been the first box I had configured when I brought up all of our boxes and I never went back and installed Inspeqtor.  I know, I know – an amateur’s mistake at best.  But, and it is no excuse, we’ve been running hard and fast for a while and, ultimately, this always catches up to you.</p>
+<p>A few days ago I made a mistake – a significant one.  I had a large data load running into a MySQL database and I wasn't really thinking about the storage implications of it.  To make matters worse this was the only box in the cluster that wasn't running the monitoring software I like – <a href="https://github.com/mperham/inspeqtor">Inspeqtor</a>.  The db server had been the first box I had configured when I brought up all of our boxes and I never went back and installed Inspeqtor.  I know, I know – an amateur's mistake at best.  But, and it is no excuse, we've been running hard and fast for a while and, ultimately, this always catches up to you.</p>
 
-<p>So you know where this is going – <strong>we ran out of space</strong>.  And out of space on a db server is generally a bad thing.  Sometimes it falls into the category of “ok bad” and other times it falls into the category of “oh shite bad”.  This was “oh shite bad”.  I spent about 12 hours wondering <strong>if</strong> I’d get back my data, not <em>when</em>.  Happily, my luck held, and it was <strong>when</strong> and that <strong>when</strong> is likely about 24 more hours from the time of this writing.  A bunch of the data has already been recovered and, with that, it is time to write the retrospective mea culpa and maybe cast some light on what is honestly a fairly crappy aspect of AWS.</p>
+<p>So you know where this is going – <strong>we ran out of space</strong>.  And out of space on a db server is generally a bad thing.  Sometimes it falls into the category of "ok bad" and other times it falls into the category of "oh shite bad".  This was "oh shite bad".  I spent about 12 hours wondering <strong>if</strong> I'd get back my data, not <em>when</em>.  Happily, my luck held, and it was <strong>when</strong> and that <strong>when</strong> is likely about 24 more hours from the time of this writing.  A bunch of the data has already been recovered and, with that, it is time to write the retrospective mea culpa and maybe cast some light on what is honestly a fairly crappy aspect of AWS.</p>
 
-<p>Now, unlike most of my AWS writings which I structure as tutorials, this is not a tutorial.  It is more of an essay or perhaps advice.  I couldn’t fully document the meandering path that I took as it was done under pressure and with a fair to moderate level of cursing.</p>
+<p>Now, unlike most of my AWS writings which I structure as tutorials, this is not a tutorial.  It is more of an essay or perhaps advice.  I couldn't fully document the meandering path that I took as it was done under pressure and with a fair to moderate level of cursing.</p>
 
 <p>Note: When I went through all this I was fairly dissatisfied with AWS in this regard and there are some real quirks to storage and minor issues but when I think about what this would have taken with a classical data center, I applaud Amazon.  My guess is that if I had to get professional operations people involved to have helped with this, I would quickly be out a few thousand dollars in high priced on call labor.</p>
 
@@ -193,29 +193,29 @@
 <p>The first thing to understand is that the steps I took and the tools I used are <strong>dangerous</strong>.  Had I taken a slightly wrong path I would likely have lost everything.  If you are going to walk this type of road then I strongly recommend:</p>
 
 <ul>
-  <li>Do it with a second set of eyes.  I am an unabashed fan of pair programming and whenever things are bad I prefer to have a pairing buddy.  My normal pairing partner, <a href="http://www.dasari.me">Dv</a>, wasn’t available when all this was going on so I brought on <a href="https://nickjanetakis.com/">Nick</a> as a consultant for this ordeal and he was fantastic.  At two critical junctures he kept me from going astray.  Highly recommended.</li>
-  <li>Take your time.  When data recovery is an issue you need to take your time and actually <strong>think</strong>.  If people are yelling at you to get it done and hurry up then, well, don’t listen to them.  If I hadn’t brought this back up it would have likely cost us between 1 and 3 months of lost effort.  With those kind of stakes I’m going to take my damn time and so should you.</li>
-  <li>When in doubt – <strong>stop</strong>.  It is always tempting to plunge forward since you are <em>almost</em> there.  Nope.  When in doubt my advice is rest, coffee or even sleep.  Some things just can’t be rushed and understanding that is key.</li>
+  <li>Do it with a second set of eyes.  I am an unabashed fan of pair programming and whenever things are bad I prefer to have a pairing buddy.  My normal pairing partner, <a href="http://www.dasari.me">Dv</a>, wasn't available when all this was going on so I brought on <a href="https://nickjanetakis.com/">Nick</a> as a consultant for this ordeal and he was fantastic.  At two critical junctures he kept me from going astray.  Highly recommended.</li>
+  <li>Take your time.  When data recovery is an issue you need to take your time and actually <strong>think</strong>.  If people are yelling at you to get it done and hurry up then, well, don't listen to them.  If I hadn't brought this back up it would have likely cost us between 1 and 3 months of lost effort.  With those kind of stakes I'm going to take my damn time and so should you.</li>
+  <li>When in doubt – <strong>stop</strong>.  It is always tempting to plunge forward since you are <em>almost</em> there.  Nope.  When in doubt my advice is rest, coffee or even sleep.  Some things just can't be rushed and understanding that is key.</li>
 </ul>
 
 <h1 id="initial-mistakes-made">Initial Mistakes Made</h1>
 
-<p>As I look back at this I can see that I made one real mistake early in setting up this, our first AWS box was that I didn’t really analyze our data volumes and growth rate and do some projections.  I’ve done that now, at least a bit, and I wish I had done that at the start.  For this project we’re growing at about 250 + gigs per month.  When I setup our database server I went for a very simple configuration – a 2 terabyte volume configured as the boot volume.  Apparently, even today, there are still hard and fast limits <a href="http://unix.stackexchange.com/questions/33555/what-is-the-max-partition-supported-in-linux">such as you can’t have a boot volume greater than two terabytes</a>.  Sigh.  What I should have done is have a small boot volume and then a data volume that was 2 terabytes.  I can’t prove it but I think that if I had done this my woes in partition resizing would not have happened.</p>
+<p>As I look back at this I can see that I made one real mistake early in setting up this, our first AWS box was that I didn't really analyze our data volumes and growth rate and do some projections.  I've done that now, at least a bit, and I wish I had done that at the start.  For this project we're growing at about 250 + gigs per month.  When I setup our database server I went for a very simple configuration – a 2 terabyte volume configured as the boot volume.  Apparently, even today, there are still hard and fast limits <a href="http://unix.stackexchange.com/questions/33555/what-is-the-max-partition-supported-in-linux">such as you can't have a boot volume greater than two terabytes</a>.  Sigh.  What I should have done is have a small boot volume and then a data volume that was 2 terabytes.  I can't prove it but I think that if I had done this my woes in partition resizing would not have happened.</p>
 
 <p>Take away advice:</p>
 
 <ol>
   <li>For a db server always have a small boot volume</li>
-  <li>Make your database store its data on a non boot volume; yes that’s obvious based on #1 but I’m being explicit.</li>
-  <li>I suspect that if I had used LVM things might have been better but I’ve never understood LVM very well.</li>
-  <li>Whatever you do make <em>absolutely certain</em> that if you are using MySQL then at the version you are using either has <a href="http://dev.mysql.com/doc/refman/5.7/en/innodb-multiple-tablespaces.html">innodb_per_file</a> either turned on or as the default.  At my last data center I had this manually turned on in my.cnf.  And it became the default in MySQL 5.6.  I never dreamed when I set up my boxes at AWS this past fall that I didn’t get 5.6 as part of a normal <em>apt-get install mariadb</em> operation.  This option defines whether you have a single gigantic blob of disc space that stores all your files or a blob of disc space <strong>per table</strong>.  When you use innodb_per_file, despite some issues, it means that you can address storage needs far more granularly by applying symlinks to different file systems.  This is an incredible advantage for handling large amounts of data.</li>
+  <li>Make your database store its data on a non boot volume; yes that's obvious based on #1 but I'm being explicit.</li>
+  <li>I suspect that if I had used LVM things might have been better but I've never understood LVM very well.</li>
+  <li>Whatever you do make <em>absolutely certain</em> that if you are using MySQL then at the version you are using either has <a href="http://dev.mysql.com/doc/refman/5.7/en/innodb-multiple-tablespaces.html">innodb_per_file</a> either turned on or as the default.  At my last data center I had this manually turned on in my.cnf.  And it became the default in MySQL 5.6.  I never dreamed when I set up my boxes at AWS this past fall that I didn't get 5.6 as part of a normal <em>apt-get install mariadb</em> operation.  This option defines whether you have a single gigantic blob of disc space that stores all your files or a blob of disc space <strong>per table</strong>.  When you use innodb_per_file, despite some issues, it means that you can address storage needs far more granularly by applying symlinks to different file systems.  This is an incredible advantage for handling large amounts of data.</li>
 </ol>
 
-<p>Note: If you understand the issues of innodb_per_file then you can likely ignore #4.  And, honestly, if you understand it then perhaps you should drop me a resume; I’m always looking for talent.</p>
+<p>Note: If you understand the issues of innodb_per_file then you can likely ignore #4.  And, honestly, if you understand it then perhaps you should drop me a resume; I'm always looking for talent.</p>
 
-<h1 id="but-why-didnt-you-use-rds">But Why Didn’t You Use RDS?</h1>
+<h1 id="but-why-didnt-you-use-rds">But Why Didn't You Use RDS?</h1>
 
-<p>I’m sure someone out there is shouting at their phone or tablet saying <em>Why, oh dear lord, why didn’t you use RDS</em>.  Well I actually tried to use RDS, specifically Aurora, but found, for our data, <a href="https://fuzzygroup.github.io/blog/aws/2016/08/28/aws-tutorial-4-rds-data-loading-into-aurora-run-in-circles-scream-and-shout-the-oh-shite-moment.html">RDS led to silent data loss on data load</a>.  I don’t know why but I verified it myself and I was in a hurry so I just setup my own DB server.  Yes RDS would have been easier but not if it loses data.</p>
+<p>I'm sure someone out there is shouting at their phone or tablet saying <em>Why, oh dear lord, why didn't you use RDS</em>.  Well I actually tried to use RDS, specifically Aurora, but found, for our data, <a href="https://fuzzygroup.github.io/blog/aws/2016/08/28/aws-tutorial-4-rds-data-loading-into-aurora-run-in-circles-scream-and-shout-the-oh-shite-moment.html">RDS led to silent data loss on data load</a>.  I don't know why but I verified it myself and I was in a hurry so I just setup my own DB server.  Yes RDS would have been easier but not if it loses data.</p>
 
 <p>Take away advice:</p>
 
@@ -226,13 +226,13 @@
 
 <h1 id="step-1---reboot-the-server">Step 1 - Reboot the Server</h1>
 
-<p>When a database server runs out of space, the database software itself generally goes down and that’s actually good.  The first step is always, always, always to reboot the server.  A reboot generally clears up at least some disc space, often enough to get things operational again.  I wouldn’t recommend actually adding more info to the database until you solve the storage issues but you can at least get access to the system.</p>
+<p>When a database server runs out of space, the database software itself generally goes down and that's actually good.  The first step is always, always, always to reboot the server.  A reboot generally clears up at least some disc space, often enough to get things operational again.  I wouldn't recommend actually adding more info to the database until you solve the storage issues but you can at least get access to the system.</p>
 
 <p>Take away advice:</p>
 
 <ul>
   <li>Reboot your database server after problems to clear up some space.</li>
-  <li>If your database software isn’t quickly accessible it is likely recovering from the crash.  Check the logs and be patient.  MySQL, my database of choice, is excellent at recovery.  I can’t speak to other databases but MySQL has always been great at this in my experience.</li>
+  <li>If your database software isn't quickly accessible it is likely recovering from the crash.  Check the logs and be patient.  MySQL, my database of choice, is excellent at recovery.  I can't speak to other databases but MySQL has always been great at this in my experience.</li>
 </ul>
 
 <h1 id="step-2---get-a-second-set-of-eyes">Step 2 - Get a Second Set of Eyes</h1>
@@ -274,14 +274,14 @@
 
 <ul>
   <li>Volumes are external hard drives that you can create freely and attach to servers.</li>
-  <li>You can have as many as you want within reason; you aren’t constrained by the number of ports you have in your machine.</li>
+  <li>You can have as many as you want within reason; you aren't constrained by the number of ports you have in your machine.</li>
   <li>Attaching and then mounting is equivalent to plugging the volume in</li>
 </ul>
 
 <h1 id="step-4---experiment-before-you-do-anything-with-your-data">Step 4 - Experiment Before You Do Anything With Your Data</h1>
 
 <p>One of the brilliant aspects of AWS is that you can experiment with abandon.  Need to see how to mess about with a 4 terabyte 
-partition?  You can just create one and then try things.  I’d strongly recommend experimenting with the process in full before you risk your data.</p>
+partition?  You can just create one and then try things.  I'd strongly recommend experimenting with the process in full before you risk your data.</p>
 
 <h1 id="step-5---the-low-level-unix-commands-in-question">Step 5 - The Low Level Unix Commands in Question</h1>
 
@@ -289,9 +289,9 @@ partition?  You can just create one and then try things.  I’d strongly recomme
 
 <h2 id="the-fstab-file">The fstab File</h2>
 
-<p>Fstab isn’t a command, it is a user defined ASCII data file in /etc i.e. /etc/fstab that defines how logical volumes are attached to the computer you’re working on and where they are <em>mounted</em>.  What you have to is create a master directory such as /mnt and then subdirectories where you want discs to be attached such as /mnt/old.  The instructions in fstab would then connect a low level volume such as /dev/xvdf to that directory allowing you to ls, cd and so on.</p>
+<p>Fstab isn't a command, it is a user defined ASCII data file in /etc i.e. /etc/fstab that defines how logical volumes are attached to the computer you're working on and where they are <em>mounted</em>.  What you have to is create a master directory such as /mnt and then subdirectories where you want discs to be attached such as /mnt/old.  The instructions in fstab would then connect a low level volume such as /dev/xvdf to that directory allowing you to ls, cd and so on.</p>
 
-<p>Here’s an example from one of my boxes:</p>
+<p>Here's an example from one of my boxes:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>cat /etc/fstab
 LABEL=cloudimg-rootfs	/	 ext4	defaults,discard	0 0
@@ -301,7 +301,7 @@ LABEL=cloudimg-rootfs	/	 ext4	defaults,discard	0 0
 
 <p>This shows two logical drives, one from the AWS default setup and one volume I created.  Both are ext4 filesystems and they are mounted at / and /mnt/old respectively.</p>
 
-<p>Since we’re into /etc/fstab, I would be remiss if I didn’t point out the noatime issue which I didn’t realize was still a thing in 2016 but apparently it still is.  Here are some urls to read:</p>
+<p>Since we're into /etc/fstab, I would be remiss if I didn't point out the noatime issue which I didn't realize was still a thing in 2016 but apparently it still is.  Here are some urls to read:</p>
 
 <ul>
   <li><a href="http://www.brendangregg.com/blog/2015-03-03/performance-tuning-linux-instances-on-ec2.html">Absolutely Worth It</a></li>
@@ -312,24 +312,24 @@ LABEL=cloudimg-rootfs	/	 ext4	defaults,discard	0 0
   <li><a href="https://lonesysadmin.net/2013/12/08/gain-30-linux-disk-performance-noatime-nodiratime-relatime/">30% Disk Performance Gains with Noatime</a></li>
 </ul>
 
-<p>Note: I’m going to add noatime and nodiratime into my mount statements shortly.  This is what I’m going to add to my fstab:</p>
+<p>Note: I'm going to add noatime and nodiratime into my mount statements shortly.  This is what I'm going to add to my fstab:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>rw,noatime,nodiratime,nobarrier,data=ordered 
 </code></pre>
 </div>
 
-<p>which I sourced from <a href="http://www.zhongweicheng.com/?p=2494">here</a>.  Once that’s set in /etc/fstab then I’m going to:</p>
+<p>which I sourced from <a href="http://www.zhongweicheng.com/?p=2494">here</a>.  Once that's set in /etc/fstab then I'm going to:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>sudo service mysql stop (making certain that nothing is using the db first)
 mount -o remount
 </code></pre>
 </div>
 
-<p>You can also do it <a href="http://serverfault.com/questions/346360/how-can-i-add-the-noatime-flag-to-my-filesystem-without-a-reboot">this way</a> without modifying fstab but then you lose the options on reboot so that’s kind of suckass.</p>
+<p>You can also do it <a href="http://serverfault.com/questions/346360/how-can-i-add-the-noatime-flag-to-my-filesystem-without-a-reboot">this way</a> without modifying fstab but then you lose the options on reboot so that's kind of suckass.</p>
 
 <h2 id="mounting-a-drive---mount">Mounting a Drive - mount</h2>
 
-<p>The mount command mounts the volumes identified in /etc/fstab.  You need to use this after you have attached a drive using the AWS console in order to make it available to the system.  If it helps you to understand this then think of the AWS Console’s attach command as equivalent to plugging in a hardware cable to a drive whereas mount is the software side.</p>
+<p>The mount command mounts the volumes identified in /etc/fstab.  You need to use this after you have attached a drive using the AWS console in order to make it available to the system.  If it helps you to understand this then think of the AWS Console's attach command as equivalent to plugging in a hardware cable to a drive whereas mount is the software side.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>sudo mount -a 
 </code></pre>
@@ -349,7 +349,7 @@ mount -o remount
 </code></pre>
 </div>
 
-<p>When you can’t unmount a volume with the AWS console, what do you do – you do this:</p>
+<p>When you can't unmount a volume with the AWS console, what do you do – you do this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>sudo umount /devxda1
 </code></pre>
@@ -365,7 +365,7 @@ mount -o remount
 
 <h2 id="list-block-devices---lsblk">List Block Devices - lsblk</h2>
 
-<p>The lsblk command shows you the logical block devices on your system.  A block device essentially means a disk but it could be something else.  This one was new to me or at least something I don’t think I’ve used since I ran Fedora on my ThinkPad back in 2000.  Here’s an example:</p>
+<p>The lsblk command shows you the logical block devices on your system.  A block device essentially means a disk but it could be something else.  This one was new to me or at least something I don't think I've used since I ran Fedora on my ThinkPad back in 2000.  Here's an example:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>lsblk
 NAME                                MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
@@ -382,24 +382,24 @@ loop1                                 7:1    0     2G  0 loop
 </code></pre>
 </div>
 
-<p>This is showing all the block devices.  If you notice xvda this is showing a physical volume and then a logical volume within it.  It is also interesting to note that docker is actually a block device.  It makes sense that Docker went this route but until I saw it myself I don’t think I really appreciated that; <strong>very, very cool</strong>.</p>
+<p>This is showing all the block devices.  If you notice xvda this is showing a physical volume and then a logical volume within it.  It is also interesting to note that docker is actually a block device.  It makes sense that Docker went this route but until I saw it myself I don't think I really appreciated that; <strong>very, very cool</strong>.</p>
 
 <h2 id="file-system-file-system-what-do-we-have---file">File System, File System, What do We Have - file</h2>
 
-<p>The file command tells you what file system your disk volume supports.  When I first moved to Linux professionally from Windows, as opposed to just mucking about with Linux, I remember being a bit baffled about the wealth of file system options – ext2, ext3, reiser / murderfs, etc.  You really didn’t see this much if at all in Windows at the time so it was disconcerting.  The basic idea being having multiple filesytems is that different filesytems are good at different things.  If, for example, the year is 2005 and you want to put 100,000 files in a single directory then your only real option is ReiserFS.  Reiser was fantastic at this.  Similarly if you need a maximum file size of 16 exabytes in size then you need Btrfs and that’s likely the only filesystem on the planet other than ZFS which can do this.</p>
+<p>The file command tells you what file system your disk volume supports.  When I first moved to Linux professionally from Windows, as opposed to just mucking about with Linux, I remember being a bit baffled about the wealth of file system options – ext2, ext3, reiser / murderfs, etc.  You really didn't see this much if at all in Windows at the time so it was disconcerting.  The basic idea being having multiple filesytems is that different filesytems are good at different things.  If, for example, the year is 2005 and you want to put 100,000 files in a single directory then your only real option is ReiserFS.  Reiser was fantastic at this.  Similarly if you need a maximum file size of 16 exabytes in size then you need Btrfs and that's likely the only filesystem on the planet other than ZFS which can do this.</p>
 
-<p>Given that all data on a computer is ultimately written to a file at some point, if you can get better performance from a different filesystem, then changing filesystems is a really easy way to get better performance that affects everything.  When you improve your code you affect only your application but move to a filesystem with say 10% better write speed then <strong>everything</strong> you do on that machine improves.  That’s the power of changing your filesystem.  Now, that said, this is something where you absolutely need to understand every single issue.  For example Btrfs looks great but only use it on OpenSuse or Oracle Linux.  On other platforms it is still under active development.</p>
+<p>Given that all data on a computer is ultimately written to a file at some point, if you can get better performance from a different filesystem, then changing filesystems is a really easy way to get better performance that affects everything.  When you improve your code you affect only your application but move to a filesystem with say 10% better write speed then <strong>everything</strong> you do on that machine improves.  That's the power of changing your filesystem.  Now, that said, this is something where you absolutely need to understand every single issue.  For example Btrfs looks great but only use it on OpenSuse or Oracle Linux.  On other platforms it is still under active development.</p>
 
-<p>Here’s an example of using file on a newly created volume:</p>
+<p>Here's an example of using file on a newly created volume:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>sudo file -s /dev/xvdf
 /dev/xvdf: data
 </code></pre>
 </div>
 
-<p>If you notice all it says is <strong>data</strong>.  This means that the volume is newly created and has no filesystem yet so you’ll need to use mkfs covered below.</p>
+<p>If you notice all it says is <strong>data</strong>.  This means that the volume is newly created and has no filesystem yet so you'll need to use mkfs covered below.</p>
 
-<p>Here’s file when a filesystem exists:</p>
+<p>Here's file when a filesystem exists:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>sudo file -s /dev/xvdf
 /dev/xvdf: Linux rev 1.0 ext4 filesystem data, UUID=2a3476d6-cb01-44e6-a4c6-3c6d3c1cb675 (extents) (large files) (huge files)
@@ -411,7 +411,7 @@ loop1                                 7:1    0     2G  0 loop
 <ul>
   <li><a href="https://mariadb.com/resources/blog/what-best-linux-filesystem-mariadb">Best Filesystem for MariaDB</a></li>
   <li><a href="http://serverfault.com/questions/29193/what-is-the-best-linux-filesystem-for-mysql-innodb">Best Filesystem for MariaDB Stack Overflow; quite old but illustrates the tradeoffs well</a></li>
-  <li><a href="https://www.percona.com/blog/2014/05/23/improve-innodb-performance-write-bound-loads/">Read This But Don’t Do It</a></li>
+  <li><a href="https://www.percona.com/blog/2014/05/23/improve-innodb-performance-write-bound-loads/">Read This But Don't Do It</a></li>
   <li><a href="https://jeremytinley.wordpress.com/2014/10/08/more-ext4-vs-xfs-io-testing/">Benchmark Results</a></li>
 </ul>
 
@@ -425,7 +425,7 @@ loop1                                 7:1    0     2G  0 loop
 
 <h1 id="step-6---and-now-we-come-to-partition-resizing">Step 6 - And Now We Come to Partition Resizing</h1>
 
-<p>It may be hard to believe that it has taken this many words to get ourselves ready for partition resizing. Damn but I can be a <em>wordy son of a bitch</em> at times – apologies.  Anyway I’m going to give the punch line first:</p>
+<p>It may be hard to believe that it has taken this many words to get ourselves ready for partition resizing. Damn but I can be a <em>wordy son of a bitch</em> at times – apologies.  Anyway I'm going to give the punch line first:</p>
 
 <blockquote>
   <p>I was never, ever able to resize a 2 TB AWS boot volume to a bigger size.  According to the <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-expand-volume.html">AWS docs</a> this should be possible but they are actually fairly crappy with respect to volume issues.  No matter what I did I kept getting superblock / magic number errors that I could not get past.</p>
@@ -462,15 +462,15 @@ loop1                                 7:1    0     2G  0 loop
 
 <p>(Here is the warning)</p>
 
-<p>I find it absolutely inconceivable that Amazon can’t do better than this.  Given the possibility for destructive errors by getting things wrong this should be much, much better.  Given that this is a controlled cloud computing environment, doesn’t Amazon know the kernel?</p>
+<p>I find it absolutely inconceivable that Amazon can't do better than this.  Given the possibility for destructive errors by getting things wrong this should be much, much better.  Given that this is a controlled cloud computing environment, doesn't Amazon know the kernel?</p>
 
-<p>Note: I’m a self admitted amazon fan boy for AWS so for me to say this means I think its really really serious.</p>
+<p>Note: I'm a self admitted amazon fan boy for AWS so for me to say this means I think its really really serious.</p>
 
 <p>When you create a disc volume there is no option for naming / tagging it at creation time:</p>
 
 <p><img src="/blog/assets/create_volume.png" alt="create_volume.png" /></p>
 
-<p>That is equally sucky.  Do this a lot and you end with a bunch of things name vol-64bb3234d and vol-534343bc and you’re scratching your head going “hm…”.  Yes you can name them after but that increases the chance that they never get named.</p>
+<p>That is equally sucky.  Do this a lot and you end with a bunch of things name vol-64bb3234d and vol-534343bc and you're scratching your head going "hm…".  Yes you can name them after but that increases the chance that they never get named.</p>
 
 <h2 id="my-path-if-its-useful-to-you">My Path If Its Useful To You</h2>
 
@@ -873,7 +873,7 @@ Couldn't find valid filesystem superblock.
 
 <h1 id="step-7---why-having-partition-resizing-fail-was-ok">Step 7 - Why Having Partition Resizing Fail was Ok</h1>
 
-<p>The reason that I never lost my mind was that in the process of troubleshooting all this I realized that I had failed to set the innodb_per_file option when my db server was initially setup.  The innodb_per_file option can only be set when a database is created / loaded so if I wanted it, I didn’t have a lot of options.  And, since it was a holiday and downtime was sort of naturally going on, it was actually about the best possible time to do all this.  Keep in mind that while it isn’t pleasant to go from <em>mince onions for stuffing</em> to <em>check database dump</em> and then to <em>make cranberry orange relish</em>, you can actually do this without losing your mind.  By the end of it I was timing database dump routines along side recipes with ease i.e. “Ok I can make a caramel apple cobbler in the same time it takes to dump the table page2016_q2s”.  Certainly 2016, also known in my head as dbpocalyse, is a holiday I won’t soon forget.</p>
+<p>The reason that I never lost my mind was that in the process of troubleshooting all this I realized that I had failed to set the innodb_per_file option when my db server was initially setup.  The innodb_per_file option can only be set when a database is created / loaded so if I wanted it, I didn't have a lot of options.  And, since it was a holiday and downtime was sort of naturally going on, it was actually about the best possible time to do all this.  Keep in mind that while it isn't pleasant to go from <em>mince onions for stuffing</em> to <em>check database dump</em> and then to <em>make cranberry orange relish</em>, you can actually do this without losing your mind.  By the end of it I was timing database dump routines along side recipes with ease i.e. "Ok I can make a caramel apple cobbler in the same time it takes to dump the table page2016_q2s".  Certainly 2016, also known in my head as dbpocalyse, is a holiday I won't soon forget.</p>
 
 <h1 id="step-8---generating-your-mysql-dump-files">Step 8 - Generating Your MySQL Dump Files</h1>
 
@@ -898,7 +898,7 @@ end
 
 <h1 id="step-9---verify-your-dump-files-with-tail">Step 9 - Verify Your Dump Files with Tail</h1>
 
-<p>Here’s a general bit of advice when you are dealing with multi-hour long / multi-day long mysqldump processes – make sure that they actually complete.  After all when you’re looking at a directory listing and all you see is this:</p>
+<p>Here's a general bit of advice when you are dealing with multi-hour long / multi-day long mysqldump processes – make sure that they actually complete.  After all when you're looking at a directory listing and all you see is this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>215121716510 page2016_q2s.sql
 </code></pre>
@@ -920,49 +920,49 @@ end
 </code></pre>
 </div>
 
-<p>That’s what the tail of a successful MySQL dump should look like.  The key thing is <strong>– Dump completed on 2016-11-23  7:50:34</strong>.</p>
+<p>That's what the tail of a successful MySQL dump should look like.  The key thing is <strong>– Dump completed on 2016-11-23  7:50:34</strong>.</p>
 
-<h1 id="step-10---why-didnt-i-try-maatkit-or-something-else">Step 10 - Why Didn’t I Try maatkit or something else?</h1>
+<h1 id="step-10---why-didnt-i-try-maatkit-or-something-else">Step 10 - Why Didn't I Try maatkit or something else?</h1>
 
-<p>You’ll notice that I used straight up mysqldump as my backup tool.  Why would I do that when there are higher performance alternatives like maatkit, mydumper or mysqlhotbackup?  Well it all comes down to <strong>trust</strong>:</p>
+<p>You'll notice that I used straight up mysqldump as my backup tool.  Why would I do that when there are higher performance alternatives like maatkit, mydumper or mysqlhotbackup?  Well it all comes down to <strong>trust</strong>:</p>
 
 <ul>
-  <li>mysqldump for all the issues is <strong>solid</strong>.  I’ve used it for more than a decade and it has never given me issues – when I used it correctly.  Any issues I’ve had have been user error and that hasn’t happened for at least a decade.</li>
-  <li>mysqldump is regularly maintained.  <a href="https://sourceforge.net/projects/maatkit/">maatkit</a> seems to have last been maintained in 2013 while <a href="https://www.percona.com/blog/2015/11/12/logical-mysql-backup-tool-mydumper-0-9-1-now-available/">mydumper</a> is about a year since last maintenance.  While I’m not one to take the position that old software is dead software, for something as critical as a backup tool it does make me a little bit squeamish.</li>
+  <li>mysqldump for all the issues is <strong>solid</strong>.  I've used it for more than a decade and it has never given me issues – when I used it correctly.  Any issues I've had have been user error and that hasn't happened for at least a decade.</li>
+  <li>mysqldump is regularly maintained.  <a href="https://sourceforge.net/projects/maatkit/">maatkit</a> seems to have last been maintained in 2013 while <a href="https://www.percona.com/blog/2015/11/12/logical-mysql-backup-tool-mydumper-0-9-1-now-available/">mydumper</a> is about a year since last maintenance.  While I'm not one to take the position that old software is dead software, for something as critical as a backup tool it does make me a little bit squeamish.</li>
   <li>All of this happened over the U.S. Thanksgiving holiday and while I had time it was in dribs and drabs – often while I was in the middle of cooking – the last thing I had time for was sitting down and poring thru tech notes to figure out why the command line options for mydumper were different from mysqldump.  Honestly – why would you change these?  I could simply set mysqldump going on a half dozen different terminals front ended by tmux to keep them alive.  That gave me concurrency if not performance.</li>
 </ul>
 
 <h2 id="sidebar-for-open-source-authors---currency-matters">Sidebar for Open Source Authors - Currency Matters</h2>
 
-<p>There are tons and tons of different open source projects that are actually fantastic but haven’t really been updated recently.  That doesn’t mean that you shouldn’t use them by any means.  But, if you are an open source author, you should really be aware that the potential users of your software often look at your project in terms of its git repository.  And one of the first things you notice is the datestamp which github gives you as “2 years ago”, “a month ago” and so on.  I’m going to illustrate this with an example from a project I really, really like: <a href="https://github.com/mperham/inspeqtor">Inspeqtor</a>.  Inspeqtor is an open source monitoring tool <a href="https://fuzzygroup.github.io/blog/aws/2016/10/20/aws-tutorial-20-adding-machine-and-process-monitoring-to-your-aws-instance-with-inspeqtor.html">I’ve written about before</a>.  Honestly it is <a href="https://mmonit.com/monit/">monit</a> with an easier configuration approach.  And it is from one of my open source heroes, <a href="http://www.mikeperham.com/">Mike Perham</a>, so of course I like it. But, the first time I considered it, it hadn’t been updated in about a year and I have to say that did give me pause.  If I hadn’t known exactly who Mike Perham was then I likely would have raced over to Monit and used it instead.</p>
+<p>There are tons and tons of different open source projects that are actually fantastic but haven't really been updated recently.  That doesn't mean that you shouldn't use them by any means.  But, if you are an open source author, you should really be aware that the potential users of your software often look at your project in terms of its git repository.  And one of the first things you notice is the datestamp which github gives you as "2 years ago", "a month ago" and so on.  I'm going to illustrate this with an example from a project I really, really like: <a href="https://github.com/mperham/inspeqtor">Inspeqtor</a>.  Inspeqtor is an open source monitoring tool <a href="https://fuzzygroup.github.io/blog/aws/2016/10/20/aws-tutorial-20-adding-machine-and-process-monitoring-to-your-aws-instance-with-inspeqtor.html">I've written about before</a>.  Honestly it is <a href="https://mmonit.com/monit/">monit</a> with an easier configuration approach.  And it is from one of my open source heroes, <a href="http://www.mikeperham.com/">Mike Perham</a>, so of course I like it. But, the first time I considered it, it hadn't been updated in about a year and I have to say that did give me pause.  If I hadn't known exactly who Mike Perham was then I likely would have raced over to Monit and used it instead.</p>
 
-<p>Now the secret trick for an open source is really simple – <strong>you don’t have to touch the code</strong> – for github to update the last modified time stamp.  All you have to do is update the readme or some other documentation file.  A lot of the time when you are an open source user is that you don’t want <strong>abandonware</strong>.  When you choose an open source tool you’re making an investment.  It may be an investment of time rather than money but it damn well is an investment.  And when things are abandonware the nature of that investment changes.  Even if I am 90% likely to never reach out to a project in the form of an issue or support, knowing that the project is still alive means that I can.  And about the only positive signal that a project is alive comes from damn timestamp that github reports so gleefully.</p>
+<p>Now the secret trick for an open source is really simple – <strong>you don't have to touch the code</strong> – for github to update the last modified time stamp.  All you have to do is update the readme or some other documentation file.  A lot of the time when you are an open source user is that you don't want <strong>abandonware</strong>.  When you choose an open source tool you're making an investment.  It may be an investment of time rather than money but it damn well is an investment.  And when things are abandonware the nature of that investment changes.  Even if I am 90% likely to never reach out to a project in the form of an issue or support, knowing that the project is still alive means that I can.  And about the only positive signal that a project is alive comes from damn timestamp that github reports so gleefully.</p>
 
-<h1 id="step-11---why-didnt-i-get-a-real-professional">Step 11 - Why Didn’t I Get a Real Professional?</h1>
+<h1 id="step-11---why-didnt-i-get-a-real-professional">Step 11 - Why Didn't I Get a Real Professional?</h1>
 
-<p>I have to admit that it is <strong>pretty damn inconceiveable</strong> to me that in <strong>2016</strong> you can’t resize an AWS volume dynamically particularly if you can so easily unmount it and operate it on it.  And it is important to know that I am <em>not an expert</em> in this area.  I’m not a full time ops guy nor am I a true sysadmin – I just play one on the internet from time to time.  So the logical thing to do would have been to reach out to a real professional or even AWS support so why didn’t I?  Well it comes down to this:</p>
+<p>I have to admit that it is <strong>pretty damn inconceiveable</strong> to me that in <strong>2016</strong> you can't resize an AWS volume dynamically particularly if you can so easily unmount it and operate it on it.  And it is important to know that I am <em>not an expert</em> in this area.  I'm not a full time ops guy nor am I a true sysadmin – I just play one on the internet from time to time.  So the logical thing to do would have been to reach out to a real professional or even AWS support so why didn't I?  Well it comes down to this:</p>
 
 <ul>
-  <li><strong>Timing</strong>.  This happened just prior to a holiday so people’s availability is severely constrained.  I didn’t want any resource involved that couldn’t see it thru end to end.  I know that I am fully available and I am confident enough that no matter what happened I would get thru it.</li>
+  <li><strong>Timing</strong>.  This happened just prior to a holiday so people's availability is severely constrained.  I didn't want any resource involved that couldn't see it thru end to end.  I know that I am fully available and I am confident enough that no matter what happened I would get thru it.</li>
   <li><strong>No Backups</strong>.  There were no database backups available (see next section) which means that any solution had to be 100% safe.  And I could only guarantee that if I did things myself.</li>
-  <li><strong>Pricing</strong>.  The older I get the more sensitive I get to being, what I feel, unfairly screwed.  The last time I got significant talent on the spot market – i.e. when you need it immediately – <a href="https://www.linkedin.com/in/peter-hegedus-04ba331?authType=NAME_SEARCH&amp;authToken=pg9J&amp;locale=en_US&amp;trk=tyah&amp;trkInfo=clickedVertical%3Amynetwork%2CclickedEntityId%3A5541755%2CauthType%3ANAME_SEARCH%2Cidx%3A1-1-1%2CtarId%3A1480149749298%2Ctas%3Apeter%20hegedus">that person</a> charged me either $300 or $400 per hour for about two hours of what amounted to configuration support.  And that’s fine, it was his right to do that.  But that degree of what I felt was dramatic unfairness meant that I will never, ever contact him again before the <strong>heat death of the universe</strong>.  And the pity is that this person could easily have taken less per hour and rolled it into an ongoing relationship where I’d still be relying on him today.  I mean I am still running, daily, the code he wrote.  Sigh.  I saw no reason to raise my blood pressure by being potentially screwed once again.</li>
+  <li><strong>Pricing</strong>.  The older I get the more sensitive I get to being, what I feel, unfairly screwed.  The last time I got significant talent on the spot market – i.e. when you need it immediately – <a href="https://www.linkedin.com/in/peter-hegedus-04ba331?authType=NAME_SEARCH&amp;authToken=pg9J&amp;locale=en_US&amp;trk=tyah&amp;trkInfo=clickedVertical%3Amynetwork%2CclickedEntityId%3A5541755%2CauthType%3ANAME_SEARCH%2Cidx%3A1-1-1%2CtarId%3A1480149749298%2Ctas%3Apeter%20hegedus">that person</a> charged me either $300 or $400 per hour for about two hours of what amounted to configuration support.  And that's fine, it was his right to do that.  But that degree of what I felt was dramatic unfairness meant that I will never, ever contact him again before the <strong>heat death of the universe</strong>.  And the pity is that this person could easily have taken less per hour and rolled it into an ongoing relationship where I'd still be relying on him today.  I mean I am still running, daily, the code he wrote.  Sigh.  I saw no reason to raise my blood pressure by being potentially screwed once again.</li>
 </ul>
 
 <h1 id="step-12---flying-without-a-net-or-life-without-database-backups">Step 12 - Flying without a Net or Life Without Database Backups</h1>
 
-<p>It may surprise some people that I did not have a decent backup system in place and there’s a story here.  This is a project that is an outgrowth of a very poorly funded project that I’ve been continuously working on since 2010.  The aggregate code base size is north of 400K lines of Ruby and all the code growth has been organic not planned.  Although other people have touched the code base at times I’ve been the sole author of probably 95% of it.  As an incredibly poorly funded project there was never much of an ops budget and since this was a 24x7x365 system there wasn’t a lot of opportunity for offline time for backup.  There was about a 2 year period when we changed to one data center where I was told backups were being done.  Unfortunately there were enough times were I was told that “we have a backup issue and we need to reboot all of your servers to address it” that I never once trusted it.</p>
+<p>It may surprise some people that I did not have a decent backup system in place and there's a story here.  This is a project that is an outgrowth of a very poorly funded project that I've been continuously working on since 2010.  The aggregate code base size is north of 400K lines of Ruby and all the code growth has been organic not planned.  Although other people have touched the code base at times I've been the sole author of probably 95% of it.  As an incredibly poorly funded project there was never much of an ops budget and since this was a 24x7x365 system there wasn't a lot of opportunity for offline time for backup.  There was about a 2 year period when we changed to one data center where I was told backups were being done.  Unfortunately there were enough times were I was told that "we have a backup issue and we need to reboot all of your servers to address it" that I never once trusted it.</p>
 
-<p>During the past 7 years there was only one time when an important table was accidentally dropped.  That was the one case when we might have called for data recovery and we had a local copy of the same data that was only a few hours out of sync so we didn’t bother.  So, at least from a track record basis, I have a pretty good record for not screwing things up.  One of the secrets to my success tho is I applied a very strict trust metric to database access – if I woudn’t trust <a href="http://dasari.me">you</a> to watch my kids then I wouldn’t give you access to the actual database.  And, surprisingly, that actually has worked out pretty well.</p>
+<p>During the past 7 years there was only one time when an important table was accidentally dropped.  That was the one case when we might have called for data recovery and we had a local copy of the same data that was only a few hours out of sync so we didn't bother.  So, at least from a track record basis, I have a pretty good record for not screwing things up.  One of the secrets to my success tho is I applied a very strict trust metric to database access – if I woudn't trust <a href="http://dasari.me">you</a> to watch my kids then I wouldn't give you access to the actual database.  And, surprisingly, that actually has worked out pretty well.</p>
 
-<p>Now, does any of that excuse there not being backups?  Absolutely not.  This is now both better funded and far more mission critical so I’ll get this figured out in short order.  If I end up rolling my own backup solution then I’ll do it on my own time and open source it.  While there are different backup solutions out there, our data sets have some unique characteristics and rolling some code to automate this might be an interesting challenge.  I suspect using <a href="https://aws.amazon.com/dynamodb/">dynamodb</a> for tracking the backup catalog might be interesting.</p>
+<p>Now, does any of that excuse there not being backups?  Absolutely not.  This is now both better funded and far more mission critical so I'll get this figured out in short order.  If I end up rolling my own backup solution then I'll do it on my own time and open source it.  While there are different backup solutions out there, our data sets have some unique characteristics and rolling some code to automate this might be an interesting challenge.  I suspect using <a href="https://aws.amazon.com/dynamodb/">dynamodb</a> for tracking the backup catalog might be interesting.</p>
 
 <h1 id="step-13---engineer-color-code-thyself">Step 13 - Engineer Color Code Thyself</h1>
 
-<p>The biggest mistake in something like this, beyond the fact that it happened at all, is likely to come from yourself.  People, particularly tired, frustrated people (and you will be both tired and frustrated from this), make mistakes.  A lot of this work happens inside terminal tabs that look exactly alike.  It is incrediby easy to check on this and mistake source for destination and then – WHAM – you have a real problem.  And I know you are thinking that this cannot happen or “how stupid is this guy; <strong>I</strong> am smarter than that.”  Well you might be, I certainly am, but it still happens.  And, honestly, if something like that has even a chance of happen you are better off setting things up so that it <strong>won’t</strong> happen.</p>
+<p>The biggest mistake in something like this, beyond the fact that it happened at all, is likely to come from yourself.  People, particularly tired, frustrated people (and you will be both tired and frustrated from this), make mistakes.  A lot of this work happens inside terminal tabs that look exactly alike.  It is incrediby easy to check on this and mistake source for destination and then – WHAM – you have a real problem.  And I know you are thinking that this cannot happen or "how stupid is this guy; <strong>I</strong> am smarter than that."  Well you might be, I certainly am, but it still happens.  And, honestly, if something like that has even a chance of happen you are better off setting things up so that it <strong>won't</strong> happen.</p>
 
-<p>Just as an example, even though I’d like to think I’m smarter than that, all of this started just prior to Thanksgiving 2016 so Turkey Day 2016 was spent running back and forth between Thanksgiving cooking and seeing if certain long running exports had finished yet.  Just as a 22 pound turkey seems to take forever to cook so, too, does a table dump that has this many bytes: 215121716510.  Since I was in and out of things so many times, statistically, the chance that I’d make a mistake I think was actually fairly high.</p>
+<p>Just as an example, even though I'd like to think I'm smarter than that, all of this started just prior to Thanksgiving 2016 so Turkey Day 2016 was spent running back and forth between Thanksgiving cooking and seeing if certain long running exports had finished yet.  Just as a 22 pound turkey seems to take forever to cook so, too, does a table dump that has this many bytes: 215121716510.  Since I was in and out of things so many times, statistically, the chance that I'd make a mistake I think was actually fairly high.</p>
 
-<p>When you are dealing with old and new systems that would normally look identical the best trick I’ve ever found is really, really simple – <strong>color code</strong> things.  If you look at <a href="https://www.quora.com/How-much-of-the-brain-is-involved-with-vision">how much of the brain is related to vision</a> then this actually makes sense.  Making dangerous things highly visual means that they really stand out.   All I did was set the background color differently for each terminal.  I made all terminals related to source be solarized and all terminals related to destination be normal (black).  Here is what that looks like:</p>
+<p>When you are dealing with old and new systems that would normally look identical the best trick I've ever found is really, really simple – <strong>color code</strong> things.  If you look at <a href="https://www.quora.com/How-much-of-the-brain-is-involved-with-vision">how much of the brain is related to vision</a> then this actually makes sense.  Making dangerous things highly visual means that they really stand out.   All I did was set the background color differently for each terminal.  I made all terminals related to source be solarized and all terminals related to destination be normal (black).  Here is what that looks like:</p>
 
 <p><img src="/blog/assets/color_code_your_terminals_destination.png" alt="solarized" /></p>
 
@@ -970,7 +970,7 @@ end
 
 <p>Given that I might have 3 or 4 terminals open on source and the same number on destination this makes everything so much easier.</p>
 
-<p><strong>Sidebar:</strong> I’ve been looking, for years, for a way to define my background terminal color on login to a different system automatically specifically to prevent this. This should happen automatically at login based on an environment variable.  If anyone out there knows a unix shell scripting trick for this I’d bloody well love to hear it.  Thanks!</p>
+<p><strong>Sidebar:</strong> I've been looking, for years, for a way to define my background terminal color on login to a different system automatically specifically to prevent this. This should happen automatically at login based on an environment variable.  If anyone out there knows a unix shell scripting trick for this I'd bloody well love to hear it.  Thanks!</p>
 
 <h1 id="useful-urls">Useful Urls</h1>
 
@@ -990,7 +990,7 @@ end
   <li><a href="http://askubuntu.com/questions/84501/how-can-i-change-convert-a-ubuntu-mbr-drive-to-a-gpt-and-make-ubuntu-boot-from">Converting MBR drives to gpt</a></li>
   <li><a href="http://cloud.tekgoblin.com/2013/04/29/aws-guides-how-to-increase-your-ec2-linux-root-volume-size/">Increasing Your Root Volume Size</a></li>
   <li><a href="https://matt.berther.io/2015/02/03/how-to-resize-aws-ec2-ebs-volumes/">Resizing AWS Volumes</a></li>
-  <li><a href="http://cloudacademy.com/blog/amazon-ebs-shink-volume/">Shrinking Volumes; hey its the inverse of what I wanted but isn’t that the same thing?</a></li>
+  <li><a href="http://cloudacademy.com/blog/amazon-ebs-shink-volume/">Shrinking Volumes; hey its the inverse of what I wanted but isn't that the same thing?</a></li>
   <li><a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-expand-volume.html">EBS Expanding Volumes</a></li>
   <li><a href="http://blog.textit.in/why-buying-provisioned-iops-on-rds-may-be-a-mistake">Provisioned IOPs - interesting</a></li>
   <li><a href="https://forums.aws.amazon.com/message.jspa?messageID=526918">Tech Support</a></li>
@@ -1005,7 +1005,7 @@ end
   <li><a href="https://www.percona.com/blog/2014/05/23/improve-innodb-performance-write-bound-loads/">Innodb Performance Tuning</a></li>
   <li><a href="http://dev.mysql.com/doc/refman/5.7/en/innodb-performance-multiple_io_threads.html">Innodb Multiple IO Threads</a></li>
   <li><a href="http://dba.stackexchange.com/questions/86636/when-is-it-safe-to-disable-innodb-doublewrite-buffering">Innodb Double Write Buffering</a></li>
-  <li><a href="http://dev.mysql.com/doc/refman/5.7/en/mysqlimport.html">MySQL Import; Don’t Bother with It</a></li>
+  <li><a href="http://dev.mysql.com/doc/refman/5.7/en/mysqlimport.html">MySQL Import; Don't Bother with It</a></li>
   <li><a href="http://dba.stackexchange.com/questions/54639/is-there-a-successor-or-an-alternative-to-mk-parallel-dump">Stack Overflow on mk parallel dump</a></li>
   <li><a href="https://learn.percona.com/hubfs/Manuals/Percona_Toolkit/Percona-Toolkit-2.2.19.pdf?t=1479504188846">Percona Toolkit</a></li>
   <li><a href="http://dba.stackexchange.com/questions/20/how-can-i-optimize-a-mysqldump-of-a-large-database">Optimizing MySQL Dump</a></li>

@@ -178,9 +178,9 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>There are certain skills as a software developer that take, in my experience, a lifetime to master.  I have now been using version control since the mid 1990s and I still don’t consider myself, by any means, a master.  I’m good, don’t get me wrong, but I don’t feel that I have yet fully internalized all the benefits that version control offers.  So, when I have a chance to really take advantage of version control, I truly relish the opportunity.</p>
+    <p>There are certain skills as a software developer that take, in my experience, a lifetime to master.  I have now been using version control since the mid 1990s and I still don't consider myself, by any means, a master.  I'm good, don't get me wrong, but I don't feel that I have yet fully internalized all the benefits that version control offers.  So, when I have a chance to really take advantage of version control, I truly relish the opportunity.</p>
 
-<p>I recently had a refactoring situtation where I was, shall we say, overly ambitious.  And, yes, that’s the positive version of what I’d refer to as “Humpty Dumpty” code syndrome where you have so thoroughly broken a critical bit of code that you just can’t put it back together.  Specifically:</p>
+<p>I recently had a refactoring situtation where I was, shall we say, overly ambitious.  And, yes, that's the positive version of what I'd refer to as "Humpty Dumpty" code syndrome where you have so thoroughly broken a critical bit of code that you just can't put it back together.  Specifically:</p>
 
 <ul>
   <li>I refactored a truly alway bit of two critical routines, one with 8 input variables that returned 6 variables</li>
@@ -197,17 +197,17 @@
   <li>NOT lose any of the cool new features</li>
 </ul>
 
-<p>One of the development practices I am absolutely <strong>adamant</strong> about is only ever having 1 checkout of the code based at a time.  I’m hardcore on this because I’ve seen what happens when you have multiple versions floating about – its very, very convenient but you tend to get confused and then you lose track of what’s the master and things get screwball.  But, in desparate times, you do what you must and so I went over to github and:</p>
+<p>One of the development practices I am absolutely <strong>adamant</strong> about is only ever having 1 checkout of the code based at a time.  I'm hardcore on this because I've seen what happens when you have multiple versions floating about – its very, very convenient but you tend to get confused and then you lose track of what's the master and things get screwball.  But, in desparate times, you do what you must and so I went over to github and:</p>
 
 <ul>
-  <li>I found a commit from roughly before I started; I wasn’t real specific about this, I just remember “this debacle started last Thursday so goto Wednesday”</li>
+  <li>I found a commit from roughly before I started; I wasn't real specific about this, I just remember "this debacle started last Thursday so goto Wednesday"</li>
   <li>I browsed the code base at that point</li>
   <li>I created a new directory where I wanted this</li>
   <li>I checked out the code; that put a fresh copy of master in place</li>
   <li>I did a git co HASH where HASH represented the commit hash for Wednesday</li>
 </ul>
 
-<p>This put me what’s called <a href="http://stackoverflow.com/questions/3965676/why-did-my-git-repo-enter-a-detached-head-state"><em>detached head</em></a> mode and I was able to modify /run / test, etc.  I then had to:</p>
+<p>This put me what's called <a href="http://stackoverflow.com/questions/3965676/why-did-my-git-repo-enter-a-detached-head-state"><em>detached head</em></a> mode and I was able to modify /run / test, etc.  I then had to:</p>
 
 <ul>
   <li>port over my rake task which was doing my tests</li>
@@ -254,9 +254,9 @@
 </code></pre>
 </div>
 
-<p>That’s a whole lot of changes.  The easiest approach was to start with the entirely new files and just copy them over to the original.</p>
+<p>That's a whole lot of changes.  The easiest approach was to start with the entirely new files and just copy them over to the original.</p>
 
-<p>Now this is where I’m going to make a highly personal engineering choice here – I’m going to avoid an automated merge process of any type.  When it comes to complex code changes in an automated fashion I honestly don’t have a lot of faith.  I’ve seen automated merges go wrong time after time so I was looking for a tool to make this easier.  A quick bit of googling turned up:</p>
+<p>Now this is where I'm going to make a highly personal engineering choice here – I'm going to avoid an automated merge process of any type.  When it comes to complex code changes in an automated fashion I honestly don't have a lot of faith.  I've seen automated merges go wrong time after time so I was looking for a tool to make this easier.  A quick bit of googling turned up:</p>
 
 <ul>
   <li>OpenDiff / FileMerge (part of X-Code)</li>

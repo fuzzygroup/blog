@@ -188,7 +188,7 @@
 <ul>
   <li>Can I ping each box?  Yes!</li>
   <li>
-    <p>Can I ssh into each box?  No!  The box we name ficrawler2 was unable to be ssh’d into and gave this error:</p>
+    <p>Can I ssh into each box?  No!  The box we name ficrawler2 was unable to be ssh'd into and gave this error:</p>
 
     <p>ssh ficrawler2
 ssh_exchange_identification: read: Operation timed out</p>
@@ -204,7 +204,7 @@ ssh_exchange_identification: read: Operation timed out</p>
 
 <p class="center left"><img src="/blog/assets/aws/aws_tutorial_10_01.png" alt="aws_tutorial_10_01.png" /></p>
 
-<p>This makes me think that SSH itself went down but external network metrics like ping remained up.  Next step up is to reboot the box.  And I did that and the problem persisted.  This led me to thinking that there’s a lower level problem here, possibly network layer?</p>
+<p>This makes me think that SSH itself went down but external network metrics like ping remained up.  Next step up is to reboot the box.  And I did that and the problem persisted.  This led me to thinking that there's a lower level problem here, possibly network layer?</p>
 
 <p>Now from my ssh config tutorial you might know that my ssh config file defined ficrawler2.  Here are the particulars:</p>
 
@@ -222,18 +222,18 @@ ssh_exchange_identification: read: Operation timed out</p>
 
 <p>The result of the ssh -i line above will be a very long string of ssh commands showing what happened.</p>
 
-<p>Unfortunately by the time I did the research to figure this out and setup this blog post, ssh returned and I’m left scratching my head more than a bit.</p>
+<p>Unfortunately by the time I did the research to figure this out and setup this blog post, ssh returned and I'm left scratching my head more than a bit.</p>
 
 <h1 id="lessons-learned">Lessons Learned</h1>
 
-<p>Here’s what we now know:</p>
+<p>Here's what we now know:</p>
 
 <ul>
-  <li>A box can be ping’able but not ssh’able</li>
+  <li>A box can be ping'able but not ssh'able</li>
   <li>Next time I may want to not reboot so quickly</li>
-  <li>A reboot doesn’t necessarily clear it up so the underlying box might actually have been fine</li>
+  <li>A reboot doesn't necessarily clear it up so the underlying box might actually have been fine</li>
   <li>I need to write the ssh test line faster next time</li>
-  <li>It is very unclear how AWS cloud watch can be used to test for a box that is unable to be ssh’d into; that may not be viable (monitoring it could actually be construed as an attack)</li>
+  <li>It is very unclear how AWS cloud watch can be used to test for a box that is unable to be ssh'd into; that may not be viable (monitoring it could actually be construed as an attack)</li>
 </ul>
 
 <h1 id="update-1">Update 1</h1>
@@ -265,13 +265,13 @@ ssh_exchange_identification: read: Connection reset by peer
 
 <p>I understand that you are unable to access some of your instances via ssh at random times. Please correct me if I miss understood.</p>
 
-<p>Are you still experiencing the issue, or was the problem resolved after the reboot? I’ve noticed that all the instances with the name “crawler” was started around the same time (2016-10-03 14:25:38 UTC ). Did you have the same issue on all of these instances?</p>
+<p>Are you still experiencing the issue, or was the problem resolved after the reboot? I've noticed that all the instances with the name "crawler" was started around the same time (2016-10-03 14:25:38 UTC ). Did you have the same issue on all of these instances?</p>
 
 <p>Normally when an instance is inaccessible via ssh, it could indicate a network error or high CPU utilization on the instance. I had a look at the instance metrics for CPU and networking, and all seems to be within acceptable ranges. I can confirm that there are no failures or events on the underlying hardware.</p>
 
 <p>I understand that you want to investigate the cause of the issue and prevent it from happening again.</p>
 
-<p>The best place to start with troubleshooting is to have a look at the OS log files. For Ubuntu; you can have a look in the /var/log/syslog file, or the output of the dmesg command. Please have a look for any warnings or error messages around the time that you’ve experienced the issues.</p>
+<p>The best place to start with troubleshooting is to have a look at the OS log files. For Ubuntu; you can have a look in the /var/log/syslog file, or the output of the dmesg command. Please have a look for any warnings or error messages around the time that you've experienced the issues.</p>
 
 <p>What error message did you get when you tried to ssh to the instances?</p>
 
@@ -283,7 +283,7 @@ ssh_exchange_identification: read: Connection reset by peer
 
 <p>I also see that your security group, sg-DFDDFD, allows ssh access from the world (0.0.0.0/0). Leaving port 22 open to the world is a security risk as it leaves your instances vulnerable for attack. I would recommend that you remove this inbound rule and only allow ssh access from trusted IP addresses.</p>
 
-<p>If you want to eliminate manual intervention when an instance fails, you can have a look at Auto Scaling. This will automatically start new instances or stop faulty ones when health checks fails. You can reference the below links for more information about Auto Scaling if you’re interested.</p>
+<p>If you want to eliminate manual intervention when an instance fails, you can have a look at Auto Scaling. This will automatically start new instances or stop faulty ones when health checks fails. You can reference the below links for more information about Auto Scaling if you're interested.</p>
 
 <p>https://aws.amazon.com/autoscaling/
 http://docs.aws.amazon.com/autoscaling/latest/userguide/GettingStartedTutorial.html</p>

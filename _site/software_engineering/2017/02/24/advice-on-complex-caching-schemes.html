@@ -184,7 +184,7 @@
   <p>There are only two hard things in Computer Science: cache invalidation and naming things. <a href="https://martinfowler.com/bliki/TwoHardThings.html">Link</a></p>
 </blockquote>
 
-<p>Personally I’d generalize this to:</p>
+<p>Personally I'd generalize this to:</p>
 
 <blockquote>
   <p>There are only two hard things in Computer Science: caching things and naming things. (Me/Today)</p>
@@ -209,23 +209,23 @@
   <p>Hell No!</p>
 </blockquote>
 
-<p>Any kind of cache is always <strong>finicky</strong> and <strong>hard to debug</strong>.  The more complexity in your caching architecture, the absolutely harder it is to debug and the less likely it is to work reliably.  I’ve implemented a lot of caches over the years and I’ve tried to be trickier and tricker and, generally, when I bothered to track cache hits, the trickier ones never seemed to work quite right.  Part of it may have been logic errors and part of it may been misunderstanding how caches get called in this new crazy multi core world but I think my point stands – <em>complex caching schemes are hard to get right</em>.</p>
+<p>Any kind of cache is always <strong>finicky</strong> and <strong>hard to debug</strong>.  The more complexity in your caching architecture, the absolutely harder it is to debug and the less likely it is to work reliably.  I've implemented a lot of caches over the years and I've tried to be trickier and tricker and, generally, when I bothered to track cache hits, the trickier ones never seemed to work quite right.  Part of it may have been logic errors and part of it may been misunderstanding how caches get called in this new crazy multi core world but I think my point stands – <em>complex caching schemes are hard to get right</em>.</p>
 
 <p>Here was my advice to the client:</p>
 
 <ol>
-  <li>Use <a href="https://memcached.org/">memcached</a> solely (as part of ElastiCache); don’t bring in cloudfront.  Memcached has that brilliantly simple, automagical cache invalidation where you a) set when the object is available until allowing it to just disappear <em>automatically</em> and b) if enough other objects crowd it out, it is expired using a FIFO architecture.  Those two properties make the cache invalidation issues pretty much disappear.</li>
+  <li>Use <a href="https://memcached.org/">memcached</a> solely (as part of ElastiCache); don't bring in cloudfront.  Memcached has that brilliantly simple, automagical cache invalidation where you a) set when the object is available until allowing it to just disappear <em>automatically</em> and b) if enough other objects crowd it out, it is expired using a FIFO architecture.  Those two properties make the cache invalidation issues pretty much disappear.</li>
   <li>Take the incoming API call params and a) put them in a hash, b) call hash.to_json to get a stringified version, c) call a SHA1 routine on that stringified version.  That gives you a dirt simple cache key that you can store into memcached.</li>
   <li>If their implementation of ElastiCache allows having multiple caches then set up a new cache for this new data and separate it logically from the current cache as this is high volume but low value.</li>
-  <li>If their implementation of ElastiCache doesn’t allow multiple caches then simply increase the size of the current cache.  Your goal here is to ensure that this new cache (which is on low value data) doesn’t crowd out the current cache citizens (which are higher value data).</li>
+  <li>If their implementation of ElastiCache doesn't allow multiple caches then simply increase the size of the current cache.  Your goal here is to ensure that this new cache (which is on low value data) doesn't crowd out the current cache citizens (which are higher value data).</li>
   <li>Look into their current implementation of ElastiCache and see if they have any metrics on cache hit ratio and the like.</li>
 </ol>
 
-<p>That’s 458 words on caching and I could honestly write a book on it but I think I’ll stop here.</p>
+<p>That's 458 words on caching and I could honestly write a book on it but I think I'll stop here.</p>
 
-<p><strong>Sidebar 1</strong>: (Not part of the 458 words).  If you never watched Brad Danga’s video on Live Journal architecture then I absolutely recommend it unfortunately it seems to have expired from YouTube and the best I can do are the <a href="http://danga.com/words/2005_oscon/oscon-2005.pdf">slides</a> (my favorite version) / <a href="http://danga.com/words/">More Slides</a>.  Brad is my favorite Internet Architect and if he had a baseball card, well, I’d treasure it.  Recommended.</p>
+<p><strong>Sidebar 1</strong>: (Not part of the 458 words).  If you never watched Brad Danga's video on Live Journal architecture then I absolutely recommend it unfortunately it seems to have expired from YouTube and the best I can do are the <a href="http://danga.com/words/2005_oscon/oscon-2005.pdf">slides</a> (my favorite version) / <a href="http://danga.com/words/">More Slides</a>.  Brad is my favorite Internet Architect and if he had a baseball card, well, I'd treasure it.  Recommended.</p>
 
-<p><strong>Sidebar 2</strong>: (Not part of the 458 words).  If you haven’t used ElastiCache then I highly recommend it.  It is truly the simplest way you’ll ever setup caching infrastructure.  AWS really knocked it out of the park on this one.</p>
+<p><strong>Sidebar 2</strong>: (Not part of the 458 words).  If you haven't used ElastiCache then I highly recommend it.  It is truly the simplest way you'll ever setup caching infrastructure.  AWS really knocked it out of the park on this one.</p>
 
   </div>
   

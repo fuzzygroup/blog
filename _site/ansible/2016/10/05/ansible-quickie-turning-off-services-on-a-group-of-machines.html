@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Ansible Quickie - Turning Off Services On A Group of Machines</title>
-  <meta name="description" content="In my continuing investigation of SSH failures on my cluster of AWS boxes, I’ve noticed that sendmail is running on my boxes and NOT refusing connections.  I...">
+  <meta name="description" content="In my continuing investigation of SSH failures on my cluster of AWS boxes, I've noticed that sendmail is running on my boxes and NOT refusing connections.  I...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/ansible/2016/10/05/ansible-quickie-turning-off-services-on-a-group-of-machines.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="In my continuing investigation of SSH failures on my cluster of AWS boxes, I’ve noticed that sendmail is running on my boxes and NOT refusing connections.  I’m not an ops guy but I can’t think that...">
+      content="In my continuing investigation of SSH failures on my cluster of AWS boxes, I've noticed that sendmail is running on my boxes and NOT refusing connections.  I'm not an ops guy but I can't think that...">
   
 
   
@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>In my continuing investigation of <a href="https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-10-diagnosing-ssh-failures-or-when-ping-works-but-ssh-fails.html">SSH failures on my cluster of AWS boxes</a>, I’ve noticed that sendmail is running on my boxes and NOT refusing connections.  I’m not an ops guy but I can’t think that this is good.  Here’s what I’m seeing:</p>
+    <p>In my continuing investigation of <a href="https://fuzzygroup.github.io/blog/aws/2016/10/01/aws-tutorial-10-diagnosing-ssh-failures-or-when-ping-works-but-ssh-fails.html">SSH failures on my cluster of AWS boxes</a>, I've noticed that sendmail is running on my boxes and NOT refusing connections.  I'm not an ops guy but I can't think that this is good.  Here's what I'm seeing:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>tail -f /var/log/syslog
 
@@ -188,7 +188,7 @@ Oct  5 08:10:01 ip-172-31-32-56 sm-mta[25939]: u958A1I6025939: from=&lt;root@ip-
 
 <h1 id="stopping-services-with-ansible">Stopping Services with Ansible</h1>
 
-<p>I don’t have a port open for sendmail in my security group so this confuses me but it should be easy enough to add an ansible role to my playbook to address it.  Here are the steps:</p>
+<p>I don't have a port open for sendmail in my security group so this confuses me but it should be easy enough to add an ansible role to my playbook to address it.  Here are the steps:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>cd ~/wherever_your_ansible_root_is
 mkdir -p roles/services/tasks
@@ -206,7 +206,7 @@ touch roles/services/tasks/main.yml
 </code></pre>
 </div>
 
-<p>I added the routines to stop my apache2 instances because I’m not actually using them yet and any part of an attack surface that I can reduce might increase the chance of these boxes staying running longer.  Ideally they should be on a private internal network that isn’t exposed to the world at all.  And that’s coming but that’s a level of work I can’t do this very minute.</p>
+<p>I added the routines to stop my apache2 instances because I'm not actually using them yet and any part of an attack surface that I can reduce might increase the chance of these boxes staying running longer.  Ideally they should be on a private internal network that isn't exposed to the world at all.  And that's coming but that's a level of work I can't do this very minute.</p>
 
 <p>In my main playbook simply call this role:</p>
 
@@ -214,7 +214,7 @@ touch roles/services/tasks/main.yml
 </code></pre>
 </div>
 
-<p>You should note that I’m calling that role as the very last role since it does no good to stop a service before its created.  According to the <a href="http://docs.ansible.com/ansible/service_module.html">ansible service module docs</a>, the options for state are:</p>
+<p>You should note that I'm calling that role as the very last role since it does no good to stop a service before its created.  According to the <a href="http://docs.ansible.com/ansible/service_module.html">ansible service module docs</a>, the options for state are:</p>
 
 <ul>
   <li>running</li>
@@ -226,7 +226,7 @@ touch roles/services/tasks/main.yml
 
 <h1 id="proof">Proof</h1>
 
-<p>Here’s an example of a ps test on this before and after:</p>
+<p>Here's an example of a ps test on this before and after:</p>
 
 <p><strong>Before:</strong></p>
 

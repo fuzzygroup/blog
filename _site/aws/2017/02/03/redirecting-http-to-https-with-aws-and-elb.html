@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="A Tale of Four Redirects
 
-Every technologist worth his or her salt has an internal list of “most hated technologies”.  These are the things that no matter what they do always, always give them trou...">
+Every technologist worth his or her salt has an internal list of &quot;most hated technologies&quot;.  These are the things that no matter what they do always, always give...">
   
 
   
@@ -182,15 +182,15 @@ Every technologist worth his or her salt has an internal list of “most hated t
   <div class="post-content" itemprop="articleBody">
     <p style="text-align:center">A Tale of Four Redirects</p>
 
-<p>Every technologist worth his or her salt has an internal list of “most hated technologies”.  These are the things that no matter what they do always, always give them trouble.  Whether its because the technology in question is actually hard, a mental block or just plain ‘ol bad luck, we all have them.  For me it is always, always <a href="http://httpd.apache.org/docs/current/mod/mod_rewrite.html">mod_rewrite</a>.  <a href="http://httpd.apache.org/">Apache’s</a> mod_rewrite is just plain magic – when it works (and it can always be made to work), it does in place url transformations that let you change your entire technology stack but let Google keep on serving those old urls.  It really is outstanding.  But Great Ghu does it ever give me trouble at times.</p>
+<p>Every technologist worth his or her salt has an internal list of "most hated technologies".  These are the things that no matter what they do always, always give them trouble.  Whether its because the technology in question is actually hard, a mental block or just plain 'ol bad luck, we all have them.  For me it is always, always <a href="http://httpd.apache.org/docs/current/mod/mod_rewrite.html">mod_rewrite</a>.  <a href="http://httpd.apache.org/">Apache's</a> mod_rewrite is just plain magic – when it works (and it can always be made to work), it does in place url transformations that let you change your entire technology stack but let Google keep on serving those old urls.  It really is outstanding.  But Great Ghu does it ever give me trouble at times.</p>
 
 <p>Note: For a basic tutorial on mod_rewrite, please see this <a href="http://fuzzyblog.io/blog/apache/2017/02/03/apache2-and-mod-rewrite.html">blog post</a>.</p>
 
-<p>The situation in question was that I had a client with Rails being served by Apache / <a href="https://www.phusionpassenger.com/">Passenger</a> (my very <strong>favorite</strong> Rails deployment tool) and the client wanted, correctly, to convert all http based url requests to https.  Here’s the transition of the redirects one by one.</p>
+<p>The situation in question was that I had a client with Rails being served by Apache / <a href="https://www.phusionpassenger.com/">Passenger</a> (my very <strong>favorite</strong> Rails deployment tool) and the client wanted, correctly, to convert all http based url requests to https.  Here's the transition of the redirects one by one.</p>
 
 <h1 id="important---remove-allowoverride-all-from-your-apache-conf-file">Important - Remove AllowOverride all from Your Apache Conf File</h1>
 
-<p>I can’t stress this enough.  The Apache directive <strong>AllowOverride all</strong> means that redirects will not work.  Honestly I don’t even understand what AllowOverride all even does but I did confirm, experimentally, that if you have this, redirects simply will not work.  So make sure that you’ve got this turned off.</p>
+<p>I can't stress this enough.  The Apache directive <strong>AllowOverride all</strong> means that redirects will not work.  Honestly I don't even understand what AllowOverride all even does but I did confirm, experimentally, that if you have this, redirects simply will not work.  So make sure that you've got this turned off.</p>
 
 <h1 id="redirect-1">Redirect 1</h1>
 
@@ -202,7 +202,7 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI}
 </code></pre>
 </div>
 
-<p>This would actually work but our Apache isn’t actually serving https at all.  When you use an AWS ELB (Elastic Load Balancer) in conjunction with the ACM (AWS Certificate Manager) then your web server talks http on port 80 and the ELB acts as an intermediary translating it to and from https.  If you’re lucky with this redirect then your site may, possibly work.  If you’re unlucky then you’ll get stuck in an infinite loop of http to https to http and so on.  <a href="http://stackoverflow.com/questions/16200501/http-to-https-apache-redirection">Source</a></p>
+<p>This would actually work but our Apache isn't actually serving https at all.  When you use an AWS ELB (Elastic Load Balancer) in conjunction with the ACM (AWS Certificate Manager) then your web server talks http on port 80 and the ELB acts as an intermediary translating it to and from https.  If you're lucky with this redirect then your site may, possibly work.  If you're unlucky then you'll get stuck in an infinite loop of http to https to http and so on.  <a href="http://stackoverflow.com/questions/16200501/http-to-https-apache-redirection">Source</a></p>
 
 <h1 id="redirect-2">Redirect 2</h1>
 
@@ -230,7 +230,7 @@ RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
 <h1 id="redirect-4---the-working-one">Redirect 4 - The Working One</h1>
 
-<p>If you read support forum threads <em>closely</em> and <strong>well</strong> then you often, always near the end, find the right answer.  Here’s the redirect that worked for me:</p>
+<p>If you read support forum threads <em>closely</em> and <strong>well</strong> then you often, always near the end, find the right answer.  Here's the redirect that worked for me:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code># the final correct redirect
 RewriteEngine on
@@ -239,13 +239,13 @@ RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 </code></pre>
 </div>
 
-<p>This is from the same thread above (#3).  You’ll notice that #2, #3 and #4 all rely on the HTTP:X-Forwarded-Proto http header feature - this prevents problems with the ELB.  The description that the author gave is interesting:</p>
+<p>This is from the same thread above (#3).  You'll notice that #2, #3 and #4 all rely on the HTTP:X-Forwarded-Proto http header feature - this prevents problems with the ELB.  The description that the author gave is interesting:</p>
 
 <blockquote>
   <p>The Apache block (#2) above caused our ELB health check to fail from the HTTP 301 response. To allow this and other local requests over HTTP while redirecting external requests through the ELB to HTTPS, adjust the rewrite condition to match on http instead of a negative match on https:</p>
 </blockquote>
 
-<p>This solution was contributed by <a href="https://forums.aws.amazon.com/profile.jspa?userID=342382">holeinonenv</a> and, sir, I owe you a beer.  Thank you for your help. It is the only thing he’s ever posted on the AWS forums and man am I glad he posted it.</p>
+<p>This solution was contributed by <a href="https://forums.aws.amazon.com/profile.jspa?userID=342382">holeinonenv</a> and, sir, I owe you a beer.  Thank you for your help. It is the only thing he's ever posted on the AWS forums and man am I glad he posted it.</p>
 
   </div>
   

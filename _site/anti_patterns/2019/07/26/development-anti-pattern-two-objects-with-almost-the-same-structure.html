@@ -181,11 +181,11 @@
     <p>One of the beautiful things about greenfield development, that joyous process of starting anew on something, is that it lets you see errors that you make much more cleanly.  And this is a combination of a few things:</p>
 
 <ol>
-  <li>The Forest for the Trees.  In a big code base, any errors you make aren’t that visible because they are drowned out by all the other bits of code.</li>
+  <li>The Forest for the Trees.  In a big code base, any errors you make aren't that visible because they are drowned out by all the other bits of code.</li>
   <li>Willingness to Get It Right.  When you start a new code base, it is like starting a new love affair – this time, you are going to get it <strong>right</strong>.  This time, it will be <strong>different</strong>.  So you are a bit more able to see errors then a lot more willing to rip apart something that is already working to make it right.</li>
 </ol>
 
-<p>The specific example at hand is the anti pattern of two objects with almost the same structure.  Here’s an example from my current side project:</p>
+<p>The specific example at hand is the anti pattern of two objects with almost the same structure.  Here's an example from my current side project:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>desc habits;
 +-----------------+--------------+------+-----+---------+----------------+
@@ -233,7 +233,7 @@ desc habit_tasks;
 
 <p>These are pretty close to the same and they represent an attempt to give a 1 level hierarchy (the habit_task) onto the parent object (habit).</p>
 
-<p>And the simple answer here is that what I’m actually looking for are groups not a sub-object i.e. invent a group concept an then simply reduce all the habit_task objects to habits that are grouped together.  That achieves roughly 95% of what habit_tasks did and dramatically:</p>
+<p>And the simple answer here is that what I'm actually looking for are groups not a sub-object i.e. invent a group concept an then simply reduce all the habit_task objects to habits that are grouped together.  That achieves roughly 95% of what habit_tasks did and dramatically:</p>
 
 <ul>
   <li>reduces code duplication (the same routine to calculate economic_value is used multiple places)</li>

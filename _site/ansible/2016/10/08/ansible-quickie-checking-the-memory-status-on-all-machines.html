@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Ansible Quickie - Checking the Memory Status on All Machines</title>
-  <meta name="description" content="As I’ve related in depth, I’ve been dealing with a problem of reliability and it is looking like its a memory issue.  Now there are lots and lots of ways to ...">
+  <meta name="description" content="As I've related in depth, I've been dealing with a problem of reliability and it is looking like its a memory issue.  Now there are lots and lots of ways to ...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/ansible/2016/10/08/ansible-quickie-checking-the-memory-status-on-all-machines.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="As I’ve related in depth, I’ve been dealing with a problem of reliability and it is looking like its a memory issue.  Now there are lots and lots of ways to monitor memory usage on a cluster of mac...">
+      content="As I've related in depth, I've been dealing with a problem of reliability and it is looking like its a memory issue.  Now there are lots and lots of ways to monitor memory usage on a cluster of mac...">
   
 
   
@@ -178,11 +178,11 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>As I’ve related in depth, I’ve been dealing with a problem of reliability and it is looking like its a memory issue.  Now there are lots and lots of ways to monitor memory usage on a cluster of machines.  I don’t think I could even enumerate them if I tried.  However I’m a software engineer and I’m specifically <strong>not</strong> the kind of guy who has a dashboard and systems monitoring tools like HP OpenView, etc.  I’ve also been using Unix since 1986 and I fundamentally believe in the core Unix model of tiny tools so here’s how I did it.</p>
+    <p>As I've related in depth, I've been dealing with a problem of reliability and it is looking like its a memory issue.  Now there are lots and lots of ways to monitor memory usage on a cluster of machines.  I don't think I could even enumerate them if I tried.  However I'm a software engineer and I'm specifically <strong>not</strong> the kind of guy who has a dashboard and systems monitoring tools like HP OpenView, etc.  I've also been using Unix since 1986 and I fundamentally believe in the core Unix model of tiny tools so here's how I did it.</p>
 
 <h1 id="what-i-wanted">What I Wanted</h1>
 
-<p>Getting control of a bad ops situation with servers is often about representing data in a way that <strong>you can understand</strong> and process it.  All I wanted was a command in a terminal that I could run periodically which would show me free memory on all machines.  Here’s an example of what I put together:</p>
+<p>Getting control of a bad ops situation with servers is often about representing data in a way that <strong>you can understand</strong> and process it.  All I wanted was a command in a terminal that I could run periodically which would show me free memory on all machines.  Here's an example of what I put together:</p>
 
 <p>ficrawlerbig | SUCCESS | rc=0 »
 5103412</p>
@@ -214,11 +214,11 @@
 <p>ficrawler10 | SUCCESS | rc=0 »
 5102220</p>
 
-<p>That’s all I want and I wasn’t going to setup some kind of elaborate tool to get that.  I was going to use Ansible to execute a command on a batch of machines.  All I needed was that command.</p>
+<p>That's all I want and I wasn't going to setup some kind of elaborate tool to get that.  I was going to use Ansible to execute a command on a batch of machines.  All I needed was that command.</p>
 
 <h1 id="the-command">The Command</h1>
 
-<p>There are all kinds of ways to get memory stats on unix and I wasn’t about to make this hard.  And you have to remember that at my core I’m a Ruby guy.  And while I mastered awk in 1990 or so, I haven’t written a line of awk since about 1996 when my own implementation of awk, HyperAwk (see below), disappeared from this world.  I’m also not a shell guy; I struggle with bash / zsh.  So I wanted a ruby solution.  And I came up with this:</p>
+<p>There are all kinds of ways to get memory stats on unix and I wasn't about to make this hard.  And you have to remember that at my core I'm a Ruby guy.  And while I mastered awk in 1990 or so, I haven't written a line of awk since about 1996 when my own implementation of awk, HyperAwk (see below), disappeared from this world.  I'm also not a shell guy; I struggle with bash / zsh.  So I wanted a ruby solution.  And I came up with this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="c1">#!/usr/local/rvm/rubies/ruby-2.3.1/bin/ruby</span>
 <span class="n">output</span> <span class="o">=</span> <span class="sx">%x(free)</span>
@@ -226,7 +226,7 @@
 </code></pre>
 </div>
 
-<p>Which I’m pretty sure I shamelessly stole from a Stack Overflow post somewhere.  I think I closed the tab in a browser crash.  Sorry.</p>
+<p>Which I'm pretty sure I shamelessly stole from a Stack Overflow post somewhere.  I think I closed the tab in a browser crash.  Sorry.</p>
 
 <h1 id="the-ansible-side-of-things---an-ad-hoc-routine">The Ansible Side of things - An Ad Hoc Routine:</h1>
 

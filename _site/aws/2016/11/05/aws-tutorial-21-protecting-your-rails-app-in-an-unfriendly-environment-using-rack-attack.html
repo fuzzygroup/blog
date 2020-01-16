@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>AWS Tutorial 21 - Protecting Your Rails App In an Unfriendly Environment Using Rack Attack</title>
-  <meta name="description" content="The more I do in a cloud environment, the more I learn that cloud hosting, despite being essentially the same linux stack that I’m used to is just plain diff...">
+  <meta name="description" content="The more I do in a cloud environment, the more I learn that cloud hosting, despite being essentially the same linux stack that I'm used to is just plain diff...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/aws/2016/11/05/aws-tutorial-21-protecting-your-rails-app-in-an-unfriendly-environment-using-rack-attack.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="The more I do in a cloud environment, the more I learn that cloud hosting, despite being essentially the same linux stack that I’m used to is just plain different.  Ever since 2008 I’ve done AWS st...">
+      content="The more I do in a cloud environment, the more I learn that cloud hosting, despite being essentially the same linux stack that I'm used to is just plain different.  Ever since 2008 I've done AWS st...">
   
 
   
@@ -178,18 +178,18 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>The more I do in a cloud environment, the more I learn that cloud hosting, despite being essentially the same linux stack that I’m used to is just plain <strong>different</strong>.  Ever since 2008 I’ve done AWS stuff on and off but my focus for core hosting has generally been a stack of Linux boxes in a traditional data center.</p>
+    <p>The more I do in a cloud environment, the more I learn that cloud hosting, despite being essentially the same linux stack that I'm used to is just plain <strong>different</strong>.  Ever since 2008 I've done AWS stuff on and off but my focus for core hosting has generally been a stack of Linux boxes in a traditional data center.</p>
 
 <h1 id="understanding-the-attack-surface">Understanding The Attack Surface</h1>
 
-<p>One of the differences between hosting in a traditional data center and on the “cloud” is that the cloud offers a larger <em>attack surface</em>.  From the perspective of a security research the idea of an attack surface is as follows:</p>
+<p>One of the differences between hosting in a traditional data center and on the "cloud" is that the cloud offers a larger <em>attack surface</em>.  From the perspective of a security research the idea of an attack surface is as follows:</p>
 
 <blockquote>
-  <p>The attack surface of a software environment is the sum of the different points (the “attack vectors”) where an unauthorized user (the “attacker”) can try to enter data to or extract data from an environment.
+  <p>The attack surface of a software environment is the sum of the different points (the "attack vectors") where an unauthorized user (the "attacker") can try to enter data to or extract data from an environment.
 <a href="https://en.wikipedia.org/wiki/Attack_surface">Wikipedia</a></p>
 </blockquote>
 
-<p>One way to think of attack surface is in terms of your own system – you run software on these ports for example.  Each port is a place where we can be attacked.  However there is a meta way to look at the idea of an attack surface – think about the whole expanse of machines where you host your nodes.  Given the size of AWS in terms of the number of customers it has and the vast number of instances that they host, if you’re looking to do something malicious online, would you rather target a tiny regional data center or a vast sprawling expanse of targets like AWS?  I’m not a malicious guy and even I can tell that the right answer here is <strong>AWS</strong>.</p>
+<p>One way to think of attack surface is in terms of your own system – you run software on these ports for example.  Each port is a place where we can be attacked.  However there is a meta way to look at the idea of an attack surface – think about the whole expanse of machines where you host your nodes.  Given the size of AWS in terms of the number of customers it has and the vast number of instances that they host, if you're looking to do something malicious online, would you rather target a tiny regional data center or a vast sprawling expanse of targets like AWS?  I'm not a malicious guy and even I can tell that the right answer here is <strong>AWS</strong>.</p>
 
 <p>What sparked this blog post is the other day I tossed up an EC2 instance for a project and I discovered, within minutes, of that instance coming online was this crap in my production.log file:</p>
 
@@ -204,34 +204,34 @@
 </code></pre>
 </div>
 
-<p>What’s happening here is that a botnet somewhere in the world is probing for software with known security vulnerabilities; phpMyAdmin is a well known source of problems.  According to this <a href="http://sparkcognition.com/2016/06/sparkblog-navigating-perils-phpmyadmin-security/">report</a>, phpMyAdmin is actually the #2 target by volume of security probes.</p>
+<p>What's happening here is that a botnet somewhere in the world is probing for software with known security vulnerabilities; phpMyAdmin is a well known source of problems.  According to this <a href="http://sparkcognition.com/2016/06/sparkblog-navigating-perils-phpmyadmin-security/">report</a>, phpMyAdmin is actually the #2 target by volume of security probes.</p>
 
-<p>So you’re probably thinking something like:</p>
+<p>So you're probably thinking something like:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>This is a rails app; I don't have any php apps on my system and so this isn't a problem since there's nothing to find.
 </code></pre>
 </div>
 
-<p>And that’s technically true but each of these probes is:</p>
+<p>And that's technically true but each of these probes is:</p>
 
 <ul>
   <li>polluting our log files making it harder to find real problems</li>
-  <li>raising an exception which is computationally expensive i.e. we’re actually paying something for someone to probe our system</li>
+  <li>raising an exception which is computationally expensive i.e. we're actually paying something for someone to probe our system</li>
 </ul>
 
 <h1 id="filtering-inbound-requests-in-rails">Filtering Inbound Requests in Rails</h1>
 
-<p>There are lots and lots of ways to deal with this kind of problem but let’s talk about what’s desirable:</p>
+<p>There are lots and lots of ways to deal with this kind of problem but let's talk about what's desirable:</p>
 
 <ul>
   <li>stop the request as early as possible; the sooner you stop this type of request the less of your system resources are consumed</li>
-  <li>let’s not write this from scratch; someone else must have already solved this</li>
+  <li>let's not write this from scratch; someone else must have already solved this</li>
   <li>the rules for this need to be checked into git so we have a history of what we changed</li>
 </ul>
 
 <p>A little bit of googling turns up the gem <a href="https://github.com/kickstarter/rack-attack">rack-attack</a> which plugs into the Rack middle ware layer that sits between the inbound http layer and our Rails application.</p>
 
-<p>Here’s how to configure Rack Attack for your Rails application.  All of this is actually quite easy and was tested on production Rails 4 and Rails 5 applications running on AWS.</p>
+<p>Here's how to configure Rack Attack for your Rails application.  All of this is actually quite easy and was tested on production Rails 4 and Rails 5 applications running on AWS.</p>
 
 <h2 id="step-1-add-rack-attack-to-gemfile">Step 1: Add rack-attack to Gemfile</h2>
 
@@ -251,7 +251,7 @@
 
 <h2 id="step-3-add-rack-attack-to-applicationrb">Step 3: Add rack-attack to application.rb</h2>
 
-<p>The next step is to modify application.rb or config.ru so that rack-attack is called.  Here’s an example for both:</p>
+<p>The next step is to modify application.rb or config.ru so that rack-attack is called.  Here's an example for both:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>For application.rb:
 
@@ -265,11 +265,11 @@ use Rack::Attack
 
 <h2 id="step-4-write-your-rules">Step 4: Write Your Rules</h2>
 
-<p>At this stage you have rack-attack properly setup and stuck into the middle for your data flow but it won’t <strong>do</strong> anything.  Like a lot of security products it needs a set of rules to execute.  Since this is essentially Rails system software, its controlled at startup by a chunk of Ruby code located in config/initializers.  Any Ruby code in this directory is executed once at startup.  Here are some of the caveats of initializers:</p>
+<p>At this stage you have rack-attack properly setup and stuck into the middle for your data flow but it won't <strong>do</strong> anything.  Like a lot of security products it needs a set of rules to execute.  Since this is essentially Rails system software, its controlled at startup by a chunk of Ruby code located in config/initializers.  Any Ruby code in this directory is executed once at startup.  Here are some of the caveats of initializers:</p>
 
 <ul>
-  <li>If there is a syntax error in an initializer the entire Rails system won’t start.  Honestly problems with initializers having code problems and my not noticing it was why I developed my fascination with <a href="https://fuzzygroup.github.io/blog/git/2014/08/29/the-importance-of-git-hooks.html">.git/hooks</a> and why I’ve <strong>required</strong> them for any engineer who works on a Ruby project with me.  If you don’t have your engineers using .git/hooks then you’re doing yourself a disservice.</li>
-  <li>The name for the initializer doesn’t matter at all; theoretically you should name this rack-attack.rb but you could name it magic-bananna.rb and it would be just as happy.</li>
+  <li>If there is a syntax error in an initializer the entire Rails system won't start.  Honestly problems with initializers having code problems and my not noticing it was why I developed my fascination with <a href="https://fuzzygroup.github.io/blog/git/2014/08/29/the-importance-of-git-hooks.html">.git/hooks</a> and why I've <strong>required</strong> them for any engineer who works on a Ruby project with me.  If you don't have your engineers using .git/hooks then you're doing yourself a disservice.</li>
+  <li>The name for the initializer doesn't matter at all; theoretically you should name this rack-attack.rb but you could name it magic-bananna.rb and it would be just as happy.</li>
   <li>Initializers are executed once and only once per execution of the core Rails stack; if you need to make a change stop your development server and restart it.</li>
 </ul>
 
@@ -282,7 +282,7 @@ end
 </code></pre>
 </div>
 
-<p>The rack-attack wiki has a great example of a configuration <a href="https://github.com/kickstarter/rack-attack/wiki/Example-Configuration">here</a> which illustrates the power of rack-attack and what it can do for you.  Here’s the custom rule I wrote for any .php request:</p>
+<p>The rack-attack wiki has a great example of a configuration <a href="https://github.com/kickstarter/rack-attack/wiki/Example-Configuration">here</a> which illustrates the power of rack-attack and what it can do for you.  Here's the custom rule I wrote for any .php request:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>Rack::Attack.blocklist('any php request') do |req|
   req.path =~ /\.php/ &amp;&amp; req.get? #&amp;&amp; req.user_agent == 'BadUA'
@@ -293,9 +293,9 @@ end
 <p>All this is doing is looking for any request containing .php that is also a get request.  Four things:</p>
 
 <ol>
-  <li>I didn’t make the regex be .php$ because there might be parameters its trying to pass along like ?foo=bar</li>
-  <li>The commented out bit lets you optionally test the name of the user agent also.  I didn’t do this because the user-agent is so regularly spoofed that its not funny.</li>
-  <li>If you are going to use the example from the rack-attack wiki linked above then don’t forget to modify the examples for your specific urls on login.  I missed that the first time around.</li>
+  <li>I didn't make the regex be .php$ because there might be parameters its trying to pass along like ?foo=bar</li>
+  <li>The commented out bit lets you optionally test the name of the user agent also.  I didn't do this because the user-agent is so regularly spoofed that its not funny.</li>
+  <li>If you are going to use the example from the rack-attack wiki linked above then don't forget to modify the examples for your specific urls on login.  I missed that the first time around.</li>
   <li>This will only do get requests.</li>
 </ol>
 

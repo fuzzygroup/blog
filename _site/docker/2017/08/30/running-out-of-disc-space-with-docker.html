@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Running out of Disc Space with Docker</title>
-  <meta name="description" content="I’ve now been exploring Docker for almost a year now and using it daily for five months or so.  And, as I get ever closer to shipping a product that runs usi...">
+  <meta name="description" content="I've now been exploring Docker for almost a year now and using it daily for five months or so.  And, as I get ever closer to shipping a product that runs usi...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/docker/2017/08/30/running-out-of-disc-space-with-docker.html">
@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I’ve now been exploring <a href="https://www.docker.com/">Docker</a> for almost a year now and using it daily for five months or so.  And, as I get ever closer to shipping a product that runs using containers for everything, I have been continually hitting issues regarding running out of disc space.</p>
+    <p>I've now been exploring <a href="https://www.docker.com/">Docker</a> for almost a year now and using it daily for five months or so.  And, as I get ever closer to shipping a product that runs using containers for everything, I have been continually hitting issues regarding running out of disc space.</p>
 
 <h1 id="understanding-the-problem">Understanding The Problem</h1>
 
@@ -197,7 +197,7 @@
 
 <h1 id="docker-on-linux-basics">Docker on Linux Basics</h1>
 
-<p>On Ubuntu and most Linux platforms that I understand, the core Docker installation of your data is stored in /var/lib/docker and then a collection of subdirectories.  Here’s an example:</p>
+<p>On Ubuntu and most Linux platforms that I understand, the core Docker installation of your data is stored in /var/lib/docker and then a collection of subdirectories.  Here's an example:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ls -l /var/lib/docker
 total 44
@@ -217,9 +217,9 @@ drwx------ 12 root root  4096 Aug 30 03:01 volumes
 
 <p>I am currently involved in what is termed <em>green field</em> software development – this is a development term related to creating a brand new product i.e. everything is a green field waiting to be plowed.  One of the characteristics of green field development is a <strong>lot</strong> of deploys.  As I initially looked into this problem, its characteristics seemed to map directly to the number of deploys – more deploys meant more disc space used.  When you see this type of situation, it tends to argue that the underlying issue is somehow tied to garbage collection.  My research and analysis of this led me to think that the issue was somehow tied to issues in the Docker aufs filesystem and I switched my installation from aufs to overlay2 and thought it was resolved.</p>
 
-<p>Last night I started getting alerts that my production server was again almost out of disc space (thank you <a href="https://github.com/arnaudsj/monit">Monit!</a>).  Now the interesting thing is that between when I thought this was resolved and last night, I <strong>have not been deploying at all</strong>.  Over the past 5 days, I have been involved in an intense refactor of my new product’s two core <a href="https://en.wikipedia.org/wiki/God_object">god objects</a> - course.rb and teacher.rb.  In software development parlance, a god object is an object that knows too much or does too much and it is regarded as an <a href="https://en.wikipedia.org/wiki/Anti-pattern">anti pattern</a>.  When you do this type of refactoring, it tends to shut down everything since it breaks, well, <strong>everything</strong>.  Seeing that I was again running out of disc space – while I wasn’t deploying – argued that my working theory was just plain <strong>wrong</strong>.</p>
+<p>Last night I started getting alerts that my production server was again almost out of disc space (thank you <a href="https://github.com/arnaudsj/monit">Monit!</a>).  Now the interesting thing is that between when I thought this was resolved and last night, I <strong>have not been deploying at all</strong>.  Over the past 5 days, I have been involved in an intense refactor of my new product's two core <a href="https://en.wikipedia.org/wiki/God_object">god objects</a> - course.rb and teacher.rb.  In software development parlance, a god object is an object that knows too much or does too much and it is regarded as an <a href="https://en.wikipedia.org/wiki/Anti-pattern">anti pattern</a>.  When you do this type of refactoring, it tends to shut down everything since it breaks, well, <strong>everything</strong>.  Seeing that I was again running out of disc space – while I wasn't deploying – argued that my working theory was just plain <strong>wrong</strong>.</p>
 
-<p>My next step was to ssh into the box (yes, even with a containerized architecture, there are still servers and sshing in is still a thing) and look into /var/lib/docker once again.  My general tool for this was the command du -shc *  which translates to “show me the disc space usage at a summary level and translate it to human style (i.e. k / megs / gigs)”.  Here’s an example of my command flow:</p>
+<p>My next step was to ssh into the box (yes, even with a containerized architecture, there are still servers and sshing in is still a thing) and look into /var/lib/docker once again.  My general tool for this was the command du -shc *  which translates to "show me the disc space usage at a summary level and translate it to human style (i.e. k / megs / gigs)".  Here's an example of my command flow:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>sudo su - 
 cd /var/lib/docker
@@ -249,13 +249,13 @@ du -shc *
 
 <ol>
   <li>While there may have been issues related to a constant ongoing deploy process, the core underlying issue seems to be disc usage due to log file build up.</li>
-  <li>Docker makes it very hard to see the underlying problem since there doesn’t seem to be a “where is my damn disc space going” type of command.  Update: Try using “docker system df” to visualize docker disc space usage.  I only found this late in the writing process on this post.  The docker system df command doesn’t specifically report log file space usage which I suspect would illuminate this problem.</li>
+  <li>Docker makes it very hard to see the underlying problem since there doesn't seem to be a "where is my damn disc space going" type of command.  Update: Try using "docker system df" to visualize docker disc space usage.  I only found this late in the writing process on this post.  The docker system df command doesn't specifically report log file space usage which I suspect would illuminate this problem.</li>
   <li>Logs appear to be persistent over time and not reclaimed as you deploy.  My suspicion is that logs are only reset when you stop the Docker daemon (and sometimes not even then).</li>
-  <li>Traditional log management like log rotate won’t work unless you restart the Docker daemon.</li>
-  <li><strong>Sidebar</strong>: I wonder how many people that have struggled with this issue have actually had log file growth issues not actual Docker problems?  Most of the unresolved Docker / Moby issues below don’t explore the logs possibility.</li>
+  <li>Traditional log management like log rotate won't work unless you restart the Docker daemon.</li>
+  <li><strong>Sidebar</strong>: I wonder how many people that have struggled with this issue have actually had log file growth issues not actual Docker problems?  Most of the unresolved Docker / Moby issues below don't explore the logs possibility.</li>
 </ol>
 
-<p>It should be noted that I’m not logging to files from within my application code and I’m using the log to standard out approach from the <a href="https://github.com/nickjj/orats">Orats gem</a>.</p>
+<p>It should be noted that I'm not logging to files from within my application code and I'm using the log to standard out approach from the <a href="https://github.com/nickjj/orats">Orats gem</a>.</p>
 
 <h1 id="fixing-this-problem-once-and-for-all">Fixing this Problem Once and For All</h1>
 
@@ -271,7 +271,7 @@ du -shc *
 
 <h2 id="step-2-delete-varlibdocker">Step 2: Delete /var/lib/docker</h2>
 
-<p>The next step appears drastic and it is.  If you have important data in your Docker system then you’re going to lose it at this stage but when I attempted to do this piecemeal, I got bizarre deployment errors related to missing containers and even redeploying did not fix it.</p>
+<p>The next step appears drastic and it is.  If you have important data in your Docker system then you're going to lose it at this stage but when I attempted to do this piecemeal, I got bizarre deployment errors related to missing containers and even redeploying did not fix it.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>sudo su
 umount /var/lib/docker/overlay2
@@ -304,7 +304,7 @@ rm -rf *
 </span></code></pre>
 </div>
 
-<p><strong>Disclaimer</strong>: I’m honestly not 100% certain that switching from aufs to overlay2 is absolutely required but it was a part of the overall solution and does seem to have benefits so I left it in here although I suspect that the logging is clearly the biggest win here.</p>
+<p><strong>Disclaimer</strong>: I'm honestly not 100% certain that switching from aufs to overlay2 is absolutely required but it was a part of the overall solution and does seem to have benefits so I left it in here although I suspect that the logging is clearly the biggest win here.</p>
 
 <h2 id="step-4-restart-docker-daemon">Step 4: Restart Docker Daemon</h2>
 
@@ -324,7 +324,7 @@ rm -rf *
 </code></pre>
 </div>
 
-<p>Here’s an example in the context of a full container:</p>
+<p>Here's an example in the context of a full container:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>services:
   redis:
@@ -340,7 +340,7 @@ rm -rf *
 </code></pre>
 </div>
 
-<p>Theoretically I could have ignored this at a per container level and just relied on the log management defined in /etc/docker/daemon.json but when you have a system level config file, that often gets changed and not checked into version control, belt <strong>and</strong> suspenders is better.  Setting this at the application level and the system level should ensure that I don’t get bit by this again.  This will also protect your local dev box from unlimited log growth which could otherwise be a problem since your local dev box isn’t configured by the same /etc/docker/daemon.json file.</p>
+<p>Theoretically I could have ignored this at a per container level and just relied on the log management defined in /etc/docker/daemon.json but when you have a system level config file, that often gets changed and not checked into version control, belt <strong>and</strong> suspenders is better.  Setting this at the application level and the system level should ensure that I don't get bit by this again.  This will also protect your local dev box from unlimited log growth which could otherwise be a problem since your local dev box isn't configured by the same /etc/docker/daemon.json file.</p>
 
 <h2 id="add-cron-jobs-for-removing-unused-stuff-periodically">Add Cron Jobs for Removing Unused Stuff Periodically</h2>
 
@@ -357,7 +357,7 @@ rm -rf *
 
 <h2 id="step-7-get-etcdockerdaemonjson-into-ansible--version-control">Step 7: Get /etc/docker/daemon.json into Ansible / Version Control</h2>
 
-<p>However you configure a new instance, you should make sure that your modified daemon.json file from Step 3 is part of that process or you’ll find that setting up a new machine has this same problem.</p>
+<p>However you configure a new instance, you should make sure that your modified daemon.json file from Step 3 is part of that process or you'll find that setting up a new machine has this same problem.</p>
 
 <h2 id="step-8-redeploy-everything">Step 8: Redeploy Everything</h2>
 
@@ -365,7 +365,7 @@ rm -rf *
 
 <h1 id="sidebar-1-docker-system-df">Sidebar 1: docker system df</h1>
 
-<p>As I was finishing this post, I found the command docker system df which shows you the space docker uses.  Here’s an example from my local dev box:</p>
+<p>As I was finishing this post, I found the command docker system df which shows you the space docker uses.  Here's an example from my local dev box:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>FuzzygroupMacbookPro2016% docker system df
 TYPE                TOTAL               ACTIVE              SIZE                RECLAIMABLE
@@ -377,7 +377,7 @@ Local Volumes       41                  22                  634.5MB             
 
 <h1 id="sidebar-2-docker-system-prune">Sidebar 2: docker system prune</h1>
 
-<p>The command docker system prune reclaims dangling images and stopped containers.  Here’s an example:</p>
+<p>The command docker system prune reclaims dangling images and stopped containers.  Here's an example:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>FuzzygroupMacbookPro2016% docker system prune
 WARNING! This will remove:
@@ -393,13 +393,13 @@ Total reclaimed space: 28.72GB
 </code></pre>
 </div>
 
-<p>The interesting thing here is that before I ran this I had 46 gigs of free space on my local dev box and after I ran this, I still had 46 gigs free.  I don’t know why Docker states that it reclaimed space when it doesn’t.</p>
+<p>The interesting thing here is that before I ran this I had 46 gigs of free space on my local dev box and after I ran this, I still had 46 gigs free.  I don't know why Docker states that it reclaimed space when it doesn't.</p>
 
-<p>Note: I’m not the only person who can’t reclaim this space.</p>
+<p>Note: I'm not the only person who can't reclaim this space.</p>
 
 <h1 id="what-to-learn-from-this">What to Learn from This</h1>
 
-<p>I would argue that the big takeaway from this isn’t actually the specific Docker commands, useful as they are, but the observation that disc space growth wasn’t tied to deploys but instead to system operation.  Realizing this changed how I approached the problem.  When you build complex systems, learning how to observe them and then correlating that with what you are doing to the system is a key technique.</p>
+<p>I would argue that the big takeaway from this isn't actually the specific Docker commands, useful as they are, but the observation that disc space growth wasn't tied to deploys but instead to system operation.  Realizing this changed how I approached the problem.  When you build complex systems, learning how to observe them and then correlating that with what you are doing to the system is a key technique.</p>
 
 <h1 id="thank-yous">Thank Yous</h1>
 

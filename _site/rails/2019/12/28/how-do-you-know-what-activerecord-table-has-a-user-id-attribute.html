@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-Even though I’m a firm, firm believer in agile, I’ve recently been experimenting with a throwback to waterfall style development and it very quickly left me with a fully featured data structure o...">
+Even though I'm a firm, firm believer in agile, I've recently been experimenting with a throwback to waterfall style development and it very quickly left me with a fully featured data structure o...">
   
 
   
@@ -182,12 +182,12 @@ Even though I’m a firm, firm believer in agile, I’ve recently been experimen
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_0903.jpeg" alt="IMG_0903.jpeg" /></p>
 
-<p>Even though I’m a firm, firm believer in agile, I’ve recently been experimenting with a throwback to waterfall style development and it very quickly left me with a fully featured data structure of tables and relationships modeled as <strong>example data</strong>.  What I did is very rapidly write a series of migrations and then populate them to represent a sample “installation”.  My goal with this approach was to play to my strengths – data modeling – and avoid getting tied down in user interface stuff (my weakness).</p>
+<p>Even though I'm a firm, firm believer in agile, I've recently been experimenting with a throwback to waterfall style development and it very quickly left me with a fully featured data structure of tables and relationships modeled as <strong>example data</strong>.  What I did is very rapidly write a series of migrations and then populate them to represent a sample "installation".  My goal with this approach was to play to my strengths – data modeling – and avoid getting tied down in user interface stuff (my weakness).</p>
 
-<p>This was a very, very interesting approach and what I found was that I got much further along the lines of the “guts” of an application simply because I never got discouraged by:</p>
+<p>This was a very, very interesting approach and what I found was that I got much further along the lines of the "guts" of an application simply because I never got discouraged by:</p>
 
 <blockquote>
-  <p>Oh Shite – I know this should look good but I’m too much of a hoser to make it look good; I guess I’ll put it aside and go watch TV</p>
+  <p>Oh Shite – I know this should look good but I'm too much of a hoser to make it look good; I guess I'll put it aside and go watch TV</p>
 </blockquote>
 
 <p>The downside to this is that I never bothered setting up the normal associations that you do when you write a migration; I simply thought about this application in terms of the example data:</p>
@@ -198,7 +198,7 @@ Even though I’m a firm, firm believer in agile, I’ve recently been experimen
   <li>how the data objects would interact with each other</li>
 </ul>
 
-<p>One of the things that I noticed when I started filling in the basics like “belongs_to :user” was that I kept constantly jumping between the class I was working on and the schema file.  Finally it hit me – what I needed was a method that I could execute in the console that would tell me what classes had a user_id attribute.  And so I wrote a class called DataObject (for an ActiveRecord class which stores data) and a method .has_user_id.  What I was looking for was output that looked like this:</p>
+<p>One of the things that I noticed when I started filling in the basics like "belongs_to :user" was that I kept constantly jumping between the class I was working on and the schema file.  Finally it hit me – what I needed was a method that I could execute in the console that would tell me what classes had a user_id attribute.  And so I wrote a class called DataObject (for an ActiveRecord class which stores data) and a method .has_user_id.  What I was looking for was output that looked like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>&gt; DataObject.has_user_id
 Initiative
@@ -226,7 +226,7 @@ User
 </code></pre>
 </div>
 
-<p>Here’s the entirety of the DataObject class:</p>
+<p>Here's the entirety of the DataObject class:</p>
 
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">DataObject</span>
   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">all</span>
@@ -248,15 +248,15 @@ User
 </code></pre>
 </div>
 
-<p>You’ll notice the self.all class method returns a list of classes specific to my application.  These are the classes that actually make up the business logic.  I needed to NOT pull all classes in the application because I built this on top of a new framework, JumpStart Pro (see next section). JumpStart Pro has a bunch of its own classes for things like Credit Cards, Charges, etc.  I only wanted to focus on the classes that I implemented; hence the .all method.</p>
+<p>You'll notice the self.all class method returns a list of classes specific to my application.  These are the classes that actually make up the business logic.  I needed to NOT pull all classes in the application because I built this on top of a new framework, JumpStart Pro (see next section). JumpStart Pro has a bunch of its own classes for things like Credit Cards, Charges, etc.  I only wanted to focus on the classes that I implemented; hence the .all method.</p>
 
-<p>In order to use this, all I need to do is go into a console, which I <strong>always, always</strong> have open anyway (Thanks Jared) and then type DataObject.has_user_id and I’ll get a print out similar to the above list.  Using this I was able to much more easily move from class to class and add in my <em>belongs_to user</em> relationships.</p>
+<p>In order to use this, all I need to do is go into a console, which I <strong>always, always</strong> have open anyway (Thanks Jared) and then type DataObject.has_user_id and I'll get a print out similar to the above list.  Using this I was able to much more easily move from class to class and add in my <em>belongs_to user</em> relationships.</p>
 
 <p><strong>Note</strong>: It took about 3 to 4 times longer to write this blog post than it did to write this class.</p>
 
 <h2 id="sidebar-gorails-jumpstart">Sidebar: GoRails JumpStart</h2>
 
-<p>Given that my weakest skill is user interface, I chose, right from the start, to build this on top of <a href="https://jumpstartrails.com/">GoRails’ JumpStart Pro</a> product which is a framework for building Rails app and giving you a solid set of underpinnings for a SAAS app.  I’ve been ridiculously happy so far with JumpStart Pro.  Here’s an example of the high quality user interface I’ve seen from it:</p>
+<p>Given that my weakest skill is user interface, I chose, right from the start, to build this on top of <a href="https://jumpstartrails.com/">GoRails' JumpStart Pro</a> product which is a framework for building Rails app and giving you a solid set of underpinnings for a SAAS app.  I've been ridiculously happy so far with JumpStart Pro.  Here's an example of the high quality user interface I've seen from it:</p>
 
 <p class="center"><img src="/blog/assets/okrsnow01_edited.png" alt="okrsnow01_edited.png" /></p>
 
@@ -271,10 +271,10 @@ User
 </code></pre>
 </div>
 
-<p>I will fully admit that I don’t actually know if this drop down comes from JumpStart Pro or from Rails 6 and the new form with style forms but, <strong>damn</strong> is it sexy as hell to get a drop down calendar without ever doing a damn thing.  Here’s what I said to my wife as I discovered this in the car on the way home from seeing Trans Siberian Orchestra:</p>
+<p>I will fully admit that I don't actually know if this drop down comes from JumpStart Pro or from Rails 6 and the new form with style forms but, <strong>damn</strong> is it sexy as hell to get a drop down calendar without ever doing a damn thing.  Here's what I said to my wife as I discovered this in the car on the way home from seeing Trans Siberian Orchestra:</p>
 
 <blockquote>
-  <p>Man that’s sexy.  I think I’m more than a bit hard …</p>
+  <p>Man that's sexy.  I think I'm more than a bit hard …</p>
 </blockquote>
 
 <p>JumpStart Pro – Absolutely recommended.</p>

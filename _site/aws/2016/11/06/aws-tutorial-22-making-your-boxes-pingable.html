@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>The security default for AWS is brilliantly simple: <strong>Everything, absolutely everything, is locked down by default</strong>.  Once you understand that then developing on the AWS platform becomes a lot simpler.  Let’s take, for example, a simple EC2 instance:</p>
+    <p>The security default for AWS is brilliantly simple: <strong>Everything, absolutely everything, is locked down by default</strong>.  Once you understand that then developing on the AWS platform becomes a lot simpler.  Let's take, for example, a simple EC2 instance:</p>
 
 <ol>
   <li>You create it and you would generally assume that a server is pingable.</li>
@@ -186,7 +186,7 @@
   <li>So you try pinging the public IP and that fails.</li>
 </ol>
 
-<p>The answer here is simple – everything is locked down by default.  Even something as innocuous as ping.  Every AWS box comes with what’s called a Security Group and Amazon describes this a <em><a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html">virtual firewall that controls the traffic for one or more instances</a></em>.  Every box you create on AWS will automatically get a Security Group, confusingly named, Launch Wizard N where N is just an incrementing integer.  And since most of us generally accept defaults, you may end up with security groups named:</p>
+<p>The answer here is simple – everything is locked down by default.  Even something as innocuous as ping.  Every AWS box comes with what's called a Security Group and Amazon describes this a <em><a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html">virtual firewall that controls the traffic for one or more instances</a></em>.  Every box you create on AWS will automatically get a Security Group, confusingly named, Launch Wizard N where N is just an incrementing integer.  And since most of us generally accept defaults, you may end up with security groups named:</p>
 
 <ul>
   <li>Launch Wizard 1</li>
@@ -195,12 +195,12 @@
   <li>Launch Wizard 11</li>
 </ul>
 
-<p>At least that’s what my many attempts at AWS experimentation have left me with.  I’d strongly suggest you name these well.  For the bulk of us, networking is confusing enough without cruft like “Launch Wizard N”.  Honestly!</p>
+<p>At least that's what my many attempts at AWS experimentation have left me with.  I'd strongly suggest you name these well.  For the bulk of us, networking is confusing enough without cruft like "Launch Wizard N".  Honestly!</p>
 
-<p>Stack Overflow, as always, has a useful <a href="http://stackoverflow.com/questions/21981796/cannot-ping-aws-ec2-instance">piece</a> on this.  Here’s what to do:</p>
+<p>Stack Overflow, as always, has a useful <a href="http://stackoverflow.com/questions/21981796/cannot-ping-aws-ec2-instance">piece</a> on this.  Here's what to do:</p>
 
 <ol>
-  <li>You have to edit the Security Group to which your EC2 instance belongs.  If you don’t yet have a security group then add a new one.</li>
+  <li>You have to edit the Security Group to which your EC2 instance belongs.  If you don't yet have a security group then add a new one.</li>
   <li>Add a new rule and select the All ICMP option from the drop downs.</li>
   <li>If you want to restrict people probing for your instance then lock it down to your own IP address but there are pros and cons.</li>
 </ol>

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Code - Data Versus Algorithms or There Is Always Another Way</title>
-  <meta name="description" content="I’m currently writing an active side project.  I describe active as something that I think about every single day and I’ve been at for several months.  It is...">
+  <meta name="description" content="I'm currently writing an active side project.  I describe active as something that I think about every single day and I've been at for several months.  It is...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/software_engineering/2019/09/13/code-data-versus-algorithms-or-there-is-always-another-way.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="I’m currently writing an active side project.  I describe active as something that I think about every single day and I’ve been at for several months.  It is still in stealth mode but at more than ...">
+      content="I'm currently writing an active side project.  I describe active as something that I think about every single day and I've been at for several months.  It is still in stealth mode but at more than ...">
   
 
   
@@ -178,11 +178,11 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I’m currently writing an active side project.  I describe active as something that I think about every single day and I’ve been at for several months.  It is still in stealth mode but at more than 4k lines of code, it is pretty damn real.  This is also the first thing I’ve ever built where gamification plays an important role.  One of the things that I need for the gamification is to know if a date is a holiday.  The date centric holidays are pretty easy – Date.new(this_year, 10, 31) for halloween, just for example.  But the stickler is thanksgiving – that 4th Thursday of the damn month.</p>
+    <p>I'm currently writing an active side project.  I describe active as something that I think about every single day and I've been at for several months.  It is still in stealth mode but at more than 4k lines of code, it is pretty damn real.  This is also the first thing I've ever built where gamification plays an important role.  One of the things that I need for the gamification is to know if a date is a holiday.  The date centric holidays are pretty easy – Date.new(this_year, 10, 31) for halloween, just for example.  But the stickler is thanksgiving – that 4th Thursday of the damn month.</p>
 
-<p>A simple Ruby solution is to construct a date range - Nov 1 and Nov 30 and then walk up, counting the Thursdays when you go.  And I’m certain there are better / more elegant ways but I’m not a whizbang date math kinda engineer.  But this is a method which gets called for every single metric that the system captures (for just a few months of data, there are over 700 metrics for my usage alone).  So I don’t want that much iteration.  I looked at the <a href="https://github.com/holidays/holidays">Holidays gem</a> and considered it but I only, for now, need simple holidays.</p>
+<p>A simple Ruby solution is to construct a date range - Nov 1 and Nov 30 and then walk up, counting the Thursdays when you go.  And I'm certain there are better / more elegant ways but I'm not a whizbang date math kinda engineer.  But this is a method which gets called for every single metric that the system captures (for just a few months of data, there are over 700 metrics for my usage alone).  So I don't want that much iteration.  I looked at the <a href="https://github.com/holidays/holidays">Holidays gem</a> and considered it but I only, for now, need simple holidays.</p>
 
-<p>And then it struck me – this is a side project, damn it.  The odds on any side project surviving for more than a year are low (although <a href="https://www.jobhound.io">Job Hound</a> has now beaten the odds at about 1.5 years old).  And Data is (generally) faster than code no matter how you cut it – so why not just hard code 5 years of Thanksgivings into the app.  I don’t need a generalized solution that works for all time.  I just need a solution that is good enough to find out if there’s a market for my side project.</p>
+<p>And then it struck me – this is a side project, damn it.  The odds on any side project surviving for more than a year are low (although <a href="https://www.jobhound.io">Job Hound</a> has now beaten the odds at about 1.5 years old).  And Data is (generally) faster than code no matter how you cut it – so why not just hard code 5 years of Thanksgivings into the app.  I don't need a generalized solution that works for all time.  I just need a solution that is good enough to find out if there's a market for my side project.</p>
 
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">DateCommon</span>
   
@@ -233,9 +233,9 @@
 </code></pre>
 </div>
 
-<p><strong>Note</strong>: by using created_at, I need to call this as part of an after_create or after_save since otherwise created_at wouldn’t be set.</p>
+<p><strong>Note</strong>: by using created_at, I need to call this as part of an after_create or after_save since otherwise created_at wouldn't be set.</p>
 
-<p>Oh and as far as finding out when a particular Thanksgiving was, Google proved amply up to the task.  Just google for Thanksgiving 2024 and you’ll see what I mean.  Sadly Google stops at 2024 which means my threshold of 5 years is probably about right.</p>
+<p>Oh and as far as finding out when a particular Thanksgiving was, Google proved amply up to the task.  Just google for Thanksgiving 2024 and you'll see what I mean.  Sadly Google stops at 2024 which means my threshold of 5 years is probably about right.</p>
 
   </div>
   

@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="When you find yourself uttering statements like:
 
-That mysql tip is from Peter Zaitsev.  I’ll follow it because I trust him.
+That mysql tip is from Peter Zaitsev.  I'll follow it because I trust him.
 
 And you actually know who Peter is – without having to look him up – th...">
   
@@ -184,9 +184,9 @@ And you actually know who Peter is – without having to look him up – th...">
   <div class="post-content" itemprop="articleBody">
     <p>When you find yourself uttering statements like:</p>
 
-<p>That mysql tip is from Peter Zaitsev.  I’ll follow it because I trust him.</p>
+<p>That mysql tip is from Peter Zaitsev.  I'll follow it because I trust him.</p>
 
-<p>And you actually know who Peter is – without having to look him up – then perhaps you’ve gone too far down the MySQL rabbit hole.  But anyway…  MySQL is normally started from either an init.d script or an upstart routine like this:</p>
+<p>And you actually know who Peter is – without having to look him up – then perhaps you've gone too far down the MySQL rabbit hole.  But anyway…  MySQL is normally started from either an init.d script or an upstart routine like this:</p>
 
 <ul>
   <li>sudo /etc/init.d/mysql start</li>
@@ -202,7 +202,7 @@ And you actually know who Peter is – without having to look him up – th...">
 
 <p>Now both of these are actually just a front end to mysqld_safe which is a shell script supplied by MySQL which handles running the executable, pid file and such.  Its an old school Linux / Unix approach to life and it works great.</p>
 
-<p>Now when MySQL is having problems starting up like, for example, you moved a database from Connecticut to Indianapolis via copying a mysql cold backup (directly copying the innodb files) and you got the number of log files wrong in my.cnf or innodb.cnf then you’ll find that if you start mysql thru upstart or init.d, you may not get error messages since they get “lost” at the level between the mysqld_safe script and init.d / upstart.  In this case then you can run mysqld_safe directly like this:</p>
+<p>Now when MySQL is having problems starting up like, for example, you moved a database from Connecticut to Indianapolis via copying a mysql cold backup (directly copying the innodb files) and you got the number of log files wrong in my.cnf or innodb.cnf then you'll find that if you start mysql thru upstart or init.d, you may not get error messages since they get "lost" at the level between the mysqld_safe script and init.d / upstart.  In this case then you can run mysqld_safe directly like this:</p>
 
 <ul>
   <li>sudo /usr/local/mysql/bin/mysqld_safe</li>

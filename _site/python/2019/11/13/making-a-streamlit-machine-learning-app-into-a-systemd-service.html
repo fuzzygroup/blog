@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-As I documented recently, I’ve become quite the fan of Streamlit for taking Machine Learning applications written in Python and making them easily available on the web.  Streamlit is a very cool ...">
+As I documented recently, I've become quite the fan of Streamlit for taking Machine Learning applications written in Python and making them easily available on the web.  Streamlit is a very cool ...">
   
 
   
@@ -182,13 +182,13 @@ As I documented recently, I’ve become quite the fan of Streamlit for taking Ma
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_7931.jpeg" alt="IMG_7931.jpeg" /></p>
 
-<p>As I <a href="https://fuzzyblog.io/blog/python/2019/10/17/a-step-by-step-guide-to-running-streamlit-pytorch-and-bert-on-a-cheap-aws-instance.html">documented recently</a>, I’ve become quite the fan of <a href="https://streamlit.io">Streamlit</a> for taking Machine Learning applications written in Python and making them easily available on the web.  Streamlit is a very cool toolkit for taking a Python Machine Learning app and adding a simple UI to it and then hosting it via a built in web server.  I haven’t seen anything really like in the Ruby world and I’m quite impressed by its elegance and simplicity.</p>
+<p>As I <a href="https://fuzzyblog.io/blog/python/2019/10/17/a-step-by-step-guide-to-running-streamlit-pytorch-and-bert-on-a-cheap-aws-instance.html">documented recently</a>, I've become quite the fan of <a href="https://streamlit.io">Streamlit</a> for taking Machine Learning applications written in Python and making them easily available on the web.  Streamlit is a very cool toolkit for taking a Python Machine Learning app and adding a simple UI to it and then hosting it via a built in web server.  I haven't seen anything really like in the Ruby world and I'm quite impressed by its elegance and simplicity.</p>
 
-<p><strong>Note</strong>: Before you start down the path of implementing this the way I did, see the last section titled “Note: “ after the Jenkins section.</p>
+<p><strong>Note</strong>: Before you start down the path of implementing this the way I did, see the last section titled "Note: " after the Jenkins section.</p>
 
-<p>So we have a custom internal app using Streamlit and I am, at present, the only person who can deploy it.  That’s, well, stupid.  Deployment always needs to be something that anyone on the technical team should be able to do.  This became increasingly obvious to me when I had to pull over, on Monday afternoon, and deploy fixes to it – in the first snow of the season.  And, yes, I’ve been a consultant for a lot of my career so I’m ok with this but it still is sub optimal.</p>
+<p>So we have a custom internal app using Streamlit and I am, at present, the only person who can deploy it.  That's, well, stupid.  Deployment always needs to be something that anyone on the technical team should be able to do.  This became increasingly obvious to me when I had to pull over, on Monday afternoon, and deploy fixes to it – in the first snow of the season.  And, yes, I've been a consultant for a lot of my career so I'm ok with this but it still is sub optimal.</p>
 
-<p>Here’s what a deploy using Streamlit onto an Ubuntu server looks like:</p>
+<p>Here's what a deploy using Streamlit onto an Ubuntu server looks like:</p>
 
 <ol>
   <li>SSH into the box.</li>
@@ -209,11 +209,11 @@ As I documented recently, I’ve become quite the fan of Streamlit for taking Ma
   <li>Restart it with the syntax: <strong>nohup streamlit run dashboard.py</strong></li>
 </ol>
 
-<p>All of this should be able to be automated with <a href="https://www.ansible.com/">Ansible</a>.  Well, let’s make that most of it.  The flaw in the ointment is the last thing.  Apparently the only thing that Ansible can’t automate is something with nohup.  Now I’m sure if I dug in enough I could either understand it find a way around it but a seemingly solid <a href="https://stackoverflow.com/questions/53345184/how-can-i-run-nohup-command-in-ansible-playbook-task">Stack Overflow post argues that the right approach is to use SystemD and services rather than nohup</a> and that seems like a good idea actually.  Ansible can easily start and stop SystemD services so we can throw out the entire pid / kill stuff.</p>
+<p>All of this should be able to be automated with <a href="https://www.ansible.com/">Ansible</a>.  Well, let's make that most of it.  The flaw in the ointment is the last thing.  Apparently the only thing that Ansible can't automate is something with nohup.  Now I'm sure if I dug in enough I could either understand it find a way around it but a seemingly solid <a href="https://stackoverflow.com/questions/53345184/how-can-i-run-nohup-command-in-ansible-playbook-task">Stack Overflow post argues that the right approach is to use SystemD and services rather than nohup</a> and that seems like a good idea actually.  Ansible can easily start and stop SystemD services so we can throw out the entire pid / kill stuff.</p>
 
 <h2 id="a-shell-script-and-a-system-d-unit-file">A Shell Script and a System D Unit File</h2>
 
-<p>I don’t claim to be a SystemD advocate per se but it is now the current reigning standard so it is better to use it than fight against it (SystemD was pretty controversial within the Unix world).  The basics of SystemD are explained here:</p>
+<p>I don't claim to be a SystemD advocate per se but it is now the current reigning standard so it is better to use it than fight against it (SystemD was pretty controversial within the Unix world).  The basics of SystemD are explained here:</p>
 
 <ul>
   <li><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system_administrators_guide/sect-managing_services_with_systemd-unit_files">RedHat Overview of SystemD</a></li>
@@ -228,7 +228,7 @@ As I documented recently, I’ve become quite the fan of Streamlit for taking Ma
   <li>sudo systemctl status rundashboard</li>
 </ul>
 
-<p>Here’s an example of the output of sudo systemctl status rundashboard</p>
+<p>Here's an example of the output of sudo systemctl status rundashboard</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>sudo systemctl status rundashboard
 ● rundashboard.service - Example systemd service.
@@ -249,11 +249,11 @@ As I documented recently, I’ve become quite the fan of Streamlit for taking Ma
   <li>A SystemD unit file which installs our service into the underlying Unix system</li>
 </ul>
 
-<p><strong>Note</strong>: I’m not a SystemD expert so I’m absolutely certain that there are subtleties of SystemD that I’m overlooking.</p>
+<p><strong>Note</strong>: I'm not a SystemD expert so I'm absolutely certain that there are subtleties of SystemD that I'm overlooking.</p>
 
 <h3 id="the-shell-script">The Shell Script</h3>
 
-<p>Here’s the shell script:</p>
+<p>Here's the shell script:</p>
 
 <div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
 <span class="nb">cd</span> /home/ubuntu/hate-language-modeling
@@ -264,7 +264,7 @@ nohup streamlit run dashboard.py
 
 <h3 id="the-systemd-unit-file">The SystemD Unit File</h3>
 
-<p>Here’s the SystemD unit file:</p>
+<p>Here's the SystemD unit file:</p>
 
 <div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>Unit]
 <span class="nv">Description</span><span class="o">=</span>Run Streamlit Dashboard.
@@ -305,7 +305,7 @@ sudo chmod 644 /etc/systemd/system/rundashboard.service
 
 <h3 id="inventory-file">Inventory File</h3>
 
-<p>Given that my specific machines have different IP addresses than yours, I’ve obfuscated them below.</p>
+<p>Given that my specific machines have different IP addresses than yours, I've obfuscated them below.</p>
 
 <div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="s">aws_box1 ansible_ssh_host=1.2.3.4  ansible_ssh_private_key=/Users/sjohnson/Downloads/adl_fuzzygroup.pem ansible_python_interpreter=/usr/bin/python3</span>
 
@@ -315,7 +315,7 @@ sudo chmod 644 /etc/systemd/system/rundashboard.service
 
 <h3 id="playbook">Playbook</h3>
 
-<p>Here’s the playbook:</p>
+<p>Here's the playbook:</p>
 
 <div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="pi">-</span> <span class="s">hosts</span><span class="pi">:</span> <span class="s">aws_box1</span>
   <span class="s">remote_user</span><span class="pi">:</span> <span class="s">ubuntu</span>
@@ -341,7 +341,7 @@ sudo chmod 644 /etc/systemd/system/rundashboard.service
 </code></pre>
 </div>
 
-<p>You’ll notice that this is split into four different sections.  The reason for this is that to handle the systemd stuff, the ansible role needs to run as root (the become: true) whereas the git pull / git clone needs to run as the ubuntu user.  And, yes, I know there is an ansible git module that is supposed to work.  And, this time, as <strong>every other</strong> time I have tried to use it, I failed; hence the work around.</p>
+<p>You'll notice that this is split into four different sections.  The reason for this is that to handle the systemd stuff, the ansible role needs to run as root (the become: true) whereas the git pull / git clone needs to run as the ubuntu user.  And, yes, I know there is an ansible git module that is supposed to work.  And, this time, as <strong>every other</strong> time I have tried to use it, I failed; hence the work around.</p>
 
 <h3 id="the-git-clone-role">The Git Clone Role</h3>
 
@@ -367,7 +367,7 @@ sudo chmod 644 /etc/systemd/system/rundashboard.service
 </code></pre>
 </div>
 
-<p>Here’s the role itself:</p>
+<p>Here's the role itself:</p>
 
 <div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="pi">-</span> <span class="s">name</span><span class="pi">:</span> <span class="s">install the service</span>
   <span class="s">copy</span><span class="pi">:</span>
@@ -413,13 +413,13 @@ sudo chmod 644 /etc/systemd/system/rundashboard.service
 
 <h3 id="running-all-this">Running All This</h3>
 
-<p>If you’ve put all the pieces together correctly then you can run this as follows:</p>
+<p>If you've put all the pieces together correctly then you can run this as follows:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>sudo ansible-playbook -i inventories/inventory.txt playbook_deploy_hate-language-modeling.yml
 </code></pre>
 </div>
 
-<p><strong>Note</strong>: I have to run my ansible-playbook with sudo due to messed up python installs on my personal MacBook.  That’s a me thing / my mistake not an Ansible thing.</p>
+<p><strong>Note</strong>: I have to run my ansible-playbook with sudo due to messed up python installs on my personal MacBook.  That's a me thing / my mistake not an Ansible thing.</p>
 
 <p>When it runs you should see output like the following (depending on whether or not you have the delightful cowsay installed locally):</p>
 
@@ -591,9 +591,9 @@ adl/antihate/ansible on ☁️  us-west-2 took 25s
   <li>ansible installed locally</li>
 </ul>
 
-<p>The real goal here is actually to make it so anyone on our team can deploy this.  And that means that we need a web based user interface that can be wrapped around the Ansible scripting.  In my next bit of writing on this topic, I’ll walk thru Jenkins and how to do all that.</p>
+<p>The real goal here is actually to make it so anyone on our team can deploy this.  And that means that we need a web based user interface that can be wrapped around the Ansible scripting.  In my next bit of writing on this topic, I'll walk thru Jenkins and how to do all that.</p>
 
-<p><strong>Note</strong>: This ended up being considerably more tricky than is addressed above.  My email is fuzzygroup at gmail.com and you are welcome to reach out to me if you want clarification.  I spent a lot of time writing this up and I can’t put more time into it right now but if anyone really needs this, I’ll make it a priority.</p>
+<p><strong>Note</strong>: This ended up being considerably more tricky than is addressed above.  My email is fuzzygroup at gmail.com and you are welcome to reach out to me if you want clarification.  I spent a lot of time writing this up and I can't put more time into it right now but if anyone really needs this, I'll make it a priority.</p>
 
   </div>
   

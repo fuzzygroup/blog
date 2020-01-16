@@ -290,39 +290,39 @@
 <p>Try to avoid maintaining state by providing stateless conversations. <br />
 Communications are expensive. <br />
 Bandwidth is expensive. <br />
-Fine-grained servers don’t scale well.</p>
+Fine-grained servers don't scale well.</p>
 
 <p>State adds fragility and complexity to systems. All incoming requests have to find the right state. If the state is kept in memory, it is much harder to load balance across a cluster of machines, because there is no practical way to keep an identical synchronized image on all machines in a cluster. If the state is kept in a shared durable store (normally a database), then all the machines have to connect to it and it must log all changes to state, which takes time.<br />
 [SJ] Example of state – think about these two urls:<br />
 <a href="http://www.fuzzygroup.com/about/">http://www.fuzzygroup.com/about/</a><br />
 <a href="http://www.fuzzygroup.com/&amp;amp">http://www.fuzzygroup.com/&amp;amp</a>;sessid=3129kj31lk4sfda-fdsa<br />
-The first url will always work.  The 2nd url has it’s destination encoded within it so that can be automatically timed out by the destination server (think about stock quotes or financial transactions).</p>
+The first url will always work.  The 2nd url has it's destination encoded within it so that can be automatically timed out by the destination server (think about stock quotes or financial transactions).</p>
 
 <p>His points on databases and state management for a cluster of servers are exactly correct.</p>
 
-<p>The way to avoid state is to provide all the information the client needs in one fell swoop. For example, if I ask my hospital for my medical record, I want to get my medical record as a single returned message. I don’t want to get back an object with “property getters” and “property setters” that I call for each interesting piece of information such as my name or Social Security number or birth date.</p>
+<p>The way to avoid state is to provide all the information the client needs in one fell swoop. For example, if I ask my hospital for my medical record, I want to get my medical record as a single returned message. I don't want to get back an object with "property getters" and "property setters" that I call for each interesting piece of information such as my name or Social Security number or birth date.</p>
 
 <p>[SJ]  Agreed.  Make sense ?</p>
 
 <p>We learned the lessons about communications and bandwidth in client-server computing, which was much more optimized than the Internet. Yet, even with a high-performance, reliable network and maintained connections it turns out that the right way to talk to a database server from a client is in reasonable-sized chunks.</p>
 
-<p>For example, to see my portfolio, do not issue a separate SQL query for each statistic of each stock. If everyone does that, the server shuts down. Conversely, don’t ask for all portfolio transactions known to the system and trust the local software to filter out mine. The server isn’t suited to serving up tens or hundreds of megabytes to each client.</p>
+<p>For example, to see my portfolio, do not issue a separate SQL query for each statistic of each stock. If everyone does that, the server shuts down. Conversely, don't ask for all portfolio transactions known to the system and trust the local software to filter out mine. The server isn't suited to serving up tens or hundreds of megabytes to each client.</p>
 
-<p>PowerBuilder solved all this very nicely when it came on the scene in 1992 with its coarse-grained model and optimistic concurrency, meaning it could ask for a set of information without holding locks on the server. With the Internet, this model of coarse-grained computing is even more essential. Since HTTP doesn’t typically hold connections open, the costs of communication are higher and the scale makes it prohibitive to maintain statemore reasons for getting the job done in one fell swoop.</p>
+<p>PowerBuilder solved all this very nicely when it came on the scene in 1992 with its coarse-grained model and optimistic concurrency, meaning it could ask for a set of information without holding locks on the server. With the Internet, this model of coarse-grained computing is even more essential. Since HTTP doesn't typically hold connections open, the costs of communication are higher and the scale makes it prohibitive to maintain statemore reasons for getting the job done in one fell swoop.</p>
 
 <p>[SJ]  Correct.  Make sense?</p>
 
-<p>Now that we have schema, XML is well suited to describe any complex data set such as my portfolio or my medical record, even including marked up text such as a doctor’s comments. It provides a natural mechanism for coarse-grained messages. Whatever information you want to package up can be put into a suitable XML bag.</p>
+<p>Now that we have schema, XML is well suited to describe any complex data set such as my portfolio or my medical record, even including marked up text such as a doctor's comments. It provides a natural mechanism for coarse-grained messages. Whatever information you want to package up can be put into a suitable XML bag.</p>
 
 <p>[SJ] Coarse grained would be a fairly large object such as an entire record.  Fine grained would be a property of an individual record.</p>
 
-<p>Today, SOAP serves as the functional mechanism to filter the data you want. To obtain my medical record, not all medical records, and see information only since 1990, I need to invoke some service that takes in a message describing who I am and the date range I want and then sends back the right package of information. In an ideal world, I might send an XML Query, but applications are wary of supporting open-ended queries, and XML Query isn’t there yet; so we use SOAP as the mechanism to know which messages sent in will return the desired data.</p>
+<p>Today, SOAP serves as the functional mechanism to filter the data you want. To obtain my medical record, not all medical records, and see information only since 1990, I need to invoke some service that takes in a message describing who I am and the date range I want and then sends back the right package of information. In an ideal world, I might send an XML Query, but applications are wary of supporting open-ended queries, and XML Query isn't there yet; so we use SOAP as the mechanism to know which messages sent in will return the desired data.</p>
 
-<p>What this doesn’t require is objects. Thinking of the Web servers as “objects” is an extremely bad idea. Objects are repositories of state. Conversations with them are by definition not stateless. Because objects are encapsulated, conversations with them are also inherently fine-grained. If you think about it, coarse-grained messages are the antithesis of encapsulation. You are surfacing your state explicitly as a message.</p>
+<p>What this doesn't require is objects. Thinking of the Web servers as "objects" is an extremely bad idea. Objects are repositories of state. Conversations with them are by definition not stateless. Because objects are encapsulated, conversations with them are also inherently fine-grained. If you think about it, coarse-grained messages are the antithesis of encapsulation. You are surfacing your state explicitly as a message.</p>
 
-<p>[SJ] Again the idea is that state is expensive to maintain computationally and it prevents direct access to objects.  We all want the ability to bookmark and navigate directly to locations on the web.  While state doesn’t necessarily prevent this, it generally does.</p>
+<p>[SJ] Again the idea is that state is expensive to maintain computationally and it prevents direct access to objects.  We all want the ability to bookmark and navigate directly to locations on the web.  While state doesn't necessarily prevent this, it generally does.</p>
 
-<p>This is at the heart of Web services. Web services doesn’t mean surfacing application “interfaces” to underlying objects through automatically generated SOAP. It means providing well-defined, coarse-grained messages that provide all possible information in one fell swoop (SOAP) and a contract (WSDL) for which messages sent in result in which messages sent back.</p>
+<p>This is at the heart of Web services. Web services doesn't mean surfacing application "interfaces" to underlying objects through automatically generated SOAP. It means providing well-defined, coarse-grained messages that provide all possible information in one fell swoop (SOAP) and a contract (WSDL) for which messages sent in result in which messages sent back.</p>
 
 <p>[SJ] Exactly correct</p>
 

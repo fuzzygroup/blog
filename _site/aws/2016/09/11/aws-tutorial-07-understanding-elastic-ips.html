@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>AWS Tutorial 07 - Understanding Elastic IPs</title>
-  <meta name="description" content="Any ec2 instance, let’s call it a node for simplicity’s sake, in AWS has a number of network settings that define how you access it.  Here’s an example:">
+  <meta name="description" content="Any ec2 instance, let's call it a node for simplicity's sake, in AWS has a number of network settings that define how you access it.  Here's an example:">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/aws/2016/09/11/aws-tutorial-07-understanding-elastic-ips.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="Any ec2 instance, let’s call it a node for simplicity’s sake, in AWS has a number of network settings that define how you access it.  Here’s an example:
+      content="Any ec2 instance, let's call it a node for simplicity's sake, in AWS has a number of network settings that define how you access it.  Here's an example:
 
 
 
@@ -182,15 +182,15 @@ So this box has both a public IP and a pu...">
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>Any ec2 instance, let’s call it a node for simplicity’s sake, in AWS has a number of network settings that define how you access it.  Here’s an example:</p>
+    <p>Any ec2 instance, let's call it a node for simplicity's sake, in AWS has a number of network settings that define how you access it.  Here's an example:</p>
 
 <p class="center"><img src="/blog/assets/aws/aws_tutorial_07.png" alt="aws_tutorial_07.png" /></p>
 
-<p>So this box has both a public IP and a public DNS address.  And these are how you access the node - until its restarted.  At which point the node will be assigned a fresh IP address and a matching DNS address.  And, at this point, your SSH settings / browser settings for accessing that box need to be reset.  And if you’re using an SSH config file to make accessing the box easy, well, you have to change it.  And that <strong>sucks</strong>.</p>
+<p>So this box has both a public IP and a public DNS address.  And these are how you access the node - until its restarted.  At which point the node will be assigned a fresh IP address and a matching DNS address.  And, at this point, your SSH settings / browser settings for accessing that box need to be reset.  And if you're using an SSH config file to make accessing the box easy, well, you have to change it.  And that <strong>sucks</strong>.</p>
 
 <p>The key here is to assign an Elastic IP Address to the box so a consistent ip address and matching domain name is persistently attached to the node so even if you restart it / resize it / etc, you can always access it in the same way.</p>
 
-<p>Here’s how to do that:</p>
+<p>Here's how to do that:</p>
 
 <ul class="center">
   <li>In your AWS console goto <a href="https://console.aws.amazon.com/ec2/v2/home#Instances:sort=instanceState">EC2 instances</a></li>
@@ -200,7 +200,7 @@ So this box has both a public IP and a pu...">
 
 <ul>
   <li>Click Allocate New Address.</li>
-  <li>Answer Yes and you’ll get this:</li>
+  <li>Answer Yes and you'll get this:</li>
 </ul>
 
 <p class="center left"><img src="/blog/assets/aws/aws_tutorial_07_elastic_ip_allocate_succeeded.png" alt="aws_tutorial_07.png" /></p>
@@ -224,9 +224,9 @@ So this box has both a public IP and a pu...">
 <p>There are some issues with Elastic IPs that you need to understand:</p>
 
 <ul>
-  <li>Setting an elastic IP releases your current public IP so if you’re used to that you need to take note</li>
+  <li>Setting an elastic IP releases your current public IP so if you're used to that you need to take note</li>
   <li>You get allocated only 5 free elastic IPs with you account.  After that you pay for them so use wisely</li>
-  <li>You might be able to get around the limit of 5 by taking a <a href="https://www.google.com/search?q=dynamic+dns+for+AWS&amp;oq=dynamic+dns+for+AWS&amp;aqs=chrome..69i57.3735j0j7&amp;sourceid=chrome&amp;ie=UTF-8">dynamic DNS approach</a> but I haven’t explored that myself</li>
+  <li>You might be able to get around the limit of 5 by taking a <a href="https://www.google.com/search?q=dynamic+dns+for+AWS&amp;oq=dynamic+dns+for+AWS&amp;aqs=chrome..69i57.3735j0j7&amp;sourceid=chrome&amp;ie=UTF-8">dynamic DNS approach</a> but I haven't explored that myself</li>
 </ul>
 
 

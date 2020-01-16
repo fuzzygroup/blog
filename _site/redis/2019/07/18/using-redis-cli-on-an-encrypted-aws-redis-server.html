@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Using redis-cli on An Encrypted AWS Redis Server</title>
-  <meta name="description" content="So I find myself needing to use redis-cli to modify the keys on a running Redis instance to deal with a few Sidekiq issues.  And, much to my surprise, I can’...">
+  <meta name="description" content="So I find myself needing to use redis-cli to modify the keys on a running Redis instance to deal with a few Sidekiq issues.  And, much to my surprise, I can'...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/redis/2019/07/18/using-redis-cli-on-an-encrypted-aws-redis-server.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="So I find myself needing to use redis-cli to modify the keys on a running Redis instance to deal with a few Sidekiq issues.  And, much to my surprise, I can’t simply connect to it and make changes ...">
+      content="So I find myself needing to use redis-cli to modify the keys on a running Redis instance to deal with a few Sidekiq issues.  And, much to my surprise, I can't simply connect to it and make changes ...">
   
 
   
@@ -178,12 +178,12 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>So I find myself needing to use <a href="https://redis.io/topics/rediscli">redis-cli</a> to modify the keys on a running Redis instance to deal with a few <a href="https://github.com/mperham/sidekiq/blob/master/Changes.md#413">Sidekiq issues</a>.  And, much to my surprise, I can’t simply connect to it and make changes because I keep getting <strong>Error: Connection reset by peer</strong> errors.  A bit of a deep dive taught me this:</p>
+    <p>So I find myself needing to use <a href="https://redis.io/topics/rediscli">redis-cli</a> to modify the keys on a running Redis instance to deal with a few <a href="https://github.com/mperham/sidekiq/blob/master/Changes.md#413">Sidekiq issues</a>.  And, much to my surprise, I can't simply connect to it and make changes because I keep getting <strong>Error: Connection reset by peer</strong> errors.  A bit of a deep dive taught me this:</p>
 
 <ul>
   <li>Our redis instance is encrypted both at rest and in transit</li>
   <li>The way to do this is to connect to it via stunnel which builds a secure tunnel</li>
-  <li>You have to supply the password on the command line to redis-cli; this surprised me because it leaves the password in the shell history and that’s fscking awful for security; grumble, grumble, grumble</li>
+  <li>You have to supply the password on the command line to redis-cli; this surprised me because it leaves the password in the shell history and that's fscking awful for security; grumble, grumble, grumble</li>
 </ul>
 
 <p>Here are some references that I followed:</p>
@@ -197,21 +197,21 @@
 
 <ol>
   <li>I started by installing stunnnel.</li>
-  <li>I continued by building a mapping for stunnel to the redis server I wanted to mess with.  This required getting the redis server url from our application’s settings.</li>
+  <li>I continued by building a mapping for stunnel to the redis server I wanted to mess with.  This required getting the redis server url from our application's settings.</li>
   <li>Start the tunnel</li>
   <li>Verify that the tunnel is running.</li>
   <li>I connected to redis-cli passing the -a password option.</li>
   <li>
     <p>I was able to then verify that redis-cli works correctly by doing a simple set / get:</p>
 
-    <p>set a “hello”
+    <p>set a "hello"
 get a</p>
 
-    <p>“hello”</p>
+    <p>"hello"</p>
   </li>
 </ol>
 
-<p>And this positioned me for being able to run a redis-cli keys command.  Of course the keys routine I needed to run was error full but that’s another story …</p>
+<p>And this positioned me for being able to run a redis-cli keys command.  Of course the keys routine I needed to run was error full but that's another story …</p>
 
   </div>
   

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Reclaiming Docker Disc Space on OSX</title>
-  <meta name="description" content="A few nights ago, after a truly horrible night’s sleep complete with my first ever incidence of acid reflux, I woke to find my Mac nattering at me about bein...">
+  <meta name="description" content="A few nights ago, after a truly horrible night's sleep complete with my first ever incidence of acid reflux, I woke to find my Mac nattering at me about bein...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/docker/2017/09/06/reclaiming-docker-disc-space-on-osx.html">
@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>A few nights ago, after a truly horrible night’s sleep complete with my first ever incidence of acid reflux, I woke to find my Mac nattering at me about being <strong>out of disc space</strong>.  And by out of disc space I mean that I was down to about 3 gigs out of a terabyte sized SSD.  Yikes!</p>
+    <p>A few nights ago, after a truly horrible night's sleep complete with my first ever incidence of acid reflux, I woke to find my Mac nattering at me about being <strong>out of disc space</strong>.  And by out of disc space I mean that I was down to about 3 gigs out of a terabyte sized SSD.  Yikes!</p>
 
 <p>Taking a look at the normal culprits yielded no surprise increases and I can distinctly recall having in excess of 30 gigs just a day or two ago.  Given all the <a href="http://fuzzyblog.io/blog/docker/2017/08/30/running-out-of-disc-space-with-docker.html">server side problems with respect to Docker and disc space</a> that I have written about previously, I had a strong hunch that somehow Docker was involved.</p>
 
@@ -198,13 +198,13 @@
 </code></pre>
 </div>
 
-<p>Nope – clearly 20K isn’t anything for disc space usage.</p>
+<p>Nope – clearly 20K isn't anything for disc space usage.</p>
 
 <h1 id="containers">Containers</h1>
 
 <p>My next thought was that perhaps Docker has some massive backing store for containers.  I did a bunch of searches and ran across this <a href="https://forums.docker.com/t/consistently-out-of-disk-space-in-docker-beta/9438/67">Docker thread</a> and then <a href="https://forums.docker.com/t/consistently-out-of-disk-space-in-docker-beta/9438/36">another thread</a>, both of which pointed me to the Docker.qcow2 file.</p>
 
-<p>Here’s what a du -shc showed me on this file:</p>
+<p>Here's what a du -shc showed me on this file:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
  57G	/Users/sjohnson/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
@@ -270,7 +270,7 @@ for </span>item <span class="k">in</span> <span class="k">$(</span>docker images
 </code></pre>
 </div>
 
-<p>I then started my overall “build all containers” shell script and tracked progress as it went:</p>
+<p>I then started my overall "build all containers" shell script and tracked progress as it went:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
 3.0G	total

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>What Just Happened To Your Database In the Past 10 Minutes</title>
-  <meta name="description" content="So I’m rapidly coming to the conclusion that Christmas is the enemy of getting things done.  While I have come up with a lot of potential topics to write abo...">
+  <meta name="description" content="So I'm rapidly coming to the conclusion that Christmas is the enemy of getting things done.  While I have come up with a lot of potential topics to write abo...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/mysql/2016/12/14/what-just-happened-to-your-database-in-the-past-10-minutes.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="So I’m rapidly coming to the conclusion that Christmas is the enemy of getting things done.  While I have come up with a lot of potential topics to write about recently I don’t seem to be able to g...">
+      content="So I'm rapidly coming to the conclusion that Christmas is the enemy of getting things done.  While I have come up with a lot of potential topics to write about recently I don't seem to be able to g...">
   
 
   
@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>So I’m rapidly coming to the conclusion that Christmas is the enemy of getting things done.  While I have come up with a lot of potential topics to write about recently I don’t seem to be able to get anything actually finished due to:</p>
+    <p>So I'm rapidly coming to the conclusion that Christmas is the enemy of getting things done.  While I have come up with a lot of potential topics to write about recently I don't seem to be able to get anything actually finished due to:</p>
 
 <ul>
   <li>Present Shopping</li>
@@ -189,15 +189,15 @@
 
 <p>Alas – at least, as my old boss, <a href="https://twitter.com/rafer">Scott Rafer</a>, used to say – <em>these are high quality problems to have</em>!</p>
 
-<p>A quick post today – looking at the state of your database.  Let’s say you have a table called posts and it has a field called created_at (the Rails standard way of tracking table changes) and you want to see how many things came into that table in the past 10 minutes.  Here’s the sql you need:</p>
+<p>A quick post today – looking at the state of your database.  Let's say you have a table called posts and it has a field called created_at (the Rails standard way of tracking table changes) and you want to see how many things came into that table in the past 10 minutes.  Here's the sql you need:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>SELECT COUNT(*) FROM posts WHERE created_at &gt; DATE_ADD(NOW(),INTERVAL - 10 MINUTE);
 </code></pre>
 </div>
 
-<p>Previously I’ve generally looked at tables and then tried to relate what’s going on to the current time and adjust in my head for the server time zone offset.  This is <strong>much, much</strong> better.</p>
+<p>Previously I've generally looked at tables and then tried to relate what's going on to the current time and adjust in my head for the server time zone offset.  This is <strong>much, much</strong> better.</p>
 
-<p>A really nice side effect of this is that you can simply change the interval quickly and see if your performance is linear or non-linear.  Let’s say you change your interval to 5, 10 and 15 minutes and this was the result:</p>
+<p>A really nice side effect of this is that you can simply change the interval quickly and see if your performance is linear or non-linear.  Let's say you change your interval to 5, 10 and 15 minutes and this was the result:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>MariaDB [foo_production]&gt; SELECT COUNT(*) FROM posts WHERE created_at &gt; DATE_ADD(NOW(),INTERVAL - 5 MINUTE);
 +----------+

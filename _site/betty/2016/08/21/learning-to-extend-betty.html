@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Learning to Extend Betty</title>
-  <meta name="description" content="So in my long, long history of using open source, I’ve never taken the time to formally give back to the community by maintaining anything.  Yes I’ve blogged...">
+  <meta name="description" content="So in my long, long history of using open source, I've never taken the time to formally give back to the community by maintaining anything.  Yes I've blogged...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/betty/2016/08/21/learning-to-extend-betty.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="So in my long, long history of using open source, I’ve never taken the time to formally give back to the community by maintaining anything.  Yes I’ve blogged.  And I’ve answered questions and I’ve ...">
+      content="So in my long, long history of using open source, I've never taken the time to formally give back to the community by maintaining anything.  Yes I've blogged.  And I've answered questions and I've ...">
   
 
   
@@ -178,13 +178,13 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>So in my long, long history of using open source, I’ve never taken the time to formally give back to the community by maintaining anything.  Yes I’ve blogged.  And I’ve answered questions and I’ve damn sure argued for using open source in every job I’ve had since 1999.  And that is a form of give back but is that really the same?  Recently I saw a Hacker News post on “Projects Looking for Maintainers” and I found something that was personally interesting to me: <a href="http://github.com/pickhardt/betty.git">Betty</a>.  Betty is an NLP interface to your command line and the current author / originator describes it as “Siri for your command line”.  That’s a really apt description.</p>
+    <p>So in my long, long history of using open source, I've never taken the time to formally give back to the community by maintaining anything.  Yes I've blogged.  And I've answered questions and I've damn sure argued for using open source in every job I've had since 1999.  And that is a form of give back but is that really the same?  Recently I saw a Hacker News post on "Projects Looking for Maintainers" and I found something that was personally interesting to me: <a href="http://github.com/pickhardt/betty.git">Betty</a>.  Betty is an NLP interface to your command line and the current author / originator describes it as "Siri for your command line".  That's a really apt description.</p>
 
-<p>So I sent an email to him and he and I have been corresponding ever since and it looks like I’m at least going to be helping out.  My first commitment was to the documentation side and I proposed documenting how to extend Betty with new functionality.  And that’s what we’re discussing here.</p>
+<p>So I sent an email to him and he and I have been corresponding ever since and it looks like I'm at least going to be helping out.  My first commitment was to the documentation side and I proposed documenting how to extend Betty with new functionality.  And that's what we're discussing here.</p>
 
 <h1 id="extending-betty-with-a-new-fun-command">Extending Betty with a New Fun Command</h1>
 
-<p>One of the cool things in here is the fun module which does, well, fun things.  Extending Betty with a new command is pretty much just writing a regular expression wrapper for what you want it match on and then defining its output.  Here’s two I just added:</p>
+<p>One of the cool things in here is the fun module which does, well, fun things.  Extending Betty with a new command is pretty much just writing a regular expression wrapper for what you want it match on and then defining its output.  Here's two I just added:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>if command.match(/^superman\s+vs\s+batman$/i)
   responses &lt;&lt; {
@@ -200,11 +200,11 @@ end
 </code></pre>
 </div>
 
-<p>Astute eyes will recognize the <a href="http://stackoverflow.com/questions/4252936/how-do-i-use-the-conditional-operator-in-ruby">ternary logic</a> there so Betty doesn’t always answer the same way.</p>
+<p>Astute eyes will recognize the <a href="http://stackoverflow.com/questions/4252936/how-do-i-use-the-conditional-operator-in-ruby">ternary logic</a> there so Betty doesn't always answer the same way.</p>
 
 <h1 id="extending-betty-with-a-new-module----git">Extending Betty with a new Module – Git!</h1>
 
-<p>In the lib directory create a new file named <strong>git.rb</strong>.  Here’s what we’re going to drop in there:</p>
+<p>In the lib directory create a new file named <strong>git.rb</strong>.  Here's what we're going to drop in there:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>module Git
   def self.interpret(command)
@@ -233,7 +233,7 @@ $executors &lt;&lt; Git
 </code></pre>
 </div>
 
-<p>Here’s what that actually means:
+<p>Here's what that actually means:
 * an overall module named Git
 * a class method named interpret which accepts a command and runs it against a regex which returns a response or responses
 * a help method which lets you know how betty can help you with git</p>
@@ -246,7 +246,7 @@ Betty: Running find . -type f -exec wc -w {} \; | awk '{total += $1} END {print 
 </code></pre>
 </div>
 
-<p>I don’t think that’s appropriate for Betty to be making changes to git stuff on your behalf.  So I opted for Betty to just give you feedback.</p>
+<p>I don't think that's appropriate for Betty to be making changes to git stuff on your behalf.  So I opted for Betty to just give you feedback.</p>
 
 <p>Adding this module gave Betty this feature:</p>
 

@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>This blog post expands on my current interest in <a href="https://fuzzygroup.github.io/blog/saml/2016/10/28/understanding-saml-and-sso.html">SAML</a> with a more detailed investigation of SAML, IdP versus SP initiation and how you actually debug it.  In the process of writing this, I reached out to two companies that support SAML in their products and I wanted to express a special thanks to Scott G at <a href="http://www.mindtouch.com/">MindTouch</a> who did an absolutely fantastic job of answering questions – honestly the best technical support I’ve received in years.  Kudos and thank you!</p>
+    <p>This blog post expands on my current interest in <a href="https://fuzzygroup.github.io/blog/saml/2016/10/28/understanding-saml-and-sso.html">SAML</a> with a more detailed investigation of SAML, IdP versus SP initiation and how you actually debug it.  In the process of writing this, I reached out to two companies that support SAML in their products and I wanted to express a special thanks to Scott G at <a href="http://www.mindtouch.com/">MindTouch</a> who did an absolutely fantastic job of answering questions – honestly the best technical support I've received in years.  Kudos and thank you!</p>
 
 <h1 id="tools-for-working-on-saml">Tools for Working on SAML</h1>
 
@@ -205,7 +205,7 @@
 
 <h2 id="examples-of-how-to-make-a-ui-that-uses-saml">Examples of How to Make a UI that Uses SAML</h2>
 
-<p>Here are examples of a great SAML user interface for a developer.  This is from <a href="http://www.mindtouch.com/">MindTouch</a>.  Whether we get a success or a failure there’s enough context for the developer to actually understand what’s happening:</p>
+<p>Here are examples of a great SAML user interface for a developer.  This is from <a href="http://www.mindtouch.com/">MindTouch</a>.  Whether we get a success or a failure there's enough context for the developer to actually understand what's happening:</p>
 
 <p><img src="/blog/assets/great_saml_ui_mind_touch_saml_success.png" alt="" />
 If you have the debug tracer on then you can see the whole SAML transaction</p>
@@ -214,19 +214,19 @@ If you have the debug tracer on then you can see the whole SAML transaction</p>
 If you hit errors part way thru a SAML transaction then you can see at least as far as you got.</p>
 
 <p><img src="/blog/assets/saml_success_but_no_access.png" alt="" />
-If you are requesting a page which requires administrative access you don’t have then you’ll get logged in but blocked access to the requested resource.  See below under “Local Users Haven’t Gone Away - Local Login Has Gone Away”</p>
+If you are requesting a page which requires administrative access you don't have then you'll get logged in but blocked access to the requested resource.  See below under "Local Users Haven't Gone Away - Local Login Has Gone Away"</p>
 
 <h1 id="debugging-a-saml-transaction">Debugging a SAML Transaction</h1>
 
-<p>The very first thing you want to do if you’re debugging saml stuff is use FireFox and get the <a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjS3Lbu3pPQAhVL0oMKHTOtAwgQFggdMAA&amp;url=https%3A%2F%2Faddons.mozilla.org%2Fen-US%2Ffirefox%2Faddon%2Fsaml-tracer%2F&amp;usg=AFQjCNHN7JDX_TkQIZOiPV2tMSVDyfgwkA">SAML tracer</a> plugin.  This tool shows you the SAML back and forth flow and it is absolutely brilliant:</p>
+<p>The very first thing you want to do if you're debugging saml stuff is use FireFox and get the <a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwjS3Lbu3pPQAhVL0oMKHTOtAwgQFggdMAA&amp;url=https%3A%2F%2Faddons.mozilla.org%2Fen-US%2Ffirefox%2Faddon%2Fsaml-tracer%2F&amp;usg=AFQjCNHN7JDX_TkQIZOiPV2tMSVDyfgwkA">SAML tracer</a> plugin.  This tool shows you the SAML back and forth flow and it is absolutely brilliant:</p>
 
 <p><img src="/blog/assets/saml_tracer.png" alt="saml_tracer" /></p>
 
-<p>When Scott G was helping me, his first suggestion was “Ok – go and get the FireFox SAML tracer” and with that we were off to the races.  Good tools always make things better and this was excellent.</p>
+<p>When Scott G was helping me, his first suggestion was "Ok – go and get the FireFox SAML tracer" and with that we were off to the races.  Good tools always make things better and this was excellent.</p>
 
-<p>Note: There is also a <a href="https://chrome.google.com/webstore/detail/saml-chrome-panel/paijfdbeoenhembfhkhllainmocckace?hl=en">Chrome SAML tool</a> which I haven’t tried yet.  It doesn’t appear to be as complete as SAML Tracer since it only supports post requests.</p>
+<p>Note: There is also a <a href="https://chrome.google.com/webstore/detail/saml-chrome-panel/paijfdbeoenhembfhkhllainmocckace?hl=en">Chrome SAML tool</a> which I haven't tried yet.  It doesn't appear to be as complete as SAML Tracer since it only supports post requests.</p>
 
-<h1 id="local-users-havent-gone-away---local-login-has-gone-away">Local Users Haven’t Gone Away - Local Login Has Gone Away</h1>
+<h1 id="local-users-havent-gone-away---local-login-has-gone-away">Local Users Haven't Gone Away - Local Login Has Gone Away</h1>
 
 <p>One thing to understand about SAML is that local users, at the level of the Service Provider, have not gone away.  What has gone away is <strong>local login</strong> and <strong>local passwords</strong>.  Your application will, almost certainly, still have a local set of users that you have to administer.  This becomes most apparent when you want to grant administrative rights to a user who has logged in via saml.  Even my SAML poster child for a great implementation, MindTouch, says this:</p>
 
@@ -240,7 +240,7 @@ Users cannot be seated by a SAML assertion. A user must be explicitly seated by 
 
 <h1 id="idp-versus-sp-initiation">IdP versus SP Initiation</h1>
 
-<p>When you first get involved with SAML one of the initial things you’ll be asked is:</p>
+<p>When you first get involved with SAML one of the initial things you'll be asked is:</p>
 
 <blockquote>
   <p>IdP init or SP Init?</p>
@@ -262,9 +262,9 @@ Users cannot be seated by a SAML assertion. A user must be explicitly seated by 
   <li>If the assertion is valid the user is granted access.</li>
 </ol>
 
-<p>Here’s the rub from a technical perspective: <strong>IdP Init is MUCH MUCH HARDER</strong>.  When you are doing IdP Init you need to do all the low level SAML junk yourself.  When you are doing SP init then they do the SAML junk.</p>
+<p>Here's the rub from a technical perspective: <strong>IdP Init is MUCH MUCH HARDER</strong>.  When you are doing IdP Init you need to do all the low level SAML junk yourself.  When you are doing SP init then they do the SAML junk.</p>
 
-<p>Just to illustrate how much work the SP versus IdP approach changes things, you should look at these two configuration UIs below.  One is for SP Init and one is for IdP Init.  The IdP Init one is trivial to configure – all you have to do is set a few urls.  The SP Init one is much harder to configure – it requires your certificate and more low level details.  But there’s an inversion here – the more complex it is to configure the SP, the less code you have to write yourself.  Repeat that after me – the less code you have to write.  I got the SP Init up and running in a matter of hours.  The IdP init took days.</p>
+<p>Just to illustrate how much work the SP versus IdP approach changes things, you should look at these two configuration UIs below.  One is for SP Init and one is for IdP Init.  The IdP Init one is trivial to configure – all you have to do is set a few urls.  The SP Init one is much harder to configure – it requires your certificate and more low level details.  But there's an inversion here – the more complex it is to configure the SP, the less code you have to write yourself.  Repeat that after me – the less code you have to write.  I got the SP Init up and running in a matter of hours.  The IdP init took days.</p>
 
 <h2 id="configuration-screen-when-you-are-the-idp-and-the-sp-wants-sp-init">Configuration Screen when You Are the IdP And the SP wants SP Init</h2>
 
@@ -276,7 +276,7 @@ Users cannot be seated by a SAML assertion. A user must be explicitly seated by 
 
 <h1 id="example-of-a-saml-assertion-when-you-are-the-idp-pushing-to-an-sp">Example of a SAML Assertion When You Are the IdP Pushing to an SP</h1>
 
-<p>Here’s a full example of a SAML assertion.  This, if you updated the time stamps, would correctly validate (a few urls have been changed, however):</p>
+<p>Here's a full example of a SAML assertion.  This, if you updated the time stamps, would correctly validate (a few urls have been changed, however):</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>&lt;samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="_a4f7e48e0-88e7-0134-4eb1-22000ab35e7b" Version="2.0" IssueInstant="2016-11-10T19:21:13.116Z" Destination="https://community-staging.foo.com/auth/saml/SSO" Consent="urn:oasis:names:tc:SAML:2.0:consent:unspecified" &gt;
   &lt;Issuer xmlns="urn:oasis:names:tc:SAML:2.0:assertion"&gt;http://sso.foo.com/saml/auth&lt;/Issuer&gt;
@@ -337,25 +337,25 @@ Users cannot be seated by a SAML assertion. A user must be explicitly seated by 
 </code></pre>
 </div>
 
-<p>The important thing to understand about SAML assertions is that they are very, very precise – you have to exactly and correctly match values between the assertion, the response and the metadata signature.  So when you have a problem you need to look for mis-matches.  Even when you think they aren’t there they likely are.  SAML, for all of its difficulty, is a well thought out, time tested standard.  It is more likely that you have an implementation problem than SAML itself being broken.</p>
+<p>The important thing to understand about SAML assertions is that they are very, very precise – you have to exactly and correctly match values between the assertion, the response and the metadata signature.  So when you have a problem you need to look for mis-matches.  Even when you think they aren't there they likely are.  SAML, for all of its difficulty, is a well thought out, time tested standard.  It is more likely that you have an implementation problem than SAML itself being broken.</p>
 
 <h1 id="example-of-a-debugging-flow">Example of a Debugging Flow</h1>
 
-<p>When you start to do this a lot you need to think hard about how to make your debugging flow easier.  I burned a lot of time thinking that I was <em>almost</em> there.  And if you’re almost there then why do you need to make debugging easy?  Well, honestly, I probably had another 50+ odd debugging sessions before I actually got there.  I finally ended up writing a simple rake task which generated the SAML assertion I needed to validate so instead of logging into a web ui, tailing logs, capturing base64 encoded data, pasting it into ruby as a string, decoding it and then using an editor to make it viewable, I could just type something like this:</p>
+<p>When you start to do this a lot you need to think hard about how to make your debugging flow easier.  I burned a lot of time thinking that I was <em>almost</em> there.  And if you're almost there then why do you need to make debugging easy?  Well, honestly, I probably had another 50+ odd debugging sessions before I actually got there.  I finally ended up writing a simple rake task which generated the SAML assertion I needed to validate so instead of logging into a web ui, tailing logs, capturing base64 encoded data, pasting it into ruby as a string, decoding it and then using an editor to make it viewable, I could just type something like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake saml:go1 --trace
 </code></pre>
 </div>
 
-<p>I cannot express what a huge improvement that was.  So, even if you think you’re almost there, you’re likely not and you should work on your debugging tools.</p>
+<p>I cannot express what a huge improvement that was.  So, even if you think you're almost there, you're likely not and you should work on your debugging tools.</p>
 
-<p>Oh and if you’re going to do it the hard way then Base64.decode64(encoded_assertion) is your very best friend.</p>
+<p>Oh and if you're going to do it the hard way then Base64.decode64(encoded_assertion) is your very best friend.</p>
 
-<h1 id="accept-that-youre-not-going-to-understand-everything-and-just-try-it">Accept that You’re Not Going to Understand Everything and Just Try It</h1>
+<h1 id="accept-that-youre-not-going-to-understand-everything-and-just-try-it">Accept that You're Not Going to Understand Everything and Just Try It</h1>
 
 <p>One of the better pieces of advice that I can give you is that you can have SAML issues that a vendor swears up and down <strong>will not work</strong> and they still might.  I had a situation where the vendor swore up, down, right, left and sideways that my signatures were wrong and my IdP was at fault.  This was the absolutely worst type of technical support situation where neither party was willing to admit fault.  Things had been checked, re-checked and checked again and everything seemed to be in order.  Finally I thought <em>screw it</em> and just tried to authenticate and <strong>whammo</strong> it just plain worked.</p>
 
-<p>To this day the vendor can’t explain why.  Here’s the XML / Java stack trace in case anyone can tell me why given that the signatures here don’t verify but access is still granted.  Personally I would think that you wouldn’t validate an untrusted credential but maybe this is a common thing???</p>
+<p>To this day the vendor can't explain why.  Here's the XML / Java stack trace in case anyone can tell me why given that the signatures here don't verify but access is still granted.  Personally I would think that you wouldn't validate an untrusted credential but maybe this is a common thing???</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>&lt;&lt;   2016-11-10 14:33:04,007 -0800 [937-exec-5] DEBUG  [cid=gqaoh85646, tx=9ab899b9-acd9-43cc-af52-e00f95efe725, rh=54.224.44.177, userId=] ty.trust.ExplicitKeyTrustEvaluator - Successfully validated untrusted credential against trusted key
 &lt;&lt;   2016-11-10 14:33:04,007 -0800 [937-exec-5] DEBUG  [cid=gqaoh85646, tx=9ab899b9-acd9-43cc-af52-e00f95efe725, rh=54.224.44.177, userId=] ture.impl.BaseSignatureTrustEngine - Successfully established trust of KeyInfo-derived credential
@@ -382,7 +382,7 @@ org.springframework.security.web.context.HttpSessionSecurityContextRepository$Se
 </code></pre>
 </div>
 
-<p>I’ve open sourced <a href="https://github.com/fuzzygroup/saml_idp">my fork of the Ruby IdP</a> I based this all on and I’ll be updating it at least somewhat regularly.  I put a bunch of advice on the home page there.</p>
+<p>I've open sourced <a href="https://github.com/fuzzygroup/saml_idp">my fork of the Ruby IdP</a> I based this all on and I'll be updating it at least somewhat regularly.  I put a bunch of advice on the home page there.</p>
 
   </div>
   

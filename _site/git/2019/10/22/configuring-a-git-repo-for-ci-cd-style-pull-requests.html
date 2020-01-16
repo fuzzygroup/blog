@@ -195,13 +195,13 @@ Like a lot of senior software folk, I have a particular set of beliefs about how
   <li>develop is automatically merged into master</li>
 </ul>
 
-<p>Only master goes to production and you never touch develop directly.  I’ve used this particular approach to version control for a number of years now and it really works splendidly.  Kudos to favorite pairing partner, Sean Kennedy, for beating this into my head when I was resistant.  Respect!</p>
+<p>Only master goes to production and you never touch develop directly.  I've used this particular approach to version control for a number of years now and it really works splendidly.  Kudos to favorite pairing partner, Sean Kennedy, for beating this into my head when I was resistant.  Respect!</p>
 
-<p>Now while I’ve used this for a long time, I’ve never actually set it up on Github; I always deferred to others to do the heavy lifting on this.  This blog post outlines what has to happen to repo in order to support this style of development.</p>
+<p>Now while I've used this for a long time, I've never actually set it up on Github; I always deferred to others to do the heavy lifting on this.  This blog post outlines what has to happen to repo in order to support this style of development.</p>
 
 <h1 id="step-1---your-gitconfig-file">Step 1 - Your .git/config File</h1>
 
-<p>When you start with your repo, look at the .git/config file.  Here’s mine:</p>
+<p>When you start with your repo, look at the .git/config file.  Here's mine:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>cat .git/config
 [core]
@@ -235,7 +235,7 @@ Like a lot of senior software folk, I have a particular set of beliefs about how
 </code></pre>
 </div>
 
-<p>So our first step is to add a remote “origin”.  This is done by going to github and creating a repo and then adding it to the existing git repo with:</p>
+<p>So our first step is to add a remote "origin".  This is done by going to github and creating a repo and then adding it to the existing git repo with:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>git remote add origin https://github.com/fuzzygroup/feed_finder.git
 git push -u origin master   
@@ -265,11 +265,11 @@ git co develop
 <p>The next step is to add a Branch Protection Rule to the develop branch:</p>
 
 <ol>
-  <li>Click “Add Rule” from the “Branch protection rules” section on the Branches tab.</li>
+  <li>Click "Add Rule" from the "Branch protection rules" section on the Branches tab.</li>
   <li>In Branch name pattern enter <strong>develop</strong>.</li>
-  <li>Select “Require pull request reviews before merging”.  (Note - even if you are a solo developer, you can still merge by using your Admin privileges check box on the pull request review screen; this is a small usability hiccup for your personal development but it keeps your git practice the same for work and home and that’s invaluable; and if that isn’t enough, it is how I develop every single day on my side projects)</li>
-  <li>Set the “Require approving reviews” drop down to 1.</li>
-  <li>Do NOT check off the “Include administrators” option or you won’t be able to override the approval requirement on your personal repos.</li>
+  <li>Select "Require pull request reviews before merging".  (Note - even if you are a solo developer, you can still merge by using your Admin privileges check box on the pull request review screen; this is a small usability hiccup for your personal development but it keeps your git practice the same for work and home and that's invaluable; and if that isn't enough, it is how I develop every single day on my side projects)</li>
+  <li>Set the "Require approving reviews" drop down to 1.</li>
+  <li>Do NOT check off the "Include administrators" option or you won't be able to override the approval requirement on your personal repos.</li>
   <li>Click Save Changes</li>
 </ol>
 
@@ -291,15 +291,15 @@ To github.com:fuzzygroup/feed_finder.git
 </code></pre>
 </div>
 
-<p>You’ll notice that Github now returns a url as part of the push.  This pull request needs to be approved at Github so after your push is done, follow the url onto Github and click the <strong>Create pull request</strong> button:</p>
+<p>You'll notice that Github now returns a url as part of the push.  This pull request needs to be approved at Github so after your push is done, follow the url onto Github and click the <strong>Create pull request</strong> button:</p>
 
 <p class="center"><img src="/blog/assets/1_open_a_pull_request.png" alt="1_open_a_pull_request.png" /></p>
 
-<p>Click the Create Pull Request button and you’ll see the Merge Pull Request screen.  Click the <strong>Merge pull request</strong> button.</p>
+<p>Click the Create Pull Request button and you'll see the Merge Pull Request screen.  Click the <strong>Merge pull request</strong> button.</p>
 
 <p class="center"><img src="/blog/assets/2_merge_pull_request.png" alt="2_merge_pull_request.png" /></p>
 
-<p>Now since you don’t have another person on the project, you need to merge it yourself with your Administrator privileges by toggling the check box and then the <strong>Confirm merge</strong> button:</p>
+<p>Now since you don't have another person on the project, you need to merge it yourself with your Administrator privileges by toggling the check box and then the <strong>Confirm merge</strong> button:</p>
 
 <p class="center"><img src="/blog/assets/3_confirm_merge_pull_request.png" alt="3_confirm_merge_pull_request.png" /></p>
 
@@ -327,7 +327,7 @@ To github.com:fuzzygroup/feed_finder.git
 <p>and</p>
 
 <ul>
-  <li>deploying master (if you continue down this path; deploy won’t be covered in this article)</li>
+  <li>deploying master (if you continue down this path; deploy won't be covered in this article)</li>
 </ul>
 
 <h1 id="step-4---adding-ci--cd-with-circle-ci">Step 4 - Adding CI / CD with Circle CI</h1>
@@ -425,7 +425,7 @@ To github.com:fuzzygroup/feed_finder.git
   <li>Click Start Building and watch it fly along.</li>
 </ol>
 
-<p><strong>Note</strong>: This blog post is currently incomplete; I’m still finishing the CI / CD portion but I had to deploy it immediately to share with a coworker.</p>
+<p><strong>Note</strong>: This blog post is currently incomplete; I'm still finishing the CI / CD portion but I had to deploy it immediately to share with a coworker.</p>
 
 
   </div>

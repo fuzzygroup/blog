@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-I’ve been doing Rails now since 2007 and Ruby since 2006.  And, despite having implemented timezone support, literally I don’t know how many times, I have never felt good about my knowledge of ti...">
+I've been doing Rails now since 2007 and Ruby since 2006.  And, despite having implemented timezone support, literally I don't know how many times, I have never felt good about my knowledge of ti...">
   
 
   
@@ -182,11 +182,11 @@ I’ve been doing Rails now since 2007 and Ruby since 2006.  And, despite having
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_8144.jpeg" alt="IMG_8144.jpeg" /></p>
 
-<p>I’ve been doing Rails now since 2007 and Ruby since 2006.  And, despite having implemented timezone support, literally I don’t know how many times, I have never felt good about my knowledge of timezones.</p>
+<p>I've been doing Rails now since 2007 and Ruby since 2006.  And, despite having implemented timezone support, literally I don't know how many times, I have never felt good about my knowledge of timezones.</p>
 
-<p>I just implemented timezones again - for my latest side project - and this time I actually feel pretty good about.  The credit goes to <a href="https://thoughtbot.com/blog/authors/elle-meredith">Elle Meredith</a> of <a href="https://thoughtbot.com">ThoughtBot</a> for her <a href="https://thoughtbot.com/blog/its-about-time-zones">outstandingly good, utterly excellent, truly splendid blog post on the topic</a>.  Not only did she write a fantastic post, she also included this critical information: “July 23, 2015 UPDATED ON March 28, 2019”.  That’s awesome because it tells me that it likely applies to my current version of Rails.</p>
+<p>I just implemented timezones again - for my latest side project - and this time I actually feel pretty good about.  The credit goes to <a href="https://thoughtbot.com/blog/authors/elle-meredith">Elle Meredith</a> of <a href="https://thoughtbot.com">ThoughtBot</a> for her <a href="https://thoughtbot.com/blog/its-about-time-zones">outstandingly good, utterly excellent, truly splendid blog post on the topic</a>.  Not only did she write a fantastic post, she also included this critical information: "July 23, 2015 UPDATED ON March 28, 2019".  That's awesome because it tells me that it likely applies to my current version of Rails.</p>
 
-<p>Finally she wrote these Don’ts and Do’s:</p>
+<p>Finally she wrote these Don'ts and Do's:</p>
 
 <p><strong>DON’T USE</strong></p>
 
@@ -194,8 +194,8 @@ I’ve been doing Rails now since 2007 and Ruby since 2006.  And, despite having
   <li>Time.now</li>
   <li>Date.today</li>
   <li>Date.today.to_time</li>
-  <li>Time.parse(“2015-07-04 17:05:37”)</li>
-  <li>Time.strptime(string, “%Y-%m-%dT%H:%M:%S%z”)</li>
+  <li>Time.parse("2015-07-04 17:05:37")</li>
+  <li>Time.strptime(string, "%Y-%m-%dT%H:%M:%S%z")</li>
 </ul>
 
 <p><strong>DO USE</strong></p>
@@ -206,13 +206,13 @@ I’ve been doing Rails now since 2007 and Ruby since 2006.  And, despite having
   <li>Time.zone.today</li>
   <li>Date.current</li>
   <li>1.day.from_now</li>
-  <li>Time.zone.parse(“2015-07-04 17:05:37”)</li>
-  <li>Time.strptime(string, “%Y-%m-%dT%H:%M:%S%z”).in_time_zone</li>
+  <li>Time.zone.parse("2015-07-04 17:05:37")</li>
+  <li>Time.strptime(string, "%Y-%m-%dT%H:%M:%S%z").in_time_zone</li>
 </ul>
 
 <p>As someone who could probably grep his Rails code bases and find many hundreds if not thousands of Date.today calls, yikes!</p>
 
-<p>One of the reasons that I’m so damn happy about this is 10 minutes ago I had a dashboard board that showed 0 data items for today.  I then moved from Date.today to Date.current and re-deployed and my dashboard now shows me the correct information.  Given that it is 9:05 EST and, thus, roughly 3 am UTC (i.e. the next day), this pretty conclusively provides that:</p>
+<p>One of the reasons that I'm so damn happy about this is 10 minutes ago I had a dashboard board that showed 0 data items for today.  I then moved from Date.today to Date.current and re-deployed and my dashboard now shows me the correct information.  Given that it is 9:05 EST and, thus, roughly 3 am UTC (i.e. the next day), this pretty conclusively provides that:</p>
 
 <ul>
   <li>the article was good</li>
@@ -222,7 +222,7 @@ I’ve been doing Rails now since 2007 and Ruby since 2006.  And, despite having
 
 <p>Thank you Elle!</p>
 
-<p><strong>Note</strong>: One of the reasons that I have so frequently used Date.today is that I do an inordinate amount of data processing using Rake tasks where there isn’t the context of a currently logged in user.  I’m still not sure what to do in these cases but I now have the knowledge to noodle on it at least.</p>
+<p><strong>Note</strong>: One of the reasons that I have so frequently used Date.today is that I do an inordinate amount of data processing using Rake tasks where there isn't the context of a currently logged in user.  I'm still not sure what to do in these cases but I now have the knowledge to noodle on it at least.</p>
 
   </div>
   

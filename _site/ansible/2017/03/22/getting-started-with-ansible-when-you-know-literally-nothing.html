@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Getting Started with Ansible when You Know Literally Nothing</title>
-  <meta name="description" content="An old friend, let’s call him GC, emailed me earier today about ansible:">
+  <meta name="description" content="An old friend, let's call him GC, emailed me earier today about ansible:">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/ansible/2017/03/22/getting-started-with-ansible-when-you-know-literally-nothing.html">
@@ -178,14 +178,14 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>An old friend, let’s call him GC, emailed me earier today about ansible:</p>
+    <p>An old friend, let's call him GC, emailed me earier today about ansible:</p>
 
 <blockquote>
   <p>Hi Scott,</p>
 </blockquote>
 
 <blockquote>
-  <p>I’m trying out ansible… But I’m a little at a loss as to what I do next.</p>
+  <p>I'm trying out ansible… But I'm a little at a loss as to what I do next.</p>
 </blockquote>
 
 <blockquote>
@@ -197,7 +197,7 @@
 </blockquote>
 
 <blockquote>
-  <p>This seems like exactly what ansible is for. But I’ve now installed it locally, and at pythonanywhere, and… well, I’m watching nice videos about the wonderful way ansible can automate this, and I can run ansible-console and see zillions of commands, and…</p>
+  <p>This seems like exactly what ansible is for. But I've now installed it locally, and at pythonanywhere, and… well, I'm watching nice videos about the wonderful way ansible can automate this, and I can run ansible-console and see zillions of commands, and…</p>
 </blockquote>
 
 <blockquote>
@@ -232,13 +232,13 @@
   <p>gc</p>
 </blockquote>
 
-<p>Ansible is the best devops tool I’ve ever used but its yaml based syntax and mixture of different concepts - playbooks, roles, tasks and inventories can make this hard so let’s break this down bit by bit and construct a conceptual model for this.</p>
+<p>Ansible is the best devops tool I've ever used but its yaml based syntax and mixture of different concepts - playbooks, roles, tasks and inventories can make this hard so let's break this down bit by bit and construct a conceptual model for this.</p>
 
 <p><strong>Note:</strong> If you want a set of introductory slides on Ansible, <a href="http://fuzzyblog.io/blog/assets/ansible_basics.pdf">here are a set of slides</a> that I gave in Fall 2016 at an Elixir Meetup.</p>
 
 <h1 id="definitions">Definitions</h1>
 
-<p>Let’s start with some definitions:</p>
+<p>Let's start with some definitions:</p>
 
 <ul>
   <li>Playbook - A collection of logical tasks that are designed to accomplish a purpose.  Think of a playbook as an executable of limited scope.  Playbooks execute roles.</li>
@@ -249,7 +249,7 @@
 
 <h1 id="what-actually-is-ansible">What Actually Is Ansible?</h1>
 
-<p>Part of what makes Ansible confusing is that its not an imperative, from start to finish scripting language.  Ansible is instead a <em>state description system</em> where what you’re doing is describing the state of the system that you want to achieve, as a series of yaml documents, and then Ansible itself reconciles the target system with that state description until it matches.  If you ever did expert systems development then think of Ansible as a problem solving engine and that’s actually pretty close to the truth.</p>
+<p>Part of what makes Ansible confusing is that its not an imperative, from start to finish scripting language.  Ansible is instead a <em>state description system</em> where what you're doing is describing the state of the system that you want to achieve, as a series of yaml documents, and then Ansible itself reconciles the target system with that state description until it matches.  If you ever did expert systems development then think of Ansible as a problem solving engine and that's actually pretty close to the truth.</p>
 
 <h1 id="solving-our-problem">Solving Our Problem</h1>
 
@@ -267,19 +267,19 @@
   </li>
 </ul>
 
-<p>The difference between these two is <strong>where</strong> Ansible is executing and the reason that’s important is that Ansible operates via SSH automation at its core.  This means that the underlying concept of <em>connection</em> is key to Ansible.  You can operate Ansible either via a connection from your local machine to a series of remote hosts (your inventory) or you can operate it on a remote host solely (the connection: local approach).  My suspicion is that either approach could be made to work so let’s explore both.</p>
+<p>The difference between these two is <strong>where</strong> Ansible is executing and the reason that's important is that Ansible operates via SSH automation at its core.  This means that the underlying concept of <em>connection</em> is key to Ansible.  You can operate Ansible either via a connection from your local machine to a series of remote hosts (your inventory) or you can operate it on a remote host solely (the connection: local approach).  My suspicion is that either approach could be made to work so let's explore both.</p>
 
 <h2 id="local-to-remote">Local to Remote</h2>
 
-<p>With a local to remote approach, the ansible code executes initially on your local machine but connects to each of the machines identified in your inventory.  This connection is done through SSH automation.  I know a lot of my readers are people from the Ruby community so perhaps this analogy might help – if you’re at all familiar with <a href="http://capistranorb.com/">Capistrano</a> then think of this aspect of Ansible as a vastly more generalized Capistrano.</p>
+<p>With a local to remote approach, the ansible code executes initially on your local machine but connects to each of the machines identified in your inventory.  This connection is done through SSH automation.  I know a lot of my readers are people from the Ruby community so perhaps this analogy might help – if you're at all familiar with <a href="http://capistranorb.com/">Capistrano</a> then think of this aspect of Ansible as a vastly more generalized Capistrano.</p>
 
 <h2 id="remote-to-remote">Remote to Remote</h2>
 
-<p>A Remote to Remote approach is actually very similar to local to remote.  The only real difference is that you use a dedicated ansible box on your network to handle running your Ansible code.  This can have some pretty dramatic performance improvements since your remote box is at the same “level” as your ansible code itself.</p>
+<p>A Remote to Remote approach is actually very similar to local to remote.  The only real difference is that you use a dedicated ansible box on your network to handle running your Ansible code.  This can have some pretty dramatic performance improvements since your remote box is at the same "level" as your ansible code itself.</p>
 
 <h2 id="on-remote">On Remote</h2>
 
-<p>Another approach would be to run the ansible process solely on the remote machine directly.  I’ve done less of this but it should certainly be possible.</p>
+<p>Another approach would be to run the ansible process solely on the remote machine directly.  I've done less of this but it should certainly be possible.</p>
 
 <h2 id="choosing-local-to-remote">Choosing Local to Remote</h2>
 
@@ -287,9 +287,9 @@
 
 <h2 id="starting-with-a-make-file">Starting with a Make File</h2>
 
-<p>GC is an outstanding, low level software developer so his thinking of ansible as something you run directly from the makefile doesn’t surprise me at all.  In an earlier life he implemented the HyperAwk programming language for me using Borland’s Turbo Pascal (yes I’ve known him that long).  HyperAwk was a variant on the Awk programming language that read directly from binary word processing files (Word, WordPerfect, Ami Pro, Samna) and then constructed hypertext documents from them.  I miss HyperAwk but I digress.</p>
+<p>GC is an outstanding, low level software developer so his thinking of ansible as something you run directly from the makefile doesn't surprise me at all.  In an earlier life he implemented the HyperAwk programming language for me using Borland's Turbo Pascal (yes I've known him that long).  HyperAwk was a variant on the Awk programming language that read directly from binary word processing files (Word, WordPerfect, Ami Pro, Samna) and then constructed hypertext documents from them.  I miss HyperAwk but I digress.</p>
 
-<p>Let’s start with a sample makefile.  Here’s one from the <a href="https://www.gnu.org/software/make/manual/html_node/Simple-Makefile.html">Gnu folks</a>:</p>
+<p>Let's start with a sample makefile.  Here's one from the <a href="https://www.gnu.org/software/make/manual/html_node/Simple-Makefile.html">Gnu folks</a>:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>edit : main.o kbd.o command.o display.o 
 
@@ -315,15 +315,15 @@ clean :
 </code></pre>
 </div>
 
-<p>And while GC’s makefile is certainly different, conceptually it should be much the same - a series of steps which result in the production of a binary file.  In GC’s case that binary is checked into a version control system and that’s what our Ansible playbook will operate on.</p>
+<p>And while GC's makefile is certainly different, conceptually it should be much the same - a series of steps which result in the production of a binary file.  In GC's case that binary is checked into a version control system and that's what our Ansible playbook will operate on.</p>
 
-<p>What we’re going to need to do is invoke our Ansible playbook at the end of the clean: stage with a line something like this:</p>
+<p>What we're going to need to do is invoke our Ansible playbook at the end of the clean: stage with a line something like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i /Users/sjohnson/me/fuzzygroup/ansible/gc01/inventories/hosts /Users/sjohnson/me/fuzzygroup/ansible/gc01/playbook_deployer.yml
 </code></pre>
 </div>
 
-<p>As I don’t know anything about the paths in GC’s build system, I’m specifying absolute paths to everything but there’s nothing stopping GC from embedding his ansible code into the build process itself – that’s a choice that he could certainly make.  Obviously he would change the /sjohnson/ to something on his local system.</p>
+<p>As I don't know anything about the paths in GC's build system, I'm specifying absolute paths to everything but there's nothing stopping GC from embedding his ansible code into the build process itself – that's a choice that he could certainly make.  Obviously he would change the /sjohnson/ to something on his local system.</p>
 
 <h2 id="the-inventory-file">The Inventory File</h2>
 
@@ -334,20 +334,20 @@ ansible_ssh_host=ec2-99-39-100-178.us-east-1.compute.amazonaws.com        ansibl
 </code></pre>
 </div>
 
-<p>If we wanted this to execute on say 10 different hosts then we’d simply enumerate all 10 hosts here.  And if our local machine’s SSH keys are setup to reach the remote box directly then we wouldn’t even have to specify a .pem file.  The example above shows how I generally configure ansible to talk to AWS since that’s a very, very common use case.</p>
+<p>If we wanted this to execute on say 10 different hosts then we'd simply enumerate all 10 hosts here.  And if our local machine's SSH keys are setup to reach the remote box directly then we wouldn't even have to specify a .pem file.  The example above shows how I generally configure ansible to talk to AWS since that's a very, very common use case.</p>
 
 <h2 id="the-roles-we-need">The Roles We Need</h2>
 
-<p>Here are the roles that we’re likely to need:</p>
+<p>Here are the roles that we're likely to need:</p>
 
 <ul>
   <li>git_pull</li>
   <li>web_server_restart</li>
 </ul>
 
-<p>Ansible like a lot of open source tools can be used in many different ways.  I’ve looked at a lot of Ansible code on the web and I’ve written probably close to 10K lines of Ansible by now and I have a pretty opinionated approach to Ansible development by this point.  I treat Ansible code just as if it was “real” source code and I use a very disciplined approach to the files and structure of an ansible “application” – don’t kid yourself, Ansible is a real application development tool even if it doesn’t seem like it.  If you have any doubts on Ansible as a development environment, please read <a href="http://fuzzyblog.io/blog/aws/2017/03/06/using-ansible-as-a-development-tool-with-rails.html">this post of mine</a>.</p>
+<p>Ansible like a lot of open source tools can be used in many different ways.  I've looked at a lot of Ansible code on the web and I've written probably close to 10K lines of Ansible by now and I have a pretty opinionated approach to Ansible development by this point.  I treat Ansible code just as if it was "real" source code and I use a very disciplined approach to the files and structure of an ansible "application" – don't kid yourself, Ansible is a real application development tool even if it doesn't seem like it.  If you have any doubts on Ansible as a development environment, please read <a href="http://fuzzyblog.io/blog/aws/2017/03/06/using-ansible-as-a-development-tool-with-rails.html">this post of mine</a>.</p>
 
-<p>Before we delve too deep into the specific ansible code, let’s look at the file structure that makes up what we need to do.  Here is tree’s output:</p>
+<p>Before we delve too deep into the specific ansible code, let's look at the file structure that makes up what we need to do.  Here is tree's output:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>~/me/fuzzygroup/ansible/gc01
 20:19 $ tree
@@ -368,7 +368,7 @@ ansible_ssh_host=ec2-99-39-100-178.us-east-1.compute.amazonaws.com        ansibl
 
 <h2 id="the-playbook">The Playbook</h2>
 
-<p>Here is the playbook that we’ll need:</p>
+<p>Here is the playbook that we'll need:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>- hosts: production
   become: yes
@@ -423,7 +423,7 @@ ansible_ssh_host=ec2-99-39-100-178.us-east-1.compute.amazonaws.com        ansibl
 
 <h1 id="learning-more">Learning More</h1>
 
-<p>This is barely touching the surface of Ansible.  Not only did I completely ignore Ansible’s idempotent nature but I also skipped a ton of other important things such as AWS automation, the <em>censored</em> nature of Ansible Galaxy, python Boto support and more.  Here are some pointers:</p>
+<p>This is barely touching the surface of Ansible.  Not only did I completely ignore Ansible's idempotent nature but I also skipped a ton of other important things such as AWS automation, the <em>censored</em> nature of Ansible Galaxy, python Boto support and more.  Here are some pointers:</p>
 
 <ul>
   <li><a href="http://fuzzyblog.io/blog/category.html#ansible">My Blog on Ansible</a></li>

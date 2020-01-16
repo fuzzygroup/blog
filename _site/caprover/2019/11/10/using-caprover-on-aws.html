@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Using CapRover on AWS</title>
-  <meta name="description" content="I am a Ruby on Rails guy and I censored hate deploying Ruby stuff.  I’ve been deploying Rails stuff now since 2007 and, quite honestly, it sucked in 2007 and...">
+  <meta name="description" content="I am a Ruby on Rails guy and I censored hate deploying Ruby stuff.  I've been deploying Rails stuff now since 2007 and, quite honestly, it sucked in 2007 and...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/caprover/2019/11/10/using-caprover-on-aws.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="I am a Ruby on Rails guy and I censored hate deploying Ruby stuff.  I’ve been deploying Rails stuff now since 2007 and, quite honestly, it sucked in 2007 and it sucks today.  The only way I’ve ever...">
+      content="I am a Ruby on Rails guy and I censored hate deploying Ruby stuff.  I've been deploying Rails stuff now since 2007 and, quite honestly, it sucked in 2007 and it sucks today.  The only way I've ever...">
   
 
   
@@ -178,9 +178,9 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I am a Ruby on Rails guy and I <strong>censored</strong> hate deploying Ruby stuff.  I’ve been deploying Rails stuff now since 2007 and, quite honestly, it sucked in 2007 and it sucks today.  The only way I’ve ever found Rails deployment to not suck is by using Heroku which is absolutely magical and wonderful – but expensive.  Now I’ve recently become hooked on Heroku and the ease of its Git push based deployment structure.  The problem is that I need more power / flexibility with respect to what I’m deploying and this has let me to the <a href="https://caprover.com/">CapRover</a> open source project.</p>
+    <p>I am a Ruby on Rails guy and I <strong>censored</strong> hate deploying Ruby stuff.  I've been deploying Rails stuff now since 2007 and, quite honestly, it sucked in 2007 and it sucks today.  The only way I've ever found Rails deployment to not suck is by using Heroku which is absolutely magical and wonderful – but expensive.  Now I've recently become hooked on Heroku and the ease of its Git push based deployment structure.  The problem is that I need more power / flexibility with respect to what I'm deploying and this has let me to the <a href="https://caprover.com/">CapRover</a> open source project.</p>
 
-<p>This project aims to give you a version of Heroku but running on your own hardware.  Given that I’m an AWS guy, I wanted to use CapRover on AWS EC2 instances.</p>
+<p>This project aims to give you a version of Heroku but running on your own hardware.  Given that I'm an AWS guy, I wanted to use CapRover on AWS EC2 instances.</p>
 
 <h2 id="setup---1">Setup - 1</h2>
 
@@ -234,11 +234,11 @@ ERRO[0000] error waiting for container: context canceled
 </code></pre>
 </div>
 
-<p>I’ve now used Docker for a bunch of years and this led to the typical, crap ass Docker troubleshooting approach of roaming thru Google, looking for a github issue that explains things.  I found one from a <a href="https://github.com/moby/moby/issues/34427">January 19, 2019</a> issue which said “don’t use the snap version of Docker”.</p>
+<p>I've now used Docker for a bunch of years and this led to the typical, crap ass Docker troubleshooting approach of roaming thru Google, looking for a github issue that explains things.  I found one from a <a href="https://github.com/moby/moby/issues/34427">January 19, 2019</a> issue which said "don't use the snap version of Docker".</p>
 
 <h2 id="setup---3">Setup - 3</h2>
 
-<p>I’m personally an apt-get fan and I don’t even know what we have Snaps but they are the new hotness so I did try them out.  Apparently this is my bad.</p>
+<p>I'm personally an apt-get fan and I don't even know what we have Snaps but they are the new hotness so I did try them out.  Apparently this is my bad.</p>
 
 <p>Ok then:</p>
 
@@ -369,7 +369,7 @@ For more details and docs see CapRover.com
 
 <p>You will need an actual domain that you can bind to your ip address.  And you need to make sure that you assign *.domain.com (or whatever) to it.</p>
 
-<p>Since I’m an AWS guy, I went to the Route 53 domain manager and found an unused domain of mine, cartazzi.com and bound it to the ip address above.  I then added a *.cartazzi.com wildcard dns entry onto it.</p>
+<p>Since I'm an AWS guy, I went to the Route 53 domain manager and found an unused domain of mine, cartazzi.com and bound it to the ip address above.  I then added a *.cartazzi.com wildcard dns entry onto it.</p>
 
 <h2 id="setup---8">Setup - 8</h2>
 
@@ -377,7 +377,7 @@ For more details and docs see CapRover.com
 
 <h2 id="setup---9">Setup - 9</h2>
 
-<p>The magic of all this is tied to the Captain Definition file or captain-definition which is essentially a JSON formatted Dockerfile that defines how the application is built.  And this is where my Docker knowledge failed me.  Here’s as far as I got:</p>
+<p>The magic of all this is tied to the Captain Definition file or captain-definition which is essentially a JSON formatted Dockerfile that defines how the application is built.  And this is where my Docker knowledge failed me.  Here's as far as I got:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>cat captain-definition
 {
@@ -502,7 +502,7 @@ Something bad happened. Cannot deploy cts-home-page at captain-01.
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>I am really, really impressed with CapRover and I intend to return to it.  While I didn’t get everything working, what did work was <strong>impressive</strong> and the fact that Rails doesn’t deploy is mostly a documentation issue, not a failing, at all, of CapRover.  The issues I had with AWS are also documentation issues.</p>
+<p>I am really, really impressed with CapRover and I intend to return to it.  While I didn't get everything working, what did work was <strong>impressive</strong> and the fact that Rails doesn't deploy is mostly a documentation issue, not a failing, at all, of CapRover.  The issues I had with AWS are also documentation issues.</p>
 
 <h2 id="take-2">Take 2</h2>
 
@@ -515,7 +515,7 @@ Something bad happened. Cannot deploy cts-home-page at captain-01.
 </span></code></pre>
 </div>
 
-<p>and then here’s a valid albeit simple Rails Dockerfile to run on an Ubuntu instance:</p>
+<p>and then here's a valid albeit simple Rails Dockerfile to run on an Ubuntu instance:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>#FROM ruby:2.6.5-ubuntu
 FROM ubuntu:latest
@@ -546,14 +546,14 @@ CMD puma -C config/puma.rb
 </code></pre>
 </div>
 
-<p>Now, let’s run thru the deployment process once again, in full:</p>
+<p>Now, let's run thru the deployment process once again, in full:</p>
 
 <ol>
   <li>Add the captain-definition file.</li>
   <li>Add the Dockerfile</li>
   <li>Do a git add .</li>
-  <li>Do a git commit -m “updated captain stuff”</li>
-  <li>Everything has to be added and committed (but not pushed) since CapRover reads from the local git repo.  If its not added and committed, CapRover won’t see it (and they warn you about this but I don’t feel the warning is strenuous enough).</li>
+  <li>Do a git commit -m "updated captain stuff"</li>
+  <li>Everything has to be added and committed (but not pushed) since CapRover reads from the local git repo.  If its not added and committed, CapRover won't see it (and they warn you about this but I don't feel the warning is strenuous enough).</li>
   <li>If this is a new app for you then goto your equivalent url to http://captain.caprover.com and define a new app.</li>
   <li>On the first time Do a caprover deploy and use the up and down arrows to select the machine and the app.</li>
   <li>Watch the Docker stuff build.</li>

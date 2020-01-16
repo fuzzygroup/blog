@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-As I’ve written before, I personally find virtual environments to be the devil /  Satan’s Step Child for programming but there’s no other option so, well, fsck ME.  Anyway this is now something I...">
+As I've written before, I personally find virtual environments to be the devil /  Satan's Step Child for programming but there's no other option so, well, fsck ME.  Anyway this is now something I...">
   
 
   
@@ -182,7 +182,7 @@ As I’ve written before, I personally find virtual environments to be the devil
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_8780.jpeg" alt="IMG_8780.jpeg" /></p>
 
-<p>As I’ve written before, I personally find virtual environments to be the <a href="https://fuzzyblog.io/blog/ruby/2019/07/10/when-rbenv-well-won-t-rbenv-fixing-shell-extension-madness.html">devil /  Satan’s Step Child for programming</a> but there’s no other option so, well, <a href="https://en.wikipedia.org/wiki/Fsck">fsck</a> ME.  Anyway this is now something I am wrestling with in terms of Python.</p>
+<p>As I've written before, I personally find virtual environments to be the <a href="https://fuzzyblog.io/blog/ruby/2019/07/10/when-rbenv-well-won-t-rbenv-fixing-shell-extension-madness.html">devil /  Satan's Step Child for programming</a> but there's no other option so, well, <a href="https://en.wikipedia.org/wiki/Fsck">fsck</a> ME.  Anyway this is now something I am wrestling with in terms of Python.</p>
 
 <p>My problem was this persnickety little prick of an error:</p>
 
@@ -192,11 +192,11 @@ IPython inside the virtualenv.
 </code></pre>
 </div>
 
-<p>This starts with at least one problem – what the hell is iPython.  Apparently iPython is “interactive Python”.  Now I don’t really understand how Python or Python3 isn’t interactive when both of them can load up a functional repl but, whatever.  Apparently iPython improves debugging or at least has some bit of color coding (so maybe think of it as ruby + <a href="https://rubygems.org/gems/awesome_print/versions/1.8.0">awesome_print</a>).  So this error message means:</p>
+<p>This starts with at least one problem – what the hell is iPython.  Apparently iPython is "interactive Python".  Now I don't really understand how Python or Python3 isn't interactive when both of them can load up a functional repl but, whatever.  Apparently iPython improves debugging or at least has some bit of color coding (so maybe think of it as ruby + <a href="https://rubygems.org/gems/awesome_print/versions/1.8.0">awesome_print</a>).  So this error message means:</p>
 
 <ol>
-  <li>I’m in the virtual environment from VENV.</li>
-  <li>iPython is likely coming in from the system layer so I’m probably getting a Python 2.x instead of a Python 3.x.</li>
+  <li>I'm in the virtual environment from VENV.</li>
+  <li>iPython is likely coming in from the system layer so I'm probably getting a Python 2.x instead of a Python 3.x.</li>
 </ol>
 
 <p>A bunch of googles left me scratching my head until I found this <a href="https://stackoverflow.com/questions/20327621/calling-ipython-from-a-virtualenv">Stack Overflow page</a> with about a half dozen approaches.  Hmmmph - this calls <a href="https://wiki.python.org/moin/TOOWTDI">TOOWTDI</a> very much into question, imho.  And then that seemed to work and I wrote the first draft of this blog post.  And then it near immediately stopped working.  <em>grumble</em>.</p>
@@ -222,7 +222,7 @@ source ~/.zshrc
 </code></pre>
 </div>
 
-<p>While, I’m still not entirely sure why I need iPython but the cool kids seem to use it and the color coding and back traces are much better:</p>
+<p>While, I'm still not entirely sure why I need iPython but the cool kids seem to use it and the color coding and back traces are much better:</p>
 
 <p class="center"><img src="/blog/assets/without_ipython.png" alt="without_ipython.png" /></p>
 
@@ -232,7 +232,7 @@ source ~/.zshrc
 
 <p>Note: This is with iPython.</p>
 
-<p><strong>Note</strong>: I’m intrigued by the idea of <a href="https://github.com/asdf-vm/asdf">ASDF</a> possibly fixing shell extension madness by at least making this uniform across languages.  Anyone tried this yet?  I need a single solution for at least Python and Ruby (and preferably Elixir / Rust).</p>
+<p><strong>Note</strong>: I'm intrigued by the idea of <a href="https://github.com/asdf-vm/asdf">ASDF</a> possibly fixing shell extension madness by at least making this uniform across languages.  Anyone tried this yet?  I need a single solution for at least Python and Ruby (and preferably Elixir / Rust).</p>
 
   </div>
   

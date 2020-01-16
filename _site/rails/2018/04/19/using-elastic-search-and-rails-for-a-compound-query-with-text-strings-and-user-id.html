@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Using Elastic Search and Rails for a Compound Query with Text Strings and User ID</title>
-  <meta name="description" content="I’m writing this blog post, my first in quite a while, because I recently had to implement ElasticSearch for Rails for a new application I’m building and I f...">
+  <meta name="description" content="I'm writing this blog post, my first in quite a while, because I recently had to implement ElasticSearch for Rails for a new application I'm building and I f...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2018/04/19/using-elastic-search-and-rails-for-a-compound-query-with-text-strings-and-user-id.html">
@@ -178,14 +178,14 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I’m writing this blog post, my first in quite a while, because I recently had to implement <a href="https://github.com/elastic/elasticsearch-rails">ElasticSearch for Rails</a> for a <a href="https://www.jobhound.io">new application I’m building</a> and I find life in the Elastic world a bit different than I had expected.  If you’re an Elastic Search veteran then you should definitely move along because:</p>
+    <p>I'm writing this blog post, my first in quite a while, because I recently had to implement <a href="https://github.com/elastic/elasticsearch-rails">ElasticSearch for Rails</a> for a <a href="https://www.jobhound.io">new application I'm building</a> and I find life in the Elastic world a bit different than I had expected.  If you're an Elastic Search veteran then you should definitely move along because:</p>
 
 <ul>
   <li>This is fairly basic</li>
-  <li>I’m writing this mostly to cement this in my own brain</li>
+  <li>I'm writing this mostly to cement this in my own brain</li>
 </ul>
 
-<p>Curiously I found very few examples about how to do this type of compound query in Rails and that’s also part of my motivation for writing it.  The closest example I found was in a <a href="https://stackoverflow.com/questions/19381199/how-to-perform-elasticsearch-query-on-records-from-only-a-certain-user-rails-ti/49900343#49900343">four year old Stack Overflow post</a>.</p>
+<p>Curiously I found very few examples about how to do this type of compound query in Rails and that's also part of my motivation for writing it.  The closest example I found was in a <a href="https://stackoverflow.com/questions/19381199/how-to-perform-elasticsearch-query-on-records-from-only-a-certain-user-rails-ti/49900343#49900343">four year old Stack Overflow post</a>.</p>
 
 <h1 id="the-problem-everyone-should-see-only-their-own-data">The Problem: Everyone Should See Only Their Own Data</h1>
 
@@ -195,7 +195,7 @@
 </code></pre>
 </div>
 
-<p>Given that I was initially the only user on this code base, I didn’t even notice the issue until I thought about deployment.  At which point there was the obligatory light bulb / I’m an idiot moment.  The problem here is that this code searches everyone’s jobs, not just the jobs that <strong>you</strong> created.  Now since every bit of data encompasses a user_id attribute, this should boil down to two problems:</p>
+<p>Given that I was initially the only user on this code base, I didn't even notice the issue until I thought about deployment.  At which point there was the obligatory light bulb / I'm an idiot moment.  The problem here is that this code searches everyone's jobs, not just the jobs that <strong>you</strong> created.  Now since every bit of data encompasses a user_id attribute, this should boil down to two problems:</p>
 
 <ol>
   <li>Getting user_id into the index</li>
@@ -204,11 +204,11 @@
 
 <h1 id="sidebar-but-what-about-searchkick">Sidebar: But What About SearchKick</h1>
 
-<p>I’m sure a number of people are shouting out “Use <a href="https://github.com/ankane/searchkick">SearchKick</a> (dummy)” but whenever I tried to use SearchKick, I got odd errors and I eventually just pulled it from Gemfile.  Given that I’m a long time believer in Ankane’s ChartKick, I’m sure it is me but I still couldn’t make use of it.</p>
+<p>I'm sure a number of people are shouting out "Use <a href="https://github.com/ankane/searchkick">SearchKick</a> (dummy)" but whenever I tried to use SearchKick, I got odd errors and I eventually just pulled it from Gemfile.  Given that I'm a long time believer in Ankane's ChartKick, I'm sure it is me but I still couldn't make use of it.</p>
 
 <h1 id="step-1-getting-userid-into-the-index">Step 1: Getting user_id into the Index</h1>
 
-<p>I’ve opted to setup each of my searchable models as follows:</p>
+<p>I've opted to setup each of my searchable models as follows:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>include Elasticsearch::Model
 include Elasticsearch::Model::Callbacks
@@ -281,11 +281,11 @@ end
 </code></pre>
 </div>
 
-<p>This re-indexes every model in full.  You don’t always need this but it is very convenient to have for development when you’re playing with schema changes and the like.</p>
+<p>This re-indexes every model in full.  You don't always need this but it is very convenient to have for development when you're playing with schema changes and the like.</p>
 
 <h1 id="recommended-reading">Recommended Reading</h1>
 
-<p>I made heavy use of <a href="https://iridakos.com/tutorials/2017/12/03/elasticsearch-and-rails-tutorial.html">Iridakos’s excellent tutorial</a> and I recommend you do too.</p>
+<p>I made heavy use of <a href="https://iridakos.com/tutorials/2017/12/03/elasticsearch-and-rails-tutorial.html">Iridakos's excellent tutorial</a> and I recommend you do too.</p>
 
   </div>
   

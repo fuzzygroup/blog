@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Elixir Example Using Ecto for An Existing MySQL Database</title>
-  <meta name="description" content="My Elixir progress has slowed a bit as of late and the cause has mostly been Ecto.  I’ve been having a hard time wrapping my head around Ecto and I suspect t...">
+  <meta name="description" content="My Elixir progress has slowed a bit as of late and the cause has mostly been Ecto.  I've been having a hard time wrapping my head around Ecto and I suspect t...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/elixir/2016/09/26/elixir-example-using-ecto-for-an-existing-mysql-database.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="My Elixir progress has slowed a bit as of late and the cause has mostly been Ecto.  I’ve been having a hard time wrapping my head around Ecto and I suspect the issue is over a decade of constant Ac...">
+      content="My Elixir progress has slowed a bit as of late and the cause has mostly been Ecto.  I've been having a hard time wrapping my head around Ecto and I suspect the issue is over a decade of constant Ac...">
   
 
   
@@ -178,11 +178,11 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>My Elixir progress has slowed a bit as of late and the cause has mostly been Ecto.  I’ve been having a hard time wrapping my head around Ecto and I suspect the issue is over a decade of constant ActiveRecord usage.  So this morning I decided to read other blog posts and try and execute on them.  I settled on this one:</p>
+    <p>My Elixir progress has slowed a bit as of late and the cause has mostly been Ecto.  I've been having a hard time wrapping my head around Ecto and I suspect the issue is over a decade of constant ActiveRecord usage.  So this morning I decided to read other blog posts and try and execute on them.  I settled on this one:</p>
 
 <p><a href="http://geoffreylessel.com/2016/using-ecto-with-an-existing-mysql-database/">http://geoffreylessel.com/2016/using-ecto-with-an-existing-mysql-database/</a></p>
 
-<p>since it seemed to be exactly what I needed - wrap an Ecto interface around an existing database.  Unfortunately the author hadn’t published everything and some of the details he glossed over were exactly what tripped me up.  Happily he was very responsive to email and while you should absolutely read his piece, here are the bare minimum steps to build this.  This application uses a Formula 1 racing database as a source of data to query.</p>
+<p>since it seemed to be exactly what I needed - wrap an Ecto interface around an existing database.  Unfortunately the author hadn't published everything and some of the details he glossed over were exactly what tripped me up.  Happily he was very responsive to email and while you should absolutely read his piece, here are the bare minimum steps to build this.  This application uses a Formula 1 racing database as a source of data to query.</p>
 
 <p>Obviously adjust all the path statements and passwords and username to match your system.</p>
 
@@ -263,11 +263,11 @@ end
 </code></pre>
 </div>
 
-<p>Note that F1History.Repo needs to be one of the supervisor’s children. This is critically important.</p>
+<p>Note that F1History.Repo needs to be one of the supervisor's children. This is critically important.</p>
 
 <h1 id="edit-raceex">Edit race.ex</h1>
 
-<p>The file race.ex defines a race “object” that we will be querying. Here’s what that file looks like:</p>
+<p>The file race.ex defines a race "object" that we will be querying. Here's what that file looks like:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>defmodule F1History.Race do
   use Ecto.Schema

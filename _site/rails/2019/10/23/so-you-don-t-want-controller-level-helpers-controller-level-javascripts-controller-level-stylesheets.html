@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-One of the better Rails tricks that my buddy Sean Kennedy taught me over the past year was just how configurable Rails is.  Yes Rails is opinionated – but Rails isn’t an asshole about it – Rails ...">
+One of the better Rails tricks that my buddy Sean Kennedy taught me over the past year was just how configurable Rails is.  Yes Rails is opinionated – but Rails isn't an asshole about it – Rails ...">
   
 
   
@@ -182,9 +182,9 @@ One of the better Rails tricks that my buddy Sean Kennedy taught me over the pas
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_9602.jpeg" alt="IMG_9602.jpeg" /></p>
 
-<p>One of the better Rails tricks that my buddy Sean Kennedy taught me over the past year was just how configurable Rails is.  Yes Rails is opinionated – but Rails isn’t an asshole about it – Rails is configurable as all heck.</p>
+<p>One of the better Rails tricks that my buddy Sean Kennedy taught me over the past year was just how configurable Rails is.  Yes Rails is opinionated – but Rails isn't an asshole about it – Rails is configurable as all heck.</p>
 
-<p>Let’s take the issue of controller level helpers.  A helper script file is automatically generated when you create a controller so when you generate a controller named DataSource, you get:</p>
+<p>Let's take the issue of controller level helpers.  A helper script file is automatically generated when you create a controller so when you generate a controller named DataSource, you get:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>➜  police_crawl git:(master) ✗ rails g controller DataSource
       create  app/controllers/data_source_controller.rb
@@ -209,13 +209,13 @@ app/helpers/tweet_helper.rb
 
 <p>creates the idea in the developers mind that you will get the display_content routine from the context where you call it (either the views for data_source or the views for tweet).  I understand exactly why Rails works this way but it is, well, bullshite.  Getting rid of helpers spread across multiple files absolutely helps make this clear to developers – that there can only, ever be one method named display_content.</p>
 
-<p>Happily Rails isn’t an asshole – even where it has strong opinions – and you can make Rails work the way that you want.  The way you do it, in this case, is you add an initializer:</p>
+<p>Happily Rails isn't an asshole – even where it has strong opinions – and you can make Rails work the way that you want.  The way you do it, in this case, is you add an initializer:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>config/initializers/generators.rb
 </code></pre>
 </div>
 
-<p>and here’s the contents of the initializer:</p>
+<p>and here's the contents of the initializer:</p>
 
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">generators</span> <span class="k">do</span> <span class="o">|</span><span class="n">g</span><span class="o">|</span>
   <span class="n">g</span><span class="p">.</span><span class="nf">orm</span>             <span class="ss">:active_record</span>
@@ -243,7 +243,7 @@ app/helpers/tweet_helper.rb
 
 <p><strong>Note</strong>: I switched it from DataSource controller to DataSources for proper restful style.</p>
 
-<p>There is one caveat here and that’s the one thing to watch out for with initializers.  This first bit me, hard, way, way, way back in 2007 and it still bites me in the arse from time to time.  Initializers are one of the first things loaded in your Rails app and any syntax error, no matter how small, stops your Rails app from starting.  And may the Flying Spaghetti Monster save you if you start a deploy with an initializer that is syntactically invalid.  <strong>shudder</strong>. You should see my post on git pre-commit hooks to avoid this (<a href="https://fuzzyblog.io/blog/git/2014/08/29/the-importance-of-git-hooks.html">2014 Post</a> and my <a href="https://fuzzyblog.io/blog/rails/2019/09/17/tiny-rails-tip-don-t-let-byebug-into-production.html">2019 Post</a>).</p>
+<p>There is one caveat here and that's the one thing to watch out for with initializers.  This first bit me, hard, way, way, way back in 2007 and it still bites me in the arse from time to time.  Initializers are one of the first things loaded in your Rails app and any syntax error, no matter how small, stops your Rails app from starting.  And may the Flying Spaghetti Monster save you if you start a deploy with an initializer that is syntactically invalid.  <strong>shudder</strong>. You should see my post on git pre-commit hooks to avoid this (<a href="https://fuzzyblog.io/blog/git/2014/08/29/the-importance-of-git-hooks.html">2014 Post</a> and my <a href="https://fuzzyblog.io/blog/rails/2019/09/17/tiny-rails-tip-don-t-let-byebug-into-production.html">2019 Post</a>).</p>
 
   </div>
   

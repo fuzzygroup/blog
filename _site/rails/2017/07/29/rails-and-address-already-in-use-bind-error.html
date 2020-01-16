@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Rails and Address Already In Use - Bind Error</title>
-  <meta name="description" content="Lately I’ve seen this error come up quite a few times:">
+  <meta name="description" content="Lately I've seen this error come up quite a few times:">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2017/07/29/rails-and-address-already-in-use-bind-error.html">
@@ -178,11 +178,11 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>Lately I’ve seen this error come up quite a few times:</p>
+    <p>Lately I've seen this error come up quite a few times:</p>
 
-<p>/Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch_web_app_api/gems/puma-3.9.1/lib/puma/binder.rb:269:in `initialize’: Address already in use - bind(2) for “::1” port 3220 (Errno::EADDRINUSE)</p>
+<p>/Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch_web_app_api/gems/puma-3.9.1/lib/puma/binder.rb:269:in `initialize': Address already in use - bind(2) for "::1" port 3220 (Errno::EADDRINUSE)</p>
 
-<p>I’m running a fairly complex stack that mirrors an 8 micro service application where things are expected to be on certain points in development so having port 3220 not working means that one of my APIs isn’t available – and that’s <strong>unacceptable</strong>.  So I dug into it a bit and with the help of <a href="https://stackoverflow.com/questions/10261477/tcpserver-error-address-already-in-use-bind2">this StackOverflow</a>, I found the answer was to locate the offending process and then kill it dead:</p>
+<p>I'm running a fairly complex stack that mirrors an 8 micro service application where things are expected to be on certain points in development so having port 3220 not working means that one of my APIs isn't available – and that's <strong>unacceptable</strong>.  So I dug into it a bit and with the help of <a href="https://stackoverflow.com/questions/10261477/tcpserver-error-address-already-in-use-bind2">this StackOverflow</a>, I found the answer was to locate the offending process and then kill it dead:</p>
 
 <blockquote>
   <p>lsof -wni tcp:3220</p>

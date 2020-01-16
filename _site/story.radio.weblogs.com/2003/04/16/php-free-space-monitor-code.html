@@ -506,36 +506,36 @@ The FuzzyBlog!</a></b></font>
 # script to get the amount of free space with df -h and email it<br />
 # to me daily</p>
 
-<p>include “../z/class.phpmailer.php”;</p>
+<p>include "../z/class.phpmailer.php";</p>
 
-<p>  $freespace = mysystem(“df -h”);<br />
-  $fortune = mysystem (“/usr/games/fortune”);</p>
+<p>  $freespace = mysystem("df -h");<br />
+  $fortune = mysystem ("/usr/games/fortune");</p>
 
-<p>  $email = “<a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;">&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;</a>”;<br />
+<p>  $email = "<a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;">&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;</a>";<br />
   <a href="//setup">//setup</a> the email object &amp; params<br />
   $mail = new phpmailer();<br />
   $mail-&gt;IsMail();<br />
-  $mail-&gt;From = “<a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#119;&#101;&#098;&#109;&#097;&#115;&#116;&#101;&#114;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;">&#119;&#101;&#098;&#109;&#097;&#115;&#116;&#101;&#114;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;</a>”;<br />
-  $mail-&gt;FromName = “Free Space Mailer”;<br />
-  $mail-&gt;AddAddress(“$email”);<br />
-  $mail-&gt;AddReplyTo(“<a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;">&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;</a>”);<br />
+  $mail-&gt;From = "<a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#119;&#101;&#098;&#109;&#097;&#115;&#116;&#101;&#114;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;">&#119;&#101;&#098;&#109;&#097;&#115;&#116;&#101;&#114;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;</a>";<br />
+  $mail-&gt;FromName = "Free Space Mailer";<br />
+  $mail-&gt;AddAddress("$email");<br />
+  $mail-&gt;AddReplyTo("<a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;">&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;</a>");<br />
   $mail-&gt;IsHTML(false);<br />
-  $mail-&gt;Subject = “Free Space On FuzzyGroup Server”;<br />
-  $mail-&gt;Body    = $freespace . “\n\n\n\n” . $fortune;</p>
+  $mail-&gt;Subject = "Free Space On FuzzyGroup Server";<br />
+  $mail-&gt;Body    = $freespace . "\n\n\n\n" . $fortune;</p>
 
 <p>  if(!$mail-&gt;Send())<br />
   {<br />
-    echo “Error – Can’t Email User Info&lt;p&gt;”;<br />
-    echo “Mailer Error: “ . $mail-&gt;ErrorInfo;<br />
+    echo "Error – Can't Email User Info&lt;p&gt;";<br />
+    echo "Mailer Error: " . $mail-&gt;ErrorInfo;<br />
     exit;<br />
   }<br />
   else {<br />
-    print “&lt;pre&gt;$freespace &lt;BR&gt;&lt;BR&gt;$fortune&lt;/PRE&gt;”;<br />
+    print "&lt;pre&gt;$freespace &lt;BR&gt;&lt;BR&gt;$fortune&lt;/PRE&gt;";<br />
     exit;<br />
   }</p>
 
 <p>function mysystem($command) {<br />
- if (!($p=popen(“($command)2&gt;&amp;1”,”r”))) {<br />
+ if (!($p=popen("($command)2&gt;&amp;1","r"))) {<br />
   return 126;<br />
  }</p>
 

@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I am, as you likely know, an unabashed Ruby fan – love the language; loathe the performance but still a huge, huge damn fan.  Ruby is the first language I ever fell in love with and like many first loves, they never really fade.  Still, even so, there times when you just hunger for something new.  Here’s how to get a new programming language up and running with Docker for a handful of different environments.  I deliberately chose languages that can boot into a console or REPL (replace-evaluate-print-loop) since that’s the easiest way to get going in terms of experimenting with a language.</p>
+    <p>I am, as you likely know, an unabashed Ruby fan – love the language; loathe the performance but still a huge, huge damn fan.  Ruby is the first language I ever fell in love with and like many first loves, they never really fade.  Still, even so, there times when you just hunger for something new.  Here's how to get a new programming language up and running with Docker for a handful of different environments.  I deliberately chose languages that can boot into a console or REPL (replace-evaluate-print-loop) since that's the easiest way to get going in terms of experimenting with a language.</p>
 
 <h1 id="installing-docker">Installing Docker</h1>
 
@@ -210,7 +210,7 @@
   <p>docker kill hash</p>
 </blockquote>
 
-<p>The general syntax shown above of <strong>docker</strong> <em>command</em> is what you’ll see below.  Normally there will be other options as well which you can see illustrated below.</p>
+<p>The general syntax shown above of <strong>docker</strong> <em>command</em> is what you'll see below.  Normally there will be other options as well which you can see illustrated below.</p>
 
 <h2 id="the-magic-eval-statement">The Magic Eval Statement</h2>
 
@@ -225,11 +225,11 @@ Cannot connect to the Docker daemon at tcp://192.168.59.103:2376. Is the docker 
   <p>eval $(docker-machine env ${C_DOCKER_MACHINE})</p>
 </blockquote>
 
-<p>My bash skills are laughably bad so I’m not going to even try and explain that.  Just think of it as a magic spell given to you by an experienced wizard – you don’t have to understand how it works as long as it does.</p>
+<p>My bash skills are laughably bad so I'm not going to even try and explain that.  Just think of it as a magic spell given to you by an experienced wizard – you don't have to understand how it works as long as it does.</p>
 
 <h2 id="the-images-command">The images Command</h2>
 
-<p>Run the command docker images to find all the Docker images on your system.  You’ll be surprised at how big some of these can be and they often will hang out on your system, just eating your disc space.  Just as an example, a prototype I played with using the tleyden5iwx/open-ocr-preprocessor OpenOcr image over a year ago is still on my system using 1.3 gigs of disc sapce.</p>
+<p>Run the command docker images to find all the Docker images on your system.  You'll be surprised at how big some of these can be and they often will hang out on your system, just eating your disc space.  Just as an example, a prototype I played with using the tleyden5iwx/open-ocr-preprocessor OpenOcr image over a year ago is still on my system using 1.3 gigs of disc sapce.</p>
 
 <h2 id="disc-space-usage--where-does-all-this-go">Disc Space Usage / Where Does All This Go?</h2>
 
@@ -239,7 +239,7 @@ Cannot connect to the Docker daemon at tcp://192.168.59.103:2376. Is the docker 
   <p>~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2</p>
 </blockquote>
 
-<p>Please keep in mind that you can use up a considerable amount of disc space just by experimenting with images.  Here’s my system:</p>
+<p>Please keep in mind that you can use up a considerable amount of disc space just by experimenting with images.  Here's my system:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>du -hc ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
  21G	/Users/sjohnson/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
@@ -251,7 +251,7 @@ Cannot connect to the Docker daemon at tcp://192.168.59.103:2376. Is the docker 
 
 <h2 id="ruby">Ruby</h2>
 
-<p>In case you’re not a rubyist, I thought I’d start with this one.  <a href="https://hub.docker.com/r/library/ruby/tags/">Ruby on Docker</a></p>
+<p>In case you're not a rubyist, I thought I'd start with this one.  <a href="https://hub.docker.com/r/library/ruby/tags/">Ruby on Docker</a></p>
 
 <p>docker run –rm –name ruby -it ruby:2.4-alpine</p>
 
@@ -261,7 +261,7 @@ Cannot connect to the Docker daemon at tcp://192.168.59.103:2376. Is the docker 
 
 <p>docker run –rm –name elixir -it elixir:1.4-slim</p>
 
-<p>Here’s what this process looks like while it runs:</p>
+<p>Here's what this process looks like while it runs:</p>
 
 <p><img src="/blog/assets/docker_elixir.png" alt="docker_elixir.png" /></p>
 
@@ -279,7 +279,7 @@ Cannot connect to the Docker daemon at tcp://192.168.59.103:2376. Is the docker 
 
 <h2 id="python-3">Python 3</h2>
 
-<p>Python 3 is a newer version of Python that hasn’t been as widely adopted as the Python 2 family.</p>
+<p>Python 3 is a newer version of Python that hasn't been as widely adopted as the Python 2 family.</p>
 
 <p>docker run –rm –name python33 -it python:3.3-slim</p>
 
@@ -289,7 +289,7 @@ Cannot connect to the Docker daemon at tcp://192.168.59.103:2376. Is the docker 
 
 <p>docker run –rm –name r-base -it r-base:3.4.0</p>
 
-<p>R can be a bit different from other languages due to its mathematical orientation.  Here’s a sample R one liner you can use to test it:</p>
+<p>R can be a bit different from other languages due to its mathematical orientation.  Here's a sample R one liner you can use to test it:</p>
 
 <blockquote>
   <p>print(sample(1:10))</p>
@@ -299,15 +299,15 @@ Cannot connect to the Docker daemon at tcp://192.168.59.103:2376. Is the docker 
 
 <h2 id="perl">Perl</h2>
 
-<p>Perl in many ways is the grandfather to all modern web development.  Unlike the languages above, Perl isn’t a REPL based language so you’ll have to pass a script in when you run it.  <a href="https://hub.docker.com/_/perl/">Perl on Docker</a></p>
+<p>Perl in many ways is the grandfather to all modern web development.  Unlike the languages above, Perl isn't a REPL based language so you'll have to pass a script in when you run it.  <a href="https://hub.docker.com/_/perl/">Perl on Docker</a></p>
 
-<p>docker run -it –rm –name my-running-script -v “$PWD”:/usr/src/myapp -w /usr/src/myapp perl:5.20 perl your-daemon-or-script.pl</p>
+<p>docker run -it –rm –name my-running-script -v "$PWD":/usr/src/myapp -w /usr/src/myapp perl:5.20 perl your-daemon-or-script.pl</p>
 
 <h2 id="julia">Julia</h2>
 
 <p>Julia is a high performance language used for finance and math that runs on top of the Java VM.  <a href="https://hub.docker.com/_/julia/">Julia on Docker</a></p>
 
-<p>docker run -it –rm -v “$PWD”:/usr/myapp -w /usr/myapp julia julia script.jl arg1 arg2</p>
+<p>docker run -it –rm -v "$PWD":/usr/myapp -w /usr/myapp julia julia script.jl arg1 arg2</p>
 
 <h1 id="learning-more-about-docker">Learning More About Docker</h1>
 

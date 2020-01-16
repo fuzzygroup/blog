@@ -180,9 +180,9 @@
   <div class="post-content" itemprop="articleBody">
     <h1 id="the-problem">The Problem</h1>
 
-<p>I had a weird thing recently – a table with 313 million rows had 30+ second queries on a unique index – that’s way, way too long.  Here’s how I went about troubleshooting this.</p>
+<p>I had a weird thing recently – a table with 313 million rows had 30+ second queries on a unique index – that's way, way too long.  Here's how I went about troubleshooting this.</p>
 
-<p>A shout out of thanks to <a href="https://github.com/itsgg">Ganesh</a> and to <a href="https://github.com/wakproductions">Winston</a> who both helped out.  Notable mention to Ganesh who actually figured out the core issue; I’m really just the scribe here.</p>
+<p>A shout out of thanks to <a href="https://github.com/itsgg">Ganesh</a> and to <a href="https://github.com/wakproductions">Winston</a> who both helped out.  Notable mention to Ganesh who actually figured out the core issue; I'm really just the scribe here.</p>
 
 <h1 id="viewing-mysql-indexes">Viewing MySQL Indexes</h1>
 
@@ -202,15 +202,15 @@ possible_keys: NULL
         Extra: Using where
 </code></pre>
 
-<p>Given that I <strong>know</strong> that there’s an index I found this <em>puzzling</em>.  The next step was to use a FORCE INDEX syntax on the query to ensure that this isn’t an optimizer issue:</p>
+<p>Given that I <strong>know</strong> that there's an index I found this <em>puzzling</em>.  The next step was to use a FORCE INDEX syntax on the query to ensure that this isn't an optimizer issue:</p>
 
 <blockquote>
-  <p>select * from line_items FORCE INDEX (index_line_items_fin_document_identifier_period) where company_id=37 and document_identifier = ‘RCON2170’ and period = ‘2008-12-31’</p>
+  <p>select * from line_items FORCE INDEX (index_line_items_fin_document_identifier_period) where company_id=37 and document_identifier = 'RCON2170' and period = '2008-12-31'</p>
 </blockquote>
 
 <p>And that gave the same disappointing performance.  Pity. Using FORCE INDEX would have sucked but it would have been an easy fix at least.  Onward!</p>
 
-<p>This is where Ganesh rose to the challenge and recommended using SHOW INDEXES FROM table_name.  I haven’t used that in years and that’s likely a bad, bad, bad thing on my part (sorry).  Here’s what that gave us:</p>
+<p>This is where Ganesh rose to the challenge and recommended using SHOW INDEXES FROM table_name.  I haven't used that in years and that's likely a bad, bad, bad thing on my part (sorry).  Here's what that gave us:</p>
 
 <blockquote>
   <p>SHOW INDEX FROM line_items\G</p>
@@ -287,7 +287,7 @@ Index_comment:
 
 <h1 id="understanding-how-indexes-get-corrupted">Understanding How Indexes Get Corrupted</h1>
 
-<p>This is the kind of thing that should NEVER happen so what went wrong?  Here’s where you have to guess a bit since we lack enough history to recreate things exactly.  Here’s what I think happened:</p>
+<p>This is the kind of thing that should NEVER happen so what went wrong?  Here's where you have to guess a bit since we lack enough history to recreate things exactly.  Here's what I think happened:</p>
 
 <ol>
   <li>We had this running on a 100GB partition where the database was roughly 54 gb and, yes, most of that space was dedicated to this one table.</li>
@@ -309,9 +309,9 @@ Index_comment:
 
 <p><strong>Note 1:</strong> A better way to do this, that I just thought of, is to <strong>NOT</strong> do this as a deploy but instead manually scp the migration to the server (in fact it should be in db/migrate it should be there), delete the timestamp from schema_migrations and then run db:migrate directly on the server.  This would avoid step 4 entirely.</p>
 
-<p><strong>Note 2:</strong> Very <strong>long running</strong> migrations are generally best run directly on the server without a deploy (in my not so humble opinion).  I used to do this all the time in my AppData hey day but I haven’t had to in ages so it took a while to remember it.</p>
+<p><strong>Note 2:</strong> Very <strong>long running</strong> migrations are generally best run directly on the server without a deploy (in my not so humble opinion).  I used to do this all the time in my AppData hey day but I haven't had to in ages so it took a while to remember it.</p>
 
-<p><strong>Note 3:</strong> If you don’t like doing an scp of a migration file then deploy to one node in your cluster of servers that is NOT a db role.  That prevents the migration from running automatically and then you can log in via ssh and start the migration manually.  Migrations <strong>only</strong> run automatically when you have at least one machine identified as a db role being deployed to.</p>
+<p><strong>Note 3:</strong> If you don't like doing an scp of a migration file then deploy to one node in your cluster of servers that is NOT a db role.  That prevents the migration from running automatically and then you can log in via ssh and start the migration manually.  Migrations <strong>only</strong> run automatically when you have at least one machine identified as a db role being deployed to.</p>
 
 
   </div>

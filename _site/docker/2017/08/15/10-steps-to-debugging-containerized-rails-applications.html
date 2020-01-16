@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>10 Steps to Debugging Containerized Applications</title>
-  <meta name="description" content="I’ve recently been building a new product using Rails based on an approach that I call Breaking the Monolith.  Rather than build a traditional Rails monolith...">
+  <meta name="description" content="I've recently been building a new product using Rails based on an approach that I call Breaking the Monolith.  Rather than build a traditional Rails monolith...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/docker/2017/08/15/10-steps-to-debugging-containerized-rails-applications.html">
@@ -178,23 +178,23 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I’ve recently been building a new product using Rails based on an approach that I call <em>Breaking the Monolith</em>.  Rather than build a traditional Rails monolith, I use multiple microservices / small Rails applications and deploy them all with Docker into a distributed system.  The hardest part about distributed systems is always <strong>debugging</strong> and I’ve written this guide as a step by step approach for how to go from a misbehaving application right down to a malfunctioning container – this is the actual process that I follow.</p>
+    <p>I've recently been building a new product using Rails based on an approach that I call <em>Breaking the Monolith</em>.  Rather than build a traditional Rails monolith, I use multiple microservices / small Rails applications and deploy them all with Docker into a distributed system.  The hardest part about distributed systems is always <strong>debugging</strong> and I've written this guide as a step by step approach for how to go from a misbehaving application right down to a malfunctioning container – this is the actual process that I follow.</p>
 
 <p>All of this is being done on Ubuntu under AWS but the debugging process applies to any *nix type environment or Platform as a Service (PAAS).</p>
 
-<h1 id="disclaimer-but-you-dont-ssh-into-containers">Disclaimer: But You Don’t SSH into Containers…</h1>
+<h1 id="disclaimer-but-you-dont-ssh-into-containers">Disclaimer: But You Don't SSH into Containers…</h1>
 
-<p>A lot of the examples below are based around SSH’ing into a server and diagnosing the error in context.  I’ve seen a lot of things since the advent of containers that seemingly want you to believe, that in this brave new world, you just don’t SSH in anymore.  Now, perhaps I am doing things wrong, but I have not found that to be the case at all.  It may be that once I am out of active development that I will no longer be SSH’ing into servers but, for now, SSH is still a dear old friend.</p>
+<p>A lot of the examples below are based around SSH'ing into a server and diagnosing the error in context.  I've seen a lot of things since the advent of containers that seemingly want you to believe, that in this brave new world, you just don't SSH in anymore.  Now, perhaps I am doing things wrong, but I have not found that to be the case at all.  It may be that once I am out of active development that I will no longer be SSH'ing into servers but, for now, SSH is still a dear old friend.</p>
 
 <h1 id="failure-context---504-gateway-error">01: Failure Context - 504 Gateway Error</h1>
 
-<p>The general system for a failure on this application seems to be a 504 Gateway Error which basically means that the application load balancer (ALB) isn’t receiving output back from one of the HTTP subsystems.</p>
+<p>The general system for a failure on this application seems to be a 504 Gateway Error which basically means that the application load balancer (ALB) isn't receiving output back from one of the HTTP subsystems.</p>
 
 <h1 id="check-the-url-in-development-after-a-server-restart">02.  Check the Url in Development after a Server Restart</h1>
 
-<p>Every single time you do a deploy with Docker, your entire Gem stack along with any initializers is rebuilt and that means that a stack level change that you made in development but failed to catch can break everything.  So the first diagnosis step is to stop the development server and make sure that things come back up correctly.  Each of my applications runs on a different port so I can’t give a single example here – do the ctrl+c on Puma and then restart it and check the status.</p>
+<p>Every single time you do a deploy with Docker, your entire Gem stack along with any initializers is rebuilt and that means that a stack level change that you made in development but failed to catch can break everything.  So the first diagnosis step is to stop the development server and make sure that things come back up correctly.  Each of my applications runs on a different port so I can't give a single example here – do the ctrl+c on Puma and then restart it and check the status.</p>
 
-<p><strong>Note</strong>: If you don’t have a simple health check for your application then I would strongly recommend it.  Here’s a <a href="https://gist.github.com/fuzzygroup/7dec79f94deac117ce591598243f596a">simple gist showing a /health url</a> for a Rails application.</p>
+<p><strong>Note</strong>: If you don't have a simple health check for your application then I would strongly recommend it.  Here's a <a href="https://gist.github.com/fuzzygroup/7dec79f94deac117ce591598243f596a">simple gist showing a /health url</a> for a Rails application.</p>
 
 <p>If your Rails app is running on say port 3200 then you can just do:</p>
 
@@ -210,7 +210,7 @@
 
 <h1 id="test-the-health-check-logged-into-the-server">03: Test the Health Check Logged into the Server</h1>
 
-<p>Once you’ve verified that things are correct in development, the next step is to log into the server and run the same curl test on the server where the failure is occurring.  In order to make this type of debugging extremely simple for me, I run all my applications server side on exactly the same port structure that I do in development.  Even http services like the main web site run on their development port since I can let the load balancer handle translation back to 80.  Having a deployment environment that mirrors development is a huge conceptual boon. Assuming our same 3200 port example, we would:</p>
+<p>Once you've verified that things are correct in development, the next step is to log into the server and run the same curl test on the server where the failure is occurring.  In order to make this type of debugging extremely simple for me, I run all my applications server side on exactly the same port structure that I do in development.  Even http services like the main web site run on their development port since I can let the load balancer handle translation back to 80.  Having a deployment environment that mirrors development is a huge conceptual boon. Assuming our same 3200 port example, we would:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>curl http://localhost:3200/health
 </code></pre>
@@ -226,7 +226,7 @@
 
 <h1 id="check-the-application-docker-logs">04: Check the Application Docker Logs</h1>
 
-<p>The next step is the application level Docker logs.  My deployer engine, Dockerano, generates a per application shell script which generates logs for the “main” container called dshell so I see something like this</p>
+<p>The next step is the application level Docker logs.  My deployer engine, Dockerano, generates a per application shell script which generates logs for the "main" container called dshell so I see something like this</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>./dlogs
 
@@ -267,13 +267,13 @@ tmpfs           799M     0  799M 0% /run/user/1000
 </code></pre>
 </div>
 
-<p>I spent a lot of time on this project trying desperately to use T2.micro instances because, well, they’re cheap and, at best, it was a false economy.  Severe bloat within the Docker AUFS filesystem found me continually running out of disc space after multiple deploys even though my containers were actually tiny.  This is a <a href="https://github.com/moby/moby/issues/22207">known Docker Moby issue</a> that has been open for over a year and a half now and is still <strong>unassigned</strong> to anyone.</p>
+<p>I spent a lot of time on this project trying desperately to use T2.micro instances because, well, they're cheap and, at best, it was a false economy.  Severe bloat within the Docker AUFS filesystem found me continually running out of disc space after multiple deploys even though my containers were actually tiny.  This is a <a href="https://github.com/moby/moby/issues/22207">known Docker Moby issue</a> that has been open for over a year and a half now and is still <strong>unassigned</strong> to anyone.</p>
 
 <p>In order to avoid this bug, I ended up moving from multiple T2.micro instances to a single m4.large instance and then doubling the underlying storage from 8 gigs to 16.  And, when I did that, a lot of my issues just magically disappeared.  Being cheap truly was a false economy here because I ended up with fewer instances and not only did my reliability go up but my bill went down.</p>
 
 <h1 id="check-the-cpu-usage-and-ram-usage">06: Check the CPU Usage and Ram Usage</h1>
 
-<p>If you don’t have htop installed on all your instances then you really, really should.  htop kicks the absolute snot out of classic top.  Install it with:</p>
+<p>If you don't have htop installed on all your instances then you really, really should.  htop kicks the absolute snot out of classic top.  Install it with:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get install htop
 </code></pre>
@@ -289,7 +289,7 @@ tmpfs           799M     0  799M 0% /run/user/1000
 
 <h1 id="look-at-individual-container-status">07: Look at Individual Container Status</h1>
 
-<p>If you’re having an issue with a given application then you want to look at all the containers for that application.  The easiest way is to grep by name.  Let’s say that your underlying application is called seirawatchwebapp:</p>
+<p>If you're having an issue with a given application then you want to look at all the containers for that application.  The easiest way is to grep by name.  Let's say that your underlying application is called seirawatchwebapp:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>docker ps | grep seirawatchwebapp
 23c1b98a2add        fuzzygroup/seirawatchwebapp_web   "bundle exec clock..."   11 hours ago        Restarting (10) 9 seconds ago                              seirawatchwebapp_clockwork_1
@@ -299,21 +299,21 @@ tmpfs           799M     0  799M 0% /run/user/1000
 </code></pre>
 </div>
 
-<p>The thing to be concerned about here is 23c1b98a2add and the reason is that it generally shouldn’t be continuously restarting which is what this view shows.</p>
+<p>The thing to be concerned about here is 23c1b98a2add and the reason is that it generally shouldn't be continuously restarting which is what this view shows.</p>
 
 <h1 id="application-level-logs---timberio">08: Application Level logs - Timber.io</h1>
 
-<p>I’ve recently started using <a href="https://www.timber.io">Timber.io</a> which is a cross application logging environment and I’ve been very, very happy with it.  If you haven’t looked at Timber.io for your Rails development, I’d recommend it.  Even the free tier is actually quite useful.</p>
+<p>I've recently started using <a href="https://www.timber.io">Timber.io</a> which is a cross application logging environment and I've been very, very happy with it.  If you haven't looked at Timber.io for your Rails development, I'd recommend it.  Even the free tier is actually quite useful.</p>
 
 <p>Timber.io is a full web app rather than a command line tool so you need to log into the Timber service and then select your application where you want to view the logs.</p>
 
 <h1 id="check-your-error-logger">09: Check Your Error Logger</h1>
 
-<p>If you aren’t running a dedicated error tracker, whether HoneyBadger, BugSnag or Errbit, you really, really should.</p>
+<p>If you aren't running a dedicated error tracker, whether HoneyBadger, BugSnag or Errbit, you really, really should.</p>
 
 <h1 id="the-answer-check-all-your-containers">10: The Answer: Check All Your Containers</h1>
 
-<p>What I’m building is a multi-container system, a distributed system in truth, with formal APIs between each of the components and what this means is that a container failure in subsystem X can affect subsystem Y or subsystem Z without it being clear as to why.  The trouble with this type of debugging is getting a high enough level view to understand it as a whole.</p>
+<p>What I'm building is a multi-container system, a distributed system in truth, with formal APIs between each of the components and what this means is that a container failure in subsystem X can affect subsystem Y or subsystem Z without it being clear as to why.  The trouble with this type of debugging is getting a high enough level view to understand it as a whole.</p>
 
 <p>The easiest way to do this on a single machine is to use the <strong>docker stats</strong> command:</p>
 
@@ -345,7 +345,7 @@ e34789eed4cc        0.00%               108.5MiB / 7.795GiB   1.36%             
 </code></pre>
 </div>
 
-<p>The curious thing here is that one container, c520fc5504f1, is showing – for CPU % and all other metrics.  Let’s zoom in on that one.  Personally I find the view above to be more granular than needed and missing the application specific details that I need so my deployer generates a dstats shell script which does this:</p>
+<p>The curious thing here is that one container, c520fc5504f1, is showing – for CPU % and all other metrics.  Let's zoom in on that one.  Personally I find the view above to be more granular than needed and missing the application specific details that I need so my deployer generates a dstats shell script which does this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>./dstats 
 CONTAINER                      CPU %               MEM USAGE / LIMIT     CONTAINER ID
@@ -376,7 +376,7 @@ shouldigem_redis_1             0.09%               6.215MiB / 7.795GiB   9c2e8ec
 
 <p>Note 1: Source for dstats is <a href="https://gist.github.com/fuzzygroup/b4293b4a7d15a9d8ea88a50ddb2ab3f0">here</a>.</p>
 
-<p>Note 2: If you’re curious about how to configure the output of docker stats then see <a href="https://docs.docker.com/engine/reference/commandline/stats/#formatting">this link</a>.</p>
+<p>Note 2: If you're curious about how to configure the output of docker stats then see <a href="https://docs.docker.com/engine/reference/commandline/stats/#formatting">this link</a>.</p>
 
 <p>If I then docker ps and grep either with the name or the process id, I will see the same container:</p>
 
@@ -424,7 +424,7 @@ Error connecting to Redis on 127.0.0.1:6379 (Errno::ECONNREFUSED)
 </code></pre>
 </div>
 
-<p>So what’s going on here is clearly at the Sidekiq stack layer and it is some type of connection to the underlying containerized Redis instance.  Once we know that, troubleshooting this should actually be pretty simple; it eventually turned out to be a missing pair of files - config/sidekiq.yml.erb and config/initializers/sidekiq.rb that had been overlooked in my initial configuration.</p>
+<p>So what's going on here is clearly at the Sidekiq stack layer and it is some type of connection to the underlying containerized Redis instance.  Once we know that, troubleshooting this should actually be pretty simple; it eventually turned out to be a missing pair of files - config/sidekiq.yml.erb and config/initializers/sidekiq.rb that had been overlooked in my initial configuration.</p>
 
 <p>Just as a sidebar, a docker ps -a is also sometimes useful:</p>
 
@@ -468,7 +468,7 @@ ac91a943e789        mongo:3.2                         "docker-entrypoint..."   3
 </code></pre>
 </div>
 
-<p>I’m not going to go so far as to say that you don’t have to, rarely, restart the docker daemon but it is just that – <strong>rare</strong>.  Your problems are far, far, far more likely to be application side errors, even when it looks like Docker is at fault.  I’ve mistakenly pointed the finger at Docker too many times – and I was <strong>wrong</strong>.</p>
+<p>I'm not going to go so far as to say that you don't have to, rarely, restart the docker daemon but it is just that – <strong>rare</strong>.  Your problems are far, far, far more likely to be application side errors, even when it looks like Docker is at fault.  I've mistakenly pointed the finger at Docker too many times – and I was <strong>wrong</strong>.</p>
 
 <h1 id="pitch-for-a-friend-learn-from-nick">Pitch for a Friend: Learn from Nick</h1>
 

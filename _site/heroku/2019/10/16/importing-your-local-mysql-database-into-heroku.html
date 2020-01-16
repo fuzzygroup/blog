@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-It never fails to amaze me how poorly documented certain basic things are.  The topic today is getting your development data for something using MySQL loaded into Heroku.  This shouldn’t be hard ...">
+It never fails to amaze me how poorly documented certain basic things are.  The topic today is getting your development data for something using MySQL loaded into Heroku.  This shouldn't be hard ...">
   
 
   
@@ -182,7 +182,7 @@ It never fails to amaze me how poorly documented certain basic things are.  The 
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_9407.jpeg" alt="IMG_9407.jpeg" /></p>
 
-<p>It never fails to amaze me how poorly documented certain basic things are.  The topic today is getting your development data for something using MySQL loaded into Heroku.  This shouldn’t be hard but Google certainly doesn’t make it clear.  And, to be honest, Heroku certainly doesn’t make it clear.  As with many things, the answer was obvious, but with Heroku being such a closed platform and having its own import tools for Postgres, I would have thought there was something other than the standard.</p>
+<p>It never fails to amaze me how poorly documented certain basic things are.  The topic today is getting your development data for something using MySQL loaded into Heroku.  This shouldn't be hard but Google certainly doesn't make it clear.  And, to be honest, Heroku certainly doesn't make it clear.  As with many things, the answer was obvious, but with Heroku being such a closed platform and having its own import tools for Postgres, I would have thought there was something other than the standard.</p>
 
 <h2 id="step-1---find-your-mysql-credentials-in-heroku">Step 1 - Find Your MySQL Credentials in Heroku</h2>
 
@@ -195,7 +195,7 @@ It never fails to amaze me how poorly documented certain basic things are.  The 
   <li>Database</li>
 </ul>
 
-<p>Your Heroku Dashboard for MySQL can be found <a href="https://dashboard.jawsdb.com/mysql/dashboard">here</a>.  No, I don’t know why it is called “jawsdb”; some kind of shark fetish perhaps …</p>
+<p>Your Heroku Dashboard for MySQL can be found <a href="https://dashboard.jawsdb.com/mysql/dashboard">here</a>.  No, I don't know why it is called "jawsdb"; some kind of shark fetish perhaps …</p>
 
 <h2 id="step-2---dump-your-database-locally">Step 2 - Dump Your Database Locally</h2>
 
@@ -207,7 +207,7 @@ It never fails to amaze me how poorly documented certain basic things are.  The 
 
 <h2 id="step-3---make-a-command-line-to-import">Step 3 - Make a Command Line to Import</h2>
 
-<p>You can use a standard MySQL command line to import the database using the host parameter to comment to the Heroku hosted version over the Internet.  Here’s an example:</p>
+<p>You can use a standard MySQL command line to import the database using the host parameter to comment to the Heroku hosted version over the Internet.  Here's an example:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>mysql -uYOUR_USERNAME -pYOUR_PASSWORD YOUR_DATABASE --host=YOUR_HOST &lt; lib/tasks/data/db_dumps/change_me_now_development_2019-09-26.sql
 </code></pre>
@@ -232,7 +232,7 @@ total 1808
 </code></pre>
 </div>
 
-<p>There is a difference of only 23 bytes between the import and the export and that’s good enough for me!</p>
+<p>There is a difference of only 23 bytes between the import and the export and that's good enough for me!</p>
 
   </div>
   

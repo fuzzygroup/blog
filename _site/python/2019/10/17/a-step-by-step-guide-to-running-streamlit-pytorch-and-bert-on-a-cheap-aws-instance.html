@@ -195,15 +195,15 @@ Streamlit is an ideal tool for taking machine learning prototypes and building q
   <li>Got a small machine learning app up and running with <a href="https://streamlit.io/">PyTorch</a></li>
 </ul>
 
-<p>The rest of this blog post goes over the specifics because there were several gotcha’s that might catch you (my instance was too small, then my instance had too little disc space and then git lfs reared up and bit me in the proverbial arse).</p>
+<p>The rest of this blog post goes over the specifics because there were several gotcha's that might catch you (my instance was too small, then my instance had too little disc space and then git lfs reared up and bit me in the proverbial arse).</p>
 
-<p>This isn’t written with the exact step by step process but more “if you are moderately aws experienced then you’ll understand the steps”.</p>
+<p>This isn't written with the exact step by step process but more "if you are moderately aws experienced then you'll understand the steps".</p>
 
 <ol>
   <li>Create an AWS Ubuntu 18.04 ec2 instance using the AWS ec2 dashboard.  Because building python and pytorch is actually large and slow, you need to have extra memory and disc space.  I used a t2.large and I doubled the disc space to 16 gigs.</li>
-  <li>When you create the instance make sure that you allow for 8501 as the open port for traffic since that is Streamlit’s default.</li>
-  <li>Install git lfs support as documented <a href="https://github.com/git-lfs/git-lfs/wiki/Installation">here</a> or see <a href="https://fuzzyblog.io/blog/git/2019/10/17/git-large-file-support-silently-fails.html">my blog post on this</a> if you have models checked into Git.  This is generally two steps: <strong>sudo apt-get install git-lfs</strong> and then <strong>git lfs install</strong> in the repo directory (note that this is out of order in these directions since I don’t know if you are using lfs).</li>
-  <li>Install your code with a git checkout.  If your codebase isn’t public then you should generate ssh keys on the box and add the public key onto your repo (or make the repo public for the two seconds it takes to clone it and then make it private again).</li>
+  <li>When you create the instance make sure that you allow for 8501 as the open port for traffic since that is Streamlit's default.</li>
+  <li>Install git lfs support as documented <a href="https://github.com/git-lfs/git-lfs/wiki/Installation">here</a> or see <a href="https://fuzzyblog.io/blog/git/2019/10/17/git-large-file-support-silently-fails.html">my blog post on this</a> if you have models checked into Git.  This is generally two steps: <strong>sudo apt-get install git-lfs</strong> and then <strong>git lfs install</strong> in the repo directory (note that this is out of order in these directions since I don't know if you are using lfs).</li>
+  <li>Install your code with a git checkout.  If your codebase isn't public then you should generate ssh keys on the box and add the public key onto your repo (or make the repo public for the two seconds it takes to clone it and then make it private again).</li>
   <li>Install python with: <strong>sudo apt install python3</strong></li>
   <li>Install pip with: <strong>sudo apt install python3-pip</strong></li>
   <li>Install your python dependencies with: <strong>pip3 install -r requirements.txt</strong></li>
@@ -212,9 +212,9 @@ Streamlit is an ideal tool for taking machine learning prototypes and building q
 
 <p>This allows Streamlit to detach and run even after you log out.  After Streamlit starts up, it will give you the url that you can give out to let people test it.</p>
 
-<p>If you find the &amp; trick doesn’t work then instead start the process with nohup: <strong>nohup streamlit run dashboard.py</strong></p>
+<p>If you find the &amp; trick doesn't work then instead start the process with nohup: <strong>nohup streamlit run dashboard.py</strong></p>
 
-<p><strong>Note 1</strong>: I haven’t yet put all of this into an Ansible playbook for installing Streamlit but I’m not far from doing that because this whole process, well, SUCKED!  <em>chuckle</em></p>
+<p><strong>Note 1</strong>: I haven't yet put all of this into an Ansible playbook for installing Streamlit but I'm not far from doing that because this whole process, well, SUCKED!  <em>chuckle</em></p>
 
 <p><strong>Note 2</strong>: More details on <a href="https://www.tecmint.com/keep-remote-ssh-sessions-running-after-disconnection/">running background processes</a>.</p>
 

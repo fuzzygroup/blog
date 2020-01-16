@@ -178,13 +178,13 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>Everyone wants to think that that complex computing problems are solved with a single flash of blinding insight.  And sometimes you do have that one epiphany that brings everything home.  But, more often than not, computing problems are solved by dogged persistence, by being more stubborn than the problem itself and by careful, diligent incremental progress where you observe the problem in question, altering one variable at a time until you understand what’s happening.</p>
+    <p>Everyone wants to think that that complex computing problems are solved with a single flash of blinding insight.  And sometimes you do have that one epiphany that brings everything home.  But, more often than not, computing problems are solved by dogged persistence, by being more stubborn than the problem itself and by careful, diligent incremental progress where you observe the problem in question, altering one variable at a time until you understand what's happening.</p>
 
-<p>In this step of our ongoing SSH disaster, we’re going to use Ansible to gather metrics on our running system and give ourselves a command line tool we can execute regularly.  By building this into a single command line tool, we can run it quickly and easily.  When we can do things quickly and easily we will do them more frequently and more frequency means more data.  And, I tend to believe that more data gives us the opportunity for more insights.</p>
+<p>In this step of our ongoing SSH disaster, we're going to use Ansible to gather metrics on our running system and give ourselves a command line tool we can execute regularly.  By building this into a single command line tool, we can run it quickly and easily.  When we can do things quickly and easily we will do them more frequently and more frequency means more data.  And, I tend to believe that more data gives us the opportunity for more insights.</p>
 
 <h1 id="a-hypothesis">A Hypothesis</h1>
 
-<p>We’ve been working on the hypothesis that what’s going on is a problem of memory leaks causing an out of memory (OOM) condition on our Linux EC2 instance.  And even though Linux is supposed to kill a run away process that uses too much memory that doesn’t seem to be happening.  And, no, I don’t understand why.</p>
+<p>We've been working on the hypothesis that what's going on is a problem of memory leaks causing an out of memory (OOM) condition on our Linux EC2 instance.  And even though Linux is supposed to kill a run away process that uses too much memory that doesn't seem to be happening.  And, no, I don't understand why.</p>
 
 <p>There are two basic compute resources that cause any Linux or Unix systems to have problems when they run low:</p>
 
@@ -193,7 +193,7 @@
   <li>disc</li>
 </ul>
 
-<p>Linux has two tools that we can always run when we’re logged into a linux system to monitor these resources:</p>
+<p>Linux has two tools that we can always run when we're logged into a linux system to monitor these resources:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>df -h
 
@@ -219,9 +219,9 @@ Swap:            0          0          0
 
 <h1 id="a-script">A Script</h1>
 
-<p>What we’re going to do is write a tiny script, in Ruby, that we can use to monitor these resources.  And while there are literally hundreds of different monitoring tools that could do this for us, we’re going to do it ourselves so we introduce the smallest possible changes to our environments.  I call this type of approach reducing things to <strong>first principles</strong>.  Yes a real monitoring tool would be far more powerful but setting it up would take a bunch of time, introduce multiple changes and then we’d have to learn how to use it.  We’re going to write our Ruby script in about 10 minutes and we’re done.</p>
+<p>What we're going to do is write a tiny script, in Ruby, that we can use to monitor these resources.  And while there are literally hundreds of different monitoring tools that could do this for us, we're going to do it ourselves so we introduce the smallest possible changes to our environments.  I call this type of approach reducing things to <strong>first principles</strong>.  Yes a real monitoring tool would be far more powerful but setting it up would take a bunch of time, introduce multiple changes and then we'd have to learn how to use it.  We're going to write our Ruby script in about 10 minutes and we're done.</p>
 
-<p>Here’s all you need:</p>
+<p>Here's all you need:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>script/free_memory.rb
 
@@ -241,11 +241,11 @@ puts  "Total Memory: #{total_memory} (#{total_memory/1024 / 1024} gb) / Used Mem
 
 <p>This is what I call hobbesian coding after the British philosopher Thomas Hobbes who coined the expression <strong>Life is nasty, brutish and short</strong>.  This is ugly but its quick.  All we need to do is run the command and capture the output.  This is done with output = %x(free) and output = %x(df -h).  We then split it into an array on the space character and then map it to variables.  Finally we have a single puts statement that we displays the result and does some math.</p>
 
-<p><strong>Note</strong>: This could have been written in anything.  Bash / awk would have been great for it but I’m a Ruby guy so I use the tool that I know.</p>
+<p><strong>Note</strong>: This could have been written in anything.  Bash / awk would have been great for it but I'm a Ruby guy so I use the tool that I know.</p>
 
 <h1 id="the-ansible-connection">The Ansible Connection</h1>
 
-<p>If you remember, I said <em>Linux has two tools that we can always run when we’re logged into a linux system</em>, well being logged into a system is what Ansible <strong>does</strong>.  Ansible is brilliant because it runs via ssh.   SSH means you have a login so  all we need to monitor our box is an ansible ad hoc command to run this and here that is:</p>
+<p>If you remember, I said <em>Linux has two tools that we can always run when we're logged into a linux system</em>, well being logged into a system is what Ansible <strong>does</strong>.  Ansible is brilliant because it runs via ssh.   SSH means you have a login so  all we need to monitor our box is an ansible ad hoc command to run this and here that is:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ansible all -i inventories/production2 -u ubuntu -a "/var/www/apps/banks/current/script/free_memory.rb"
 </code></pre>
@@ -253,7 +253,7 @@ puts  "Total Memory: #{total_memory} (#{total_memory/1024 / 1024} gb) / Used Mem
 
 <p>That tells Ansible to run on all boxes in the inventories/production2 collection using the username ubuntu and then run whatever code exists at /var/www/apps/banks/current/script/free_memory.rb.</p>
 
-<p>And here’s an example of the result:</p>
+<p>And here's an example of the result:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ansible all -i inventories/production2 -u ubuntu -a "/var/www/apps/banks/current/script/free_memory.rb"
 ficrawlerbig | SUCCESS | rc=0 &gt;&gt;
@@ -291,25 +291,25 @@ ficrawler9 | UNREACHABLE! =&gt; {
 </code></pre>
 </div>
 
-<p>I’ve now been running this repeatedly for several days.  And I’ve learned that I can now pretty well predict when failures are going to occur.  I can also use this to diagnose problems on the boxes.  What we know is that if we’re running a heavy weight process like Sidekiq that is literally chewing through memory, the used memory column should actually show something.  If you look above you can see that ficrawler4 has (0 gb) in use.  That means that something has gone wrong.  So if we log into the box and change to the tmux session where this is executing, here’s what we find:</p>
+<p>I've now been running this repeatedly for several days.  And I've learned that I can now pretty well predict when failures are going to occur.  I can also use this to diagnose problems on the boxes.  What we know is that if we're running a heavy weight process like Sidekiq that is literally chewing through memory, the used memory column should actually show something.  If you look above you can see that ficrawler4 has (0 gb) in use.  That means that something has gone wrong.  So if we log into the box and change to the tmux session where this is executing, here's what we find:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>after get_mechanize_links_on_a_pageKilled                                                                                                                                                           │·····························
 __AWS_PRODUCTION__ ubuntu@ip-172-31-32-54:/var/www/apps/banks/current$
 </code></pre>
 </div>
 
-<p>Now that’s interesting, isn’t it?  This is actually what’s supposed to happen.  When you see Killed on a Linux machine it means that the OOM actually worked for a change.  Praise Be!  And if we log into the box ficrawler10 we will actually find the same thing.  But when we log into ficrawler6, here’s what we find:</p>
+<p>Now that's interesting, isn't it?  This is actually what's supposed to happen.  When you see Killed on a Linux machine it means that the OOM actually worked for a change.  Praise Be!  And if we log into the box ficrawler10 we will actually find the same thing.  But when we log into ficrawler6, here's what we find:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ssh ficrawler6
 ssh_exchange_identification: read: Connection reset by peer
 </code></pre>
 </div>
 
-<p>Sigh.  Now that’s the whole problem we’re suffering from.  Now here’s what that means – this crash of ssh – just happened!  I’ve been writing this post in real time and running this ad hoc ansible command so about 5 minutes ago ansible could ssh in and run the command.  Now it can’t.  So what that means is that there is a time period where we have 0 gb free and the system is still responsive.  That’s <strong>really</strong> interesting.  What that means is that we could manually ssh into the box, if we caught it soon enough, and restart the sidekiq process and NOT have to restart the whole box.</p>
+<p>Sigh.  Now that's the whole problem we're suffering from.  Now here's what that means – this crash of ssh – just happened!  I've been writing this post in real time and running this ad hoc ansible command so about 5 minutes ago ansible could ssh in and run the command.  Now it can't.  So what that means is that there is a time period where we have 0 gb free and the system is still responsive.  That's <strong>really</strong> interesting.  What that means is that we could manually ssh into the box, if we caught it soon enough, and restart the sidekiq process and NOT have to restart the whole box.</p>
 
-<p>Hm… I need to think about that and I’m pretty sure that it is <strong>important</strong>.</p>
+<p>Hm… I need to think about that and I'm pretty sure that it is <strong>important</strong>.</p>
 
-<p>Here’s what happens on ficrawler6 when we run our ansible routine again:</p>
+<p>Here's what happens on ficrawler6 when we run our ansible routine again:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ficrawler6 | UNREACHABLE! =&gt; {
     "changed": false,
@@ -319,11 +319,11 @@ ssh_exchange_identification: read: Connection reset by peer
 </code></pre>
 </div>
 
-<p>We’ve learned some valuable things from gathering metrics and being able to run them easily.  Lots of people would have taken the approach of using an off the shelf tool for this and while tools are great, they’re big.  And they can be intrusive.  Breaking things down to first principles helps you understand.  And sure our ruby script for this is absolute crap.  Move it to a different distro and formatting will likely be off and it will break.  Who cares?  We spent 10 minutes writing it.</p>
+<p>We've learned some valuable things from gathering metrics and being able to run them easily.  Lots of people would have taken the approach of using an off the shelf tool for this and while tools are great, they're big.  And they can be intrusive.  Breaking things down to first principles helps you understand.  And sure our ruby script for this is absolute crap.  Move it to a different distro and formatting will likely be off and it will break.  Who cares?  We spent 10 minutes writing it.</p>
 
 <h1 id="credit">Credit</h1>
 
-<p>A Shout Out to <a href="http://nickjanetakis.com/">Nick Janetakis</a> who was a consultant on <a href="https://fuzzygroup.github.io/blog/aws/2016/10/06/aws-tutorial-14-diagnosing-ssh-failures-take-2.html">Take 2</a> of this series of posts.  The first thing Nick said was disc space and I probably wouldn’t have thought to include disc space monitoring in my Ruby script if he hadn’t done that.  Thanks man!</p>
+<p>A Shout Out to <a href="http://nickjanetakis.com/">Nick Janetakis</a> who was a consultant on <a href="https://fuzzygroup.github.io/blog/aws/2016/10/06/aws-tutorial-14-diagnosing-ssh-failures-take-2.html">Take 2</a> of this series of posts.  The first thing Nick said was disc space and I probably wouldn't have thought to include disc space monitoring in my Ruby script if he hadn't done that.  Thanks man!</p>
 
   </div>
   

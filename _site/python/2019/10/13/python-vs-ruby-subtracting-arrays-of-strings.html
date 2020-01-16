@@ -184,7 +184,7 @@ I did a simple but fascinating thing yesterday – I wrote a routine in python a
 
 <p>I did a simple but fascinating thing yesterday – I wrote a routine in python and ruby to subtract the different elements between two lists (python) or arrays (ruby) and then return a random element between the two lists (arrays).</p>
 
-<p>Let’s start with the Ruby because it is way, way simpler:</p>
+<p>Let's start with the Ruby because it is way, way simpler:</p>
 
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">all_experts</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'expert_1.py'</span><span class="p">,</span> <span class="s1">'expert_2.py'</span><span class="p">,</span> <span class="s1">'expert_3.py'</span><span class="p">,</span> <span class="s1">'expert_4.py'</span><span class="p">]</span>
 
@@ -212,7 +212,7 @@ I did a simple but fascinating thing yesterday – I wrote a routine in python a
 </code></pre>
 </div>
 
-<p>The interesting thing here is what’s going on with the python.  My initial understanding of the python failure was that subtraction failed because it was lists of strings.  That’s actually not the case.  Here’s the result of two lists of integers being subtracted:</p>
+<p>The interesting thing here is what's going on with the python.  My initial understanding of the python failure was that subtraction failed because it was lists of strings.  That's actually not the case.  Here's the result of two lists of integers being subtracted:</p>
 
 <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
@@ -221,7 +221,7 @@ I did a simple but fascinating thing yesterday – I wrote a routine in python a
 </code></pre>
 </div>
 
-<p>What’s going on here with the python is that we are:</p>
+<p>What's going on here with the python is that we are:</p>
 
 <ul>
   <li>casting the lists to sets and then</li>
@@ -237,13 +237,13 @@ I did a simple but fascinating thing yesterday – I wrote a routine in python a
 </code></pre>
 </div>
 
-<p>From a rubyist’s perspective here, the surprising things are</p>
+<p>From a rubyist's perspective here, the surprising things are</p>
 
 <ul>
-  <li>that array subtraction isn’t a built-in python thing; I mean what the f ..</li>
+  <li>that array subtraction isn't a built-in python thing; I mean what the f ..</li>
   <li>the amount of casting that is going on</li>
-  <li>the fact that set() is what converted an array to a set instead of calling .to_set on the array (admittedly after you did a require ‘set’)</li>
-  <li>needing to print the result in Python instead of Ruby’s default return</li>
+  <li>the fact that set() is what converted an array to a set instead of calling .to_set on the array (admittedly after you did a require 'set')</li>
+  <li>needing to print the result in Python instead of Ruby's default return</li>
 </ul>
 
 <h2 id="references">References</h2>

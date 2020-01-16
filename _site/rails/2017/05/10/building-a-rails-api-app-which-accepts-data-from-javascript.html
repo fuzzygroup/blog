@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>A friend recently described a web tracking problem to me and we discussed looking at it via Google Analytics or by rolling our own approach.  Google Analytics is tremendously powerful but I looked at this as a chance to improve my JavaScript skills which are, admittedly, not my strongest part of my technical skill set so I went with the roll my own approach.  As with most things I do, I’m writing this out in full to clarify my own thinking and understanding of the problem as well as to make this information publicly available.</p>
+    <p>A friend recently described a web tracking problem to me and we discussed looking at it via Google Analytics or by rolling our own approach.  Google Analytics is tremendously powerful but I looked at this as a chance to improve my JavaScript skills which are, admittedly, not my strongest part of my technical skill set so I went with the roll my own approach.  As with most things I do, I'm writing this out in full to clarify my own thinking and understanding of the problem as well as to make this information publicly available.</p>
 
 <h1 id="problem">Problem</h1>
 
@@ -195,13 +195,13 @@
 
 <h1 id="part-1-javascript">Part 1: JavaScript</h1>
 
-<p>I’m not a JavaScript expert by any means so this js code was largely pulled together from StackOverflow and other sources (references are at the end).  I ended up writing this twice, first starting with jQuery and then realizing that for something embeddable you really want to eliminate every dependency – so getting rid of jQuery itself is a desirable goal.</p>
+<p>I'm not a JavaScript expert by any means so this js code was largely pulled together from StackOverflow and other sources (references are at the end).  I ended up writing this twice, first starting with jQuery and then realizing that for something embeddable you really want to eliminate every dependency – so getting rid of jQuery itself is a desirable goal.</p>
 
 <h2 id="browser-fingerprinting">Browser Fingerprinting</h2>
 
-<p>A browser fingerprint is an SHA / MD5 style hash which reflects a unique profile of a browser based on the browser’s uniquely exposed capabilities, platform, fonts and other attributes.  While not necessarily as unique as a fingerprint, browser fingerprint is actually a robust approach to tracking a user and since it is based on readily available <a href="https://github.com/Valve/fingerprintjs2">open source libraries</a>, it isn’t something that needs to be developed from scratch.  And, happily, it even gets good marks on my new <a href="http://shouldigem.com/report_cards/146?url=https%3A%2F%2Fgithub.com%2FValve%2Ffingerprintjs2">Should I Gem</a> tool.</p>
+<p>A browser fingerprint is an SHA / MD5 style hash which reflects a unique profile of a browser based on the browser's uniquely exposed capabilities, platform, fonts and other attributes.  While not necessarily as unique as a fingerprint, browser fingerprint is actually a robust approach to tracking a user and since it is based on readily available <a href="https://github.com/Valve/fingerprintjs2">open source libraries</a>, it isn't something that needs to be developed from scratch.  And, happily, it even gets good marks on my new <a href="http://shouldigem.com/report_cards/146?url=https%3A%2F%2Fgithub.com%2FValve%2Ffingerprintjs2">Should I Gem</a> tool.</p>
 
-<p>Here’s all it takes to calculate a browser fingerprint:</p>
+<p>Here's all it takes to calculate a browser fingerprint:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>&lt;!-- bring in the library --&gt;
 &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js"&gt;&lt;/script&gt;
@@ -217,7 +217,7 @@
 
 <h2 id="the-jquery-approach">The jQuery Approach</h2>
 
-<p>Here’s the jQuery code:</p>
+<p>Here's the jQuery code:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>&lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
@@ -241,7 +241,7 @@
 
 <h2 id="the-xhr-approach">The XHR Approach</h2>
 
-<p>Here’s the XHR code:</p>
+<p>Here's the XHR code:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>&lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
@@ -261,23 +261,23 @@
 
 <h1 id="part-2-rails-api-server">Part 2: Rails API Server</h1>
 
-<p>I’ve become an increasing fan of microservices as an architectural paradigm and Rails API servers are something I now generate regularly.  Here’s how I did that:</p>
+<p>I've become an increasing fan of microservices as an architectural paradigm and Rails API servers are something I now generate regularly.  Here's how I did that:</p>
 
 <blockquote>
   <p>rails new –api tracking_api –database=mysql –skip-spring –skip-listen –skip-sprockets</p>
 </blockquote>
 
-<p>You’ll notice that I’m skipping spring and listen which gets rid of the <a href="http://fuzzyblog.io/blog/osx/2017/03/20/getting-around-osx-bash-fork-issues.html">disaster that is the evented file watcher on OSX</a> / <a href="https://github.com/puma/puma-dev/issues/56">Github Issue</a> (this causes huge issues with overly aggressive process launching).</p>
+<p>You'll notice that I'm skipping spring and listen which gets rid of the <a href="http://fuzzyblog.io/blog/osx/2017/03/20/getting-around-osx-bash-fork-issues.html">disaster that is the evented file watcher on OSX</a> / <a href="https://github.com/puma/puma-dev/issues/56">Github Issue</a> (this causes huge issues with overly aggressive process launching).</p>
 
 <h2 id="getting-past-cors-restrictions">Getting Past CORS Restrictions</h2>
 
 <p>Once this is done we need to add the rack-cors gem with:</p>
 
 <blockquote>
-  <p>gem ‘rack-cors’</p>
+  <p>gem 'rack-cors'</p>
 </blockquote>
 
-<p>in the Gemfile.  In case you’ve been following what I’ve done with <a href="http://www.shouldigem.com">ShouldIGem.com</a>, you might be curious how rack-cors fared – it got an <a href="http://shouldigem.com/report_cards/141?url=https%3A%2F%2Fgithub.com%2Fcyu%2Frack-cors">A</a>.</p>
+<p>in the Gemfile.  In case you've been following what I've done with <a href="http://www.shouldigem.com">ShouldIGem.com</a>, you might be curious how rack-cors fared – it got an <a href="http://shouldigem.com/report_cards/141?url=https%3A%2F%2Fgithub.com%2Fcyu%2Frack-cors">A</a>.</p>
 
 <p>The rack-cors gem addresses the problems with Cross Origin Scripting (CORS) by allowing domain X to post or get to domain Y.  While there are a bunch of other approaches to getting around CORS, the rack-cors gem was by far the best solution I found.</p>
 
@@ -311,21 +311,21 @@ end
 </code></pre>
 </div>
 
-<p>The PageView object is simply an ActiveRecord model which logs the view to the database and it is simple enough that I’m not going to cover it here.</p>
+<p>The PageView object is simply an ActiveRecord model which logs the view to the database and it is simple enough that I'm not going to cover it here.</p>
 
 <p>Note: This is a simplified controller.  I have deliberately omitted handling the api key parameter which limits calls against the API to only those with valid API keys.</p>
 
 <h2 id="testing-this-with-wget-or-curl">Testing this with Wget or Curl</h2>
 
-<p>As I wrote about previously, I’m a huge believer in using curl or wget to test APIs.  Here is a simple wget statement that exercises the API as you tail a log file to make sure everything works:</p>
+<p>As I wrote about previously, I'm a huge believer in using curl or wget to test APIs.  Here is a simple wget statement that exercises the API as you tail a log file to make sure everything works:</p>
 
 <blockquote>
-  <p>wget “http://localhost:3820/api/log_it?api_key=foobarbaz&amp;url=http%3A%2F%2Flocalhost%3A3400%2F&amp;fingerprint=e82eaadd”</p>
+  <p>wget "http://localhost:3820/api/log_it?api_key=foobarbaz&amp;url=http%3A%2F%2Flocalhost%3A3400%2F&amp;fingerprint=e82eaadd"</p>
 </blockquote>
 
 <h2 id="testing-this-from-the-browser">Testing this From the Browser</h2>
 
-<p>To test this from the browser just embed it in an HTML page and tail the logs on the API service.  Here’s what those logs look like:</p>
+<p>To test this from the browser just embed it in an HTML page and tail the logs on the API service.  Here's what those logs look like:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>Started GET "/api/log_it?api_key=foobarbaz&amp;url=http://localhost:3400/&amp;fingerprint=e82eaadd998e1aae0309b781029f8edb" for 127.0.0.1 at 2017-05-09 18:35:32 -0400
 Processing by ApiController#log_it as */*

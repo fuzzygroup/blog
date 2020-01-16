@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Using Ansible as a Development Tool with Rails and AWS for Large Scale Data Processing Automation</title>
-  <meta name="description" content="Man it was a hell of a busy week last week.  Here’s an illustration:">
+  <meta name="description" content="Man it was a hell of a busy week last week.  Here's an illustration:">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/aws/2017/03/06/using-ansible-as-a-development-tool-with-rails.html">
@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>Man it was a hell of a busy week last week.  Here’s an illustration:</p>
+    <p>Man it was a hell of a busy week last week.  Here's an illustration:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>~/me/appdatallc/ansible-clean [master|✚ 1…1]
 01:34 $ find . -name '*.yml' | xargs wc -l
@@ -197,7 +197,7 @@ find . -name '*.yml' | xargs wc -l
 <p>The really interesting part of this was using Ansible as a <strong>development tool</strong> with Rails.  The use case in question was automating production of large scale data processing jobs.  Example what these jobs did is highly proprietary but they basically had a shared architecture like this:</p>
 
 <ul>
-  <li>Execute on a developer’s workstation</li>
+  <li>Execute on a developer's workstation</li>
   <li>Verify state of the application by calling an API server side</li>
   <li>Change the thread count as needed for the right amount of concurrency</li>
   <li>Clear the rails log</li>
@@ -211,11 +211,11 @@ find . -name '*.yml' | xargs wc -l
 
 <p>There were a series of 8 different data processing jobs, 6 of which matched the above list and two of which were slightly different.  Each of the stages above was represented by a small Ansible playbook and the coordination between each of the playbooks was handled by a bash script which called each of the stages in succession.</p>
 
-<p>Classically Ansible is a devops tool for provisioning boxes but last week really illustrated to me the power of <strong>Ansible as a development tool</strong>.  Ansible’s idempotent, state based approach of modeling the world as a succession of yaml files can definitely be funky but the model works.</p>
+<p>Classically Ansible is a devops tool for provisioning boxes but last week really illustrated to me the power of <strong>Ansible as a development tool</strong>.  Ansible's idempotent, state based approach of modeling the world as a succession of yaml files can definitely be funky but the model works.</p>
 
 <h1 id="adding-status-tracking">Adding Status Tracking</h1>
 
-<p>Early Friday I realized that once these jobs were running, the developer running them would need to understand the status of the job on a highly discrete level.  Historically I’ve done this by directly querying the database and just <em>understanding</em> the objects involved and the tables that represent them.  But that comes from a huge amount of internal domain knowlege that Winston didn’t have.</p>
+<p>Early Friday I realized that once these jobs were running, the developer running them would need to understand the status of the job on a highly discrete level.  Historically I've done this by directly querying the database and just <em>understanding</em> the objects involved and the tables that represent them.  But that comes from a huge amount of internal domain knowlege that Winston didn't have.</p>
 
 <p>This status would need to include:</p>
 
@@ -228,15 +228,15 @@ find . -name '*.yml' | xargs wc -l
 
 <p>TASK [run_rake_task_and_show_output : debug] <strong>**</strong><strong>**</strong><strong>**</strong><strong>**</strong>*****
 ok: [monthly-categorization] =&gt; {
-    “msg”: [
-        “in LoadError rescue statement”,
-        “Queue Size = 0”,
-        “Total categorization records = 271408”,
-        “Total distinct entities in categorization = 6783”
+    "msg": [
+        "in LoadError rescue statement",
+        "Queue Size = 0",
+        "Total categorization records = 271408",
+        "Total distinct entities in categorization = 6783"
     ]
 }</p>
 
-<p>The ability to run this at any point in the process is hugely useful and here’s an example of how simple that code can be.  There are three key pieces:</p>
+<p>The ability to run this at any point in the process is hugely useful and here's an example of how simple that code can be.  There are three key pieces:</p>
 
 <ul>
   <li>Ansible Playbook - a playbook which defined a Rake namespace and task to be executed</li>
@@ -267,13 +267,13 @@ ok: [monthly-categorization] =&gt; {
         msg: ""
 </code></pre>
 
-<p>My first pass on all this had the output being listed as a jumbled mess (typical to captured output by Ansible).  Winston correctly pointed out something to the effect of “Looks a bit like arse”.  Well a quick google led to this <a href="http://stackoverflow.com/questions/34188167/ansible-print-message-debug-msg-line1-n-var2-n-line3-with-var3">StackOverflow post</a> where this technique:</p>
+<p>My first pass on all this had the output being listed as a jumbled mess (typical to captured output by Ansible).  Winston correctly pointed out something to the effect of "Looks a bit like arse".  Well a quick google led to this <a href="http://stackoverflow.com/questions/34188167/ansible-print-message-debug-msg-line1-n-var2-n-line3-with-var3">StackOverflow post</a> where this technique:</p>
 
 <blockquote>
-  <p>msg: “”</p>
+  <p>msg: ""</p>
 </blockquote>
 
-<p>could be applied.  In our case we had it as result so it was just a matter of replacing msg with result.stdout.  And, almost magically, that jumbled mess came into razor sharp focus.  My thanks to Winston for recognizing that this was an issue.  I was so close to the problem that I didn’t even perceive it.</p>
+<p>could be applied.  In our case we had it as result so it was just a matter of replacing msg with result.stdout.  And, almost magically, that jumbled mess came into razor sharp focus.  My thanks to Winston for recognizing that this was an issue.  I was so close to the problem that I didn't even perceive it.</p>
 
 <h2 id="rake-task-being-called-by-playbook">Rake task being called by Playbook:</h2>
 
@@ -314,18 +314,18 @@ ok: [monthly-categorization] =&gt; {
 
 <h1 id="conclusion">Conclusion</h1>
 
-<p>I’ve been managing this job production process for almost two years now and most of my approaches to making it better have evolved around different rake tasks and some fairly bad internal documentation.  By pulling Ansible into this, for the first time, we actually have a solution which:</p>
+<p>I've been managing this job production process for almost two years now and most of my approaches to making it better have evolved around different rake tasks and some fairly bad internal documentation.  By pulling Ansible into this, for the first time, we actually have a solution which:</p>
 
 <ul>
   <li>Goes end to end</li>
   <li>Automates tasks like AMI creation and instance launching historically done with the AWS developer console</li>
   <li>Allows use of N instances to process the data</li>
-  <li>Fully uses our existing code base without change – I can’t emphasize this point enough</li>
+  <li>Fully uses our existing code base without change – I can't emphasize this point enough</li>
   <li>Displays status on the running jobs at any point</li>
   <li>Is broken down into small, modular chunks – each of our playbooks are maybe 10 lines in total</li>
 </ul>
 
-<p>Ansible isn’t how I expected to solve this problem but its approach really, really worked – keep it in mind.</p>
+<p>Ansible isn't how I expected to solve this problem but its approach really, really worked – keep it in mind.</p>
 
   </div>
   

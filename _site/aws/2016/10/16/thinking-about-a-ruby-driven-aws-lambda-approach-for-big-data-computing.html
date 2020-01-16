@@ -178,9 +178,9 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>So I have a computing problem to solve where the amount of data to process vastly exceeds even my desire to spin up EC2 instances.  I really do actually enjoy <a href="https://fuzzygroup.github.io/blog/tag.html#ansible">Ansible</a> but at some point you have to cry to the heavens and shout out “There must be a better way!”.  This is literally an “oh crap” moment when I realized exactly the scale of the problem.</p>
+    <p>So I have a computing problem to solve where the amount of data to process vastly exceeds even my desire to spin up EC2 instances.  I really do actually enjoy <a href="https://fuzzygroup.github.io/blog/tag.html#ansible">Ansible</a> but at some point you have to cry to the heavens and shout out "There must be a better way!".  This is literally an "oh crap" moment when I realized exactly the scale of the problem.</p>
 
-<p>Note: I’m not at liberty here to give specifics so I’m talking in generalities quite a bit in this post.  Apologies.</p>
+<p>Note: I'm not at liberty here to give specifics so I'm talking in generalities quite a bit in this post.  Apologies.</p>
 
 <p>AWS has a lot of tools that can be applied to big data process but two come to mind:</p>
 
@@ -189,14 +189,14 @@
   <li><a href="https://aws.amazon.com/lambda/">Lambda</a></li>
 </ul>
 
-<p>EMR is older and harder to use so I’m going to avoid it for now in favor of the new hotness – <strong>Lambda</strong>.  Here’s the brag statement about Lambda:</p>
+<p>EMR is older and harder to use so I'm going to avoid it for now in favor of the new hotness – <strong>Lambda</strong>.  Here's the brag statement about Lambda:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>Run code without thinking about servers.
 Pay for only the compute time you consume.
 </code></pre>
 </div>
 
-<p>That’s a pretty compelling statement to make and it is actually close to a holy grail of distributed computing.<br />
+<p>That's a pretty compelling statement to make and it is actually close to a holy grail of distributed computing.<br />
 I have a big data problem that:</p>
 
 <ol>
@@ -240,9 +240,9 @@ I have a big data problem that:</p>
 </code></pre>
 </div>
 
-<p>So we’re actually only talking about 12 classes, 38 methods and 366 LOC.  So this isn’t large at all.  We know that one approach to running this is running it as packaged ruby.  Another approach would be <em>code that writes code</em> but before we talk about this, let’s talk about the execution context.</p>
+<p>So we're actually only talking about 12 classes, 38 methods and 366 LOC.  So this isn't large at all.  We know that one approach to running this is running it as packaged ruby.  Another approach would be <em>code that writes code</em> but before we talk about this, let's talk about the execution context.</p>
 
-<p>This application needs to run every time period from 2013 to present.  And depending on the results from our initial prototype, that will be either monthly or quarterly.  So if this is quarterly we need to run it 12 times - (4 in 2013, 4 in 2015, 4 in 2016) and if its monthly then we need to run it 36 times.  And we’ll need to run it monthly going forward.  And, each time, the input data is different.</p>
+<p>This application needs to run every time period from 2013 to present.  And depending on the results from our initial prototype, that will be either monthly or quarterly.  So if this is quarterly we need to run it 12 times - (4 in 2013, 4 in 2015, 4 in 2016) and if its monthly then we need to run it 36 times.  And we'll need to run it monthly going forward.  And, each time, the input data is different.</p>
 
 <h1 id="code-that-writes-code">Code that Writes Code</h1>
 
@@ -263,7 +263,7 @@ I have a big data problem that:</p>
   <li>uses the <a href="http://docs.aws.amazon.com/sdkforruby/api/Aws/Lambda/Client.html">AWS Lambda Ruby APIs</a> to submit the job</li>
 </ul>
 
-<p>With this approach while we’re not using Lambda to actually execute our Ruby code, we’re getting the same result, using Lambda’s native JavaScript / node support but still using our overall Ruby framework to run everything and manage the process.  And this will have the advantage of generating an auditable code base that we can dig into if we find any problems.</p>
+<p>With this approach while we're not using Lambda to actually execute our Ruby code, we're getting the same result, using Lambda's native JavaScript / node support but still using our overall Ruby framework to run everything and manage the process.  And this will have the advantage of generating an auditable code base that we can dig into if we find any problems.</p>
 
   </div>
   

@@ -49,7 +49,7 @@ bundle exec rails g model TextCommon
 
 
 
-All that would happen was I’d get a cryptic:
+All that would happen was I'd get a cryptic:
 
 
   Run...">
@@ -193,7 +193,7 @@ All that would happen was I’d get a cryptic:
 </code></pre>
 </div>
 
-<p>All that would happen was I’d get a cryptic:</p>
+<p>All that would happen was I'd get a cryptic:</p>
 
 <blockquote>
   <p>Running via Spring preloader in process 19539</p>
@@ -215,14 +215,14 @@ All that would happen was I’d get a cryptic:
       </tbody>
     </table>
   </li>
-  <li>Next up was to try this on an El Capitan machine because I’ve had enough issues with Sierra to, well, think it sucks monkey chunks.  Nope.  Same issues.</li>
-  <li>My next thought was to revert to my spring theory and disable spring and listen at the Gemfile level.  Apparently you can’t do that because if you don’t have listen then the rails command dies with an exception.</li>
+  <li>Next up was to try this on an El Capitan machine because I've had enough issues with Sierra to, well, think it sucks monkey chunks.  Nope.  Same issues.</li>
+  <li>My next thought was to revert to my spring theory and disable spring and listen at the Gemfile level.  Apparently you can't do that because if you don't have listen then the rails command dies with an exception.</li>
   <li>So I added back listen but not spring and got another version of the same error.</li>
 </ol>
 
 <p>At this point I thought to myself – <strong>wait</strong> – you generated this app with <strong>–skip-active-record.</strong>  Is that why model generation is failing?  So I tried rails g controller Foo as a test and that worked just fine.</p>
 
-<p>The bottom line is that if you don’t have persistent storage configured at the Rails level, rails g model just won’t work.  That’s a pity because:</p>
+<p>The bottom line is that if you don't have persistent storage configured at the Rails level, rails g model just won't work.  That's a pity because:</p>
 
 <ul>
   <li>PORO (plain old ruby objects) are really, really nice</li>

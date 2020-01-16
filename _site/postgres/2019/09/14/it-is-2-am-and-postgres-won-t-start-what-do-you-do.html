@@ -195,7 +195,7 @@ PG::ConnectionBad: could not connect to server: No such file or directory
 </code></pre>
 </div>
 
-<p>Sigh.  This particular side project is built with <a href="https://jumpstartrails.com/">Jumpstart Rails</a> and Jumpstart Rails uses Postgres.  And while I have no particular object to Postgres, it isn’t MySQL which is my “comfort db”.  So I guess I have to roll my metaphorical sleeves up (they are metaphorical sleeves because I’m writing this at 2:47 am in bed and, well, naked) and figure this out.  I could just try and go back to sleep but, nah….</p>
+<p>Sigh.  This particular side project is built with <a href="https://jumpstartrails.com/">Jumpstart Rails</a> and Jumpstart Rails uses Postgres.  And while I have no particular object to Postgres, it isn't MySQL which is my "comfort db".  So I guess I have to roll my metaphorical sleeves up (they are metaphorical sleeves because I'm writing this at 2:47 am in bed and, well, naked) and figure this out.  I could just try and go back to sleep but, nah….</p>
 
 <p>The first thing I try is to look at Procfile.dev:</p>
 
@@ -207,7 +207,7 @@ sidekiq: bundle exec sidekiq
 </code></pre>
 </div>
 
-<p>There is no reference to Postgres so maybe it just isn’t running.  I rebooted two days ago (to the sound of much griping and cursing - but I digress) so I try and start Postgres using brew:</p>
+<p>There is no reference to Postgres so maybe it just isn't running.  I rebooted two days ago (to the sound of much griping and cursing - but I digress) so I try and start Postgres using brew:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>brew services start postgres
 Service `postgresql` already started, use `brew services restart postgresql` to restart.
@@ -221,7 +221,7 @@ sjohnson         44631   0.0  0.0  4295688    856 s029  S+    2:51AM   0:00.00 g
 </code></pre>
 </div>
 
-<p>That seems to argue that it isn’t.  Maybe there’s a lock file left behind so I should restart it instead:</p>
+<p>That seems to argue that it isn't.  Maybe there's a lock file left behind so I should restart it instead:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>brew services restart postgresql
 Stopping `postgresql`... (might take a while)
@@ -237,7 +237,7 @@ sjohnson         44859   0.0  0.0  4268040    784 s029  S+    2:52AM   0:00.00 g
 </code></pre>
 </div>
 
-<p>This type of behavior with a “headless” process generally means that it is starting up, hitting an error condition and aborting – and failing to clean up its lock file (making brew think that its still running).  Sigh.</p>
+<p>This type of behavior with a "headless" process generally means that it is starting up, hitting an error condition and aborting – and failing to clean up its lock file (making brew think that its still running).  Sigh.</p>
 
 <p>Postgres is a background service which means that it is running behind the scenes and it is managed by brew.  So a little digging gave me brew services list:</p>
 
@@ -295,15 +295,15 @@ unbound       stopped
 </code></pre>
 </div>
 
-<p>And that says to me “Google this little f* problem” which takes me to a <a href="https://olivierlacan.com/posts/migrating-homebrew-postgres-to-a-new-version/">great postgres blog post</a> which recommends that I run:</p>
+<p>And that says to me "Google this little f* problem" which takes me to a <a href="https://olivierlacan.com/posts/migrating-homebrew-postgres-to-a-new-version/">great postgres blog post</a> which recommends that I run:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>brew postgresql-upgrade-database
 </code></pre>
 </div>
 
-<p>And that doesn’t seem to work because I went from 9.6 to 11.something.or.other – too large a version leap.  But it does make a backup of my Postgres database and maybe that will help me – only it doesn’t.</p>
+<p>And that doesn't seem to work because I went from 9.6 to 11.something.or.other – too large a version leap.  But it does make a backup of my Postgres database and maybe that will help me – only it doesn't.</p>
 
-<p>And this is the point where I start to get sleepy and I’m going to cut to the chase with the solution:</p>
+<p>And this is the point where I start to get sleepy and I'm going to cut to the chase with the solution:</p>
 
 <ul>
   <li>Backup my old databases to another location to be safe</li>

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Rails Humor The Sound of Crickets when rails g Is Used</title>
-  <meta name="description" content="So I’m starting work on a new project that promises to be interesting.  This is pure green field development – one of my very, very favorite things.  I did a...">
+  <meta name="description" content="So I'm starting work on a new project that promises to be interesting.  This is pure green field development – one of my very, very favorite things.  I did a...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2017/02/20/rails-humor-the-sound-of-crickets-when-rails-g-is-used.html">
@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>So I’m starting work on a new project that promises to be interesting.  This is pure green field development – one of my very, very favorite things.  I did a skeleton application generation like this:</p>
+    <p>So I'm starting work on a new project that promises to be interesting.  This is pure green field development – one of my very, very favorite things.  I did a skeleton application generation like this:</p>
 
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">rails</span> <span class="kp">new</span> <span class="n">exploder</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">active</span><span class="o">-</span><span class="n">record</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">action</span><span class="o">-</span><span class="n">cable</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">spring</span> <span class="o">--</span><span class="n">api</span>
 </code></pre>
@@ -200,7 +200,7 @@ git push -u origin/master
 </code></pre>
 </div>
 
-<p>And I got … nothing. Hm… Here’s app/models:</p>
+<p>And I got … nothing. Hm… Here's app/models:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ls -l app/models/
 total 0
@@ -208,9 +208,9 @@ drwxr-xr-x@ 3 sjohnson  staff   102B Feb 20 08:32 concerns/
 </code></pre>
 </div>
 
-<p><em>blink</em>  Oh right – skip-active-record.  This is going to be purely an API and one that processes a lot of text.  But, in an amazing lack of foresight, apparently there’s no such thing as a model generator when you don’t have ActiveRecord installed.  Sheesh.</p>
+<p><em>blink</em>  Oh right – skip-active-record.  This is going to be purely an API and one that processes a lot of text.  But, in an amazing lack of foresight, apparently there's no such thing as a model generator when you don't have ActiveRecord installed.  Sheesh.</p>
 
-<p>I’ll say this much though – it did make me laugh out loud when I really, really needed it.  Off to write a poro (plain old ruby objects) model generator so test files get properly set up and such…</p>
+<p>I'll say this much though – it did make me laugh out loud when I really, really needed it.  Off to write a poro (plain old ruby objects) model generator so test files get properly set up and such…</p>
 
   </div>
   

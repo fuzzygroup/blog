@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>When Sidekiq Makes You Nuts Check Your Types</title>
-  <meta name="description" content="Much of what I do at the job I’m in the process of leaving is large scale data processing and it is all done through queues and Sidekiq.  I generally do it w...">
+  <meta name="description" content="Much of what I do at the job I'm in the process of leaving is large scale data processing and it is all done through queues and Sidekiq.  I generally do it w...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2017/03/08/when-sidekiq-makes-you-nuts-check-your-types.html">
@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>Much of what I do at the job I’m in the process of leaving is large scale data processing and it is all done through queues and <a href="http://www.sidekiq.org">Sidekiq</a>.  I generally do it with a method call that looks like this:</p>
+    <p>Much of what I do at the job I'm in the process of leaving is large scale data processing and it is all done through queues and <a href="http://www.sidekiq.org">Sidekiq</a>.  I generally do it with a method call that looks like this:</p>
 
 <blockquote>
   <p>CompileWorker.perform_async(id)</p>
@@ -190,13 +190,13 @@
   <p>CompileWorker.perform_async(id, date)</p>
 </blockquote>
 
-<p>And I got crazy, crazy, crazy results – my object would get about 10 lines into the call and then … nothing.  I’d test my method line by line in rails console on production and it would work perfectly.  I even went so far as to isolate it down to one Sidekiq thread and one redis server (on local host no less to make sure that no other sidekiq worker was messing with things).  And nothing made any difference.  Finally I realized that the crucial difference was actually that I was passing in a date.  Here’s the docs:</p>
+<p>And I got crazy, crazy, crazy results – my object would get about 10 lines into the call and then … nothing.  I'd test my method line by line in rails console on production and it would work perfectly.  I even went so far as to isolate it down to one Sidekiq thread and one redis server (on local host no less to make sure that no other sidekiq worker was messing with things).  And nothing made any difference.  Finally I realized that the crucial difference was actually that I was passing in a date.  Here's the docs:</p>
 
 <blockquote>
-  <p>Don’t pass symbols, named parameters or complex Ruby objects (like Date or Time!) as those will not survive the dump/load round trip correctly. <a href="https://github.com/mperham/sidekiq/wiki/Best-Practices">More</a></p>
+  <p>Don't pass symbols, named parameters or complex Ruby objects (like Date or Time!) as those will not survive the dump/load round trip correctly. <a href="https://github.com/mperham/sidekiq/wiki/Best-Practices">More</a></p>
 </blockquote>
 
-<p>And, sure enough, when I removed the date by treating it as an internal constant, it worked perfectly.  Here’s the workaround I came up with:</p>
+<p>And, sure enough, when I removed the date by treating it as an internal constant, it worked perfectly.  Here's the workaround I came up with:</p>
 
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">compile</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="p">)</span>
   <span class="k">if</span> <span class="n">date</span><span class="p">.</span><span class="nf">is_a?</span><span class="p">(</span><span class="no">String</span><span class="p">)</span>
@@ -214,7 +214,7 @@
 
 <p>This allows my internal use of the compile method where a date is passed in normally to function without issue but to work correctly when called in an asynchronous manner.</p>
 
-<p>I actually don’t have a problem with Sidekiq working in this fashion but it does bother me that while the Sidekiq documentation warns about this, there’s no error thrown or alert raised.  Now it might be impossible to pull off an error message but this is a damn easy mistake to make.  I knew about the ActiveRecord object limitation in Sidekiq but didn’t have a clue that it extended to a simple date.</p>
+<p>I actually don't have a problem with Sidekiq working in this fashion but it does bother me that while the Sidekiq documentation warns about this, there's no error thrown or alert raised.  Now it might be impossible to pull off an error message but this is a damn easy mistake to make.  I knew about the ActiveRecord object limitation in Sidekiq but didn't have a clue that it extended to a simple date.</p>
 
   </div>
   

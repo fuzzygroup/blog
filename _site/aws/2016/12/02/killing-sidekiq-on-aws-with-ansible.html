@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Killing Sidekiq on AWS with Ansible</title>
-  <meta name="description" content="We do a lot of batch data processing here and much of that involves shoving crap into Sidekiq to be run in a threaded fashion.  I’m not done with my own thre...">
+  <meta name="description" content="We do a lot of batch data processing here and much of that involves shoving crap into Sidekiq to be run in a threaded fashion.  I'm not done with my own thre...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/aws/2016/12/02/killing-sidekiq-on-aws-with-ansible.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="We do a lot of batch data processing here and much of that involves shoving crap into Sidekiq to be run in a threaded fashion.  I’m not done with my own threading stuff yet by any means but, for no...">
+      content="We do a lot of batch data processing here and much of that involves shoving crap into Sidekiq to be run in a threaded fashion.  I'm not done with my own threading stuff yet by any means but, for no...">
   
 
   
@@ -178,20 +178,20 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>We do a lot of batch data processing here and much of that involves shoving crap into <a href="http://sidekiq.org/">Sidekiq</a> to be run in a threaded fashion.  I’m not done with my own threading stuff yet by any means but, for now, Sidekiq is a superstar so we’re going to use it and bow west towards the <a href="http://www.mikeperham.com/">Mike Perham</a> alter of threaded awesomeness that is Sidekiq.</p>
+    <p>We do a lot of batch data processing here and much of that involves shoving crap into <a href="http://sidekiq.org/">Sidekiq</a> to be run in a threaded fashion.  I'm not done with my own threading stuff yet by any means but, for now, Sidekiq is a superstar so we're going to use it and bow west towards the <a href="http://www.mikeperham.com/">Mike Perham</a> alter of threaded awesomeness that is Sidekiq.</p>
 
 <p>One issue we had recently was that we thought we had killed sidekiq dead but, since it was running as a background service instead of a foreground task, it popped back up and kept happily eating data.  This would have been fine except for the fact that we had a db dump and restore in process and this caused data to be in an inconsistent state.  And that led to a second round of table dump / restore tangoing.</p>
 
-<p>The first thing to understand here is that this is <strong>my</strong> mistake.  I’m the moron who set it as a background service after all and, in the utter panic that accompanies disaster recovery, well, I forgot.  I did my normal kill -9 dance and went on my merry way ignoring the fact that Ubuntu would happily cackle gleefully as it re-launched it.  <em>Sigh</em>.</p>
+<p>The first thing to understand here is that this is <strong>my</strong> mistake.  I'm the moron who set it as a background service after all and, in the utter panic that accompanies disaster recovery, well, I forgot.  I did my normal kill -9 dance and went on my merry way ignoring the fact that Ubuntu would happily cackle gleefully as it re-launched it.  <em>Sigh</em>.</p>
 
-<p>So there’s at least two playbooks here:</p>
+<p>So there's at least two playbooks here:</p>
 
 <ul>
   <li>playbook_status_sidekiq.yml</li>
   <li>playbook_stop_sidekiq_with_prejudice.yml</li>
 </ul>
 
-<p>The “_with_prejudice” refers to stopping Sidekiq with a -9 argument to kill.  This tells Linux “really, truly, right DAMN NOW kill this process”.  Sometimes Sidekiq fails to stop; often because of the ruby code its executing and while that’s fine there are lots of times that you just need it to go away.  This is one of them.</p>
+<p>The "_with_prejudice" refers to stopping Sidekiq with a -9 argument to kill.  This tells Linux "really, truly, right DAMN NOW kill this process".  Sometimes Sidekiq fails to stop; often because of the ruby code its executing and while that's fine there are lots of times that you just need it to go away.  This is one of them.</p>
 
 <p>Two additional related playbooks I could write are:</p>
 
@@ -200,7 +200,7 @@
   <li>playbook_service_stop_sidekiq.yml</li>
 </ul>
 
-<p>And here we go!  The first thing we need is the ability to know what’s going on in our cluster of boxes.  This means the ability to know if sidekiq is running:</p>
+<p>And here we go!  The first thing we need is the ability to know what's going on in our cluster of boxes.  This means the ability to know if sidekiq is running:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>playbook:
 
@@ -322,9 +322,9 @@ fiworkerbig                : ok=2    changed=1    unreachable=0    failed=0
 </code></pre>
 </div>
 
-<p>Given my <a href="https://fuzzygroup.github.io/blog/unix/2016/11/23/pkill-rocks.html">previous praise of pkill</a>, readers may be wondering why I used the old xargs trick.  Simply put I couldn’t make pkill work.  There are google posts on the topic but I didn’t have time to dig into it – I <strong>knew</strong> that xargs had to work so I went with it.  Honestly I dont understand why Ansible doesn’t have a process module – it just seems so absolutely needed.</p>
+<p>Given my <a href="https://fuzzygroup.github.io/blog/unix/2016/11/23/pkill-rocks.html">previous praise of pkill</a>, readers may be wondering why I used the old xargs trick.  Simply put I couldn't make pkill work.  There are google posts on the topic but I didn't have time to dig into it – I <strong>knew</strong> that xargs had to work so I went with it.  Honestly I dont understand why Ansible doesn't have a process module – it just seems so absolutely needed.</p>
 
-<p>As with my previous example if there is interest, on Monday, I’ll publish examples showing the dynamic inventory version of this.</p>
+<p>As with my previous example if there is interest, on Monday, I'll publish examples showing the dynamic inventory version of this.</p>
 
   </div>
   

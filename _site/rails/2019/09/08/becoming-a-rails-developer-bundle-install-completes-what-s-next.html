@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Becoming a Rails Developer - Bundle Install Completes; What&#39;s Next</title>
-  <meta name="description" content="I currently bootstrapping a friend into a Rails development cycle and here’s their status:">
+  <meta name="description" content="I currently bootstrapping a friend into a Rails development cycle and here's their status:">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2019/09/08/becoming-a-rails-developer-bundle-install-completes-what-s-next.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="I currently bootstrapping a friend into a Rails development cycle and here’s their status:
+      content="I currently bootstrapping a friend into a Rails development cycle and here's their status:
 
 
   RbEnv is installed.
@@ -184,7 +184,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I currently bootstrapping a friend into a Rails development cycle and here’s their status:</p>
+    <p>I currently bootstrapping a friend into a Rails development cycle and here's their status:</p>
 
 <ol>
   <li>RbEnv is installed.</li>
@@ -194,7 +194,7 @@
   <li>The database is created i.e. bundle exec rake db:create has completed.</li>
 </ol>
 
-<p>So from their parlance, “the application compiles” – but what now brown cow?</p>
+<p>So from their parlance, "the application compiles" – but what now brown cow?</p>
 
 <p>The first thing you want to do is verify that things work.  I mean they should but how do you know?</p>
 
@@ -211,7 +211,7 @@ User.where(username: 'fuzzygroup') (and press enter)
 </code></pre>
 </div>
 
-<p>What this should do is launch the interactive rails console – a REPL, similar to what you get when you type python.  A REPL (read-evaluate-print-loop) is an interactive way to do development and manipulate the state of the system.  There are two different REPLs in the ruby world – there is <strong>irb</strong> which is a REPL for the ruby language and then <strong>rails c</strong> which is the ruby REPL but loaded with all the “objects” (really classes) for your application.</p>
+<p>What this should do is launch the interactive rails console – a REPL, similar to what you get when you type python.  A REPL (read-evaluate-print-loop) is an interactive way to do development and manipulate the state of the system.  There are two different REPLs in the ruby world – there is <strong>irb</strong> which is a REPL for the ruby language and then <strong>rails c</strong> which is the ruby REPL but loaded with all the "objects" (really classes) for your application.</p>
 
 <p>The command:</p>
 
@@ -219,7 +219,7 @@ User.where(username: 'fuzzygroup') (and press enter)
 </code></pre>
 </div>
 
-<p>is a “ActiveRecord” statement which says “Execute the User class and return any database objects with the username of ‘fuzzygroup’ drom the users table”.  ActiveRecord is an ORM (object-relational mapper) that drives the database layer of Rails.  Unlike most ORMs, ActiveRecord actually works strikingly well.</p>
+<p>is a "ActiveRecord" statement which says "Execute the User class and return any database objects with the username of 'fuzzygroup' drom the users table".  ActiveRecord is an ORM (object-relational mapper) that drives the database layer of Rails.  Unlike most ORMs, ActiveRecord actually works strikingly well.</p>
 
 <p>What you should get back from User.first at this point is basically [] and a response like this:</p>
 
@@ -228,9 +228,9 @@ User.where(username: 'fuzzygroup') (and press enter)
 </code></pre>
 </div>
 
-<p>The default operation for ActiveRecord’s where statement is to query the database and return a collection of objects (think array although its actually richer).  In this case there was no matching object so you just got back an empty array (like class).</p>
+<p>The default operation for ActiveRecord's where statement is to query the database and return a collection of objects (think array although its actually richer).  In this case there was no matching object so you just got back an empty array (like class).</p>
 
-<p>This brings us to an interesting ruby-ism which messes up a lot of people – the concept of the default return.  Here’s an example</p>
+<p>This brings us to an interesting ruby-ism which messes up a lot of people – the concept of the default return.  Here's an example</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>def multiply(x,y)
   x * y
@@ -238,13 +238,13 @@ end
 </code></pre>
 </div>
 
-<p>If you executed this method with multiply(2,3) then you’d get back 6 even though there is no actual return statement.  Ruby operates by returning the last evaluated expression at the end of a statement and we can use that concept right now.  Back in the Rails console type:</p>
+<p>If you executed this method with multiply(2,3) then you'd get back 6 even though there is no actual return statement.  Ruby operates by returning the last evaluated expression at the end of a statement and we can use that concept right now.  Back in the Rails console type:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>result = _
 </code></pre>
 </div>
 
-<p>And you’ll get this:</p>
+<p>And you'll get this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>2.6.3 :018 &gt; result = _
   User Exists? (8.3ms)  SELECT 1 AS one FROM `users` WHERE `users`.`username` = 'fddd' LIMIT 1
@@ -254,7 +254,7 @@ User::ActiveRecord_Relation &lt; ActiveRecord::Relation
 </code></pre>
 </div>
 
-<p>In the Rails console, the last result is always available as the special variable <strong>_</strong>. And you can always look at an object’s class with the .class method.</p>
+<p>In the Rails console, the last result is always available as the special variable <strong>_</strong>. And you can always look at an object's class with the .class method.</p>
 
 <p>To exit the Rails console, just type quit and press enter:</p>
 
@@ -262,9 +262,9 @@ User::ActiveRecord_Relation &lt; ActiveRecord::Relation
 </code></pre>
 </div>
 
-<p>What you have now done is to validate that the Rails system itself works.  If you can bring up a Rails console and connect to the database thru ActiveRecord then pretty much 100% of Rails itself works (the connection to Redis is something else but we’re not ready for that yet).</p>
+<p>What you have now done is to validate that the Rails system itself works.  If you can bring up a Rails console and connect to the database thru ActiveRecord then pretty much 100% of Rails itself works (the connection to Redis is something else but we're not ready for that yet).</p>
 
-<p>And this brings up to the nasty truth about any Rails environment – without data to operate on, things, well, really suck.  This process of getting an initial set of development data to work on is referred to as “seeding”.  And there is both a default way to do this – and then the way that I do it.</p>
+<p>And this brings up to the nasty truth about any Rails environment – without data to operate on, things, well, really suck.  This process of getting an initial set of development data to work on is referred to as "seeding".  And there is both a default way to do this – and then the way that I do it.</p>
 
 <p>The default want to do this is:</p>
 
@@ -278,17 +278,17 @@ User::ActiveRecord_Relation &lt; ActiveRecord::Relation
 
 <p>Idempotence (UK: /ˌɪdɛmˈpoʊtəns/, US: /ˌaɪdəm-/) is the property of certain operations in mathematics and computer science whereby they can be applied multiple times without changing the result beyond the initial application.  <a href="https://en.wikipedia.org/wiki/Idempotence">Wikipedia</a></p>
 
-<p>From a personal perspective, in this context, idempotence means that an object in the database should be created correctly when it doesn’t exist <strong>and</strong> that creation command should be able to be run again – and not have that object altered.  Here’s an example - you want a user named fuzzygroup (yep that’s me; it is short for me and my cats while also being a mild reference to fuzzy logic) to exist in the system.  And when you extend the database seeding routine to be more powerful, you don’t want the work that was done incrementally using the user interface to be wiped out.</p>
+<p>From a personal perspective, in this context, idempotence means that an object in the database should be created correctly when it doesn't exist <strong>and</strong> that creation command should be able to be run again – and not have that object altered.  Here's an example - you want a user named fuzzygroup (yep that's me; it is short for me and my cats while also being a mild reference to fuzzy logic) to exist in the system.  And when you extend the database seeding routine to be more powerful, you don't want the work that was done incrementally using the user interface to be wiped out.</p>
 
-<p>Here’s how I manage database seeding:</p>
+<p>Here's how I manage database seeding:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake seed:init --trace
 </code></pre>
 </div>
 
-<p><strong>Note</strong>: Yes you should do this now if you are working on one of my codebases; otherwise this won’t do a damn thing.</p>
+<p><strong>Note</strong>: Yes you should do this now if you are working on one of my codebases; otherwise this won't do a damn thing.</p>
 
-<p>The command rake is a way to execute a set of ruby scripts that run from the command line. Rake is a creation of the late Jim Weirich, a wonderful rubyist, and “rake tasks” are a key part of the Rails infrastructure.  This command is saying: “Run the seed namespace and call the init task within it.  Also give me a detailed trace of any errors”.  Rake tasks live in this part of your rails codebase:</p>
+<p>The command rake is a way to execute a set of ruby scripts that run from the command line. Rake is a creation of the late Jim Weirich, a wonderful rubyist, and "rake tasks" are a key part of the Rails infrastructure.  This command is saying: "Run the seed namespace and call the init task within it.  Also give me a detailed trace of any errors".  Rake tasks live in this part of your rails codebase:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>lib/tasks/
 </code></pre>

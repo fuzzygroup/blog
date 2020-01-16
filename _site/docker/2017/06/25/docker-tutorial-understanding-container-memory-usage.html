@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Docker Tutorial Understanding Container Memory Usage</title>
-  <meta name="description" content="I know that it might seem like in 2017, in our new container centric world, that understanding memory usage on a per container basis isn’t all that necessary...">
+  <meta name="description" content="I know that it might seem like in 2017, in our new container centric world, that understanding memory usage on a per container basis isn't all that necessary...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/docker/2017/06/25/docker-tutorial-understanding-container-memory-usage.html">
@@ -178,9 +178,9 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I know that it might seem like in 2017, in our new container centric world, that understanding memory usage on a per container basis isn’t all that necessary but my recent experiences with my side project are, sorely, disagreeing with that.</p>
+    <p>I know that it might seem like in 2017, in our new container centric world, that understanding memory usage on a per container basis isn't all that necessary but my recent experiences with my side project are, sorely, disagreeing with that.</p>
 
-<p>I’m developing a SAAS product where I’ve firmly and irrevocably broken the traditional Rails monolithic development model.  So rather than have one giant Rails app, I have multiple Rails apps – the promotional website, the crawler, the admin tool and so on.  .  My current deployment model is Docker containers and each Rails app is represented by a container stack.  For cost reasons I want to use resources efficiently allowing multiple container stacks to exist on the same host.  This requires understanding our low level memory usage so here goes…</p>
+<p>I'm developing a SAAS product where I've firmly and irrevocably broken the traditional Rails monolithic development model.  So rather than have one giant Rails app, I have multiple Rails apps – the promotional website, the crawler, the admin tool and so on.  .  My current deployment model is Docker containers and each Rails app is represented by a container stack.  For cost reasons I want to use resources efficiently allowing multiple container stacks to exist on the same host.  This requires understanding our low level memory usage so here goes…</p>
 
 <p>Note: All of this is being done on AWS under Ubuntu 16.04 using docker-compose 1.8</p>
 
@@ -221,7 +221,7 @@ ee27a6e37fef        0.00%               131.4 MiB / 1.952 GiB   6.57%           
 <p>If you wanted to reduce the amount of output to the bare essentials then try:</p>
 
 <blockquote>
-  <p>docker stats –format “table \t\t”</p>
+  <p>docker stats –format "table \t\t"</p>
 </blockquote>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>CONTAINER           CPU %               MEM USAGE / LIMIT
@@ -250,7 +250,7 @@ a5251659f7c9        redis:3.2-alpine  "docker-entrypoint..."   27 minutes ago   
 
 <h1 id="putting-it-all-together---dockerstats">Putting it All Together - dockerstats</h1>
 
-<p>If you’re thinking that this two step process, well, <strong>sucks</strong>, yep.  I took a pass at cleaning this up into a single shell script but I found my bash skills, sadly weren’t up to it.  Happily I did additional research and managed to put this together from some things I found on the web:</p>
+<p>If you're thinking that this two step process, well, <strong>sucks</strong>, yep.  I took a pass at cleaning this up into a single shell script but I found my bash skills, sadly weren't up to it.  Happily I did additional research and managed to put this together from some things I found on the web:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
 docker stats --format <span class="s2">"table </span><span class="se">\t\t</span><span class="s2">"</span> <span class="k">$(</span>docker ps|grep -v <span class="s2">"NAMES"</span>|awk <span class="s1">'{ print $NF }'</span>|tr <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="s2">" "</span><span class="k">)</span>
@@ -263,7 +263,7 @@ docker stats --format <span class="s2">"table </span><span class="se">\t\t</span
   <p>chmod +x dockerstats</p>
 </blockquote>
 
-<p>then you’ll have a single shell script that produces this:</p>
+<p>then you'll have a single shell script that produces this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>CONTAINER                                            CPU %               MEM USAGE / LIMIT
 seiracrawler_redis_1                                 0.12%               15.29 MiB / 1.952 GiB
@@ -277,9 +277,9 @@ seirawatchsite_redis.1.siatex4zd6xezsevxfk4no98n     0.09%               6.664 M
 </code></pre>
 </div>
 
-<p>You’ll seem some redundancy here because one my Docker installations on this particular box is using Docker Swarm (not recommended btw) and there are  replicas of some of the containers due to my swarm configuration.</p>
+<p>You'll seem some redundancy here because one my Docker installations on this particular box is using Docker Swarm (not recommended btw) and there are  replicas of some of the containers due to my swarm configuration.</p>
 
-<p>Personally I think this functionality is important enough that I’ve added it to my deploy process on all my boxes running Docker and I’ll recommend the same to all my clients.</p>
+<p>Personally I think this functionality is important enough that I've added it to my deploy process on all my boxes running Docker and I'll recommend the same to all my clients.</p>
 
 <p>If you just want the dockerstats shell script, here is a <a href="https://gist.github.com/fuzzygroup/e000a972a999b406a38557324e11d1c0">gist with it</a>.</p>
 

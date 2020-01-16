@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Adding Mosh Support to Your AWS Servers</title>
-  <meta name="description" content="Mosh is an open source project that I’ve been tracking for the past several years as an SSH replacement and it appears that it is finally at a point where it...">
+  <meta name="description" content="Mosh is an open source project that I've been tracking for the past several years as an SSH replacement and it appears that it is finally at a point where it...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/aws/2017/07/02/adding-mosh-support-to-your-aws-servers.html">
@@ -178,11 +178,11 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>Mosh is an open source project that I’ve been tracking for the past several years as an SSH replacement and it appears that it is finally at a point where it is ready for me to put it into production.  In this tutorial I document the process of installing Mosh client side and server side along with the necessary security group configuration.  In case you’re not aware of Mosh, <a href="https://mosh.org/">Mosh</a> is a UDP based addition to SSH which improves the reliability of connecting to your servers, particularly on mobile.  One of the notable benefits of mosh over ssh is that mosh doesn’t fill up buffers so a CTRL+C key sequence actually stops things immediately.</p>
+    <p>Mosh is an open source project that I've been tracking for the past several years as an SSH replacement and it appears that it is finally at a point where it is ready for me to put it into production.  In this tutorial I document the process of installing Mosh client side and server side along with the necessary security group configuration.  In case you're not aware of Mosh, <a href="https://mosh.org/">Mosh</a> is a UDP based addition to SSH which improves the reliability of connecting to your servers, particularly on mobile.  One of the notable benefits of mosh over ssh is that mosh doesn't fill up buffers so a CTRL+C key sequence actually stops things immediately.</p>
 
 <h1 id="step-1-installing-the-mosh-client-software">Step 1: Installing the Mosh Client Software</h1>
 
-<p>If you’re using OSX and HomeBrew then you can install the mosh client software with a simple:</p>
+<p>If you're using OSX and HomeBrew then you can install the mosh client software with a simple:</p>
 
 <blockquote>
   <p>brew install mobile-shell</p>
@@ -200,7 +200,7 @@
 
 <h1 id="step-3-opening-your-security-group">Step 3: Opening Your Security Group</h1>
 
-<p>The hardest part of all this is actually opening a <em>hole</em> in your AWS security group to allow the Mosh communications protocol to pass through.  Since ssh is an internet standard, a hole for ssh’s port 22 is always open on an AWS security group.  What you have to do for mosh is:</p>
+<p>The hardest part of all this is actually opening a <em>hole</em> in your AWS security group to allow the Mosh communications protocol to pass through.  Since ssh is an internet standard, a hole for ssh's port 22 is always open on an AWS security group.  What you have to do for mosh is:</p>
 
 <ul>
   <li>Open a UDP type</li>
@@ -208,11 +208,11 @@
   <li>Accessible to anywhere (or just your ip address; up to you)</li>
 </ul>
 
-<p>Here’s what your security group settings should look like:</p>
+<p>Here's what your security group settings should look like:</p>
 
 <p><img src="/blog/assets/mosh_security_group2.png" alt="mosh_security_group.png" /></p>
 
-<p>Here’s how to get to your AWS security group:</p>
+<p>Here's how to get to your AWS security group:</p>
 
 <ol>
   <li>Log into the AWS console.</li>
@@ -234,7 +234,7 @@
 
 <p>By adding this role into whatever you use for a bootstrapping task, you can add mosh support to all your boxes with one command.  And, if you used a single security group for all your AWS instances, that may be the only thing to you need to make all boxes accessible by mosh instead of ssh.</p>
 
-<h1 id="step-5-an-example-of-moshing-in-using-an-aws-pem-file">Step 5: An Example of “moshing in” Using an AWS Pem File</h1>
+<h1 id="step-5-an-example-of-moshing-in-using-an-aws-pem-file">Step 5: An Example of "moshing in" Using an AWS Pem File</h1>
 
 <p>I ssh in to my AWS boxes using a command like this:</p>
 
@@ -245,7 +245,7 @@
 <p>Here is the Mosh equivalent:</p>
 
 <blockquote>
-  <p>mosh –ssh=”ssh -i ~/.ssh/fuzzygroup2.pem” ubuntu@xyz.com</p>
+  <p>mosh –ssh="ssh -i ~/.ssh/fuzzygroup2.pem" ubuntu@xyz.com</p>
 </blockquote>
 
 <p>My thanks (and an upvote) to <a href="https://serverfault.com/questions/825173">Server Fault</a> for answering this part of it.</p>

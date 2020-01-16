@@ -502,14 +502,14 @@ The FuzzyBlog!</a></b></font>
 
 <p>PHP Pear Programming Tutorial</p>
 
-<p>If you haven’t worked with the Pear database abstraction class then you really should.   Now I know that everyone says that and we often don’t bother – “too hard”, “it’s a pain”, etc.  It’s really not.  Here’s how I learned how to do it and what I recommend. </p>
+<p>If you haven't worked with the Pear database abstraction class then you really should.   Now I know that everyone says that and we often don't bother – "too hard", "it's a pain", etc.  It's really not.  Here's how I learned how to do it and what I recommend. </p>
 
 <ol>
   <li>Write a simple PHP app to do nothing more than list the contents of a table using the MySQL native functions.</li>
   <li>Go through and convert it line by line to the Pear equivalents.</li>
 </ol>
 
-<p>Our first script should be familiar to anyone who has ever used the basic MySQL functions in PHP.  I’m not going to go into details here since it’s so basic.</p>
+<p>Our first script should be familiar to anyone who has ever used the basic MySQL functions in PHP.  I'm not going to go into details here since it's so basic.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>&lt;?php// //////////////////////////////////////////////////*
 
@@ -543,7 +543,7 @@ $db_host = "YOUR VALUE HERE"; $db = "YOUR VALUE HERE"; $db_user = "YOUR VALUE HE
 </code></pre>
 </div>
 
-<p>So that’s our starting point. Now here’s the pear equivalent.  As you can see it’s just about exactly the same number of lines with the main differences being in the use of objects.  I put the new / different code in <font color="red">Red</font> to make it easier.</p>
+<p>So that's our starting point. Now here's the pear equivalent.  As you can see it's just about exactly the same number of lines with the main differences being in the use of objects.  I put the new / different code in <font color="red">Red</font> to make it easier.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>&lt;?php// //////////////////////////////////////////////////*
 
@@ -567,7 +567,7 @@ All this does is connect to a MySQL db and list a table
 </code></pre>
 </div>
 
-<p>As you can see, it really isn’t much if at all harder to use Pear than the native mysql_XYZ functions.  Keep that in mind as you write php code. </p>
+<p>As you can see, it really isn't much if at all harder to use Pear than the native mysql_XYZ functions.  Keep that in mind as you write php code. </p>
 
 <p>Source:</p>
 
@@ -578,9 +578,9 @@ All this does is connect to a MySQL db and list a table
   <li><a href="http://www.fuzzygroup.com/php/examples/example_pear_db.phps">Colorized Code - Pear</a></li>
 </ul>
 
-<h3 id="howd-he-colorize-that-">How’d He Colorize That ?</h3>
+<h3 id="howd-he-colorize-that-">How'd He Colorize That ?</h3>
 
-<p>If you want to display a colorized source view of your code then make a Unix symbolic link and Apache / PHP will properly colorize the code when it’s executed:</p>
+<p>If you want to display a colorized source view of your code then make a Unix symbolic link and Apache / PHP will properly colorize the code when it's executed:</p>
 
 <p>I.E.</p>
 
@@ -598,7 +598,7 @@ All this does is connect to a MySQL db and list a table
 
 <h3 id="addslashes-versus-mysqlescapestring">addslashes Versus mysql_escape_string</h3>
 
-<p>If you’re not yet ready to do the pear step then you might want to consider moving away from <a href="http://www.php.net/manual/en/function.mysql-escape-string.php">mysql_escape_string</a> and to <a href="http://www.php.net/manual/en/function.addslashes.php">addslashes</a>.  These functions seem to be equivalent and yet one will work across databases and one is only MySQL specific.  But I do recommend reading the user contributed notes on addslashes(), it seems to not be perfect.  Guess which one I’m largely using now?</p>
+<p>If you're not yet ready to do the pear step then you might want to consider moving away from <a href="http://www.php.net/manual/en/function.mysql-escape-string.php">mysql_escape_string</a> and to <a href="http://www.php.net/manual/en/function.addslashes.php">addslashes</a>.  These functions seem to be equivalent and yet one will work across databases and one is only MySQL specific.  But I do recommend reading the user contributed notes on addslashes(), it seems to not be perfect.  Guess which one I'm largely using now?</p>
 
 <h3 id="recommended">Recommended</h3>
 
@@ -609,11 +609,11 @@ All this does is connect to a MySQL db and list a table
   <li>Mastering PHP 4.1 by Sybex which has a short but outstanding section on Pear and Databases <a href="http://www.amazon.com/exec/obidos/tg/detail/-/0782129242/qid=1037277456/sr=8-1/ref=sr_8_1/002-4202734-9602408?v=glance&amp;s=books&amp;n=507846">[Go]</a></li>
 </ul>
 
-<p>Thanks to both.  Kudos to Mastering PHP 4.1.  Don’t be thrown by the 4.1 nomenclature, it’s a surprisingly good book.  They even cover how to decrypt MIME attachments which I couldn’t find in a single other PHP book (and I checked like 20 including the table of contents to the forthcoming O’Reilly PHP Cookbook).</p>
+<p>Thanks to both.  Kudos to Mastering PHP 4.1.  Don't be thrown by the 4.1 nomenclature, it's a surprisingly good book.  They even cover how to decrypt MIME attachments which I couldn't find in a single other PHP book (and I checked like 20 including the table of contents to the forthcoming O'Reilly PHP Cookbook).</p>
 
 <h3 id="notes">Notes</h3>
 
-<p>There is nothing wrong with the native MySQL php functions but if you have any intent on moving your code to another database then starting with the Pear stuff now is definitely a good thing.  It really isn’t hard and it will make you a bit more confident with the PHP object stuff which is increasingly important.</p>
+<p>There is nothing wrong with the native MySQL php functions but if you have any intent on moving your code to another database then starting with the Pear stuff now is definitely a good thing.  It really isn't hard and it will make you a bit more confident with the PHP object stuff which is increasingly important.</p>
 
 <table>
   <tbody>

@@ -186,7 +186,7 @@
 <ol>
   <li>The safest option would be to move to white listing <strong>all</strong> ip addresses needed for SSH login.  That would be an absolute ban on any incoming SSH logins from the old employee and, while inconvenient, is a wonderful means to lock down a system.</li>
   <li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair">Re-issue a new SSH pem file</a>.</li>
-  <li>Delete the old SSH pem file on your machine and then verify login to at least 2 systems with the new PEM file.  I’d make sure to verify access to the primary db server using the new PEM file but that’s just me.</li>
+  <li>Delete the old SSH pem file on your machine and then verify login to at least 2 systems with the new PEM file.  I'd make sure to verify access to the primary db server using the new PEM file but that's just me.</li>
   <li><a href="https://stackoverflow.com/questions/31912037/how-to-delete-deactivate-the-current-pem-file-and-create-new-one-in-aws">De-authorize the old PEM file</a>.</li>
   <li><a href="https://docs.aws.amazon.com/cli/latest/reference/apigateway/delete-api-key.html">Delete the API keys that the employee had access to</a>.  Make sure that you delete them in all regions where they were valid.</li>
 </ol>

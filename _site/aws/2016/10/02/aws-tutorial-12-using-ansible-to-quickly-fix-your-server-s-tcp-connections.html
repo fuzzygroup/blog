@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>AWS Tutorial 12 - Using Ansible to Quickly Fix Your Server&#39;s TCP Connections</title>
-  <meta name="description" content="The bulk of my coding is actually back end coding and I spent a lot of time dealing with network programming issues.  We’ve been running for years in a data ...">
+  <meta name="description" content="The bulk of my coding is actually back end coding and I spent a lot of time dealing with network programming issues.  We've been running for years in a data ...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/aws/2016/10/02/aws-tutorial-12-using-ansible-to-quickly-fix-your-server-s-tcp-connections.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="The bulk of my coding is actually back end coding and I spent a lot of time dealing with network programming issues.  We’ve been running for years in a data center that I put together and every box...">
+      content="The bulk of my coding is actually back end coding and I spent a lot of time dealing with network programming issues.  We've been running for years in a data center that I put together and every box...">
   
 
   
@@ -178,15 +178,15 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>The bulk of my coding is actually back end coding and I spent a lot of time dealing with network programming issues.  We’ve been running for years in a data center that I put together and every box was finely tuned.  Unfortunately due to the massive issues surrounding Chef, we were never able to maintain boxes automatically so every server became a unique snowflake – well set up and such but I have no idea now what changes we made to tune each server over the years.</p>
+    <p>The bulk of my coding is actually back end coding and I spent a lot of time dealing with network programming issues.  We've been running for years in a data center that I put together and every box was finely tuned.  Unfortunately due to the massive issues surrounding Chef, we were never able to maintain boxes automatically so every server became a unique snowflake – well set up and such but I have no idea now what changes we made to tune each server over the years.</p>
 
-<p>And while we still have that data center active, we’re now crawling on our AWS boxes and much happier but we’re still working the kinks out.  This morning I started seeing this appear:</p>
+<p>And while we still have that data center active, we're now crawling on our AWS boxes and much happier but we're still working the kinks out.  This morning I started seeing this appear:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>Cannot assign requested address.
 </code></pre>
 </div>
 
-<p>It was appearing in the context of our Redis connections.  And, sure enough, we had a routine which was creating a handle to redis every, single, time it was handling a url.  That’s bad.  So the easy fix was to pass the connection in from a higher level.  But even after that it was still an issue.  Some quick research brought me to:</p>
+<p>It was appearing in the context of our Redis connections.  And, sure enough, we had a routine which was creating a handle to redis every, single, time it was handling a url.  That's bad.  So the easy fix was to pass the connection in from a higher level.  But even after that it was still an issue.  Some quick research brought me to:</p>
 
 <ul>
   <li><a href="https://stackoverflow.com/questions/10980850/solveredis-localhost6379-cannot-assign-requested-address">https://stackoverflow.com/questions/10980850/solveredis-localhost6379-cannot-assign-requested-address</a></li>
@@ -207,7 +207,7 @@
 
 <h1 id="how-to-ansible-ize-this">How to Ansible-ize This</h1>
 
-<p>Given that we have a bunch of AWS nodes setup, I don’t really want to make this change manually so let’s script it with Ansible and run it as a role.  Here’s what to do for the directory where your Ansible stuff resides:</p>
+<p>Given that we have a bunch of AWS nodes setup, I don't really want to make this change manually so let's script it with Ansible and run it as a role.  Here's what to do for the directory where your Ansible stuff resides:</p>
 
 <ul>
   <li>mkdir -p roles/machine_setup_tcp_tw_reuse/tasks</li>
@@ -257,7 +257,7 @@
 
 <h1 id="notes">Notes</h1>
 
-<p>The reason for the small level of granularity on this role is that I’m now using Ansible to fix issues on production running hosts.  And I wanted to be able to run <strong>just</strong> this role.  Ansible has tagging which I do believe would let me have this embedded within my overall machine_setup task but this felt safer since I’m still a noob at Ansible.</p>
+<p>The reason for the small level of granularity on this role is that I'm now using Ansible to fix issues on production running hosts.  And I wanted to be able to run <strong>just</strong> this role.  Ansible has tagging which I do believe would let me have this embedded within my overall machine_setup task but this felt safer since I'm still a noob at Ansible.</p>
 
   </div>
   

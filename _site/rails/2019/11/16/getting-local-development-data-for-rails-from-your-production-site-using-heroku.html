@@ -182,9 +182,9 @@ One of the worst aspects of doing Rails development, although this is not limite
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_9986.jpeg" alt="IMG_9986.jpeg" /></p>
 
-<p>One of the worst aspects of doing Rails development, although this is not limited to Rails in any way, is getting data to use for development work once your site starts getting users.  Yes I know that you should always have full test coverage and that local data shouldn’t be necessary – <strong>but it absolutely is</strong>.  There is always a class of errors that you simply can’t diagnose with a set of data with which to work.</p>
+<p>One of the worst aspects of doing Rails development, although this is not limited to Rails in any way, is getting data to use for development work once your site starts getting users.  Yes I know that you should always have full test coverage and that local data shouldn't be necessary – <strong>but it absolutely is</strong>.  There is always a class of errors that you simply can't diagnose with a set of data with which to work.</p>
 
-<p>The happy truth though is that you actually can pretty easily move data from production to development at will (at least as long as the database isn’t too massive; when your site gets large it is a different matter).</p>
+<p>The happy truth though is that you actually can pretty easily move data from production to development at will (at least as long as the database isn't too massive; when your site gets large it is a different matter).</p>
 
 <h2 id="the-approach">The Approach</h2>
 
@@ -199,7 +199,7 @@ One of the worst aspects of doing Rails development, although this is not limite
 
 <h2 id="making-this-easy-with-a-rake-task">Making this Easy with a Rake Task</h2>
 
-<p>Here’s a rake task that I wrote that gives you a lot of tasks for dealing with your local / remote databases.  Drop this into lib/tasks and you can see the tasks it offers with:</p>
+<p>Here's a rake task that I wrote that gives you a lot of tasks for dealing with your local / remote databases.  Drop this into lib/tasks and you can see the tasks it offers with:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake -T | grep database
 </code></pre>
@@ -342,13 +342,13 @@ One of the worst aspects of doing Rails development, although this is not limite
 
 <h2 id="dumping-from-production-and-loading-to-development">Dumping from Production and Loading to Development</h2>
 
-<p>Here’s how to dump the data:</p>
+<p>Here's how to dump the data:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake database:production:mysql_dump_data --trace
 </code></pre>
 </div>
 
-<p>And here’s how to load this in:</p>
+<p>And here's how to load this in:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake database:development:mysql_load_data_command --trace
 ** Invoke database:development:mysql_load_data_command (first_time)
@@ -367,7 +367,7 @@ mysql -uroot -pADFD!@# change_me_now_development  &lt; lib/tasks/data/db_dumps/
 </code></pre>
 </div>
 
-<p><strong>Note</strong>: The database name you get from Heroku is very much a randomized string so don’t expect it to be the normal Rails like “_production” style database name.</p>
+<p><strong>Note</strong>: The database name you get from Heroku is very much a randomized string so don't expect it to be the normal Rails like "_production" style database name.</p>
 
   </div>
   

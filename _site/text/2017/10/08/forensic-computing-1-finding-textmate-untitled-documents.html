@@ -178,15 +178,15 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>So my Mac crashed again last night.  This is now roughly a two to three times per week occurrence.  Once upon a time I would have sworn like a sailor about this but I now, sadly, accept it.  If you’re curious about OSX crashes and kernel panics, I dig into <a href="http://fuzzyblog.io/blog/osx/2017/10/08/forensic-computing-2-kernel-panics-and-kexts.html">them here</a>.</p>
+    <p>So my Mac crashed again last night.  This is now roughly a two to three times per week occurrence.  Once upon a time I would have sworn like a sailor about this but I now, sadly, accept it.  If you're curious about OSX crashes and kernel panics, I dig into <a href="http://fuzzyblog.io/blog/osx/2017/10/08/forensic-computing-2-kernel-panics-and-kexts.html">them here</a>.</p>
 
-<p><a href="http://macromates.com/">TextMate</a> is the programming editor and writing tool I use and normally after a crash, it automatically opens all the documents I previously had open.  And when I say “all”, I mean everything, even the things that weren’t ever formally saved i.e. “untitled 107”, “untitled 132”, etc.  Because TextMate doesn’t force met to assign a file, I’m able to treat TextMate windows as virtual pieces of paper, virtual post-its if you will and just drop stuff into them.  I only bother to save a file when I actually need to make it long term persistent.  And an awful lot of the time, that never happens.  Sometimes these the contents of these windows flows into a <a href="https://gist.github.com/">gist</a> which then gets emailed to someone.</p>
+<p><a href="http://macromates.com/">TextMate</a> is the programming editor and writing tool I use and normally after a crash, it automatically opens all the documents I previously had open.  And when I say "all", I mean everything, even the things that weren't ever formally saved i.e. "untitled 107", "untitled 132", etc.  Because TextMate doesn't force met to assign a file, I'm able to treat TextMate windows as virtual pieces of paper, virtual post-its if you will and just drop stuff into them.  I only bother to save a file when I actually need to make it long term persistent.  And an awful lot of the time, that never happens.  Sometimes these the contents of these windows flows into a <a href="https://gist.github.com/">gist</a> which then gets emailed to someone.</p>
 
-<p>Now this bizarre “don’t bother to save the file” approach is well and good until it <strong>breaks</strong>.  Last night, just before my machine crashed, I know for a fact that I was in <strong>untitled 30</strong>.  But when I restarted my machine, I noticed that untitled 30 wasn’t in my Window list:</p>
+<p>Now this bizarre "don't bother to save the file" approach is well and good until it <strong>breaks</strong>.  Last night, just before my machine crashed, I know for a fact that I was in <strong>untitled 30</strong>.  But when I restarted my machine, I noticed that untitled 30 wasn't in my Window list:</p>
 
 <p><img src="/blog/textmate_window_list.png" alt="/blog/textmate_window_list.png" /></p>
 
-<p>This literally sent a chill down my spine – if untitled 30 isn’t present then:</p>
+<p>This literally sent a chill down my spine – if untitled 30 isn't present then:</p>
 
 <ol>
   <li>Where did it go?</li>
@@ -199,7 +199,7 @@
 
 <h1 id="step-1-google">Step 1: Google</h1>
 
-<p>Whenever you are trying to understand something like this Google is generally your first place to look.  Unfortunately these googles didn’t really yield anything:</p>
+<p>Whenever you are trying to understand something like this Google is generally your first place to look.  Unfortunately these googles didn't really yield anything:</p>
 
 <ul>
   <li><a href="https://www.google.com/search?tbs=li:1&amp;q=where+does+textmate+store+untitled+files">where does textmate store untitled files</a></li>
@@ -208,7 +208,7 @@
 
 <h1 id="step-2-spotlight">Step 2: Spotlight</h1>
 
-<p>OSX’s Spotlight, the system level search engine was next.  This too yielded nothing, squat, <a href="http://www.urbandictionary.com/define.php?term=bupkus">bupkus</a>.</p>
+<p>OSX's Spotlight, the system level search engine was next.  This too yielded nothing, squat, <a href="http://www.urbandictionary.com/define.php?term=bupkus">bupkus</a>.</p>
 
 <h1 id="step-3-alfred">Step 3: Alfred</h1>
 
@@ -219,10 +219,10 @@
 <p>Another way to use Spotlight is to trigger the mdfind utility from the command line and look for the filename untitled 30 directly by typing:</p>
 
 <blockquote>
-  <p>mdfind “untitled”</p>
+  <p>mdfind "untitled"</p>
 </blockquote>
 
-<p>The output of mdfind is a list of filenames.  But, unfortunately, mdfind isn’t, by default, for filenames which means that it finds the word untitled in the <em>body of documents</em> where as we want it in the filename itself. Just to be sure we can feed the mdfind’s output thru grep to winnow it down:</p>
+<p>The output of mdfind is a list of filenames.  But, unfortunately, mdfind isn't, by default, for filenames which means that it finds the word untitled in the <em>body of documents</em> where as we want it in the filename itself. Just to be sure we can feed the mdfind's output thru grep to winnow it down:</p>
 
 <blockquote>
   <table>
@@ -247,11 +247,11 @@
   <p>mdfind kMDItemIsScreenCapture:1</p>
 </blockquote>
 
-<p>What that does is find every screenshot you’ve taken on your Mac.  And I don’t mean files named “Screen Shot xyz” but any screenshot you’ve ever taken, even ones you’ve moved to other directories, renamed, etc.  Wow.</p>
+<p>What that does is find every screenshot you've taken on your Mac.  And I don't mean files named "Screen Shot xyz" but any screenshot you've ever taken, even ones you've moved to other directories, renamed, etc.  Wow.</p>
 
 <h1 id="step-5-look-elsewhere">Step 5: Look Elsewhere</h1>
 
-<p>Now the absence of results in Steps 2, 3 and 4 gave me a strong indication that what I was looking for wasn’t in an indexed location and that gave me a clue.  Spotlight  and mdfind are both generally looking in the files for the user but NOT in the application level files.  OSX has a key directory structure for users that generally isn’t indexed:</p>
+<p>Now the absence of results in Steps 2, 3 and 4 gave me a strong indication that what I was looking for wasn't in an indexed location and that gave me a clue.  Spotlight  and mdfind are both generally looking in the files for the user but NOT in the application level files.  OSX has a key directory structure for users that generally isn't indexed:</p>
 
 <blockquote>
   <p>/Users/sjohnson/Library/Application Support/</p>
@@ -263,7 +263,7 @@
   <p>/Users/sjohnson/Library/Application Support/TextMate/</p>
 </blockquote>
 
-<p>What I didn’t know was what was below the TextMate directory:</p>
+<p>What I didn't know was what was below the TextMate directory:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ls -l "/Users/sjohnson/Library/Application Support/TextMate/"
 total 6488
@@ -287,7 +287,7 @@ drwxr-xr-x  156 sjohnson  staff   5.2K Oct  8 07:12 Session/
 </code></pre>
 </div>
 
-<p>And now that I have a path I can just type open “/Users/sjohnson/Library/Application\ Support/TextMate/Session” and get a Finder window of all my untitled documents like this:</p>
+<p>And now that I have a path I can just type open "/Users/sjohnson/Library/Application\ Support/TextMate/Session" and get a Finder window of all my untitled documents like this:</p>
 
 <p><img src="/blog/assets/text_mate_session.png" alt="text_mate_session.png" /></p>
 

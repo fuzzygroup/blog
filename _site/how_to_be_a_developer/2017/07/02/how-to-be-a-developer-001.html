@@ -180,13 +180,13 @@
   <div class="post-content" itemprop="articleBody">
     <h1 id="background">Background</h1>
 
-<p>I’ve taken on a new project recently.  I’m helping teach some local (Indianapolis) homeless youth basic software engineering using the web developer curriculum from <a href="http://www.freecodecamp.com">Free Code Camp</a>.  Initially I’m teaching two students and we’re working out of the <a href="https://outreachindiana.org/">Outreach Indiana</a> facility in downtown Indianapolis.  Outreach Indiana is a fantastic charity that truly does good work.</p>
+<p>I've taken on a new project recently.  I'm helping teach some local (Indianapolis) homeless youth basic software engineering using the web developer curriculum from <a href="http://www.freecodecamp.com">Free Code Camp</a>.  Initially I'm teaching two students and we're working out of the <a href="https://outreachindiana.org/">Outreach Indiana</a> facility in downtown Indianapolis.  Outreach Indiana is a fantastic charity that truly does good work.</p>
 
-<p>I thought I’d write a series of essays on How to Be a Developer that reflect some of the things I’ve learned over a career working in high tech.  While I am a fan of what Free Code Camp does, I thought some practical, hands on advice might add some value for my students.  I’ve structured these as a series of single topic narratives arranged numerically.</p>
+<p>I thought I'd write a series of essays on How to Be a Developer that reflect some of the things I've learned over a career working in high tech.  While I am a fan of what Free Code Camp does, I thought some practical, hands on advice might add some value for my students.  I've structured these as a series of single topic narratives arranged numerically.</p>
 
 <h1 id="lesson-001---commit">Lesson 001 - Commit</h1>
 
-<p>The topic for my first lesson is that to be a developer you need to <strong>commit</strong>.  Now I don’t mean a <em>git commit</em> (more on that in #19), what I mean is that the nature of being a developer is <strong>committing to solving problems</strong>.  I’m going to give you an example of a problem I solved just three days ago:</p>
+<p>The topic for my first lesson is that to be a developer you need to <strong>commit</strong>.  Now I don't mean a <em>git commit</em> (more on that in #19), what I mean is that the nature of being a developer is <strong>committing to solving problems</strong>.  I'm going to give you an example of a problem I solved just three days ago:</p>
 
 <p>Broken:</p>
 
@@ -200,7 +200,7 @@
   <p>docker-compose -f docker-compose.production.yml exec -T web bundle exec rake db:migrate</p>
 </blockquote>
 
-<p>What these commands do doesn’t really matter but the only difference between these two commands is a small <strong>-T</strong> flag that only discovered after troubleshooting an obscure Ansible to Docker error:</p>
+<p>What these commands do doesn't really matter but the only difference between these two commands is a small <strong>-T</strong> flag that only discovered after troubleshooting an obscure Ansible to Docker error:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>Traceback (most recent call last):\n  File \"/usr/bin/docker-compose\", line 9, in 
 &lt;module&gt;\n    load_entry_point('docker-compose==1.8.0', 
@@ -220,7 +220,7 @@ old_flag = fcntl.fcntl(fd, fcntl.F_GETFL)\nValueError: file descriptor cannot be
 </code></pre>
 </div>
 
-<p>It took considerable sleuthing to figure this out and the error was identified in <a href="https://github.com/docker/compose/issues/3352">a single Github issue</a> on the underlying Docker project.  And when I say that this problem was obscure, even Docker experts I know had no idea about the -T flag.  Here’s part of the problem description:</p>
+<p>It took considerable sleuthing to figure this out and the error was identified in <a href="https://github.com/docker/compose/issues/3352">a single Github issue</a> on the underlying Docker project.  And when I say that this problem was obscure, even Docker experts I know had no idea about the -T flag.  Here's part of the problem description:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>So basically, you need -i for docker exec when you are piping in data to the command.
 
@@ -230,12 +230,12 @@ And docker-compose exec only have -T, which means neither -i or -t. But you cann
 </code></pre>
 </div>
 
-<p>And that’s what I mean by obscure…  As a developer you run into this kind of stuff all the time – there’s a reason why when you start with Free Code Camp, it emphasizes using Google before you ever get into a programming language.  A huge part of being a developer is now your skill at using Google and that’s something that I’ll cover in #11.</p>
+<p>And that's what I mean by obscure…  As a developer you run into this kind of stuff all the time – there's a reason why when you start with Free Code Camp, it emphasizes using Google before you ever get into a programming language.  A huge part of being a developer is now your skill at using Google and that's something that I'll cover in #11.</p>
 
 <p>To me the very essence of being a developer is being willing to commit to <strong>problem solving</strong> at this level.  It means:</p>
 
 <ul>
-  <li>accepting that you will continually be encountering new things that you don’t know in depth</li>
+  <li>accepting that you will continually be encountering new things that you don't know in depth</li>
   <li>trying hard to understand whatever the problem you encounter</li>
   <li>researching things in depth, sometimes over and over as the problems shift</li>
   <li>sometimes solving things by experimenting until you come up with a solution that works</li>
@@ -244,13 +244,13 @@ And docker-compose exec only have -T, which means neither -i or -t. But you cann
 <p>As a developer, sometimes the problem you solve:</p>
 
 <ul>
-  <li>is one of languages where you can’t figure out how to do something using your language of choice</li>
-  <li>is one of your tooling where the tool you’re using either doesn’t work or doesn’t work as expected</li>
+  <li>is one of languages where you can't figure out how to do something using your language of choice</li>
+  <li>is one of your tooling where the tool you're using either doesn't work or doesn't work as expected</li>
   <li>is one of an algorithm where the underlying approach to solving the problem is unclear</li>
   <li>is an obscure bug which only happens from in certain circumstances; in this case you need to figure out what those circumstances are and how to repeat them</li>
 </ul>
 
-<p>And there are perhaps an infinite number of variants on these but the underlying nature of being a developer is really problem solving and in order to do that a developer has to commit himself or herself fully.  I’m going to close this with a song lyric that really reminds me of being a developer:</p>
+<p>And there are perhaps an infinite number of variants on these but the underlying nature of being a developer is really problem solving and in order to do that a developer has to commit himself or herself fully.  I'm going to close this with a song lyric that really reminds me of being a developer:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>I get knocked down, but I get up again
 You are never gonna keep me down
@@ -265,7 +265,7 @@ You are never gonna keep me down
 </code></pre>
 </div>
 
-<p>The problems you solve will continually knock you down and you <strong>have</strong> to get back up again.  Some of the best developers I have ever worked with actually weren’t the smartest but they knew how to commit and how to just stick with problems like a terrier until it was solved.</p>
+<p>The problems you solve will continually knock you down and you <strong>have</strong> to get back up again.  Some of the best developers I have ever worked with actually weren't the smartest but they knew how to commit and how to just stick with problems like a terrier until it was solved.</p>
 
   </div>
   

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Building a Python requirements.txt File</title>
-  <meta name="description" content="So one of my first tasks in my new job is getting a code base into readiness from its state as “works on the original developer’s laptop”.  And, naturally, t...">
+  <meta name="description" content="So one of my first tasks in my new job is getting a code base into readiness from its state as "works on the original developer's laptop".  And, naturally, t...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/python/2019/09/10/building-a-python-requirements-txt-file.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="So one of my first tasks in my new job is getting a code base into readiness from its state as “works on the original developer’s laptop”.  And, naturally, this process is hindered by the fact that...">
+      content="So one of my first tasks in my new job is getting a code base into readiness from its state as &quot;works on the original developer's laptop&quot;.  And, naturally, this process is hindered by the...">
   
 
   
@@ -178,11 +178,11 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>So one of my first tasks in my new job is getting a code base into readiness from its state as “works on the original developer’s laptop”.  And, naturally, this process is hindered by the fact that it is a Python codebase and I’m a Ruby guy.  Still this is software development 101 – release management – and I do know how to do that.</p>
+    <p>So one of my first tasks in my new job is getting a code base into readiness from its state as "works on the original developer's laptop".  And, naturally, this process is hindered by the fact that it is a Python codebase and I'm a Ruby guy.  Still this is software development 101 – release management – and I do know how to do that.</p>
 
 <p>A python requirements.txt file is the equivalent of a Ruby Gemfile – an ASCII text file that identifies the libraries to load into an application.</p>
 
-<p>Here’s an example of a Gemfile:</p>
+<p>Here's an example of a Gemfile:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>gem 'rails', '~&gt; 6'
 gem 'puma', '~&gt; 3.11'
@@ -191,7 +191,7 @@ gem 'bootsnap', '&gt;= 1.1.0', require: false
 </code></pre>
 </div>
 
-<p>And here’s a Python requirements.txt file:</p>
+<p>And here's a Python requirements.txt file:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>Pygments==1.4
 SQLAlchemy==0.7.1
@@ -201,7 +201,7 @@ anyjson==0.3
 </code></pre>
 </div>
 
-<p>The syntax is different but they are clearly the same type of thing – a package name and a version number.  The reason that the version number is important is that this locks a package down to a specific version number.  I’ll write later why this is so damn important these days but for now please accept that it is (its a security thing).</p>
+<p>The syntax is different but they are clearly the same type of thing – a package name and a version number.  The reason that the version number is important is that this locks a package down to a specific version number.  I'll write later why this is so damn important these days but for now please accept that it is (its a security thing).</p>
 
 <p>So the questions become:</p>
 
@@ -223,7 +223,7 @@ anyjson==0.3
 </code></pre>
 </div>
 
-<p>Do I understand the difference between it beginning with “from” and “import”?  Nope.  Nor do I need to at this point.</p>
+<p>Do I understand the difference between it beginning with "from" and "import"?  Nope.  Nor do I need to at this point.</p>
 
 <p>So my first entry in this requirements.txt file might be:</p>
 
@@ -237,7 +237,7 @@ anyjson==0.3
 </code></pre>
 </div>
 
-<p>Here’s what happened:</p>
+<p>Here's what happened:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>Collecting zstandard==9999 (from -r requirements.txt (line 17))
   ERROR: Could not find a version that satisfies the requirement zstandard==9999 
@@ -257,7 +257,7 @@ ERROR: No matching distribution found for zstandard==9999 (from -r requirements.
 
 <p>The final trick is to build this up one dependency at a time.  That way you resolve everything as you go instead of N conflicts all at once.</p>
 
-<p>In closing there are also some standard libraries that follow the same from / import calls but don’t actually need to be in requirements.txt.  Here are some seeming examples:</p>
+<p>In closing there are also some standard libraries that follow the same from / import calls but don't actually need to be in requirements.txt.  Here are some seeming examples:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>import re 
 from sys import stdin
@@ -266,7 +266,7 @@ from sys import stdin
 
 <p>My best advice here is play around with the 9999 trick and see if a version number appears.  If it does then put it in requirements.txt and if not, well, kill it since then it is likely a Python built in.</p>
 
-<p>And while I suspect there are more subtleties buried deep within Python’s requirements.txt facility, this is a pretty good stopping place.</p>
+<p>And while I suspect there are more subtleties buried deep within Python's requirements.txt facility, this is a pretty good stopping place.</p>
 
   </div>
   

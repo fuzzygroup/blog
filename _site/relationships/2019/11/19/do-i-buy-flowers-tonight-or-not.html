@@ -45,7 +45,7 @@
     <meta name="twitter:description"
       content="
 
-Like a lot of software developers, I can be pretty forgetful at times.  If you’re in the industry, you know how it goes:
+Like a lot of software developers, I can be pretty forgetful at times.  If you're in the industry, you know how it goes:
 
 
   You start working on a project and it is February
@@ -186,44 +186,44 @@ Like a lot of software developers, I can be pretty forgetful at times.  If you�
   <div class="post-content" itemprop="articleBody">
     <p class="center"><img src="/blog/assets/IMG_9420a.jpeg" alt="IMG_9420a.jpeg" /></p>
 
-<p>Like a lot of software developers, I can be pretty forgetful at times.  If you’re in the industry, you know how it goes:</p>
+<p>Like a lot of software developers, I can be pretty forgetful at times.  If you're in the industry, you know how it goes:</p>
 
 <ul>
   <li>You start working on a project and it is February</li>
   <li>You look up and … it is May and</li>
-  <li>You don’t remember all that much of your life between</li>
+  <li>You don't remember all that much of your life between</li>
 </ul>
 
-<p>A good friend of mine refers to this as falling down a code hole (Thank you Mister Mott) and it really is a thing.  Some people’s code holes are a few days long.  Other people’s code holes can, in the case of a death march, last for months.</p>
+<p>A good friend of mine refers to this as falling down a code hole (Thank you Mister Mott) and it really is a thing.  Some people's code holes are a few days long.  Other people's code holes can, in the case of a death march, last for months.</p>
 
-<p>A bunch of years ago, I came out of a code hole and realized that I couldn’t remember when I had last bought my wife flowers (if your wife doesn’t like flowers then substitute chocolates, wine, etc).  Any husband worth his salt knows what I mean – that little treat that says to the person you love that you remember their existence and they matter.  I regard that for my personal relationships, buying a woman flowers unexpectedly as akin to lubrication on a mechanical device; something that makes the underlying machine work better. Call if “relationship lubrication” if you will.</p>
+<p>A bunch of years ago, I came out of a code hole and realized that I couldn't remember when I had last bought my wife flowers (if your wife doesn't like flowers then substitute chocolates, wine, etc).  Any husband worth his salt knows what I mean – that little treat that says to the person you love that you remember their existence and they matter.  I regard that for my personal relationships, buying a woman flowers unexpectedly as akin to lubrication on a mechanical device; something that makes the underlying machine work better. Call if "relationship lubrication" if you will.</p>
 
-<p>After realizing this, I thought about how I could solve it – in a <strong>natural</strong> fashion.  I didn’t want to put it on a calendar; I didn’t want it to be regular so I realized that I could tie it to:</p>
+<p>After realizing this, I thought about how I could solve it – in a <strong>natural</strong> fashion.  I didn't want to put it on a calendar; I didn't want it to be regular so I realized that I could tie it to:</p>
 
 <ul>
   <li>Something I did regularly</li>
   <li>Make it quasi random</li>
 </ul>
 
-<p>Since I’ve an old school Unix guy (originally SunOS back in ‘89 on a Sun 3 running Qunitus Prolog), what I did was tie this to my shell startup routine:</p>
+<p>Since I've an old school Unix guy (originally SunOS back in '89 on a Sun 3 running Qunitus Prolog), what I did was tie this to my shell startup routine:</p>
 
 <ul>
-  <li>For non computer folks, a “shell” is a program you use to interface directly with the machine</li>
+  <li>For non computer folks, a "shell" is a program you use to interface directly with the machine</li>
   <li>A startup routine is a script which runs when the shell starts up</li>
   <li>As a heavy terminal user, I open a shell 10 or 20 times a day so, over time, I adjusted the probabilities to reflect that.</li>
 </ul>
 
-<p>What I did was write a “throw of the dice routine” that randomly tells me whether or not to buy flowers.  This can be as complex as you want it to be. I made the example below a little complex and tied in a “on her birthday” routine just in case.</p>
+<p>What I did was write a "throw of the dice routine" that randomly tells me whether or not to buy flowers.  This can be as complex as you want it to be. I made the example below a little complex and tied in a "on her birthday" routine just in case.</p>
 
-<p>Here’s what this looks like when the throw of the dice doesn’t succeed:</p>
+<p>Here's what this looks like when the throw of the dice doesn't succeed:</p>
 
 <p class="center"><img src="/blog/assets/flowers_no.png" alt="flowers_no.png" /></p>
 
-<p>Here’s what this looks like when it does succeed:</p>
+<p>Here's what this looks like when it does succeed:</p>
 
 <p class="center"><img src="/blog/assets/flowers_yes.png" alt="flowers_yes.png" /></p>
 
-<p>Here’s the code:</p>
+<p>Here's the code:</p>
 
 <div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1">#!/Users/sjohnson/.rvm/rubies/ruby-2.3.1/bin/ruby</span>
 <span class="nb">require</span> <span class="s1">'date'</span>
@@ -251,9 +251,9 @@ Like a lot of software developers, I can be pretty forgetful at times.  If you�
 
 <p>I call this from ~/.zshrc just by calling the ruby script directly.  The same trick works in ~/.bashrc.</p>
 
-<p>I should admit that a lot of times when this said “Buy Flowers”, I actually didn’t – life can be messy and complex and I never intended it directly drive my behavior. What it did do, however, was make me much more aware of the need for this.</p>
+<p>I should admit that a lot of times when this said "Buy Flowers", I actually didn't – life can be messy and complex and I never intended it directly drive my behavior. What it did do, however, was make me much more aware of the need for this.</p>
 
-<p><strong>Note 1</strong>: I haven’t needed this now for a lot of years so below is a quick reproduction designed to select between flowers, wine, chocolates and a card.  Once I ran it for enough years, I internalized this type of activity as a habit.  And then I moved laptops one year and realized “Heh.  I changed!”.</p>
+<p><strong>Note 1</strong>: I haven't needed this now for a lot of years so below is a quick reproduction designed to select between flowers, wine, chocolates and a card.  Once I ran it for enough years, I internalized this type of activity as a habit.  And then I moved laptops one year and realized "Heh.  I changed!".</p>
 
 <p><strong>Note 2</strong>: I told my wife about this a few weeks ago and she laughed.  Oh gosh did she laugh …</p>
 

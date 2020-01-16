@@ -208,7 +208,7 @@ end
 
 <h2 id="step-3-specfactoriesrb">Step 3: spec/factories/*.rb</h2>
 
-<p>Each of your factories needs to be rewritten to call FactoryBot not FactoryGirl so you’ll have a structure something like this:</p>
+<p>Each of your factories needs to be rewritten to call FactoryBot not FactoryGirl so you'll have a structure something like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>FactoryBot.define do
   factory :user do
@@ -227,7 +227,7 @@ end
 
 <h2 id="step-4-your-actual-spec-files">Step 4: Your Actual Spec Files</h2>
 
-<p>In each of your spec files, you’ll need to change calls from FactoryGirl.create to FactoryBot.create like this:</p>
+<p>In each of your spec files, you'll need to change calls from FactoryGirl.create to FactoryBot.create like this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>@job = FactoryBot.create(:job, :user_id =&gt; User.first.id)
 </code></pre>

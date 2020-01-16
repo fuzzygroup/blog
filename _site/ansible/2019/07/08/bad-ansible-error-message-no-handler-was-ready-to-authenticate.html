@@ -184,7 +184,7 @@
 </code></pre>
 </div>
 
-<p>What this is doing is executing the Ansible ec2.py script which talks to AWS and returns a list of resources.  And here is today’s favorite crappy error message:</p>
+<p>What this is doing is executing the Ansible ec2.py script which talks to AWS and returns a list of resources.  And here is today's favorite crappy error message:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>Traceback (most recent call last):
   File "/etc/ansible/inventory/ec2.py", line 1701, in &lt;module&gt;
@@ -227,7 +227,7 @@ jenkins@ip-172-31-19-205:/home/ubuntu$  python /etc/ansible/inventory/ec2.py --l
 </code></pre>
 </div>
 
-<p>The trick here was reading enough of it to find “No handler was ready to authenticate.”  I discovered this while setting up a new <a href="https://jenkins.io/">Jenkins</a> server and the error was that Ansible’s AWS credentials hadn’t yet been copied up the server in the directory:</p>
+<p>The trick here was reading enough of it to find "No handler was ready to authenticate."  I discovered this while setting up a new <a href="https://jenkins.io/">Jenkins</a> server and the error was that Ansible's AWS credentials hadn't yet been copied up the server in the directory:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>/home/jenkins/.aws/credentials
 </code></pre>

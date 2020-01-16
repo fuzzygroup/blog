@@ -184,25 +184,25 @@
   <li>We grew our initial search engine thru a bunch of release culminating in a CD-ROM grade search and retrieval system.</li>
   <li>I worked for Dataware Technologies for 3.5 years building corporate Knowledge Management Systems which, sigh, were really collaborative document repositories based on the underlying <a href="https://en.wikipedia.org/wiki/BRS/Search">BRS engine</a>; still available today</li>
   <li>The metasearch engine I designed back in 1997 is still available today as <a href="https://www.ixtent.com/en/products/opentext-discovery-suite">The OpenText Federated Query Server</a></li>
-  <li>I built the Feedster Blog / RSS Search Engine and took it from a few hundred blogs to over eighteen million (only to be thrown out by my own board but that’s another story and, no, I’m not still bitter …)</li>
-  <li>Along the way I’ve used and analyzed most of the search tools out there from Folio Views to Verity to Guide to BRS to EPMS to InQuery   to Site Server to Lucene to ElasticSearch and more</li>
+  <li>I built the Feedster Blog / RSS Search Engine and took it from a few hundred blogs to over eighteen million (only to be thrown out by my own board but that's another story and, no, I'm not still bitter …)</li>
+  <li>Along the way I've used and analyzed most of the search tools out there from Folio Views to Verity to Guide to BRS to EPMS to InQuery   to Site Server to Lucene to ElasticSearch and more</li>
 </ul>
 
-<p>So let’s just posit that I know a few things about search, k?</p>
+<p>So let's just posit that I know a few things about search, k?</p>
 
-<p>The topic of this post is how you, as an end user, implement a search system and along the way I’m going to make a few observations about search as an industry.</p>
+<p>The topic of this post is how you, as an end user, implement a search system and along the way I'm going to make a few observations about search as an industry.</p>
 
-<p><strong>Note</strong>: the key implementation point is at the end; apologizes for the digression into industry analysis, I’ve simply wanted to write this down for a damn long time.</p>
+<p><strong>Note</strong>: the key implementation point is at the end; apologizes for the digression into industry analysis, I've simply wanted to write this down for a damn long time.</p>
 
-<h2 id="search-is-not-a-well-productized-thing">Search Is Not a Well Productized “Thing”</h2>
+<h2 id="search-is-not-a-well-productized-thing">Search Is Not a Well Productized "Thing"</h2>
 
-<p>The first thing to understand is that search is <strong>not a well productized thing</strong>.  Companies have been trying to build businesses off of search now since the mid 1960s and yet, with the exception of Google, there is <strong>no</strong> general search vendor in the same way that there is a database vendor (Oracle).  And, to be really honest, I don’t regard Google as a search vendor (they are an advertising company) because you can’t really use Google for your own data.  Even the mighty Google, with literally billions of dollars, has chosen to <a href="https://en.wikipedia.org/wiki/Google_Search_Appliance">exit the model of selling search</a>.</p>
+<p>The first thing to understand is that search is <strong>not a well productized thing</strong>.  Companies have been trying to build businesses off of search now since the mid 1960s and yet, with the exception of Google, there is <strong>no</strong> general search vendor in the same way that there is a database vendor (Oracle).  And, to be really honest, I don't regard Google as a search vendor (they are an advertising company) because you can't really use Google for your own data.  Even the mighty Google, with literally billions of dollars, has chosen to <a href="https://en.wikipedia.org/wiki/Google_Search_Appliance">exit the model of selling search</a>.</p>
 
 <p><strong>Note</strong>: My personal belief is that Google has chosen to exit the business of selling search is because:</p>
 
 <ul>
-  <li>Google’s core relevancy ranking is tied to hyperlink analysis but that information doesn’t exist within the firewall.</li>
-  <li>The business opportunity for selling search simply isn’t all that good compared to the business of selling advertising on global web search.  Advertising is an 80 billion dollar a year business for Google; selling search software is a teeny, tiny fraction of that – even across all the search vendors.</li>
+  <li>Google's core relevancy ranking is tied to hyperlink analysis but that information doesn't exist within the firewall.</li>
+  <li>The business opportunity for selling search simply isn't all that good compared to the business of selling advertising on global web search.  Advertising is an 80 billion dollar a year business for Google; selling search software is a teeny, tiny fraction of that – even across all the search vendors.</li>
   <li>Selling search means providing technical support and Google is not good at that.</li>
 </ul>
 
@@ -210,7 +210,7 @@
 
 <h2 id="practical-tip-1-start-with-one-document">Practical Tip 1: Start with One Document</h2>
 
-<p>With an understanding of why search is hard, here is the practical tip.  Implementing search, for anyone who isn’t a damn expert, is very, very hard because what you are doing is generally working with headless, non-observable systems.</p>
+<p>With an understanding of why search is hard, here is the practical tip.  Implementing search, for anyone who isn't a damn expert, is very, very hard because what you are doing is generally working with headless, non-observable systems.</p>
 
 <p>A headless system is one that runs in the background, what is referred to as a daemon.  Search systems tend to have a number of headless tools (the indexer and the search engine).  The problem with headless systems is that you rarely know what is going on and that makes understanding what is happening sometimes damn near impossible.</p>
 
@@ -230,7 +230,7 @@
   <li>a manual set of documents</li>
 </ul>
 
-<p>Because you don’t really understand how content is ingested, I regard starting with a single document as a key part of the approach.  What you want to understand is:</p>
+<p>Because you don't really understand how content is ingested, I regard starting with a single document as a key part of the approach.  What you want to understand is:</p>
 
 <ul>
   <li>how content comes in</li>
@@ -242,13 +242,13 @@
 
 <h2 id="practical-tip-2-instrument-the-content-base">Practical Tip 2: Instrument the Content Base</h2>
 
-<p>My second practical tip is really simple - you want to instrument the content base.  In computer parlance, instrumenting something means to make it observable / knowable.  When you build search systems and the number of documents expands dramatically, you are faced with the problem of “how do you know that it works”.  Let’s say, for example, that you sell security systems and you have a set of documents, Microsoft Word, PowerPoint, Excel that all talk about your products.  And let’s posit that, as a global vendor, you have say 10,000 documents.  If your search system was to fail to find something – would you ever know?  And the correct answer here is that, generally speaking, you wouldn’t.</p>
+<p>My second practical tip is really simple - you want to instrument the content base.  In computer parlance, instrumenting something means to make it observable / knowable.  When you build search systems and the number of documents expands dramatically, you are faced with the problem of "how do you know that it works".  Let's say, for example, that you sell security systems and you have a set of documents, Microsoft Word, PowerPoint, Excel that all talk about your products.  And let's posit that, as a global vendor, you have say 10,000 documents.  If your search system was to fail to find something – would you ever know?  And the correct answer here is that, generally speaking, you wouldn't.</p>
 
 <p>Internal document collections suffer from the problem of being homogenous in nature – the documents are mostly the same.  And that means it is really hard to tell if something that should be returned for a given query actually was ever even indexed.  The easiest way around this is to instrument your content base by putting in some content that should only exist for you, the search administrator. It needs to be something that no one, other than you, will ever search for in the context of your corpus.  Here are some options:</p>
 
 <ul>
-  <li>A favorite author’s name - say Heinlein or Bujold</li>
-  <li>A favorite character’s name that is distinctive as hell - Vorkosigan</li>
+  <li>A favorite author's name - say Heinlein or Bujold</li>
+  <li>A favorite character's name that is distinctive as hell - Vorkosigan</li>
   <li>If you have a set of initials that are consonants only, say LDM or BCG or JSJ, these tend to not be english language words (no vowels) so they are utterly unique.</li>
 </ul>
 
@@ -264,7 +264,7 @@
   <li>html</li>
 </ul>
 
-<p>that each have our specialized content.  You then let these be indexed - forever - as a “control group” on your search.  So if your specialized word was Vorkosigan, you should, for every search, have 5 results that come back, one per format.</p>
+<p>that each have our specialized content.  You then let these be indexed - forever - as a "control group" on your search.  So if your specialized word was Vorkosigan, you should, for every search, have 5 results that come back, one per format.</p>
 
 <p><strong>Note</strong>: I guess this violates the single document principle.  Sorry.</p>
 
@@ -276,24 +276,24 @@
   <li>The <strong>indexer</strong> which takes content in and makes the index against which queries are done</li>
   <li>The <strong>query parser</strong> which takes the query from the user and then pre-processes it before it goes to the search engine</li>
   <li>The <strong>search engine</strong> which accepts a query and returns a list of results</li>
-  <li>The <strong>relevancy ranker</strong> which takes the list of results and orders them correctly; this is often internal to the engine but it doesn’t have to be</li>
+  <li>The <strong>relevancy ranker</strong> which takes the list of results and orders them correctly; this is often internal to the engine but it doesn't have to be</li>
   <li>The <strong>user interface</strong>, these days HTML into which a query is entered and the</li>
   <li>The <strong>admin tools</strong> which generally range from ok to abysmal.  These are completely different</li>
 </ul>
 
-<h2 id="practical-tip-3-dont-bother-with-a-fielded-user-interface">Practical Tip 3: Don’t Bother with a Fielded User Interface</h2>
+<h2 id="practical-tip-3-dont-bother-with-a-fielded-user-interface">Practical Tip 3: Don't Bother with a Fielded User Interface</h2>
 
-<p>When you start to deploy search software, everyone always wants to play with the user interface and build a fielded user interface.  Don’t; just don’t.  Your users simply won’t bother.  Google has created a global consciousness that search is a single field that magically gives you what you need.  This is the user interface that you want to implement.</p>
+<p>When you start to deploy search software, everyone always wants to play with the user interface and build a fielded user interface.  Don't; just don't.  Your users simply won't bother.  Google has created a global consciousness that search is a single field that magically gives you what you need.  This is the user interface that you want to implement.</p>
 
 <p><strong>Note</strong>: Under the hood and behind the scenes, the query that a search engine gets from a single field is often parsed and a fielded query is constructed which the search engine then runs.</p>
 
-<p>There are rare occasions where an actual fielded user interface is needed but this is an edge case that you only want to approach after users actually ask for it.  And, in my opinion, even if they ask for it, they won’t often use it.</p>
+<p>There are rare occasions where an actual fielded user interface is needed but this is an edge case that you only want to approach after users actually ask for it.  And, in my opinion, even if they ask for it, they won't often use it.</p>
 
 <p>If you really want to provide a fielded user interface, I would encourage you to simply document the query language that your search engine uses.  Almost all search engines have an actual query language right down to field operators.</p>
 
-<h2 id="im-available--hire-me">I’m Available / Hire Me</h2>
+<h2 id="im-available--hire-me">I'm Available / Hire Me</h2>
 
-<p>As with everything I write, if I’m writing it, it means that I’m available as an expert.  I am a consultant these days and I trade $$$ for time and expertise.</p>
+<p>As with everything I write, if I'm writing it, it means that I'm available as an expert.  I am a consultant these days and I trade $$$ for time and expertise.</p>
 
   </div>
   

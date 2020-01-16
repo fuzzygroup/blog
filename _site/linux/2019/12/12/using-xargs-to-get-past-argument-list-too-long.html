@@ -52,7 +52,7 @@ zsh: argument list too long: grep
 
 
 
-That’s a pr...">
+That's a pr...">
   
 
   
@@ -196,13 +196,13 @@ zsh: argument list too long: grep
 </code></pre>
 </div>
 
-<p>That’s a problem because when the argument list is too long, nothing can happen.  The solution here is a combination of find and xargs, specifically:</p>
+<p>That's a problem because when the argument list is too long, nothing can happen.  The solution here is a combination of find and xargs, specifically:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>find . -name '*.json' | xargs grep '"class":0'
 </code></pre>
 </div>
 
-<p>Here’s the output from this:</p>
+<p>Here's the output from this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>./davidson-data-266118b4178f11ea80474c3275928de7.json:{"count":3,"hate_speech":3,"offensive_speech":0,"neither":0,"class":0,"tweet":"\"@JPantsdotcom @Todd__Kincannon @the__realtony I'm partial
 </code></pre>
@@ -214,7 +214,7 @@ zsh: argument list too long: grep
 </code></pre>
 </div>
 
-<p>but the embedded grep in find doesn’t accept that and fails with this error:</p>
+<p>but the embedded grep in find doesn't accept that and fails with this error:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>find: illegal option -- n
 usage: find [-H | -L | -P] [-EXdsx] [-f path] path ... [expression]
@@ -228,7 +228,7 @@ usage: find [-H | -L | -P] [-EXdsx] [-f path] path ... [expression]
 </code></pre>
 </div>
 
-<p>and that’s not an exact match so, sigh.</p>
+<p>and that's not an exact match so, sigh.</p>
 
 <p>If we return to the original approach and add a -l option flag then we can list only filenames:</p>
 

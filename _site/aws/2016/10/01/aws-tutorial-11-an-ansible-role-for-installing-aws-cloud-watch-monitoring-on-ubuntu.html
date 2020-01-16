@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>AWS Tutorial 11 - An Ansible Role for Installing AWS Cloud Watch Monitoring On Ubuntu</title>
-  <meta name="description" content="As I’ve written here earlier, Ansible is a provisioning and management tool that you can use to enable better automated provisioning of your AWS machines.  W...">
+  <meta name="description" content="As I've written here earlier, Ansible is a provisioning and management tool that you can use to enable better automated provisioning of your AWS machines.  W...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/aws/2016/10/01/aws-tutorial-11-an-ansible-role-for-installing-aws-cloud-watch-monitoring-on-ubuntu.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="As I’ve written here earlier, Ansible is a provisioning and management tool that you can use to enable better automated provisioning of your AWS machines.  While I am absolutely in love with AWS, o...">
+      content="As I've written here earlier, Ansible is a provisioning and management tool that you can use to enable better automated provisioning of your AWS machines.  While I am absolutely in love with AWS, o...">
   
 
   
@@ -178,9 +178,9 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>As I’ve written here earlier, Ansible is a provisioning and management tool that you can use to enable better automated provisioning of your AWS machines.  While I am <a href="https://fuzzygroup.github.io/blog/aws/2016/09/06/aws-i-was-wrong-dead-wrong.html">absolutely in love with AWS</a>, one thing that I do think that CloudWatch got wrong is that there is no memory graphs when you use CloudWatch to monitor your machines.  Given that I write threaded applications all the time, knowing how my memory utilization looks is a vital diagnostic tool.  And while there is a way to do this, it requires a fair bit of systems administration to accomplish it since it requires code to be installed on every server to be monitored.</p>
+    <p>As I've written here earlier, Ansible is a provisioning and management tool that you can use to enable better automated provisioning of your AWS machines.  While I am <a href="https://fuzzygroup.github.io/blog/aws/2016/09/06/aws-i-was-wrong-dead-wrong.html">absolutely in love with AWS</a>, one thing that I do think that CloudWatch got wrong is that there is no memory graphs when you use CloudWatch to monitor your machines.  Given that I write threaded applications all the time, knowing how my memory utilization looks is a vital diagnostic tool.  And while there is a way to do this, it requires a fair bit of systems administration to accomplish it since it requires code to be installed on every server to be monitored.</p>
 
-<p>Since we need to make a change to every box we have and to all new boxes we will create, who are we going to call?  Ansible!!!  That’s right – in this tutorial we’re going to use Ansible to write a playbook and role for:</p>
+<p>Since we need to make a change to every box we have and to all new boxes we will create, who are we going to call?  Ansible!!!  That's right – in this tutorial we're going to use Ansible to write a playbook and role for:</p>
 
 <ul>
   <li>downloading required modules</li>
@@ -192,7 +192,7 @@
 
 <h1 id="creating-our-structure">Creating our Structure</h1>
 
-<p>While Ansible is flexible in how things can be structured, I use a standard approach.  All of the code here is available on my github (link at the end) but I find that writing it all out helps my understanding at least.  Here’s how to create the structure that I use for Ansible.  All of this assumes you are already in a project directory where you want to store this.</p>
+<p>While Ansible is flexible in how things can be structured, I use a standard approach.  All of the code here is available on my github (link at the end) but I find that writing it all out helps my understanding at least.  Here's how to create the structure that I use for Ansible.  All of this assumes you are already in a project directory where you want to store this.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>mkdir inventories
 touch inventories/production
@@ -219,20 +219,20 @@ touch playbook.yml
 
 <h1 id="the-inventory">The Inventory</h1>
 
-<p>In the inventory file you want a format very similar to an old fashioned .ini file.  Here’s what mine looks like:</p>
+<p>In the inventory file you want a format very similar to an old fashioned .ini file.  Here's what mine looks like:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>[web]
 fiworker2    ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com        ansible_ssh_private_key_file=/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
 </code></pre>
 </div>
 
-<p>The syntax I’m using is human_readable_name  ansible_ssh_host=  ansible_ssh_private_key_file=</p>
+<p>The syntax I'm using is human_readable_name  ansible_ssh_host=  ansible_ssh_private_key_file=</p>
 
-<p>While you can generate the inventory file automatically with code, I don’t have a ton of AWS instances yet so I’ve just listed them manually.</p>
+<p>While you can generate the inventory file automatically with code, I don't have a ton of AWS instances yet so I've just listed them manually.</p>
 
 <h1 id="the-playbook">The Playbook</h1>
 
-<p>Here’s the playbook:</p>
+<p>Here's the playbook:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>- hosts: all
   become: yes
@@ -253,7 +253,7 @@ fiworker2    ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com  
 
 <h1 id="the-role">The Role</h1>
 
-<p>Here’s the role:</p>
+<p>Here's the role:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>---
   
@@ -295,11 +295,11 @@ fiworker2    ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com  
 
 <h1 id="using-ansible-vault-for-the-vars-file">Using Ansible Vault for the vars file</h1>
 
-<p>Within the roles directory there is a vars directory and a file main.yml within it.  This file will contain our variables that define our AWS access key and AWS secret.  Given that this file will likely be checked into version control, there’s value in encrypting those variables.  The tool Ansible Vault is used for that.  Here’s how:</p>
+<p>Within the roles directory there is a vars directory and a file main.yml within it.  This file will contain our variables that define our AWS access key and AWS secret.  Given that this file will likely be checked into version control, there's value in encrypting those variables.  The tool Ansible Vault is used for that.  Here's how:</p>
 
 <ol>
   <li>Use the command:  ansible-vault create roles/aws_cloudwatch_memory/vars/main.yml</li>
-  <li>This will ask your for a password.  Enter one and confirm it and then you’ll be launched into an editor where you can put in your keys.</li>
+  <li>This will ask your for a password.  Enter one and confirm it and then you'll be launched into an editor where you can put in your keys.</li>
   <li>Exit the editor and it will save your now encrypted data.  You can then edit it later with: ansible-vault edit roles/aws_cloudwatch_memory/vars/main.yml</li>
 </ol>
 
@@ -316,7 +316,7 @@ ec2_secret_key: "bar"
 
 <h1 id="the-ansiblecfg-file">The ansible.cfg file</h1>
 
-<p>You may, or may not, need a ansible.cfg file.  This is an ASCII file that defines how to handle ssh connectivity.  Here’s mine:</p>
+<p>You may, or may not, need a ansible.cfg file.  This is an ASCII file that defines how to handle ssh connectivity.  Here's mine:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>[ssh_connection]
 ssh_user = vagrant
@@ -326,17 +326,17 @@ ansible_ssh_private_key_file = /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
 </code></pre>
 </div>
 
-<p>I’m not, at the time of this writing, a true Ansible expert so I suspect there’s redundancy in my cfg file but when I run without it, I’m unable to connect to AWS and I think it’s due to the control_path setting being required due to the length of the EC2 host names.</p>
+<p>I'm not, at the time of this writing, a true Ansible expert so I suspect there's redundancy in my cfg file but when I run without it, I'm unable to connect to AWS and I think it's due to the control_path setting being required due to the length of the EC2 host names.</p>
 
 <h1 id="running-this">Running This</h1>
 
-<p>Here’s all you need to do to run this:</p>
+<p>Here's all you need to do to run this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/production playbook.yml
 </code></pre>
 </div>
 
-<p>If you encrypted your keys then you’ll be prompted for the password.  If you want to store the password in a local file on your machine then you can always do it this way:</p>
+<p>If you encrypted your keys then you'll be prompted for the password.  If you want to store the password in a local file on your machine then you can always do it this way:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/production playbook.yml --vault-password-file ~/.vault_pass.txt
 </code></pre>

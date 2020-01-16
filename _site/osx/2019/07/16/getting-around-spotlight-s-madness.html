@@ -178,15 +178,15 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>Spotlight is the Apple / OSX search engine and I find it absolutely, blindingly maddening.  The way Spotlight seems to work, when you use it from the OSX search icon, is that it tells you what it found but not <strong>where</strong> it found it.  And I get that filesystems are passe and we are supposed to be in a post file world, blah, blah, blah.  And I call bullshite on that.  I’m a professional software developer and knowing where things actually exist is actually fricking important.</p>
+    <p>Spotlight is the Apple / OSX search engine and I find it absolutely, blindingly maddening.  The way Spotlight seems to work, when you use it from the OSX search icon, is that it tells you what it found but not <strong>where</strong> it found it.  And I get that filesystems are passe and we are supposed to be in a post file world, blah, blah, blah.  And I call bullshite on that.  I'm a professional software developer and knowing where things actually exist is actually fricking important.</p>
 
-<p>And here’s how to do that with Spotlight – use mdfind directly.  mdfind is the underlying  command line executable that also executes spotlight searches.  Earlier today I was struggling to remember the name of a Ruby gem and all I knew was that it had “icon” in its name.  So here’s what I did:</p>
+<p>And here's how to do that with Spotlight – use mdfind directly.  mdfind is the underlying  command line executable that also executes spotlight searches.  Earlier today I was struggling to remember the name of a Ruby gem and all I knew was that it had "icon" in its name.  So here's what I did:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>mdfind icon -onlyin /Users/sjohnson/Dropbox/fuzzygroup/ | grep Gemfile
 </code></pre>
 </div>
 
-<p>And this command looked for the string of characters “icon” but only in the directory where I keep all of my many, many Rails projects.  And then I fed it thru a grep command to find only the references to Gemfile.  And this very quickly led me to <a href="https://github.com/victorgama/identicon">identicon</a> which is a gem which builds <a href="https://meta.stackexchange.com/questions/17443/how-is-the-default-user-avatar-generated">Stack Overflow like abstract user avatars</a>.</p>
+<p>And this command looked for the string of characters "icon" but only in the directory where I keep all of my many, many Rails projects.  And then I fed it thru a grep command to find only the references to Gemfile.  And this very quickly led me to <a href="https://github.com/victorgama/identicon">identicon</a> which is a gem which builds <a href="https://meta.stackexchange.com/questions/17443/how-is-the-default-user-avatar-generated">Stack Overflow like abstract user avatars</a>.</p>
 
 
   </div>

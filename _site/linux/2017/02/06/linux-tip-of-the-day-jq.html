@@ -178,9 +178,9 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I made either the happy decision to do some late night Hacker News reading last night and I found a really interesting bash script – <strong><a href="https://github.com/jgrahamc/hncomments/blob/master/hncomments">hncomments</a></strong>.  This is a tool which looks at a data feed from HackerNews, through the algolia search engine, and emails you when comments matching what you are interested in appear.  My interest in it stemmed from its author - <a href="http://www.jgc.org/">John Graham Cumming (jgrahamc)</a>.  He’s one of those programmers who I’ve always admired purely from an intellectual basis.  Anyone who can write books with the intellectual breadth of <a href="https://www.amazon.com/gp/product/0596523203?ie=UTF8&amp;tag=jgcorg-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0596523203">Geek Atlas</a>, <a href="https://www.nostarch.com/gnumake">Gnu Make</a> and <a href="http://shop.oreilly.com/product/0636920035305.do">Introduction to Go</a> has to be worth admiring.</p>
+    <p>I made either the happy decision to do some late night Hacker News reading last night and I found a really interesting bash script – <strong><a href="https://github.com/jgrahamc/hncomments/blob/master/hncomments">hncomments</a></strong>.  This is a tool which looks at a data feed from HackerNews, through the algolia search engine, and emails you when comments matching what you are interested in appear.  My interest in it stemmed from its author - <a href="http://www.jgc.org/">John Graham Cumming (jgrahamc)</a>.  He's one of those programmers who I've always admired purely from an intellectual basis.  Anyone who can write books with the intellectual breadth of <a href="https://www.amazon.com/gp/product/0596523203?ie=UTF8&amp;tag=jgcorg-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0596523203">Geek Atlas</a>, <a href="https://www.nostarch.com/gnumake">Gnu Make</a> and <a href="http://shop.oreilly.com/product/0636920035305.do">Introduction to Go</a> has to be worth admiring.</p>
 
-<p>Anyway I went to get this running and realized that it requires dependencies of jq, recode, sed and curl – and I didn’t even know what jq was so my thought was <em>this is a series of Linux Tips of the Day!</em>.  For the next few days I’ll be talking about each of these starting with jq.  So, John, thank you for the idea and here’s a tip on JQ.  After I write tips for each of these, I’ll follow through with getting this whole thing running.</p>
+<p>Anyway I went to get this running and realized that it requires dependencies of jq, recode, sed and curl – and I didn't even know what jq was so my thought was <em>this is a series of Linux Tips of the Day!</em>.  For the next few days I'll be talking about each of these starting with jq.  So, John, thank you for the idea and here's a tip on JQ.  After I write tips for each of these, I'll follow through with getting this whole thing running.</p>
 
 <p>The Linux tool jq is a command line JSON processor designed to use JSON as part of a Unix pipeline.  In the case of the hncomments bash script, jq takes input from the the <a href="http://www.algolia.com">algolia</a> output as called by curl.</p>
 
@@ -198,7 +198,7 @@
   <p>brew install jq</p>
 </blockquote>
 
-<p>Help is available, as it always should be (but often isn’t), with –help.  Here’s an example:</p>
+<p>Help is available, as it always should be (but often isn't), with –help.  Here's an example:</p>
 
 <div class="language-bash highlighter-rouge"><pre class="highlight"><code>sjohnson@FuzzygroupMacbookAir ~ <span class="nv">$ </span>jq --help
 jq - commandline JSON processor <span class="o">[</span>version 1.5]
@@ -231,7 +231,7 @@ Usage: jq <span class="o">[</span>options] &lt;jq filter&gt; <span class="o">[</
 </span></code></pre>
 </div>
 
-<p>Because this is designed to be used as part of a pipeline and you have to data in JSON format for it to work, I’m going to illustrate its use by stealing from the <strong>hncomments</strong> bash script (thank you John!):</p>
+<p>Because this is designed to be used as part of a pipeline and you have to data in JSON format for it to work, I'm going to illustrate its use by stealing from the <strong>hncomments</strong> bash script (thank you John!):</p>
 
 <div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="nv">j</span><span class="o">=</span><span class="sb">`</span>curl -s <span class="s2">"https://hn.algolia.com/api/v1/search_by_date?query=</span><span class="nv">$q</span><span class="s2">&amp;tags=comment&amp;numericFilters=created_at_i&gt;</span><span class="nv">$l</span><span class="s2">"</span><span class="sb">`</span>
 
@@ -247,10 +247,10 @@ Usage: jq <span class="o">[</span>options] &lt;jq filter&gt; <span class="o">[</
 </code></pre>
 </div>
 
-<p>For purposes of illustration, let’s assume that $q is <strong>docker</strong>.  This means that the curl statement is executing the url at hn.algolia.com and returning it as $j.  The jq tool is then filtering down the json by looking for the hash key “hits” in the json output.  Here’s an example of what the start of that output looks like:</p>
+<p>For purposes of illustration, let's assume that $q is <strong>docker</strong>.  This means that the curl statement is executing the url at hn.algolia.com and returning it as $j.  The jq tool is then filtering down the json by looking for the hash key "hits" in the json output.  Here's an example of what the start of that output looks like:</p>
 
 <blockquote>
-  <p>{“hits”:[{“created_at”:”2017-02-06T08:29:47.000Z”,”title”:null,”url”:null,”author”:”schappim”,”points”:null,”story_text”:null,”comment_text”:”Function as a service (like AWS Lambda, Google Cloud Functions and Azure Functions) for Ruby.</p>
+  <p>{"hits":[{"created_at":"2017-02-06T08:29:47.000Z","title":null,"url":null,"author":"schappim","points":null,"story_text":null,"comment_text":"Function as a service (like AWS Lambda, Google Cloud Functions and Azure Functions) for Ruby.</p>
 </blockquote>
 
 <p>More on all of this tomorrow when I look into recode.</p>

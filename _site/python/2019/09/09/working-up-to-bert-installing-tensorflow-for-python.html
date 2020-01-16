@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Working Up to Bert - Installing TensorFlow for Python</title>
-  <meta name="description" content="I’m gearing myself up mentally for a bunch of upcoming machine learning worth using Bert / Roberta and that means getting my head around just working with Py...">
+  <meta name="description" content="I'm gearing myself up mentally for a bunch of upcoming machine learning worth using Bert / Roberta and that means getting my head around just working with Py...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/python/2019/09/09/working-up-to-bert-installing-tensorflow-for-python.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="I’m gearing myself up mentally for a bunch of upcoming machine learning worth using Bert / Roberta and that means getting my head around just working with Python as a tool.  So today’s exercise is ...">
+      content="I'm gearing myself up mentally for a bunch of upcoming machine learning worth using Bert / Roberta and that means getting my head around just working with Python as a tool.  So today's exercise is ...">
   
 
   
@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I’m gearing myself up mentally for a bunch of upcoming machine learning worth using Bert / Roberta and that means getting my head around just working with Python as a tool.  So today’s exercise is installing TensorFlow for Python since Bert / Roberta have TensorFlow as a dependency.</p>
+    <p>I'm gearing myself up mentally for a bunch of upcoming machine learning worth using Bert / Roberta and that means getting my head around just working with Python as a tool.  So today's exercise is installing TensorFlow for Python since Bert / Roberta have TensorFlow as a dependency.</p>
 
 <p>I worked from the <a href="https://www.tensorflow.org/install/pip">official TensorFlow instructions using pip</a>.</p>
 
@@ -205,13 +205,13 @@ virtualenv --version
   <li>virtualenv is the equivalent of rvm or rbenv</li>
 </ul>
 
-<p>If you don’t have current versions of those then you might want to check out the <a href="https://www.anaconda.com/distribution/">Anaconda distribution of Python</a> although some of my <a href="https://eethomp.github.io">python friends</a> would curse mightily to hear me say that; I don’t savvy the differences enough yet to know.</p>
+<p>If you don't have current versions of those then you might want to check out the <a href="https://www.anaconda.com/distribution/">Anaconda distribution of Python</a> although some of my <a href="https://eethomp.github.io">python friends</a> would curse mightily to hear me say that; I don't savvy the differences enough yet to know.</p>
 
 <h2 id="create-a-virtual-environment">Create a Virtual Environment</h2>
 
-<p>The next step is to create a virtual environment where you’re planning to work.</p>
+<p>The next step is to create a virtual environment where you're planning to work.</p>
 
-<p><strong>Note</strong>: Given the quantity of terminal windows I survive in, the first thing I actually did was to load the nu shell in my terminal so I had a distinct environment to separate Python from my Ruby (“You got python in my Ruby; No you got Ruby in my python”; anyone out there get that old joke).  I also created and changed into a new directory where this will all be installed into since I wasn’t sure exactly where / how the python virtual environment was going to work.</p>
+<p><strong>Note</strong>: Given the quantity of terminal windows I survive in, the first thing I actually did was to load the nu shell in my terminal so I had a distinct environment to separate Python from my Ruby ("You got python in my Ruby; No you got Ruby in my python"; anyone out there get that old joke).  I also created and changed into a new directory where this will all be installed into since I wasn't sure exactly where / how the python virtual environment was going to work.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>mkdir ~/fuzzygroup/adl/tensorflow
 cd ~/fuzzygroup/adl/tensorflow
@@ -219,7 +219,7 @@ virtualenv --system-site-packages -p python3 ./venv
 </code></pre>
 </div>
 
-<p>What this shows me is that virtualenv creates a single directory called “venv” in your current directory (presumably holding dependencies):</p>
+<p>What this shows me is that virtualenv creates a single directory called "venv" in your current directory (presumably holding dependencies):</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ls
 ------+-----------+----------+-------+-------------+-------------+-------------
@@ -230,7 +230,7 @@ virtualenv --system-site-packages -p python3 ./venv
 </code></pre>
 </div>
 
-<p>and here’s a look into venv itself:</p>
+<p>and here's a look into venv itself:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>ls venv/
 ---+-------------------------+-----------+----------+-------+-------------+-------------+-------------
@@ -245,7 +245,7 @@ virtualenv --system-site-packages -p python3 ./venv
 </code></pre>
 </div>
 
-<p><strong>Sidebar</strong>: And isn’t the <a href="https://www.jonathanturner.org/2019/08/introducing-nushell.html">nu shell</a> cool as hell?</p>
+<p><strong>Sidebar</strong>: And isn't the <a href="https://www.jonathanturner.org/2019/08/introducing-nushell.html">nu shell</a> cool as hell?</p>
 
 <p>Once you have venv setup then you need to activate it:</p>
 
@@ -269,9 +269,9 @@ virtualenv --system-site-packages -p python3 ./venv
 </code></pre>
 </div>
 
-<p>to see what’s installed.</p>
+<p>to see what's installed.</p>
 
-<p>In the Ruby world this would be ‘gem list’.</p>
+<p>In the Ruby world this would be 'gem list'.</p>
 
 <p>Now in the Ruby world where you automagically have your environment setup for you (and taken down) when you change in and out of directories, virtualenv requires you to manually deactivate:</p>
 
@@ -279,9 +279,9 @@ virtualenv --system-site-packages -p python3 ./venv
 </code></pre>
 </div>
 
-<p>Given my personal problems with <a href="https://fuzzyblog.io/blog/ruby/2019/07/10/when-rbenv-well-won-t-rbenv-fixing-shell-extension-madness.html">Shell Extension Madness</a>, I’m not certain that being explicit about virtualenv activation / deactivation is all that bad.</p>
+<p>Given my personal problems with <a href="https://fuzzyblog.io/blog/ruby/2019/07/10/when-rbenv-well-won-t-rbenv-fixing-shell-extension-madness.html">Shell Extension Madness</a>, I'm not certain that being explicit about virtualenv activation / deactivation is all that bad.</p>
 
-<p><strong>Note</strong>: I’m a consultant and a serious ruby hobbyist so I have WAY more environments than is normal; I’m not saying that rbenv / rvm don’t work in general, more specifically, that they don’t always work for <strong>me</strong>.</p>
+<p><strong>Note</strong>: I'm a consultant and a serious ruby hobbyist so I have WAY more environments than is normal; I'm not saying that rbenv / rvm don't work in general, more specifically, that they don't always work for <strong>me</strong>.</p>
 
 <p>## Actually Installing TensorFlow</p>
 
@@ -299,9 +299,9 @@ virtualenv --system-site-packages -p python3 ./venv
 </code></pre>
 </div>
 
-<p>Interestingly the TensorFlow docs had the above as just “python -c” despite referencing python3 earlier.  I thought perhaps that virtualenv aliased python3 to python but that seems not to be the case; bad on Google Documents; sigh.</p>
+<p>Interestingly the TensorFlow docs had the above as just "python -c" despite referencing python3 earlier.  I thought perhaps that virtualenv aliased python3 to python but that seems not to be the case; bad on Google Documents; sigh.</p>
 
-<p>Here’s what I got as a result:</p>
+<p>Here's what I got as a result:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>python3 -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
 /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:516: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
@@ -338,7 +338,7 @@ Tensor("Sum:0", shape=(), dtype=float32)
 </code></pre>
 </div>
 
-<p>And I guess that’s right… I mean it did some kind of math; I just don’t understand it yet.  And they don’t actually show what should happen.  Again bad on the Google documenters.</p>
+<p>And I guess that's right… I mean it did some kind of math; I just don't understand it yet.  And they don't actually show what should happen.  Again bad on the Google documenters.</p>
 
 <p>So the next step here is to move onto the <a href="https://www.tensorflow.org/tutorials">tutorials</a>…</p>
 

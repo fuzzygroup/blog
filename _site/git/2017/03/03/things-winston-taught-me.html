@@ -182,16 +182,16 @@
 
 <h1 id="how-i-use-git">How I Use Git</h1>
 
-<p>I’ve tried a number of git UI tools over the years but I keep coming back to the command line.  Here’s my work flow:</p>
+<p>I've tried a number of git UI tools over the years but I keep coming back to the command line.  Here's my work flow:</p>
 
 <ul>
   <li>git status</li>
   <li>git add some_file</li>
-  <li>git commit -m “a commit message”</li>
+  <li>git commit -m "a commit message"</li>
   <li>git push origin master</li>
 </ul>
 
-<p>I’m pretty much a straight command line guy.  And because I try very hard to avoid rollup commits, this can make the commit process tedious.</p>
+<p>I'm pretty much a straight command line guy.  And because I try very hard to avoid rollup commits, this can make the commit process tedious.</p>
 
 <h1 id="how-winston-uses-git">How Winston Uses Git</h1>
 
@@ -200,18 +200,18 @@
 <ul>
   <li>gs</li>
   <li>ga</li>
-  <li>gc “a commit message”</li>
+  <li>gc "a commit message"</li>
   <li>gpc</li>
 </ul>
 
-<p>These abbreviations are a heck of a lot shorter than what I’ve been typing so that’s clearly a win.  My one objection to his approach is that ga adds EVERYTHING.  My preference is atomic commit messages where one commit = the changes to one file so I really would prefer to have two aliases for add:</p>
+<p>These abbreviations are a heck of a lot shorter than what I've been typing so that's clearly a win.  My one objection to his approach is that ga adds EVERYTHING.  My preference is atomic commit messages where one commit = the changes to one file so I really would prefer to have two aliases for add:</p>
 
 <ul>
   <li>ga some_file</li>
   <li>gaa (adds everything)</li>
 </ul>
 
-<p>Here’s how Winston originally implemented this:</p>
+<p>Here's how Winston originally implemented this:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>alias gundo='git reset --soft HEAD~1'
 function gc() {
@@ -250,7 +250,7 @@ function ghelp() {
 <ul>
   <li>add a ga function which does a single file add</li>
   <li>change the name of the previous ga, which added everything, to gaa (git add all)</li>
-  <li>add a ghelp function to tell me what’s available</li>
+  <li>add a ghelp function to tell me what's available</li>
 </ul>
 
 <p>Just using this for a few days has really streamlined my workflow.  Thanks Winston!</p>

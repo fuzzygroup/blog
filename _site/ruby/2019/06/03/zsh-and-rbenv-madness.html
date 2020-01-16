@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Zsh and RbEnv Madness</title>
-  <meta name="description" content="I’m a Mac user and I recently switched over from Bash to Zsh.  I then got massive weirdness when I switched from Terminal Window 1, Tab 1 to say Terminal Win...">
+  <meta name="description" content="I'm a Mac user and I recently switched over from Bash to Zsh.  I then got massive weirdness when I switched from Terminal Window 1, Tab 1 to say Terminal Win...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/ruby/2019/06/03/zsh-and-rbenv-madness.html">
@@ -43,7 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="I’m a Mac user and I recently switched over from Bash to Zsh.  I then got massive weirdness when I switched from Terminal Window 1, Tab 1 to say Terminal Window 3, Tab 9 (yes I have a problem; I’m ...">
+      content="I'm a Mac user and I recently switched over from Bash to Zsh.  I then got massive weirdness when I switched from Terminal Window 1, Tab 1 to say Terminal Window 3, Tab 9 (yes I have a problem; I'm ...">
   
 
   
@@ -178,16 +178,16 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I’m a Mac user and I recently switched over from Bash to Zsh.  I then got massive weirdness when I switched from Terminal Window 1, Tab 1 to say Terminal Window 3, Tab 9 (yes I have a problem; I’m sure you have your own problems; now shoo!).  Specifically I would see that in the first Terminal Window, I would get the right version of Ruby and then in the second Terminal Window, I would get the “system ruby”.</p>
+    <p>I'm a Mac user and I recently switched over from Bash to Zsh.  I then got massive weirdness when I switched from Terminal Window 1, Tab 1 to say Terminal Window 3, Tab 9 (yes I have a problem; I'm sure you have your own problems; now shoo!).  Specifically I would see that in the first Terminal Window, I would get the right version of Ruby and then in the second Terminal Window, I would get the "system ruby".</p>
 
 <p>This requires a bit of an explanation for the less than Ruby familiar:</p>
 
 <ul>
-  <li>All (or effectively all; go away you) *nix machines include a version of Ruby aka “System Ruby”</li>
+  <li>All (or effectively all; go away you) *nix machines include a version of Ruby aka "System Ruby"</li>
   <li>The system ruby is generally old and poorly maintained</li>
   <li>The system ruby is rarely the version of Ruby your application will use</li>
-  <li>You need a “Ruby Version Manager” to set the version of Ruby you need for your application.  Two of the leading contenders are RVM and RbEnv.</li>
-  <li>Both RVM and RbEnv work by shell level fuckery.  Sorry for the swearing but this is how they get under the environment and essentially insert a version of an executable before your standard path.  I also think of both of these as “Dancing Bear” software – its not how well they dance but that they dance at all.</li>
+  <li>You need a "Ruby Version Manager" to set the version of Ruby you need for your application.  Two of the leading contenders are RVM and RbEnv.</li>
+  <li>Both RVM and RbEnv work by shell level fuckery.  Sorry for the swearing but this is how they get under the environment and essentially insert a version of an executable before your standard path.  I also think of both of these as "Dancing Bear" software – its not how well they dance but that they dance at all.</li>
   <li>On a directory where you want to use a specific version of ruby you have to create a file called .ruby-version which contains a value like 2.5.1.  This tells RVM or RbEnv to load that version of Ruby when you enter this directory.</li>
 </ul>
 

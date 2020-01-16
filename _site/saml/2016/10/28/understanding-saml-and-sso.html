@@ -178,7 +178,7 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>When you grew up as a developer prior to the Internet, it used to be that technical information was hard to come by.  From my perspective one fo the most miraculous things about being a developer in 2016 is all you have to do is run across a reference to a technology and <strong>wham</strong> all the information that you want is at your finger tips.  So let’s say you’re browsing <a href="http://news.ycombinator.com/">Hacker News</a> and you find a reference to <a href="https://hn.algolia.com/?query=saml&amp;sort=byPopularity&amp;prefix&amp;page=0&amp;dateRange=all&amp;type=story">SAML</a>, <a href="https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language">Security Assertion Markup Language</a>, you’re just a search away from a deep dive into a topic.  And if you either find yourself interested in it or you have a personal reason to explore it like a wife who’s favorite anti technology rant is about passwords (SAML is key to Single Sign On or SSO standards), then you’re just a github away from messing with a cool technology.  That’s why I’m writing today about SAML instead of my normal AWS / Ruby / Rails stuff.  But, not to worry, I’ll bring it around to Ruby / Rails by the end.</p>
+    <p>When you grew up as a developer prior to the Internet, it used to be that technical information was hard to come by.  From my perspective one fo the most miraculous things about being a developer in 2016 is all you have to do is run across a reference to a technology and <strong>wham</strong> all the information that you want is at your finger tips.  So let's say you're browsing <a href="http://news.ycombinator.com/">Hacker News</a> and you find a reference to <a href="https://hn.algolia.com/?query=saml&amp;sort=byPopularity&amp;prefix&amp;page=0&amp;dateRange=all&amp;type=story">SAML</a>, <a href="https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language">Security Assertion Markup Language</a>, you're just a search away from a deep dive into a topic.  And if you either find yourself interested in it or you have a personal reason to explore it like a wife who's favorite anti technology rant is about passwords (SAML is key to Single Sign On or SSO standards), then you're just a github away from messing with a cool technology.  That's why I'm writing today about SAML instead of my normal AWS / Ruby / Rails stuff.  But, not to worry, I'll bring it around to Ruby / Rails by the end.</p>
 
 <h1 id="what-is-saml-">What is SAML ?</h1>
 
@@ -222,7 +222,7 @@
 </code></pre>
 </div>
 
-<p>I’m going to cheat here and blatantly cheat and quote wikipedia in case a subtle rewording of my writing interferes with the meaning:</p>
+<p>I'm going to cheat here and blatantly cheat and quote wikipedia in case a subtle rewording of my writing interferes with the meaning:</p>
 
 <blockquote>
   <p>Loosely speaking, a relying party interprets an assertion as follows:</p>
@@ -257,7 +257,7 @@ Authentication statements assert to the service provider that the principal did 
 
 <h1 id="how-does-this-work-with-rails">How Does This Work with Rails?</h1>
 
-<p>Now let’s pull this all around and talk about how you might use SAML in the context of a functioning rails app.  There are two basic approaches:</p>
+<p>Now let's pull this all around and talk about how you might use SAML in the context of a functioning rails app.  There are two basic approaches:</p>
 
 <ul>
   <li>Your rails app as a SAML client to something else (i.e. your rails app is the service provider or SP)</li>
@@ -280,33 +280,33 @@ Authentication statements assert to the service provider that the principal did 
 
 <h2 id="rails-as-an-idp">Rails as an IdP</h2>
 
-<p>While an IdP might be an LDAP system or another traditional authentication engine, there’s no reason a Rails app itself can’t speak SAML natively and be an IdP of its own.  In this case the toolkit you likely want to use is one of these two:</p>
+<p>While an IdP might be an LDAP system or another traditional authentication engine, there's no reason a Rails app itself can't speak SAML natively and be an IdP of its own.  In this case the toolkit you likely want to use is one of these two:</p>
 
 <ul>
   <li><a href="https://github.com/sportngin/saml_idp">https://github.com/sportngin/saml_idp</a></li>
   <li><a href="https://github.com/lawrencepit/ruby-saml-idp">https://github.com/lawrencepit/ruby-saml-idp</a></li>
 </ul>
 
-<p>The lawrencepit gem is older and the sportngin gem appears to be a newer fork.  Unfortunately it seems as if the documentation on the sportngin gem is incorrect and you may need lawrencepit’s documentation.  I’m still bringing up a functional IDP so I can’t say definitively but there’s a definite code smell of incorrectly made documentation in sportngin.  It should be noted though that sportngin has done a lot of work to make bringing up an IdP server better.  I’ll hopefully update this blog post in the future when I have more concrete answers.</p>
+<p>The lawrencepit gem is older and the sportngin gem appears to be a newer fork.  Unfortunately it seems as if the documentation on the sportngin gem is incorrect and you may need lawrencepit's documentation.  I'm still bringing up a functional IDP so I can't say definitively but there's a definite code smell of incorrectly made documentation in sportngin.  It should be noted though that sportngin has done a lot of work to make bringing up an IdP server better.  I'll hopefully update this blog post in the future when I have more concrete answers.</p>
 
 <h1 id="understanding-how-to-build-an-idp-with-rails-and-rubyidp">Understanding How to Build an IdP with Rails and ruby_idp</h1>
 
-<p>I took a stab at building a SAML system using ruby_idp and as part of that effort, I wrote the wiki page for <a href="https://github.com/sportngin/saml_idp/wiki">saml_idp</a>.  Honestly explaining things is the best way I’ve ever found to understand them so this is my give back to the community and my thanks to the author of saml_idp.</p>
+<p>I took a stab at building a SAML system using ruby_idp and as part of that effort, I wrote the wiki page for <a href="https://github.com/sportngin/saml_idp/wiki">saml_idp</a>.  Honestly explaining things is the best way I've ever found to understand them so this is my give back to the community and my thanks to the author of saml_idp.</p>
 
 <h1 id="general-advice">General Advice</h1>
 
-<p>Unfortunately the documentation for all of these tools is, to put it mildly, on the sparse to incorrect side (example - using the sportngin gem, you can’t include the controller per the docs, you have to inherit from it instead).  If you’re going to do a SAML project based on any of these, you’re going to need to:</p>
+<p>Unfortunately the documentation for all of these tools is, to put it mildly, on the sparse to incorrect side (example - using the sportngin gem, you can't include the controller per the docs, you have to inherit from it instead).  If you're going to do a SAML project based on any of these, you're going to need to:</p>
 
 <ul>
   <li>Read the standards documentation</li>
   <li>Read the gem source – and I mean really read it</li>
-  <li>Dig in and get your fingers dirty; don’t be afraid to fork the gem</li>
+  <li>Dig in and get your fingers dirty; don't be afraid to fork the gem</li>
   <li>Read the pull requests</li>
   <li>Read the open github issues; even unsolved issues make spark your thinking</li>
   <li>Read the closed github issues</li>
   <li>Read the tests; on projects like these, the tests more than anything else help you understand what parameters to use</li>
   <li>Look at the forks to see if there is anything newer that might help you</li>
-  <li>If you’re going down the IdP route you will really need to implement a saml client as well; this isn’t surprising when you think about it</li>
+  <li>If you're going down the IdP route you will really need to implement a saml client as well; this isn't surprising when you think about it</li>
 </ul>
 
   </div>

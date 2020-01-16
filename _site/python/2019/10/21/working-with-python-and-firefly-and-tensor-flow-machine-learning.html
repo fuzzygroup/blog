@@ -184,7 +184,7 @@ I am currently working on a project using Python that process data via standard 
 
 <p>I am currently working on a project using Python that process data via standard in and then renders an opinion on it to standard out.  This is called an <strong>expert</strong> and there are many of them that pass their opinion on down a pipeline (the original input is actually json and each expert adds its opinion into the json).</p>
 
-<p>The problem that I’ve discovered is that <a href="https://www.tensorflow.org/">Tensor Flow</a> is extremely slow to startup.  This means that that my quickly running command line model hit an execution wall just due to the startup time of the Tensor Flow libraries.  The solution was to break my command line program into two parts.  I started with:</p>
+<p>The problem that I've discovered is that <a href="https://www.tensorflow.org/">Tensor Flow</a> is extremely slow to startup.  This means that that my quickly running command line model hit an execution wall just due to the startup time of the Tensor Flow libraries.  The solution was to break my command line program into two parts.  I started with:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>expert_white_supremacy_speech.py
 </code></pre>
@@ -197,11 +197,11 @@ expert_white_supremacy_speech_service.py
 </code></pre>
 </div>
 
-<p>The “_service.py” version of this will be run via a Python library called <a href="https://rorodata.github.io/firefly/">Firefly</a> which provides “functions as a service” that are exposed via a restful API.</p>
+<p>The "_service.py" version of this will be run via a Python library called <a href="https://rorodata.github.io/firefly/">Firefly</a> which provides "functions as a service" that are exposed via a restful API.</p>
 
 <p><strong>Note 1</strong>: In computer science speech, a program that runs in the background is called a daemon or a service.</p>
 
-<p><em>*Note</em> 2*: Because I’m going to have a number of these experts, I already have conventions around naming and since I will likely end up moving the “opinion” portion of all of the experts into this “function as a service” paradigm.  That way my web interface, written in Rails, can also call into it thru a simple curl command.</p>
+<p><em>*Note</em> 2*: Because I'm going to have a number of these experts, I already have conventions around naming and since I will likely end up moving the "opinion" portion of all of the experts into this "function as a service" paradigm.  That way my web interface, written in Rails, can also call into it thru a simple curl command.</p>
 
 <p>Firefly provides a persistently running daemon which should have all the libraries loaded one time.  This daemon is run with the following syntax:</p>
 
@@ -215,9 +215,9 @@ expert_white_supremacy_speech_service.py
 </code></pre>
 </div>
 
-<p>The default for Firefly is to run on port 8000.  And this is where it gets interesting.  Because I’m going to have different experts that are all going to need to render opinions that are all coming from different routines, I went into firefly thinking “Ok; run one instance on port 8000 for method x; run another instance on part 8001 for method y and so on”.  The actually approach is to use a config file which maps multiple methods from as many python files as you have.</p>
+<p>The default for Firefly is to run on port 8000.  And this is where it gets interesting.  Because I'm going to have different experts that are all going to need to render opinions that are all coming from different routines, I went into firefly thinking "Ok; run one instance on port 8000 for method x; run another instance on part 8001 for method y and so on".  The actually approach is to use a config file which maps multiple methods from as many python files as you have.</p>
 
-<p>Let’s illustrate this with two python scripts, fibs.py and squares.py and a config file, config.yml.  Here’s the contents of each:</p>
+<p>Let's illustrate this with two python scripts, fibs.py and squares.py and a config file, config.yml.  Here's the contents of each:</p>
 
 <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># this is squares.py</span>
 
@@ -248,7 +248,7 @@ expert_white_supremacy_speech_service.py
 </code></pre>
 </div>
 
-<p>The syntax on the yaml file for the function line is “base_python_script_name.method”.</p>
+<p>The syntax on the yaml file for the function line is "base_python_script_name.method".</p>
 
 <p>This means that my approach is going to be to run firefly with the config file:</p>
 
@@ -279,7 +279,7 @@ firefly.client.FireflyError: Firefly functions only accept named arguments
 </code></pre>
 </div>
 
-<p>I left the error (client.find(5)) in place because it illustrates that firefly only works with named arguments which wasn’t obvious (at least to me).</p>
+<p>I left the error (client.find(5)) in place because it illustrates that firefly only works with named arguments which wasn't obvious (at least to me).</p>
 
 <p>If you watch the logs on the firefly execution, you see something like this:</p>
 
@@ -295,7 +295,7 @@ http://127.0.0.1:8000/
 
 <h1 id="performance">Performance</h1>
 
-<p>In my initial implementation on my white_supremacy_speech expert, I’m getting a performance characteristic compatible with Tensor Flow execution assuming the libraries were already resident.  This means that my assumptions on how Firefly works were correct and this performance bottleneck has been addressed.  And that means that my plan on moving the guts of the other opinion tools into Firefly is solid.</p>
+<p>In my initial implementation on my white_supremacy_speech expert, I'm getting a performance characteristic compatible with Tensor Flow execution assuming the libraries were already resident.  This means that my assumptions on how Firefly works were correct and this performance bottleneck has been addressed.  And that means that my plan on moving the guts of the other opinion tools into Firefly is solid.</p>
 
 <h1 id="conclusion">Conclusion</h1>
 
