@@ -63,4 +63,6 @@ The test set is the collection of labeled data that you use to make sure that yo
 
 These are terms that are used to measure how your model performs and are different mathematical approaches for model performance.   
 
+# Thank You
 
+This blog post was reviewed by Elaine Thompson and Grant Vousden-Dishington.  My thanks are extended to both of them.
