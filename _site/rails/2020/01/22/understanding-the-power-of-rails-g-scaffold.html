@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Understanding the Power of rails g scaffold</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2020/01/22/understanding-the-power-of-rails-g-scaffold.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="Understanding the Power of rails g scaffold">
+
+  
+    <meta name="twitter:description"
+      content="
+
+Wow.  I am a damn idiot who has literally made his life harder than it ever needed to be — for years.  Sigh.  I am referring to the Rails generator and the scaffold command.  When you have comple...">
+  
+
+  
+    <meta name="twitter:image"
+      content="http://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+    
+  <script type="text/javascript">
+    function do_search() {
+      var searchForm = document.getElementById('search');
+      var q = document.getElementById('q');
+      var searchQuery = "site:fuzzyblog.io " + q.value;
+      document.location = "https://www.google.com/search?q=" + searchQuery;
+    }
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+          
+          <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div style="width: 50%; float:left; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed red">
+              <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound:<br/>Make applying for tech jobs suck less!</a>
+            </p>
+        </div>
+        <div style="width: 40%; float:right; text-align: center; valign: center; padding: 10px; border: 2px dashed blue">
+
+            <form id="search" action="https://www.google.com/search">
+              <input id="q" name="q" size=40>
+              <button type="submit" form="form1" value="Search" onclick="do_search();">Search</button><br/>&nbsp;
+            </form>
+
+        </div>
+        
+        <!--
+        <div style="width: 75%; float:left; ">&nbsp;&nbsp;&nbsp;</div>
+        -->
+          <!--
+        <div style="width: 20%; float:right; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+              <a href="http://www.fuzzyblog.io/" class="cta-button-blue">Hire Me!</a>
+            </p>
+        </div>
+            -->
+        <div style="clear: both;"></div>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Understanding the Power of rails g scaffold</h1>
+    <p class="I'll"><time datetime="2020-01-22T00:00:00-05:00" itemprop="datePublished">Jan 22, 2020</time> 
+      </p> 
+  </header>
+  
+
+  <div class="post-content" itemprop="articleBody">
+    <p class="center"><img src="/blog/assets/IMG_1463.jpeg" alt="IMG_1463.jpeg" /></p>
+
+<p>Wow.  I am a damn idiot who has literally made his life harder than it ever needed to be — for years.  Sigh.  I am referring to the Rails generator and the <strong>scaffold</strong> command.  When you have complex software tools, sometimes you don't discover features – great damn features – for a long time.  In this case I'm referring to:</p>
+
+<blockquote>
+  <p>rails g scaffold pluralized_object_name</p>
+</blockquote>
+
+<p>In my case, I'm building a project where the ultimate goal is to create a <em>label</em> on <em>something</em>.  Never mind what a label is or what the something is.  A friend I've been helping with Rails recently asked me what <strong>rails g scaffold</strong> does and I muttered something about "makes the model and controller in one go" but I never thought to try it myself until just now.  HOLY CRAP!  Wow.</p>
+
+<blockquote>
+  <p>rails g scaffold labels</p>
+</blockquote>
+
+<p>And here's what this generated for me:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>rails g scaffold Labels
+Running via Spring preloader in process 78104
+[WARNING] The model name 'Labels' was recognized as a plural, using the singular 'Label' 
+instead. Override with --force-plural or setup custom inflection rules for 
+this noun before running the generator.
+      invoke  active_record
+      create    db/migrate/20200122100533_create_labels.rb
+      create    app/models/label.rb
+      invoke    test_unit
+      create      test/models/label_test.rb
+      create      test/fixtures/labels.yml
+      invoke  resource_route
+       route    resources :labels
+      invoke  scaffold_controller
+      create    app/controllers/labels_controller.rb
+      invoke    erb
+      create      app/views/labels
+      create      app/views/labels/index.html.erb
+      create      app/views/labels/edit.html.erb
+      create      app/views/labels/show.html.erb
+      create      app/views/labels/new.html.erb
+      create      app/views/labels/_form.html.erb
+      append      app/views/shared/_left_nav.html.erb
+      invoke    test_unit
+      create      test/controllers/labels_controller_test.rb
+      create      test/system/labels_test.rb
+      invoke    helper
+      create      app/helpers/labels_helper.rb
+      invoke      test_unit
+      invoke  assets
+      invoke    scss
+      create      app/assets/stylesheets/labels.scss
+</code></pre>
+</div>
+
+<p>And this isn't just creating a raw file structure, the core controller itself and the tests are actually built for you.</p>
+
+<p>Here's the controller:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LabelsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="n">before_action</span> <span class="ss">:set_label</span><span class="p">,</span> <span class="ss">only: </span><span class="p">[</span><span class="ss">:show</span><span class="p">,</span> <span class="ss">:edit</span><span class="p">,</span> <span class="ss">:update</span><span class="p">,</span> <span class="ss">:destroy</span><span class="p">]</span>
+
+  <span class="c1"># GET /labels</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@pagy</span><span class="p">,</span> <span class="vi">@labels</span> <span class="o">=</span> <span class="n">pagy</span><span class="p">(</span><span class="no">Label</span><span class="p">.</span><span class="nf">all</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="c1"># GET /labels/1</span>
+  <span class="k">def</span> <span class="nf">show</span>
+  <span class="k">end</span>
+
+  <span class="c1"># GET /labels/new</span>
+  <span class="k">def</span> <span class="nf">new</span>
+    <span class="vi">@label</span> <span class="o">=</span> <span class="no">Label</span><span class="p">.</span><span class="nf">new</span>
+  <span class="k">end</span>
+
+  <span class="c1"># GET /labels/1/edit</span>
+  <span class="k">def</span> <span class="nf">edit</span>
+  <span class="k">end</span>
+
+  <span class="c1"># POST /labels</span>
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@label</span> <span class="o">=</span> <span class="no">Label</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">label_params</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="vi">@label</span><span class="p">.</span><span class="nf">save</span>
+      <span class="n">redirect_to</span> <span class="vi">@label</span><span class="p">,</span> <span class="ss">notice: </span><span class="s1">'Label was successfully created.'</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">:new</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="c1"># PATCH/PUT /labels/1</span>
+  <span class="k">def</span> <span class="nf">update</span>
+    <span class="k">if</span> <span class="vi">@label</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">label_params</span><span class="p">)</span>
+      <span class="n">redirect_to</span> <span class="vi">@label</span><span class="p">,</span> <span class="ss">notice: </span><span class="s1">'Label was successfully updated.'</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">:edit</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="c1"># DELETE /labels/1</span>
+  <span class="k">def</span> <span class="nf">destroy</span>
+    <span class="vi">@label</span><span class="p">.</span><span class="nf">destroy</span>
+    <span class="n">redirect_to</span> <span class="n">labels_url</span><span class="p">,</span> <span class="ss">notice: </span><span class="s1">'Label was successfully destroyed.'</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+    <span class="c1"># Use callbacks to share common setup or constraints between actions.</span>
+    <span class="k">def</span> <span class="nf">set_label</span>
+      <span class="vi">@label</span> <span class="o">=</span> <span class="no">Label</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="k">end</span>
+
+    <span class="c1"># Only allow a trusted parameter "white list" through.</span>
+    <span class="k">def</span> <span class="nf">label_params</span>
+      <span class="n">params</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="ss">:label</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+</code></pre>
+</div>
+
+<p>And here's the controller test:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'test_helper'</span>
+
+<span class="k">class</span> <span class="nc">LabelsControllerTest</span> <span class="o">&lt;</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">IntegrationTest</span>
+  <span class="n">setup</span> <span class="k">do</span>
+    <span class="vi">@label</span> <span class="o">=</span> <span class="n">labels</span><span class="p">(</span><span class="ss">:one</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="nb">test</span> <span class="s2">"should get index"</span> <span class="k">do</span>
+    <span class="n">get</span> <span class="n">labels_url</span>
+    <span class="n">assert_response</span> <span class="ss">:success</span>
+  <span class="k">end</span>
+
+  <span class="nb">test</span> <span class="s2">"should get new"</span> <span class="k">do</span>
+    <span class="n">get</span> <span class="n">new_label_url</span>
+    <span class="n">assert_response</span> <span class="ss">:success</span>
+  <span class="k">end</span>
+
+  <span class="nb">test</span> <span class="s2">"should create label"</span> <span class="k">do</span>
+    <span class="n">assert_difference</span><span class="p">(</span><span class="s1">'Label.count'</span><span class="p">)</span> <span class="k">do</span>
+      <span class="n">post</span> <span class="n">labels_url</span><span class="p">,</span> <span class="ss">params: </span><span class="p">{</span> <span class="ss">label: </span><span class="p">{</span>  <span class="p">}</span> <span class="p">}</span>
+    <span class="k">end</span>
+
+    <span class="n">assert_redirected_to</span> <span class="n">label_url</span><span class="p">(</span><span class="no">Label</span><span class="p">.</span><span class="nf">last</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="nb">test</span> <span class="s2">"should show label"</span> <span class="k">do</span>
+    <span class="n">get</span> <span class="n">label_url</span><span class="p">(</span><span class="vi">@label</span><span class="p">)</span>
+    <span class="n">assert_response</span> <span class="ss">:success</span>
+  <span class="k">end</span>
+
+  <span class="nb">test</span> <span class="s2">"should get edit"</span> <span class="k">do</span>
+    <span class="n">get</span> <span class="n">edit_label_url</span><span class="p">(</span><span class="vi">@label</span><span class="p">)</span>
+    <span class="n">assert_response</span> <span class="ss">:success</span>
+  <span class="k">end</span>
+
+  <span class="nb">test</span> <span class="s2">"should update label"</span> <span class="k">do</span>
+    <span class="n">patch</span> <span class="n">label_url</span><span class="p">(</span><span class="vi">@label</span><span class="p">),</span> <span class="ss">params: </span><span class="p">{</span> <span class="ss">label: </span><span class="p">{</span>  <span class="p">}</span> <span class="p">}</span>
+    <span class="n">assert_redirected_to</span> <span class="n">label_url</span><span class="p">(</span><span class="vi">@label</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="nb">test</span> <span class="s2">"should destroy label"</span> <span class="k">do</span>
+    <span class="n">assert_difference</span><span class="p">(</span><span class="s1">'Label.count'</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">do</span>
+      <span class="n">delete</span> <span class="n">label_url</span><span class="p">(</span><span class="vi">@label</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="n">assert_redirected_to</span> <span class="n">labels_url</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+<p>I've always been using generators:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>rails g model label 
+</code></pre>
+</div>
+
+<p>and</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>rails g controller Labels
+</code></pre>
+</div>
+
+<p>but then, for years, I've been manually writing my controllers, stubbing out my controller tests, adding stuff to the routes file, etc.  Wow.  I am just dumb founded in terms of how this:</p>
+
+<ul>
+  <li>improves the speed of rapid prototyping with Rails</li>
+  <li>improves quality by generating a test scaffold</li>
+  <li>writes a modern controller (I have certain learned coding practices that are likely pretty crappy from a decade plus of Rails experience when practices have changed)</li>
+</ul>
+
+<h2 id="caveats">Caveats</h2>
+
+<p>Here are some things that I don't like:</p>
+
+<ul>
+  <li>I'm personally an rspec junkie but the simple fact that this generates a complete test biases me towards it (note - I checked on a project where rspec was the default and it did generate a similar test but with rspec syntax) so this isn't really a caveat but something I wanted to point out</li>
+  <li>No support for generating factories, even on my project with rspec configured, but this is <a href="https://guides.rubyonrails.org/generators.html">customizable</a>.</li>
+  <li>No support for authorization (and I get that there can't be since that's an app level thing but security holes and security testing is damn important)</li>
+</ul>
+
+<h2 id="at-least-im-not-the-only-idiot-out-there">At Least I'm Not the Only Idiot Out There</h2>
+
+<p>I know there are people within the Rails community that are "generator resistant".  Hell – one of the Rails folk I loved pairing with most in known space used to (gently) chastise me for using "rails g" for anything other than the core migration.</p>
+
+<p>I know that if I was running a big Rails project, like the one that I used to be on, I'd not only make sure that my team used this but I'd also invest the time in customizing this pretty heavily so:</p>
+
+<ul>
+  <li>a factory file was generated</li>
+  <li>access control was added to the controller (I'd do it by an inheritance via a base_controller but an authorization directive was fine)</li>
+  <li>a policy file was written (useful if you are using Pundit)</li>
+  <li>the controller tests were enhanced with a logged in / logged out set of tests</li>
+</ul>
+
+<p>This is the power of generators – they are customizable and you can reduce the repetitive code that your team manually generates every single time.</p>
+
+  </div>
+  
+  <!--
+    http://fuzzyblog.io/blog/tag.html#aws
+    http://localhost:5000/blog/category.html#facebook
+  -->
+  
+  <hr/><br/>
+  <p><strong>Posted In:</strong>
+  
+    <a href="http://fuzzyblog.io/blog/tag.html#rails" >
+      #rails
+    </a>
+    
+  </p>
+  
+  <!--
+  <hr/><br/>
+  <div style="text-align: center;">
+      <ul class="list-inline tags" >       
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#rails" class="link_button">
+         rails
+       </a>
+     </li>
+     
+    </ul>
+
+  </div>
+-->  
+
+
+  
+  
+  
+
+</article>
+
+<div class="just-comments" data-apikey="2fb5b93f-dad4-41c0-a9c4-645079ddc541"></div>
+<script async src="https://just-comments.com/w.js"></script>
+
+
+      </div>
+    </div>
+
+    <div class="wrapper">
+  <div style="">
+    <!--
+    <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+      <a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Never be surprised by your kid's Xbox spending again!</a>
+    </p>
+      -->
+      <p style="text-align: center; padding: 10px; border: 2px dashed red">
+        <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound:<br/>Make applying for tech jobs suck less!</a>
+      </p>
+      
+  </div>
+</div>
+
+<footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
