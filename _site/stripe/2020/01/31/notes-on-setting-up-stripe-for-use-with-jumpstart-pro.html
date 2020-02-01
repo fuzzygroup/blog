@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>When rails credentials:edit Won&#39;t Save Your Credentials</title>
-  <meta name="description" content="">
+  <title>Notes on Setting Up Stripe for Use with Jumpstart Pro</title>
+  <meta name="description" content="I just finished, with a colleague's assistance, the SAAS implementation of a multi license product using Stripe as the billing engine and Jumpstart Pro as th...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2020/01/24/when-rails-credentials-edit-won-t-save-your-credentials.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/stripe/2020/01/31/notes-on-setting-up-stripe-for-use-with-jumpstart-pro.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,15 +39,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="When rails credentials:edit Won't Save Your Credentials">
+  <meta name="twitter:title" content="Notes on Setting Up Stripe for Use with Jumpstart Pro">
 
   
     <meta name="twitter:description"
-      content="
-
-Rails 5.2 and Rails 6 introduced the idea of rails credentials:edit which allowed you to create encrypted credentials that stored things like API keys with commands like this:
-
-rails credentials:...">
+      content="I just finished, with a colleague's assistance, the SAAS implementation of a multi license product using Stripe as the billing engine and Jumpstart Pro as the Rails application template.  Listed be...">
   
 
   
@@ -175,51 +171,45 @@ rails credentials:...">
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">When rails credentials:edit Won't Save Your Credentials</h1>
-    <p class="I'll"><time datetime="2020-01-24T00:00:00-05:00" itemprop="datePublished">Jan 24, 2020</time> 
+    <h1 class="post-title" itemprop="name headline">Notes on Setting Up Stripe for Use with Jumpstart Pro</h1>
+    <p class="I'll"><time datetime="2020-01-31T00:00:00-05:00" itemprop="datePublished">Jan 31, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_1474.jpeg" alt="IMG_1474.jpeg" /></p>
+    <p>I just finished, with a <a href="https://eethomp.github.io">colleague's assistance</a>, the SAAS implementation of a multi license product using <a href="https://www.stripe.com/">Stripe</a> as the billing engine and <a href="https://jumpstartrails.com/">Jumpstart Pro</a> as the Rails application template.  Listed below, in a mildly random order, are the steps we had to take:</p>
 
-<p>Rails 5.2 and Rails 6 introduced the idea of rails credentials:edit which allowed you to create encrypted credentials that stored things like API keys with commands like this:</p>
+<ol>
+  <li>Create a Stripe account.</li>
+  <li>Add your bank account credentials.</li>
+  <li>Define your <a href="https://dashboard.stripe.com/test/subscriptions/products">product</a> within Stripe.</li>
+  <li>Define your subscription plans within the product inside Stripe.  Pricing plans nest within one product which is not intuitive.</li>
+  <li>Add the Stripe credentials to the Rails environment. <a href="https://fuzzyblog.io/blog/rails/2020/01/24/when-rails-credentials-edit-won-t-save-your-credentials.html">Read This Post!</a></li>
+  <li>Install the <a href="https://stripe.com/docs/stripe-cli">Stripe listen</a> tool using Homebrew: brew install stripe/stripe-cli/stripe</li>
+  <li>Authenticate your Stripe listen with your stripe API key like this: stripe login –api-key pk_BLAH_FOO_BAR_BAZ_DOH_HOMER</li>
+  <li>Start the Stripe Listen tool (it defaults to port 3000; if you are running Rails on another port then you need to figure that bit out yourself).</li>
+  <li>Confirm in a browser that this is the right api return value (and, yes, this supports <a href="https://www.choosyosx.com/">Choosy</a>).</li>
+  <li>When you see the webhook signing secret show up then use the <a href="https://fuzzyblog.io/blog/rails/2020/01/24/when-rails-credentials-edit-won-t-save-your-credentials.html">rails credentials:edit</a> to add that to your environment.</li>
+  <li>
+    <p>Create a test transaction and you should see in the logs that the transaction went all the way through with entries something like the ones below.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rails credentials:edit --environment development
-</code></pre>
-</div>
-
-<p>What this does is create a file in config/credentials and edit and then (theoretically) save it, in an encrypted state.</p>
-
-<p>I was recently using this on a Rails 6 application and I found that no matter what I did my credentials <strong>did not</strong> save.  A <a href="https://eethomp.github.io/">colleague</a> of mine traced this to an issue with the $EDITOR variable I had set via this <a href="https://stackoverflow.com/questions/48539408/rails-5-2-encrypted-credentials-not-saving">Stack Overflow post</a>:</p>
-
-<blockquote>
-  <p>I had this problem in rails 5.2.0 using textmate as the editor. It turns out the credentials file must be closed after save in order for the changes to persist.</p>
-</blockquote>
-
-<p>My $EDITOR variable was set to:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>echo $EDITOR
-/usr/local/bin/mate
-</code></pre>
-</div>
-
-<p>The solution was actually simple – specify the editor before you run the command (and use VI as the editor) so:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>EDITOR=vi rails credentials:edit --environment development
-</code></pre>
-</div>
-
-<p>And bada bing, bada boom – my credentials were actually saved.</p>
-
-<h2 id="see-also">See Also</h2>
-
-<ul>
-  <li><a href="https://blog.bigbinary.com/2019/07/03/rails-6-adds-support-for-multi-environment-credentials.html">Big Binary</a></li>
-  <li><a href="https://stackoverflow.com/questions/50435193/cannot-edit-rails-credentials-rails-5-2">Stack Overflow</a></li>
-  <li><a href="https://medium.com/cedarcode/rails-5-2-credentials-9b3324851336">CedarCode</a></li>
-</ul>
+    <p>stripe listen
+&gt; Ready! Your webhook signing secret is whsec_TRyDDDDDDDDDDDwnW3Y3u6TY7hDc (^C to quit)
+2020-01-31 21:07:18   –&gt; setup_intent.succeeded [evt_1G7BOCARA9hqQw13nA4]
+2020-01-31 21:07:24   –&gt; customer.created [evt_1G7BODARA9hqQw13uTOc]
+2020-01-31 21:07:28   –&gt; payment_method.attached [evt_1G7BOEARA33c6vCsbI]
+2020-01-31 21:07:31   –&gt; customer.updated [evt_1G7BOEARA3b1n6m7mC]
+2020-01-31 21:09:25   –&gt; setup_intent.created [evt_1G7BQGARA9hucov62]
+2020-01-31 21:09:30   –&gt; setup_intent.created [evt_1G7BQJARzeSJPFuu]
+2020-01-31 21:09:33   –&gt; setup_intent.succeeded [evt_1G7BQ3uheaVInO]
+2020-01-31 21:09:34   –&gt; customer.updated [evt_1G7BQJARA9hqQNa0]
+2020-01-31 21:09:35   –&gt; invoice.created [evt_1G7BQJARA9hqQw13Rei]
+2020-01-31 21:09:35   –&gt; invoice.finalized [evt_1G7BQJARA9hqQw13LaF]
+2020-01-31 21:09:36   –&gt; customer.subscription.created [evt_1G7BQKARA9tQAPyfk]
+2020-01-31 21:09:43   –&gt; invoice.payment_succeeded [evt_1G7BQKARA9hqPYpc]</p>
+  </li>
+</ol>
 
   </div>
   
@@ -231,12 +221,16 @@ rails credentials:...">
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
+    <a href="http://fuzzyblog.io/blog/tag.html#stripe" >
+      #stripe
+    </a>
+    
     <a href="http://fuzzyblog.io/blog/tag.html#rails" >
       #rails
     </a>
     
-    <a href="http://fuzzyblog.io/blog/tag.html#credentials" >
-      #credentials
+    <a href="http://fuzzyblog.io/blog/tag.html#jumpstart" >
+      #jumpstart
     </a>
     
   </p>
@@ -247,14 +241,20 @@ rails credentials:...">
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#stripe" class="link_button">
+         stripe
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
        <a href="http://fuzzyblog.io/blog/tag.html#rails" class="link_button">
          rails
        </a>
      </li>
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#credentials" class="link_button">
-         credentials
+       <a href="http://fuzzyblog.io/blog/tag.html#jumpstart" class="link_button">
+         jumpstart
        </a>
      </li>
      

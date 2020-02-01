@@ -27,3 +27,9 @@ The solution was actually simple -- specify the editor before you run the comman
     EDITOR=vi rails credentials:edit --environment development
 
 And bada bing, bada boom -- my credentials were actually saved.
+
+## See Also
+
+* [Big Binary](https://blog.bigbinary.com/2019/07/03/rails-6-adds-support-for-multi-environment-credentials.html)
+* [Stack Overflow](https://stackoverflow.com/questions/50435193/cannot-edit-rails-credentials-rails-5-2)
+* [CedarCode](https://medium.com/cedarcode/rails-5-2-credentials-9b3324851336)
