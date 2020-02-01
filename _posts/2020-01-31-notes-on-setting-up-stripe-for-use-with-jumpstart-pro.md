@@ -10,13 +10,14 @@ I just finished, with a [colleague's assistance](https://eethomp.github.io), the
 2.  Add your bank account credentials.
 3. Define your [product](https://dashboard.stripe.com/test/subscriptions/products) within Stripe.
 4. Define your subscription plans within the product inside Stripe.  Pricing plans nest within one product which is not intuitive.
-5. Add the Stripe credentials to the Rails environment. [Read This Post!](https://fuzzyblog.io/blog/rails/2020/01/24/when-rails-credentials-edit-won-t-save-your-credentials.html)
-6. Install the [Stripe listen](https://stripe.com/docs/stripe-cli) tool using Homebrew: brew install stripe/stripe-cli/stripe 
-7. Authenticate your Stripe listen with your stripe API key like this: stripe login --api-key pk_BLAH_FOO_BAR_BAZ_DOH_HOMER
-8. Start the Stripe Listen tool (it defaults to port 3000; if you are running Rails on another port then you need to figure that bit out yourself).
-9. Confirm in a browser that this is the right api return value (and, yes, this supports [Choosy](https://www.choosyosx.com/)).
-10. When you see the webhook signing secret show up then use the [rails credentials:edit](https://fuzzyblog.io/blog/rails/2020/01/24/when-rails-credentials-edit-won-t-save-your-credentials.html) to add that to your environment.
-11. Create a test transaction and you should see in the logs that the transaction went all the way through with entries something like the ones below.
+5. Add the Stripe credentials to the Rails environment. [Read This Post!](https://fuzzyblog.io/blog/rails/2020/01/24/when-rails-credentials-edit-won-t-save-your-credentials.html).
+6. In the /admin/plans urls on your Jumpstart based application, define the plans and prices that you want to offer (remember to enter prices in pennies) and make sure that the plan identifier that Stripe generated is entered into the stripe field inside the plan creation tool.
+7. Install the [Stripe listen](https://stripe.com/docs/stripe-cli) tool using Homebrew: brew install stripe/stripe-cli/stripe 
+8. Authenticate your Stripe listen with your stripe API key like this: stripe login --api-key pk_BLAH_FOO_BAR_BAZ_DOH_HOMER
+9. Start the Stripe Listen tool (it defaults to port 3000; if you are running Rails on another port then you need to figure that bit out yourself).
+10. Confirm in a browser that this is the right api return value (and, yes, this supports [Choosy](https://www.choosyosx.com/)).
+11. When you see the webhook signing secret show up then use the [rails credentials:edit](https://fuzzyblog.io/blog/rails/2020/01/24/when-rails-credentials-edit-won-t-save-your-credentials.html) to add that to your environment.
+12. Create a test transaction using the [Stripe test card numbers](https://stripe.com/docs/testing#cards) and you should see in the logs that the transaction went all the way through with entries something like the ones below.
 
    
     stripe listen

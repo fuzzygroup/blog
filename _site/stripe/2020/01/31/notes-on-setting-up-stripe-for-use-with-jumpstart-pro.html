@@ -185,14 +185,15 @@
   <li>Add your bank account credentials.</li>
   <li>Define your <a href="https://dashboard.stripe.com/test/subscriptions/products">product</a> within Stripe.</li>
   <li>Define your subscription plans within the product inside Stripe.  Pricing plans nest within one product which is not intuitive.</li>
-  <li>Add the Stripe credentials to the Rails environment. <a href="https://fuzzyblog.io/blog/rails/2020/01/24/when-rails-credentials-edit-won-t-save-your-credentials.html">Read This Post!</a></li>
+  <li>Add the Stripe credentials to the Rails environment. <a href="https://fuzzyblog.io/blog/rails/2020/01/24/when-rails-credentials-edit-won-t-save-your-credentials.html">Read This Post!</a>.</li>
+  <li>In the /admin/plans urls on your Jumpstart based application, define the plans and prices that you want to offer (remember to enter prices in pennies) and make sure that the plan identifier that Stripe generated is entered into the stripe field inside the plan creation tool.</li>
   <li>Install the <a href="https://stripe.com/docs/stripe-cli">Stripe listen</a> tool using Homebrew: brew install stripe/stripe-cli/stripe</li>
   <li>Authenticate your Stripe listen with your stripe API key like this: stripe login –api-key pk_BLAH_FOO_BAR_BAZ_DOH_HOMER</li>
   <li>Start the Stripe Listen tool (it defaults to port 3000; if you are running Rails on another port then you need to figure that bit out yourself).</li>
   <li>Confirm in a browser that this is the right api return value (and, yes, this supports <a href="https://www.choosyosx.com/">Choosy</a>).</li>
   <li>When you see the webhook signing secret show up then use the <a href="https://fuzzyblog.io/blog/rails/2020/01/24/when-rails-credentials-edit-won-t-save-your-credentials.html">rails credentials:edit</a> to add that to your environment.</li>
   <li>
-    <p>Create a test transaction and you should see in the logs that the transaction went all the way through with entries something like the ones below.</p>
+    <p>Create a test transaction using the <a href="https://stripe.com/docs/testing#cards">Stripe test card numbers</a> and you should see in the logs that the transaction went all the way through with entries something like the ones below.</p>
 
     <p>stripe listen
 &gt; Ready! Your webhook signing secret is whsec_TRyDDDDDDDDDDDwnW3Y3u6TY7hDc (^C to quit)
