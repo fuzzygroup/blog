@@ -4,6 +4,9 @@ title: Notes on Setting Up Stripe for Use with Jumpstart Pro
 category: stripe
 tags: ["stripe", "rails", "jumpstart"]
 ---
+{:.center}
+![IMG_1562.jpeg](/blog/assets/IMG_1562.jpeg)
+
 I just finished, with a [colleague's assistance](https://eethomp.github.io), the SAAS implementation of a multi license product using [Stripe](https://www.stripe.com/) as the billing engine and [Jumpstart Pro](https://jumpstartrails.com/) as the Rails application template.  Listed below, in a mildly random order, are the steps we had to take:
 
 1.  Create a Stripe account.
@@ -34,3 +37,6 @@ I just finished, with a [colleague's assistance](https://eethomp.github.io), the
     2020-01-31 21:09:35   --> invoice.finalized [evt_1G7BQJARA9hqQw13LaF]
     2020-01-31 21:09:36   --> customer.subscription.created [evt_1G7BQKARA9tQAPyfk]
     2020-01-31 21:09:43   --> invoice.payment_succeeded [evt_1G7BQKARA9hqPYpc]
+    
+    
+**Note**: Once you do all the above steps then you still need to use the Copy Product to Live mode option to move the products and plans you built for testing to the production mode.  And then you'll need to move the subscription plan ids over as well since these will be changed.

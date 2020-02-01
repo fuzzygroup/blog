@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Getting Started with Pundit</title>
+  <title>Belt, Suspenders and Possible Overcomplications in Home Control</title>
   <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2020/01/25/getting-started-with-pundit.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/hardware/2020/02/01/belt-suspenders-and-possible-overcomplications-in-home-control.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,13 +39,13 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Getting Started with Pundit">
+  <meta name="twitter:title" content="Belt, Suspenders and Possible Overcomplications in Home Control">
 
   
     <meta name="twitter:description"
       content="
 
-Pundit, a Rails gem that my former boss, Taylor Williams, taught me is a tool for &quot;simple, robust and scalable authorization system&quot; and the more I play with authorization, the more tru...">
+I mildly shudder to write this post and I strongly hope that it  received with all the good intentions that I have.  I saw that my friend Greg Stein wrote a damn interesting post about home contr...">
   
 
   
@@ -173,115 +173,26 @@ Pundit, a Rails gem that my former boss, Taylor Williams, taught me is a tool fo
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Getting Started with Pundit</h1>
-    <p class="I'll"><time datetime="2020-01-25T00:00:00-05:00" itemprop="datePublished">Jan 25, 2020</time> 
+    <h1 class="post-title" itemprop="name headline">Belt, Suspenders and Possible Overcomplications in Home Control</h1>
+    <p class="I'll"><time datetime="2020-02-01T00:00:00-05:00" itemprop="datePublished">Feb 1, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_1424.jpeg" alt="IMG_1424.jpeg" /></p>
+    <p class="center"><img src="/blog/assets/IMG_1623.jpeg" alt="IMG_1623.jpeg" /></p>
 
-<p><a href="https://github.com/varvet/pundit">Pundit</a>, a Rails gem that my former boss, Taylor Williams, taught me is a tool for "simple, robust and scalable authorization system" and the more I play with authorization, the more true I find that.  This blog post lays out how to get started with Pundit with more details coming down the road.</p>
+<p>I mildly shudder to write this post and I strongly hope that it  received with all the <strong>good intentions</strong> that I have.  I saw that my friend Greg Stein wrote a <a href="http://prng.blogspot.com/2020/02/howto-environment-sensors-in-home.html">damn interesting post about home control and water sensors</a>.  Greg is one of those scarily smart folks that makes me feel a bit like a knuckle dragging monkey, who, at times, is picking things out of his fur and debating "should I eat this or not?".</p>
 
-<p>I will freely admit that when Taylor taught me Pundit, I grokked about maybe 1/10th of 1/10th of what he taught me (the <a href="https://www.seaseducation.com/attain-info/">project I worked on under Taylor</a> had a staggeringly complex security scheme).  What I found, once I started from scratch with Pundit, is that it is strikingly simple to understand and a huge improvement over former Rails security gems like CanCan.</p>
+<p>In this post, Greg builds a wonderful home control system that will notify him anywhere that he is in the world if a leak occurs (he had a fish tank leak that led to him say "hm… I can fix this").  This is utterly classic "Nerd Itch Scratching" and I actually love the solution that he came up with but it made me think a lot about the number of <em>moving parts</em> in his solution.  I had a similar issue back in 2017 and I <a href="https://fuzzyblog.io/blog/house/2017/01/07/protecting-your-home-from-water-damage.html">wrote up my solution at that time</a>.</p>
 
-<h2 id="security-basics-authentication-versus-authorization">Security Basics: Authentication versus Authorization</h2>
-
-<p>There are two basic security concepts that often get tangled up together so let's start with the basics:</p>
+<p>This is one of those things where I suspect the actual answer is both things:</p>
 
 <ul>
-  <li>Authentication - Should the user be allowed access into the <strong>system</strong>?</li>
-  <li>Authorization - Should the user be granted permission to do <strong>something</strong> with a <strong>item</strong> within the <strong>system</strong>?</li>
+  <li>The sophisticated approach that let's you monitor from anywhere and play with a time series database (<a href="https://www.influxdata.com/">InfluxDB</a>; I'm jealous, TSDBs are cool)</li>
+  <li>The brutally simply solution that I came up with because even if what I did isn't remotely monitorable, my solution is so simple (and cheap) that it qualifies as backup to the complex solution</li>
+  <li>You spend more time at home than you do away which means that statistically the leak is more likely to happen when you are home.  And  because systems with lots of moving parts are inherently something that can break, having backup, even if imperfect might not be a bad idea.</li>
 </ul>
-
-<p>It should be noted that:</p>
-
-<ul>
-  <li>system</li>
-  <li>something</li>
-  <li>item</li>
-</ul>
-
-<p>are all not defined.  That's actually intentional at this point because we need to work in terms of abstractions and all of those are abstract.</p>
-
-<h2 id="installing-pundit">Installing Pundit</h2>
-
-<p>Here's what you have to do:</p>
-
-<ol>
-  <li>Add it into Gemfile i.e. gem "pundit"</li>
-  <li>Add it into application_controller.rb i.e. include Pundit</li>
-  <li>Run the pundit generator: rails g pundit:install</li>
-  <li>Restart your server</li>
-</ol>
-
-<h2 id="using-pundit">Using Pundit</h2>
-
-<p>The way that Pundit works is that authorization is handled at the Rails controller level via an <strong>authorize</strong> statement like this:</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># GET /projects</span>
-<span class="k">def</span> <span class="nf">index</span>
-  <span class="vi">@pagy</span><span class="p">,</span> <span class="vi">@projects</span> <span class="o">=</span> <span class="n">pagy</span><span class="p">(</span><span class="n">current_user</span><span class="p">.</span><span class="nf">projects</span><span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="s2">"id DESC"</span><span class="p">))</span>
-  <span class="n">authorize</span> <span class="vi">@projects</span>
-<span class="k">end</span>
-</code></pre>
-</div>
-
-<p>So you make an instance variable of what you want to display in your HTML view template and then you authorize it via Pundit.  The authorization is then defined by a Policy file stored in /app/policies/classname_policy.rb.  Here's an example for the project.rb class:</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ProjectPolicy</span> <span class="o">&lt;</span> <span class="no">ApplicationPolicy</span>
-  <span class="kp">attr_reader</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">:project</span>
-
-  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span>
-    <span class="vi">@user</span> <span class="o">=</span> <span class="n">user</span>
-    <span class="vi">@project</span> <span class="o">=</span> <span class="n">project</span>
-  <span class="k">end</span>
-
-  <span class="c1"># Inheriting from the application policy scope generated by the generator</span>
-   <span class="k">class</span> <span class="nc">Scope</span> <span class="o">&lt;</span> <span class="no">Scope</span>
-     <span class="k">def</span> <span class="nf">resolve</span>
-       <span class="k">if</span> <span class="n">user</span><span class="p">.</span><span class="nf">admin?</span>
-         <span class="n">scope</span><span class="p">.</span><span class="nf">all</span>
-       <span class="k">else</span>
-         <span class="n">scope</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">active: </span><span class="kp">true</span><span class="p">)</span>
-       <span class="k">end</span>
-     <span class="k">end</span>
-   <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">index?</span>
-    <span class="n">valid_user?</span>
-  <span class="k">end</span>
-  
-  <span class="c1"># this ilustrates that the user MUST be logged in and </span>
-  <span class="c1"># that the owner of the data has to be the logged in user</span>
-  <span class="k">def</span> <span class="nf">show?</span>
-    <span class="n">valid_user?</span> <span class="o">&amp;&amp;</span> <span class="n">project</span><span class="p">.</span><span class="nf">user</span> <span class="o">==</span> <span class="n">user</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">edit?</span>
-    <span class="n">valid_user?</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">new?</span>
-    <span class="n">valid_user?</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">create?</span>
-    <span class="n">valid_user?</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">destroy?</span>
-    <span class="n">valid_user?</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">update?</span>
-    <span class="n">valid_user?</span>
-  <span class="k">end</span>
-
-<span class="k">end</span>
-</code></pre>
-</div>
 
   </div>
   
@@ -293,16 +204,12 @@ Pundit, a Rails gem that my former boss, Taylor Williams, taught me is a tool fo
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#pundit" >
-      #pundit
+    <a href="http://fuzzyblog.io/blog/tag.html#hardware" >
+      #hardware
     </a>
     
-    <a href="http://fuzzyblog.io/blog/tag.html#rails" >
-      #rails
-    </a>
-    
-    <a href="http://fuzzyblog.io/blog/tag.html#security" >
-      #security
+    <a href="http://fuzzyblog.io/blog/tag.html#home_control" >
+      #home_control
     </a>
     
   </p>
@@ -313,20 +220,14 @@ Pundit, a Rails gem that my former boss, Taylor Williams, taught me is a tool fo
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#pundit" class="link_button">
-         pundit
+       <a href="http://fuzzyblog.io/blog/tag.html#hardware" class="link_button">
+         hardware
        </a>
      </li>
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#rails" class="link_button">
-         rails
-       </a>
-     </li>
-     
-     <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#security" class="link_button">
-         security
+       <a href="http://fuzzyblog.io/blog/tag.html#home_control" class="link_button">
+         home_control
        </a>
      </li>
      

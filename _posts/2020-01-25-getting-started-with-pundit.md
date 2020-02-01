@@ -4,6 +4,10 @@ title: Getting Started with Pundit
 category: rails
 tags: ["pundit", "rails", "security"]
 ---
+{:.center}
+![IMG_1424.jpeg](/blog/assets/IMG_1424.jpeg)
+
+
 [Pundit](https://github.com/varvet/pundit), a Rails gem that my former boss, Taylor Williams, taught me is a tool for "simple, robust and scalable authorization system" and the more I play with authorization, the more true I find that.  This blog post lays out how to get started with Pundit with more details coming down the road.
 
 I will freely admit that when Taylor taught me Pundit, I grokked about maybe 1/10th of 1/10th of what he taught me (the [project I worked on under Taylor](https://www.seaseducation.com/attain-info/) had a staggeringly complex security scheme).  What I found, once I started from scratch with Pundit, is that it is strikingly simple to understand and a huge improvement over former Rails security gems like CanCan.
