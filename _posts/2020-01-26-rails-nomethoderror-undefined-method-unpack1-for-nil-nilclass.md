@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Rails -- NoMethodError: undefined method unpack1 for nil:NilClass
+title: Rails -- NoMethodError undefined method unpack1 for nil NilClass
 category: rails
 tags: ["rails"]
 ---
