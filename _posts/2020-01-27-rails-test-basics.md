@@ -31,6 +31,25 @@ and to run verbosely and fail on the first test failure:
 
     rails test -v -f test/helpers/application_helper.rb
 
+and to run just one specific test:
+
+    rails test test/controllers/labels_controller_test.rb:9
+
+Note: RSpec is very good at running the next test if the line number shifts a bit (example you put in :8 but you added a line so its actually :9).  With standard rails test, you get this madness:
+
+    ❯ rails test test/controllers/projects_controller_test.rb:17
+    Running via Spring preloader in process 95090
+    Run options: --seed 52687
+    
+    # Running:
+    
+    Finished in 0.010622s, 0.0000 runs/s, 0.0000 assertions/s.
+    0 runs, 0 assertions, 0 failures, 0 errors, 0 skips
+
+The 0 runs, 0 assertions, 0 failures, 0 errors, 0 skips can best be interpreted as:
+
+> Yo! Hoser! I don't know what to do here so I'm going to confuse you deliberately. Ha Haw!
+
 ## Death to Fixtures; Viva La Factory Bot
 
 Within the RSpec world, we long, long ago tossed out the concept of static fixtures and embraced the world of Factories via [FactoryBot](https://github.com/thoughtbot/factory_bot/blob/master/GETTING_STARTED.md). I haven't used classical Rails testing with FactoryBot before but here's what to do:
@@ -78,6 +97,17 @@ As shown above, the canonical test operator is assert_something (or just assert)
 * assert_select
 
 And I am certain that there are more but this is a decent sampling of most of the assertion statements that I can remember using once upon a time.
+
+## Using assert_redirected_to
+
+Here's a minimal example of assert_redirected_to:
+
+```ruby
+test "should get index and redirect to / when logged in and no projects" do 
+  get labels_url
+  assert_redirected_to new_user_session_path
+end
+```
 
 
 

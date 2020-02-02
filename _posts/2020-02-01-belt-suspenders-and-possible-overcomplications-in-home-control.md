@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Belt, Suspenders and Possible Overcomplications in Home Control
+title: Belt and Suspenders and Possible Overcomplications in Home Control
 category: hardware
 tags: ["hardware", "home_control"]
 ---

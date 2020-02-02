@@ -1,6 +1,6 @@
 ---
 layout: post
-title: The Power of production In development
+title: The Power of Using Production In Development
 category: rails
 tags: ["rails"]
 ---

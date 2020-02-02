@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>The Power of Using Production In Development</title>
+  <title>When You Can&#39;t Run Rails Console Restart Spring</title>
   <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2020/02/01/the-power-of-production-in-development.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2020/02/02/when-you-can-t-run-rails-console-restart-spring.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,13 +39,16 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="The Power of Using Production In Development">
+  <meta name="twitter:title" content="When You Can't Run Rails Console Restart Spring">
 
   
     <meta name="twitter:description"
       content="
 
-I spent a lot of time today trying to get something to deploy and hitting a near unending set of small issues that still broke the entire deploy (Rails in production mode is WAY less forgiving th...">
+So I just hit this little gem of a pissant thing (yep - it is already that type of day):
+
+RAILS_ENV=development rails c
+/Users/sjohnson/.rvm/gems/ruby-2.7.0/gems/railties-6.0.2.1/lib/rails/applic...">
   
 
   
@@ -173,26 +176,31 @@ I spent a lot of time today trying to get something to deploy and hitting a near
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">The Power of Using Production In Development</h1>
-    <p class="I'll"><time datetime="2020-02-01T00:00:00-05:00" itemprop="datePublished">Feb 1, 2020</time> 
+    <h1 class="post-title" itemprop="name headline">When You Can't Run Rails Console Restart Spring</h1>
+    <p class="I'll"><time datetime="2020-02-02T00:00:00-05:00" itemprop="datePublished">Feb 2, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_1647.jpeg" alt="IMG_1647.jpeg" /></p>
+    <p class="center"><img src="/blog/assets/IMG_1621.jpeg" alt="IMG_1621.jpeg" /></p>
 
-<p>I spent a lot of time today trying to get something to deploy and hitting a near unending set of small issues that still broke the entire deploy (Rails in production mode is WAY less forgiving than Rails in development mode).  And, to be honest, the constant stream of cursing was, perhaps, my less than finest moment (friends of mine, at least two, are now laughing hard).</p>
+<p>So I just hit this little gem of a pissant thing (yep - it is already that type of day):</p>
 
-<p>An old school trick for helping with this is to run production mode locally and see if rails console comes up.  As a general rule of thumb, if rails console works, then rails itself will work.</p>
-
-<p>Here's how to do this:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>RAILS_ENV=production bundle exec rails c
+<div class="highlighter-rouge"><pre class="highlight"><code>RAILS_ENV=development rails c
+/Users/sjohnson/.rvm/gems/ruby-2.7.0/gems/railties-6.0.2.1/lib/rails/application/configuration.rb:241:in `database_configuration': Cannot load database configuration:
+Could not load database configuration. No such file - ["config/database.yml"] (RuntimeError)
 </code></pre>
 </div>
 
-<p>And this one, simple, stupid trick tends to reveal a lot of issues.  <strong>Recommended</strong>.</p>
+<p>The issue was that I changed my underlying project directory and then had to re clone at the git level.  The culprit, naturally, was Spring so it took a:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>bin/spring stop
+bin/spring start
+</code></pre>
+</div>
+
+<p>And this time, I actually put the answer into <a href="https://stackoverflow.com/questions/32539062/rails-could-not-load-database-configuration-no-such-file/60024457#60024457">Stack Overflow</a>; I wonder if it will get accepted.</p>
 
   </div>
   
