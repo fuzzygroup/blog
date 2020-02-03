@@ -7,7 +7,18 @@ tags: ["rails", "test"]
 {:.center}
 ![IMG_1419.jpeg](/blog/assets/IMG_1419.jpeg)
 
-More than a decade using RSpec has left me flummoxed in terms of "classical" Rails testing.  I'm on a new project built using the Jumpstart application template and all the tests are standard Rails tests so here's a quick recap that I wrote, well, to force myself to step back in time and go "old school".  And if you don't like my version then you should really read [this](https://guides.rubyonrails.org/testing.html).
+More than a decade using RSpec has left me flummoxed in terms of "classical" Rails testing.  I'm on a new project built using the Jumpstart application template and all the tests are standard Rails tests so here's a quick recap that I wrote, well, to force myself to step back in time and go "old school".  And if you don't like my version then you should really read [this](https://guides.rubyonrails.org/testing.html).  And if you are using Devise for authentication then you really must read [this](https://medium.com/@yutafujii_59175/a-simple-login-test-with-rails-devise-and-unit-test-68bc4fade4ba).
+
+## Making Tests Debuggable
+
+The ability to use byebug in a testing context for breakpoints and stepping through code is utterly invaluable.  Here's what you need to do for that:
+
+1.  Add byebug into a development, test group in Gemfile.
+2. Add the line **require 'byebug'** to the very top of test_helper.rb
+
+## How Do You Skip a Test?
+
+You put the keyword 'skip' at the top of the test that you need to skip.  This is equivalent to xit in RSpec.
 
 ## Running Tests
 

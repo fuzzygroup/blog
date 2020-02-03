@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Rails Test Basics</title>
-  <meta name="description" content="">
+  <title>A Regular Expression for Validating An Internet Domain</title>
+  <meta name="description" content="Despite the power and truth of Jamie Zawinski's law:">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2020/01/27/rails-test-basics.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/regex/2020/02/03/a-regex-for-an-internet-domain.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,13 +39,17 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Rails Test Basics">
+  <meta name="twitter:title" content="A Regular Expression for Validating An Internet Domain">
 
   
     <meta name="twitter:description"
-      content="
+      content="Despite the power and truth of Jamie Zawinski's law:
 
-More than a decade using RSpec has left me flummoxed in terms of &quot;classical&quot; Rails testing.  I'm on a new project built using the Jumpstart application template and all the tests are st...">
+
+  Regular Expressions: Now You Have Two Problems Jeff Atwood's Perspective
+
+
+Like Jeff, I too really, really love regular expressions or regex...">
   
 
   
@@ -173,150 +177,44 @@ More than a decade using RSpec has left me flummoxed in terms of &quot;classical
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Rails Test Basics</h1>
-    <p class="I'll"><time datetime="2020-01-27T00:00:00-05:00" itemprop="datePublished">Jan 27, 2020</time> 
+    <h1 class="post-title" itemprop="name headline">A Regular Expression for Validating An Internet Domain</h1>
+    <p class="I'll"><time datetime="2020-02-03T00:00:00-05:00" itemprop="datePublished">Feb 3, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_1419.jpeg" alt="IMG_1419.jpeg" /></p>
-
-<p>More than a decade using RSpec has left me flummoxed in terms of "classical" Rails testing.  I'm on a new project built using the Jumpstart application template and all the tests are standard Rails tests so here's a quick recap that I wrote, well, to force myself to step back in time and go "old school".  And if you don't like my version then you should really read <a href="https://guides.rubyonrails.org/testing.html">this</a>.  And if you are using Devise for authentication then you really must read <a href="https://medium.com/@yutafujii_59175/a-simple-login-test-with-rails-devise-and-unit-test-68bc4fade4ba">this</a>.</p>
-
-<h2 id="making-tests-debuggable">Making Tests Debuggable</h2>
-
-<p>The ability to use byebug in a testing context for breakpoints and stepping through code is utterly invaluable.  Here's what you need to do for that:</p>
-
-<ol>
-  <li>Add byebug into a development, test group in Gemfile.</li>
-  <li>Add the line <strong>require 'byebug'</strong> to the very top of test_helper.rb</li>
-</ol>
-
-<h2 id="how-do-you-skip-a-test">How Do You Skip a Test?</h2>
-
-<p>You put the keyword 'skip' at the top of the test that you need to skip.  This is equivalent to xit in RSpec.</p>
-
-<h2 id="running-tests">Running Tests</h2>
-
-<p>The very basic of testing is nothing more than test execution so to run all model tests:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>rails test test/models/
-</code></pre>
-</div>
-
-<p>and to run one file</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>rails test test/models/user_test.rb    
-</code></pre>
-</div>
-
-<p>and to run everything:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>rails test     
-</code></pre>
-</div>
-
-<p>and to run with verbose mode:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>rails test -v test/models  
-</code></pre>
-</div>
-
-<p>and to run verbosely and fail on the first test failure:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>rails test -v -f test/helpers/application_helper.rb
-</code></pre>
-</div>
-
-<p>and to run just one specific test:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>rails test test/controllers/labels_controller_test.rb:9
-</code></pre>
-</div>
-
-<p>Note: RSpec is very good at running the next test if the line number shifts a bit (example you put in :8 but you added a line so its actually :9).  With standard rails test, you get this madness:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ rails test test/controllers/projects_controller_test.rb:17
-Running via Spring preloader in process 95090
-Run options: --seed 52687
-
-# Running:
-
-Finished in 0.010622s, 0.0000 runs/s, 0.0000 assertions/s.
-0 runs, 0 assertions, 0 failures, 0 errors, 0 skips
-</code></pre>
-</div>
-
-<p>The 0 runs, 0 assertions, 0 failures, 0 errors, 0 skips can best be interpreted as:</p>
+    <p>Despite the power and truth of Jamie Zawinski's law:</p>
 
 <blockquote>
-  <p>Yo! Hoser! I don't know what to do here so I'm going to confuse you deliberately. Ha Haw!</p>
+  <p>Regular Expressions: Now You Have Two Problems <a href="https://blog.codinghorror.com/regular-expressions-now-you-have-two-problems/">Jeff Atwood's Perspective</a></p>
 </blockquote>
 
-<h2 id="death-to-fixtures-viva-la-factory-bot">Death to Fixtures; Viva La Factory Bot</h2>
+<p>Like Jeff, I too really, really <strong>love</strong> regular expressions or regexes.  I use this one a lot and I finally learned to use \S (Any non-whitespace character) so here's a regex</p>
 
-<p>Within the RSpec world, we long, long ago tossed out the concept of static fixtures and embraced the world of Factories via <a href="https://github.com/thoughtbot/factory_bot/blob/master/GETTING_STARTED.md">FactoryBot</a>. I haven't used classical Rails testing with FactoryBot before but here's what to do:</p>
-
-<ol>
-  <li>Add FactoryBot to Gemfile in a test section.</li>
-  <li>Run bundle install.</li>
-  <li>Create a factories directory mkdir test/factories</li>
-  <li>Generate a sample factory</li>
-  <li>Add include FactoryBot::Syntax::Methods to the top of test/test_helper.rb</li>
-  <li>Stop spring with  bin/spring stop</li>
-  <li>Start spring with  bin/spring start</li>
-  <li>Write a simple test using FactoryBot like my <a href="https://fuzzyblog.io/blog/rspec/2020/01/03/ruby-testing-technique-the-power-and-stupidity-of-def-foo.html">test foo blog post</a>.</li>
-  <li>Run the test.</li>
-</ol>
-
-<p>Here's a sample test using my foo example:</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'test_helper'</span>
-
-<span class="k">class</span> <span class="nc">LabelTest</span> <span class="o">&lt;</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">TestCase</span>
-  
-  <span class="nb">test</span> <span class="s1">'should return foo'</span> <span class="k">do</span>
-    <span class="n">subject</span> <span class="o">=</span> <span class="no">FactoryBot</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">:label</span><span class="p">)</span>
-    <span class="n">assert_equal</span> <span class="n">subject</span><span class="p">.</span><span class="nf">foo</span><span class="p">,</span> <span class="s1">'bar'</span>
-  <span class="k">end</span>
-  
-  <span class="nb">test</span> <span class="s1">'should return FOO'</span> <span class="k">do</span>
-    <span class="n">assert_equal</span> <span class="no">Label</span><span class="p">.</span><span class="nf">foo</span><span class="p">,</span> <span class="s1">'BAR'</span>
-  <span class="k">end</span>
-<span class="k">end</span>
+<div class="highlighter-rouge"><pre class="highlight"><code>^\S+\.\S+$
 </code></pre>
 </div>
 
-<h2 id="writing-tests">Writing Tests</h2>
+<p>that I wrote yesterday to "validate" the permitted characters in an Internet domain.  I was all proud of this and wrote this blog post only to realize that pride really does goeth before a fall – this will NOT correctly validate an Internet domain.  As I write this post, I realize that the number of allowed characters in an Internet domain are actually NOT any non-whitespace characters and here's the proof that I actually got that wrong yesterday when I put something online using it:</p>
 
-<p>As shown above, the canonical test operator is assert_something (or just assert).  Above I am using assert_equal but there are lots of assertion statements including:</p>
+<p class="center"><img src="/blog/assets/rubular_and_underscores.png" alt="rubular_and_underscores.png" /></p>
 
-<ul>
-  <li>assert</li>
-  <li>assert_equal</li>
-  <li>assert_response</li>
-  <li>assert_difference do</li>
-  <li>assert_redirected_to</li>
-  <li>assert_not_nil</li>
-  <li>assert_no_difference do</li>
-  <li>assert_match</li>
-  <li>assert_select</li>
-</ul>
+<p><strong>Note</strong>: The fact that Rubular allows through an _ which is NOT a valid character in domains is problematic.</p>
 
-<p>And I am certain that there are more but this is a decent sampling of most of the assertion statements that I can remember using once upon a time.</p>
+<p>So the right way to do this, DAMN IT, is something like this:</p>
 
-<h2 id="using-assertredirectedto">Using assert_redirected_to</h2>
-
-<p>Here's a minimal example of assert_redirected_to:</p>
-
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">test</span> <span class="s2">"should get index and redirect to / when logged in and no projects"</span> <span class="k">do</span> 
-  <span class="n">get</span> <span class="n">labels_url</span>
-  <span class="n">assert_redirected_to</span> <span class="n">new_user_session_path</span>
-<span class="k">end</span>
+<div class="highlighter-rouge"><pre class="highlight"><code>^[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+$
 </code></pre>
 </div>
 
+<p>And this actually works:</p>
+
+<p class="center"><img src="/blog/assets/rubular_no_s.png" alt="rubular_no_s.png" /></p>
+
+<p>The [A-Za-z0-9-]+ is a "character class" which says "Any uppercase or lowercase letter plus 0-9 plus a -" are allowed (any order, any quantity)".</p>
+
+<p>Regular Expressions – Now you have two problems.</p>
 
   </div>
   
@@ -328,12 +226,8 @@ Finished in 0.010622s, 0.0000 runs/s, 0.0000 assertions/s.
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#rails" >
-      #rails
-    </a>
-    
-    <a href="http://fuzzyblog.io/blog/tag.html#test" >
-      #test
+    <a href="http://fuzzyblog.io/blog/tag.html#regex" >
+      #regex
     </a>
     
   </p>
@@ -344,14 +238,8 @@ Finished in 0.010622s, 0.0000 runs/s, 0.0000 assertions/s.
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#rails" class="link_button">
-         rails
-       </a>
-     </li>
-     
-     <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#test" class="link_button">
-         test
+       <a href="http://fuzzyblog.io/blog/tag.html#regex" class="link_button">
+         regex
        </a>
      </li>
      
