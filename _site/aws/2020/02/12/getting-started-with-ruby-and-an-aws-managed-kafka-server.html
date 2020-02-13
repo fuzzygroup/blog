@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Getting Started with Ruby and an AWS Managed Kafka Server</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/aws/2020/02/12/getting-started-with-ruby-and-an-aws-managed-kafka-server.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="Getting Started with Ruby and an AWS Managed Kafka Server">
+
+  
+    <meta name="twitter:description"
+      content="
+
+I am in the position of building a data pipeline that looks like this:
+
+
+  Kafka as the core repository using an AWS Managed Kafka Server
+  A data feed from Twitter feeding into Kafka using the r...">
+  
+
+  
+    <meta name="twitter:image"
+      content="http://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+    
+  <script type="text/javascript">
+    function do_search() {
+      var searchForm = document.getElementById('search');
+      var q = document.getElementById('q');
+      var searchQuery = "site:fuzzyblog.io " + q.value;
+      document.location = "https://www.google.com/search?q=" + searchQuery;
+    }
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+          
+          <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div style="width: 50%; float:left; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed red">
+              <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound:<br/>Make applying for tech jobs suck less!</a>
+            </p>
+        </div>
+        <div style="width: 40%; float:right; text-align: center; valign: center; padding: 10px; border: 2px dashed blue">
+
+            <form id="search" action="https://www.google.com/search">
+              <input id="q" name="q" size=40>
+              <button type="submit" form="form1" value="Search" onclick="do_search();">Search</button><br/>&nbsp;
+            </form>
+
+        </div>
+        
+        <!--
+        <div style="width: 75%; float:left; ">&nbsp;&nbsp;&nbsp;</div>
+        -->
+          <!--
+        <div style="width: 20%; float:right; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+              <a href="http://www.fuzzyblog.io/" class="cta-button-blue">Hire Me!</a>
+            </p>
+        </div>
+            -->
+        <div style="clear: both;"></div>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Getting Started with Ruby and an AWS Managed Kafka Server</h1>
+    <p class="I'll"><time datetime="2020-02-12T00:00:00-05:00" itemprop="datePublished">Feb 12, 2020</time> 
+      </p> 
+  </header>
+  
+
+  <div class="post-content" itemprop="articleBody">
+    <p class="center"><img src="/blog/assets/IMG_1839.jpg" alt="IMG_1839.jpg" /></p>
+
+<p>I am in the position of building a data pipeline that looks like this:</p>
+
+<ul>
+  <li>Kafka as the core repository using an <a href="https://us-east-2.console.aws.amazon.com/msk/home?region=us-east-2#/home">AWS Managed Kafka Server</a></li>
+  <li>A data feed from Twitter feeding into Kafka using the <a href="https://github.com/zendesk/ruby-kafka">ruby-kafka</a> gem from Zendesk</li>
+  <li>Python Machine Learning routines processing the data in Kafka and outputting it to SQS</li>
+</ul>
+
+<p>In this blog post I will walk through creating the Kafka server and then show you the initial configuration to get Ruby to talk to it.</p>
+
+<h2 id="core-assumptions">Core Assumptions</h2>
+
+<p>Here are the core assumptions:</p>
+
+<ul>
+  <li>AWS Managed Kafka Instance in the same VPC as an EC2 Instance</li>
+  <li>Ruby 2.7</li>
+  <li>Minimal ruby script; just enough to connect and put one thing into a topic</li>
+</ul>
+
+<h2 id="aws-kafka-pricing">AWS Kafka Pricing</h2>
+
+<p>The baseline pricing for an AWS kafka.m5.large cluster is:  0.21 / hour <strong>without factoring in storage</strong>.  0.21 / hour means nothing to me so here's the calculation:</p>
+
+<ul>
+  <li>0.21 * 24 = $5.04 / day</li>
+  <li>0.21 * 24 * 7 = $35.28 / week</li>
+  <li>0.21 * 24 * 30 = $151.20 / month</li>
+  <li>0.21 * 24 * 365 = $1839.60 / year</li>
+</ul>
+
+<p>Whether or not this is a good deal depends on your budget and application but what I can tell you is that the AWS Managed Kafka is phenomenally easy to setup and get started with.</p>
+
+<p><strong>Note</strong>: Read thru the creation process below because I suspect it has pricing implications.</p>
+
+<h2 id="creating-the-kafka-instance">Creating the Kafka Instance</h2>
+
+<p>The new Managed Kafka service from AWS makes creating a Kafka instance absolutely trivial.  You do need to know the VPC id of your instance to make things easier.  You want to start <a href="https://us-east-2.console.aws.amazon.com/msk/home?#/cluster/create">here</a> to create a Kafka cluster.  Here are screenshots of the entire creation flow along with notes on anything I thought relevant.</p>
+
+<p class="center"><img src="/blog/assets/aws_kafka_01_name_version_config.png" alt="aws_kafka_01_name_version_config.png" /></p>
+
+<p>Naming your Kafka cluster is pretty simple and unless you are an expert I'd go with the standard configuration.  AWS sometimes lags behind on their versions of open source stuff so keep that in mind.</p>
+
+<p>The <a href="https://docs.aws.amazon.com/msk/latest/developerguide/msk-default-configuration.html">standard configuration options</a> are generally pretty good.  I might argue that auto.create.topics.enable should be enabled by default but that's a debatable point and really one tied to application needs.</p>
+
+<p><a href="/blog/assets/aws_kafka_02_networking.png">aws_kafka_02_networking.png</a></p>
+
+<p>The networking options are where you likely will get into trouble.  You want to:</p>
+
+<ul>
+  <li>Choose the same VPC as your instances</li>
+  <li>Match the availability zones per your needs</li>
+</ul>
+
+<p><a href="/blog/assets/aws_kafka_03_availabilty_zone.png">aws_kafka_03_availabilty_zone.png</a></p>
+
+<p><a href="/blog/assets/aws_kafka_04_brokers_and_tags.png">aws_kafka_04_brokers_and_tags.png</a></p>
+
+<p>Unless you are experienced at Kafka and can estimate your needs, I'd recommend setting the broker size to the minimum.   You automatically end up with a broker in each availability zone:</p>
+
+<blockquote>
+  <p>Your cluster will have 2 total brokers, distributed evenly across your 2 Availability Zones.</p>
+</blockquote>
+
+<p>Given that the broker is described as "kafka.m5.large" which is also the item in the pricing page, it occurs to me that perhaps my pricing above needs to be doubled (if 2 availability zones) or tripled (if 3 availability zones).  This is unclear to me and I'm not sure if I'll know until I see a bill.</p>
+
+<p>I added a Name tag matching the name of the project and a Type tag of 'kafka' to better help understand the bill.</p>
+
+<p><a href="/blog/assets/aws_kafka_05_storage.png">aws_kafka_05_storage.png</a></p>
+
+<p>The default storage is 1000 gb (so 1 terabyte).  I have no idea if this is enough storage or too little but you can't decrease it so I left it at the default.</p>
+
+<p>Also:</p>
+
+<blockquote>
+  <p>EBS storage volume per broker.  You can't decrease the storage after the cluster is created.</p>
+</blockquote>
+
+<p>My guess is that whatever the storage bill is, it is either doubled or tripled based on the number of availability zones.</p>
+
+<p><a href="/blog/assets/aws_kafka_06_encryption.png">aws_kafka_06_encryption.png</a></p>
+
+<p>For this application which isn't particularly secure (it is based on public data from the Internet), I turned off most of the encryption options.</p>
+
+<p><a href="/blog/assets/aws_kafka_07_auth_and_monitoring.png">aws_kafka_07_auth_and_monitoring.png</a></p>
+
+<p>I turned on most of the monitoring options down to the Topic level.  I also setup the Grafana option so that I can monitor down to the CPU / Disk level.</p>
+
+<p><a href="/blog/assets/aws_kafka_07a_advanced.png">aws_kafka_07a_advanced.png</a></p>
+
+<p><strong>Important</strong>: The Advanced settings option is the one I missed the first time around.  I set this to be the same security group as I use for my instances.  You don't have to use the same security group but if you aren't an AWS networking guru (and I'm not), this is very, very helpful.</p>
+
+<p><a href="/blog/assets/aws_kafka_08_create.png">aws_kafka_08_create.png</a></p>
+
+<p>Just click the Create Cluster button and wait for a bit for your cluster to be created.</p>
+
+<h2 id="once-your-cluster-is-created">Once Your Cluster Is Created</h2>
+
+<p>Once creation is complete the you want to click the View Client Information button at the top of the Details tab and you'll get something like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>b-2.ohi.88aa.c4.kafka.us-east-2.amazonaws.com:9092,b-1.ohi.qwq88.c4.kafka.us-east-2.amazonaws.com:9092
+</code></pre>
+</div>
+
+<p><strong>Note</strong>: These aren't my actual kafka details but, even if they were, it wouldn't matter because unless you are part of my AWS security group (or I open it to the world) then you can't get access.</p>
+
+<h2 id="getting-your-security-groups-right">Getting Your Security Groups Right</h2>
+
+<p>I made things a lot easier by using the same security groups for my instance that is going to write to kafka and my kafka cluster.  But, what I found, is that I would get connection errors like these:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Kafka::ConnectionError (Could not connect to any of the seed brokers:)
+- kafka://b-2.ohi.aaaddd.c4.kafka.us-east-2.amazonaws.com:9092: Connection timed out
+- kafka://b-1.ohi.aaaddd.c4.kafka.us-east-2.amazonaws.com:9092: Connection timed out
+</code></pre>
+</div>
+
+<p>whenever I tried to do anything with my kafka cluster.  What I found was an answer at the security group layer <a href="https://docs.aws.amazon.com/msk/latest/developerguide/create-client-machine.html">here</a>.  I have not seen this referenced anywhere else and here is my write up on what to do:</p>
+
+<ol>
+  <li>Find the VPC that your instance and your security group are using (you will need to confirm this on your <a href="https://us-east-2.console.aws.amazon.com/ec2/v2/home?#Instances:sort=publicIp">instance settings</a> and your <a href="https://us-east-2.console.aws.amazon.com/msk/home?">kafka</a> settings).</li>
+  <li>Open the AWS VPC console <a href="https://console.aws.amazon.com/vpc/">here</a>.</li>
+  <li>In the navigation pane, choose Security Groups. In the VPC ID column of the security groups, find the row that contains the ID you found in Step 1 and the Description column has the value default VPC security group. Choose this row by selecting the check box in the first column.</li>
+  <li>In the Inbound Rules tab, choose Edit rules.</li>
+  <li>Choose Add Rule.</li>
+  <li>In the new rule, choose All traffic in the Type column. In the second field in the Source column, enter the ID of the security group of the client machine. This is the group ID that you saved earlier.</li>
+  <li>Choose Save rules.</li>
+</ol>
+
+<p>And that magically made connectivity to my Kafka cluster work.  Sigh.</p>
+
+<h2 id="ruby-script">Ruby Script</h2>
+
+<p>Here are three basic ways you can test connectivity to your kafka cluster with the ruby kafka gem.</p>
+
+<h3 id="test-script-1---try-and-get-the-topics">Test Script 1 - Try and Get the Topics</h3>
+
+<p>Kafka divides where your content goes into "topics" (think buckets).  Here's how to get those topics back as an array:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">config</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"b-2.ohi.eee.c4.kafka.us-east-2.amazonaws.com:9092"</span><span class="p">,</span><span class="s2">"b-1.ohi.fff.c4.kafka.us-east-2.amazonaws.com:9092"</span><span class="p">]</span>
+<span class="n">kafka</span> <span class="o">=</span> <span class="no">Kafka</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">kafka</span><span class="p">.</span><span class="nf">topics</span>
+</code></pre>
+</div>
+
+<h3 id="test-script-2---try-and-put-something-in-a-non-existent-topic">Test Script 2 - Try and Put Something in a Non Existent Topic</h3>
+
+<p>Even if this fails due to a non existent topic, it should fail correctly (i.e. that the topic doesn't exist not that it can't connect to kafka).</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">config</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"b-2.ohi.eee.c4.kafka.us-east-2.amazonaws.com:9092"</span><span class="p">,</span><span class="s2">"b-1.ohi.fff.c4.kafka.us-east-2.amazonaws.com:9092"</span><span class="p">]</span>
+<span class="n">kafka</span> <span class="o">=</span> <span class="no">Kafka</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">kafka</span><span class="p">.</span><span class="nf">deliver_message</span><span class="p">(</span><span class="s2">"foo"</span><span class="p">,</span> <span class="ss">topic: </span><span class="s2">"bar"</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<h3 id="test-script-3---higher-performance-delivery-of-messages">Test Script 3 - Higher Performance Delivery of Messages</h3>
+
+<p>This approach, from the ruby-kafka documentation, is supposed to be a higher performance approach.</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">config</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"b-2.ohi.eee.c4.kafka.us-east-2.amazonaws.com:9092"</span><span class="p">,</span><span class="s2">"b-1.ohi.fff.c4.kafka.us-east-2.amazonaws.com:9092"</span><span class="p">]</span>
+<span class="n">kafka</span> <span class="o">=</span> <span class="no">Kafka</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="c1"># Instantiate a new producer.</span>
+<span class="n">producer</span> <span class="o">=</span> <span class="n">kafka</span><span class="p">.</span><span class="nf">producer</span>
+<span class="c1"># Add a message to the producer buffer.</span>
+<span class="n">producer</span><span class="p">.</span><span class="nf">produce</span><span class="p">(</span><span class="s2">"hello1"</span><span class="p">,</span> <span class="ss">topic: </span><span class="s2">"test-messages"</span><span class="p">)</span>
+<span class="c1"># Deliver the messages to Kafka.</span>
+<span class="n">producer</span><span class="p">.</span><span class="nf">deliver_messages</span>
+</code></pre>
+</div>
+
+<p>Note: I haven't delved deeply enough into the docs yet to understand the real differences between #2 and #3 particularly in a streaming context.</p>
+
+  </div>
+  
+  <!--
+    http://fuzzyblog.io/blog/tag.html#aws
+    http://localhost:5000/blog/category.html#facebook
+  -->
+  
+  <hr/><br/>
+  <p><strong>Posted In:</strong>
+  
+    <a href="http://fuzzyblog.io/blog/tag.html#aws" >
+      #aws
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#ruby" >
+      #ruby
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#kafka" >
+      #kafka
+    </a>
+    
+  </p>
+  
+  <!--
+  <hr/><br/>
+  <div style="text-align: center;">
+      <ul class="list-inline tags" >       
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#aws" class="link_button">
+         aws
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#ruby" class="link_button">
+         ruby
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#kafka" class="link_button">
+         kafka
+       </a>
+     </li>
+     
+    </ul>
+
+  </div>
+-->  
+
+
+  
+  
+  
+
+</article>
+
+<div class="just-comments" data-apikey="2fb5b93f-dad4-41c0-a9c4-645079ddc541"></div>
+<script async src="https://just-comments.com/w.js"></script>
+
+
+      </div>
+    </div>
+
+    <div class="wrapper">
+  <div style="">
+    <!--
+    <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+      <a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Never be surprised by your kid's Xbox spending again!</a>
+    </p>
+      -->
+      <p style="text-align: center; padding: 10px; border: 2px dashed red">
+        <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound:<br/>Make applying for tech jobs suck less!</a>
+      </p>
+      
+  </div>
+</div>
+
+<footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
