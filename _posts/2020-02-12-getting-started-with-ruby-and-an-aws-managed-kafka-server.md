@@ -47,16 +47,16 @@ Naming your Kafka cluster is pretty simple and unless you are an expert I'd go w
 
 The [standard configuration options](https://docs.aws.amazon.com/msk/latest/developerguide/msk-default-configuration.html) are generally pretty good.  I might argue that auto.create.topics.enable should be enabled by default but that's a debatable point and really one tied to application needs.
 
-[aws_kafka_02_networking.png](/blog/assets/aws_kafka_02_networking.png)
+![aws_kafka_02_networking.png](/blog/assets/aws_kafka_02_networking.png)
 
 The networking options are where you likely will get into trouble.  You want to:
 
 * Choose the same VPC as your instances
 * Match the availability zones per your needs
 
-[aws_kafka_03_availabilty_zone.png](/blog/assets/aws_kafka_03_availabilty_zone.png)
+![aws_kafka_03_availabilty_zone.png](/blog/assets/aws_kafka_03_availabilty_zone.png)
 
-[aws_kafka_04_brokers_and_tags.png](/blog/assets/aws_kafka_04_brokers_and_tags.png)
+![aws_kafka_04_brokers_and_tags.png](/blog/assets/aws_kafka_04_brokers_and_tags.png)
 
 Unless you are experienced at Kafka and can estimate your needs, I'd recommend setting the broker size to the minimum.   You automatically end up with a broker in each availability zone:
 
@@ -66,7 +66,7 @@ Given that the broker is described as "kafka.m5.large" which is also the item in
 
 I added a Name tag matching the name of the project and a Type tag of 'kafka' to better help understand the bill.
 
-[aws_kafka_05_storage.png](/blog/assets/aws_kafka_05_storage.png)
+![aws_kafka_05_storage.png](/blog/assets/aws_kafka_05_storage.png)
 
 The default storage is 1000 gb (so 1 terabyte).  I have no idea if this is enough storage or too little but you can't decrease it so I left it at the default.
 
@@ -76,19 +76,19 @@ Also:
 
 My guess is that whatever the storage bill is, it is either doubled or tripled based on the number of availability zones.
 
-[aws_kafka_06_encryption.png](/blog/assets/aws_kafka_06_encryption.png)
+![aws_kafka_06_encryption.png](/blog/assets/aws_kafka_06_encryption.png)
 
 For this application which isn't particularly secure (it is based on public data from the Internet), I turned off most of the encryption options.
 
-[aws_kafka_07_auth_and_monitoring.png](/blog/assets/aws_kafka_07_auth_and_monitoring.png)
+![aws_kafka_07_auth_and_monitoring.png](/blog/assets/aws_kafka_07_auth_and_monitoring.png)
 
 I turned on most of the monitoring options down to the Topic level.  I also setup the Grafana option so that I can monitor down to the CPU / Disk level.
 
-[aws_kafka_07a_advanced.png](/blog/assets/aws_kafka_07a_advanced.png)
+![aws_kafka_07a_advanced.png](/blog/assets/aws_kafka_07a_advanced.png)
 
 **Important**: The Advanced settings option is the one I missed the first time around.  I set this to be the same security group as I use for my instances.  You don't have to use the same security group but if you aren't an AWS networking guru (and I'm not), this is very, very helpful.
 
-[aws_kafka_08_create.png](/blog/assets/aws_kafka_08_create.png)
+![aws_kafka_08_create.png](/blog/assets/aws_kafka_08_create.png)
 
 Just click the Create Cluster button and wait for a bit for your cluster to be created.
 
