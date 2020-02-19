@@ -10,18 +10,32 @@ I spent a lot of time in the world of Science Fiction and Fantasy conventions an
 
 Here is the consent related signage:
 
-{:.center}![IMG_1478_2.jpeg](/blog/assets/IMG_1478_2.jpeg)
-{:.center}![IMG_1483_2.jpeg](/blog/assets/IMG_1483_2.jpeg)
-{:.center}![IMG_1485_2.jpeg](/blog/assets/IMG_1485_2.jpeg)
-{:.center}![IMG_1484_2.jpeg](/blog/assets/IMG_1484_2.jpeg)
-{:.center}![IMG_1482_2.jpeg](/blog/assets/IMG_1482_2.jpeg)
-{:.center}![IMG_1480_2.jpeg](/blog/assets/IMG_1480_2.jpeg)
+{:.center}
+![IMG_1478_2.jpeg](/blog/assets/IMG_1478_2.jpeg)
+
+{:.center}
+![IMG_1483_2.jpeg](/blog/assets/IMG_1483_2.jpeg)
+
+{:.center}
+![IMG_1485_2.jpeg](/blog/assets/IMG_1485_2.jpeg)
+
+{:.center}
+![IMG_1484_2.jpeg](/blog/assets/IMG_1484_2.jpeg)
+
+{:.center}
+![IMG_1482_2.jpeg](/blog/assets/IMG_1482_2.jpeg)
+
+{:.center}
+![IMG_1480_2.jpeg](/blog/assets/IMG_1480_2.jpeg)
 
 ## Gluten Free Signage
 
 Since I'm a food person, I also captured how they approached the gluten free signage:
 
-{:.center}![IMG_1472_2.jpeg](/blog/assets/IMG_1472_2.jpeg)
-{:.center}![IMG_1473_2.jpeg](/blog/assets/IMG_1473_2.jpeg)
+{:.center}
+![IMG_1472_2.jpeg](/blog/assets/IMG_1472_2.jpeg)
+
+{:.center}
+![IMG_1473_2.jpeg](/blog/assets/IMG_1473_2.jpeg)
 
 
