@@ -38,4 +38,6 @@ Since I'm a food person, I also captured how they approached the gluten free sig
 {:.center}
 ![IMG_1473_2.jpeg](/blog/assets/IMG_1473_2.jpeg)
 
+## About Confusion
 
+Confusion is a fan run, Detroit based science fiction convention with a surprisingly good "feel" to it. Among the cool features is a dance party DJ'd by non other than [John Scalzi](https://whatever.scalzi.com/).  **Recommended**.
