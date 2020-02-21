@@ -7,9 +7,6 @@ tags: ["bias", "diversity"]
 As a contractor for the ADL, I recently went through our official bias and diversity training.  I put together my notes on that for a new hire who recently joined us.  
 
 {:.center}
-![IMG_1478_2.jpeg](/blog/assets/IMG_1478_2.jpeg)
-
-{:.center}
 ![IMG_0798.jpeg](/blog/assets/IMG_0798.jpeg)
 
 {:.center}
