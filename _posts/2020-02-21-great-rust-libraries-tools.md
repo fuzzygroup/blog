@@ -19,6 +19,7 @@ I've been very impressed with the quality of the core tooling around Rust and he
 * [http://eradman.com/entrproject/](http://eradman.com/entrproject/)  -- A filesystem watcher built on top of Rust; possible alternative.
 * [https://github.com/watchexec/watchexec](http://eradman.com/entrproject/) -- Another filesystem watcher built on top of Rust; possible alternative.
 * [https://github.com/spacejam/sled](https://github.com/spacejam/sled) -- An embedded database built in Rust
+* [https://github.com/bastion-rs/bastion](https://github.com/bastion-rs/bastion) -- Seemingly an Erlang like distributed runtime; fascinating AF if it is true
 
 One of the reasons you use Rust is performance and the metrics on Sled are pretty impressive:
 

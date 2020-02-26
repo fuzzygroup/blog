@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Great Rust Libraries / Tools</title>
-  <meta name="description" content="">
+  <title>Writing Ruby Programs Like a Python Programmer</title>
+  <meta name="description" content="As of late, I have found myself writing a number of what amount to "Non Rails" tools.  These are tools that tend to:">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/rust/2020/02/21/great-rust-libraries-tools.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/ruby/2020/02/15/writing-ruby-programs-like-a-python-programmer.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,13 +39,15 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Great Rust Libraries / Tools">
+  <meta name="twitter:title" content="Writing Ruby Programs Like a Python Programmer">
 
   
     <meta name="twitter:description"
-      content="
+      content="As of late, I have found myself writing a number of what amount to &quot;Non Rails&quot; tools.  These are tools that tend to:
 
-I don't often do the dance with new languages.  I suspect you could view my approach to languages as monogamy – I've been in a long term, monogamous relationship with Ruby now since 2007.  But 12...">
+
+  Run continuously in the background
+  Are deployed as SystemD servi...">
   
 
   
@@ -173,49 +175,137 @@ I don't often do the dance with new languages.  I suspect you could view my appr
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Great Rust Libraries / Tools</h1>
-    <p class="I'll"><time datetime="2020-02-21T00:00:00-05:00" itemprop="datePublished">Feb 21, 2020</time> 
+    <h1 class="post-title" itemprop="name headline">Writing Ruby Programs Like a Python Programmer</h1>
+    <p class="I'll"><time datetime="2020-02-15T00:00:00-05:00" itemprop="datePublished">Feb 15, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_1986.jpeg" alt="IMG_1986.jpeg" /></p>
-
-<p>I don't often do the dance with new languages.  I suspect you could view my approach to languages as monogamy – I've been in a long term, monogamous relationship with Ruby now since 2007.  But 12 years is a long time and deciding to dance with Python this past fall was perhaps my break through event away from "language monogamy".  I'm now happily dating other languages and the latest one to turn my head is <a href="https://www.rust-lang.org/">Rust</a>.</p>
-
-<p>I've been very impressed with the quality of the core tooling around Rust and here are some of those tools:</p>
+    <p>As of late, I have found myself writing a number of what amount to "Non Rails" tools.  These are tools that tend to:</p>
 
 <ul>
-  <li><a href="https://github.com/IntrepidPig/orca">https://github.com/IntrepidPig/orca</a> – Reddit client library</li>
-  <li><a href="https://github.com/BurntSushi/aho-corasick">https://github.com/BurntSushi/aho-corasick</a> – String / Substring matcher</li>
-  <li><a href="https://github.com/BurntSushi/aho-corasick">https://crates.io/crates/kafka</a> – Kafka client</li>
-  <li><a href="https://github.com/notify-rs/notify">https://github.com/notify-rs/notify</a> – Filesystem watcher; this is what drew me to using Rust; I have a high performance application where I'm virtually certain Ruby is going to fall over and die.  Rust gives me an alternative.</li>
-  <li><a href="https://github.com/francesca64/hotwatch">https://github.com/francesca64/hotwatch</a> - make notify easier to use</li>
-  <li><a href="http://eradman.com/entrproject/">http://eradman.com/entrproject/</a>  – A filesystem watcher built on top of Rust; possible alternative.</li>
-  <li><a href="http://eradman.com/entrproject/">https://github.com/watchexec/watchexec</a> – Another filesystem watcher built on top of Rust; possible alternative.</li>
-  <li><a href="https://github.com/spacejam/sled">https://github.com/spacejam/sled</a> – An embedded database built in Rust</li>
-  <li><a href="https://github.com/bastion-rs/bastion">https://github.com/bastion-rs/bastion</a> – Seemingly an Erlang like distributed runtime; fascinating AF if it is true</li>
+  <li>Run continuously in the background</li>
+  <li>Are deployed as SystemD services on Unix boxes</li>
+  <li>Have the normal issues of coding complexities between development (OSX) and production (Ubuntu)</li>
 </ul>
 
-<p>One of the reasons you use Rust is performance and the metrics on Sled are pretty impressive:</p>
+<p>Even though I normally just generate a Rails application for even my command line tools, this project felt like minimalism was called for and, well, I wanted that particular challenge.</p>
+
+<p>In the remainder of this blog post, I'm going to talk about what this looks like and what I've learned from spending a few months in the Python world and how I'm applying it here.</p>
+
+<h2 id="file-structure">File Structure</h2>
+
+<p>Here's a directory listing from one of these tools.  The thing to understand is that "ohi" is the abbreviation for the project (which explains why you see it multiple times).</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>❯ ls -l
+total 64
+-rw-r--r--@ 1 sjohnson  staff   189 Feb 24 09:58 Gemfile
+-rw-r--r--  1 sjohnson  staff  2083 Feb 24 09:58 Gemfile.lock
+-rw-r--r--@ 1 sjohnson  staff   307 Feb 24 10:21 README.md
+-rwxr-xr-x@ 1 sjohnson  staff   111 Feb 24 14:35 deploy.sh
+-rw-r--r--@ 1 sjohnson  staff  3542 Feb 24 14:07 loader.rb
+-rw-r--r--@ 1 sjohnson  staff  1477 Feb 24 14:12 loader_kafka_to_ohi.rb
+-rw-r--r--@ 1 sjohnson  staff   436 Feb 24 10:29 loader_kafka_to_ohi.service
+-rw-r--r--@ 1 sjohnson  staff   125 Feb 24 10:22 loader_kafka_to_ohi.sh
+</code></pre>
+</div>
+
+<p>Here is the role of each of these pieces:</p>
 
 <ul>
-  <li>over a billion operations in under a minute at 95% read 5% writes on 16 cores on a small dataset</li>
-  <li>a crash-safe monotonic ID generator capable of generating 75-125 million unique ID's per second</li>
+  <li>Gemfile / Gemfile.lock – the standard Ruby packages that the tool relies on</li>
+  <li>README.md – the Readme</li>
+  <li>deploy.sh – a shell script that SCP's everything up to a deployment server.  Yeah, yeah. I need CI/CD.  And it will come but for now this makes deployment easy.</li>
+  <li>loader.rb – the "God" class for this tool (explained below)</li>
+  <li>loader_kafka_to_ohi.rb – the actual main loop for the tool</li>
+  <li>loader_kafka_to_ohi.service – the SystemD service file for this</li>
+  <li>loader_kafka_to_ohi.sh – the shell script called by the SystemD service file</li>
 </ul>
 
-<h2 id="sources--things-to-read">Sources / Things to Read</h2>
+<h2 id="it-really-is-about-separating-def-main-from-supporting-functions">It really is About Separating def main From Supporting Functions</h2>
+
+<p>While all these tools tend to come down to the 8 files above (or variants on them), the bulk of it is in two files:</p>
 
 <ul>
-  <li><a href="https://www.rust-lang.org/learn/get-started">Getting Started with Rust</a></li>
-  <li><a href="https://blog.codeship.com/coming-rust-ruby/">Rust and Ruby</a></li>
-  <li><a href="https://www.confluent.io/blog/getting-started-with-rust-and-kafka/">Rust and Kafka</a></li>
-  <li><a href="https://www.reddit.com/r/rust/comments/57ybqa/watchexec_rustbased_file_watcher_for_os_x_linux/">Rust File Watcher</a></li>
-  <li><a href="https://github.com/carols10cents/rust.tmbundle">Textmate 2 and Rust</a></li>
-  <li><a href="https://crates.io/">Rust Package Index</a></li>
+  <li>loader_kafka_to_ohi.rb</li>
+  <li>loader.rb</li>
 </ul>
 
+<p>The first file, loader_kafka_to_ohi.rb, basically amounts to  a few sections:</p>
+
+<ul>
+  <li>A comment at the very top showing how to execute it including any command line arguments</li>
+  <li>A set of require statements to load the gems (remember - this isn't Rails so you need to manually require your gems)</li>
+  <li>Constant declaration</li>
+  <li>A def main function</li>
+  <li>A call to execute main()</li>
+</ul>
+
+<p>Here's the skeleton:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>
+<span class="c1">#</span>
+<span class="c1"># Execution Example</span>
+<span class="c1"># RAILS_ENV=development TOPIC=reddit ruby loader_reddit_to_kafka.rb</span>
+<span class="c1">#</span>
+
+<span class="nb">require</span> <span class="s1">'json'</span>
+<span class="nb">require</span> <span class="s1">'kafka'</span>
+<span class="nb">require</span> <span class="s1">'mechanize'</span>
+<span class="nb">require</span> <span class="s1">'ostruct'</span>
+<span class="nb">require</span> <span class="s1">'redd'</span>
+<span class="nb">require</span> <span class="s1">'redis'</span>
+<span class="nb">require_relative</span> <span class="s1">'loader'</span>
+
+<span class="no">TOPIC</span> <span class="o">=</span> <span class="no">ENV</span><span class="p">[</span><span class="s1">'TOPIC'</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">main</span>
+  <span class="c1"># code here</span>
+<span class="k">end</span>
+
+<span class="n">main</span>
+</code></pre>
+</div>
+
+<p><strong>Note 0</strong>: You'll notice that I still use the convention of RAILS_ENV for the environment; I'm too damn trained at this point in my career to even consider naming that something else</p>
+
+<p>Having written a number of these tools lately, I can definitively state that there is a <strong>huge</strong> clarity of code benefit to separating out the main loop from the supporting code.  It is a forest for the trees sort of thing.</p>
+
+<p>The second file, loader.rb, is a "God Class" which wraps every function used by main (or any of the functions that main calls) into a single class.  Given that the underlying function of this tool is to load data, well, I call the class: Loader i..e</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Loader</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+<p>Even though a God class is generally a bad thing (poor use of name spaces, too big, etc.), I found it to be a decent compromise in terms of abstractions simply because it makes debugging <em>trivial</em>.  I find myself constantly switching between local development and remote development (where all my tooling like Kafka, my API server, etc) exist.  With a god class like loader, I can easily ssh into my production box and then just use irb in my deployment directory to:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">require_relative</span> <span class="s1">'loader'</span>
+</code></pre>
+</div>
+
+<p>and then continue figuring out whatever problem has come up with easy access to functions in my god class (everything is just a def self.whatever method in loader.rb so all methods can be called trivially).</p>
+
+<p><strong>Note 1</strong>: My main loop including require statements, constants and declarations is less than 60 lines and my god class is less than 160 lines.  As I said this is a compromise.</p>
+
+<p><strong>Note 2</strong>: Normally the term God object is used instead of "God class" but since I'm not actually ever instantiating an object, it felt like God class was more accurate.</p>
+
+<p><strong>Note 3</strong>: But shouldn't you always have your development environment mirror your production environment?  Sure in an ideal world but Kafka servers are a <em>damn censored</em> pain in the arse to setup where as the AWS managed kafka service is almost brainless in its simplicity.  This is a very lightly staffed project and I chose to spend my time on coding rather than DevOps (and, yes, getting something complex installed locally is still DevOps).</p>
+
+<h2 id="use-requirerelative-to-import-a-god-class">Use require_relative to Import A God Class</h2>
+
+<p>The key technique to making this style of development work was my realizing that while <a href="https://www.thoughtco.com/requre-method-2908199">require</a> worked for gems, it worked poorly, if at all, for my own function libraries.  The reason for this is apparently Ruby madness with respect to the current working directory or cwd.  Happily <a href="https://stackoverflow.com/questions/9750610/ruby-require-error-cannot-load-such-file">require_relative solves this issue with flying colors</a>.</p>
+
+<h2 id="wheres-the-python-connection">Where's the Python Connection?</h2>
+
+<p>I find this technique, a god class with require_relative, to be very similar to coding in Python using import statements.  Oddly Python feels a bit more object oriented because anything you import automatically gets treated as a namespace that makes coding look like a class.  Python folk use this technique very readily and I find that flexibility quite pleasant in Ruby (even if I have to define a class to make it work).</p>
+
+<p><strong>Note 4</strong>: Yes I should be able to do this also with <a href="https://ruby-doc.com/docs/ProgrammingRuby/html/tut_modules.html">modules</a> but I've found modules to be problematic in past experience so … (and I freely admit that it might be me).</p>
+
+<h2 id="what-about-test-coverage">What About Test Coverage</h2>
+
+<p>While I shudder to admit it, I actually haven't written test coverage for these things yet.  When I do I'll figure out how to graft test coverage onto a non Rails application.</p>
 
   </div>
   
@@ -227,8 +317,12 @@ I don't often do the dance with new languages.  I suspect you could view my appr
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#rust" >
-      #rust
+    <a href="http://fuzzyblog.io/blog/tag.html#ruby" >
+      #ruby
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#python" >
+      #python
     </a>
     
   </p>
@@ -239,8 +333,14 @@ I don't often do the dance with new languages.  I suspect you could view my appr
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#rust" class="link_button">
-         rust
+       <a href="http://fuzzyblog.io/blog/tag.html#ruby" class="link_button">
+         ruby
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#python" class="link_button">
+         python
        </a>
      </li>
      
