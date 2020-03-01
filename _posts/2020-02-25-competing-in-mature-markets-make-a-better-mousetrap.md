@@ -4,6 +4,8 @@ title: Competing in Mature Markets - Make a Better Mousetrap
 category: marketing
 tags: ["marketing"]
 ---
+I am a very big believer in the power of competition.  In my experience 
+
 For essentially the entire time I've been alive, manufacturers have grown 
 
 I find it 
