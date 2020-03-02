@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Competing in Mature Markets - Make a Better Mousetrap</title>
-  <meta name="description" content="I am a very big believer in the power of competition.  In my experience">
+  <title>Using Rust Playground for Hello World and Variable Interpolation</title>
+  <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/marketing/2020/02/25/competing-in-mature-markets-make-a-better-mousetrap.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/rust/2020/03/02/using-rust-playground-for-hello-world-and-variable-interpolation.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,17 +39,15 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Competing in Mature Markets - Make a Better Mousetrap">
+  <meta name="twitter:title" content="Using Rust Playground for Hello World and Variable Interpolation">
 
   
     <meta name="twitter:description"
-      content="I am a very big believer in the power of competition.  In my experience
+      content="
 
-For essentially the entire time I've been alive, manufacturers have grown
+Artwork by my friend Autumn Mott; Hopefully I can find a better link to put here
 
-I find it
-
-Fridges - make the damn icemaker work ...">
+It is a Monday and what better way to start your 6 am Monday morning then learning some of the elements of a new ...">
   
 
   
@@ -177,24 +175,75 @@ Fridges - make the damn icemaker work ...">
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Competing in Mature Markets - Make a Better Mousetrap</h1>
-    <p class="I'll"><time datetime="2020-02-25T00:00:00-05:00" itemprop="datePublished">Feb 25, 2020</time> 
+    <h1 class="post-title" itemprop="name headline">Using Rust Playground for Hello World and Variable Interpolation</h1>
+    <p class="I'll"><time datetime="2020-03-02T00:00:00-05:00" itemprop="datePublished">Mar 2, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I am a very big believer in the power of competition.  In my experience</p>
+    <p class="center"><img src="/blog/assets/IMG_1313.jpg" alt="IMG_1313.jpg" /></p>
 
-<p>For essentially the entire time I've been alive, manufacturers have grown</p>
+<p class="center"><a href="https://www.facebook.com/autumn.mott.3">Artwork by my friend Autumn Mott; Hopefully I can find a better link to put here</a></p>
 
-<p>I find it</p>
+<p>It is a Monday and what better way to start your 6 am Monday morning then learning some of the elements of a new language – Rust.</p>
 
-<p>Fridges - make the damn icemaker work well - make it produce the type of ice that you buy at the supermarket</p>
+<p>I started by adding a link in my Browser toolbar to the Rust Playground which amounts to a web based REPL (Read Evaluate Print Loop) for Rust where you can type in Rust code and run it.  Yes I know it really isn't a REPL because Rust is a compiled language not an interpreted one but it functions well enough as a REPL that I can wrap my Ruby tinged mind around it.</p>
 
-<p>Washers and Dryers - 
-lint trap
-why the duck int he 21st century am I still bending over and lifting up to wet clothes into a dryer in a dryer</p>
+<p>Here's the Hello World program that automatically appears in the Rust playground</p>
+
+<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Hello, world!"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>The output of this is:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Hello, world!
+</code></pre>
+</div>
+
+<p>That's pretty easy to understand:</p>
+
+<ul>
+  <li>A main function defined with fn</li>
+  <li>A print line function defined with a ! (my previous Rust reading tells me that's a macro indicator)</li>
+  <li>{ and } to denote structure</li>
+  <li>A ; to denote the end of lines</li>
+</ul>
+
+<p>I wanted to make a simple change to experiment with the use of variables so I added a main2() function and called it from main():</p>
+
+<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Hello, world!"</span><span class="p">);</span>
+    <span class="nf">main2</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">fn</span> <span class="nf">main2</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"The value of x is: {}"</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+    <span class="k">let</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"The value of y is: {}"</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>The output of this is:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Hello, world!
+The value of x is: 5
+The value of y is: 6
+</code></pre>
+</div>
+
+<p>You can see that the <strong>let</strong> keyword assigns a variable and that {} binds a variable into a string (which is generally called interpolation).</p>
+
+<p>Note: Variables quickly bring you in to the heart of Rust – <a href="https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html">immutability</a> – and here there by dragons that hopefully come up tomorrow after some reading.</p>
+
+<h2 id="what-about-replit">What about Repl.it?</h2>
+
+<p>Another way to have a web based REPL for Rust is <a href="https;//www.repl.it">Repl.it</a>.  And while I like the concept of repl.it, they have eliminated any privacy without a paid account: Upgrade your account for private repls.  This appears on the bottom of every new REPL you create and at $74 / 12 months that feels <a href="https://repl.it/site/pricing">expensive</a> simply for the basics of privacy.</p>
 
   </div>
   
@@ -206,8 +255,12 @@ why the duck int he 21st century am I still bending over and lifting up to wet c
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#marketing" >
-      #marketing
+    <a href="http://fuzzyblog.io/blog/tag.html#rust" >
+      #rust
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#variables" >
+      #variables
     </a>
     
   </p>
@@ -218,8 +271,14 @@ why the duck int he 21st century am I still bending over and lifting up to wet c
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#marketing" class="link_button">
-         marketing
+       <a href="http://fuzzyblog.io/blog/tag.html#rust" class="link_button">
+         rust
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#variables" class="link_button">
+         variables
        </a>
      </li>
      
