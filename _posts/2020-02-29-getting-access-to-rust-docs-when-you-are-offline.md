@@ -8,6 +8,7 @@ This one is short but simple since I didn't have it on my last flight and I fly 
 
     rustup docs --book
 
-That brings up a browser with a full implementation of the rust docs. 
+That brings up a browser with a full implementation of the rust docs.  Not only is there a full table of contents but it is also searchable. 
 
 There is also the magic of [devdocs.io](https://devdocs.io/r) but that requires that you were wise enough to have pre-clicked the install for offline option.  And, alas, I was not.
+

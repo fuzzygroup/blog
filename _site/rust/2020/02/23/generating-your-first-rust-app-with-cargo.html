@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Getting Access to Rust Docs When You are Offline</title>
-  <meta name="description" content="This one is short but simple since I didn't have it on my last flight and I fly again tomorrow.  To access your Rust documentation when you aren't online:">
+  <title>Generating Your First Rust App with Cargo</title>
+  <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/rust/2020/02/29/getting-access-to-rust-docs-when-you-are-offline.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/rust/2020/02/23/generating-your-first-rust-app-with-cargo.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,17 +39,15 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Getting Access to Rust Docs When You are Offline">
+  <meta name="twitter:title" content="Generating Your First Rust App with Cargo">
 
   
     <meta name="twitter:description"
-      content="This one is short but simple since I didn't have it on my last flight and I fly again tomorrow.  To access your Rust documentation when you aren't online:
+      content="
 
-rustup docs --book
+The Rust tool cargo is the Rust equivalent of rake and bundler and rails combined (these are Ruby tools).  Cargo is what you use to generate a new Rust app.  Here's an example:
 
-
-
-That brings up a br...">
+cargo new loader_...">
   
 
   
@@ -177,23 +175,69 @@ That brings up a br...">
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Getting Access to Rust Docs When You are Offline</h1>
-    <p class="I'll"><time datetime="2020-02-29T00:00:00-05:00" itemprop="datePublished">Feb 29, 2020</time> 
+    <h1 class="post-title" itemprop="name headline">Generating Your First Rust App with Cargo</h1>
+    <p class="I'll"><time datetime="2020-02-23T00:00:00-05:00" itemprop="datePublished">Feb 23, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>This one is short but simple since I didn't have it on my last flight and I fly again tomorrow.  To access your Rust documentation when you aren't online:</p>
+    <p class="center"><img src="/blog/assets/IMG_0833.jpeg" alt="IMG_0833.jpeg" /></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rustup docs --book
+<p>The Rust tool cargo is the Rust equivalent of rake and bundler and rails combined (these are Ruby tools).  Cargo is what you use to generate a new Rust app.  Here's an example:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>cargo new loader_datastreamer_to_kafka_rust
 </code></pre>
 </div>
 
-<p>That brings up a browser with a full implementation of the rust docs.  Not only is there a full table of contents but it is also searchable.</p>
+<p>This generates a new, correctly laid out project directory.  And here's what it looks like:</p>
 
-<p>There is also the magic of <a href="https://devdocs.io/r">devdocs.io</a> but that requires that you were wise enough to have pre-clicked the install for offline option.  And, alas, I was not.</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>❯ tree
+.
+├── Cargo.toml
+└── src
+    └── main.rs
 
+1 directory, 2 files
+</code></pre>
+</div>
+
+<p>The Cargo.toml file is a package manifest which has a default contents of this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>❯ cat Cargo.toml
+[package]
+name = "loader_datastreamer_to_kafka_rust1"
+version = "0.1.0"
+authors = ["Scott Johnson &lt;blahblah@gmail.com&gt;"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+</code></pre>
+</div>
+
+<p>Any Rust packages, which are named <strong>crates</strong>, you use in your application would be listed under the dependencies section.  Here's an example of that:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[dependencies]
+notify = "4.0.15"
+</code></pre>
+</div>
+
+<p>That's an example of using the <a href="https://crates.io/crates/notify">notify crate</a>.</p>
+
+<p>Your default main.rs file is always stored in src and looks like this initially:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>❯ cat src/main.rs
+fn main() {
+    println!("Hello, world!");
+}
+</code></pre>
+</div>
+
+<p>Yep – you get a Hello World for free when you create any Rust application.</p>
+
+<p>Cargo actually does quite a bit more than just creating your Rust application but that's a topic for another day.</p>
 
   </div>
   
