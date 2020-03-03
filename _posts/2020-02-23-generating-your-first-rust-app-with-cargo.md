@@ -51,3 +51,4 @@ Your default main.rs file is always stored in src and looks like this initially:
 Yep -- you get a Hello World for free when you create any Rust application.  
 
 Cargo actually does quite a bit more than just creating your Rust application but that's a topic for another day.
+
