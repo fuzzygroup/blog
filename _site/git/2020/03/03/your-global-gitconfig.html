@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Using Rust Playground for Hello World and Variable Interpolation</title>
+  <title>Your Global .gitconfig</title>
   <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/rust/2020/03/02/using-rust-playground-for-hello-world-and-variable-interpolation.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/git/2020/03/03/your-global-gitconfig.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,15 +39,13 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Using Rust Playground for Hello World and Variable Interpolation">
+  <meta name="twitter:title" content="Your Global .gitconfig">
 
   
     <meta name="twitter:description"
       content="
 
-Artwork by my friend Autumn Mott; Hopefully I can find a better link to put here
-
-It is a Monday and what better way to start your 6 am Monday morning then learning some of the elements of a new ...">
+I had a question recently about my use of git trash which isn't a standard git command.  I accomplished this, about a decade ago, by modifying ~/.gitconfig and, well, I haven't thought about it e...">
   
 
   
@@ -175,79 +173,68 @@ It is a Monday and what better way to start your 6 am Monday morning then learni
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Using Rust Playground for Hello World and Variable Interpolation</h1>
-    <p class="I'll"><time datetime="2020-03-02T00:00:00-05:00" itemprop="datePublished">Mar 2, 2020</time> 
+    <h1 class="post-title" itemprop="name headline">Your Global .gitconfig</h1>
+    <p class="I'll"><time datetime="2020-03-03T00:00:00-05:00" itemprop="datePublished">Mar 3, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_1313.jpg" alt="IMG_1313.jpg" /></p>
+    <p class="center"><img src="/blog/assets/IMG_2192.jpeg" alt="IMG_2192.jpeg" /></p>
 
-<p class="center"><a href="https://www.facebook.com/autumnmottart">Artwork by my friend Autumn Mott; Hopefully I can find a better link to put here</a></p>
+<p>I had a question recently about my use of <strong>git trash</strong> which isn't a standard git command.  I accomplished this, about a decade ago, by modifying ~/.gitconfig and, well, I haven't thought about it ever since.  Here's my ~/.gitconfig as an example.</p>
 
-<p>It is a Monday and what better way to start your 6 am Monday morning then learning some of the elements of a new language – Rust.</p>
-
-<p>I started by adding a link in my Browser toolbar to the Rust Playground which amounts to a web based REPL (Read Evaluate Print Loop) for Rust where you can type in Rust code and run it.  Yes I know it really isn't a REPL because Rust is a compiled language not an interpreted one but it functions well enough as a REPL that I can wrap my Ruby tinged mind around it.</p>
-
-<p>Here's the Hello World program that automatically appears in the Rust playground</p>
-
-<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nd">println!</span><span class="p">(</span><span class="s">"Hello, world!"</span><span class="p">);</span>
-<span class="p">}</span>
+<div class="highlighter-rouge"><pre class="highlight"><code>[color]
+diff = auto
+status = auto
+branch = auto
+[color "branch"]
+current = yellow reverse
+local = yellow
+remote = green
+[color "diff"]
+meta = yellow bold
+frag = magenta bold
+old = red bold
+new = green bold
+[color "status"]
+added = yellow
+changed = green
+untracked = cyan
+[user]
+name = Scott Johnson
+email = blahblahblah@gmail.com
+[alias]
+co = checkout
+st = status
+br = branch
+trash = checkout -f
+lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit
+[apply]
+whitespace = nowarn
+[core]
+excludesfile = /Users/sjohnson/.gitignore_global
+[difftool "sourcetree"]
+cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+path = 
+[mergetool "sourcetree"]
+cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+trustExitCode = true
+[filter "lfs"]
+clean = git-lfs clean -- %f
+smudge = git-lfs smudge -- %f
+required = true
+process = git-lfs filter-process
+[push]
+default = simple
 </code></pre>
 </div>
 
-<p>The output of this is:</p>
+<p>The key thing, to support git trash, is the [alias] section.  This is where you can define your own custom commands based on the fundamental git primitives.  My git lg command is also pretty nice (and courtesy from Sean Kennedy).</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Hello, world!
-</code></pre>
-</div>
+<p>Another really, really useful thing is the excludesfile setting which lets you tell git to never, ever worry about a file like the cursed <strong>.DS_Store</strong> files which OSX persists in generating.</p>
 
-<p>That's pretty easy to understand:</p>
-
-<ul>
-  <li>A main function defined with fn</li>
-  <li>A print line function defined with a ! (my previous Rust reading tells me that's a macro indicator)</li>
-  <li>{ and } to denote structure</li>
-  <li>A ; to denote the end of lines</li>
-</ul>
-
-<p>I wanted to make a simple change to experiment with the use of variables so I added a main2() function and called it from main():</p>
-
-<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nd">println!</span><span class="p">(</span><span class="s">"Hello, world!"</span><span class="p">);</span>
-    <span class="nf">main2</span><span class="p">();</span>
-<span class="p">}</span>
-
-<span class="k">fn</span> <span class="nf">main2</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
-    <span class="nd">println!</span><span class="p">(</span><span class="s">"The value of x is: {}"</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
-    <span class="k">let</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
-    <span class="nd">println!</span><span class="p">(</span><span class="s">"The value of y is: {}"</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
-<span class="p">}</span>
-</code></pre>
-</div>
-
-<p>The output of this is:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>Hello, world!
-The value of x is: 5
-The value of y is: 6
-</code></pre>
-</div>
-
-<p>You can see that the <strong>let</strong> keyword assigns a variable and that {} binds a variable into a string (which is generally called interpolation).</p>
-
-<p>Note: Variables quickly bring you in to the heart of Rust – <a href="https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html">immutability</a> – and here there by dragons that hopefully come up tomorrow after some reading.</p>
-
-<h2 id="link">Link</h2>
-
-<p>Here's a <a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=496e2617d024958faf48d84553bd8cf1">permanent link</a> to this if you want to try it out.</p>
-
-<h2 id="what-about-replit">What about Repl.it?</h2>
-
-<p>Another way to have a web based REPL for Rust is <a href="https;//www.repl.it">Repl.it</a>.  And while I like the concept of repl.it, they have eliminated any privacy without a paid account: Upgrade your account for private repls.  This appears on the bottom of every new REPL you create and at $74 / 12 months that feels <a href="https://repl.it/site/pricing">expensive</a> simply for the basics of privacy.</p>
+<p>This is generally stored in something like /Users/username/.gitignore_global.</p>
 
   </div>
   
@@ -259,12 +246,8 @@ The value of y is: 6
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#rust" >
-      #rust
-    </a>
-    
-    <a href="http://fuzzyblog.io/blog/tag.html#variables" >
-      #variables
+    <a href="http://fuzzyblog.io/blog/tag.html#git" >
+      #git
     </a>
     
   </p>
@@ -275,14 +258,8 @@ The value of y is: 6
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#rust" class="link_button">
-         rust
-       </a>
-     </li>
-     
-     <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#variables" class="link_button">
-         variables
+       <a href="http://fuzzyblog.io/blog/tag.html#git" class="link_button">
+         git
        </a>
      </li>
      

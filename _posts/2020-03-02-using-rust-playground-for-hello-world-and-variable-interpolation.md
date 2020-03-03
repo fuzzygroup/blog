@@ -8,7 +8,7 @@ tags: ["rust", "variables"]
 ![IMG_1313.jpg](/blog/assets/IMG_1313.jpg)
 
 {:.center}
-[Artwork by my friend Autumn Mott; Hopefully I can find a better link to put here](https://www.facebook.com/autumn.mott.3)
+[Artwork by my friend Autumn Mott; Hopefully I can find a better link to put here](https://www.facebook.com/autumnmottart)
 
 It is a Monday and what better way to start your 6 am Monday morning then learning some of the elements of a new language -- Rust.
 
@@ -59,6 +59,10 @@ The output of this is:
 You can see that the **let** keyword assigns a variable and that {} binds a variable into a string (which is generally called interpolation). 
 
 Note: Variables quickly bring you in to the heart of Rust -- [immutability](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html) -- and here there by dragons that hopefully come up tomorrow after some reading.
+
+## Link
+
+Here's a [permanent link](https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=496e2617d024958faf48d84553bd8cf1) to this if you want to try it out.
 
 ## What about Repl.it?
 
