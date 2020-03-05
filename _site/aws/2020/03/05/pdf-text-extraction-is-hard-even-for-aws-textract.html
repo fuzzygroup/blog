@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>PDF Text Extraction Is Hard Even for AWS Textract</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/aws/2020/03/05/pdf-text-extraction-is-hard-even-for-aws-textract.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="PDF Text Extraction Is Hard Even for AWS Textract">
+
+  
+    <meta name="twitter:description"
+      content="
+
+I have always found that serendipity plays a large role in my technical life.  For example I recently ran into a great article and discussion thread on PDF Text Extraction:
+
+
+  Article
+  Discussi...">
+  
+
+  
+    <meta name="twitter:image"
+      content="http://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+    
+  <script type="text/javascript">
+    function do_search() {
+      var searchForm = document.getElementById('search');
+      var q = document.getElementById('q');
+      var searchQuery = "site:fuzzyblog.io " + q.value;
+      document.location = "https://www.google.com/search?q=" + searchQuery;
+    }
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+          
+          <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div style="width: 50%; float:left; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed red">
+              <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound:<br/>Make applying for tech jobs suck less!</a>
+            </p>
+        </div>
+        <div style="width: 40%; float:right; text-align: center; valign: center; padding: 10px; border: 2px dashed blue">
+
+            <form id="search" action="https://www.google.com/search">
+              <input id="q" name="q" size=40>
+              <button type="submit" form="form1" value="Search" onclick="do_search();">Search</button><br/>&nbsp;
+            </form>
+
+        </div>
+        
+        <!--
+        <div style="width: 75%; float:left; ">&nbsp;&nbsp;&nbsp;</div>
+        -->
+          <!--
+        <div style="width: 20%; float:right; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+              <a href="http://www.fuzzyblog.io/" class="cta-button-blue">Hire Me!</a>
+            </p>
+        </div>
+            -->
+        <div style="clear: both;"></div>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">PDF Text Extraction Is Hard Even for AWS Textract</h1>
+    <p class="I'll"><time datetime="2020-03-05T00:00:00-05:00" itemprop="datePublished">Mar 5, 2020</time> 
+      </p> 
+  </header>
+  
+
+  <div class="post-content" itemprop="articleBody">
+    <p class="center"><img src="/blog/assets/IMG_2329.jpeg" alt="IMG_2329.jpeg" /></p>
+
+<p>I have always found that serendipity plays a large role in my technical life.  For example I recently ran into a great article and discussion thread on PDF Text Extraction:</p>
+
+<ul>
+  <li><a href="https://www.filingdb.com/pdf-text-extraction">Article</a></li>
+  <li><a href="https://news.ycombinator.com/item?id=22473263">Discussion Thread</a></li>
+</ul>
+
+<p>The thrust of this article amounts to "PDF Processing Is Hard and Here's Why" (tldr - PDF isn't a document format as much as a layout format and how things are laid out generally bears little relationship to their structure as "document elements").</p>
+
+<p>Now lately I've been involved in some resume processing lately and this made me say:</p>
+
+<blockquote>
+  <p>Hm… Can I extract just the email addresses programmatically from this stack of resumes?</p>
+</blockquote>
+
+<p>I found that following the techniques in this <a href="https://medium.com/@rqaiserr/how-to-convert-pdfs-into-searchable-key-words-with-python-85aab86c544f">Medium article</a>, I was able to extract roughly 70% of the email addresses from a small sample.  And while 70% isn't bad, I suspected that better should be possible.  And that led me to the <a href="https://aws.amazon.com/textract/">AWS Textract</a> service.</p>
+
+<p>Unfortunately what I found was that even the "machine learning" powered Textract service:</p>
+
+<blockquote>
+  <p>Amazon Textract overcomes these challenges by using machine learning to instantly “read” virtually any type of document to accurately extract text and data without the need for any manual effort or custom code.</p>
+</blockquote>
+
+<p>failed to get email addresses reliably out of simple PDF resumes (note - my overall review on Textract is still generally positive; see Conclusion below).  The failure rate was better – roughly 10% instead of 30% but it still failed.  What I did find fascinating, however, is how AWS Textract works under the hood.  There appear to be  three results from the Textract API call:</p>
+
+<ul>
+  <li>apiResponse.json</li>
+  <li>keyValues.csv</li>
+  <li>rawText.txt</li>
+</ul>
+
+<p>These three results have different functions:</p>
+
+<ul>
+  <li>a set of bounding boxes with text elements right down to geometry</li>
+  <li>a set of semantic fields that they found in the document (I generally found this pretty useless; for a resume I would have expected things like contact info to be key values; instead it was a graduation date)</li>
+  <li>the full text of the document</li>
+</ul>
+
+<p>Here's an example of the apiResponse.json which was the most interesting of these (note that I modified the contact info before to be nonsense values in the interest of candidate privacy):</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>"DocumentMetadata": {
+    "Pages": 1
+  },
+  "JobStatus": "SUCCEEDED",
+  "Blocks": [
+    {
+      "BlockType": "PAGE",
+      "Geometry": {
+        "BoundingBox": {
+          "Width": 1,
+          "Height": 1,
+          "Left": 0,
+          "Top": 0
+        },
+        "Polygon": [
+          {
+            "X": 0,
+            "Y": 0
+          },
+          {
+            "X": 1,
+            "Y": 0
+          },
+          {
+            "X": 1,
+            "Y": 1
+          },
+          {
+            "X": 0,
+            "Y": 1
+          }
+        ]
+      },
+      "Id": "87aab91c-10c3-4191-86ef-1a0f250967be",
+      "Relationships": [
+        {
+          "Type": "CHILD",
+          "Ids": [
+            "84fa231e-2427-4ca5-9b17-4259f503c86b",
+            "05b76c03-093d-4910-92d3-fb44105a7ba8",
+            "d15f7eec-b028-44cd-ae33-533056aa4781",
+            "58e06118-f8e4-480f-b959-3f446bbab5d9",
+            "0d917c44-f204-429f-8cbb-8ec9cb5c7e00",
+            "463bcf6d-c759-49be-b29f-29037e183064",
+            "afe3b98b-7fdb-47ff-8102-593bd827eb8a",
+            "ae57ff27-7202-49fa-b655-6bc8b6ffd789",
+            "71580491-1cd2-423e-806f-5e0feef655b3",
+            "a64ce3df-d8fb-4d83-85df-591d18f4bcb3",
+            "8fe6464f-56bd-4c34-97a9-bb006d45b344",
+            "35c2359a-116a-40d6-8273-e3f4d4c5e2b4",
+            "e1bde700-0c89-42d0-853d-0bc4993399f9",
+            "b3109ceb-d8f8-421e-9244-a07a2a9b5239",
+            "f5152abc-6df8-48c0-ae3b-77027809101f",
+            "a046da52-4cea-4e29-a89a-45f21beea3cb",
+            "3cd7399f-6a98-4b4b-897f-78f9b137df21",
+            "bef5b4a7-a1c7-450d-8986-491152dd6d2f",
+            "f351ecec-c23f-4a3a-b9f5-424e596c9415",
+            "75e884d1-50f9-4065-8f69-2d4b58e30d4a",
+            "9a296dac-b804-4613-996b-edfceccfe256",
+            "ae7d1032-90a2-4274-987e-e8eafc61d7e7",
+            "2dc6fe79-2a69-48cb-a4ba-bf8a405acbcd",
+            "d4652eb5-9071-4451-8fcf-46bd61f1c036",
+            "b0fa99d4-fa78-41c7-adf4-0e856e5fbf7b",
+            "d7ac3623-e47c-4200-b55c-11f534058333",
+            "8e157557-b7ab-432b-b0a7-91aaa90672fc",
+            "f602d231-16ef-4eb4-bf25-b03103a9ea06",
+            "836e2ef9-1400-4091-82ba-c89483dea265",
+            "52c86df4-7855-4c6d-b6ed-7bce72e0e27b",
+            "f549a067-879d-4536-93df-47b2be6522ea",
+            "e3340758-ab33-4029-894b-a95b2291e8d9",
+            "5e72a4a3-cb40-4760-b4d9-2168e35d20a7",
+            "a9ee3dfb-67da-4f70-b72e-296302fe73bd",
+            "740d09a0-cbe1-4094-af3f-240a492f7742",
+            "99ed5bc2-8bc5-48c8-8fb1-d25984702d49",
+            "bfd03b33-7bdc-4115-bfc5-3c2aa2cc2c07",
+            "e4fb79b6-6015-46a2-8474-d0aa12f3ab8c",
+            "62c38550-9fb4-4f8f-ae31-d7137294439e",
+            "0d8fa105-9bcb-4a6d-b3f9-f3332202edfe",
+            "8a221c4f-0fc4-4db8-b550-5b4592d9d7cd",
+            "290058c0-1c75-43b8-b158-bdd409ae8a83",
+            "98ae6f91-842a-4aa9-b78b-7bed745ad9cd",
+            "f4e7228c-6117-462f-a2de-12fe9fdbd318",
+            "8dbc468c-5323-4df0-895c-8ec141d270ff",
+            "1bd5d158-a9f5-4942-aecb-1ad4acbe0242",
+            "3c2c9a98-32cd-44bd-a41d-2d167fd0c660",
+            "ffe50c97-3ef7-485d-9662-0e51bc0532e9",
+            "44eab195-e89f-4468-a6ac-7e783eea7e70",
+            "905344ed-5bb6-4a48-90c1-91ec5df2731e",
+            "9a9d401a-646f-4c63-848e-c63ced45613c",
+            "c169fa15-17a9-4d66-a2a5-d04604717f41",
+            "5fdaccd1-0548-40d6-91f5-e715ea6cc7cc",
+            "4931b0c8-d22a-49b5-b693-7c8e2cd57b2b",
+            "91568b1f-4724-40d0-8018-29385ff48b41",
+            "38ed7115-a109-40f9-bc58-efd346b0189d",
+            "ba5b8e71-c982-49a4-a32e-2505eb07634a",
+            "2f25027e-774c-4284-a52a-615fef4b8a9e",
+            "bb2239fe-e9e0-4498-8632-94a7edcb144e",
+            "1d651db9-1518-4432-85d2-9d7cf9362847",
+            "e419bc6c-690a-4bef-b830-1b991b88949c",
+            "1e5306d2-e0ea-4b47-953e-8140b8c7cbcb",
+            "71fb110f-a8a6-4285-bc25-63941faf0778",
+            "62832387-9ea9-4564-a4c3-871c5f15d729",
+            "59b7a3e4-acea-4625-b6f8-05886d558e52",
+            "14336d40-fd0c-47b7-aff6-5213c6d7a0f7",
+            "e58e4ba0-567f-494d-91d8-fb2c4aa6eec0",
+            "29cea082-c4df-41cf-9a68-1c9a388be9b3",
+            "24abce03-8a73-4c2e-9bca-e25ee82d7ce5"
+          ]
+        }
+      ],
+      "Page": 1
+    },
+    {
+      "BlockType": "LINE",
+      "Confidence": 99.34569549560547,
+      "Text": "Austin Johnson",
+      "Geometry": {
+        "BoundingBox": {
+          "Width": 0.17683932185173035,
+          "Height": 0.01665823720395565,
+          "Left": 0.4110524356365204,
+          "Top": 0.046603888273239136
+        },
+        "Polygon": [
+          {
+            "X": 0.4110524356365204,
+            "Y": 0.046603888273239136
+          },
+          {
+            "X": 0.5878917574882507,
+            "Y": 0.046603888273239136
+          },
+          {
+            "X": 0.5878917574882507,
+            "Y": 0.06326212733983994
+          },
+          {
+            "X": 0.4110524356365204,
+            "Y": 0.06326212733983994
+          }
+        ]
+      },
+      "Id": "84fa231e-2427-4ca5-9b17-4259f503c86b",
+      "Relationships": [
+        {
+          "Type": "CHILD",
+          "Ids": [
+            "b90a16d9-f9a8-40b9-8407-1f41d7434c0f",
+            "af247f18-04bb-45ce-b48b-884440f3f669"
+          ]
+        }
+      ],
+      "Page": 1
+    },
+    {
+      "BlockType": "LINE",
+      "Confidence": 91.6850357055664,
+      "Text": "+1 (267) 999-8879",
+      "Geometry": {
+        "BoundingBox": {
+          "Width": 0.14686554670333862,
+          "Height": 0.014410415664315224,
+          "Left": 0.08256683498620987,
+          "Top": 0.06718409806489944
+        },
+        "Polygon": [
+          {
+            "X": 0.08256683498620987,
+            "Y": 0.06718409806489944
+          },
+          {
+            "X": 0.2294323742389679,
+            "Y": 0.06718409806489944
+          },
+          {
+            "X": 0.2294323742389679,
+            "Y": 0.08159451931715012
+          },
+          {
+            "X": 0.08256683498620987,
+            "Y": 0.08159451931715012
+          }
+        ]
+      },
+      "Id": "05b76c03-093d-4910-92d3-fb44105a7ba8",
+      "Relationships": [
+        {
+          "Type": "CHILD",
+          "Ids": [
+            "9b1f5522-2874-4348-9deb-c91b8f46ffe0",
+            "4331a1bf-ecc0-4d5a-b4fe-d19b1a3629d5",
+            "8c09ea37-ace2-4dd3-83e2-83137fc27f10"
+          ]
+        }
+      ],
+      "Page": 1
+    },
+    {
+      "BlockType": "LINE",
+      "Confidence": 98.89478302001953,
+      "Text": "austinjohnson@gmail.com",
+      "Geometry": {
+        "BoundingBox": {
+          "Width": 0.21318471431732178,
+          "Height": 0.015170887112617493,
+          "Left": 0.7046566009521484,
+          "Top": 0.06679927557706833
+        },
+        "Polygon": [
+          {
+            "X": 0.7046566009521484,
+            "Y": 0.06679927557706833
+          },
+          {
+            "X": 0.9178413152694702,
+            "Y": 0.06679927557706833
+          },
+          {
+            "X": 0.9178413152694702,
+            "Y": 0.08197016268968582
+          },
+          {
+            "X": 0.7046566009521484,
+            "Y": 0.08197016268968582
+          }
+        ]
+      },
+      "Id": "d15f7eec-b028-44cd-ae33-533056aa4781",
+      "Relationships": [
+        {
+          "Type": "CHILD",
+          "Ids": [
+            "4e82dc44-c82f-4b30-b830-d13d201f61ad"
+          ]
+        }
+      ],
+      "Page": 1
+    },
+</code></pre>
+</div>
+
+<p>It would actually be pretty simply to take this JSON and walk across it with a map operation on a series of regular expressions and extract an email address -or- a header block (on the assumption that resumes have contact info in the first say 10 lines of the resume).</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Even though I wasn't as impressed by the Textract as I wanted to be, it:</p>
+
+<ul>
+  <li>performed quite well</li>
+  <li>was easier to get running that using Python and NLTK</li>
+  <li>didn't return the amount of garble text (i.e. PDF display instructions) that I saw using Python</li>
+  <li>structured the API results well enough that I could easily manipulate it to get the information I wanted out of the result</li>
+</ul>
+
+<p>Bravo AWS!  Nicely done.</p>
+
+  </div>
+  
+  <!--
+    http://fuzzyblog.io/blog/tag.html#aws
+    http://localhost:5000/blog/category.html#facebook
+  -->
+  
+  <hr/><br/>
+  <p><strong>Posted In:</strong>
+  
+    <a href="http://fuzzyblog.io/blog/tag.html#aws" >
+      #aws
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#python" >
+      #python
+    </a>
+    
+  </p>
+  
+  <!--
+  <hr/><br/>
+  <div style="text-align: center;">
+      <ul class="list-inline tags" >       
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#aws" class="link_button">
+         aws
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#python" class="link_button">
+         python
+       </a>
+     </li>
+     
+    </ul>
+
+  </div>
+-->  
+
+
+  
+  
+  
+
+</article>
+
+<div class="just-comments" data-apikey="2fb5b93f-dad4-41c0-a9c4-645079ddc541"></div>
+<script async src="https://just-comments.com/w.js"></script>
+
+
+      </div>
+    </div>
+
+    <div class="wrapper">
+  <div style="">
+    <!--
+    <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+      <a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Never be surprised by your kid's Xbox spending again!</a>
+    </p>
+      -->
+      <p style="text-align: center; padding: 10px; border: 2px dashed red">
+        <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound:<br/>Make applying for tech jobs suck less!</a>
+      </p>
+      
+  </div>
+</div>
+
+<footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
