@@ -2,7 +2,7 @@
 layout: post
 title: Reloading the REPL in Python
 category: python
-tags; ["python", "rails"]
+tags: ["python", "rails"]
 ---
 {:.center}
 ![607483cd3c96fc17beee37cd0248294a.jpg](/blog/assets/607483cd3c96fc17beee37cd0248294a.jpg)
