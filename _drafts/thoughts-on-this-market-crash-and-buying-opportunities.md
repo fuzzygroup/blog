@@ -8,7 +8,7 @@ Here are some buying opportunities.  Use these at your own risk.  I'm an amateur
 
 ## Things to Buy
 
-* Work from Home is going to be large.  Tooling for work from home is going to be needed.  The best tool for Team communications is Slack Technologies (NYSE: WORK)
+* Work from Home is going to be large.  Tooling for work from home is going to be needed.  The best tool for Team communications is Slack Technologies (NYSE: WORK).  Another standout is Zoom Communications (NASDAQ: ZM).
 * Amazon is going to benefit from this (no one wants to go out) but they will take a supply chain hit likely.
 * Grocery Delivery and meal delivery.
 * Medical Oxygen is going to get a huge boom in need.  I don't know who the players are here but someone has to be making tanks, filling tanks, making masks and such.
@@ -27,3 +27,10 @@ Here are some buying opportunities.  Use these at your own risk.  I'm an amateur
 ## The Big Picture
 
 For any investing opportunity look at players with cash on hand.  Companies with cash on hand will be able to weather this better.
+
+## Long Term Changes
+
+There are some interesting societal changes that might happen if this drags on long term:
+
+* The past 10 to 15 years have seen a resurgence in cities and people reveling in an urban lifestyle.  And now that people are confined to apartments and working from home, this is already proving hard.  If this drags on we may see people moving to the suburbs.
+* 

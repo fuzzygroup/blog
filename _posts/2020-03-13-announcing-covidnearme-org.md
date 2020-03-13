@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Announcing covidnearme.org
-category: covidenearme
-tags: ["covidenearme", "covid"]
+title: What is covidnearme.org ?
+category: covidnearme.org
+tags: ["covidnearme.org", "covid"]
 ---
 I'd like to say that I'm happy to announce:
 
@@ -18,7 +18,7 @@ Covnearme.org is a web site which lets you:
 * Bookmark a location or location that you care about
 * See a leaderboard of cases
 
-## BUT WHAT HAPPENED IN THE US ON 3/10?
+## <a name="hopkinswheresmylocaldata"></a>BUT WHAT HAPPENED IN THE US ON 3/10?
 
 That is apparently the date when Johns Hopkins stopped reporting US level county data and only data at the state level.  Yes that means that the US is officially **LESS OPEN** than China.  Let's compare a screenshot between Seattle and Hubei:
 
