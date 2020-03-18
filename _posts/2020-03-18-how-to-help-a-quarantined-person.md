@@ -44,6 +44,7 @@ Here's what I would recommend:
 * Help getting their prescriptions picked up
 * Painkillers but not [Ibuoprofen](https://www.sciencealert.com/who-recommends-to-avoid-taking-ibuprofen-for-covid-19-symptoms)
 * Humidifier
+* Thermometer
 * Soap
 * Crackers or something to help with nausea
 
