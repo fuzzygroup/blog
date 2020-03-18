@@ -23,9 +23,15 @@ Here are some thoughts:
 4. You deliver to their front porch or front door the things that they need.  **And then you leave -- be in your car before they come out**.
 5. Given that theft may be a concern, it is likely good to leave things somewhat protected like between outer and inner doors.
 6. If you don't have hand sanitizer to use after touching their door then bring a plastic grocery sack to touch the door handle and such  And then throw it away.
+7. You call them to tell them that what they need is waiting for them.
 
+## How Do You Keep People Company?
 
-5. You call them to tell them that what they need is waiting for them.
+For a lot of people, particularly extroverted social folk, being in quarantine is almost physically painful.  Keep in mind that people need company but that phone calls may be hard due to sore throats.  So think a lot about:
+
+* text messaging
+* instant messaging
+* perhaps even doing a shared activity like "virtual presence" like watching something together on Netflix or Youtube
 
 ## What Does a Quarantined Person Need?
 
