@@ -4,6 +4,8 @@ title: How to Help a Quarantined Person
 category: covidnearme.org
 tags: ["covidnearme.org", "covid"]
 ---
+Note: If you're concerned about COVID-19, I'd encourage you to check out [CovidNearMe.org](https://www.covidnearme.org).  Disclaimer - I'm one of the authors of it.
+
 I've now personally seen the impact of COVID-19 -- a good friend -- who was in my house less than 10 days ago has been diagnosed with the following:
 
 * May have COVID-19 but a test wasn't available
@@ -18,7 +20,11 @@ Here are some thoughts:
 1. You don't want to be in that person's physical presence.  It is QUARANTINE.
 2. But all of us are a community.  You can't NOT help people; that isn't an option.
 3. You can online order things for them.
-4. You deliver to their front porch or front door the things that they need.  **And then you leave**.
+4. You deliver to their front porch or front door the things that they need.  **And then you leave -- be in your car before they come out**.
+5. Given that theft may be a concern, it is likely good to leave things somewhat protected like between outer and inner doors.
+6. If you don't have hand sanitizer to use after touching their door then bring a plastic grocery sack to touch the door handle and such  And then throw it away.
+
+
 5. You call them to tell them that what they need is waiting for them.
 
 ## What Does a Quarantined Person Need?
