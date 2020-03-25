@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ruby: invalid option -: Or When Ruby Goes Insane in the Brain
+title: ruby invalid option dash colon Or When Ruby Goes Insane in the Brain
 category: ruby
 tags: ["ruby", "jekyll"]
 ---
