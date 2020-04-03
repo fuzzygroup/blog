@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Deploying a Rails App Using HatchBox onto Google Cloud Platform</title>
-  <meta name="description" content="This blog post is a quickie where I document how I deployed CovidNearMe onto Google Cloud Platform or GCP using HatchBox.io.  I need to start by giving a hug...">
+  <title>Adding Chartkick to a Rails 6 App - Things I Always Forget</title>
+  <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2020/03/22/deploying-a-rails-app-using-hatchbox-onto-google-cloud-platform.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2020/04/02/adding-chartkick-to-a-rails-6-app.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,11 +39,24 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Deploying a Rails App Using HatchBox onto Google Cloud Platform">
+  <meta name="twitter:title" content="Adding Chartkick to a Rails 6 App - Things I Always Forget">
 
   
     <meta name="twitter:description"
-      content="This blog post is a quickie where I document how I deployed CovidNearMe onto Google Cloud Platform or GCP using HatchBox.io.  I need to start by giving a huge shout out to Tony Carnevale from Googl...">
+      content="
+
+Chartkick is the charting engine that I've used for a bunch of years.  When you use Chartkick on a Rails 6 app, here are some gotchas:
+
+Gemfile
+
+gem 'chartkick'
+
+
+
+Command Line
+
+bundle install
+ya...">
   
 
   
@@ -171,60 +184,37 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Deploying a Rails App Using HatchBox onto Google Cloud Platform</h1>
-    <p class="I'll"><time datetime="2020-03-22T00:00:00-04:00" itemprop="datePublished">Mar 22, 2020</time> 
+    <h1 class="post-title" itemprop="name headline">Adding Chartkick to a Rails 6 App - Things I Always Forget</h1>
+    <p class="I'll"><time datetime="2020-04-02T00:00:00-04:00" itemprop="datePublished">Apr 2, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>This blog post is a quickie where I document how I deployed CovidNearMe onto Google Cloud Platform or GCP using <a href="https://www.hatchbox.io">HatchBox.io</a>.  I need to start by giving a huge shout out to <strong>Tony Carnevale</strong> from Google who went above and beyond in providing outstanding support.</p>
+    <p class="center"><img src="/blog/assets/IMG_2666.jpeg" alt="IMG_2666.jpeg" /></p>
 
-<p>Here are the stages.</p>
+<p><a href="https://chartkick.com/">Chartkick</a> is the charting engine that I've used for a bunch of years.  When you use Chartkick on a Rails 6 app, here are some gotchas:</p>
 
-<h2 id="stage-1-create-a-cluster">Stage 1: Create a Cluster</h2>
+<h2 id="gemfile">Gemfile</h2>
 
-<p><strong>Note</strong>: Even a single machine is considered a cluster.</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>gem 'chartkick'
+</code></pre>
+</div>
 
-<ol>
-  <li>Go to <a href="https://www.hatchbox.io">HatchBox.io</a></li>
-  <li>Login with your account.</li>
-  <li>Click on Clusters and define a <a href="https://www.hatchbox.io/clusters/new">New Cluster</a>.</li>
-  <li>Name the cluster <strong>GCP Covid Near Me</strong> (or that's what I did).</li>
-  <li>Select <strong>Somewhere Else</strong> as the hosting provider.</li>
-  <li>Select the <strong>Everything on a Single Server</strong> option.</li>
-  <li>If you are using the GCP Cloud SQL (postgresql) and GCP Redis then remove these options from the Roles list.</li>
-  <li>Enter the IP address under public ip.</li>
-  <li>Set the private IP to 127.0.0.</li>
-  <li>There appears to be a bug where you can't provision the server unless a local redis installation is selected so add it back.</li>
-  <li>Click provision the server and you will be given an SSH command to run as root on the box.  You SSH in, do a sudo su, execute the command and exit out</li>
-  <li>You click Test / Provision (I forget which) and your server will be flawlessly setup.</li>
-</ol>
+<h2 id="command-line">Command Line</h2>
 
-<h2 id="stage-2-create-an-app-on-the-cluster">Stage 2: Create an App on the Cluster</h2>
+<div class="highlighter-rouge"><pre class="highlight"><code>bundle install
+yarn add chartkick chart.js
+yarn install --check-files
+</code></pre>
+</div>
 
-<ol>
-  <li>Click on <a href="https://www.hatchbox.io/apps">Apps</a>.</li>
-  <li>Click on <a href="https://www.hatchbox.io/apps/new">Create a New App</a>.</li>
-  <li>Choose the cluster from the drop down list.</li>
-  <li>Click on your git repo host.</li>
-  <li>Set the name of your application (I like to include the name of the cluster with the app name since this app is already deployed to digital ocean).</li>
-  <li>Enter the name of the repo (easily find this from .git/config in your Rails root directory).</li>
-  <li>Set external host for the database if you are using Google's Cloud SQL.  This means that you need to  define a postgres configuration url.  The format for this url is this: <strong>postgresql://user:password@databasehost.com/database</strong>.  You simply need to replace user with your username, password with your password, databasehost.com with your database server and database with the name of the database.</li>
-  <li>
-    <table>
-      <tbody>
-        <tr>
-          <td>Define your Rails Master Key right away so you don't screw this up and have to ask <a href="https://gorails.com">Chris Oliver</a> for support (and thus sound like an idiot).  Your rails Master Key can be found in and copied with: cat config/master.key</td>
-          <td>pbcopy (if you are on OSX)</td>
-        </tr>
-      </tbody>
-    </table>
-  </li>
-  <li>Do an initial deploy.  This will give you an HTTP only application.  You can't have HTTPS until you have a domain assigned to the server so you have to start with HTTP.</li>
-  <li>You can then define SSL.  I'd like to illustrate those steps but I didn't write them down well enough so that will have to be a future blog post.</li>
-  <li>Make sure that you have SSH on the GCP cluster open to the IP address for the Hatchbox deployment engine.  This ip address, today, March 24, 2020, is <strong>94.53.199.250</strong>.</li>
-</ol>
+<h2 id="add-to-applicationjs">Add to application.js</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>require("chartkick")
+require("chart.js")
+</code></pre>
+</div>
 
   </div>
   
@@ -240,10 +230,6 @@
       #rails
     </a>
     
-    <a href="http://fuzzyblog.io/blog/tag.html#hatchbox" >
-      #hatchbox
-    </a>
-    
   </p>
   
   <!--
@@ -254,12 +240,6 @@
      <li style="display: inline-block;">
        <a href="http://fuzzyblog.io/blog/tag.html#rails" class="link_button">
          rails
-       </a>
-     </li>
-     
-     <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#hatchbox" class="link_button">
-         hatchbox
        </a>
      </li>
      
