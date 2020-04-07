@@ -4,7 +4,7 @@ title: Covid-19 - Good News, Bad News or the Weekend?
 category: covidnearme.org
 tags: ["covidnearme.org", "covid"]
 ---
-I noticed an interesting thing yesterday -- the number of COVID-19 cases fell in New York and I was curious.  Here's what I saw:
+I noticed an interesting thing yesterday -- the number of COVID-19 cases fell in New York and I was curious (the number on the right is the number of new cases).  Here's what I saw:
 
 {:.center}
 ![covid_monday.png](/blog/assets/covid_monday.png)
