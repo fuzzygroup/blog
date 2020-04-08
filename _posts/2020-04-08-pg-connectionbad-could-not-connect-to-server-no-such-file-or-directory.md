@@ -1,6 +1,6 @@
 ---
 layout: post
-title: PG::ConnectionBad (could not connect to server: No such file or directory)
+title: PG ConnectionBad (could not connect to server No such file or directory)
 category: postgres
 tags: ["postgres"]
 ---
