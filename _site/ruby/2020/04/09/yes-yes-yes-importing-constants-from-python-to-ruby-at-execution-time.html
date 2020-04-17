@@ -295,6 +295,18 @@ This is going to fall into the category of &quot;Dancing Bear&quot; coding in th
   <li>Add an import mechanism that brings in the constant from a file i.e. "from common_invective_anti_WHATEVER import *"</li>
 </ol>
 
+<h2 id="commentary">Commentary</h2>
+
+<p>I ran an early draft of this by an old friend, <a href="https://www.markbernstein.org">Mark Bernstein</a>, the author of <a href="https://www.eastgate.com/Tinderbox/">Tinderbox</a> and an extraordinarily experienced software engineer.  He started with a blindingly obvious question:</p>
+
+<blockquote>
+  <p>Why didn't you move the regular expressions from code to data i.e. lists of strings that could be included dynamically in the code base?</p>
+</blockquote>
+
+<p>The reason for this was that I had just moved these regexes from data to code to eliminate the need for file i/o at runtime for better performance.</p>
+
+<p>Mark continued with a question about why we are using regexes instead of neural networks and the answer is that we are actually using neural networks (specifically <a href="https://en.wikipedia.org/wiki/BERT_(language_model)">bert</a>).  We simply are also using regexes as an additional tool.</p>
+
 <h2 id="sidebar-what-if-load-didnt-work-for-me">Sidebar: What if load() didn't work for me?</h2>
 
 <p>As you read through this you are likely thinking "wow – if load checked the file extension then Scott was <strong>screwed</strong>".  And, well, <em>no</em>.  My backup plan was actually pretty simple and involved writing a method that did this:</p>

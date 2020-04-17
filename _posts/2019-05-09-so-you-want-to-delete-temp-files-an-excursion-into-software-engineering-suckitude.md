@@ -164,6 +164,6 @@ You'll notice that boxes 194.55.30.37 and 194.55.31.216 went from 2 odd gigs of 
 
 The hardest part about debugging anything is when your mental model doesn't match what's actually going on under the hood.  The actual epiphany moment was when I realized that this wasn't running under Rails itself.  After that things started to fall into place.
 
-## Thank Yous
+## Thank You's
 
 A big shout out to [Sean Kennedy](https;//csphere.github.io/) who did a fantastic job debugging this with me and came up with a great final solution.  Kudos also to various friends who im'd with me over the course of the day and provided moral support on an extremely frustrating day. 

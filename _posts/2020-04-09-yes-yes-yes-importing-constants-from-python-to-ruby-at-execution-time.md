@@ -112,6 +112,16 @@ Happily there were only three changes that had to be made to the python side of 
 2. Change their name from REGEXES to REGEXES_WHATEVER since at the Ruby layer I will have all of them operating at the same time and you shouldn't redeclare the same constant multiple times; they are CONSTANTS!
 3. Add an import mechanism that brings in the constant from a file i.e. "from common_invective_anti_WHATEVER import *"
 
+## Commentary
+
+I ran an early draft of this by an old friend, [Mark Bernstein](https://www.markbernstein.org), the author of [Tinderbox](https://www.eastgate.com/Tinderbox/) and an extraordinarily experienced software engineer.  He started with a blindingly obvious question: 
+
+> Why didn't you move the regular expressions from code to data i.e. lists of strings that could be included dynamically in the code base?
+
+The reason for this was that I had just moved these regexes from data to code to eliminate the need for file i/o at runtime for better performance.  
+
+Mark continued with a question about why we are using regexes instead of neural networks and the answer is that we are actually using neural networks (specifically [bert](https://en.wikipedia.org/wiki/BERT_(language_model))).  We simply are also using regexes as an additional tool.
+
 ## Sidebar: What if load() didn't work for me?
 
 As you read through this you are likely thinking "wow -- if load checked the file extension then Scott was **screwed**".  And, well, *no*.  My backup plan was actually pretty simple and involved writing a method that did this:
