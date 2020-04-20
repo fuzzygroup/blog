@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Taking Control of One's Workaholic Tendencies
+title: Taking Control of One's Workaholic Tendencies - The IT Anonymous Edition
 category: startup
 tags: ["startup"]
 ---
@@ -50,7 +50,7 @@ my response:
 ![IMG_3181.jpeg](/blog/assets/IMG_3181.jpeg)
 
 {:.center}
-![IMG_3132.jpeg](/blog/assets/IMG_2291.jpeg)
+![IMG_3132.jpeg](/blog/assets/IMG_3132.jpeg)
 
 {:.center}
 ![IMG_3232.jpeg](/blog/assets/IMG_3232.jpeg)
@@ -73,4 +73,4 @@ A group discussion occurs and then, the magic of community solves this as anothe
 
 And with that I speak up:
 
-> I resolve to "I shall work no amount of time, per week, greater than 40 hours for these people."
+> I resolve to "I shall work no amount of time, per week, greater than 40 hours for this project. My wife, family, health and my sanity demand it."
