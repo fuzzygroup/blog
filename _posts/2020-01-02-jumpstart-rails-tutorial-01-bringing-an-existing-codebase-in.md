@@ -7,6 +7,7 @@ tags: ["rails", "jumpstart"]
 {:.center}
 ![IMG_0902.jpeg](/blog/assets/IMG_0902.jpeg)
 
+**Updated**: 5/5/2020
 
 It is the second day of the New Year -- welcome to 2020 -- and I have still failed to launch my side project that I started midway through 2019.  Sigh.  I find myself fundamentally regretting this but, well, life:
 
@@ -44,7 +45,22 @@ You notice that I changed the name of this to:
   
 I changed it since my previous repo name was web_change_me_now and this is going to be the second version of it.
 
-## Step 2 - Add Your Local Version to Github 
+## Step 2 - Run Yarn Install
+
+Change into the directory that you just cloned the repo into and:
+
+    cd web_change_me_now2
+    yarn install --check-files
+
+## Step 3 - Update database.yml
+
+The file config/database.yml needs to be updated to reflect the name of your new application's database.  This means changing:
+
+* jumpstart_development
+* jumpstart_test
+* jumpstart_production
+
+## Step 4 - Add Your Local Version to Github 
 
 I then went to github (I'm a staunch github user instead of gitlib) and created a new repo named:
 
@@ -69,7 +85,10 @@ So if I want to push my changes, I need to do:
 
     git push web_change_me_now2 master
     
-## Step 3 - Getting a develop Branch in Place
+
+**Note**: You may want to reverse the order of Steps 5 and 4 (i.e. create a local develop branch first and then push to that) .  After that you can change into master, merge develop and then push to master.  Overall that seems to work better but I'm still confirming this which is why I haven't fully rewritten this blog post.
+
+## Step 5 - Getting a develop Branch in Place
 
 I'm a firm believer in a simple, branch based approach to git.  I've talked about this before and, specifically:
 
