@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Installing Ansible on Ubuntu 18 on AWS</title>
+  <title>Simple Search and Replace in Ruby</title>
   <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/ansible/2020/05/12/installing-ansible-on-ubuntu-18.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/ruby/2020/05/14/simple-search-and-replace-in-ruby.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,17 +39,13 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Installing Ansible on Ubuntu 18 on AWS">
+  <meta name="twitter:title" content="Simple Search and Replace in Ruby">
 
   
     <meta name="twitter:description"
       content="
 
-Ansible is an Open Source DevOps engine for systems configuration.  Here is the process for installing Ansible on Ubuntu 18 for AWS.
-
-sudo apt-add-repository ppa:ansible/ansible
-sudo apt update
-s...">
+The other day I needed to take some regular expressions and convert them to strings.  And while executing a .to_s on the regular expression itself worked correctly it brought through the regular ...">
   
 
   
@@ -177,33 +173,43 @@ s...">
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Installing Ansible on Ubuntu 18 on AWS</h1>
-    <p class="I'll"><time datetime="2020-05-12T00:00:00-04:00" itemprop="datePublished">May 12, 2020</time> 
+    <h1 class="post-title" itemprop="name headline">Simple Search and Replace in Ruby</h1>
+    <p class="I'll"><time datetime="2020-05-14T00:00:00-04:00" itemprop="datePublished">May 14, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_2290.jpeg" alt="IMG_2290.jpeg" /></p>
+    <p class="center"><img src="/blog/assets/IMG_2674.jpeg" alt="IMG_2674.jpeg" /></p>
 
-<p>Ansible is an Open Source DevOps engine for systems configuration.  Here is the process for installing Ansible on Ubuntu 18 for AWS.</p>
+<p>The other day I needed to take some regular expressions and convert them to strings.  And while executing a .to_s on the regular expression itself worked correctly it brought through the regular expression characters so there were things like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-add-repository ppa:ansible/ansible
-sudo apt update
-sudo apt install ansible
-sudo apt install python-pip
-pip install boto3 --user
+<div class="highlighter-rouge"><pre class="highlight"><code>covid[ -]19
 </code></pre>
 </div>
 
-<p>As with a bunch of my shorter blog posts around installing software, this one is because I needed to install Ansible on a server for work and I figured that documenting it was likely useful (this is now the second time I've had to do it for this job and there will undoubtedly be a third).</p>
+<p>where what I was looking for was just the "covid19" bit (I was generating hashtags from the matched regular expressions for the new <a href="https://covidnearme.org/news">CovidNearMe News Aggregator</a>).  I started digging into the <a href="https://apidock.com/ruby/String/">Ruby string library</a> and didn't find what I was looking for - a str_replace like command.  I also experimented a bit with <a href="https://apidock.com/ruby/String/tr">tr</a> but that proved to be misleading at best.</p>
 
-<h2 id="sources">Sources</h2>
+<p>Not surprisingly, <a href="https://stackoverflow.com/questions/13333116/how-do-i-search-and-replace-strings-not-regex-in-ruby">Stack Overflow</a> came to the rescue and the answer was blindingly simple:</p>
 
 <ul>
-  <li><a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-ansible-on-ubuntu-18-04">Installing Ansible on Ubuntu</a></li>
-  <li><a href="https://crunchify.com/how-to-install-boto3-and-set-amazon-keys-a-python-interface-to-amazon-web-services/">Installing Boto on Linux</a></li>
+  <li>Use sub</li>
+  <li>Use gsub</li>
 </ul>
+
+<p>but <strong>don't</strong> specify a pattern; just specify a <strong>string</strong>.  If you don't have:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.gsub(/foo/,'bar')     
+</code></pre>
+</div>
+
+<p>but instead</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.gsub('foo','bar')
+</code></pre>
+</div>
+
+<p>With this approach, you can then either use sub or gsub depending on how you need the search and replace executed.  This is a truly ruby-esque approach and one I should have anticipated.</p>
 
   </div>
   
@@ -215,16 +221,8 @@ pip install boto3 --user
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#ansible" >
-      #ansible
-    </a>
-    
-    <a href="http://fuzzyblog.io/blog/tag.html#linux" >
-      #linux
-    </a>
-    
-    <a href="http://fuzzyblog.io/blog/tag.html#ubuntu" >
-      #ubuntu
+    <a href="http://fuzzyblog.io/blog/tag.html#ruby" >
+      #ruby
     </a>
     
   </p>
@@ -235,20 +233,8 @@ pip install boto3 --user
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#ansible" class="link_button">
-         ansible
-       </a>
-     </li>
-     
-     <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#linux" class="link_button">
-         linux
-       </a>
-     </li>
-     
-     <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#ubuntu" class="link_button">
-         ubuntu
+       <a href="http://fuzzyblog.io/blog/tag.html#ruby" class="link_button">
+         ruby
        </a>
      </li>
      
