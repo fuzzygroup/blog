@@ -13,7 +13,10 @@ Ansible is an Open Source DevOps engine for systems configuration.  Here is the 
     sudo apt update
     sudo apt install ansible
     sudo apt install python-pip
-    pip install boto3 --user
+    pip install boto3 --user 
+    pip install boto --user
+
+**Note**: The commands pip install boto3 --user / pip install boto --user - you only need one of these.  Use boto3 if your Ansible installation is using python3 and boto if your Ansible is using python 2.x.
 
 As with a bunch of my shorter blog posts around installing software, this one is because I needed to install Ansible on a server for work and I figured that documenting it was likely useful (this is now the second time I've had to do it for this job and there will undoubtedly be a third).
 
