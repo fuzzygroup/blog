@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Using Spacy for Part of Speech Tagging</title>
+  <title>Getting Past Bash Argument list too long</title>
   <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/python/2020/06/24/using-spacy-for-part-of-speech-tagging.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/bash/2020/06/25/getting-past-bash-argument-list-too-long.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,13 +39,16 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Using Spacy for Part of Speech Tagging">
+  <meta name="twitter:title" content="Getting Past Bash Argument list too long">
 
   
     <meta name="twitter:description"
       content="
 
-Part of speech tagging is a classic NLP (natural language parsing) where you give a sentence of sentence fragment to a bit of software and ask it to tell you the parts of speech. If this sounds l...">
+Right now I have a directory with about 750,000 odd files in it and any attempt to manipulate the files results in this:
+
+root@ip-172-31-1-219:~/datastreamer/data# mv * /home/ubuntu/data/data
+bas...">
   
 
   
@@ -173,74 +176,47 @@ Part of speech tagging is a classic NLP (natural language parsing) where you giv
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Using Spacy for Part of Speech Tagging</h1>
-    <p class="I'll"><time datetime="2020-06-24T00:00:00-04:00" itemprop="datePublished">Jun 24, 2020</time> 
+    <h1 class="post-title" itemprop="name headline">Getting Past Bash Argument list too long</h1>
+    <p class="I'll"><time datetime="2020-06-25T00:00:00-04:00" itemprop="datePublished">Jun 25, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_3818.jpeg" alt="IMG_3818.jpeg" /></p>
+    <p class="center"><img src="/blog/assets/IMG_3700.jpeg" alt="IMG_3700.jpeg" /></p>
 
-<p>Part of speech tagging is a classic NLP (natural language parsing) where you give a sentence of sentence fragment to a bit of software and ask it to tell you the parts of speech. If this sounds like a 7th Grade English exercise, well, you aren't wrong …  I'm experimenting with this for an upcoming user interface where I'm hoping to use NLP techniques to lessen the amount of manual data entry.</p>
+<p>Right now I have a directory with about 750,000 odd files in it and any attempt to manipulate the files results in this:</p>
 
-<p>I chose to use Spacy, a Python NLP tool, for this.  Here's an example of the output from Spacy:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>Input:
-
-ADL - Make the ansible create all the queues
-
-Output:
-
-...
-ADL          PROPN      NNP      noun, proper singular
--            PUNCT      :        punctuation mark, colon or ellipsis
-Make         VERB       VB       verb, base form
-the          DET        DT       determiner
-ansible      ADJ        JJ       adjective
-create       NOUN       NN       noun, singular or mass
-all          DET        PDT      predeterminer
-the          DET        DT       determiner
-queues       NOUN       NNS      noun, plural
+<div class="highlighter-rouge"><pre class="highlight"><code>root@ip-172-31-1-219:~/datastreamer/data# mv * /home/ubuntu/data/data
+bash: /bin/mv: Argument list too long
 </code></pre>
 </div>
 
-<p>I've done this type of stuff in the past using tools like Princeton's WordNET but Spacy makes this even easier that ever before.  Here's all it took:</p>
+<p>My first challenge was to do this:</p>
 
-<ol>
-  <li>pip3 install spacy</li>
-  <li>python3 -m spacy download en_core_web_sm</li>
-</ol>
-
-<p>Here's the accompanying Python code.  This code does two things.  It starts by defining a Spacy document based on the sentence and then it iterates over the words in the sentence and gives the word tags and explanation.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt;&gt;&gt; import spacy
-&gt;&gt;&gt; sp = spacy.load('en_core_web_sm')
-&gt;&gt;&gt; sen = sp("ADL - Make the ansible create all the queues")
-&gt;&gt;&gt; for word in sen:
-...     print(f'{word.text:{12}} {word.pos_:{10}} {word.tag_:{8}} {spacy.explain(word.tag_)}')
-...
-ADL          PROPN      NNP      noun, proper singular
--            PUNCT      :        punctuation mark, colon or ellipsis
-Make         VERB       VB       verb, base form
-the          DET        DT       determiner
-ansible      ADJ        JJ       adjective
-create       NOUN       NN       noun, singular or mass
-all          DET        PDT      predeterminer
-the          DET        DT       determiner
-queues       NOUN       NNS      noun, plural
+<div class="highlighter-rouge"><pre class="highlight"><code>chown ubuntu:ubuntu *
 </code></pre>
 </div>
 
-<p>I'm contemplating this for a system built in Rails and it isn't hard to envision setting up a simple Flask API that front ends a Spacy installation that does just this much and returns the result as a JSON structure.</p>
+<p>And the fix for this one was actually easy:</p>
 
-<p>Spacy – very, very much recommended!</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>chown ubuntu:ubuntu .
+</code></pre>
+</div>
 
-<h2 id="references">References</h2>
+<p>By omitting the *, the bash limits on argument list don't apply – this changes the current folder (.) and everything in it and it always works.</p>
+
+<p>The second challenge was to move the files from /root/datastreamer/data to /home/ubuntu/data/data.  Here's the solution after a bit of research:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>find /root/datastreamer/data -name '*.json' -exec mv {} /home/ubuntu/data/data \;
+</code></pre>
+</div>
+
+<h2 id="reference">Reference:</h2>
 
 <ul>
-  <li><a href="https://stackabuse.com/python-for-nlp-parts-of-speech-tagging-and-named-entity-recognition/">StackAbuse on Spacy</a></li>
-  <li><a href="https://github.com/explosion/spaCy/issues/4577">Github on Installing Spacy Libraries</a></li>
+  <li><a href="https://unix.stackexchange.com/questions/128559/solving-mv-argument-list-too-long">Unix.StackExchange</a></li>
+  <li><a href="https://stackoverflow.com/questions/17188292/list-too-long-to-chmod-recursively">StackOverflow</a></li>
 </ul>
 
   </div>
@@ -253,16 +229,12 @@ queues       NOUN       NNS      noun, plural
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#python" >
-      #python
+    <a href="http://fuzzyblog.io/blog/tag.html#bash" >
+      #bash
     </a>
     
-    <a href="http://fuzzyblog.io/blog/tag.html#nlp" >
-      #nlp
-    </a>
-    
-    <a href="http://fuzzyblog.io/blog/tag.html#spacy" >
-      #spacy
+    <a href="http://fuzzyblog.io/blog/tag.html#linux" >
+      #linux
     </a>
     
   </p>
@@ -273,20 +245,14 @@ queues       NOUN       NNS      noun, plural
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#python" class="link_button">
-         python
+       <a href="http://fuzzyblog.io/blog/tag.html#bash" class="link_button">
+         bash
        </a>
      </li>
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#nlp" class="link_button">
-         nlp
-       </a>
-     </li>
-     
-     <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#spacy" class="link_button">
-         spacy
+       <a href="http://fuzzyblog.io/blog/tag.html#linux" class="link_button">
+         linux
        </a>
      </li>
      

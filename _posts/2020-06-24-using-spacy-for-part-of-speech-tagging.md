@@ -36,6 +36,8 @@ I've done this type of stuff in the past using tools like Princeton's WordNET bu
 
 Here's the accompanying Python code.  This code does two things.  It starts by defining a Spacy document based on the sentence and then it iterates over the words in the sentence and gives the word tags and explanation.
 
+    >>> import spacy
+    >>> sp = spacy.load('en_core_web_sm')
     >>> sen = sp("ADL - Make the ansible create all the queues")
     >>> for word in sen:
     ...     print(f'{word.text:{12}} {word.pos_:{10}} {word.tag_:{8}} {spacy.explain(word.tag_)}')

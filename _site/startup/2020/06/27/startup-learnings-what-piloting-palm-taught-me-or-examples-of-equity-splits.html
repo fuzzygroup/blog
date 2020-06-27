@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Using Spacy for Part of Speech Tagging</title>
+  <title>Startup Learnings What Piloting Palm Taught Me or Examples of Equity Splits</title>
   <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/python/2020/06/24/using-spacy-for-part-of-speech-tagging.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/startup/2020/06/27/startup-learnings-what-piloting-palm-taught-me-or-examples-of-equity-splits.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,13 +39,16 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Using Spacy for Part of Speech Tagging">
+  <meta name="twitter:title" content="Startup Learnings What Piloting Palm Taught Me or Examples of Equity Splits">
 
   
     <meta name="twitter:description"
       content="
 
-Part of speech tagging is a classic NLP (natural language parsing) where you give a sentence of sentence fragment to a bit of software and ask it to tell you the parts of speech. If this sounds l...">
+In the age of the iPhone, it is really, really hard to imagine just how significant Palm used to be.  Here are some examples:
+
+
+  Palm used to sell over a billion dollars worth of organizers annu...">
   
 
   
@@ -173,75 +176,38 @@ Part of speech tagging is a classic NLP (natural language parsing) where you giv
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Using Spacy for Part of Speech Tagging</h1>
-    <p class="I'll"><time datetime="2020-06-24T00:00:00-04:00" itemprop="datePublished">Jun 24, 2020</time> 
+    <h1 class="post-title" itemprop="name headline">Startup Learnings What Piloting Palm Taught Me or Examples of Equity Splits</h1>
+    <p class="I'll"><time datetime="2020-06-27T00:00:00-04:00" itemprop="datePublished">Jun 27, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_3818.jpeg" alt="IMG_3818.jpeg" /></p>
+    <p class="center"><img src="/blog/assets/IMG_2662.jpeg" alt="IMG_2662.jpeg" /></p>
 
-<p>Part of speech tagging is a classic NLP (natural language parsing) where you give a sentence of sentence fragment to a bit of software and ask it to tell you the parts of speech. If this sounds like a 7th Grade English exercise, well, you aren't wrong …  I'm experimenting with this for an upcoming user interface where I'm hoping to use NLP techniques to lessen the amount of manual data entry.</p>
-
-<p>I chose to use Spacy, a Python NLP tool, for this.  Here's an example of the output from Spacy:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>Input:
-
-ADL - Make the ansible create all the queues
-
-Output:
-
-...
-ADL          PROPN      NNP      noun, proper singular
--            PUNCT      :        punctuation mark, colon or ellipsis
-Make         VERB       VB       verb, base form
-the          DET        DT       determiner
-ansible      ADJ        JJ       adjective
-create       NOUN       NN       noun, singular or mass
-all          DET        PDT      predeterminer
-the          DET        DT       determiner
-queues       NOUN       NNS      noun, plural
-</code></pre>
-</div>
-
-<p>I've done this type of stuff in the past using tools like Princeton's WordNET but Spacy makes this even easier that ever before.  Here's all it took:</p>
-
-<ol>
-  <li>pip3 install spacy</li>
-  <li>python3 -m spacy download en_core_web_sm</li>
-</ol>
-
-<p>Here's the accompanying Python code.  This code does two things.  It starts by defining a Spacy document based on the sentence and then it iterates over the words in the sentence and gives the word tags and explanation.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt;&gt;&gt; import spacy
-&gt;&gt;&gt; sp = spacy.load('en_core_web_sm')
-&gt;&gt;&gt; sen = sp("ADL - Make the ansible create all the queues")
-&gt;&gt;&gt; for word in sen:
-...     print(f'{word.text:{12}} {word.pos_:{10}} {word.tag_:{8}} {spacy.explain(word.tag_)}')
-...
-ADL          PROPN      NNP      noun, proper singular
--            PUNCT      :        punctuation mark, colon or ellipsis
-Make         VERB       VB       verb, base form
-the          DET        DT       determiner
-ansible      ADJ        JJ       adjective
-create       NOUN       NN       noun, singular or mass
-all          DET        PDT      predeterminer
-the          DET        DT       determiner
-queues       NOUN       NNS      noun, plural
-</code></pre>
-</div>
-
-<p>I'm contemplating this for a system built in Rails and it isn't hard to envision setting up a simple Flask API that front ends a Spacy installation that does just this much and returns the result as a JSON structure.</p>
-
-<p>Spacy – very, very much recommended!</p>
-
-<h2 id="references">References</h2>
+<p>In the age of the iPhone, it is really, really hard to imagine just how significant Palm used to be.  Here are some examples:</p>
 
 <ul>
-  <li><a href="https://stackabuse.com/python-for-nlp-parts-of-speech-tagging-and-named-entity-recognition/">StackAbuse on Spacy</a></li>
-  <li><a href="https://github.com/explosion/spaCy/issues/4577">Github on Installing Spacy Libraries</a></li>
+  <li>Palm used to sell over a billion dollars worth of organizers annually</li>
+  <li>There were multiple compatible versions of the Palm from different companies</li>
+  <li>Both Palm and Handspring, a compatible, went public with multi billion dollar valuations</li>
+  <li>As late as 2010, HP acquired Palm for 1.2 billion <a href="https://en.wikipedia.org/wiki/Palm_(PDA)">WikiPedia</a></li>
 </ul>
+
+<p>I recently read the book Piloting Palm: The Inside Story of Palm, Handspring and the Birth of the Billion-Dollar Handheld Industry:</p>
+
+<p><a href="![https://images-na.ssl-images-amazon.com/images/I/51yPty1M7oL._SX311_BO1,204,203,200_.jpg](https://images-na.ssl-images-amazon.com/images/I/51yPty1M7oL._SX311_BO1,204,203,200_.jpg)">https://www.amazon.com/Piloting-Palm-Handspring-Billion-Dollar-Handheld/dp/0471089656</a></p>
+
+<p>At its heart this book is the story of Jeff Hawkins, the inventor of Palm and Donna Dubinsky, the first CEO of Palm.  As Palm grew more successful and Hawkins and Dubinsky's ambitions grew, they ultimately left and founded the Palm compatible company, Handspring.  If you've ever read a startup case study then I doubt this book will surprise you</p>
+
+<p>The single best part of this book was that it gave metrics for the equity splits that are common for early stage management positions in startups.  This is something that is always hard to judge so having comparables is really useful:</p>
+
+<ol>
+  <li>The CEO of a spun out company from a larger entity would likely own no more than 1 percent of the company.</li>
+  <li>The CEO of an independent startup would generally have 5 percent or more.</li>
+  <li>When the former CEO of Palm, Donna Dubinsky, set up a new company, HandSpring, with Jeff Hawkins, the equity split should be 2:1.  The reason was that Dubinsky felt that Hawkins skills to the new company were more essential than her own i.e. Jeff Hawkins couldn't be replaced but she could be.</li>
+  <li>When Ed Colligan let Palm to join Handspring as VP of Marketing, he received the percentage of company ownership that a startup's CEO would get rather than the far smaller amount that a VP normally owns.  Given that we know from #2 that a CEO would get 5% then we can guess that a VP of Marketing might get 1% (far smaller).  This is backed up by this result from <a href="https://blog.hubspot.com/opinion/how-much-equity-cmo">the Hubspot blog</a>.</li>
+</ol>
 
   </div>
   
@@ -253,16 +219,12 @@ queues       NOUN       NNS      noun, plural
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#python" >
-      #python
+    <a href="http://fuzzyblog.io/blog/tag.html#startup" >
+      #startup
     </a>
     
-    <a href="http://fuzzyblog.io/blog/tag.html#nlp" >
-      #nlp
-    </a>
-    
-    <a href="http://fuzzyblog.io/blog/tag.html#spacy" >
-      #spacy
+    <a href="http://fuzzyblog.io/blog/tag.html#equity" >
+      #equity
     </a>
     
   </p>
@@ -273,20 +235,14 @@ queues       NOUN       NNS      noun, plural
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#python" class="link_button">
-         python
+       <a href="http://fuzzyblog.io/blog/tag.html#startup" class="link_button">
+         startup
        </a>
      </li>
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#nlp" class="link_button">
-         nlp
-       </a>
-     </li>
-     
-     <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#spacy" class="link_button">
-         spacy
+       <a href="http://fuzzyblog.io/blog/tag.html#equity" class="link_button">
+         equity
        </a>
      </li>
      
