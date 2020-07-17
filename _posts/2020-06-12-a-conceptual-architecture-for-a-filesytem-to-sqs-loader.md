@@ -1,6 +1,6 @@
 ---
 layout: post
-title: A Conceptual Architecture for a Filesytem to SQS Loader
+title: A Conceptual Architecture for a Filesystem to SQS Loader
 category: lambda
 tags: ["lambda", "aws", "sqs"]
 ---
