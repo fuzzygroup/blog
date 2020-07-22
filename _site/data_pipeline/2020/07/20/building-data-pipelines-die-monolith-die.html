@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Understanding AWS VCPU Limits</title>
+  <title>Building Data Pipelines Learning Number 01- Die Monolith Die</title>
   <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/2020/07/13/understanding-aws-vcpu-limits.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/data_pipeline/2020/07/20/building-data-pipelines-die-monolith-die.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,12 +39,18 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Understanding AWS VCPU Limits">
+  <meta name="twitter:title" content="Building Data Pipelines Learning Number 01- Die Monolith Die">
 
   
     <meta name="twitter:description"
       content="
-">
+
+I am in the process of wrapping up a year long engagement where I:
+
+
+  Built a high performance data pipeline
+  Capable of processing all of Twitter in real time / near real time
+  Applied multip...">
   
 
   
@@ -172,14 +178,44 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Understanding AWS VCPU Limits</h1>
-    <p class="I'll"><time datetime="2020-07-13T00:00:00-04:00" itemprop="datePublished">Jul 13, 2020</time> 
+    <h1 class="post-title" itemprop="name headline">Building Data Pipelines Learning Number 01- Die Monolith Die</h1>
+    <p class="I'll"><time datetime="2020-07-20T00:00:00-04:00" itemprop="datePublished">Jul 20, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    
+    <p class="center"><img src="/blog/assets/IMG_3897.jpeg" alt="IMG_3897.jpeg" /></p>
+
+<p>I am in the process of wrapping up a year long engagement where I:</p>
+
+<ul>
+  <li>Built a high performance data pipeline</li>
+  <li>Capable of processing all of Twitter in real time / near real time</li>
+  <li>Applied multiple tools to the data at different stages of the pipeline</li>
+  <li>Applied one or more Machine Learning models at different stages of the pipeline</li>
+  <li>Operated on AWS using SQS as the queueing structure</li>
+</ul>
+
+<p>This blog post talks about one of the key things I learned in terms of the data pipeline, specifically:</p>
+
+<p>**Do Not Build Data Pipelines Around a Monolithic Queue Processor **</p>
+
+<p><strong>Note</strong>: By queue processor I mean the bit of software which pulls the data of the queue, operates on it and then puts it back.</p>
+
+<p>This lesson may be obvious to some but we took a <em>meandering</em> approach to this problem where we started with the idea of distributed pipeline components, moved to a monolithic approach and then ended up back at a distributed approach.  As with a lot of research endeavors, the obvious conclusion wasn't quite so obvious in the throes of the research.</p>
+
+<h2 id="lesson-01-monolithic-queue-processing-raises-your-costs">Lesson 01: Monolithic Queue Processing Raises Your Costs</h2>
+
+<p>At the heart of our queue processing were a number of Machine Learning components (python / tensorflow) that really needed a <strong>GPU</strong> for efficient data processing.  The problem here is that when you have a monolithic queue processor, all your processing happens on a box with the GPU whether or not all that processing needs the GPU.  When you are using cloud computing, you pay for the GPU whether not not it is being used for a given operation.  And since GPU boxes generally cost at least 5x to 6x more than CPU only boxes, well, our monolithic queue processor proved to be an <strong>economic disaster</strong>.</p>
+
+<h2 id="lesson-02-monolithic-queue-processing-is-harder-to-debug">Lesson 02: Monolithic Queue Processing Is Harder to Debug</h2>
+
+<p>After realizing Lesson 01, I took our monolithic queue processor apart and broke it down into 8 (ultimately 9) individual queue processors.  One thing that I quickly found is that debugging the 8 individual queue processors was dramatically easier than debugging the single monolithic queue processor.  Essentially the lack of state in the individual queue processors simplified the debugging process.</p>
+
+<h2 id="lesson-03-performance-varies-across-routines---a-monolith-means-you-scale-globally-not-locally">Lesson 03: Performance Varies Across Routines - A Monolith Means You Scale Globally Not Locally</h2>
+
+<p>The final lesson here was that given given each part of the monolithic queue processor had different performance characteristics (example - JSON normalization versus Machine Learning versus calling a remote API over the network versus transferring data to S3), when we had a monolith, we could only scale globally (the entire monolith).  By breaking it down to individual queue processors, we could ensure that each queue processor could be appropriately scaled (i.e. locally scaled) right down to the number of instances / type of instances.</p>
 
   </div>
   
@@ -191,12 +227,22 @@
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
+    <a href="http://fuzzyblog.io/blog/tag.html#data_pipeline" >
+      #data_pipeline
+    </a>
+    
   </p>
   
   <!--
   <hr/><br/>
   <div style="text-align: center;">
       <ul class="list-inline tags" >       
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#data_pipeline" class="link_button">
+         data_pipeline
+       </a>
+     </li>
      
     </ul>
 

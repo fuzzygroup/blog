@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Responsibility Without Authority is a Craptastic Management Approach</title>
+  <title>So That One Time You Played with Docker</title>
   <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/2020/07/10/responsibility-without-authority-is-a-craptastic-management-approach.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/docker/2020/07/20/so-that-one-time-you-played-with-docker.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,12 +39,15 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Responsibility Without Authority is a Craptastic Management Approach">
+  <meta name="twitter:title" content="So That One Time You Played with Docker">
 
   
     <meta name="twitter:description"
       content="
-">
+
+So that one time, at band camp – wait; wrong movie, this is a technical blog post about Docker …
+
+I recently helped a friend doing some federal work in the medical field get a better understandin...">
   
 
   
@@ -172,14 +175,48 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Responsibility Without Authority is a Craptastic Management Approach</h1>
-    <p class="I'll"><time datetime="2020-07-10T00:00:00-04:00" itemprop="datePublished">Jul 10, 2020</time> 
+    <h1 class="post-title" itemprop="name headline">So That One Time You Played with Docker</h1>
+    <p class="I'll"><time datetime="2020-07-20T00:00:00-04:00" itemprop="datePublished">Jul 20, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    
+    <p class="center"><img src="/blog/assets/IMG_3684.jpeg" alt="IMG_3684.jpeg" /></p>
+
+<p>So that one time, at band camp – wait; wrong movie, this is a technical blog post about Docker …</p>
+
+<p>I recently helped a friend doing some federal work in the medical field get a better understanding of Docker and how Docker can mess about with open source licensing.  We got up a "open source" stack of tooling using a bunch of heavy weight tools:</p>
+
+<ul>
+  <li>Mongo</li>
+  <li>Memcached</li>
+  <li>A big Python app</li>
+  <li>Rabbit MQ</li>
+</ul>
+
+<p>And then, as you so often do, we finished up and I got distracted by the next bit of crazy nerd-fu that runs about in my life (server down; wifi crisis; son needing help with his PC; who can remember) and then I went back to my desk, closed my terminal prompt and never thought much more about this.</p>
+
+<p>Lately I've been noticing some slowness on my machine and I just happened to run <strong>docker ps</strong> and what do I see but:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>docker ps
+CONTAINER ID        IMAGE                         COMMAND                  CREATED             STATUS              PORTS                                                 NAMES
+b93fbedc58d2        data_streamer_to_sqs_ruby     "ruby ./main.rb"         29 seconds ago      Up 27 seconds                                                             nice_torvalds
+605da7fe5159        dsarchive/dsa_girder:latest   "/bin/sh -c 'sudo -E…"   2 weeks ago         Up 3 hours          0.0.0.0:8080-&gt;8080/tcp                                dsa_girder
+0b0eb7730fb0        dsarchive/dsa_worker:latest   "/bin/sh -c 'sudo -E…"   2 weeks ago         Up 3 hours                                                                dsa_worker
+df6fd902c11b        memcached:latest              "docker-entrypoint.s…"   2 weeks ago         Up 3 hours          11211/tcp                                             dsa_memcached
+dc7f57778b4e        mongo:latest                  "docker-entrypoint.s…"   2 weeks ago         Up 3 hours          27017/tcp                                             dsa_mongodb
+863768f4f33f        rabbitmq:management           "docker-entrypoint.s…"   2 weeks ago         Up 3 hours          4369/tcp, 5671-5672/tcp, 15671-15672/tcp, 25672/tcp   dsa_rabbitmq
+</code></pre>
+</div>
+
+<p>Yep.  That's the whole set of processes that I was using for my federal friend.  Sigh.  They've been happily sucking up CPU for more than 2 weeks.  <strong>grumble</strong></p>
+
+<p>The solution:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>docker stop 863768f4f33f dc7f57778b4e df6fd902c11b 0b0eb7730fb0 605da7fe5159
+</code></pre>
+</div>
 
   </div>
   
@@ -191,12 +228,22 @@
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
+    <a href="http://fuzzyblog.io/blog/tag.html#docker" >
+      #docker
+    </a>
+    
   </p>
   
   <!--
   <hr/><br/>
   <div style="text-align: center;">
       <ul class="list-inline tags" >       
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#docker" class="link_button">
+         docker
+       </a>
+     </li>
      
     </ul>
 
