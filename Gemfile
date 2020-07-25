@@ -11,6 +11,7 @@ gem 'jekyll-docs'
 #gem 'jekyll-galleries'
 gem 'rmagick'
 gem 'exifr'
+gem 'json', '>=1.8.6' 
 
 
 group :jekyll_plugins do
@@ -19,7 +20,7 @@ group :jekyll_plugins do
   gem 'github-pages'
   gem "jekyll-compose"
   gem 'jekyll-seo-tag'
-  gem 'jekyll-lunr-js-search'
+  #gem 'jekyll-lunr-js-search'
   gem 'jekyll-tagging'
   gem 'jekyll-import'
   gem 'jekyll-sitemap'
