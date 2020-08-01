@@ -5,7 +5,7 @@ category: software_engineering
 tags: ["software_engineering"]
 ---
 {:.center}
-![IMG_3794.jpeg](/blog/assets/IMG_3684.jpeg)
+![IMG_3794.jpeg](/blog/assets/IMG_3794.jpeg)
 
 I am currently involved in leaving a gig where I've been for a year now and I find myself breaking one of my fundamental engineering beliefs, in effect, engaging in an **anti-pattern**.  If a pattern is what you should do for something then an anti-pattern is what you **should not do**.
 

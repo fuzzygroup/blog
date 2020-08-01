@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>When You Can&#39;t Ping, You Dig</title>
+  <title>Docker Madness - When The Output Order of Debugging Seems Impossible</title>
   <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/aws/2020/07/22/when-you-can-t-ping-you-dig.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/docker/2020/07/31/docker-madness-when-the-output-order-of-debugging-seems-impossible.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,13 +39,13 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="When You Can't Ping, You Dig">
+  <meta name="twitter:title" content="Docker Madness - When The Output Order of Debugging Seems Impossible">
 
   
     <meta name="twitter:description"
       content="
 
-Normally when I'm trying to validate that an Internet service is available, well, I ping.  Ping is one of those Internet bedrock protocols that I'm firmly in the camp of &quot;SHOULD ALWAYS, ALWA...">
+Yesterday I was stuck in a hellish debugging cesspool – you know what I mean – when you are debugging a mysterious crash right down embedding line by line print statements and nothing is making s...">
   
 
   
@@ -173,26 +173,40 @@ Normally when I'm trying to validate that an Internet service is available, well
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">When You Can't Ping, You Dig</h1>
-    <p class="I'll"><time datetime="2020-07-22T00:00:00-04:00" itemprop="datePublished">Jul 22, 2020</time> 
+    <h1 class="post-title" itemprop="name headline">Docker Madness - When The Output Order of Debugging Seems Impossible</h1>
+    <p class="I'll"><time datetime="2020-07-31T00:00:00-04:00" itemprop="datePublished">Jul 31, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_3737.jpeg" alt="IMG_3737.jpeg" /></p>
+    <p class="center"><img src="/blog/assets/IMG_3775.jpeg" alt="IMG_3775.jpeg" /></p>
 
-<p>Normally when I'm trying to validate that an Internet service is available, well, I <strong>ping</strong>.  Ping is one of those Internet bedrock protocols that I'm firmly in the camp of "SHOULD ALWAYS, ALWAYS, ALWAYS BE TURNED ON".  But there are ping flooding attacks, etc so there are reasons why it isn't always a default (looking at you here AWS; staring you dead in the eyes with the 'ol stink eye).  I recently realized that while it isn't example the same, if you're trying to validate something's address (as opposed to knowing if it is actually up), you can actually use <strong>dig</strong>.  So instead of:</p>
+<p>Yesterday I was stuck in a hellish debugging cesspool – you know what I mean – when you are debugging a mysterious crash right down embedding line by line print statements and nothing is making sense.  And I don't mean that its not making a lot of sense; I mean that its making NO DAMN SENSE.  I was debugging on a GPU instance on AWS that was running a TensorFlow application and what I kept seeing was output appearing before the routine invoking it was executing.  And this was a worst case scenario right down to the very first line of my Python code being:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ping foo.bar.com
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">"AT START"</span><span class="p">)</span>
 </code></pre>
 </div>
 
-<p>try:</p>
+<p>Happily I was pairing with my colleague Grant and he did that wonderful pairing step of "this makes no damn sense; let me apply my Google Fu to this" and he discovered that Docker buffers output at times and he recommend this change to the Dockerfile:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>dig foo.bar.com
+<p><strong>Before</strong>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># rest of Dockerfile appears here
+CMD [ "python3", "./main.py" ]
 </code></pre>
 </div>
+
+<p><strong>After</strong>:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># rest of Dockerfile appears here
+CMD [ "python3", "-u", "./main.py" ]
+</code></pre>
+</div>
+
+<p>Here is the relevant <a href="https://stackoverflow.com/questions/29663459/python-app-does-not-print-anything-when-running-detached-in-docker">Stack Overflow post</a>.</p>
+
+<p>Thank you Grant!</p>
 
   </div>
   
@@ -204,8 +218,12 @@ Normally when I'm trying to validate that an Internet service is available, well
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#aws" >
-      #aws
+    <a href="http://fuzzyblog.io/blog/tag.html#docker" >
+      #docker
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#python" >
+      #python
     </a>
     
   </p>
@@ -216,8 +234,14 @@ Normally when I'm trying to validate that an Internet service is available, well
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#aws" class="link_button">
-         aws
+       <a href="http://fuzzyblog.io/blog/tag.html#docker" class="link_button">
+         docker
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#python" class="link_button">
+         python
        </a>
      </li>
      

@@ -4,6 +4,9 @@ title: Stupid Docker Tricks - Validating Outbound Connectivity from an Image
 category: docker
 tags: ["docker"]
 ---
+{:.center}
+![IMG_3737.jpeg](/blog/assets/IMG_3737.jpeg)
+
 I recently had the odd situation where it seemed like I had outbound Internet connectivity issues under Ruby powered by Docker but not with Python powered by Docker.
 
 Here's how I disproved this:

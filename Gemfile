@@ -12,6 +12,7 @@ gem 'jekyll-docs'
 gem 'rmagick'
 gem 'exifr'
 gem 'json', '>=1.8.6' 
+#gem 'json', '2.3.1'
 
 
 group :jekyll_plugins do

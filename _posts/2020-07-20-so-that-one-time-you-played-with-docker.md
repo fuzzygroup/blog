@@ -1,12 +1,7 @@
 ---
 layout: post
 title: So That One Time You Played with Docker
-category: docker
-tags: ["docker"]
----
-{:.center}
-![IMG_3684.jpeg](/blog/assets/IMG_3684.jpeg)
-
+ for hte 
 
 So that one time, at band camp -- wait; wrong movie, this is a technical blog post about Docker ...
 

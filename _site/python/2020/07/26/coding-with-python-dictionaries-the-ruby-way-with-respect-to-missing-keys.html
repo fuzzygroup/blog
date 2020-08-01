@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>So That One Time You Played with Docker</title>
+  <title>Coding with Python Dictionaries the Ruby Way With Respect to Missing Keys</title>
   <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/docker/2020/07/20/so-that-one-time-you-played-with-docker.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/python/2020/07/26/coding-with-python-dictionaries-the-ruby-way-with-respect-to-missing-keys.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,15 +39,16 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="So That One Time You Played with Docker">
+  <meta name="twitter:title" content="Coding with Python Dictionaries the Ruby Way With Respect to Missing Keys">
 
   
     <meta name="twitter:description"
       content="
 
-So that one time, at band camp – wait; wrong movie, this is a technical blog post about Docker …
+I recently had an interesting experience with Python dictionaries that made question one of Python's foundational principles i.e. TOOWTDI:
 
-I recently helped a friend doing some federal work in the medical field get a better understandin...">
+
+  There should be one– and preferably only one –obviou...">
   
 
   
@@ -175,48 +176,76 @@ I recently helped a friend doing some federal work in the medical field get a be
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">So That One Time You Played with Docker</h1>
-    <p class="I'll"><time datetime="2020-07-20T00:00:00-04:00" itemprop="datePublished">Jul 20, 2020</time> 
+    <h1 class="post-title" itemprop="name headline">Coding with Python Dictionaries the Ruby Way With Respect to Missing Keys</h1>
+    <p class="I'll"><time datetime="2020-07-26T00:00:00-04:00" itemprop="datePublished">Jul 26, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_3684.jpeg" alt="IMG_3684.jpeg" /></p>
+    <p class="center"><img src="/blog/assets/IMG_3776.jpeg" alt="IMG_3776.jpeg" /></p>
 
-<p>So that one time, at band camp – wait; wrong movie, this is a technical blog post about Docker …</p>
+<p>I recently had an interesting experience with Python dictionaries that made question one of Python's foundational principles i.e. TOOWTDI:</p>
 
-<p>I recently helped a friend doing some federal work in the medical field get a better understanding of Docker and how Docker can mess about with open source licensing.  We got up a "open source" stack of tooling using a bunch of heavy weight tools:</p>
+<blockquote>
+  <p>There should be one– and preferably only one –obvious way to do it.  Although that way may not be obvious at first unless you're Dutch.  <a href="https://wiki.python.org/moin/TOOWTDI">More…</a></p>
+</blockquote>
 
-<ul>
-  <li>Mongo</li>
-  <li>Memcached</li>
-  <li>A big Python app</li>
-  <li>Rabbit MQ</li>
-</ul>
+<p>The application was a large scale JSON processor and, in Python, JSONs are mapped to Python dictionaries which correspond to Ruby hashes.  The issue is how you handle keys that don't exist.  Here's the Ruby way:</p>
 
-<p>And then, as you so often do, we finished up and I got distracted by the next bit of crazy nerd-fu that runs about in my life (server down; wifi crisis; son needing help with his PC; who can remember) and then I went back to my desk, closed my terminal prompt and never thought much more about this.</p>
-
-<p>Lately I've been noticing some slowness on my machine and I just happened to run <strong>docker ps</strong> and what do I see but:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>docker ps
-CONTAINER ID        IMAGE                         COMMAND                  CREATED             STATUS              PORTS                                                 NAMES
-b93fbedc58d2        data_streamer_to_sqs_ruby     "ruby ./main.rb"         29 seconds ago      Up 27 seconds                                                             nice_torvalds
-605da7fe5159        dsarchive/dsa_girder:latest   "/bin/sh -c 'sudo -E…"   2 weeks ago         Up 3 hours          0.0.0.0:8080-&gt;8080/tcp                                dsa_girder
-0b0eb7730fb0        dsarchive/dsa_worker:latest   "/bin/sh -c 'sudo -E…"   2 weeks ago         Up 3 hours                                                                dsa_worker
-df6fd902c11b        memcached:latest              "docker-entrypoint.s…"   2 weeks ago         Up 3 hours          11211/tcp                                             dsa_memcached
-dc7f57778b4e        mongo:latest                  "docker-entrypoint.s…"   2 weeks ago         Up 3 hours          27017/tcp                                             dsa_mongodb
-863768f4f33f        rabbitmq:management           "docker-entrypoint.s…"   2 weeks ago         Up 3 hours          4369/tcp, 5671-5672/tcp, 15671-15672/tcp, 25672/tcp   dsa_rabbitmq
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">irb</span><span class="p">(</span><span class="n">main</span><span class="p">):</span><span class="mo">001</span><span class="p">:</span><span class="mi">0</span><span class="o">&gt;</span> <span class="nb">hash</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="p">{}</span>
+<span class="n">irb</span><span class="p">(</span><span class="n">main</span><span class="p">):</span><span class="mo">002</span><span class="p">:</span><span class="mi">0</span><span class="o">&gt;</span> <span class="nb">hash</span><span class="p">[</span><span class="s2">"foo"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"bar"</span>
+<span class="s2">"bar"</span>
+<span class="n">irb</span><span class="p">(</span><span class="n">main</span><span class="p">):</span><span class="mo">003</span><span class="p">:</span><span class="mi">0</span><span class="o">&gt;</span> <span class="nb">hash</span><span class="p">[</span><span class="s2">"blah"</span><span class="p">]</span>
+<span class="kp">nil</span>
 </code></pre>
 </div>
 
-<p>Yep.  That's the whole set of processes that I was using for my federal friend.  Sigh.  They've been happily sucking up CPU for more than 2 weeks.  <strong>grumble</strong></p>
+<p>And here's the Python way:</p>
 
-<p>The solution:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>docker stop 863768f4f33f dc7f57778b4e df6fd902c11b 0b0eb7730fb0 605da7fe5159
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="s">"foo"</span><span class="p">]</span> <span class="o">=</span> <span class="s">"bar"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="s">"blah"</span><span class="p">]</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="nb">KeyError</span><span class="p">:</span> <span class="s">'blah'</span>
+<span class="o">&gt;&gt;&gt;</span>
 </code></pre>
 </div>
+
+<p>At the heart of things is whether or not a non-existent key causes an exception to be thrown.  I look at this from the cultural perspective of the language's creators.</p>
+
+<p>Ruby says:</p>
+
+<blockquote>
+  <p>"Oh hell no; good heavens why would a non existent key cause an error.  We're Japanese at our heart and tossing an exception for this feels, well, ahem, rude."</p>
+</blockquote>
+
+<p>While Python says:</p>
+
+<blockquote>
+  <p>"Absolutely a missing key must translate to an exception; we are Dutch after all!"</p>
+</blockquote>
+
+<p>The interesting thing here is that despite the foundational principle of TOOWTDI, Python offers a way to emulate Ruby's default behavior – the .get() syntax.  Here's an example:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="s">"foo"</span><span class="p">]</span> <span class="o">=</span> <span class="s">"bar"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"foo"</span><span class="p">)</span>
+<span class="s">'bar'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"blah"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"blah"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="bp">None</span>
+</code></pre>
+</div>
+
+<p>My vastly more Pythonic co-worker, Grant, gave me this explanation when I raised this issue in our team Slack:</p>
+
+<p>@sjohnson You can make Python dicts return None if the key doesn't exist by using the .get class function instead of the square-brackets key notation. So if d is your dictionary, you can use d.get(key) instead of d[key]. The latter will throw a KeyError if the key doesn't exist, whereas the former will just return a null value.</p>
+
+<p>Thanks Grant!</p>
 
   </div>
   
@@ -228,8 +257,12 @@ dc7f57778b4e        mongo:latest                  "docker-entrypoint.s…"   2 w
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#docker" >
-      #docker
+    <a href="http://fuzzyblog.io/blog/tag.html#python" >
+      #python
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#ruby" >
+      #ruby
     </a>
     
   </p>
@@ -240,8 +273,14 @@ dc7f57778b4e        mongo:latest                  "docker-entrypoint.s…"   2 w
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#docker" class="link_button">
-         docker
+       <a href="http://fuzzyblog.io/blog/tag.html#python" class="link_button">
+         python
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#ruby" class="link_button">
+         ruby
        </a>
      </li>
      

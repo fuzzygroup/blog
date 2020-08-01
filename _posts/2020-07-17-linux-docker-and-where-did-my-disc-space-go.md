@@ -130,6 +130,15 @@ After that I had disc space again and then I could start my SystemD service with
 
 Yes my service is unimaginatively named "service.service"
 
+## In Case Rails is Part of Your System
+
+I ran out of disc space today (July 27, 2020) on a production system running Rails and I started to follow the process above and then I thought -- "Wait -- Rails log". and I:
+
+1. Changed into right user for the Rails process.
+2. Changed into the right directory for the Rails app (i.e. RAILS_ROOT/current).
+3. Executed a **du -h log**
+4. Ran a **bundle exec rake log:clear** when I saw the size of the logs was 90 gigs.
+
 ## References
 
 * [Docker Clean Up Commands](https://medium.com/@ruwanka/tidy-and-sparkling-docker-environment-with-new-docker-cleanup-commands-19277f48fd89#:~:text=Reclaim%20Your%20precious%20space,to%20any%20of%20running%20containers.)

@@ -323,6 +323,17 @@ systemctl start service.service
 
 <p>Yes my service is unimaginatively named "service.service"</p>
 
+<h2 id="in-case-rails-is-part-of-your-system">In Case Rails is Part of Your System</h2>
+
+<p>I ran out of disc space today (July 27, 2020) on a production system running Rails and I started to follow the process above and then I thought – "Wait – Rails log". and I:</p>
+
+<ol>
+  <li>Changed into right user for the Rails process.</li>
+  <li>Changed into the right directory for the Rails app (i.e. RAILS_ROOT/current).</li>
+  <li>Executed a <strong>du -h log</strong></li>
+  <li>Ran a <strong>bundle exec rake log:clear</strong> when I saw the size of the logs was 90 gigs.</li>
+</ol>
+
 <h2 id="references">References</h2>
 
 <ul>
