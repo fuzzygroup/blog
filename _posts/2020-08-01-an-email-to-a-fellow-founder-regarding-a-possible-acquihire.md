@@ -7,7 +7,6 @@ tags: ["startup", "acquisition", "acquihire"]
 {:.center}
 ![IMG_3738.jpeg](/blog/assets/IMG_3738.jpeg)
 
-
 I received this email a few moments ago and, having just left my job in the past 24 hours, I had the head space to respond in a way that I hope was helpful.
 
 The email: 
@@ -15,13 +14,13 @@ The email:
     Hello,
     I saw your post on y combinator to a founder who was being acquihired and wanted advice. 
     I am currently at the point where we are starting serious heads of terms for an acquihire 
-    of my 2 man business to a major XYZ company and could use a little advice. In particular, 
+    of my 4 man business to a major XYZ company and could use a little advice. In particular, 
     the terms they are offering for the deal seem a bit worse than my last time I was in a 
     startup that was acquired, but in that instance I was not a founder.  We are considering 
     hiring a 3rd party tax expert with lots of m&a experience to handle the negotiation for 
     about $30k. Does that make sense?
 
-    The deal is around 2 million, and due to the large equity stake and potential for leadership 
+    The deal is around 4 to 4.6 million, and due to the large equity stake and potential for leadership 
     it sounds good, but they are framing the retention as a minimum bonus which sounds a bit off.  
 
     Thank you for taking the time to read this rather out of the blue email  - any tips would really help me out!
