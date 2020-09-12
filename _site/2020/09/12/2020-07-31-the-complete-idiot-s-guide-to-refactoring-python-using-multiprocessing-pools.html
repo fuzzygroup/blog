@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Blogging and a Gift Economy for Appreciation or If I were Jeff Bezos...</title>
-  <meta name="description" content="        Blogging and a Gift Economy for Appreciation or If I were Jeff Bezos...        ">
+  <title>FuzzyBlog</title>
+  <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/story.radio.weblogs.com/2002/05/27/blogging-and-a-gift-economy-for-appreciation-or-if-i-were-jeff-bezos....html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/2020/09/12/2020-07-31-the-complete-idiot-s-guide-to-refactoring-python-using-multiprocessing-pools.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,38 +39,13 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Blogging and a Gift Economy for Appreciation or If I were Jeff Bezos...">
+  <meta name="twitter:title" content="">
 
   
     <meta name="twitter:description"
       content="
 
-    
-    Blogging and a Gift Economy for Appreciation or If I were Jeff Bezos...
-    
-    
-
-
-  
-    
-    
-  
-
-
-
-  
-    
-    
-  
-
-
-
-  
-    
-      
-    
-    
-      Last updated: 6/16/2002; 10:20:37...">
+While I would happily proclaim that my ur language is Ruby, I spend increasingly large amounts of time these days using Python.  And while there are many things that I don't like about Python (th...">
   
 
   
@@ -160,6 +135,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -198,132 +179,86 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Blogging and a Gift Economy for Appreciation or If I were Jeff Bezos...</h1>
-    <p class="I'll"><time datetime="2002-05-27T00:00:00-05:00" itemprop="datePublished">May 27, 2002</time> 
+    <h1 class="post-title" itemprop="name headline"></h1>
+    <p class="I'll"><time datetime="2020-09-12T07:19:33-04:00" itemprop="datePublished">Sep 12, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="Expires" content="Mon, 01 Jan 1990 01:00:00 GMT" />
-    <title>Blogging and a Gift Economy for Appreciation or If I were Jeff Bezos...</title>
-    <style type="text/css">
-      body {
-        margin-top: 0px;
-        margin-left: 0px;
-        margin-right: 0px;
-        margin-bottom: 0px;
-        }
+    <p class="center"><img src="/blog/assets/cloudy_drive.jpg" alt="cloudy_drive.jpg" /></p>
 
-      body, td, p {
-        font-family: verdana, sans-serif;
-        font-size: 90%;
-        }
+<p>While I would happily proclaim that my <strong>ur language</strong> is Ruby, I spend increasingly large amounts of time these days using Python.  And while there are many things that I don't like about Python (the syntax makes my eyes want to weep and then die; thanks <a href="https://www.youtube.com/watch?v=SZGEiz2cpEw">Tim Curry / Psych</a>; around 20 seconds in), the strength of the Python ecosystem is <strong>outstanding</strong>.</p>
 
-      h2 { 
-        font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 24px; font-weight: bold
-        }
-      .header {
-        font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 40px; font-weight: bold
-        }
-      .realsmall {
-        font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 9px;
-        }
-      .small {
-        font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px;
-        }
-      </style>
-    </head>
+<p>Today I'm going to talk about the <a href="https://docs.python.org/3/library/multiprocessing.html">Python Multiprocessing</a> library which is a standard part of Python and can be used without even needing to install anything.  And this isn't going to be a theoretical explanation of processes / threads / parallelism.  Instead it is going to be a simple explanation about how my favorite Python guru taught me to love the zen of multiprocessing with a very specific example.  But we do need a few basics:</p>
 
-<table>
-  <tbody>
-    <tr>
-    </tr>
-  </tbody>
-</table>
+<ol>
+  <li>In Python you want to use processes not threads.  The reason for this is the infamous GIL issue which <a href="https://realpython.com/python-gil/">Real Python</a> does a great job discussing so I'm just not going to get into it.</li>
+  <li>Unless your python processes are heavily IO bound (example – calling networked APIs), you generally want to use a pool of processes tied to your CPU / Core count.  Happily this is astonishingly trivial as the multiprocessing library gives you multiprocessing.cpu_count() as a core primitive.  Please note that I recognize that I have vastly oversimplified this issue and that many people argue for number of cores - 1.  As with all complex computing issues, well, ymmv.</li>
+  <li>Debugging parallel software is always harder than you think it is so I only, ever, do this at the end of project when I <strong>know</strong> that my code works and where the bottlenecks are (i.e. is it IO bound for example).</li>
+  <li>Consistency of coding practices makes a huge difference.  In the code base I just left, I was able to transition all of it to a multiprocessing architecture trivially because I had invested heavily in consistency.</li>
+  <li>Your deployment tooling makes a huge difference.  If you want to experiment with multiprocessing then you need the ability to change your instance type / number of cores and benchmark to know that you are spending your money wisely.</li>
+</ol>
 
-<table>
-  <tbody>
-    <tr>
-    </tr>
-  </tbody>
-</table>
+<h2 id="before">Before</h2>
 
-<table>
-  <tbody>
-    <tr>
-      <td><img src="http://radio.weblogs.com/0103807/images/trans60x60.gif" alt="" /></td>
-    </tr>
-    <tr>
-      <td>Last updated: 6/16/2002; 10:20:37 AM</td>
-    </tr>
-    <tr>
-      <td><img src="http://radio.weblogs.com/0103807/images/trans60x60.gif" alt="" /></td>
-    </tr>
-  </tbody>
-</table>
+<p>Before I implemented multiprocessing, I had an architecture across my data pipeline that looked like this:</p>
 
-<table>
-  <tbody>
-    <tr>
-      <td><img src="http://radio.weblogs.com/0103807/images/trans60x1.gif" alt="" /></td>
-    </tr>
-    <tr>
-      <td> </td>
-    </tr>
-  </tbody>
-</table>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">foo</span>
+<span class="kn">import</span> <span class="nn">bar</span> 
 
-<font size="+3"><b><a href="http://radio.weblogs.com/0103807/" style="color:black; text-decoration:none">The FuzzyBlog!</a></b></font>
-<p><em>Marketing 101. Consulting 101. PHP Consulting. Random geeky stuff. I Blog Therefore I Am.</em></p>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># do the thing
+</span>    
+    <span class="c1"># do more things
+</span></code></pre></div></div>
 
-<font size="+1"><b>Blogging and a Gift Economy for Appreciation or If I were Jeff Bezos...</b></font>
+<h2 id="after">After</h2>
 
-<p>Disclaimer 0: I am in no way claiming that this is original, innovative or anything else.  It's just the first time that I have run into it.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">multiprocessing</span>
+<span class="kn">import</span> <span class="nn">foo</span>
+<span class="kn">import</span> <span class="nn">bar</span>
 
-<p>I ran into an interesting thing in an article on Salon.  The Salon article was talking about how teenage girls with webcams were soliciting online gifts using Amazon wish lists.  While this was fairly disturbing (do you want your daughter / sister / cousin / niece / whatever) tantalizing anonymous men for Amazon stuff, it made me think about applying the same concept to blogs.  Think about it.  People are making great content on blogs every single day, sometimes every single hour.  As the net gets more and more commercial and more and more advertising driven, I just don't read Salon or MSN or whatever.  I read blogs instead.  So the question becomes – how do we keep people making great blogs – that aren't affected by advertising?  My solution: Add an Amazon wishlist to your blog.   Here is my Amazon wishlist:</p>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">multiprocessing</span><span class="p">.</span><span class="n">cpu_count</span><span class="p">())</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">pool</span><span class="p">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">do_main</span><span class="p">)</span> 
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">pass</span>
 
-<p><a href="http://www.amazon.com/o/registry/27K5JCB27FUQ6">My Wish List</a></p>
+<span class="k">def</span> <span class="nf">do_main</span><span class="p">():</span>
+    <span class="c1"># do the thing
+</span>    
+    <span class="c1"># do more things
+</span></code></pre></div></div>
 
-<p>If I was Jeff Bezos at Amazon, not only would I promote this actively to the Blog community but I would also implement a "Partial Wish" feature so that different people could pitch in on a gift.  Why?  Well, when programming books cost $40, that's a big gift.  I'd like to see it as low as $2 or $3.  I'd do that in a second for a whole lot of blogs.  And then the wish list owner could say "$20 more to go for this.  I guess I'll just buy the rest".  With email notification as well this becomes highly, highly viral.  A lot of times I just don't think to go to Amazon.</p>
+<p>As you can see, do_main is just a rewrite of main() under a different name so it can be called by pool.apply_async().  All I did for this rewrite was:</p>
 
-<p>You may be thinking "Amazon Tip Jar".  My gut feeling is that gifts are different from cash.  And gifts give you the opportunity to direct the blog content in ways you might like to see it go.  For example, I am a fairly hardcore PHP geek.  If someone gifted (that a real world) me with a PHP / MySQL Database book then I would know that he or she might want me to write about this.  And I'd probably reward them with articles on that topic.</p>
+<ol>
+  <li>Import the multiprocessing library.</li>
+  <li>Create a new def main() as per the above.</li>
+  <li>Rename my former def main() to def do_main().</li>
+</ol>
 
-<p><strong>Disclaimer 1</strong> : This is not, in any fashion, a solicitation.  My "payment" for blogging is the wonderful interaction that I get from readers all over the world (Mike in Australia, Roger in England, Veer in India, Brent in Canada, etc).  I just thought that other bloggers like Jeremiah might like this idea and I wanted to make it available.</p>
+<h2 id="thank-you">Thank You</h2>
 
-<p><strong>Disclaimer 2</strong> : Am I the only person out there who thinks that Amazon's new UI (well, new to me at least) is just not right?  Way too busy for my taste. </p>
+<p>I would be remiss without thanking my former colleague Grant for his assistance with this refactor.  It is tremendously easy to go wrong with multiprocessing and he set me straight a number of times.  Thanks Grant!</p>
 
-<script language="JavaScript" type="text/javascript"><!--
-	var imageUrl = "http://subhonker6.userland.com/weblogStats/count.gif";
-	var imageTag = "<img src=\"" + imageUrl + "?group=radio1&usernum=103807&referer=" + escape (document.referrer) + "\" height=\"1\" width=\"1\">";
-	document.write (imageTag);
-	//--></script>
+<h2 id="caveats">Caveats</h2>
 
-<table>
-  <tbody>
-    <tr>
-      <td><img src="http://radio.weblogs.com/0103807/images/trans60x1.gif" alt="" /></td>
-    </tr>
-    <tr>
-      <td> </td>
-    </tr>
-    <tr>
-      <td><img src="http://radio.weblogs.com/0103807/images/trans60x60.gif" alt="" /></td>
-    </tr>
-    <tr>
-      <td>Copyright 2002 © The FuzzyStuff</td>
-    </tr>
-    <tr>
-      <td><img src="http://radio.weblogs.com/0103807/images/trans60x60.gif" alt="" /></td>
-    </tr>
-    <tr>
-      <td> </td>
-    </tr>
-  </tbody>
-</table>
+<p>The example above isn't doing anything to capture output from the do_main() method.  The reason for this, is that for my use case, I was implementing a data pipeline where my main() method was simply doing work and advancing stuff across the pipeline from SQS bucket to SQS bucket.  If you want to capture output from a do_main() routine then that can be done by reading the documentation for apply_async.</p>
 
+<h2 id="references">References</h2>
+
+<ul>
+  <li><a href="https://realpython.com/python-gil/">The GIL Issue</a></li>
+  <li><a href="https://docs.python.org/3/library/multiprocessing.html">Python Multiprocessing</a></li>
+  <li><a href="https://docs.python.org/3/library/multiprocessing.html#using-a-pool-of-workers">Using a Pool of Workers</a></li>
+  <li><a href="https://stackoverflow.com/questions/8533318/multiprocessing-pool-when-to-use-apply-apply-async-or-map">When to Use apply_async versus map</a></li>
+  <li><a href="https://stackoverflow.com/questions/39773377/python-multiprocessing-check-status-of-each-processes">Checking the State of a Process</a></li>
+  <li><a href="https://stackoverflow.com/questions/20039659/python-multiprocessings-pool-process-limit">Pool Process Limits</a></li>
+  <li><a href="https://stackoverflow.com/questions/1006289/how-to-find-out-the-number-of-cpus-using-python">Number of CPUs using Python</a></li>
+  <li><a href="https://pythonspeed.com/articles/python-multiprocessing/">The Shark Approach to Multiprocessing</a></li>
+</ul>
 
   </div>
   
@@ -335,22 +270,12 @@
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#blogging" >
-      #blogging
-    </a>
-    
   </p>
   
   <!--
   <hr/><br/>
   <div style="text-align: center;">
       <ul class="list-inline tags" >       
-     
-     <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#blogging" class="link_button">
-         blogging
-       </a>
-     </li>
      
     </ul>
 

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>When Postgres Won&#39;t Start</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/postgres/2020/09/12/when-postgres-won-t-start.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="When Postgres Won't Start">
+
+  
+    <meta name="twitter:description"
+      content="
+
+TLDR
+
+
+  Somehow my postgres installation was upgraded.
+  When postgres is upgraded its data is NOT upgraded.
+  
+    This means postgres won't start BUT it will be a silent failure; you can only ...">
+  
+
+  
+    <meta name="twitter:image"
+      content="http://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+    
+  <script type="text/javascript">
+    function do_search() {
+      var searchForm = document.getElementById('search');
+      var q = document.getElementById('q');
+      var searchQuery = "site:fuzzyblog.io " + q.value;
+      document.location = "https://www.google.com/search?q=" + searchQuery;
+    }
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+          
+          <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div style="width: 50%; float:left; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed red">
+              <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound:<br/>Make applying for tech jobs suck less!</a>
+            </p>
+        </div>
+        <div style="width: 40%; float:right; text-align: center; valign: center; padding: 10px; border: 2px dashed blue">
+
+            <form id="search" action="https://www.google.com/search">
+              <input id="q" name="q" size=40>
+              <button type="submit" form="form1" value="Search" onclick="do_search();">Search</button><br/>&nbsp;
+            </form>
+
+        </div>
+        
+        <!--
+        <div style="width: 75%; float:left; ">&nbsp;&nbsp;&nbsp;</div>
+        -->
+          <!--
+        <div style="width: 20%; float:right; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+              <a href="http://www.fuzzyblog.io/" class="cta-button-blue">Hire Me!</a>
+            </p>
+        </div>
+            -->
+        <div style="clear: both;"></div>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">When Postgres Won't Start</h1>
+    <p class="I'll"><time datetime="2020-09-12T07:05:00-04:00" itemprop="datePublished">Sep 12, 2020</time> 
+      </p> 
+  </header>
+  
+
+  <div class="post-content" itemprop="articleBody">
+    <p class="center"><img src="/blog/assets/IMG_9569.jpeg" alt="IMG_9569.jpeg" /></p>
+
+<h2 id="tldr">TLDR</h2>
+
+<ol>
+  <li>Somehow my postgres installation was upgraded.</li>
+  <li>When postgres is upgraded its data is NOT upgraded.</li>
+  <li>
+    <p>This means postgres won't start BUT it will be a silent failure; you can only confirm this via the logs.</p>
+
+    <p>tail -n 10 /usr/local/var/log/postgres.log</p>
+  </li>
+</ol>
+
+<h2 id="the-long-version">The Long Version</h2>
+
+<p>I went through a situation the other day where I would start and stop postgres and the database would NEVER be available for connection.</p>
+
+<p>Here is the error that I kept getting:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ psql
+psql: error: could not connect to server: could not connect to server: No such file or directory
+	Is the server running locally and accepting
+	connections on Unix domain socket "/tmp/.s.PGSQL.5432"?
+</code></pre></div></div>
+
+<p>This blog posts lists all the commands I used for reference and how I fixed it:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew services restart postgres
+brew services stop postgres
+brew services start postgres
+rm -f /usr/local/var/postgres/postmaster.pid
+brew uninstall postgresql
+brew install postgresql
+brew reinstall postgresql
+brew upgrade postgres
+ls -l /usr/local/var/postgres/postmaster.pid
+ls -l /usr/local/var/postgres/
+tail -n 10 /usr/local/var/log/postgres.log
+brew postgresql-upgrade-database
+tail -n 10 /usr/local/var/log/postgres.log
+</code></pre></div></div>
+
+<p>As is always the case with this type of low level issue, the answer is ALWAYS IN THE DAMN LOGS and it is always the near to last command you use that finds it.  Here's what I found:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ tail -n 10 /usr/local/var/log/postgres.log
+2020-09-10 16:17:49.566 EDT [85169] FATAL:  database files are incompatible with server
+2020-09-10 16:17:49.566 EDT [85169] DETAIL:  The data directory was initialized by PostgreSQL version 11, which is not compatible with this version 12.4.
+2020-09-10 16:17:59.589 EDT [85170] FATAL:  database files are incompatible with server
+2020-09-10 16:17:59.589 EDT [85170] DETAIL:  The data directory was initialized by PostgreSQL version 11, which is not compatible with this version 12.4.
+2020-09-10 16:18:09.617 EDT [85172] FATAL:  database files are incompatible with server
+2020-09-10 16:18:09.617 EDT [85172] DETAIL:  The data directory was initialized by PostgreSQL version 11, which is not compatible with this version 12.4.
+2020-09-10 16:18:19.643 EDT [85174] FATAL:  database files are incompatible with server
+2020-09-10 16:18:19.643 EDT [85174] DETAIL:  The data directory was initialized by PostgreSQL version 11, which is not compatible with this version 12.4.
+2020-09-10 16:18:29.671 EDT [85175] FATAL:  database files are incompatible with server
+2020-09-10 16:18:29.671 EDT [85175] DETAIL:  The data directory was initialized by PostgreSQL version 11, which is not compatible with this version 12.4.
+</code></pre></div></div>
+
+<p>I think what happened is at some point in the recent past a brew command upgraded postgres – I have no memory of doing this and nor can I find it in the command history but it must have happened.  The solution was to run:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew postgresql-upgrade-database
+</code></pre></div></div>
+
+<p>And that gave this output:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ brew postgresql-upgrade-database
+==&gt; brew install postgresql@11
+==&gt; Downloading https://homebrew.bintray.com/bottles/postgresql%4011-11.9.catalina.bottle.tar.gz
+==&gt; Downloading from https://d29vzk4ow07wi7.cloudfront.net/6ae4d48f4eb3af904ff8bb4a4cd6194500272847636261a049559059a312ac10?response-content-disposition=attachment%3Bfilename%3D%22postgresql%4011-11.9.catalina.bottle.
+==&gt; Pouring postgresql@11-11.9.catalina.bottle.tar.gz
+==&gt; /usr/local/Cellar/postgresql@11/11.9/bin/initdb --locale=C -E UTF-8 /usr/local/var/postgresql@11
+==&gt; Caveats
+To migrate existing data from a previous major version of PostgreSQL run:
+  brew postgresql-upgrade-database
+
+This formula has created a default database cluster with:
+  initdb --locale=C -E UTF-8 /usr/local/var/postgres
+For more details, read:
+  https://www.postgresql.org/docs/11/app-initdb.html
+
+postgresql@11 is keg-only, which means it was not symlinked into /usr/local,
+because this is an alternate version of another formula.
+
+If you need to have postgresql@11 first in your PATH run:
+  echo 'export PATH="/usr/local/opt/postgresql@11/bin:$PATH"' &gt;&gt; ~/.zshrc
+
+For compilers to find postgresql@11 you may need to set:
+  export LDFLAGS="-L/usr/local/opt/postgresql@11/lib"
+  export CPPFLAGS="-I/usr/local/opt/postgresql@11/include"
+
+For pkg-config to find postgresql@11 you may need to set:
+  export PKG_CONFIG_PATH="/usr/local/opt/postgresql@11/lib/pkgconfig"
+
+
+To have launchd start postgresql@11 now and restart at login:
+  brew services start postgresql@11
+Or, if you don't want/need a background service you can just run:
+  pg_ctl -D /usr/local/var/postgresql@11 start
+==&gt; Summary
+🍺  /usr/local/Cellar/postgresql@11/11.9: 3,197 files, 36.6MB
+==&gt; Upgrading postgresql data from 11 to 12...
+waiting for server to start....2020-09-10 16:20:44.104 EDT [85963] LOG:  listening on IPv6 address "::1", port 5432
+2020-09-10 16:20:44.104 EDT [85963] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2020-09-10 16:20:44.105 EDT [85963] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2020-09-10 16:20:44.202 EDT [85964] LOG:  database system was interrupted; last known up at 2020-07-13 13:22:20 EDT
+.2020-09-10 16:20:45.519 EDT [85964] LOG:  database system was not properly shut down; automatic recovery in progress
+2020-09-10 16:20:45.537 EDT [85964] LOG:  redo starts at 0/AA216798
+2020-09-10 16:20:45.537 EDT [85964] LOG:  invalid record length at 0/AA2167D0: wanted 24, got 0
+2020-09-10 16:20:45.537 EDT [85964] LOG:  redo done at 0/AA216798
+2020-09-10 16:20:45.572 EDT [85963] LOG:  database system is ready to accept connections
+ done
+server started
+waiting for server to shut down....2020-09-10 16:20:45.839 EDT [85963] LOG:  received fast shutdown request
+2020-09-10 16:20:45.839 EDT [85963] LOG:  aborting any active transactions
+2020-09-10 16:20:45.840 EDT [85963] LOG:  background worker "logical replication launcher" (PID 85970) exited with exit code 1
+2020-09-10 16:20:45.840 EDT [85965] LOG:  shutting down
+2020-09-10 16:20:45.845 EDT [85963] LOG:  database system is shut down
+ done
+server stopped
+==&gt; Moving postgresql data from /usr/local/var/postgres to /usr/local/var/postgres.old...
+==&gt; Creating database...
+The files belonging to this database system will be owned by user "sjohnson".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "en_US.UTF-8".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+fixing permissions on existing directory /usr/local/var/postgres ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default max_connections ... 100
+selecting default shared_buffers ... 128MB
+selecting default time zone ... America/Indiana/Indianapolis
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+initdb: warning: enabling "trust" authentication for local connections
+You can change this by editing pg_hba.conf or using the option -A, or
+--auth-local and --auth-host, the next time you run initdb.
+
+Success. You can now start the database server using:
+
+    /usr/local/opt/postgresql/bin/pg_ctl -D /usr/local/var/postgres -l logfile start
+
+==&gt; Migrating and upgrading data...
+Performing Consistency Checks
+-----------------------------
+Checking cluster versions                                   ok
+Checking database user is the install user                  ok
+Checking database connection settings                       ok
+Checking for prepared transactions                          ok
+Checking for reg* data types in user tables                 ok
+Checking for contrib/isn with bigint-passing mismatch       ok
+Checking for tables WITH OIDS                               ok
+Checking for invalid "sql_identifier" user columns          ok
+Creating dump of global objects                             ok
+Creating dump of database schemas
+                                                            ok
+Checking for presence of required libraries                 ok
+Checking database user is the install user                  ok
+Checking for prepared transactions                          ok
+
+If pg_upgrade fails after this point, you must re-initdb the
+new cluster before continuing.
+
+Performing Upgrade
+------------------
+Analyzing all rows in the new cluster                       ok
+Freezing all rows in the new cluster                        ok
+Deleting files from new pg_xact                             ok
+Copying old pg_xact to new server                           ok
+Setting next transaction ID and epoch for new cluster       ok
+Deleting files from new pg_multixact/offsets                ok
+Copying old pg_multixact/offsets to new server              ok
+Deleting files from new pg_multixact/members                ok
+Copying old pg_multixact/members to new server              ok
+Setting next multixact ID and offset for new cluster        ok
+Resetting WAL archives                                      ok
+Setting frozenxid and minmxid counters in new cluster       ok
+Restoring global objects in the new cluster                 ok
+Restoring database schemas in the new cluster
+                                                            ok
+Copying user relation files
+                                                            ok
+Setting next OID for new cluster                            ok
+Sync data directory to disk                                 ok
+Creating script to analyze new cluster                      ok
+Creating script to delete old cluster                       ok
+
+Upgrade Complete
+----------------
+Optimizer statistics are not transferred by pg_upgrade so,
+once you start the new server, consider running:
+    ./analyze_new_cluster.sh
+
+Running this script will delete the old cluster's data files:
+    ./delete_old_cluster.sh
+==&gt; Upgraded postgresql data from 11 to 12!
+==&gt; Your postgresql 11 data remains at /usr/local/var/postgres.old
+</code></pre></div></div>
+
+<p>And now, finally, Here is how the logs should actually look:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ tail -n 10 /usr/local/var/log/postgres.log
+2020-09-10 16:22:52.819 EDT [86729] LOG:  received smart shutdown request
+2020-09-10 16:22:52.820 EDT [86729] LOG:  background worker "logical replication launcher" (PID 86736) exited with exit code 1
+2020-09-10 16:22:52.820 EDT [86731] LOG:  shutting down
+2020-09-10 16:22:52.888 EDT [86729] LOG:  database system is shut down
+2020-09-10 16:23:27.451 EDT [87278] LOG:  starting PostgreSQL 12.4 on x86_64-apple-darwin19.5.0, compiled by Apple clang version 11.0.3 (clang-1103.0.32.62), 64-bit
+2020-09-10 16:23:27.452 EDT [87278] LOG:  listening on IPv6 address "::1", port 5432
+2020-09-10 16:23:27.452 EDT [87278] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2020-09-10 16:23:27.453 EDT [87278] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2020-09-10 16:23:27.477 EDT [87307] LOG:  database system was shut down at 2020-09-10 16:22:52 EDT
+2020-09-10 16:23:27.481 EDT [87278] LOG:  database system is ready to accept connections
+</code></pre></div></div>
+
+  </div>
+  
+  <!--
+    http://fuzzyblog.io/blog/tag.html#aws
+    http://localhost:5000/blog/category.html#facebook
+  -->
+  
+  <hr/><br/>
+  <p><strong>Posted In:</strong>
+  
+    <a href="http://fuzzyblog.io/blog/tag.html#postgres" >
+      #postgres
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#sysadmin" >
+      #sysadmin
+    </a>
+    
+  </p>
+  
+  <!--
+  <hr/><br/>
+  <div style="text-align: center;">
+      <ul class="list-inline tags" >       
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#postgres" class="link_button">
+         postgres
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#sysadmin" class="link_button">
+         sysadmin
+       </a>
+     </li>
+     
+    </ul>
+
+  </div>
+-->  
+
+
+  
+  
+  
+
+</article>
+
+<!--
+<div class="just-comments" data-apikey="2fb5b93f-dad4-41c0-a9c4-645079ddc541"></div>
+<script async src="https://just-comments.com/w.js"></script>
+-->
+
+      </div>
+    </div>
+
+    <div class="wrapper">
+  <div style="">
+    <!--
+    <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+      <a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Never be surprised by your kid's Xbox spending again!</a>
+    </p>
+      -->
+      <p style="text-align: center; padding: 10px; border: 2px dashed red">
+        <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound:<br/>Make applying for tech jobs suck less!</a>
+      </p>
+      
+  </div>
+</div>
+
+<footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

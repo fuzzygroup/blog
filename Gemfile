@@ -26,7 +26,7 @@ group :jekyll_plugins do
   gem 'jekyll-import'
   gem 'jekyll-sitemap'
   #gem 'jekyll-galleries'
-  gem 'rmagick'
+  #gem 'rmagick'
   gem 'exifr'
   #gem 'jekyll_pages_api'
 end

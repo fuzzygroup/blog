@@ -1,6 +1,6 @@
 ---
 layout: post
-title: A Shorty But a Goody - Sorting mdfind Results by Date or Size
+title: A Shorty But a Goody, Sorting mdfind Results by Date or Size
 category: osx
 tags: ["osx", "mdfind"]
 ---
