@@ -216,3 +216,12 @@ And now, finally, Here is how the logs should actually look:
     2020-09-10 16:23:27.453 EDT [87278] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
     2020-09-10 16:23:27.477 EDT [87307] LOG:  database system was shut down at 2020-09-10 16:22:52 EDT
     2020-09-10 16:23:27.481 EDT [87278] LOG:  database system is ready to accept connections
+    
+## See Also
+
+* [Stack Overflow 1](https://stackoverflow.com/questions/39710384/cannot-connect-to-postgres-server-running-through-brew-services)
+* [Stack Overflow 2](https://stackoverflow.com/questions/37307346/is-the-server-running-on-host-localhost-1-and-accepting-tcp-ip-connections)
+* [Stack Overflow 3 - Readline](https://stackoverflow.com/questions/21488778/library-not-loaded-usr-local-opt-readline-lib-libreadline-6-2-dylib)
+* [Stack Overflow 4 - Readline and HomeBrew](https://stackoverflow.com/questions/54261455/library-not-loaded-usr-local-opt-readline-lib-libreadline-7-dylib)
+* [Stack Overflow 5 - Brew Services and Postgres](https://stackoverflow.com/questions/39710384/cannot-connect-to-postgres-server-running-through-brew-services)
+* [Stack Overflow 6 - Postgres and Mac OSX](https://stackoverflow.com/questions/17822974/postgres-fatal-database-files-are-incompatible-with-server)
