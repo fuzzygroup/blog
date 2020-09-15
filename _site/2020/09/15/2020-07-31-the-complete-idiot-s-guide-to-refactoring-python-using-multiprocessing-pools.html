@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Deploying to HatchBox with Rails 5.x</title>
+  <title>FuzzyBlog</title>
   <meta name="description" content="">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2020/09/14/deploying-to-hatchbox-with-rails-5-x.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/2020/09/15/2020-07-31-the-complete-idiot-s-guide-to-refactoring-python-using-multiprocessing-pools.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,13 +39,13 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Deploying to HatchBox with Rails 5.x">
+  <meta name="twitter:title" content="">
 
   
     <meta name="twitter:description"
       content="
 
-I just got a database less home page for a future SAAS app deployed via HatchBox under Rails 5.x and I thought the differences were significant enough that I should document it.  HatchBox is the ...">
+While I would happily proclaim that my ur language is Ruby, I spend increasingly large amounts of time these days using Python.  And while there are many things that I don't like about Python (th...">
   
 
   
@@ -179,119 +179,86 @@ I just got a database less home page for a future SAAS app deployed via HatchBox
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Deploying to HatchBox with Rails 5.x</h1>
-    <p class="I'll"><time datetime="2020-09-14T09:22:00-04:00" itemprop="datePublished">Sep 14, 2020</time> 
+    <h1 class="post-title" itemprop="name headline"></h1>
+    <p class="I'll"><time datetime="2020-09-15T12:20:56-04:00" itemprop="datePublished">Sep 15, 2020</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_4620.jpeg" alt="IMG_4620.jpeg" /></p>
+    <p class="center"><img src="/blog/assets/cloudy_drive.jpg" alt="cloudy_drive.jpg" /></p>
 
-<p>I just got a database less home page for a future SAAS app deployed via <a href="https://www.hatchbox.io/">HatchBox</a> under Rails 5.x and I thought the differences were significant enough that I should document it.  HatchBox is the best tool I've ever found for Rails deploys but knowing all the steps to follow is key.</p>
+<p>While I would happily proclaim that my <strong>ur language</strong> is Ruby, I spend increasingly large amounts of time these days using Python.  And while there are many things that I don't like about Python (the syntax makes my eyes want to weep and then die; thanks <a href="https://www.youtube.com/watch?v=SZGEiz2cpEw">Tim Curry / Psych</a>; around 20 seconds in), the strength of the Python ecosystem is <strong>outstanding</strong>.</p>
 
-<p>elixi: Other than the Rails 5.2 upgrade step, there aren't many differences between this and Rails 6 but it has been long enough since I've done this that writing it down felt right.</p>
-
-<h2 id="1-upgrade-rails-to-52x-if-you-dont-have-rails-credentialsedit">1. Upgrade Rails to "5.2.x" if You Don't Have rails credentials:edit</h2>
-
-<p>If your Rails 5 version is old enough that you get this crap:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rails credentials:edit
-rails aborted!
-Don't know how to build task 'credentials:edit' (see --tasks)
-</code></pre></div></div>
-
-<p>Here's the line you want to put into your Gemfile:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem 'rails', '~&gt; 5.2'
-</code></pre></div></div>
-
-<p>Once you change your Rails version, you want to use:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle update
-</code></pre></div></div>
-
-<p>to upgrade your Rails installation.</p>
-
-<h2 id="2-there-is-no-true-database-less-deploy-in-hatchbox">2. There is No True Database Less Deploy in HatchBox</h2>
-
-<p>HatchBox is designed to work with a database (which is also the Rails default) because it calls database create and database migrate as part of the deploy.  The trick here is to use an existing database and set your env variables and database.yml to allow for this</p>
-
-<p>Here's how to set up your database.yml file:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>production:
-  adapter: postgresql
-  url: &lt;%= ENV['DATABASE_URL'] %&gt;
-  encoding: utf8
-  pool: 50
-</code></pre></div></div>
-
-<p>Your env variables are described in the section below.</p>
-
-<p>As long as you don't have migrations or database tables as part of your app, you can use any DATABASE_URL value (you set this below under environment variables; I just copied one from a different application).</p>
-
-<h2 id="4-run-rails-credentialsedit">4. Run rails credentials:edit</h2>
-
-<p>The command:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails credentials:edit
-</code></pre></div></div>
-
-<p>creates the Rails master key and secret key base that you need.</p>
-
-<p>You want to save your master key and secret key base because you need both in the env variables section.</p>
-
-<h2 id="5-hatchbox-setup">5. HatchBox Setup</h2>
-
-<p>You want to:</p>
-
-<ul>
-  <li>Add your app to github or another supported version control system and note the username/repo_name pairing</li>
-  <li>Create a new app</li>
-  <li>Choose the cluster</li>
-  <li>Add your env variables (see next section)</li>
-</ul>
-
-<h2 id="6-set-your-env-variables-correctly">6. Set Your Env Variables Correctly</h2>
-
-<p>Here are the env variables you want to set:</p>
-
-<ul>
-  <li>DATABASE_URL</li>
-  <li>RACK_ENV</li>
-  <li>RAILS_ENV</li>
-  <li>RAILS_MASTER_KEY</li>
-  <li>REDIS_URL</li>
-  <li>SECRET_KEY_BASE</li>
-</ul>
-
-<h2 id="7-do-a-deploy">7. Do a Deploy</h2>
-
-<p>After you get everything setup you want to do a deploy.  This is necessary before you can do the SSL stuff.</p>
-
-<h2 id="8-setup-your-domain">8. Setup Your Domain</h2>
-
-<p>I added my domain to the Domains section of HatchBox both as the base domain and as the www variant.</p>
-
-<h2 id="9--setup-ssl">9.  Setup SSL</h2>
-
-<p>The next step is to select the SSL option and then turn on Let's Encrypt.</p>
-
-<h2 id="10--deploy-and-verify">10.  Deploy and Verify</h2>
-
-<p>There are two final steps.  At this point everything should be setup so you want to do a final deploy and then verify your site in https mode.</p>
-
-<h2 id="11-turn-on-push-based-deploying">11. Turn on Push Based Deploying</h2>
-
-<p>The absolute last step is to turn on git push based deploys so any code changes you make automatically trigger a deploy of your code.  HatchBox makes this brilliantly simple:</p>
+<p>Today I'm going to talk about the <a href="https://docs.python.org/3/library/multiprocessing.html">Python Multiprocessing</a> library which is a standard part of Python and can be used without even needing to install anything.  And this isn't going to be a theoretical explanation of processes / threads / parallelism.  Instead it is going to be a simple explanation about how my favorite Python guru taught me to love the zen of multiprocessing with a very specific example.  But we do need a few basics:</p>
 
 <ol>
-  <li>Go to your app's main page.</li>
-  <li>Click the Deploy menu item.</li>
-  <li>Click the Green Automatic Deploy button</li>
+  <li>In Python you want to use processes not threads.  The reason for this is the infamous GIL issue which <a href="https://realpython.com/python-gil/">Real Python</a> does a great job discussing so I'm just not going to get into it.</li>
+  <li>Unless your python processes are heavily IO bound (example – calling networked APIs), you generally want to use a pool of processes tied to your CPU / Core count.  Happily this is astonishingly trivial as the multiprocessing library gives you multiprocessing.cpu_count() as a core primitive.  Please note that I recognize that I have vastly oversimplified this issue and that many people argue for number of cores - 1.  As with all complex computing issues, well, ymmv.</li>
+  <li>Debugging parallel software is always harder than you think it is so I only, ever, do this at the end of project when I <strong>know</strong> that my code works and where the bottlenecks are (i.e. is it IO bound for example).</li>
+  <li>Consistency of coding practices makes a huge difference.  In the code base I just left, I was able to transition all of it to a multiprocessing architecture trivially because I had invested heavily in consistency.</li>
+  <li>Your deployment tooling makes a huge difference.  If you want to experiment with multiprocessing then you need the ability to change your instance type / number of cores and benchmark to know that you are spending your money wisely.</li>
 </ol>
 
-<p>And then make a simple code change and push the code.  At that point a deploy will start automatically.</p>
+<h2 id="before">Before</h2>
+
+<p>Before I implemented multiprocessing, I had an architecture across my data pipeline that looked like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">foo</span>
+<span class="kn">import</span> <span class="nn">bar</span> 
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># do the thing
+</span>    
+    <span class="c1"># do more things
+</span></code></pre></div></div>
+
+<h2 id="after">After</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">multiprocessing</span>
+<span class="kn">import</span> <span class="nn">foo</span>
+<span class="kn">import</span> <span class="nn">bar</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">multiprocessing</span><span class="p">.</span><span class="n">cpu_count</span><span class="p">())</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">pool</span><span class="p">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">do_main</span><span class="p">)</span> 
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">do_main</span><span class="p">():</span>
+    <span class="c1"># do the thing
+</span>    
+    <span class="c1"># do more things
+</span></code></pre></div></div>
+
+<p>As you can see, do_main is just a rewrite of main() under a different name so it can be called by pool.apply_async().  All I did for this rewrite was:</p>
+
+<ol>
+  <li>Import the multiprocessing library.</li>
+  <li>Create a new def main() as per the above.</li>
+  <li>Rename my former def main() to def do_main().</li>
+</ol>
+
+<h2 id="thank-you">Thank You</h2>
+
+<p>I would be remiss without thanking my former colleague Grant for his assistance with this refactor.  It is tremendously easy to go wrong with multiprocessing and he set me straight a number of times.  Thanks Grant!</p>
+
+<h2 id="caveats">Caveats</h2>
+
+<p>The example above isn't doing anything to capture output from the do_main() method.  The reason for this, is that for my use case, I was implementing a data pipeline where my main() method was simply doing work and advancing stuff across the pipeline from SQS bucket to SQS bucket.  If you want to capture output from a do_main() routine then that can be done by reading the documentation for apply_async.</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+  <li><a href="https://realpython.com/python-gil/">The GIL Issue</a></li>
+  <li><a href="https://docs.python.org/3/library/multiprocessing.html">Python Multiprocessing</a></li>
+  <li><a href="https://docs.python.org/3/library/multiprocessing.html#using-a-pool-of-workers">Using a Pool of Workers</a></li>
+  <li><a href="https://stackoverflow.com/questions/8533318/multiprocessing-pool-when-to-use-apply-apply-async-or-map">When to Use apply_async versus map</a></li>
+  <li><a href="https://stackoverflow.com/questions/39773377/python-multiprocessing-check-status-of-each-processes">Checking the State of a Process</a></li>
+  <li><a href="https://stackoverflow.com/questions/20039659/python-multiprocessings-pool-process-limit">Pool Process Limits</a></li>
+  <li><a href="https://stackoverflow.com/questions/1006289/how-to-find-out-the-number-of-cpus-using-python">Number of CPUs using Python</a></li>
+  <li><a href="https://pythonspeed.com/articles/python-multiprocessing/">The Shark Approach to Multiprocessing</a></li>
+</ul>
 
   </div>
   
@@ -303,42 +270,12 @@ Don't know how to build task 'credentials:edit' (see --tasks)
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#rails" >
-      #rails
-    </a>
-    
-    <a href="http://fuzzyblog.io/blog/tag.html#deploy" >
-      #deploy
-    </a>
-    
-    <a href="http://fuzzyblog.io/blog/tag.html#hatchbox" >
-      #hatchbox
-    </a>
-    
   </p>
   
   <!--
   <hr/><br/>
   <div style="text-align: center;">
       <ul class="list-inline tags" >       
-     
-     <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#rails" class="link_button">
-         rails
-       </a>
-     </li>
-     
-     <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#deploy" class="link_button">
-         deploy
-       </a>
-     </li>
-     
-     <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#hatchbox" class="link_button">
-         hatchbox
-       </a>
-     </li>
      
     </ul>
 

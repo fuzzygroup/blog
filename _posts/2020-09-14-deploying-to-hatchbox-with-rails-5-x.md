@@ -10,7 +10,7 @@ tags: ["rails", "deploy", "hatchbox"]
 
 I just got a database less home page for a future SAAS app deployed via [HatchBox](https://www.hatchbox.io/) under Rails 5.x and I thought the differences were significant enough that I should document it.  HatchBox is the best tool I've ever found for Rails deploys but knowing all the steps to follow is key.
 
-**Note**: Other than the Rails 5.2 upgrade step, there aren't many differences between this and Rails 6 but it has been long enough since I've done this that writing it down felt right.
+elixi: Other than the Rails 5.2 upgrade step, there aren't many differences between this and Rails 6 but it has been long enough since I've done this that writing it down felt right.
 
 ## 1. Upgrade Rails to "5.2.x" if You Don't Have rails credentials:edit
 
