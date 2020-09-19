@@ -2,7 +2,7 @@
 layout: post
 title: The Complete Idiot's Guide to Refactoring Python Using Multiprocessing Pools
 category: python
-tags: ["python", :"scalability"]
+tags: ["python", "scalability"]
 ---
 {:.center}
 ![cloudy_drive.jpg](/blog/assets/cloudy_drive.jpg)
