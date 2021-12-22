@@ -53,7 +53,7 @@ In the grand tradition of a 4th Grade Arts and Crafts project, I picked up a tra
 {:.center}
 ![IMG_1418a.jpeg](/blog/assets/IMG_1418a.jpeg)
 
-Note: Shot glasses generally are 1.5 ounces.  So take the maximum amount consumed in ounces and then divide by 1.5.  That's the number of shot glasses you need to mount.  Construction adhesive works particularly well for thais.
+Note: Shot glasses generally are 1.5 ounces.  So take the maximum amount consumed in ounces and then divide by 1.5.  That's the number of shot glasses you need to mount.  Construction adhesive works particularly well for this.
 
 ## Here's What You Need to Pull This Off
 
