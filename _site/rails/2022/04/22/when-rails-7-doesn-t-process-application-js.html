@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Rails 6 - Can&#39;t Find Application.js</title>
-  <meta name="description" content="So I started fiddling about with a new Rails project and after finding a likely starting point, I immediately ended up with this:">
+  <title>When Rails 7 Doesn&#39;t Process application.js</title>
+  <meta name="description" content="This is more than a mildly embarrassing post to have to write but it is an interesting example of how habits can bite you hard – so, so hard.">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2021/12/18/rails-6-can-t-find-application-js.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2022/04/22/when-rails-7-doesn-t-process-application-js.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,16 +39,13 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Rails 6 - Can't Find Application.js">
+  <meta name="twitter:title" content="When Rails 7 Doesn't Process application.js">
 
   
     <meta name="twitter:description"
-      content="So I started fiddling about with a new Rails project and after finding a likely starting point, I immediately ended up with this:
+      content="This is more than a mildly embarrassing post to have to write but it is an interesting example of how habits can bite you hard – so, so hard.
 
-Webpacker can't find application.js in
-
-
-I'm old school Rails and ...">
+I recently wanted to start on an application and actua...">
   
 
   
@@ -182,65 +179,18 @@ I'm old school Rails and ...">
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Rails 6 - Can't Find Application.js</h1>
-    <p class="I'll"><time datetime="2021-12-18T09:51:00-05:00" itemprop="datePublished">Dec 18, 2021</time> 
+    <h1 class="post-title" itemprop="name headline">When Rails 7 Doesn't Process application.js</h1>
+    <p class="I'll"><time datetime="2022-04-22T18:28:00-04:00" itemprop="datePublished">Apr 22, 2022</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>So I started fiddling about with a new Rails project and after finding a likely starting point, I immediately ended up with this:</p>
+    <p>This is more than a mildly embarrassing post to have to write but it is an interesting example of how habits can bite you hard – so, so hard.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Webpacker can't find application.js in
-</code></pre></div></div>
+<p>I recently wanted to start on an application and actually be current on everything: Rails, Bootstrap, etc.  I have long admitted to having issues with respect to "modern" web development (specifically JavaScript / the asset pipeline) and I'm mildly starting to deal with those issues.  I began with a <a href="https://www.bootrails.com/blog/rails-7-bootstrap-5-tutorial/">BootrAils tutorial</a> and started to work through it.</p>
 
-<p>I'm old school Rails and I find the whole asset compilation situation, honestly, perplexing.  The solution turned out to be:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec rails webpacker:install
-</code></pre></div></div>
-
-<p>after the normal:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone foo
-bundle install
-bundle exec rake db:migrate
-</code></pre></div></div>
-
-<p>I have no idea why the bundler install doesn't handle executing webpacker:install but cie la vie.  The more things change, the more they stay the same …</p>
-
-<p><strong>Update</strong>: I kept at this and kept finding that I didn't have webpacker or some other portion of the rails stack running.  I finally traced this down to things having changed.  Traditionally I've always run rails as:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec rails s -pXYZ
-</code></pre></div></div>
-
-<p>And the new approach is to run:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bin/dev
-</code></pre></div></div>
-
-<p>which in turn contains:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> #!/usr/bin/env bash
-
- if ! command -v foreman &amp;&gt; /dev/null
- then
-   echo "Installing foreman..."
-   gem install foreman
- fi
-
- foreman start -f Procfile.dev "$@"
-</code></pre></div></div>
-
-<p>and the Procfile.dev file contains:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	web: bin/rails server -p 3000
-	js: yarn build --watch
-	css: yarn build:css --watch
-</code></pre></div></div>
-
-<p>I was literally missing the yarn command so part of the overall asset pipeline just wasn't running.</p>
-
-<p>Old habits die <strong>hard</strong>.</p>
+<p>I got all the way to the end and I noticed that I simply could NOT get the popovers to work.  I don't claim to have a great understanding of the asset pipeline but I do know that it is a preprocessor that should get invoked on every page request.  I traced the problem back to application.js seemingly not getting processed (a view source didn't show it).  So, just to be sure, I added this to application</p>
 
   </div>
   

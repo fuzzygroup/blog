@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Rails 6 - Can&#39;t Find Application.js</title>
-  <meta name="description" content="So I started fiddling about with a new Rails project and after finding a likely starting point, I immediately ended up with this:">
+  <title>Postgres Woes on OSX with libicui18n.69.dylib</title>
+  <meta name="description" content="Perhaps it is me but I've found that homebrew seems to give more errors and take longer than it used it.  I just got hit with this error:">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2021/12/18/rails-6-can-t-find-application-js.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/postgres/2022/04/21/postgres-woes-on-osx-with-libicui18n-69-dylib.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,16 +39,14 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Rails 6 - Can't Find Application.js">
+  <meta name="twitter:title" content="Postgres Woes on OSX with libicui18n.69.dylib">
 
   
     <meta name="twitter:description"
-      content="So I started fiddling about with a new Rails project and after finding a likely starting point, I immediately ended up with this:
+      content="Perhaps it is me but I've found that homebrew seems to give more errors and take longer than it used it.  I just got hit with this error:
 
-Webpacker can't find application.js in
-
-
-I'm old school Rails and ...">
+	/usr/local/opt/postgresql/bin/postgres -v
+	dyld: Library ...">
   
 
   
@@ -182,65 +180,122 @@ I'm old school Rails and ...">
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Rails 6 - Can't Find Application.js</h1>
-    <p class="I'll"><time datetime="2021-12-18T09:51:00-05:00" itemprop="datePublished">Dec 18, 2021</time> 
+    <h1 class="post-title" itemprop="name headline">Postgres Woes on OSX with libicui18n.69.dylib</h1>
+    <p class="I'll"><time datetime="2022-04-21T09:33:00-04:00" itemprop="datePublished">Apr 21, 2022</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>So I started fiddling about with a new Rails project and after finding a likely starting point, I immediately ended up with this:</p>
+    <p>Perhaps it is me but I've found that homebrew seems to give more errors and take longer than it used it.  I just got hit with this error:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Webpacker can't find application.js in
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	/usr/local/opt/postgresql/bin/postgres -v
+	dyld: Library not loaded: /usr/local/opt/icu4c/lib/libicui18n.69.dylib
+	  Referenced from: /usr/local/opt/postgresql/bin/postgres
+	  Reason: image not found
 </code></pre></div></div>
 
-<p>I'm old school Rails and I find the whole asset compilation situation, honestly, perplexing.  The solution turned out to be:</p>
+<p>Digging into the OSX postgres log here:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec rails webpacker:install
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tail -n 100 /usr/local/var/log/postgresql.log
 </code></pre></div></div>
 
-<p>after the normal:</p>
+<p>helped but didn't tell me what to do.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone foo
-bundle install
-bundle exec rake db:migrate
+<p>An awful lot of googling didn't find me an answer but then I <a href="https://stackoverflow.com/questions/53828891/dyld-library-not-loaded-usr-local-opt-icu4c-lib-libicui18n-62-dylib-error-run">hit on</a>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew reinstall icu4c
 </code></pre></div></div>
 
-<p>I have no idea why the bundler install doesn't handle executing webpacker:install but cie la vie.  The more things change, the more they stay the same …</p>
+<p>That churned for a bit but then declared a decisive victory:</p>
 
-<p><strong>Update</strong>: I kept at this and kept finding that I didn't have webpacker or some other portion of the rails stack running.  I finally traced this down to things having changed.  Traditionally I've always run rails as:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	🍺  /usr/local/Cellar/maxima/5.46.0: 2,842 files, 119.1MB
+	==&gt; Running `brew cleanup maxima`...
+	Removing: /usr/local/Cellar/maxima/5.45.1_4... (2,774 files, 118.4MB)
+	Removing: /Users/sjohnson/Library/Caches/Homebrew/maxima--5.45.1_4... (38.3MB)
+	==&gt; Upgrading postgresql
+	  13.2_2 -&gt; 14.2_1
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec rails s -pXYZ
+	==&gt; Installing dependencies for postgresql: krb5
+	==&gt; Installing postgresql dependency: krb5
+	==&gt; Pouring krb5--1.19.3.catalina.bottle.tar.gz
+	🍺  /usr/local/Cellar/krb5/1.19.3: 162 files, 5.2MB
+	==&gt; Installing postgresql
+	==&gt; Pouring postgresql--14.2_1.catalina.bottle.tar.gz
+	==&gt; Caveats
+	To migrate existing data from a previous major version of PostgreSQL run:
+	  brew postgresql-upgrade-database
+
+	This formula has created a default database cluster with:
+	  initdb --locale=C -E UTF-8 /usr/local/var/postgres
+	For more details, read:
+	  https://www.postgresql.org/docs/14/app-initdb.html
+
+	To restart postgresql after an upgrade:
+	  brew services restart postgresql
+	Or, if you don't want/need a background service you can just run:
+	  /usr/local/opt/postgresql/bin/postgres -D /usr/local/var/postgres
+	==&gt; Summary
+	🍺  /usr/local/Cellar/postgresql/14.2_1: 3,305 files, 45.5MB
+	==&gt; Running `brew cleanup postgresql`...
+	Removing: /usr/local/Cellar/postgresql/13.2_2... (3,218 files, 42.6MB)
+	Removing: /Users/sjohnson/Library/Caches/Homebrew/postgresql--13.2_2... (11.1MB)
+	==&gt; Checking for dependents of upgraded formulae...
+	==&gt; No broken dependents found!
+	==&gt; Caveats
+	==&gt; postgresql@11
+	This formula has created a default database cluster with:
+	  initdb --locale=C -E UTF-8 /usr/local/var/postgresql@11
+	For more details, read:
+	  https://www.postgresql.org/docs/11/app-initdb.html
+
+	postgresql@11 is keg-only, which means it was not symlinked into /usr/local,
+	because this is an alternate version of another formula.
+
+	If you need to have postgresql@11 first in your PATH, run:
+	  echo 'export PATH="/usr/local/opt/postgresql@11/bin:$PATH"' &gt;&gt; ~/.zshrc
+
+	For compilers to find postgresql@11 you may need to set:
+	  export LDFLAGS="-L/usr/local/opt/postgresql@11/lib"
+	  export CPPFLAGS="-I/usr/local/opt/postgresql@11/include"
+
+	For pkg-config to find postgresql@11 you may need to set:
+	  export PKG_CONFIG_PATH="/usr/local/opt/postgresql@11/lib/pkgconfig"
+
+
+	To restart postgresql@11 after an upgrade:
+	  brew services restart postgresql@11
+	Or, if you don't want/need a background service you can just run:
+	  /usr/local/opt/postgresql@11/bin/postgres -D /usr/local/var/postgresql@11
+	==&gt; maxima
+	Emacs Lisp files have been installed to:
+	  /usr/local/share/emacs/site-lisp/maxima
+	==&gt; postgresql
+	To migrate existing data from a previous major version of PostgreSQL run:
+	  brew postgresql-upgrade-database
+
+	This formula has created a default database cluster with:
+	  initdb --locale=C -E UTF-8 /usr/local/var/postgres
+	For more details, read:
+	  https://www.postgresql.org/docs/14/app-initdb.html
+
+	To restart postgresql after an upgrade:
+	  brew services restart postgresql
+	Or, if you don't want/need a background service you can just run:
+	  /usr/local/opt/postgresql/bin/postgres -D /usr/local/var/postgres
 </code></pre></div></div>
 
-<p>And the new approach is to run:</p>
+<p>I followed this up with:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bin/dev
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo 'export PATH="/usr/local/opt/postgresql@11/bin:$PATH"' &gt;&gt; ~/.zshrc
 </code></pre></div></div>
 
-<p>which in turn contains:</p>
+<p>And then to confirm success:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> #!/usr/bin/env bash
-
- if ! command -v foreman &amp;&gt; /dev/null
- then
-   echo "Installing foreman..."
-   gem install foreman
- fi
-
- foreman start -f Procfile.dev "$@"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew services restart postgresql@11
 </code></pre></div></div>
 
-<p>and the Procfile.dev file contains:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	web: bin/rails server -p 3000
-	js: yarn build --watch
-	css: yarn build:css --watch
-</code></pre></div></div>
-
-<p>I was literally missing the yarn command so part of the overall asset pipeline just wasn't running.</p>
-
-<p>Old habits die <strong>hard</strong>.</p>
+<p>And, once again, I have postgres running locally.</p>
 
   </div>
   
@@ -252,8 +307,12 @@ bundle exec rake db:migrate
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#rails" >
-      #rails
+    <a href="http://fuzzyblog.io/blog/tag.html#postgres" >
+      #postgres
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#osx" >
+      #osx
     </a>
     
   </p>
@@ -264,8 +323,14 @@ bundle exec rake db:migrate
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#rails" class="link_button">
-         rails
+       <a href="http://fuzzyblog.io/blog/tag.html#postgres" class="link_button">
+         postgres
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#osx" class="link_button">
+         osx
        </a>
      </li>
      
