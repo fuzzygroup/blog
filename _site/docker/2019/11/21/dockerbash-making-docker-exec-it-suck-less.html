@@ -135,6 +135,12 @@ Docker is a container technology that allows you to package up a series of diffe
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,43 +192,38 @@ Docker is a container technology that allows you to package up a series of diffe
 
 <p>You can easily do this with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker exec -it CONTAINER_HASH /bin/bash
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker exec -it CONTAINER_HASH /bin/bash
+</code></pre></div></div>
 
 <p>The CONTAINER_HASH is a value like 311ab7fe0ea1.  This value is fetched from a docker ps command like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker ps | grep police
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker ps | grep police
+</code></pre></div></div>
 
 <p>The term 'police' is just some bit of text that identifies the docker process that is running.</p>
 
 <p>Here's an example of this output:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ docker ps | grep police
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ docker ps | grep police
 311ab7fe0ea1        img-captain-police-crawl:51         "/bin/sh -c 'puma -C…"   4 hours ago         Up 4 hours
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>What I'd really like is a command like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>dockerbash police
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dockerbash police
+</code></pre></div></div>
 
 <p>and have that do the underlying work to generate the docker exec statement.  A little bit of bash scripting gave me this script:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-<span class="k">if</span> <span class="o">[</span> -z <span class="nv">$1</span> <span class="o">]</span>; <span class="k">then
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nt">-z</span> <span class="nv">$1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
   </span><span class="nb">echo</span> <span class="s2">"You need to specify the name of the container you want to get into like:"</span>
   <span class="nb">echo</span> <span class="s2">"dockerbash police"</span>
 <span class="k">else
-  </span><span class="nv">pid</span><span class="o">=</span><span class="sb">`</span>docker ps | grep <span class="nv">$1</span> | awk <span class="s1">'{print $1}'</span><span class="sb">`</span>
-  docker <span class="nb">exec</span> -it <span class="nv">$pid</span> /bin/bash
+  </span><span class="nv">pid</span><span class="o">=</span><span class="sb">`</span>docker ps | <span class="nb">grep</span> <span class="nv">$1</span> | <span class="nb">awk</span> <span class="s1">'{print $1}'</span><span class="sb">`</span>
+  docker <span class="nb">exec</span> <span class="nt">-it</span> <span class="nv">$pid</span> /bin/bash
 <span class="k">fi</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Save the lines above as dockerbash and make it executable.  After that you can much more easily get a shell prompt inside your docker containers.</p>
 

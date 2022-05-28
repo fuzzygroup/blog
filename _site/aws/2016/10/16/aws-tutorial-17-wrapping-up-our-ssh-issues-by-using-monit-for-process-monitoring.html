@@ -137,6 +137,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -197,15 +203,14 @@
 
 <p>The first thing we need is a role for monit so we're going to build out our role structure as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mkdir -p your_ansible_root_path/roles/monit/tasks
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir -p your_ansible_root_path/roles/monit/tasks
 mkdir -p your_ansible_root_path/roles/monit/templates
 touch your_ansible_root_path/roles/monit/tasks/main.yml
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Then we're going to need a few things in our role (main.yml):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>---
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
 - name: install monit
   apt: pkg=monit state=present
   
@@ -214,28 +219,25 @@ touch your_ansible_root_path/roles/monit/tasks/main.yml
 
 - name: install monit sidekiq config file
   template: src=roles/monit/templates/sidekiq.j2 dest=/etc/monit/conf.d/sidekiq
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Our template for monitoring sidekiq is going to rely on a handful of variables that for simplicity's sake, I've defined in the file all in groupvars:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>app_base: /var/www/apps/banks/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>app_base: /var/www/apps/banks/
 app_path: /var/www/apps/banks/current/
 server_env: production
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Since I have sidekiq running on two different machines with different configurations, I used variables in the inventory file to define the number of threads and the max ram:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[crawler]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[crawler]
 ficrawlerbig ansible_ssh_host=BLAH1.compute.amazonaws.com  ansible_ssh_private_key_file=/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem  max_sidekiq_memory="50 GB" max_sidekiq_threads=50
 ficrawler3 ansible_ssh_host=BLAH2.compute.amazonaws.com ansible_ssh_private_key_file=/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem max_sidekiq_memory="13 GB" max_sidekiq_threads=25
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here's what that template looks like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>check process sidekiq
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>check process sidekiq
   with pidfile shared/tmp/pids/sidekiq.pid
   start program = "cd  &amp;&amp; bundle exec ./bin/sidekiq -C ./config/sidekiq.yml -e "
   
@@ -243,14 +245,12 @@ ficrawler3 ansible_ssh_host=BLAH2.compute.amazonaws.com ansible_ssh_private_key_
   if totalmem is greater than  for 3 cycles then restart
   
   if 3 restarts within 5 cycles then timeout
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And here's the playbook routine which calls the monit role:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- { role: monit, tags: monit}
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- { role: monit, tags: monit}
+</code></pre></div></div>
 
 <p>Once you put that all together, you'll have monit watching the sidekiq process on a regular basis.  One thing I didn't cover above is that we need to modify the config/sidekiq.yml file in the Rails root directory to use the right number of threads.  This is left as an exercise for the reader.</p>
 

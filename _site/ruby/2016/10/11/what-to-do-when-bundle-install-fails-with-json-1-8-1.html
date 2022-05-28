@@ -135,6 +135,12 @@ Gem::Ext::BuildError: ERROR: Failed to build gem native extens...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -182,7 +188,7 @@ Gem::Ext::BuildError: ERROR: Failed to build gem native extens...">
   <div class="post-content" itemprop="articleBody">
     <p>I cannot express my abject frustration at times with the Ruby ecosystem in general and bundler in particular.  When you hit this bug:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
 
     current directory: /usr/local/rvm/gems/ruby-2.3.1/gems/json-1.8.1/ext/json/ext/generator
 /usr/local/rvm/rubies/ruby-2.3.1/bin/ruby -r ./siteconf20161011-22175-140avvd.rb extconf.rb
@@ -211,14 +217,12 @@ Results logged to /usr/local/rvm/gems/ruby-2.3.1/extensions/x86_64-linux/2.3.0/j
 
 An error occurred while installing json (1.8.1), and Bundler cannot continue.
 Make sure that `gem install json -v '1.8.1'` succeeds before bundling.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I've hit this error, I suspect, a few hundred times and I always forget the solution.  And I'm not the only one.  <a href="http://dasari.me">Dv</a> and I hit this together today and we shot about 20 minutes today to need this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>gem install json -v1.8.3
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem install json -v1.8.3
+</code></pre></div></div>
 
 <p>Thank you <a href="http://stackoverflow.com/questions/21095098/why-wont-bundler-install-json-gem">Stack Overflow</a> for this answer.  Even if it was buried so deep in the thread that I almost missed it.</p>
 

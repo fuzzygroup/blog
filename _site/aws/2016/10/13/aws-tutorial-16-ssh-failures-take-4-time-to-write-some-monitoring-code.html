@@ -137,6 +137,12 @@ Well crap.  I just ran my ansible df -h test which checks to ...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -188,7 +194,7 @@ Well crap.  I just ran my ansible df -h test which checks to ...">
 
 <p>Well crap.  I just ran my ansible df -h test which checks to make sure my boxes are up and running and I got complete failure:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>fiweb1 | UNREACHABLE! =&gt; {
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fiweb1 | UNREACHABLE! =&gt; {
     "changed": false,
     "msg": "Failed to connect to the host via ssh.",
     "unreachable": true
@@ -243,8 +249,7 @@ ficrawler10 | UNREACHABLE! =&gt; {
     "msg": "Failed to connect to the host via ssh.",
     "unreachable": true
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Curiouser and curiouser said Alice.  The interesting thing here is that two of these boxes ARE NOT running our crawler code.  They're actually doing nothing at all.  So what does this tell us:</p>
 
@@ -306,7 +311,7 @@ ficrawler10 | UNREACHABLE! =&gt; {
 
 <p>Listed below is a rake task which encapsulates the bulk of it.  This is actually only the <strong>first draft</strong> of it.  The actual <a href="https://github.com/fuzzygroup/aws_monitor">github</a> code is better but I've been up all night so I don't think trying to write a good description of it is wise.  The detailed stuff is handled by aws_monitor.rb which is a short class of static methods just to simplify the rake task and make them testable.  The only bad thing I can ever say about Jim Weirich is that Rake tasks aren't really testable.  Other than that I wish he was still with us.  Right now this code is a bit of a rough draft as the failure hasn't happened again yet and things like error handling always need to get addressed but it looks something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>namespace :monitor_aws do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>namespace :monitor_aws do
   # bundle exec rake monitor_aws:ansible_hosts --trace
   task :ansible_hosts =&gt; :environment do
     #
@@ -345,8 +350,7 @@ ficrawler10 | UNREACHABLE! =&gt; {
     end
   end
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And that's about all there is to it.  The complicated version, which is also written, but not yet published has some other tricks like using ping to make sure my local connectivity didn't fail.  I don't want to publish that yet since I don't understand if my failure condition is going to be a  Net::SSH::AuthenticationFailed or a session.error message or what.</p>
 
@@ -354,7 +358,7 @@ end
 
 <p>This morning I added a running timer to track how long the boxes were up.  This is what it looks like now:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Monitoring run: 31
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Monitoring run: 31
 Success!  The box ficrawler3 is still alive and has been for: 9300 seconds!!!
 Success!  The box ficrawler4 is still alive and has been for: 9300 seconds!!!
 Success!  The box ficrawler5 is still alive and has been for: 9300 seconds!!!
@@ -363,8 +367,7 @@ Success!  The box ficrawler7 is still alive and has been for: 9300 seconds!!!
 Success!  The box ficrawler8 is still alive and has been for: 9300 seconds!!!
 Success!  The box ficrawler9 is still alive and has been for: 9300 seconds!!!
 Success!  The box ficrawler10 is still alive and has been for: 9300 seconds!!!
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="postscript-2">Postscript 2</h2>
 

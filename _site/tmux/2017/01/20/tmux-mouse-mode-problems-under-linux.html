@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,12 +192,11 @@
 
 <p>The problem was in the file ~/.tmux.conf and it was the presence of these lines:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>setw -g mode-mouse on
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setw -g mode-mouse on
 set -g mouse-select-pane off
 set -g mouse-resize-pane off
 set -g mouse-select-window off
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>To be honest this is a problem that I likely introduced myself - I vaguely remember noodling on this configuration file about 18 months ago and then something blew up.  A quick :wq in VIM and I was off to the next disaster.  And since I didn't restart tmux entirely (configuration is loaded only on startup), it wasn't until the box was physically rebooted, long after I had forgotten this particular hell, that the mouse died and I was left scratching my head.  Sigh.</p>
 

@@ -135,6 +135,12 @@ More than a decade using RSpec has left me flummoxed in terms of &quot;classical
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -201,43 +207,37 @@ More than a decade using RSpec has left me flummoxed in terms of &quot;classical
 
 <p>The very basic of testing is nothing more than test execution so to run all model tests:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rails test test/models/
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails test test/models/
+</code></pre></div></div>
 
 <p>and to run one file</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rails test test/models/user_test.rb    
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails test test/models/user_test.rb    
+</code></pre></div></div>
 
 <p>and to run everything:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rails test     
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails test     
+</code></pre></div></div>
 
 <p>and to run with verbose mode:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rails test -v test/models  
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails test -v test/models  
+</code></pre></div></div>
 
 <p>and to run verbosely and fail on the first test failure:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rails test -v -f test/helpers/application_helper.rb
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails test -v -f test/helpers/application_helper.rb
+</code></pre></div></div>
 
 <p>and to run just one specific test:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rails test test/controllers/labels_controller_test.rb:9
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails test test/controllers/labels_controller_test.rb:9
+</code></pre></div></div>
 
 <p>Note: RSpec is very good at running the next test if the line number shifts a bit (example you put in :8 but you added a line so its actually :9).  With standard rails test, you get this madness:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ rails test test/controllers/projects_controller_test.rb:17
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rails test test/controllers/projects_controller_test.rb:17
 Running via Spring preloader in process 95090
 Run options: --seed 52687
 
@@ -245,8 +245,7 @@ Run options: --seed 52687
 
 Finished in 0.010622s, 0.0000 runs/s, 0.0000 assertions/s.
 0 runs, 0 assertions, 0 failures, 0 errors, 0 skips
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The 0 runs, 0 assertions, 0 failures, 0 errors, 0 skips can best be interpreted as:</p>
 
@@ -272,7 +271,7 @@ Finished in 0.010622s, 0.0000 runs/s, 0.0000 assertions/s.
 
 <p>Here's a sample test using my foo example:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'test_helper'</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'test_helper'</span>
 
 <span class="k">class</span> <span class="nc">LabelTest</span> <span class="o">&lt;</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">TestCase</span>
   
@@ -285,8 +284,7 @@ Finished in 0.010622s, 0.0000 runs/s, 0.0000 assertions/s.
     <span class="n">assert_equal</span> <span class="no">Label</span><span class="p">.</span><span class="nf">foo</span><span class="p">,</span> <span class="s1">'BAR'</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="writing-tests">Writing Tests</h2>
 
@@ -306,16 +304,15 @@ Finished in 0.010622s, 0.0000 runs/s, 0.0000 assertions/s.
 
 <p>And I am certain that there are more but this is a decent sampling of most of the assertion statements that I can remember using once upon a time.</p>
 
-<h2 id="using-assertredirectedto">Using assert_redirected_to</h2>
+<h2 id="using-assert_redirected_to">Using assert_redirected_to</h2>
 
 <p>Here's a minimal example of assert_redirected_to:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">test</span> <span class="s2">"should get index and redirect to / when logged in and no projects"</span> <span class="k">do</span> 
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">test</span> <span class="s2">"should get index and redirect to / when logged in and no projects"</span> <span class="k">do</span> 
   <span class="n">get</span> <span class="n">labels_url</span>
   <span class="n">assert_redirected_to</span> <span class="n">new_user_session_path</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 
   </div>

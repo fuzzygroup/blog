@@ -135,6 +135,12 @@ SSH is one ...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,57 +192,50 @@ SSH is one ...">
 
 <p>Let's start with how I first logged into one of my production AWS boxes:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ssh -i ~/.ssh/my_pem_file.pem ubuntu@ec2-52-39-100-178.us-west-2.compute.amazonaws.com
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh -i ~/.ssh/my_pem_file.pem ubuntu@ec2-52-39-100-178.us-west-2.compute.amazonaws.com
+</code></pre></div></div>
 
 <p>That certainly works but it is <strong>long</strong>.  And where you have length then you may the chance for error.  And then when you need to transfer a file from server to client (or vice versa) then you need to rewrite it like so:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>scp -i ~/.ssh/my_pem_file.pem ubuntu@ec2-52-39-100-178.us-west-2.compute.amazonaws.com:/tmp/foo.txt ~/Downloads
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp -i ~/.ssh/my_pem_file.pem ubuntu@ec2-52-39-100-178.us-west-2.compute.amazonaws.com:/tmp/foo.txt ~/Downloads
+</code></pre></div></div>
 
 <h1 id="the-ssh-config-file">The SSH Config file</h1>
 
 <p>In your ~/.ssh directory there is a file named, simply enough, <strong>config</strong>.  The config file stores a series of entries related to the the host you want to log into.  Here's an example of what logging in using a config file is like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ssh mariadb
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh mariadb
+</code></pre></div></div>
 
 <p>And here is an example of scp'ing a file down to your local box:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>scp mariadb:/tmp/foo.txt ~/Downloads
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp mariadb:/tmp/foo.txt ~/Downloads
+</code></pre></div></div>
 
 <p>So that is a clear advantage but how do we get there?</p>
 
 <p>You need to edit the file ~/.ssh/config.  Do that now with nano or another editor:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>nano -w ~/.ssh/config
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano -w ~/.ssh/config
+</code></pre></div></div>
 
 <p>You need to create an entry that looks like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Host THE_NAME_YOU_IDENTIFY_THIS_ENTRY_BY
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host THE_NAME_YOU_IDENTIFY_THIS_ENTRY_BY
   Hostname YOUR_REALLY_LONG_EC2_HOST_NAME
   user SOME_USERNAME
   IdentityFile PATH_TO_A_PEM_FILE
   Port 22 (this is almost always 22)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here's an actual example for one of my EC2 boxes:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Host mariadb
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host mariadb
   Hostname ec2-52-39-100-178.us-west-2.compute.amazonaws.com
   user ubuntu
   IdentityFile /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
   Port 22
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>What this is telling ssh is pretty simple:</p>
 

@@ -135,6 +135,12 @@ Yesterday I was stuck in a hellish debugging cesspool – you know what I mean �
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,25 +190,22 @@ Yesterday I was stuck in a hellish debugging cesspool – you know what I mean �
 
 <p>Yesterday I was stuck in a hellish debugging cesspool – you know what I mean – when you are debugging a mysterious crash right down embedding line by line print statements and nothing is making sense.  And I don't mean that its not making a lot of sense; I mean that its making NO DAMN SENSE.  I was debugging on a GPU instance on AWS that was running a TensorFlow application and what I kept seeing was output appearing before the routine invoking it was executing.  And this was a worst case scenario right down to the very first line of my Python code being:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">"AT START"</span><span class="p">)</span>
-</code></pre>
-</div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">"AT START"</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p>Happily I was pairing with my colleague Grant and he did that wonderful pairing step of "this makes no damn sense; let me apply my Google Fu to this" and he discovered that Docker buffers output at times and he recommend this change to the Dockerfile:</p>
 
 <p><strong>Before</strong>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># rest of Dockerfile appears here
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># rest of Dockerfile appears here
 CMD [ "python3", "./main.py" ]
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>After</strong>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># rest of Dockerfile appears here
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># rest of Dockerfile appears here
 CMD [ "python3", "-u", "./main.py" ]
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here is the relevant <a href="https://stackoverflow.com/questions/29663459/python-app-does-not-print-anything-when-running-detached-in-docker">Stack Overflow post</a>.</p>
 

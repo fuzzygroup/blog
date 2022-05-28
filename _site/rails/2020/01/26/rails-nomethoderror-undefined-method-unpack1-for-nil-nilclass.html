@@ -139,6 +139,12 @@ Run options: --seed 144...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -188,7 +194,7 @@ Run options: --seed 144...">
 
 <p>I recently started a new application and tried running the generated tests and got this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rails test test/models/user_test.rb
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails test test/models/user_test.rb
 Running via Spring preloader in process 27379
 Run options: --seed 14413
 
@@ -231,8 +237,7 @@ rails test test/models/user_test.rb:46
 
 Finished in 0.060465s, 49.6155 runs/s, 0.0000 assertions/s.
 3 runs, 0 assertions, 0 failures, 3 errors, 0 skips
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Now this is the the first time I've used test (as opposed to RSpec) in more than a decade and I was more than a bit taken aback.  A quick <a href="https://stackoverflow.com/questions/57197682/in-decode64-undefined-method-unpack1-for-nilnilclass-nomethoderror">Stack Overflow</a> led me to:</p>
 
@@ -242,23 +247,20 @@ Finished in 0.060465s, 49.6155 runs/s, 0.0000 assertions/s.
 
 <p>Now the line of code in question is:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">attr_encrypted</span> <span class="ss">:access_token</span><span class="p">,</span> <span class="ss">key: </span><span class="no">Base64</span><span class="p">.</span><span class="nf">decode64</span><span class="p">(</span><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">credentials</span><span class="p">.</span><span class="nf">access_token_encryption_key</span><span class="p">)</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">attr_encrypted</span> <span class="ss">:access_token</span><span class="p">,</span> <span class="ss">key: </span><span class="no">Base64</span><span class="p">.</span><span class="nf">decode64</span><span class="p">(</span><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">credentials</span><span class="p">.</span><span class="nf">access_token_encryption_key</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p>So the implication is that:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">credentials</span><span class="p">.</span><span class="nf">access_token_encryption_key</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">credentials</span><span class="p">.</span><span class="nf">access_token_encryption_key</span>
+</code></pre></div></div>
 
 <p>is returning <strong>nil</strong>.</p>
 
 <p>The solution is actually pretty simple – create the credentials file using:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>EDITOR=vi rails credentials:edit --environment test
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>EDITOR=vi rails credentials:edit --environment test
+</code></pre></div></div>
 
 <p>See this <a href="https://fuzzyblog.io/blog/rails/2020/01/24/when-rails-credentials-edit-won-t-save-your-credentials.html">blog post</a> for why you have to use EDITOR=vi.</p>
 

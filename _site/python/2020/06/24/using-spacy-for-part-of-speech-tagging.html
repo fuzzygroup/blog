@@ -135,6 +135,12 @@ Part of speech tagging is a classic NLP (natural language parsing) where you giv
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,7 +192,7 @@ Part of speech tagging is a classic NLP (natural language parsing) where you giv
 
 <p>I chose to use Spacy, a Python NLP tool, for this.  Here's an example of the output from Spacy:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Input:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input:
 
 ADL - Make the ansible create all the queues
 
@@ -202,8 +208,7 @@ create       NOUN       NN       noun, singular or mass
 all          DET        PDT      predeterminer
 the          DET        DT       determiner
 queues       NOUN       NNS      noun, plural
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I've done this type of stuff in the past using tools like Princeton's WordNET but Spacy makes this even easier that ever before.  Here's all it took:</p>
 
@@ -214,7 +219,7 @@ queues       NOUN       NNS      noun, plural
 
 <p>Here's the accompanying Python code.  This code does two things.  It starts by defining a Spacy document based on the sentence and then it iterates over the words in the sentence and gives the word tags and explanation.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt;&gt;&gt; import spacy
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; import spacy
 &gt;&gt;&gt; sp = spacy.load('en_core_web_sm')
 &gt;&gt;&gt; sen = sp("ADL - Make the ansible create all the queues")
 &gt;&gt;&gt; for word in sen:
@@ -229,8 +234,7 @@ create       NOUN       NN       noun, singular or mass
 all          DET        PDT      predeterminer
 the          DET        DT       determiner
 queues       NOUN       NNS      noun, plural
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I'm contemplating this for a system built in Rails and it isn't hard to envision setting up a simple Flask API that front ends a Spacy installation that does just this much and returns the result as a JSON structure.</p>
 

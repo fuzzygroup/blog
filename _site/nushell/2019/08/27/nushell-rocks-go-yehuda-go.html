@@ -135,6 +135,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,23 +192,21 @@
 
 <p>Nu is written by Jonathan Turner, Yehuda Katz and more.  Given that I'm a rubyist, it is no surprise that I'm a Yehuda Katz fan (hence the reference to Yehuda in the title).  But this is Jonathan Turner's project.</p>
 
-<p>I had a bunch of issues getting running with Nu so I wrote up this blog post.<br />
-# Installing Nu</p>
+<p>I had a bunch of issues getting running with Nu so I wrote up this blog post.</p>
+<h1 id="installing-nu">Installing Nu</h1>
 
 <p>In order to install Nu, you need the whole Rust environment and toolchain.  Additionally you need to make sure that you are using the nightly build of Rust.  I'm on OSX and this is what I did:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source $HOME/.cargo/env
 rustup default nightly
 cargo install nu
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Depending on the state of your OSX Mojave installation, you may need to run:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>xcode-select --install
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xcode-select --install
+</code></pre></div></div>
 
 <p>before your installation will complete (in this event, just re-run from the curl statement).</p>
 
@@ -210,13 +214,12 @@ cargo install nu
 
 <p>Just call the nu executable:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>nu
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nu
+</code></pre></div></div>
 
 <p>Here's an example of what Nu looks like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> ls Desktop/| sort-by name | first 5
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ls Desktop/| sort-by name | first 5
 
 ---+--------------------+------+----------+----------+--------------+-------------+-------------
  # | name               | type | readonly | size     | created      | accessed    | modified 
@@ -227,12 +230,11 @@ cargo install nu
  3 | Desktop/2.png      | File |          | 269.7 KB | 2 years ago  | 2 years ago | 2 years ago 
  4 | Desktop/3.png      | File |          | 276.3 KB | 2 years ago  | 2 years ago | 2 years ago 
 ---+--------------------+------+----------+----------+--------------+-------------+-------------
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And nu extends into even ps:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ps | where cpu &gt; 1 | sort-by cpu | first 5
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ps | where cpu &gt; 1 | sort-by cpu | first 5
 
 ---+-------+----------+------+--------------------------------------------------------------------------------------------------
  # | pid   | status   | cpu  | name 
@@ -241,8 +243,7 @@ cargo install nu
  1 | 313   | Runnable | 2.45 | /System/Library/CoreServices/Finder.app/Contents/MacOS/Finder 
  2 | 766   | Runnable | 4.80 | /System/Library/PrivateFrameworks/PhotoLibraryPrivate.framework/Versions/A/Support/photolibraryd 
 ---+-------+----------+------+--------------------------------------------------------------------------------------------------
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="exiting-nu">Exiting Nu</h1>
 
@@ -252,7 +253,7 @@ cargo install nu
 
 <p>Here are some interesting command examples:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ls
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls
 ls | where size &gt; 4kb
 ls | where size &gt; 1gb
 ps | where cpu &gt; 5
@@ -267,8 +268,7 @@ ls | sort-by name
 enter docs 
 (this is changing into a directory and then you have a second embeded shell 
   which you can navigate between with n and p)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="references">References</h1>
 <ul>

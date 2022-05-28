@@ -48,8 +48,7 @@
 rails new
 
 
-
-But that brings in, well, Rails.  And all o...">
+But that brings in, well, Rails.  And all of...">
   
 
   
@@ -139,6 +138,12 @@ But that brings in, well, Rails.  And all o...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,23 +191,20 @@ But that brings in, well, Rails.  And all o...">
   <div class="post-content" itemprop="articleBody">
     <p>This is one of those things where there isn't a direct equivalent in the Rails world.  To generate a new Rails project you, of course, use:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rails new
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails new
+</code></pre></div></div>
 
 <p>But that brings in, well, Rails.  And all of the plethora of stuff that entails.  What if you just wanted to generate a standalone application say a page fetcher that talked to Redis and got back a url to fetch so you could store it away.  In that case you wouldn't want all of the whole Rails stack.  You might want say just redis or just rake but not everything.</p>
 
 <p>As discussed previously, mix is the integrated version of rails, rake and bundler and that's what we're going to use:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mix new page_fetcher
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mix new page_fetcher
+</code></pre></div></div>
 
 <p>Now that will work but if you really want something reliable – and if you don't, why would you bother with Elixir at all – then you really want to add a supervision tree which makes this an OTP application.  OTP is the core Erlang libraries that related to building distributed, reliable code.  Here's how to do this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mix new page_fetcher --sup
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mix new page_fetcher --sup
+</code></pre></div></div>
 
 <p>Here's the official reference to <a href="http://elixir-lang.org/docs/stable/mix/Mix.Tasks.New.html">mix new</a> in this context.</p>
 

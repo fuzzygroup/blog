@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -202,7 +208,7 @@
 
 <p>What these commands do doesn't really matter but the only difference between these two commands is a small <strong>-T</strong> flag that only discovered after troubleshooting an obscure Ansible to Docker error:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Traceback (most recent call last):\n  File \"/usr/bin/docker-compose\", line 9, in 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Traceback (most recent call last):\n  File \"/usr/bin/docker-compose\", line 9, in 
 &lt;module&gt;\n    load_entry_point('docker-compose==1.8.0', 
 'console_scripts', 'docker-compose')()
 File \"/usr/lib/python2.7/dist-packages/compose/cli/main.py\", 
@@ -217,18 +223,16 @@ io.set_blocking(pump, flag)
 File \"/usr/lib/python2.7/dist-packages/dockerpty/io.py\", line 32, 
 in set_blocking
 old_flag = fcntl.fcntl(fd, fcntl.F_GETFL)\nValueError: file descriptor cannot be a negative integer (-1)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>It took considerable sleuthing to figure this out and the error was identified in <a href="https://github.com/docker/compose/issues/3352">a single Github issue</a> on the underlying Docker project.  And when I say that this problem was obscure, even Docker experts I know had no idea about the -T flag.  Here's part of the problem description:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>So basically, you need -i for docker exec when you are piping in data to the command.
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>So basically, you need -i for docker exec when you are piping in data to the command.
 
 And you should not use -t for docker exec when you are piping data out from the command.
 
 And docker-compose exec only have -T, which means neither -i or -t. But you cannot represent -i without -t in docker-compose.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And that's what I mean by obscure…  As a developer you run into this kind of stuff all the time – there's a reason why when you start with Free Code Camp, it emphasizes using Google before you ever get into a programming language.  A huge part of being a developer is now your skill at using Google and that's something that I'll cover in #11.</p>
 
@@ -252,7 +256,7 @@ And docker-compose exec only have -T, which means neither -i or -t. But you cann
 
 <p>And there are perhaps an infinite number of variants on these but the underlying nature of being a developer is really problem solving and in order to do that a developer has to commit himself or herself fully.  I'm going to close this with a song lyric that really reminds me of being a developer:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>I get knocked down, but I get up again
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>I get knocked down, but I get up again
 You are never gonna keep me down
 I get knocked down, but I get up again
 You are never gonna keep me down
@@ -262,8 +266,7 @@ I get knocked down, but I get up again
 You are never gonna keep me down
 
 [TubThumping by Chumbawamba](https://www.google.com/search?q=i+get+knocked+down+lyrics&amp;ie=utf-8&amp;oe=utf-8) | [Youtube](https://www.youtube.com/watch?v=2H5uWRjFsGc)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The problems you solve will continually knock you down and you <strong>have</strong> to get back up again.  Some of the best developers I have ever worked with actually weren't the smartest but they knew how to commit and how to just stick with problems like a terrier until it was solved.</p>
 

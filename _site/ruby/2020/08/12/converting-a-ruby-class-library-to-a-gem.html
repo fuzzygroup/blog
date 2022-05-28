@@ -135,6 +135,12 @@ This blog post talks about my experiences converting a handful of Ruby class lib
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,10 +190,9 @@ This blog post talks about my experiences converting a handful of Ruby class lib
 
 <p>This blog post talks about my experiences converting a handful of Ruby class libraries to gems.  As do a lot of software engineers, I have a series of routines that I bring into almost every Ruby project I tackle that deal with what I consider core stuff you always need: url handling, database stuff, time parsing and so on.  Normally I just copy these from project to project but the sheer plethora of them has recently made me see the need to go down the gem route:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ mdfind -name url_common.rb | wc -l 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ mdfind -name url_common.rb | wc -l 
       62
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>All of these files are named *common.rb so you will see a number of these on my Github page.  I don't claim that any of them are particularly wonderful, brilliant, complete or even well coded; I simply find them useful.</p>
 
@@ -215,35 +220,32 @@ This blog post talks about my experiences converting a handful of Ruby class lib
 
 <h2 id="tips-and-tricks">Tips and Tricks</h2>
 
-<h3 id="change-into-the-projectnamelib-directory-to-run-bundle-install">1. Change into the project_name/lib Directory to Run bundle install</h3>
+<h3 id="1-change-into-the-project_namelib-directory-to-run-bundle-install">1. Change into the project_name/lib Directory to Run bundle install</h3>
 
 <p>My first attempt at following the directions gave me this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ bundle install
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ bundle install
 Could not locate Gemfile
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And the easy solution was to change into the project_name/lib directory. So:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cd url_common/lib
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd url_common/lib
+</code></pre></div></div>
 
 <p>Yep.  I was an idiot for not realizing this.  Sigh.</p>
 
-<h3 id="change-into-the-projectnamelib-directory-to-run-bundle-exec-rake-build">2. Change into the project_name/lib Directory to Run bundle exec rake build</h3>
+<h3 id="2-change-into-the-project_namelib-directory-to-run-bundle-exec-rake-build">2. Change into the project_name/lib Directory to Run bundle exec rake build</h3>
 
 <p>Similar to 1 above, my attempt to run bundle exec rake build gave me this failure:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ bundle exec rake build
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ bundle exec rake build
 Could not locate Gemfile or .bundle/ directory
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Again.  I was an idiot.  And, again, same solution – change to the right directory.</p>
 
-<h3 id="use-irb-for-debugging">3. Use irb for Debugging</h3>
+<h3 id="3-use-irb-for-debugging">3. Use irb for Debugging</h3>
 
 <p>In order to debug the gem you are building:</p>
 
@@ -255,27 +257,25 @@ Could not locate Gemfile or .bundle/ directory
 
 <p>And now you can execute commands from your gem like:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">UrlCommon</span><span class="p">.</span><span class="nf">foo</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">UrlCommon</span><span class="p">.</span><span class="nf">foo</span>
+</code></pre></div></div>
 
-<h3 id="if-you-have-a-class-library-then-you-dont-need-class-projectname">4. If You Have a Class Library then You Don't Need class project_name</h3>
+<h3 id="4-if-you-have-a-class-library-then-you-dont-need-class-project_name">4. If You Have a Class Library then You Don't Need class project_name</h3>
 
 <p>My prior class libraries were all structured like this:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ProjectName</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ProjectName</span>
   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">foo</span>
   <span class="k">end</span>
   
   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">bar</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>That now becomes something like this:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">require</span> <span class="s2">"url_common/version"</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s2">"url_common/version"</span>
 <span class="nb">require</span> <span class="s1">'any_gem_you_need'</span>
 
 <span class="k">module</span> <span class="nn">UrlCommon</span>
@@ -287,57 +287,52 @@ Could not locate Gemfile or .bundle/ directory
   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">bar</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Given that modules provide a namespace just as a class does and the . syntax invokes methods uniformly, this lets you invoke your "class methods" the same way you did when they were actually class methods.</p>
 
-<h3 id="the-try-method-is-a-rails-thing-not-a-ruby-thing">5. The .try Method is a Rails Thing Not a Ruby Thing</h3>
+<h3 id="5-the-try-method-is-a-rails-thing-not-a-ruby-thing">5. The .try Method is a Rails Thing Not a Ruby Thing</h3>
 
 <p>Even though I like the semantic clarity of .try(:method_symbol), you can use &amp;.method_name instead:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1">#return parts.hostname.sub(/^www\./, '') + parts.try(:path) + '?' + parts.query </span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#return parts.hostname.sub(/^www\./, '') + parts.try(:path) + '?' + parts.query </span>
 <span class="k">return</span> <span class="n">parts</span><span class="p">.</span><span class="nf">hostname</span><span class="p">.</span><span class="nf">sub</span><span class="p">(</span><span class="sr">/^www\./</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span> <span class="o">+</span> <span class="n">parts</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">path</span> <span class="o">+</span> <span class="s1">'?'</span> <span class="o">+</span> <span class="n">parts</span><span class="p">.</span><span class="nf">query</span> 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This is a <a href="https://medium.com/@CohenCarlisle/why-you-shouldnt-be-using-rails-try-for-nil-safe-navigation-in-ruby-d3123a3965ac">Ruby 2.3</a> change so it should be available to everyone by now.</p>
 
-<h3 id="within-your-gem-you-cant-reference-the-namespace">6. Within Your Gem You Can't Reference the Namespace</h3>
+<h3 id="6-within-your-gem-you-cant-reference-the-namespace">6. Within Your Gem You Can't Reference the Namespace</h3>
 
 <p>I hit this error:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>1) UrlCommon.url_base should return the url base w/o the www
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1) UrlCommon.url_base should return the url base w/o the www
    Failure/Error: base_domain = UrlCommon.get_base_domain(url)
 
    NoMethodError:
      undefined method `get_base_domain' for UrlCommon::UrlCommon:Class
    # ./lib/url_common.rb:84:in `url_base'
    # ./spec/url_common_spec.rb:97:in `block (3 levels) in &lt;top (required)&gt;'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This came from this line of code:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>def self.url_base(url, base_domain=nil)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def self.url_base(url, base_domain=nil)
   if base_domain.nil?
     base_domain = UrlCommon.get_base_domain(url)
   end
 #...
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>and the fix turned out to be:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>def self.url_base(url, base_domain=nil)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def self.url_base(url, base_domain=nil)
   if base_domain.nil?
     base_domain = get_base_domain(url)
   end
 #...
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>despite there being a def self.get_base_domain method defined in the module.  <strong>Shrug</strong></p>
 

@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -217,7 +223,7 @@
 
 <p>Inspeqtor can work with a number of different email delivery approaches from gmail to a local sendmail instance.  The configuration for Inspeqtor for different email delivery engines looks like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>#
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#
 # This is the default alert statement.  This tells Inspeqtor where to
 # send alert emails.
 #
@@ -246,36 +252,31 @@ send alerts via email with
   smtp_server localhost,
   to_email fuzzygroup@gmail.com,
   from_email inspeqtor@
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I've got the other approaches commented out just showing the local smtp_server (in my case sendmail).</p>
 
 <p>Here's an ansible role to configure sendmail:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mkdir -p ansible_root/roles/sendmail/tasks
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir -p ansible_root/roles/sendmail/tasks
 touch ansible_root/roles/sendmail/tasks/main.yml
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Edit the file main.yml and add these lines:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- name: install sendmail 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- name: install sendmail 
   apt: name=sendmail state=present
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>In your playbook, call this role as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- { role: sendmail, tags: sendmail}
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- { role: sendmail, tags: sendmail}
+</code></pre></div></div>
 
 <p>Here's how to verify if your local sendmail instance is actually running:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>echo "ficrawler1 My test email being sent from sendmail" | /usr/sbin/sendmail fuzzygroup@gmail.com
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo "ficrawler1 My test email being sent from sendmail" | /usr/sbin/sendmail fuzzygroup@gmail.com
+</code></pre></div></div>
 
 <p>Check your inbox for the message.  You may find that you need to check a spam or junk folder since this isn't a modern mail server using SPIF / DKIM standards.  If the message didn't arrive then you need to troubleshoot and figure out why.</p>
 
@@ -293,7 +294,7 @@ touch ansible_root/roles/sendmail/tasks/main.yml
 
 <h2 id="here-is-etcinspeqtorinspeqtorconf">Here is /etc/inspeqtor/inspeqtor.conf</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>#
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#
 # Welcome to the global Inspeqtor config file!
 #
 
@@ -355,25 +356,23 @@ send alerts via email with
   smtp_server localhost,
   to_email fuzzygroup@gmail.com,
   from_email inspeqtor@ip-172-31-38-2
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="here-is-etcinspeqtorhostinq">Here is /etc/inspeqtor/host.inq</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>check host
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>check host
   if load:1 &gt; 1 for 2 cycles then alert
   if load:5 &gt; 1 then alert
   if cpu:user &gt; 95% for 2 cycles then alert
   if swap &gt; 20% for 2 cycles then alert
   if disk:/ &gt; 90% then alert
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="here-is-etcinspeqtorservicesdserviceinqtemplate">Here is /etc/inspeqtor/services.d/service.inq.template</h2>
 
 <p>This is a generic starting point template to monitor any service in /etc/init.d</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cat  /etc/inspeqtor/services.d/service.inq.template
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat  /etc/inspeqtor/services.d/service.inq.template
 # NOTE this file should be renamed to &lt;name&gt;.inq where name is explained below.
 #
 # Inspeqtor is designed to monitor a host and the services running
@@ -429,24 +428,22 @@ check service mysql
   #
   #if mysql:Queries &gt; 100/sec for 2 cycles then alert
   #if mysql:Slow_queries &gt; 1/sec for 2 cycles then alert    
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>For more on writing your own inq files, see the <a href="https://github.com/mperham/inspeqtor/wiki/INQ-Configuration">wiki</a>.</p>
 
 <h2 id="here-is-my-sample-sidekiqinq-file">Here is my sample sidekiq.inq file</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>check service sidekiq
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>check service sidekiq
   if memory:rss &gt; 6g then alert, restart
   if cpu:user &gt; 95% for 2 cycles then alert
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="configuring-inspeqtor-with-ansible-1">Configuring Inspeqtor with Ansible</h2>
 
 <p>Rather than write out a playbook, roles and template files manually, I hosted it on <a href="https://github.com/fuzzygroup/ansible_inspeqtor">github</a>.  Clone it from there and adapt it for your needs.  But, in case you're curious, here is the overall structure:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>tree
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tree
 .
 ├── ansible.cfg
 ├── group_vars
@@ -471,8 +468,7 @@ check service mysql
     └── setup
         └── tasks
             └── main.yml
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The setup task exists to register an ansible variable that gives the instance-id so it can be used in alerting.  This is handled by calling the <a href="https://fuzzygroup.github.io/blog/aws/2016/09/07/aws-tutorial-getting-your-instance-id.html">instance id api</a> which I covered previously.  While there is an instance_ids method in the <a href="http://docs.ansible.com/ansible/ec2_module.html">Ansible EC2 module</a>, this approach means you don't have your security keys as its a private API you only call from inside the instance itself.</p>
 
@@ -487,15 +483,13 @@ check service mysql
 
 <p>Start / Stop on Ubuntu is handled with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo service inspeqtor restart
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo service inspeqtor restart
+</code></pre></div></div>
 
 <p>Logs can be viewed with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo tail -f /var/log/upstart/inspeqtor.log  
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo tail -f /var/log/upstart/inspeqtor.log  
+</code></pre></div></div>
 
 <h1 id="more-info">More Info</h1>
 

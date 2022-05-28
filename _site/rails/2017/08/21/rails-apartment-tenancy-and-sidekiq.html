@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -251,17 +257,15 @@
 
 <p>Most of my import routines are after_create calls that look like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>after_create :import_back_history_sidekiq
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>after_create :import_back_history_sidekiq
+</code></pre></div></div>
 
 <p>This method looks like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>def import_back_history_sidekiq
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def import_back_history_sidekiq
   InstructorImportBackHistoryWorker.perform_async(self.id, Apartment::Tenant.current)
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>There are two parameters here:</p>
 
@@ -274,7 +278,7 @@ end
 
 <p>Here's what the underlying Sidekiq worker class looks like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>class InstructorImportBackHistoryWorker
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class InstructorImportBackHistoryWorker
   include Sidekiq::Worker
 
   def perform(id, tenant)
@@ -287,8 +291,7 @@ end
     end
   end
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>All this does is invoke Apartment::Tenant.switch!(tenant) at the start of the asynchronous processing and that ensures that the correct tenant is used.  After that the import proceeds as normal.  The reason that I have a wrapper approach (import_back_history versus import_back_history_sidekiq) is that I have cases where I use these calls in batch process routines where I don't invoke Sidekiq.</p>
 

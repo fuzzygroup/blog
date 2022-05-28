@@ -135,6 +135,12 @@ Zip code data is always problematic due to the leading zeros.  The smarter_csv g
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,7 +190,7 @@ Zip code data is always problematic due to the leading zeros.  The smarter_csv g
 
 <p>Zip code data is always problematic due to the leading zeros.  The <a href="https://github.com/tilo/smarter_csv">smarter_csv</a> gem in Rails defaults to automatically handling numbers as numerics, not strings, which means that you lose 00408 to just 408.  Here's an example of a work around using a rake task to load data:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># bundle exec rake data:import_geography --trace</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># bundle exec rake data:import_geography --trace</span>
 <span class="n">task</span> <span class="ss">:import_geography</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
   <span class="n">path</span> <span class="o">=</span> <span class="no">File</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="p">,</span> <span class="s1">'lib/tasks/data/'</span><span class="p">,</span> <span class="s1">'Geocodes_USA_with_Counties.csv'</span><span class="p">)</span>
   
@@ -196,8 +202,7 @@ Zip code data is always problematic due to the leading zeros.  The smarter_csv g
     <span class="n">g_obj</span> <span class="o">=</span> <span class="no">Geography</span><span class="p">.</span><span class="nf">find_or_create</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>Note</strong>: This wasn't the <a href="https://github.com/tilo/smarter_csv/issues/151">accepted work around</a> but a hack; sigh.  The :convert_values_to_numeric_unless_leading_zeros transformation doesn't seem work.  Issue filed; I hope to fix this myself down the road.</p>
 

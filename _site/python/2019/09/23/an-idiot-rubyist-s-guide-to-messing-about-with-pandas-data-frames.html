@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -191,33 +197,30 @@
 
 <p>Let's start with the basics of just reading the Parquet file into a data frame.  For rubyists, think of a dataframe as a spreadsheet that Python can read / write.</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s">"categorical.parquet"</span><span class="p">)</span>
-</code></pre>
-</div>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s">"categorical.parquet"</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p>That's the start of this.  And this is also where I moved from using a Python script to using Python directly in the console.  I did this by typing:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>python3
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3
+</code></pre></div></div>
 
 <p>And that launched me into the interactive Python shell.  Think of this is irb or rails console – an interactive repl where you can write lines of code experimentally.</p>
 
 <p>The next step was to figure out how to get the temporal ranges.  This was done by leveraging Python datetime objects:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s">"categorical.parquet"</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s">"categorical.parquet"</span><span class="p">)</span>
 
-<span class="n">df2014</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2014</span><span class="p">]</span>
-<span class="n">df2015</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2015</span><span class="p">]</span>
-<span class="n">df2016</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2016</span><span class="p">]</span>
-<span class="n">df2017</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2017</span><span class="p">]</span>
-<span class="n">df2018</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2018</span><span class="p">]</span>
-</code></pre>
-</div>
+<span class="n">df2014</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2014</span><span class="p">]</span>
+<span class="n">df2015</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2015</span><span class="p">]</span>
+<span class="n">df2016</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2016</span><span class="p">]</span>
+<span class="n">df2017</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2017</span><span class="p">]</span>
+<span class="n">df2018</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2018</span><span class="p">]</span>
+</code></pre></div></div>
 
 <p>This gave me a series of 5 data frames; one for each year.  The next step was to break this down by categories.  The categories we had were aligned to slurs within the data:</p>
 
@@ -231,53 +234,51 @@
 
 <p>Let's take the example of looking into the misogynistic data.  Here's what our script looks like then:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s">"categorical.parquet"</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s">"categorical.parquet"</span><span class="p">)</span>
 
-<span class="n">df2014</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2014</span><span class="p">]</span>
-<span class="n">df2015</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2015</span><span class="p">]</span>
-<span class="n">df2016</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2016</span><span class="p">]</span>
-<span class="n">df2017</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2017</span><span class="p">]</span>
-<span class="n">df2018</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2018</span><span class="p">]</span>
+<span class="n">df2014</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2014</span><span class="p">]</span>
+<span class="n">df2015</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2015</span><span class="p">]</span>
+<span class="n">df2016</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2016</span><span class="p">]</span>
+<span class="n">df2017</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2017</span><span class="p">]</span>
+<span class="n">df2018</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2018</span><span class="p">]</span>
 
-<span class="n">m_results2014</span> <span class="o">=</span> <span class="n">df2014</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">)</span><span class="o">.</span><span class="n">misogynistic</span>
-<span class="n">m_results2015</span> <span class="o">=</span> <span class="n">df2015</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">)</span><span class="o">.</span><span class="n">misogynistic</span>
-<span class="n">m_results2016</span> <span class="o">=</span> <span class="n">df2016</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">)</span><span class="o">.</span><span class="n">misogynistic</span>
-<span class="n">m_results2017</span> <span class="o">=</span> <span class="n">df2017</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">)</span><span class="o">.</span><span class="n">misogynistic</span>
-<span class="n">m_results2018</span> <span class="o">=</span> <span class="n">df2018</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">)</span><span class="o">.</span><span class="n">misogynistic</span>
-</code></pre>
-</div>
+<span class="n">m_results2014</span> <span class="o">=</span> <span class="n">df2014</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">).</span><span class="n">misogynistic</span>
+<span class="n">m_results2015</span> <span class="o">=</span> <span class="n">df2015</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">).</span><span class="n">misogynistic</span>
+<span class="n">m_results2016</span> <span class="o">=</span> <span class="n">df2016</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">).</span><span class="n">misogynistic</span>
+<span class="n">m_results2017</span> <span class="o">=</span> <span class="n">df2017</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">).</span><span class="n">misogynistic</span>
+<span class="n">m_results2018</span> <span class="o">=</span> <span class="n">df2018</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">).</span><span class="n">misogynistic</span>
+</code></pre></div></div>
 
 <p>This gives a series of m_results201x data frames.  What we then want to do is get the data out of the data frame.  This can be done with the .describe() method.</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s">"categorical.parquet"</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s">"categorical.parquet"</span><span class="p">)</span>
 
-<span class="n">df2014</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2014</span><span class="p">]</span>
-<span class="n">df2015</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2015</span><span class="p">]</span>
-<span class="n">df2016</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2016</span><span class="p">]</span>
-<span class="n">df2017</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2017</span><span class="p">]</span>
-<span class="n">df2018</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2018</span><span class="p">]</span>
+<span class="n">df2014</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2014</span><span class="p">]</span>
+<span class="n">df2015</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2015</span><span class="p">]</span>
+<span class="n">df2016</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2016</span><span class="p">]</span>
+<span class="n">df2017</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2017</span><span class="p">]</span>
+<span class="n">df2018</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2018</span><span class="p">]</span>
 
-<span class="n">m_results2014</span> <span class="o">=</span> <span class="n">df2014</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">)</span><span class="o">.</span><span class="n">misogynistic</span>
-<span class="n">m_results2015</span> <span class="o">=</span> <span class="n">df2015</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">)</span><span class="o">.</span><span class="n">misogynistic</span>
-<span class="n">m_results2016</span> <span class="o">=</span> <span class="n">df2016</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">)</span><span class="o">.</span><span class="n">misogynistic</span>
-<span class="n">m_results2017</span> <span class="o">=</span> <span class="n">df2017</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">)</span><span class="o">.</span><span class="n">misogynistic</span>
-<span class="n">m_results2018</span> <span class="o">=</span> <span class="n">df2018</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">)</span><span class="o">.</span><span class="n">misogynistic</span>
+<span class="n">m_results2014</span> <span class="o">=</span> <span class="n">df2014</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">).</span><span class="n">misogynistic</span>
+<span class="n">m_results2015</span> <span class="o">=</span> <span class="n">df2015</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">).</span><span class="n">misogynistic</span>
+<span class="n">m_results2016</span> <span class="o">=</span> <span class="n">df2016</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">).</span><span class="n">misogynistic</span>
+<span class="n">m_results2017</span> <span class="o">=</span> <span class="n">df2017</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">).</span><span class="n">misogynistic</span>
+<span class="n">m_results2018</span> <span class="o">=</span> <span class="n">df2018</span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">"misogynistic &gt; 5"</span><span class="p">).</span><span class="n">misogynistic</span>
 
-<span class="n">m_results2014</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
-<span class="n">m_results2015</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
-<span class="n">m_results2016</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
-<span class="n">m_results2017</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
-<span class="n">m_results2018</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
-</code></pre>
-</div>
+<span class="n">m_results2014</span><span class="p">.</span><span class="n">describe</span><span class="p">()</span>
+<span class="n">m_results2015</span><span class="p">.</span><span class="n">describe</span><span class="p">()</span>
+<span class="n">m_results2016</span><span class="p">.</span><span class="n">describe</span><span class="p">()</span>
+<span class="n">m_results2017</span><span class="p">.</span><span class="n">describe</span><span class="p">()</span>
+<span class="n">m_results2018</span><span class="p">.</span><span class="n">describe</span><span class="p">()</span>
+</code></pre></div></div>
 
 <p>This gave us a series of results that look like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>m_results2015.describe()
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>m_results2015.describe()
 count    559.000000
 mean       8.153846
 std        9.398083
@@ -287,8 +288,7 @@ min        6.000000
 75%        8.000000
 max      210.000000
 Name: misogynistic, dtype: float64
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>What this is telling us is that for 2015 there were 559 occurrences with more than 5.</p>
 

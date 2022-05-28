@@ -135,6 +135,12 @@ Like a lot of database apps in the world, mine generally tend to use auto increm
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,31 +190,27 @@ Like a lot of database apps in the world, mine generally tend to use auto increm
 
 <p>Like a lot of database apps in the world, mine generally tend to use auto incrementing ids for object identifiers.  An object identifier is a value in a system which uniquely identifies something.  Let's say you have a url like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>http://localhost:3169/locations?country_id=91    
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://localhost:3169/locations?country_id=91    
+</code></pre></div></div>
 
 <p>What that is saying, under the hood, is "Get the data from the locations store and give me the object with id value 91".  The thing that I'm currently building is populated with a bunch of data which is coming from CSV files that I'm loading from the Internet and I need to wipe the data in the system every time it rebuilds.  Now when I say location store, I mean, in this case, a locations table in a Postgres database.  When you wipe the contents of a table in Postgres you end up with the next object in the table getting the last ID value plus 1.</p>
 
 <p>The secret is to add this snippet to your truncation routine:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>RESTART IDENTITY
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RESTART IDENTITY
+</code></pre></div></div>
 
 <p>or in full:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>TRUNCATE states RESTART IDENTITY    
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TRUNCATE states RESTART IDENTITY    
+</code></pre></div></div>
 
 <p>And in Rails I have this implemented on all my core classes as:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">truncate</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">truncate</span>
   <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="s2">"TRUNCATE states RESTART IDENTITY"</span><span class="p">)</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Since this is a def self., think of it as a C style static thing.  By defining it this way, I can simply call it as State.truncate to eliminate all data in my states store (ok its is a table but it could be more complex) and restart my ID sequences.  And in cases it wasn't clear exactly why you want this, since I'm processing the same data files in Production as in Development, my bookmarks become consistent allowing easier debugging.</p>
 

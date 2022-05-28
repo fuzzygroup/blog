@@ -135,6 +135,12 @@ One of the better lessons that you learn as a programmer is that you never want 
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,9 +190,8 @@ One of the better lessons that you learn as a programmer is that you never want 
 
 <p>One of the better lessons that you learn as a programmer is that you never want to work too large, in short, that laziness can be a virtue.  I'm speaking, of course, of doing things manually that you can automate.  I recently wanted to download a set of images from github that represented anonymous animals.  Here's the repo:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[https://github.com/wayou/anonymous-animals/tree/master/icons](https://github.com/wayou/anonymous-animals/tree/master/icons)
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[https://github.com/wayou/anonymous-animals/tree/master/icons](https://github.com/wayou/anonymous-animals/tree/master/icons)
+</code></pre></div></div>
 
 <p>What I needed to automate downloading these was two things:</p>
 
@@ -197,7 +202,7 @@ One of the better lessons that you learn as a programmer is that you never want 
 
 <p>The set of filenames I got just by copying text from the github page and using a text editor macro to reduce it to a set of filenames that %w could easily make into an array.  Here's the code for that:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">animals</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">animals</span>
     <span class="n">anims</span> <span class="o">=</span> <span class="sx">%w(
     Alligator.png
     Anteater.png
@@ -206,24 +211,21 @@ One of the better lessons that you learn as a programmer is that you never want 
     Axolotl.png
     Badger.png)</span>
   <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>My routine to download these looks like this:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">wgets</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">wgets</span>
     <span class="no">AnonAnimalCommon</span><span class="p">.</span><span class="nf">animals</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">animal</span><span class="o">|</span>
       <span class="sb">`cd /Users/sjohnson/Sync/coding/rails/wipmarks/app/assets/images &amp;&amp; wget wget https://raw.githubusercontent.com/wayou/anonymous-animals/master/icons/</span><span class="si">#{</span><span class="n">animal</span><span class="si">}</span><span class="sb">`</span>
     <span class="k">end</span>
   <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>My final step was to call this routine from the Rails console (the entire class is called AnonAnimal):</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">AnonAnimal</span><span class="p">.</span><span class="nf">wgets</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">AnonAnimal</span><span class="p">.</span><span class="nf">wgets</span>
+</code></pre></div></div>
 
 <p>Downloading all of these manually would have been likely about a half hour.  Writing this code took maybe 10 minutes.  Laziness for the win!</p>
 

@@ -137,6 +137,12 @@ It is the second day of the New Year – welcome to 2020 – and I have still fa
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -214,21 +220,18 @@ It is the second day of the New Year – welcome to 2020 – and I have still fa
 
 <p>The first step is to purchase an actual license for Jumpstart Rails. This will get you added onto the Jumpstart Rails git repo:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>https://gitlab.com/gorails/jumpstart-pro
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://gitlab.com/gorails/jumpstart-pro
+</code></pre></div></div>
 
 <p>What you need to do is begin by cloning this repo down to your local system:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git clone git@gitlab.com:gorails/jumpstart-pro.git web_change_me_now2
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git@gitlab.com:gorails/jumpstart-pro.git web_change_me_now2
+</code></pre></div></div>
 
 <p>You notice that I changed the name of this to:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>web_change_me_now2
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>web_change_me_now2
+</code></pre></div></div>
 
 <p>I changed it since my previous repo name was web_change_me_now and this is going to be the second version of it.</p>
 
@@ -236,10 +239,9 @@ It is the second day of the New Year – welcome to 2020 – and I have still fa
 
 <p>Change into the directory that you just cloned the repo into and:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cd web_change_me_now2
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd web_change_me_now2
 yarn install --check-files
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="step-3---update-databaseyml">Step 3 - Update database.yml</h2>
 
@@ -255,36 +257,31 @@ yarn install --check-files
 
 <p>I then went to github (I'm a staunch github user instead of gitlib) and created a new repo named:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>web_change_me_now2
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>web_change_me_now2
+</code></pre></div></div>
 
 <p>I then needed to add this as an origin:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git remote add web_change_me_now2 git@github.com:fuzzygroup/web_change_me_now2.git
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git remote add web_change_me_now2 git@github.com:fuzzygroup/web_change_me_now2.git
+</code></pre></div></div>
 
 <p>My next step is to push.  Now I need to be careful here since I can't push back to the gitlab remote since I don't have permissions for that (and any changes I make are to <strong>my application</strong> not the template).  Here's the push syntax:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/* make some silly ass change; I messed about with README.md */
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/* make some silly ass change; I messed about with README.md */
 git add .
 git commit -m "readme change"
 git push web_change_me_now2 master
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I don't use remotes all that much – and I suspect outside of Heroku, you don't either – so here's the syntax:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git push ORIGIN_NAME BRANCH_NAME
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git push ORIGIN_NAME BRANCH_NAME
+</code></pre></div></div>
 
 <p>So if I want to push my changes, I need to do:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git push web_change_me_now2 master
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git push web_change_me_now2 master
+</code></pre></div></div>
 
 <p><strong>Note</strong>: You may want to reverse the order of Steps 5 and 4 (i.e. create a local develop branch first and then push to that) .  After that you can change into master, merge develop and then push to master.  Overall that seems to work better but I'm still confirming this which is why I haven't fully rewritten this blog post.</p>
 

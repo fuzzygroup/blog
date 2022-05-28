@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -194,7 +200,7 @@
 
 <p>While Ansible is flexible in how things can be structured, I use a standard approach.  All of the code here is available on my github (link at the end) but I find that writing it all out helps my understanding at least.  Here's how to create the structure that I use for Ansible.  All of this assumes you are already in a project directory where you want to store this.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mkdir inventories
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir inventories
 touch inventories/production
 mkdir -p roles/aws_cloudwatch_memory/tasks
 mkdir -p roles/aws_cloudwatch_memory/vars
@@ -203,8 +209,7 @@ touch roles/roles/aws_cloudwatch_memory/vars/main.yml
 # note - if you want to encrypt your aws keys that don't do the next step and do it below under Ansible Vault
 touch ansible.cfg
 touch playbook.yml
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="core-ansible-concepts-inventory-playbook-role-var">Core Ansible Concepts: Inventory, Playbook, Role, Var</h1>
 
@@ -221,10 +226,9 @@ touch playbook.yml
 
 <p>In the inventory file you want a format very similar to an old fashioned .ini file.  Here's what mine looks like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[web]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[web]
 fiworker2    ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com        ansible_ssh_private_key_file=/Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The syntax I'm using is human_readable_name  ansible_ssh_host=  ansible_ssh_private_key_file=</p>
 
@@ -234,13 +238,12 @@ fiworker2    ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com  
 
 <p>Here's the playbook:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- hosts: all
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- hosts: all
   become: yes
   remote_user: ubuntu
   roles:
     - { role: aws_cloudwatch_memory, tags: aws_cloudwatch_memory}
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The way to read this is:</p>
 
@@ -255,7 +258,7 @@ fiworker2    ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com  
 
 <p>Here's the role:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>---
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
   
 - name: Install CloudWatch libraries
   apt: pkg=
@@ -290,8 +293,7 @@ fiworker2    ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com  
 
 - name: add command to cron
   lineinfile: dest=/etc/crontab insertafter=EOF line="* * * * * root /root/aws-scripts-mon/mon-put-instance-data.pl --mem-util --mem-used --mem-avail --aws-credential-file=/root/aws-scripts-mon/awscreds.template"
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="using-ansible-vault-for-the-vars-file">Using Ansible Vault for the vars file</h1>
 
@@ -307,10 +309,9 @@ fiworker2    ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com  
 
 <p>The vars file needs to look something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ec2_access_key: "foo"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ec2_access_key: "foo"
 ec2_secret_key: "bar"
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Obviously these would be replaced with real values.  By storing this file in rolename/vars/main.yml location and format, Ansible knows to load this file automatically when the role is executed.</p>
 
@@ -318,13 +319,12 @@ ec2_secret_key: "bar"
 
 <p>You may, or may not, need a ansible.cfg file.  This is an ASCII file that defines how to handle ssh connectivity.  Here's mine:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[ssh_connection]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ssh_connection]
 ssh_user = vagrant
 scp_if_ssh = True
 control_path = %(directory)s/%%h-%%r
 ansible_ssh_private_key_file = /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I'm not, at the time of this writing, a true Ansible expert so I suspect there's redundancy in my cfg file but when I run without it, I'm unable to connect to AWS and I think it's due to the control_path setting being required due to the length of the EC2 host names.</p>
 
@@ -332,15 +332,13 @@ ansible_ssh_private_key_file = /Users/sjohnson/.ssh/fi_nav_sitecrawl.pem
 
 <p>Here's all you need to do to run this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/production playbook.yml
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible-playbook -i inventories/production playbook.yml
+</code></pre></div></div>
 
 <p>If you encrypted your keys then you'll be prompted for the password.  If you want to store the password in a local file on your machine then you can always do it this way:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/production playbook.yml --vault-password-file ~/.vault_pass.txt
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible-playbook -i inventories/production playbook.yml --vault-password-file ~/.vault_pass.txt
+</code></pre></div></div>
 
 <h1 id="code-on-git">Code on Git</h1>
 

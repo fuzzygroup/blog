@@ -135,6 +135,12 @@ The other day I needed to take some regular expressions and convert them to stri
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,9 +190,8 @@ The other day I needed to take some regular expressions and convert them to stri
 
 <p>The other day I needed to take some regular expressions and convert them to strings.  And while executing a .to_s on the regular expression itself worked correctly it brought through the regular expression characters so there were things like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>covid[ -]19
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>covid[ -]19
+</code></pre></div></div>
 
 <p>where what I was looking for was just the "covid19" bit (I was generating hashtags from the matched regular expressions for the new <a href="https://covidnearme.org/news">CovidNearMe News Aggregator</a>).  I started digging into the <a href="https://apidock.com/ruby/String/">Ruby string library</a> and didn't find what I was looking for - a str_replace like command.  I also experimented a bit with <a href="https://apidock.com/ruby/String/tr">tr</a> but that proved to be misleading at best.</p>
 
@@ -199,15 +204,13 @@ The other day I needed to take some regular expressions and convert them to stri
 
 <p>but <strong>don't</strong> specify a pattern; just specify a <strong>string</strong>.  If you don't have:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>.gsub(/foo/,'bar')     
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.gsub(/foo/,'bar')     
+</code></pre></div></div>
 
 <p>but instead</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>.gsub('foo','bar')
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.gsub('foo','bar')
+</code></pre></div></div>
 
 <p>With this approach, you can then either use sub or gsub depending on how you need the search and replace executed.  This is a truly ruby-esque approach and one I should have anticipated.</p>
 

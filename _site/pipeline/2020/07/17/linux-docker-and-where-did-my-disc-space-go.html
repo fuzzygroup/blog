@@ -135,6 +135,12 @@ Some computing problems fall into the category of evergreen – no matter what y
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,13 +192,12 @@ Some computing problems fall into the category of evergreen – no matter what y
 
 <p>I was monitoring the underlying processing queue and I noticed that this box had seemingly stopped processing leading to a slow down in my data pipeline.  When I dug into the box, I noticed that the box was out of disc space.  This led to the first question "#*#$&amp;#$# where did my disc space go" and caused me to invoke this shell incantation:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cd / &amp;&amp; sudo du -h --max-depth=1
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd / &amp;&amp; sudo du -h --max-depth=1
+</code></pre></div></div>
 
 <p>which gave me this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>16K	./opt
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>16K	./opt
 105M	./boot
 789M	./snap
 56K	./root
@@ -218,18 +223,16 @@ du: cannot access './proc/17764/fdinfo/3': No such file or directory
 4.0K	./media
 5.5M	./etc
 20G	.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Looking at the above, I could see that the bulk of the data was in /var so I changed into var and did it again:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cd /var &amp;&amp; sudo du -h --max-depth=1
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /var &amp;&amp; sudo du -h --max-depth=1
+</code></pre></div></div>
 
 <p>which gave me:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>4.0K	./local
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>4.0K	./local
 4.0K	./opt
 36K	./snap
 4.0K	./mail
@@ -241,12 +244,11 @@ du: cannot access './proc/17764/fdinfo/3': No such file or directory
 4.0K	./crash
 28K	./spool
 16G	.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Clearly I could have looked at log but I chose to go after lib which was twice as large:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> cd lib &amp;&amp; sudo du -h --max-depth=1 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cd lib &amp;&amp; sudo du -h --max-depth=1 
 
 cd lib &amp;&amp; sudo du -h --max-depth=1
 20K	./update-notifier
@@ -287,39 +289,34 @@ cd lib &amp;&amp; sudo du -h --max-depth=1
 8.0K	./ureadahead
 16K	./initramfs-tools
 11G	.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And that told me that that culprit was <strong>Docker</strong>!  A vague memory of having this issue earlier in my life led me to these docker commands:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker system df
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker system df
+</code></pre></div></div>
 
 <p>which revealed:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>root@ip-172-31-15-140:/var/lib/docker/overlay2/fbacd11ec88524762f258c92223fa8499fb4514c4a2d494e4cf5078d924be626# docker system df
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@ip-172-31-15-140:/var/lib/docker/overlay2/fbacd11ec88524762f258c92223fa8499fb4514c4a2d494e4cf5078d924be626# docker system df
 TYPE                TOTAL               ACTIVE              SIZE                RECLAIMABLE
 Images              35                  9                   9.139GB             8.929GB (97%)
 Containers          37                  1                   2.287GB             2.287GB (100%)
 Local Volumes       0                   0                   0B                  0B
 Build Cache         0                   0                   0B                  0B
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>and then the logical successor to docker system df was:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker system prune -f
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker system prune -f
+</code></pre></div></div>
 
 <p>After that I had disc space again and then I could start my SystemD service with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>systemctl status
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl status
 systemctl status service.service
 systemctl start service.service
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Yes my service is unimaginatively named "service.service"</p>
 

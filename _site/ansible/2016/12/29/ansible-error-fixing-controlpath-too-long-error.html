@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,10 +186,9 @@
   <div class="post-content" itemprop="articleBody">
     <p>If you get the ansible error <em>ControlPath Too Long Error</em> then all you need to do is create an ansible.cfg file in the directory where you run your playbook.  Please note that this is generally an OSX only error related to the length of the .  Then you need to add this line to it:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[ssh_connection]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ssh_connection]
 control_path = %(directory)s/%%h-%%r
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>There are other options that can go here as well.</p>
 

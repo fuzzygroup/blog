@@ -135,6 +135,12 @@ AWS S3, &quot;simple storage service&quot;, is the classic AWS service.  It was 
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -190,56 +196,52 @@ AWS S3, &quot;simple storage service&quot;, is the classic AWS service.  It was 
 
 <p>S3 is fundamentally a filesystem and you can just call ls on it.  Yep – ls in the cloud.  <strong>blink</strong></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>aws s3 ls s3://adl-ohi/ --recursive --summarize | grep "Total Objects:"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws s3 ls s3://adl-ohi/ --recursive --summarize | grep "Total Objects:"
 Total Objects: 444803
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="method-2-aws-s3api">Method 2: aws s3api</h2>
 
 <p>And since S3 is a modern filesystem, it actually has an API that you can call. Yep – a json api.  <strong>blink</strong> <strong>blink</strong></p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>aws s3api list-objects --bucket adl-ohi --output json --query "[length(Contents[])]"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws s3api list-objects --bucket adl-ohi --output json --query "[length(Contents[])]"
 [
     448444
 ]
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="method-3-a-python-example">Method 3: A Python Example</h2>
 
 <p>Naturally you can just run code to do all this.  I started with an example from the Stack Overflow link below that was written for boto and upgraded it to boto3 (as still a Python novice, I feel pretty good about doing this successfully; I remember when Ruby went thru the same AWS v2 to v3 transition and it sucked there too).  I also learned how to dynamically introspect methods from Python objects as part of this debugging cycle.</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c">#!/usr/local/bin/python</span>
-
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/local/bin/python
+</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">boto3</span>
 
-<span class="n">s3</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">'s3'</span><span class="p">)</span>
-<span class="n">s3bucket</span> <span class="o">=</span> <span class="n">s3</span><span class="o">.</span><span class="n">Bucket</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">s3</span> <span class="o">=</span> <span class="n">boto3</span><span class="p">.</span><span class="n">resource</span><span class="p">(</span><span class="s">'s3'</span><span class="p">)</span>
+<span class="n">s3bucket</span> <span class="o">=</span> <span class="n">s3</span><span class="p">.</span><span class="n">Bucket</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">totalCount</span> <span class="o">=</span> <span class="mi">0</span>
 
-<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">s3bucket</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span><span class="p">():</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">s3bucket</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="nb">all</span><span class="p">():</span>
     <span class="n">totalCount</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="n">size</span> <span class="o">+=</span> <span class="n">key</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">size</span> <span class="o">+=</span> <span class="n">key</span><span class="p">.</span><span class="n">size</span>
 
 <span class="k">print</span><span class="p">(</span><span class="s">'total size:'</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="si">%.3</span><span class="s">f GB"</span> <span class="o">%</span> <span class="p">(</span><span class="n">size</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="mi">1024</span><span class="o">/</span><span class="mi">1024</span><span class="o">/</span><span class="mi">1024</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"%.3f GB"</span> <span class="o">%</span> <span class="p">(</span><span class="n">size</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="mi">1024</span><span class="o">/</span><span class="mi">1024</span><span class="o">/</span><span class="mi">1024</span><span class="p">))</span>
 <span class="k">print</span><span class="p">(</span><span class="s">'total count:'</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">totalCount</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>which gives output like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>python3 scratch/count_s3.py adl-ohi
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 scratch/count_s3.py adl-ohi
 total size:
 0.298 GB
 total count:
 486468
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>Note</strong>: I have a live upload happening on another machine so the numbers do change and that's actually fine.</p>
 

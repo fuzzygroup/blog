@@ -135,6 +135,12 @@ I'm in the process of working out security for a new side project (yes, yes, yes
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -206,7 +212,7 @@ I'm in the process of working out security for a new side project (yes, yes, yes
     <h1 id="yes-you-can-view-the-object-if-you-created-it">yes you can view the object if YOU created it</h1>
   </li>
   <li>
-    <h1 id="yes-you-can-view-the-object-if-you-belong-to-the-organizationgroup">yes you can view the object if you belong to the organization_group</h1>
+    <h1 id="yes-you-can-view-the-object-if-you-belong-to-the-organization_group">yes you can view the object if you belong to the organization_group</h1>
   </li>
   <li>
     <h1 id="yes-you-can-view-the-object-if-you-belong-to-the-organization-and-you-are-a-boss">yes you can view the object if you belong to the organization and you are a boss</h1>
@@ -215,39 +221,35 @@ I'm in the process of working out security for a new side project (yes, yes, yes
 
 <p>So when I started down this path, I immediately started getting a Pundit error that I've never seen before and that I didn't understand:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Pundit::NotDefinedError: unable to find policy `HashPolicy` for `{}`    
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Pundit::NotDefinedError: unable to find policy `HashPolicy` for `{}`    
+</code></pre></div></div>
 
 <p>And this error sent me through the normal spiral of google results only to find relatively few results.  This <a href="https://github.com/ankane/groupdate/issues/94">one</a>, which I didn't read well, however, was prescient.  And I continued down the path of debugging this at a lower and lower level until I found myself dropping byebug into Pundit itself in this method:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">policy</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">policy</span>
   <span class="n">klass</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">object</span><span class="p">)</span>
   <span class="n">klass</span><span class="p">.</span><span class="nf">is_a?</span><span class="p">(</span><span class="no">String</span><span class="p">)</span> <span class="p">?</span> <span class="n">klass</span><span class="p">.</span><span class="nf">safe_constantize</span> <span class="p">:</span> <span class="n">klass</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And what I found was that the "object" that Pundit had was just {} which made no sense to me.  And then I looked at my controller and saw what I was doing:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">index</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">index</span>
   <span class="vi">@objectives</span> <span class="o">=</span> <span class="n">current_user</span><span class="p">.</span><span class="nf">organization</span><span class="p">.</span><span class="nf">objectives</span><span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="s1">'quarter_id ASC, name ASC'</span><span class="p">).</span><span class="nf">group_by</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:quarter_id</span><span class="p">)</span>
   <span class="n">authorize</span> <span class="vi">@objectives</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>What I discovered, as I continued to debug this is that I had a failure in my test setup and that, with the .group_by method which converts an ActiveRecord collection into a hash which points to an ActiveRecord collection meant that all Pundit was getting was nothing more than {} which, naturally, led to the failure above.</p>
 
 <p>The solution was to initially fix my test setup (damn RSpec let statements; how they hell do they actually work; sigh) and then change my controller action to be this:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">index</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">index</span>
   <span class="vi">@objectives</span> <span class="o">=</span> <span class="n">current_user</span><span class="p">.</span><span class="nf">organization</span><span class="p">.</span><span class="nf">objectives</span><span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="s1">'quarter_id ASC, name ASC'</span><span class="p">)</span>
   <span class="n">authorize</span> <span class="vi">@objectives</span>
   <span class="vi">@objectives</span> <span class="o">=</span> <span class="vi">@objectives</span><span class="p">.</span><span class="nf">group_by</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:quarter_id</span><span class="p">)</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And that, naturally, is almost identical to what Ankane had (the prescient github post I cited earlier; big damn sigh).</p>
 

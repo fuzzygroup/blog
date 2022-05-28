@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -230,11 +236,20 @@
   <li>Start by going to <a href="http://github.com/trailofbits/algo">Algo</a> and downloading it per the instructions.</li>
   <li>Run the Algo setup process and answer all the questions.  You likely want to pick a data center for your VPN closest to you for best performance.  It will take a fair bit (roughly 20 minutes to run).  At the end you'll get a nicely formatted although mildly unclear set of instructions.  If you don't want to use openvpn-install also then you can stop here and just configure your local vpn.  Or you can continue to install openvpn-install.</li>
   <li>Ssh into the algo box:
-&gt; ssh -i config/algos.pem ubuntu@xxx.yyy.vvv.zzz</li>
+    <blockquote>
+      <p>ssh -i config/algos.pem ubuntu@xxx.yyy.vvv.zzz</p>
+    </blockquote>
+  </li>
   <li>Become root:
-&gt; sudo su -</li>
-  <li>Run the openvpn-install process: 
-&gt; wget https://git.io/vpn -O openvpn-install.sh &amp;&amp; bash openvpn-install.sh</li>
+    <blockquote>
+      <p>sudo su -</p>
+    </blockquote>
+  </li>
+  <li>Run the openvpn-install process:
+    <blockquote>
+      <p>wget https://git.io/vpn -O openvpn-install.sh &amp;&amp; bash openvpn-install.sh</p>
+    </blockquote>
+  </li>
   <li>At the end your OpenVPN settings will be in <strong>/root/client.ovpn</strong>   Copy that file locally and then use it to configure a VPN connection at your router or client side.  See my <a href="http://fuzzyblog.io/blog/vpn/2017/03/29/setting-up-a-router-level-vpn-to-secure-your-browsing.html">earlier tutorial</a> for details on setting up your router level connection.  Either way you should now have a VPN that supports Netflix.</li>
 </ol>
 

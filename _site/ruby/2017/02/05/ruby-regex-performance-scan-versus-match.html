@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,23 +190,22 @@
 
 <p>What I just found out is that .match is dramatically faster.  Here's an example:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code> <span class="n">tpp</span><span class="p">.</span><span class="nf">parse</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">tpp</span><span class="p">.</span><span class="nf">parse</span>
 <span class="p">{</span>
               <span class="ss">:blaahs_count</span> <span class="o">=&gt;</span> <span class="mi">324</span><span class="p">,</span>
            <span class="ss">:blaaaargs_count</span> <span class="o">=&gt;</span> <span class="mi">281</span><span class="p">,</span>
            <span class="ss">:followers_count</span> <span class="o">=&gt;</span> <span class="mi">139</span><span class="p">,</span>
-             <span class="ss">:match_seconds</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="o">.</span><span class="mo">00</span><span class="mi">841700000455603</span><span class="p">,</span>
-              <span class="ss">:scan_seconds</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="o">.</span><span class="mo">030331000016303733</span>
+             <span class="ss">:match_seconds</span> <span class="o">=&gt;</span> <span class="mf">0.00841700000455603</span><span class="p">,</span>
+              <span class="ss">:scan_seconds</span> <span class="o">=&gt;</span> <span class="mf">0.030331000016303733</span>
 <span class="p">}</span>
-<span class="mi">2</span><span class="o">.</span><span class="mi">3</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">043</span> <span class="o">&gt;</span> <span class="n">tpp</span><span class="p">.</span><span class="nf">parse</span>
+<span class="mf">2.3</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">043</span> <span class="o">&gt;</span> <span class="n">tpp</span><span class="p">.</span><span class="nf">parse</span>
 <span class="p">{</span>
               <span class="ss">:blaahs_count</span> <span class="o">=&gt;</span> <span class="mi">253</span><span class="p">,</span>
            <span class="ss">:blaaaargs_count</span> <span class="o">=&gt;</span> <span class="mi">66</span><span class="p">,</span>
-             <span class="ss">:match_seconds</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="o">.</span><span class="mo">006</span><span class="mi">857000000309199</span><span class="p">,</span>
-              <span class="ss">:scan_seconds</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="o">.</span><span class="mo">022454</span><span class="mi">99999844469</span>
+             <span class="ss">:match_seconds</span> <span class="o">=&gt;</span> <span class="mf">0.006857000000309199</span><span class="p">,</span>
+              <span class="ss">:scan_seconds</span> <span class="o">=&gt;</span> <span class="mf">0.02245499999844469</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Note: All benchmarking tests were down with a Benchmark.realtime do block wrapping the code in question.  Only the core matching operations were benchmarked; not the underlying network io.</p>
 

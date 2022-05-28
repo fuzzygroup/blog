@@ -135,6 +135,12 @@ I wrote this guide to different Ruby idioms and how to do them in Python.  Organ
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -206,22 +212,20 @@ I wrote this guide to different Ruby idioms and how to do them in Python.  Organ
 
 <p>The ruby is:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">byebug</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">byebug</span>
+</code></pre></div></div>
 
 <p>The python is:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
-</code></pre>
-</div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pdb</span><span class="p">.</span><span class="n">set_trace</span><span class="p">()</span>
+</code></pre></div></div>
 
 <h2 id="getting-all-attributes-of-an-object">Getting All Attributes of an Object</h2>
 
 <p>Most Ruby objects, at least in a Rails context, are generally ActiveRecord objects and respond to .attributes so:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">plan</span> <span class="o">=</span> <span class="no">Plan</span><span class="p">.</span><span class="nf">first</span>
-<span class="mi">2</span><span class="o">.</span><span class="mi">6</span><span class="o">.</span><span class="mi">3</span> <span class="p">:</span><span class="mo">016</span> <span class="o">&gt;</span> <span class="n">plan</span><span class="p">.</span><span class="nf">attributes</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plan</span> <span class="o">=</span> <span class="no">Plan</span><span class="p">.</span><span class="nf">first</span>
+<span class="mf">2.6</span><span class="o">.</span><span class="mi">3</span> <span class="p">:</span><span class="mo">016</span> <span class="o">&gt;</span> <span class="n">plan</span><span class="p">.</span><span class="nf">attributes</span>
 <span class="p">{</span>
              <span class="s2">"id"</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
      <span class="s2">"created_at"</span> <span class="o">=&gt;</span> <span class="no">Sat</span><span class="p">,</span> <span class="mi">27</span> <span class="no">Jul</span> <span class="mi">2019</span> <span class="mi">08</span><span class="p">:</span><span class="mi">28</span><span class="p">:</span><span class="mi">17</span> <span class="no">UTC</span> <span class="o">+</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">,</span>
@@ -238,32 +242,30 @@ I wrote this guide to different Ruby idioms and how to do them in Python.  Organ
     <span class="s2">"master_plan"</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span>
          <span class="s2">"active"</span> <span class="o">=&gt;</span> <span class="kp">true</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The python equivalent of this is is to reference the object's internal dict.  Below we have an object called message which is coming in from a streaming data solution called sse:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">message</span><span class="o">.</span><span class="n">__dict__</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">message</span><span class="p">.</span><span class="n">__dict__</span>
 <span class="p">{</span><span class="s">'data'</span><span class="p">:</span> <span class="s">'{"all_awardings":[],"approved_at_utc":null,"ups":1,"user_reports":[]}'</span><span class="p">,</span> <span class="s">'event'</span><span class="p">:</span> <span class="s">'rc'</span><span class="p">,</span> <span class="s">'id'</span><span class="p">:</span> <span class="s">'33288433929'</span><span class="p">,</span> <span class="s">'retry'</span><span class="p">:</span> <span class="bp">None</span><span class="p">}</span>
 
-<span class="c"># There are four different top level things that can be called:</span>
-<span class="n">message</span><span class="o">.</span><span class="n">data</span>
-<span class="n">message</span><span class="o">.</span><span class="n">event</span>
-<span class="n">message</span><span class="o">.</span><span class="nb">id</span> 
-<span class="n">message</span><span class="o">.</span><span class="n">retry</span>
+<span class="c1"># There are four different top level things that can be called:
+</span><span class="n">message</span><span class="p">.</span><span class="n">data</span>
+<span class="n">message</span><span class="p">.</span><span class="n">event</span>
+<span class="n">message</span><span class="p">.</span><span class="nb">id</span> 
+<span class="n">message</span><span class="p">.</span><span class="n">retry</span>
 
-<span class="c"># despite the appearance, the attributes of data are NOT json buy just a string so this doesn't work:</span>
-
-<span class="n">message</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="c1"># despite the appearance, the attributes of data are NOT json buy just a string so this doesn't work:
+</span>
+<span class="n">message</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">keys</span><span class="p">()</span>
 <span class="o">***</span> <span class="nb">AttributeError</span><span class="p">:</span> <span class="s">'str'</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">no</span> <span class="n">attribute</span> <span class="s">'keys'</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="getting-all-methods-for-an-object">Getting All Methods for an Object</h2>
 
 <p>The ruby is:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">hash</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'foo'</span><span class="p">:</span> <span class="s1">'bar'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">:</span> <span class="s1">'blepp'</span><span class="p">}</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">hash</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'foo'</span><span class="p">:</span> <span class="s1">'bar'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">:</span> <span class="s1">'blepp'</span><span class="p">}</span>
 <span class="p">(</span><span class="nb">hash</span><span class="p">.</span><span class="nf">methods</span> <span class="o">-</span> <span class="no">Object</span><span class="p">.</span><span class="nf">methods</span><span class="p">).</span><span class="nf">sort</span>
 
 <span class="p">(</span><span class="nb">hash</span><span class="p">.</span><span class="nf">methods</span> <span class="o">-</span> <span class="no">Object</span><span class="p">.</span><span class="nf">methods</span><span class="p">).</span><span class="nf">sort</span>
@@ -301,18 +303,16 @@ I wrote this guide to different Ruby idioms and how to do them in Python.  Organ
     <span class="p">[</span><span class="mi">14</span><span class="p">]</span>                                    <span class="n">foo</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span>   <span class="no">Plan</span>
     <span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="n">validate_associated_records_for_habits</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="no">Plan</span>
 <span class="p">]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The python is:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="nb">dir</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">dir</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 <span class="p">[</span><span class="s">'__class__'</span><span class="p">,</span> <span class="s">'__delattr__'</span><span class="p">,</span> <span class="s">'__dict__'</span><span class="p">,</span> <span class="s">'__dir__'</span><span class="p">,</span> <span class="s">'__doc__'</span><span class="p">,</span> <span class="s">'__eq__'</span><span class="p">,</span> <span class="s">'__format__'</span><span class="p">,</span> <span class="s">'__ge__'</span><span class="p">,</span> <span class="s">'__getattribute__'</span><span class="p">,</span> <span class="s">'__gt__'</span><span class="p">,</span> <span class="s">'__hash__'</span><span class="p">,</span> <span class="s">'__init__'</span><span class="p">,</span> <span class="s">'__init_subclass__'</span><span class="p">,</span> <span class="s">'__le__'</span><span class="p">,</span> <span class="s">'__lt__'</span><span class="p">,</span> <span class="s">'__module__'</span><span class="p">,</span> <span class="s">'__ne__'</span><span class="p">,</span> <span class="s">'__new__'</span><span class="p">,</span> <span class="s">'__reduce__'</span><span class="p">,</span> <span class="s">'__reduce_ex__'</span><span class="p">,</span> <span class="s">'__repr__'</span><span class="p">,</span> <span class="s">'__setattr__'</span><span class="p">,</span> <span class="s">'__sizeof__'</span><span class="p">,</span> <span class="s">'__str__'</span><span class="p">,</span> <span class="s">'__subclasshook__'</span><span class="p">,</span> <span class="s">'__weakref__'</span><span class="p">,</span> <span class="s">'data'</span><span class="p">,</span> <span class="s">'dump'</span><span class="p">,</span> <span class="s">'event'</span><span class="p">,</span> <span class="s">'id'</span><span class="p">,</span> <span class="s">'parse'</span><span class="p">,</span> <span class="s">'retry'</span><span class="p">,</span> <span class="s">'sse_line_pattern'</span><span class="p">]</span>
-<span class="p">(</span><span class="n">Pdb</span><span class="p">)</span> <span class="n">message</span><span class="o">.</span><span class="n">sse_line_pattern</span>
-<span class="n">re</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">'(?P&lt;name&gt;[^:]*):?( ?(?P&lt;value&gt;.*))?'</span><span class="p">)</span>
-<span class="c"># object.__dict__ gets you an object's data while dir(object) gets you an object's methods</span>
-</code></pre>
-</div>
+<span class="p">(</span><span class="n">Pdb</span><span class="p">)</span> <span class="n">message</span><span class="p">.</span><span class="n">sse_line_pattern</span>
+<span class="n">re</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">'(?P&lt;name&gt;[^:]*):?( ?(?P&lt;value&gt;.*))?'</span><span class="p">)</span>
+<span class="c1"># object.__dict__ gets you an object's data while dir(object) gets you an object's methods
+</span></code></pre></div></div>
 
 <p>See: <a href="https://fuzzyblog.io/blog/python/2019/10/24/using-python-to-get-an-object-s-methods-attributes-dynamically.html">Me</a>, <a href="https://lerner.co.il/2014/10/14/python-attributes/">Lerner</a>, <a href="https://medium.com/swlh/class-and-object-attributes-python-8191dcd1f4cf">Swlh</a>, <a href="https://stackoverflow.com/questions/6886493/get-all-object-attributes-in-python">Stack Overflow</a></p>
 
@@ -320,28 +320,26 @@ I wrote this guide to different Ruby idioms and how to do them in Python.  Organ
 
 <p>The ruby is:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">hash</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'foo'</span><span class="p">:</span> <span class="s1">'bar'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">:</span> <span class="s1">'blepp'</span><span class="p">}</span>
-<span class="mi">2</span><span class="o">.</span><span class="mi">6</span><span class="o">.</span><span class="mi">3</span> <span class="p">:</span><span class="mo">01</span><span class="mi">8</span> <span class="o">&gt;</span> <span class="nb">hash</span><span class="p">.</span><span class="nf">keys</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">hash</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'foo'</span><span class="p">:</span> <span class="s1">'bar'</span><span class="p">,</span> <span class="s1">'cat'</span><span class="p">:</span> <span class="s1">'blepp'</span><span class="p">}</span>
+<span class="mf">2.6</span><span class="o">.</span><span class="mi">3</span> <span class="p">:</span><span class="mo">01</span><span class="mi">8</span> <span class="o">&gt;</span> <span class="nb">hash</span><span class="p">.</span><span class="nf">keys</span>
 <span class="p">[</span>
     <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ss">:foo</span><span class="p">,</span>
     <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ss">:cat</span>
 <span class="p">]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The python is:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="nb">hash</span> <span class="o">=</span> <span class="p">{</span><span class="s">'foo'</span><span class="p">:</span> <span class="s">'bar'</span><span class="p">,</span> <span class="s">'cat'</span><span class="p">:</span> <span class="s">'blepp'</span><span class="p">}</span>
-<span class="nb">hash</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">hash</span> <span class="o">=</span> <span class="p">{</span><span class="s">'foo'</span><span class="p">:</span> <span class="s">'bar'</span><span class="p">,</span> <span class="s">'cat'</span><span class="p">:</span> <span class="s">'blepp'</span><span class="p">}</span>
+<span class="nb">hash</span><span class="p">.</span><span class="n">keys</span><span class="p">()</span>
 <span class="n">dict_keys</span><span class="p">([</span><span class="s">'foo'</span><span class="p">,</span> <span class="s">'cat'</span><span class="p">])</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="json-parsing">JSON Parsing</h2>
 
 <p>The ruby is:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">json_str</span> <span class="o">=</span> <span class="s1">'{"id": 12345, "message": "hello", "array": [1,2,3,4]}'</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">json_str</span> <span class="o">=</span> <span class="s1">'{"id": 12345, "message": "hello", "array": [1,2,3,4]}'</span>
 <span class="n">json</span> <span class="o">=</span> <span class="no">JSON</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">json_str</span><span class="p">)</span>
 <span class="p">{</span>
          <span class="s2">"id"</span> <span class="o">=&gt;</span> <span class="mi">12345</span><span class="p">,</span>
@@ -353,20 +351,18 @@ I wrote this guide to different Ruby idioms and how to do them in Python.  Organ
         <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="mi">4</span>
     <span class="p">]</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The python is:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">ujson</span> <span class="kn">as</span> <span class="nn">JSON</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">ujson</span> <span class="k">as</span> <span class="n">JSON</span>
 
 <span class="n">json_str</span> <span class="o">=</span> <span class="s">'{"id": 12345, "message": "hello", "array": [1,2,3,4]}'</span>
-<span class="n">json</span> <span class="o">=</span> <span class="n">JSON</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_str</span><span class="p">)</span>
+<span class="n">json</span> <span class="o">=</span> <span class="n">JSON</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_str</span><span class="p">)</span>
 <span class="p">{</span><span class="s">'id'</span><span class="p">:</span> <span class="mi">12345</span><span class="p">,</span> <span class="s">'message'</span><span class="p">:</span> <span class="s">'hello'</span><span class="p">,</span> <span class="s">'array'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]}</span>
-<span class="n">json</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="n">json</span><span class="p">.</span><span class="n">keys</span><span class="p">()</span>
 <span class="n">dict_keys</span><span class="p">([</span><span class="s">'id'</span><span class="p">,</span> <span class="s">'message'</span><span class="p">,</span> <span class="s">'array'</span><span class="p">])</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I will confess to dipping into a bit of a Ruby idiom here by importing ujson as JSON (all caps).  I find myself constantly making errors in python by calling my json variable json when that's actually an imported class / module.  This one change makes things a lot easier (at least for me).</p>
 
@@ -374,100 +370,90 @@ I wrote this guide to different Ruby idioms and how to do them in Python.  Organ
 
 <p>The ruby is:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">plan</span><span class="p">.</span><span class="nf">name</span><span class="p">.</span><span class="nf">size</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plan</span><span class="p">.</span><span class="nf">name</span><span class="p">.</span><span class="nf">size</span>
 <span class="mi">11</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The python is:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">.</span><span class="n">data</span><span class="p">)</span>
 <span class="mi">1826</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="quitting-the-console">Quitting the console</h2>
 
 <p>The ruby is:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">quit</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">quit</span>
+</code></pre></div></div>
 
 <p>The python is:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">quit</span><span class="p">()</span>
-</code></pre>
-</div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">quit</span><span class="p">()</span>
+</code></pre></div></div>
 
 <h2 id="redis">Redis</h2>
 
 <p>The ruby is:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'redis'</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'redis'</span>
 
-<span class="mi">2</span><span class="o">.</span><span class="mi">6</span><span class="o">.</span><span class="mi">3</span> <span class="p">:</span><span class="mo">005</span> <span class="o">&gt;</span> <span class="n">redis</span> <span class="o">=</span> <span class="no">Redis</span><span class="p">.</span><span class="nf">new</span>
+<span class="mf">2.6</span><span class="o">.</span><span class="mi">3</span> <span class="p">:</span><span class="mo">005</span> <span class="o">&gt;</span> <span class="n">redis</span> <span class="o">=</span> <span class="no">Redis</span><span class="p">.</span><span class="nf">new</span>
 <span class="c1">#&lt;Redis client v4.1.3 for redis://127.0.0.1:6379/0&gt;</span>
-<span class="mi">2</span><span class="o">.</span><span class="mi">6</span><span class="o">.</span><span class="mi">3</span> <span class="p">:</span><span class="mo">006</span> <span class="o">&gt;</span> <span class="n">redis</span><span class="p">.</span><span class="nf">set</span><span class="p">(</span><span class="s2">"mykey"</span><span class="p">,</span> <span class="s2">"hello world"</span><span class="p">)</span>
+<span class="mf">2.6</span><span class="o">.</span><span class="mi">3</span> <span class="p">:</span><span class="mo">006</span> <span class="o">&gt;</span> <span class="n">redis</span><span class="p">.</span><span class="nf">set</span><span class="p">(</span><span class="s2">"mykey"</span><span class="p">,</span> <span class="s2">"hello world"</span><span class="p">)</span>
 <span class="s2">"OK"</span>
-<span class="mi">2</span><span class="o">.</span><span class="mi">6</span><span class="o">.</span><span class="mi">3</span> <span class="p">:</span><span class="mo">007</span> <span class="o">&gt;</span> <span class="n">redis</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s2">"mykey"</span><span class="p">)</span>
+<span class="mf">2.6</span><span class="o">.</span><span class="mi">3</span> <span class="p">:</span><span class="mo">007</span> <span class="o">&gt;</span> <span class="n">redis</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s2">"mykey"</span><span class="p">)</span>
 <span class="s2">"hello world"</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The python is:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">redis</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">Redis</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">6379</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">r</span><span class="o">.</span><span class="nb">set</span><span class="p">(</span><span class="s">'mykey'</span><span class="p">,</span> <span class="s">'hello world'</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">redis</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">redis</span><span class="p">.</span><span class="n">Redis</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">6379</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="s">'mykey'</span><span class="p">,</span> <span class="s">'hello world'</span><span class="p">)</span>
 <span class="bp">True</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'mykey'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'mykey'</span><span class="p">)</span>
 <span class="s">'hello world'</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="string-interpolation">String Interpolation</h2>
 
 <p>The ruby is:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">skill</span> <span class="o">=</span> <span class="s2">"beginner"</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">skill</span> <span class="o">=</span> <span class="s2">"beginner"</span>
 <span class="nb">puts</span> <span class="s2">"Scott is a </span><span class="si">#{</span><span class="n">skill</span><span class="si">}</span><span class="s2">"</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The python is:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">skill</span> <span class="o">=</span> <span class="s">"beginner"</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Scott is a {skill}"</span><span class="p">)</span>
-</code></pre>
-</div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">skill</span> <span class="o">=</span> <span class="s">"beginner"</span>
+<span class="k">print</span><span class="p">(</span><span class="s">f"Scott is a </span><span class="si">{</span><span class="n">skill</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
 
 <h2 id="try-----safe-navigation-and-python-hashes">Try / &amp; - Safe Navigation and Python Hashes</h2>
 
 <p>A ruby hash returns nil if the key specified is missing:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">ENV</span><span class="p">[</span><span class="s1">'foo'</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">ENV</span><span class="p">[</span><span class="s1">'foo'</span><span class="p">]</span>
 <span class="kp">nil</span>
-<span class="mi">2</span><span class="o">.</span><span class="mi">3</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">003</span> <span class="o">&gt;</span> <span class="no">ENV</span><span class="p">[</span><span class="s1">'RUBY_VERSION'</span><span class="p">]</span>
+<span class="mf">2.3</span><span class="o">.</span><span class="mi">1</span> <span class="p">:</span><span class="mo">003</span> <span class="o">&gt;</span> <span class="no">ENV</span><span class="p">[</span><span class="s1">'RUBY_VERSION'</span><span class="p">]</span>
 <span class="s2">"ruby-2.3.1"</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>A python dict raises an exception:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">'RAILS_ENV'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="s">'RAILS_ENV'</span><span class="p">]</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
   <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
   <span class="n">File</span> <span class="s">"/Users/sjohnson/Sync/fuzzygroup/adl/antihate/antihate_experts/venv/bin/../lib/python3.7/os.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">678</span><span class="p">,</span> <span class="ow">in</span> <span class="n">__getitem__</span>
     <span class="k">raise</span> <span class="nb">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">from</span> <span class="bp">None</span>
 <span class="nb">KeyError</span><span class="p">:</span> <span class="s">'RAILS_ENV'</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'RAILS_ENV'</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'RUBY_VERSION'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'RAILS_ENV'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'RUBY_VERSION'</span><span class="p">)</span>
 <span class="s">'ruby-2.3.1'</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The ruby way around this would be to use try or the safe navigation operator:</p>
 
@@ -477,13 +463,11 @@ I wrote this guide to different Ruby idioms and how to do them in Python.  Organ
 
 <p>The ruby is:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code></code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code></code></pre></div></div>
 
 <p>The python is:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code></code></pre>
-</div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code></code></pre></div></div>
 
   </div>
   

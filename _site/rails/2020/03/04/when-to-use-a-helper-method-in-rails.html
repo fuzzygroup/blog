@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,7 +186,7 @@
   <div class="post-content" itemprop="articleBody">
     <p>One of the more interesting facilities in Rails <em>helpers</em> which reside in app/helpers/*.rb and are used, well, as helpers.  Helpers are basically display level execution of Ruby code.  I recently wrote what I thought was a great example of a helper so I thought I'd document it.  What I had was a object, stored in the database which had a bunch of data that I needed to display:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>the object, called a label
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>the object, called a label
   A serialized hash called labeled_data
      label0 
      label1
@@ -192,25 +198,22 @@
      label7
      label8
      label9
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>What I wanted to do was transform this, at display time, to an HTML structure like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;p&gt;label0: &lt;b&gt;The Data for Label 0&lt;/b&gt;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;p&gt;label0: &lt;b&gt;The Data for Label 0&lt;/b&gt;
 &lt;p&gt;label1: &lt;b&gt;The Data for Label 0&lt;/b&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>and, correctly, not show label2, etc if they were blank.  And, naturally, do the right thing when there was no data in the labeled_data hash, etc.  And while I could have done this with a view and code wrapped in evaluation / output tags:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;% and %&gt; or &lt;%= or %&gt;
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;% and %&gt; or &lt;%= or %&gt;
+</code></pre></div></div>
 
 <p>it is dramatically cleaner to write this type of thing as a helper and then call it as a function like display_labeled_data(label).  Not only does this make the code much cleaner than evaluation / output tags, it also has the advantage of being testable.  Now all that said, here is the code:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">display_labeled_data</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">display_labeled_data</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
   <span class="k">return</span> <span class="k">if</span> <span class="n">label</span><span class="p">.</span><span class="nf">labeled_data</span><span class="p">.</span><span class="nf">nil?</span>
   <span class="k">return</span> <span class="k">if</span> <span class="n">label</span><span class="p">.</span><span class="nf">labeled_data</span><span class="p">.</span><span class="nf">keys</span><span class="p">.</span><span class="nf">nil?</span>
   <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
@@ -227,8 +230,7 @@
   <span class="k">end</span>
   <span class="n">output</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">).</span><span class="nf">html_safe</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The key idea here is:</p>
 
@@ -244,9 +246,8 @@
 
 <p>This routine is then called in my display template like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;%= display_labeled_data(@label) %&gt;
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%= display_labeled_data(@label) %&gt;
+</code></pre></div></div>
 
 <p>on the show page for the labels controller.  See – Rails helpers, easy peasy!</p>
 

@@ -139,6 +139,12 @@ My git workflow is pretty simple.  Here are the tasks and (where I do them):
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -202,49 +208,43 @@ My git workflow is pretty simple.  Here are the tasks and (where I do them):
 
 <p>To install hub on OSX, you can use brew:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>brew install hub
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install hub
+</code></pre></div></div>
 
 <h2 id="if-you-cant-login">If You Can't Login</h2>
 
 <p>My first usage of github hub was actually fairly crappy:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ hub issue create -m "Update Faq for Why Do Things Appear on the Dashboard"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ hub issue create -m "Update Faq for Why Do Things Appear on the Dashboard"
 Error creating issue: Unauthorized (HTTP 401)
 Bad credentials
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>If you hit this error then the first result is a <a href="https://github.com/github/hub/issues/1067">very long Github Issues</a> page.  The long and the short of it is that you need to delete hub's config file:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rm ~/.config/hub
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rm ~/.config/hub
+</code></pre></div></div>
 
 <p>After this delete, any operation should cause hub to ask you to log in.  And, yes, hub does support Github's two factor authentication so there is that to contend with also.</p>
 
 <p><strong>Note</strong>: If you still can't use hub after deleting this file then you may have credentials defined in a shell config file like .zshrc or .bashrc.  Read the above linked issue for more.  You also might have better understanding by using the verbose option:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>HUB_VERBOSE=1 hub issue create "Update Faq for Why Do Things Appear on the Dashboard"
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HUB_VERBOSE=1 hub issue create "Update Faq for Why Do Things Appear on the Dashboard"
+</code></pre></div></div>
 
 <h2 id="and-creating-an-issue">And Creating an Issue</h2>
 
 <p>Use the -m flag to create the issue with a title.  This avoids hub opening an editor (which is fine but slows down the process and using hub is to avoid the slowdown):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ hub issue create -m "Automate Checking RSS Feeds"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ hub issue create -m "Automate Checking RSS Feeds"
 https://github.com/gochangeme/web_change_me_now/issues/465
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And there you have an issue number so now you can can just:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git branch 465
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git branch 465
 git co 465
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And, yes, I suspect there is a compound command which creates a branch and changes into it in one operation.  I personally prefer to use github via "atomic" commands so if I make a mistake, I can more easily correct recover from it.</p>
 
@@ -252,7 +252,7 @@ git co 465
 
 <p>Here's what you can do with hub (from hub –help):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>api            Low-level GitHub API request interface
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>api            Low-level GitHub API request interface
 browse         Open a GitHub page in the default browser
 ci-status      Show the status of GitHub checks for a commit
 compare        Open a compare page on GitHub
@@ -264,8 +264,7 @@ pr             List or checkout GitHub pull requests
 pull-request   Open a pull request on GitHub
 release        List or create GitHub releases
 sync           Fetch git objects from upstream and update branches
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I can easily see myself using pull-request once I get comfortable with issue as I'm already seeing the workflow benefits to hub.  Thank you Gitub!</p>
 

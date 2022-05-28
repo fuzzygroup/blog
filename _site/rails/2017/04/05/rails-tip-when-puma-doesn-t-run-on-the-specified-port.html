@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,7 +186,7 @@
   <div class="post-content" itemprop="articleBody">
     <p>So I just noticed this particular oddness:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>12:12 $ bundle exec rails s -p4000
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>12:12 $ bundle exec rails s -p4000
 =&gt; Booting Puma
 =&gt; Rails 5.0.1 application starting in development on http://localhost:4000
 =&gt; Run `rails server -h` for more startup options
@@ -189,8 +195,7 @@ Puma starting in single mode...
 * Min threads: 5, max threads: 5
 * Environment: development
 * Listening on tcp://0.0.0.0:3000
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>As you can see Puma is being started with a port 4000 directive but it is actually listening on the default 3000 port.</p>
 
@@ -214,7 +219,7 @@ Puma starting in single mode...
 
 <p>A quick bundle install and then another rails s -p4000 gives:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rails s -p4000
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec rails s -p4000
 =&gt; Booting Puma
 =&gt; Rails 5.0.1 application starting in development on http://localhost:4000
 =&gt; Run `rails server -h` for more startup options
@@ -223,12 +228,11 @@ Puma starting in single mode...
 * Min threads: 5, max threads: 5
 * Environment: development
 * Listening on tcp://localhost:4000
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>As with all http testing, a curl -I is always handy for figuring out if things are working:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>curl -I http://localhost:4000/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -I http://localhost:4000/
 HTTP/1.1 200 OK
 X-Frame-Options: SAMEORIGIN
 X-XSS-Protection: 1; mode=block
@@ -238,8 +242,7 @@ ETag: W/"c06ad854cb732d5ed93f13e0e4a601ac"
 Cache-Control: max-age=0, private, must-revalidate
 X-Request-Id: 85a07f99-f8b3-4692-aaa5-4f7c8327d901
 X-Runtime: 0.032369
-</code></pre>
-</div>
+</code></pre></div></div>
 
   </div>
   

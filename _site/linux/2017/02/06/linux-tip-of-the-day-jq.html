@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -200,7 +206,7 @@
 
 <p>Help is available, as it always should be (but often isn't), with –help.  Here's an example:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>sjohnson@FuzzygroupMacbookAir ~ <span class="nv">$ </span>jq --help
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sjohnson@FuzzygroupMacbookAir ~ <span class="nv">$ </span>jq <span class="nt">--help</span>
 jq - commandline JSON processor <span class="o">[</span>version 1.5]
 Usage: jq <span class="o">[</span>options] &lt;jq filter&gt; <span class="o">[</span>file...]
 
@@ -209,43 +215,41 @@ Usage: jq <span class="o">[</span>options] &lt;jq filter&gt; <span class="o">[</
 	filter<span class="s1">'s results as JSON on standard output.
 	The simplest filter is ., which is the identity filter,
 	copying jq'</span>s input to its output unmodified <span class="o">(</span>except <span class="k">for
-	</span>formatting<span class="o">)</span>.
+	</span>formatting<span class="o">)</span><span class="nb">.</span>
 	For more advanced filters see the jq<span class="o">(</span>1<span class="o">)</span> manpage <span class="o">(</span><span class="s2">"man jq"</span><span class="o">)</span>
 	and/or https://stedolan.github.io/jq
 
 	Some of the options include:
-	 -c		compact instead of pretty-printed output;
-	 -n		use <span class="sb">`</span>null<span class="sb">`</span> as the single input value;
-	 -e		<span class="nb">set </span>the <span class="nb">exit </span>status code based on the output;
-	 -s		<span class="nb">read</span> <span class="o">(</span>slurp<span class="o">)</span> all inputs into an array; apply filter to it;
-	 -r		output raw strings, not JSON texts;
-	 -R		<span class="nb">read </span>raw strings, not JSON texts;
-	 -C		colorize JSON;
-	 -M		monochrome <span class="o">(</span>don<span class="s1">'t colorize JSON);
+	 <span class="nt">-c</span>		compact instead of pretty-printed output<span class="p">;</span>
+	 <span class="nt">-n</span>		use <span class="sb">`</span>null<span class="sb">`</span> as the single input value<span class="p">;</span>
+	 <span class="nt">-e</span>		<span class="nb">set </span>the <span class="nb">exit </span>status code based on the output<span class="p">;</span>
+	 <span class="nt">-s</span>		<span class="nb">read</span> <span class="o">(</span>slurp<span class="o">)</span> all inputs into an array<span class="p">;</span> apply filter to it<span class="p">;</span>
+	 <span class="nt">-r</span>		output raw strings, not JSON texts<span class="p">;</span>
+	 <span class="nt">-R</span>		<span class="nb">read </span>raw strings, not JSON texts<span class="p">;</span>
+	 <span class="nt">-C</span>		colorize JSON<span class="p">;</span>
+	 <span class="nt">-M</span>		monochrome <span class="o">(</span>don<span class="s1">'t colorize JSON);
 	 -S		sort keys of objects on output;
 	 --tab	use tabs for indentation;
 	 --arg a v	set variable $a to value &lt;v&gt;;
 	 --argjson a v	set variable $a to JSON value &lt;v&gt;;
 	 --slurpfile a f	set variable $a to an array of JSON texts read from &lt;f&gt;;
 	See the manpage for more options.
-</span></code></pre>
-</div>
+</span></code></pre></div></div>
 
 <p>Because this is designed to be used as part of a pipeline and you have to data in JSON format for it to work, I'm going to illustrate its use by stealing from the <strong>hncomments</strong> bash script (thank you John!):</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="nv">j</span><span class="o">=</span><span class="sb">`</span>curl -s <span class="s2">"https://hn.algolia.com/api/v1/search_by_date?query=</span><span class="nv">$q</span><span class="s2">&amp;tags=comment&amp;numericFilters=created_at_i&gt;</span><span class="nv">$l</span><span class="s2">"</span><span class="sb">`</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">j</span><span class="o">=</span><span class="sb">`</span>curl <span class="nt">-s</span> <span class="s2">"https://hn.algolia.com/api/v1/search_by_date?query=</span><span class="nv">$q</span><span class="s2">&amp;tags=comment&amp;numericFilters=created_at_i&gt;</span><span class="nv">$l</span><span class="s2">"</span><span class="sb">`</span>
 
-<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$j</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">""</span> <span class="o">]</span> ; <span class="k">then
+<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$j</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">""</span> <span class="o">]</span> <span class="p">;</span> <span class="k">then
   </span><span class="nb">exit </span>0
 <span class="k">fi
 
-</span><span class="nv">n</span><span class="o">=</span><span class="sb">`</span>jq <span class="s1">'.hits | .[] | .created_at_i'</span> &lt;<span class="o">(</span><span class="nb">echo</span> <span class="nv">$j</span><span class="o">)</span> | sort -nr | head -n 1<span class="sb">`</span> 
-<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$n</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">""</span> <span class="o">]</span> ; <span class="k">then
+</span><span class="nv">n</span><span class="o">=</span><span class="sb">`</span>jq <span class="s1">'.hits | .[] | .created_at_i'</span> &lt;<span class="o">(</span><span class="nb">echo</span> <span class="nv">$j</span><span class="o">)</span> | <span class="nb">sort</span> <span class="nt">-nr</span> | <span class="nb">head</span> <span class="nt">-n</span> 1<span class="sb">`</span> 
+<span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$n</span><span class="s2">"</span> <span class="o">==</span> <span class="s2">""</span> <span class="o">]</span> <span class="p">;</span> <span class="k">then
   </span><span class="nb">exit </span>0
 <span class="k">fi
-</span><span class="nb">echo</span> <span class="nv">$n</span> &gt; <span class="nv">$f</span>
-</code></pre>
-</div>
+</span><span class="nb">echo</span> <span class="nv">$n</span> <span class="o">&gt;</span> <span class="nv">$f</span>
+</code></pre></div></div>
 
 <p>For purposes of illustration, let's assume that $q is <strong>docker</strong>.  This means that the curl statement is executing the url at hn.algolia.com and returning it as $j.  The jq tool is then filtering down the json by looking for the hash key "hits" in the json output.  Here's an example of what the start of that output looks like:</p>
 

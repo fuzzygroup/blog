@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -194,7 +200,7 @@
 
 <p>Here is a basic Ansible role which installs monit along with a configuration file:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>---
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
 - name: install monit
   apt: pkg=monit state=present
   
@@ -203,14 +209,12 @@
   
 - name: start monit
   service: name=monit state=started
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The lines above would go in a file roles/install_monit/tasks/main.yml.  You could then call that from a playbook with nothing more than:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- { role: install_monit, tags: monit}
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- { role: install_monit, tags: monit}
+</code></pre></div></div>
 
 <p>As long as all your AWS instances are listed in an inventory file then this will install monit on all boxes, copy up the configuration file and then restart the service.</p>
 
@@ -220,7 +224,7 @@
 
 <p>This configuration file will be installed into /etc/monit/monitrc by your Ansible playbook.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>set daemon 120 with start delay 60
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>set daemon 120 with start delay 60
 
   set mailserver smtp.sparkpostmail.com  port 587 username "SMTP_Injection" password "PASSWORD" using tlsv1 with timeout 30 seconds
 
@@ -235,8 +239,7 @@ mail-format {
 
 check filesystem "root" with path /dev/xvda1
   if space usage &gt; 90% for 8 cycles then alert
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And that's it.  Here is the english language explanation of the Monit configuration:</p>
 

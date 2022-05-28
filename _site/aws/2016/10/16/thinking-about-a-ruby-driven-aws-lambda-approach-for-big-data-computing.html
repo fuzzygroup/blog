@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -191,10 +197,9 @@
 
 <p>EMR is older and harder to use so I'm going to avoid it for now in favor of the new hotness – <strong>Lambda</strong>.  Here's the brag statement about Lambda:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Run code without thinking about servers.
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Run code without thinking about servers.
 Pay for only the compute time you consume.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>That's a pretty compelling statement to make and it is actually close to a holy grail of distributed computing.<br />
 I have a big data problem that:</p>
@@ -214,7 +219,7 @@ I have a big data problem that:</p>
 
 <p>There is an interesting approach to packaging up our existing ruby code using Traveling Ruby and then run that <a href="https://www.krautcomputing.com/blog/2016/02/29/how-to-run-ruby-scripts-on-aws-lambda-using-ansible/">package on Lambda</a>.  But before we goto that level of effort perhaps we need to examine the metrics on the codebase in question:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rake stats
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rake stats
 +----------------------+--------+--------+---------+---------+-----+-------+
 | Name                 |  Lines |    LOC | Classes | Methods | M/C | LOC/M |
 +----------------------+--------+--------+---------+---------+-----+-------+
@@ -237,8 +242,7 @@ I have a big data problem that:</p>
 | Total                |    808 |    629 |      18 |      40 |   2 |    13 |
 +----------------------+--------+--------+---------+---------+-----+-------+
   Code LOC: 398     Test LOC: 231     Code to Test Ratio: 1:0.6
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So we're actually only talking about 12 classes, 38 methods and 366 LOC.  So this isn't large at all.  We know that one approach to running this is running it as packaged ruby.  Another approach would be <em>code that writes code</em> but before we talk about this, let's talk about the execution context.</p>
 

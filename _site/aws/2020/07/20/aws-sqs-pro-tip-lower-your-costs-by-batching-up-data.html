@@ -135,6 +135,12 @@ This one is a short one but a good one.  I've been using SQS (disclaimer – I l
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -192,13 +198,12 @@ This one is a short one but a good one.  I've been using SQS (disclaimer – I l
   <li>Our routine which read things back off the queue looked something like this:</li>
 </ol>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">messages</span> <span class="o">=</span> <span class="n">sqs_client</span><span class="o">.</span><span class="n">receive_message</span><span class="p">(</span><span class="n">QueueUrl</span><span class="o">=</span><span class="n">input_queue</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">MaxNumberOfMessages</span><span class="o">=</span><span class="n">MAX_QUEUE_MESSAGES</span><span class="p">)</span>
-<span class="k">if</span> <span class="s">'Messages'</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span> <span class="c"># when the queue is exhausted, the response dict contains no 'Messages' key</span>
-    <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">[</span><span class="s">'Messages'</span><span class="p">]:</span> <span class="c"># 'Messages' is a list</span>
-        <span class="n">message_bodies</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="s">'Body'</span><span class="p">])</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">messages</span> <span class="o">=</span> <span class="n">sqs_client</span><span class="p">.</span><span class="n">receive_message</span><span class="p">(</span><span class="n">QueueUrl</span><span class="o">=</span><span class="n">input_queue</span><span class="p">.</span><span class="n">url</span><span class="p">,</span> <span class="n">MaxNumberOfMessages</span><span class="o">=</span><span class="n">MAX_QUEUE_MESSAGES</span><span class="p">)</span>
+<span class="k">if</span> <span class="s">'Messages'</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span> <span class="c1"># when the queue is exhausted, the response dict contains no 'Messages' key
+</span>    <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">[</span><span class="s">'Messages'</span><span class="p">]:</span> <span class="c1"># 'Messages' is a list
+</span>        <span class="n">message_bodies</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="s">'Body'</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">json_str</span> <span class="ow">in</span> <span class="n">message_bodies</span><span class="p">:</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Yes this was a bit more overhead but it has worked tremendously well and let us take full advantage of SQS without running up a huge bill.  Recommended.</p>
 

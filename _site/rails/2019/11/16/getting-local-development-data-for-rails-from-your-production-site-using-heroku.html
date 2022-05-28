@@ -135,6 +135,12 @@ One of the worst aspects of doing Rails development, although this is not limite
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -201,11 +207,10 @@ One of the worst aspects of doing Rails development, although this is not limite
 
 <p>Here's a rake task that I wrote that gives you a lot of tasks for dealing with your local / remote databases.  Drop this into lib/tasks and you can see the tasks it offers with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake -T | grep database
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec rake -T | grep database
+</code></pre></div></div>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="n">namespace</span> <span class="ss">:database</span> <span class="k">do</span>
   <span class="n">namespace</span> <span class="ss">:development</span> <span class="k">do</span>
     
@@ -313,7 +318,7 @@ One of the worst aspects of doing Rails development, although this is not limite
     <span class="c1"># build up a hash of db_params</span>
     <span class="n">db_params</span><span class="p">[</span><span class="s1">'username'</span><span class="p">]</span> <span class="o">=</span> <span class="n">parts</span><span class="p">.</span><span class="nf">user</span>
     <span class="c1"># the database itself is stored as the path in the url but the / needs to be stripped</span>
-    <span class="n">db_params</span><span class="p">[</span><span class="s1">'database'</span><span class="p">]</span> <span class="o">=</span> <span class="n">parts</span><span class="p">.</span><span class="nf">path</span><span class="p">[</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">255</span><span class="p">]</span>
+    <span class="n">db_params</span><span class="p">[</span><span class="s1">'database'</span><span class="p">]</span> <span class="o">=</span> <span class="n">parts</span><span class="p">.</span><span class="nf">path</span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="mi">255</span><span class="p">]</span>
     <span class="n">db_params</span><span class="p">[</span><span class="s1">'password'</span><span class="p">]</span> <span class="o">=</span> <span class="n">parts</span><span class="p">.</span><span class="nf">password</span>
     <span class="n">db_params</span><span class="p">[</span><span class="s1">'host'</span><span class="p">]</span> <span class="o">=</span> <span class="n">parts</span><span class="p">.</span><span class="nf">host</span>
     
@@ -337,20 +342,18 @@ One of the worst aspects of doing Rails development, although this is not limite
   <span class="k">end</span>
   
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="dumping-from-production-and-loading-to-development">Dumping from Production and Loading to Development</h2>
 
 <p>Here's how to dump the data:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake database:production:mysql_dump_data --trace
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec rake database:production:mysql_dump_data --trace
+</code></pre></div></div>
 
 <p>And here's how to load this in:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake database:development:mysql_load_data_command --trace
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec rake database:development:mysql_load_data_command --trace
 ** Invoke database:development:mysql_load_data_command (first_time)
 ** Invoke environment (first_time)
 ** Execute environment
@@ -358,14 +361,12 @@ One of the worst aspects of doing Rails development, although this is not limite
 Add the load file into the below command
   once you copy and paste it back into the terminal
 mysql -uroot -pADFD!@# change_me_now_development  &lt; lib/tasks/data/db_dumps/
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>(note - I changed the password above).  And then you need to actually run this command with the correct database file that came from the dump:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql -uroot -pADFD!@# change_me_now_development  &lt; lib/tasks/data/db_dumps/d3rbmdakuvgkjfkv_2019-11-16.sql
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql -uroot -pADFD!@# change_me_now_development  &lt; lib/tasks/data/db_dumps/d3rbmdakuvgkjfkv_2019-11-16.sql
+</code></pre></div></div>
 
 <p><strong>Note</strong>: The database name you get from Heroku is very much a randomized string so don't expect it to be the normal Rails like "_production" style database name.</p>
 

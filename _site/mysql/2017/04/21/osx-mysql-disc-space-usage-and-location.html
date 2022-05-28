@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,32 +190,29 @@
 
 <p>You can run this query:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>select table_schema, sum((data_length+index_length)/1024/1024) AS MB from information_schema.tables group by 1;
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select table_schema, sum((data_length+index_length)/1024/1024) AS MB from information_schema.tables group by 1;
+</code></pre></div></div>
 
 <p>and you'll get back a per database assessment of disc space used.  That's the easiest way to get this information.  Here's what it looks like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>| seira_crawler_development         | 354.68750000 |
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>| seira_crawler_development         | 354.68750000 |
 | seira_crawler_test                |   0.23437500 |
 | seira_watch_development           |   0.75000000 |
 | seira_watch_site_development      |   0.12500000 |
 | seira_watch_web_app_1_development |   2.82812500 |
 | seira_watch_web_app_2_development |   1.21875000 |
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="where-is-your-physical-database-instance">Where Is Your Physical Database Instance?</h1>
 
 <p>Run this mysql query from your command line:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql -uUSER -p -e 'SHOW VARIABLES WHERE Variable_Name LIKE "%dir"'
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql -uUSER -p -e 'SHOW VARIABLES WHERE Variable_Name LIKE "%dir"'
+</code></pre></div></div>
 
 <p>You'll see something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql -uUSER -p -e 'SHOW VARIABLES WHERE Variable_Name LIKE "%dir"'
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql -uUSER -p -e 'SHOW VARIABLES WHERE Variable_Name LIKE "%dir"'
 Enter password:
 +---------------------------+---------------------------------------------------------+
 | Variable_name             | Value                                                   |
@@ -228,8 +231,7 @@ Enter password:
 | tmpdir                    | /var/folders/76/mqchlgzs6x5cv2f11jh3jkjw0000gn/T/       |
 | wsrep_data_home_dir       | /usr/local/var/mysql/                                   |
 +---------------------------+---------------------------------------------------------+
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The path datadir is where your data is stored.  For my system I want to look into this path: /usr/local/var/mysql/.</p>
 
@@ -237,19 +239,17 @@ Enter password:
 
 <p>Running an ls -l on the path in datadir will show you all your databases on your development machine.  Doing a du -h on the path to any database on your system will show you a result like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>du -hc /usr/local/var/mysql/seira_crawler_development/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>du -hc /usr/local/var/mysql/seira_crawler_development/
 400M    /usr/local/var/mysql/seira_crawler_development/
 400M    total
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>That's the metric for my backing crawler data archive.  The data for a single user instance is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>du -hc /usr/local/var/mysql/seira_watch_web_app_1_development/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>du -hc /usr/local/var/mysql/seira_watch_web_app_1_development/
  12M    /usr/local/var/mysql/seira_watch_web_app_1_development/
  12M    total
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="scaling-the-numbers-up">Scaling the Numbers Up</h1>
 
@@ -259,13 +259,12 @@ Enter password:
 
 <p>If your SAAS app supports an admin tool of any type then you want to watch the growth of this number pretty carefully since unexpected database growth can lead to system outages and the like.  Here's a quick Ruby snippet to get this information as a float which you could log, graph, etc:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>def self.database_size
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def self.database_size
   sql = "select table_schema, sum((data_length+index_length)/1024/1024) AS MB from information_schema.tables where table_schema='#{Rails.configuration.database_configuration[Rails.env]["database"]}' group by 1;"
   results = ActiveRecord::Base.connection.select_all(sql)
   return results.first["MB"].to_f
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I'm getting the name of the current database in an environment agnostic way using: <strong>Rails.configuration.database_configuration[Rails.env]["database"]</strong>.  That value was read from the configuration file.  You could also get it from: <strong>ActiveRecord::Base.connection.current_database</strong> (which to use depends on whether or not you are using ActiveRecord or a different storage abstraction).</p>
 

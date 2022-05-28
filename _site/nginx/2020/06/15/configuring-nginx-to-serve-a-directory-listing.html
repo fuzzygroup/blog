@@ -135,6 +135,12 @@ I recently had to setup an NGINX server to serve a directory of files for proces
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -216,27 +222,25 @@ I recently had to setup an NGINX server to serve a directory of files for proces
 
 <p>It is in this file /etc/nginx/sites-available/default that you can add a location directive:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>location /home/ubuntu/data/data {
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>location /home/ubuntu/data/data {
     autoindex on;
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>and this goes inside the overall server block like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>server {
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server {
         listen 80 default_server;
         listen [::]:80 default_server;
         
         location /home/ubuntu/data/data {
             autoindex on;
         }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>My actual configuration looks like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>root /home/ubuntu/data/data;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root /home/ubuntu/data/data;
 
 # Add index.php to the list if you are using PHP
 #index index.html index.htm index.nginx-debian.html;
@@ -249,8 +253,7 @@ location /home/ubuntu/data/data {
         # as directory, then fall back to displaying a 404.
         try_files $uri $uri/ =404;
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 
   </div>

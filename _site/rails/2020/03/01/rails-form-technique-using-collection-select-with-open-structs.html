@@ -142,6 +142,12 @@ To review, an Open Struct is a hash like data structure that responds to dot met
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -200,10 +206,9 @@ To review, an Open Struct is a hash like data structure that responds to dot met
 
 <p>The Rails collection_select form helper is really designed to work with database objects that you need to make pick lists from.  The canonical usage is like this:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="o">&lt;</span><span class="sx">%= form.label :project_id %&gt;
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="sx">%= form.label :project_id %&gt;
 &lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">collection_select</span> <span class="ss">:project_id</span><span class="p">,</span> <span class="n">current_user</span><span class="p">.</span><span class="nf">projects</span><span class="p">.</span><span class="nf">all</span><span class="p">,</span> <span class="ss">:id</span><span class="p">,</span> <span class="ss">:name</span> <span class="o">%&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The expression current_user.projects.all is a list of all projects as an iterable ActiveRecord collection and what collection_select does under the hood is loop over the collection and call the .id and .name methods (.id is the value in the collection and .name is what's displayed).  And this works <strong>great</strong> – until what you have to select isn't a database collection.  And that, dear reader, is where open structs come out to play!</p>
 
@@ -211,11 +216,10 @@ To review, an Open Struct is a hash like data structure that responds to dot met
 
 <h2 id="controller-side">Controller Side</h2>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="vi">@contexts</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="vi">@contexts</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="vi">@contexts</span> <span class="o">&lt;&lt;</span> <span class="no">OpenStruct</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">id: </span><span class="s2">"web_browser_on_computer"</span><span class="p">,</span> <span class="ss">name: </span><span class="s2">"Web Browser (Desktop Computer)"</span><span class="p">)</span>
 <span class="vi">@contexts</span> <span class="o">&lt;&lt;</span> <span class="no">OpenStruct</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">id: </span><span class="s2">"mobile_app"</span><span class="p">,</span> <span class="ss">name: </span><span class="s2">"Mobile App"</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This defines an array of open struct objects.  And an array is an iterable collection just like the database collection so this implementation, despite being an entirely different underlying data structure, works just like the ActiveRecord collection based version.</p>
 
@@ -223,10 +227,9 @@ To review, an Open Struct is a hash like data structure that responds to dot met
 
 <p>And here's the view side:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="o">&lt;</span><span class="sx">%= form.label :context %&gt;
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="sx">%= form.label :context %&gt;
 &lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">collection_select</span> <span class="ss">:context</span><span class="p">,</span> <span class="vi">@contexts</span><span class="p">,</span> <span class="ss">:id</span><span class="p">,</span> <span class="ss">:name</span> <span class="o">%&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="appearance">Appearance</h2>
 

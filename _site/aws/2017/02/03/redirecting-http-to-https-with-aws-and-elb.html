@@ -135,6 +135,12 @@ Every technologist worth his or her salt has an internal list of &quot;most hate
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -196,11 +202,10 @@ Every technologist worth his or her salt has an internal list of &quot;most hate
 
 <p>Here was my first attempt:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>RewriteEngine On
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI}
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This would actually work but our Apache isn't actually serving https at all.  When you use an AWS ELB (Elastic Load Balancer) in conjunction with the ACM (AWS Certificate Manager) then your web server talks http on port 80 and the ELB acts as an intermediary translating it to and from https.  If you're lucky with this redirect then your site may, possibly work.  If you're unlucky then you'll get stuck in an infinite loop of http to https to http and so on.  <a href="http://stackoverflow.com/questions/16200501/http-to-https-apache-redirection">Source</a></p>
 
@@ -208,11 +213,10 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI}
 
 <p>My second attempt actually came straight from the <a href="https://aws.amazon.com/premiumsupport/knowledge-center/redirect-http-https-elb/">AWS docs</a> and it is <strong>flat out wrong</strong>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>RewriteEngine On
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RewriteEngine On
 RewriteCond %{HTTP:X-Forwarded-Proto} =http
 RewriteRule . https://%{HTTP:Host}%{REQUEST_URI} [L,R=permanent]
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The problem here is that the 301 redirect which this is generating causes the ELB health check to go poorly and your site is declared offline at which point no traffic gets to it.  This can be very annoying to troubleshoot but you should watch for back end not available messages.</p>
 
@@ -220,11 +224,10 @@ RewriteRule . https://%{HTTP:Host}%{REQUEST_URI} [L,R=permanent]
 
 <p>On an <a href="https://forums.aws.amazon.com/thread.jspa?messageID=745509">AWS forum thread</a> I found this redirect which an AWS engineer contributed and claimed would work.  Again it is <strong>flat out wrong</strong>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>RewriteEngine on
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RewriteEngine on
 RewriteCond %{HTTP:X-Forwarded-Proto} !https
 RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This causes the same health check problem as #2.</p>
 
@@ -232,12 +235,11 @@ RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
 <p>If you read support forum threads <em>closely</em> and <strong>well</strong> then you often, always near the end, find the right answer.  Here's the redirect that worked for me:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># the final correct redirect
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># the final correct redirect
 RewriteEngine on
 RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
 RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This is from the same thread above (#3).  You'll notice that #2, #3 and #4 all rely on the HTTP:X-Forwarded-Proto http header feature - this prevents problems with the ELB.  The description that the author gave is interesting:</p>
 

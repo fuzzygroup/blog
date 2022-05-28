@@ -135,6 +135,12 @@ Like so many other things this falls into the category of &quot;I'll do it 100 m
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -193,27 +199,24 @@ Like so many other things this falls into the category of &quot;I'll do it 100 m
 
 <p>From having done this in the past, I know I need a decimal of the format (something, 2).  This is referred to as the 'scale' and the 'precision' (the number of digits to the right of the decimal place).  So if we have decimal(8,2), that means you can store:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>123,456.78
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>123,456.78
+</code></pre></div></div>
 
 <p>So your maximum value would be 999,999.99 (just under a million dollars; now say that in a <a href="https://www.youtube.com/watch?v=l91ISfcuzDw">Dr. Evil intonation</a>).</p>
 
 <p>Now writing a migration with precision and scale isn't hard but I always want to do this to allow for placing the column in the right place (it makes my tables 'near' and, yes, I'm just that nerdy).  Here's my migration:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rails g migration add_decimal_to_metrics
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec rails g migration add_decimal_to_metrics
       invoke  active_record
       create    db/migrate/20191118100314_add_decimal_to_metrics.rb
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">AddDecimalToMetrics</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mi">6</span><span class="o">.</span><span class="mi">0</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">AddDecimalToMetrics</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
   <span class="k">def</span> <span class="nf">change</span>
     <span class="n">add_column</span> <span class="ss">:metrics</span><span class="p">,</span> <span class="ss">:decimal_val</span><span class="p">,</span> <span class="ss">:decimal</span><span class="p">,</span> <span class="ss">precision: </span><span class="mi">8</span><span class="p">,</span> <span class="ss">scale: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">after: :float_val</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="references">References</h2>
 

@@ -135,6 +135,12 @@ If you are a rails developer, you are likely aware of Rake tasks.  Rake tasks pr
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -216,7 +222,7 @@ If you are a rails developer, you are likely aware of Rake tasks.  Rake tasks pr
 
 <p>Let's start by looking at the metric in question:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>select id, created_at, date_created_at, name, metric_type_id, user_id, habit_id, habit_type_id, int_val, url from metrics where id=1516\G
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select id, created_at, date_created_at, name, metric_type_id, user_id, habit_id, habit_type_id, int_val, url from metrics where id=1516\G
 *************************** 1. row ***************************
              id: 1516
      created_at: 2009-12-14 00:00:00
@@ -228,8 +234,7 @@ date_created_at: 2009-12-14
   habit_type_id: 11
         int_val: 107
             url: https://fuzzyblog.io/recipes/main_course/2009/12/14/bacon-salisbury-steak.html                
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Somehow this event, way back in 2009, triggered a badge creation on 9/19:</p>
 
@@ -237,7 +242,7 @@ date_created_at: 2009-12-14
 
 <p>So now we need to look at the data driving that badge to figure this out:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>select * from user_badges where id=550\G
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from user_badges where id=550\G
 *************************** 1. row ***************************
              id: 550
      created_at: 2019-09-19 19:49:21.346148
@@ -250,12 +255,11 @@ date_created_at: NULL
       metric_id: 1516
  custom_message: NULL
          active: 1
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>What this shows us is that we have a disparity between the created_at date on the user_badge object and the metric.  So the fix is actually pretty damn simple.  Here's the creation code:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>    <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
       <span class="ss">badge_id: </span><span class="n">badge</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> 
       <span class="ss">metric_id: </span><span class="n">metric</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
       <span class="ss">user_id: </span><span class="n">metric</span><span class="p">.</span><span class="nf">user_id</span><span class="p">,</span>
@@ -264,12 +268,11 @@ date_created_at: NULL
       <span class="ss">active: </span><span class="kp">true</span>
     <span class="p">}</span>
     <span class="n">user_badge</span> <span class="o">=</span> <span class="no">UserBadge</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>and what it needs is this:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>    <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
       <span class="ss">badge_id: </span><span class="n">badge</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> 
       <span class="ss">metric_id: </span><span class="n">metric</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span>
       <span class="ss">user_id: </span><span class="n">metric</span><span class="p">.</span><span class="nf">user_id</span><span class="p">,</span>
@@ -280,8 +283,7 @@ date_created_at: NULL
       <span class="ss">active: </span><span class="kp">true</span>
     <span class="p">}</span>
     <span class="n">user_badge</span> <span class="o">=</span> <span class="no">UserBadge</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>Note</strong>: Are there better, cleaner ways to accomplish that?  I'm sure but that isn't the issue at this stage in an MVP.  At this stage we're going for clarity even if it isn't entirely DRY.</p>
 
@@ -298,7 +300,7 @@ date_created_at: NULL
 
 <p>Here's the rake task to fix this bit of personal idiocy:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">namespace</span> <span class="ss">:user_badge</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">namespace</span> <span class="ss">:user_badge</span> <span class="k">do</span>
   <span class="c1"># bundle exec rake user_badge:fix_idiocy --trace</span>
   <span class="n">task</span> <span class="ss">:fix_idiocy</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span> 
     <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">username: </span><span class="s1">'fuzzygroup'</span><span class="p">).</span><span class="nf">first</span>
@@ -311,8 +313,7 @@ date_created_at: NULL
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>You'll notice that I have a bundle exec execution line there as a comment.  Well, there's a reason for that.  I've been doing Rails with large scale live systems now since 2007 and I've seen the amazing quantity of data specific errors that can happen when you're in a:</p>
 

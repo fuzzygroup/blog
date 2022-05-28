@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -182,11 +188,10 @@
 
 <p>I recently started building a fairly complex structure that represents a blog's metadata and I wanted my keys to be sorted not structured willy nilly.  A little bit of thought and looking at the methods that an OpenStruct instance responds to gave me this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>b = OpenStruct.new
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>b = OpenStruct.new
 # complicated routine here that builds the metadata
 b.to_h.sort.to_h
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>All this is doing is taking the OpenStruct, converting it to a hash and sorting it and converting it back to a hash – easy peasy!</p>
 

@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -182,12 +188,11 @@
 
 <p>The situation in question was using Ansible to dynamically create EC2 instances.  <a href="http://www.nickjanetakis.com/">Nick</a> and I have been hard at this for the past several days and we're nearing the end – we can just about <em>taste</em> it.  Well, we could taste it and then yesterday we hit this crap:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>TASK [ec2_create_appdata_proxy : create_instance] ******************************
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TASK [ec2_create_appdata_proxy : create_instance] ******************************
 fatal: [54.244.41.180]: FAILED! =&gt; {"changed": false, "failed": true, "msg": "boto required for this module"}
 fatal: [54.218.52.37]: FAILED! =&gt; {"changed": false, "failed": true, "msg": "boto required for this module"}
 	to retry, use: --limit @/Users/sjohnson/Dropbox/appdatallc/ansible/playbook_appdata_proxy_create_instances.retry
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This was on:</p>
 
@@ -221,7 +226,7 @@ fatal: [54.218.52.37]: FAILED! =&gt; {"changed": false, "failed": true, "msg": "
 
 <p>Let's start with the Vagrant file:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>VAGRANTFILE_API_VERSION = '2'
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>VAGRANTFILE_API_VERSION = '2'
 
 $provision = &lt;&lt;SCRIPT
 sudo apt-get install -y software-properties-common
@@ -259,8 +264,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # TODO: Copy in your pem file for appdata (I didn't know the file name)
   config.vm.provision 'file', source: '/Users/sjohnson/.ssh/appdata_aws.pem', destination: '~/.ssh/appdata_aws.pem'
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>All I did was:</p>
 
@@ -271,9 +275,8 @@ end
 
 <p>This started the virtual machine and it loaded in all my AWS credentials from ~/.aws/credentials.  Once this was running I had an Ubuntu 14.04 distro running locally i.e. "trusty" and I could use it to execute my playbooks as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook  -i inventories/dummy playbook_appdata_proxy_create_elb.yml -vvv
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible-playbook  -i inventories/dummy playbook_appdata_proxy_create_elb.yml -vvv
+</code></pre></div></div>
 
 <p>That's the exact syntax I would have used locally.  Even -vvv for extended output is fully available.</p>
 

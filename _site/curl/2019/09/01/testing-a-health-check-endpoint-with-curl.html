@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,7 +186,7 @@
   <div class="post-content" itemprop="articleBody">
     <p>Given the move to auto scaling architectures front ended by load balancers, it is increasingly important to build into your application what is called a "health check".  This is nothing more than a known url that some external service can monitor to ensure that your application is "up".  A health check does nothing more than return an HTTP 200 (and sometimes it returns a JSON representation).  Here's a simple Rails controller that I use for health checks:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>class HealthController &lt; ApplicationController
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class HealthController &lt; ApplicationController
   def index
     results = {:status =&gt; "ok"}
     respond_to do |format|
@@ -192,14 +198,12 @@
   # additional site monitoring functionality normally goes here
   
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here's how to test this with curl and get the headers you'd want to see:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>curl -s -I https://foo.bar.something.com/health_check        
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -s -I https://foo.bar.something.com/health_check        
+</code></pre></div></div>
 
 <p>The options have the following meaning:</p>
 
@@ -212,7 +216,7 @@ end
 
 <p>What you should see is something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>HTTP/2 200
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HTTP/2 200
 date: Thu, 29 Aug 2019 19:08:18 GMT
 content-type: text/html
 server: nginx/1.10.3 (Ubuntu)
@@ -224,14 +228,15 @@ cache-control: no-cache
 x-request-id: 7158be3a-7990-4549-b780-fca5757069d3
 x-runtime: 0.208121
 strict-transport-security: max-age=15552000; includeSubDomains
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="references">References</h2>
 
-<p>Here are some great curl references:
-* <a href="https://jvns.ca/blog/2019/08/27/curl-exercises/">JVNS.CA - I can't recommend her work strongly enough</a>
-* <a href="https://unix.stackexchange.com/questions/84814/health-check-of-web-page-using-curl">Stack Exchange</a></p>
+<p>Here are some great curl references:</p>
+<ul>
+  <li><a href="https://jvns.ca/blog/2019/08/27/curl-exercises/">JVNS.CA - I can't recommend her work strongly enough</a></li>
+  <li><a href="https://unix.stackexchange.com/questions/84814/health-check-of-web-page-using-curl">Stack Exchange</a></li>
+</ul>
 
 
   </div>

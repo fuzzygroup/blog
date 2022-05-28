@@ -135,6 +135,12 @@ I've written in the past about watching your SQL queries stream by in the Rails 
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,7 +190,7 @@ I've written in the past about watching your SQL queries stream by in the Rails 
 
 <p>I've written in the past about watching your SQL queries stream by in the Rails console and how seeing, well, stupidity / things that look wrong can help guide you to things you need to find.  Here's an example I witnessed recently:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>habit = Habit.find(2)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>habit = Habit.find(2)
 habit.total_this_month
 
 Metric Load (2.5ms) SELECT metrics.date_created_at, metrics.int_val, metrics.float_val, metrics.metric_type_id FROM metrics WHERE metrics.habit_id = 2 AND (date_created_at &gt;= '2019-11-01') AND (date_created_at &lt;= '2019-11-30')
@@ -200,39 +206,35 @@ MetricType Load (252.9ms) SELECT metric_types.* FROM metric_types WHERE metric_t
 MetricType Load (11.2ms) SELECT metric_types.* FROM metric_types WHERE metric_types.id = 1 LIMIT 1
 MetricType Load (7.4ms) SELECT metric_types.* FROM metric_types WHERE metric_types.id = 1 LIMIT 1
 MetricType Load (1.6ms) SELECT metric_types.* FROM metric_types WHERE metric_types.id = 1 LIMIT 1
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>According to the bug tracker where I logged, this it was logged 5 days ago (so on November 12).  And if you could the number of metric_type queries above, the total is 12.  This is date ordered stuff so it is pretty obvious that what's happening is that metric_type query is getting executed once per day.</p>
 
 <p>Here's the definition of the total_this_month method:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">total_this_month</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">total_this_month</span>
   <span class="n">today</span> <span class="o">=</span> <span class="no">Date</span><span class="p">.</span><span class="nf">current</span>
   <span class="n">date_start</span> <span class="o">=</span> <span class="no">DateCommon</span><span class="p">.</span><span class="nf">first_date_of_month</span><span class="p">(</span><span class="n">today</span><span class="p">)</span>
   <span class="n">date_end</span> <span class="o">=</span> <span class="no">DateCommon</span><span class="p">.</span><span class="nf">last_date_of_month</span><span class="p">(</span><span class="n">date_start</span><span class="p">)</span>    
   <span class="n">total_from_date_to_date</span><span class="p">(</span><span class="n">date_start</span><span class="p">,</span> <span class="n">date_end</span><span class="p">)</span>    
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And here's the total_from_date_to_date method:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">total_from_date_to_date</span><span class="p">(</span><span class="n">date_start</span><span class="p">,</span> <span class="n">date_end</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">total_from_date_to_date</span><span class="p">(</span><span class="n">date_start</span><span class="p">,</span> <span class="n">date_end</span><span class="p">)</span>
   <span class="nb">self</span><span class="p">.</span><span class="nf">metrics</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="no">Metric</span><span class="o">::</span><span class="no">TOTAL_FIELDS</span><span class="p">).</span><span class="nf">where</span><span class="p">([</span><span class="s2">"date_created_at &gt;= ?"</span><span class="p">,</span> <span class="n">date_start</span><span class="p">]).</span><span class="nf">where</span><span class="p">([</span><span class="s2">"date_created_at &lt;= ?"</span><span class="p">,</span> <span class="n">date_end</span><span class="p">]).</span><span class="nf">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:amount</span><span class="p">).</span><span class="nf">compact</span><span class="p">.</span><span class="nf">sum</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This type of issue is referred to as an <a href="https://semaphoreci.com/blog/2017/08/09/faster-rails-eliminating-n-plus-one-queries.html">N+1 query problem</a> where each query leads to another query.  The solution here is to use the :includes option on the query to bring in the metric_types table as part of this.</p>
 
 <p>And here's the fix</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">total_from_date_to_date</span><span class="p">(</span><span class="n">date_start</span><span class="p">,</span> <span class="n">date_end</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">total_from_date_to_date</span><span class="p">(</span><span class="n">date_start</span><span class="p">,</span> <span class="n">date_end</span><span class="p">)</span>
   <span class="nb">self</span><span class="p">.</span><span class="nf">metrics</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="no">Metric</span><span class="o">::</span><span class="no">TOTAL_FIELDS</span><span class="p">).</span><span class="nf">where</span><span class="p">([</span><span class="s2">"date_created_at &gt;= ?"</span><span class="p">,</span> <span class="n">date_start</span><span class="p">]).</span><span class="nf">where</span><span class="p">([</span><span class="s2">"date_created_at &lt;= ?"</span><span class="p">,</span> <span class="n">date_end</span><span class="p">]).</span><span class="nf">includes</span><span class="p">(</span><span class="ss">:metric_type</span><span class="p">).</span><span class="nf">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:amount</span><span class="p">).</span><span class="nf">compact</span><span class="p">.</span><span class="nf">sum</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Just adding a simple .includes(:metric_type) clause to the where statement fixes this and makes that data available to the underlying .compact.sum operation.  And, yes, to fix a performance problem this easily really does make the joy flow for a developer.</p>
 

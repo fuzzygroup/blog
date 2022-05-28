@@ -154,6 +154,12 @@ Marketing 101. Consulting 101. PHP Consulting. Random geeky stuff. I Blog Theref
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -511,7 +517,7 @@ The FuzzyBlog!</a></b></font>
 
 <p>Our first script should be familiar to anyone who has ever used the basic MySQL functions in PHP.  I'm not going to go into details here since it's so basic.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;?php// //////////////////////////////////////////////////*
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php// //////////////////////////////////////////////////*
 
 My SQL Test Script for Learning Pear
 
@@ -530,22 +536,20 @@ All this does is connect to a MySQL db and list a table
   $result=mysql_query($query)    or die ('&lt;H1 align=center&gt;&lt;font color=red&gt;Bad Database Request&lt;/font&gt;&lt;/H2&gt; in :&lt;BR&gt;'      . __FILE__.' line '. __LINE__       .'&lt;BR&gt;&lt;br /&gt;&lt;b&gt;The query used was:&lt;/b&gt;&lt;BR&gt;&lt;BR&gt; '.$query      .'&lt;BR&gt;&lt;br /&gt;&lt;b&gt;MySQL says&lt;/b&gt;&lt;BR&gt;&lt;BR&gt; '.mysql_error()      .'&lt;BR&gt;&lt;BR&gt;Email administrator for help at ' . $sysadminemail . ' for help' );
 
   while ($row = mysql_fetch_array($result))  {    //start a counter so that we can keep track of how many records we change      $ctr++;      $email_id = $row["email_id"];      $account_address = $row["accountaddress"];      $subject = $row["subject"];      print "&lt;P&gt;$email_id - $account_address - $subject&lt;/P&gt;"; }?&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Contents of the zcommondb.php file are this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;?
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?
 
 $db_host = "YOUR VALUE HERE"; $db = "YOUR VALUE HERE"; $db_user = "YOUR VALUE HERE"; $db_password = "YOUR VALUE HERE"; // ONLY USED BY THE PEAR ROUTINES $db_type = "mysql";
 
 ?&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So that's our starting point. Now here's the pear equivalent.  As you can see it's just about exactly the same number of lines with the main differences being in the use of objects.  I put the new / different code in <font color="red">Red</font> to make it easier.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;?php// //////////////////////////////////////////////////*
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php// //////////////////////////////////////////////////*
 
 My SQL Test Script for Learning Pear
 
@@ -564,8 +568,7 @@ All this does is connect to a MySQL db and list a table
   // the query  $query = "SELECT email_id, accountaddress, subject FROM fo2_emails LIMIT 20";
 
   // NEW STUFF -- Pear specific  $result = $db_obj-&gt;simpleQuery($query);  while($row = $db_obj-&gt;fetchRow($result,DB_FETCHMODE_ASSOC)) {    $ctr++;    $email_id = $row["email_id"];    $account_address = $row["accountaddress"];    $subject = $row["subject"];    print "&lt;P&gt;$email_id - $account_address - $subject&lt;/P&gt;";  }?&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>As you can see, it really isn't much if at all harder to use Pear than the native mysql_XYZ functions.  Keep that in mind as you write php code. </p>
 
@@ -596,7 +599,7 @@ All this does is connect to a MySQL db and list a table
 
 <p>Thanks to <a href="http://www.Apokalyptik.com/">Apokalyptik</a> and <a href="http://www.Natrak.net/">Natrak</a> who both showed me this over the past six months or so.</p>
 
-<h3 id="addslashes-versus-mysqlescapestring">addslashes Versus mysql_escape_string</h3>
+<h3 id="addslashes-versus-mysql_escape_string">addslashes Versus mysql_escape_string</h3>
 
 <p>If you're not yet ready to do the pear step then you might want to consider moving away from <a href="http://www.php.net/manual/en/function.mysql-escape-string.php">mysql_escape_string</a> and to <a href="http://www.php.net/manual/en/function.addslashes.php">addslashes</a>.  These functions seem to be equivalent and yet one will work across databases and one is only MySQL specific.  But I do recommend reading the user contributed notes on addslashes(), it seems to not be perfect.  Guess which one I'm largely using now?</p>
 

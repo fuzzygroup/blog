@@ -138,6 +138,12 @@ For my current side project, cmn, I'm using a version control model of issue bra
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -201,13 +207,12 @@ For my current side project, cmn, I'm using a version control model of issue bra
 
 <p>As I thought about it, I realized that I knew when I last worked on it, the preceding Thursday, and there had to be a way to to look at branches by date created.  A bit of <a href="https://stackoverflow.com/questions/2255416/how-to-determine-when-a-git-branch-was-created">Internet research</a> led me to the <strong>git reflog</strong> command:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git reflog --date=local
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git reflog --date=local
+</code></pre></div></div>
 
 <p>Here is an example of reflog's output:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>e95bf81 HEAD@{Fri Nov 22 09:14:34 2019}: checkout: moving from 460 to develop
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>e95bf81 HEAD@{Fri Nov 22 09:14:34 2019}: checkout: moving from 460 to develop
 fdf7336 HEAD@{Fri Nov 22 09:13:09 2019}: commit: rollup commit
 367d9bd HEAD@{Fri Nov 22 09:13:01 2019}: checkout: moving from 458 to 460
 367d9bd HEAD@{Fri Nov 22 08:45:15 2019}: commit: rollup commit on habit buddy changes
@@ -216,15 +221,13 @@ e95bf81 HEAD@{Thu Nov 21 21:13:39 2019}: checkout: moving from 444 to develop
 2a11c54 HEAD@{Thu Nov 21 21:13:17 2019}: commit: Rollup on multiple metrics; resume with derived metric
 e95bf81 HEAD@{Thu Nov 21 10:12:54 2019}: checkout: moving from develop to 444
 e95bf81 HEAD@{Wed Nov 20 14:42:30 2019}: pull origin develop: Fast-forward
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The work had been in the area of multiple metrics so this showed me that it was branch 444.  So a quick:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git co 444
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git co 444
 git merge develop
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>bought my branch up to date so I could resume working on it.</p>
 

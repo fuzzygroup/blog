@@ -138,6 +138,12 @@ bas...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -187,30 +193,26 @@ bas...">
 
 <p>Right now I have a directory with about 750,000 odd files in it and any attempt to manipulate the files results in this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>root@ip-172-31-1-219:~/datastreamer/data# mv * /home/ubuntu/data/data
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@ip-172-31-1-219:~/datastreamer/data# mv * /home/ubuntu/data/data
 bash: /bin/mv: Argument list too long
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>My first challenge was to do this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>chown ubuntu:ubuntu *
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chown ubuntu:ubuntu *
+</code></pre></div></div>
 
 <p>And the fix for this one was actually easy:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>chown ubuntu:ubuntu .
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chown ubuntu:ubuntu .
+</code></pre></div></div>
 
 <p>By omitting the *, the bash limits on argument list don't apply – this changes the current folder (.) and everything in it and it always works.</p>
 
 <p>The second challenge was to move the files from /root/datastreamer/data to /home/ubuntu/data/data.  Here's the solution after a bit of research:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>find /root/datastreamer/data -name '*.json' -exec mv {} /home/ubuntu/data/data \;
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find /root/datastreamer/data -name '*.json' -exec mv {} /home/ubuntu/data/data \;
+</code></pre></div></div>
 
 <h2 id="reference">Reference:</h2>
 

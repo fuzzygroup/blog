@@ -138,6 +138,12 @@ Running vi...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -187,14 +193,13 @@ Running vi...">
 
 <p>The combination of Rails 6 and Ruby 2.7, or perhaps just Rails 6, introduced some new deprecation warnings and, lately, I've been seeing this cruft constantly:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rails test test/models/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails test test/models/
 Running via Spring preloader in process 34024
 /Users/sjohnson/.rvm/gems/ruby-2.7.0/gems/activemodel-6.0.2.1/lib/active_model/type/integer.rb:13: warning: Using the last argument as keyword parameters is deprecated; maybe ** should be added to the call
 /Users/sjohnson/.rvm/gems/ruby-2.7.0/gems/activemodel-6.0.2.1/lib/active_model/type/value.rb:8: warning: The called method `initialize' is defined here
 /Users/sjohnson/.rvm/gems/ruby-2.7.0/gems/activerecord-6.0.2.1/lib/active_record/connection_adapters/postgresql/oid/specialized_string.rb:12: warning: Using the last argument as keyword parameters is deprecated; maybe ** should be added to the call
 /Users/sjohnson/.rvm/gems/ruby-2.7.0/gems/activemodel-6.0.2.1/lib/active_model/type/value.rb:8: warning: The called method `initialize' is defined here
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And, in the immortal words of <a href="https://www.youtube.com/watch?v=4xmckWVPRaI">Twisted Sister</a>, we're not going to take it anymore.</p>
 
@@ -202,13 +207,12 @@ Running via Spring preloader in process 34024
 
 <p>The easy solution is to add:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>$VERBOSE=nil
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$VERBOSE=nil
+</code></pre></div></div>
 
 <p>to the top of config/environments/test.rb so it looks like this:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="vg">$VERBOSE</span><span class="o">=</span><span class="kp">nil</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="vg">$VERBOSE</span><span class="o">=</span><span class="kp">nil</span>
 <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span>
   <span class="c1"># Settings specified here will take precedence over those in config/application.rb.</span>
 
@@ -218,16 +222,14 @@ Running via Spring preloader in process 34024
   <span class="c1"># and recreated between test runs. Don't rely on the data there!</span>
   <span class="n">config</span><span class="p">.</span><span class="nf">cache_classes</span> <span class="o">=</span> <span class="kp">false</span>
   
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Obviously the rest of the file has to be there but that $VERBOSE=nil silences all the cruft.</p>
 
 <p>One other solution, RUBYOPT="-W0", prepended before you run the test doesn't work with the new use of "rails" to run your tests but does work with "rake" to run your tests so:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>RUBYOPT=W0 rake test test/models/
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RUBYOPT=W0 rake test test/models/
+</code></pre></div></div>
 
 <p>Now, that said, $VERBOSE=nil is a better option because it goes in at the project level and affects all developers on the project.</p>
 

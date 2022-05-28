@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,7 +192,7 @@
 
 <p>Whenever you are on the cutting edge (and TensorFlow is cutting edge) then you generally need the latest tools so:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>python3 --version
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 --version
 Python 3.7.4
 
 pip3 --version
@@ -194,8 +200,7 @@ pip 19.2.3 from /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/
 
 virtualenv --version
 15.1.0
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>All of those are actually recent.  To translate these for myself and the one or two other rubyists out there:</p>
 
@@ -213,26 +218,24 @@ virtualenv --version
 
 <p><strong>Note</strong>: Given the quantity of terminal windows I survive in, the first thing I actually did was to load the nu shell in my terminal so I had a distinct environment to separate Python from my Ruby ("You got python in my Ruby; No you got Ruby in my python"; anyone out there get that old joke).  I also created and changed into a new directory where this will all be installed into since I wasn't sure exactly where / how the python virtual environment was going to work.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mkdir ~/fuzzygroup/adl/tensorflow
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir ~/fuzzygroup/adl/tensorflow
 cd ~/fuzzygroup/adl/tensorflow
 virtualenv --system-site-packages -p python3 ./venv
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>What this shows me is that virtualenv creates a single directory called "venv" in your current directory (presumably holding dependencies):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ls
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls
 ------+-----------+----------+-------+-------------+-------------+-------------
  name | type      | readonly | size  | created     | accessed    | modified
 ------+-----------+----------+-------+-------------+-------------+-------------
  venv | Directory |          | 224 B | an hour ago | an hour ago | an hour ago
 ------+-----------+----------+-------+-------------+-------------+-------------
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>and here's a look into venv itself:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ls venv/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls venv/
 ---+-------------------------+-----------+----------+-------+-------------+-------------+-------------
  # | name                    | type      | readonly | size  | created     | accessed    | modified
 ---+-------------------------+-----------+----------+-------+-------------+-------------+-------------
@@ -242,32 +245,28 @@ virtualenv --system-site-packages -p python3 ./venv
  3 | venv/lib                | Directory |          | 96 B  | an hour ago | an hour ago | an hour ago
  4 | venv/pip-selfcheck.json | File      |          | 61 B  | an hour ago | an hour ago | an hour ago
 ---+-------------------------+-----------+----------+-------+-------------+-------------+-------------
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>Sidebar</strong>: And isn't the <a href="https://www.jonathanturner.org/2019/08/introducing-nushell.html">nu shell</a> cool as hell?</p>
 
 <p>Once you have venv setup then you need to activate it:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>source ./venv/bin/activate
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source ./venv/bin/activate
+</code></pre></div></div>
 
 <p>In Ruby this would be done just by changing into the directory thru .ruby-version and .ruby-gemfile.</p>
 
 <p>The next step is to make sure that pip is upgraded:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>pip install --upgrade pip
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install --upgrade pip
+</code></pre></div></div>
 
 <p>In the Ruby world, this is equivalent to upgrading bundler.</p>
 
 <p>Run a:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>pip list
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip list
+</code></pre></div></div>
 
 <p>to see what's installed.</p>
 
@@ -275,9 +274,8 @@ virtualenv --system-site-packages -p python3 ./venv
 
 <p>Now in the Ruby world where you automagically have your environment setup for you (and taken down) when you change in and out of directories, virtualenv requires you to manually deactivate:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>deactivate
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deactivate
+</code></pre></div></div>
 
 <p>Given my personal problems with <a href="https://fuzzyblog.io/blog/ruby/2019/07/10/when-rbenv-well-won-t-rbenv-fixing-shell-extension-madness.html">Shell Extension Madness</a>, I'm not certain that being explicit about virtualenv activation / deactivation is all that bad.</p>
 
@@ -287,23 +285,21 @@ virtualenv --system-site-packages -p python3 ./venv
 
 <p>And now, finally, we can actually install TensorFlow:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> pip install --upgrade tensorflow
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> pip install --upgrade tensorflow
+</code></pre></div></div>
 
 <p>This would be the equivalent of a gem install command without a Gemfile.</p>
 
 <p>To verify the installation we can pass a Python script into Python with the -c argument:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>python3 -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
+</code></pre></div></div>
 
 <p>Interestingly the TensorFlow docs had the above as just "python -c" despite referencing python3 earlier.  I thought perhaps that virtualenv aliased python3 to python but that seems not to be the case; bad on Google Documents; sigh.</p>
 
 <p>Here's what I got as a result:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>python3 -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
 /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:516: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
   _np_qint8 = np.dtype([("qint8", np.int8, 1)])
 /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:517: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
@@ -329,14 +325,12 @@ virtualenv --system-site-packages -p python3 ./venv
 /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:550: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
   np_resource = np.dtype([("resource", np.ubyte, 1)])
 Tensor("Sum:0", shape=(), dtype=float32)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This seems to be a bunch of deprecation warnings but the final output seems to be:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Tensor("Sum:0", shape=(), dtype=float32)
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Tensor("Sum:0", shape=(), dtype=float32)
+</code></pre></div></div>
 
 <p>And I guess that's right… I mean it did some kind of math; I just don't understand it yet.  And they don't actually show what should happen.  Again bad on the Google documenters.</p>
 

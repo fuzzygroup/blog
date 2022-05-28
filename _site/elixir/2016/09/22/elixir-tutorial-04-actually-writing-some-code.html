@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -203,7 +209,7 @@
 
 <p>Connecting to redis should be pretty simple so this brings us to the next step - running in an infinite loop.  Classically I'd do that as a while(true) type control structure but this is Elixir and its functional.  A bit of digging brings me to this <a href="http://stackoverflow.com/questions/35364511/proper-elixir-otp-way-to-structure-an-infinite-loop-task">Stack Overflow post</a> where it makes a pretty good argument for this type of thing:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>def fetch_pages() do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def fetch_pages() do
   # get redis 
   # pop off redis
   # tokenize the bits from redis into variables
@@ -211,8 +217,7 @@
   # save the page
   fetch_pages()
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And that would work nicely.  Since we're dealing with tail recursion we don't have to worry about blowing up the stack.</p>
 
@@ -220,44 +225,39 @@ end
 
 <p>If you open this file you'll find a basic module structure and a def start.  Let's add a def fetch_pages do / end block above the start routine and let's just add this one line within it:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>IO.puts "Calling fetch_pages"
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>IO.puts "Calling fetch_pages"
+</code></pre></div></div>
 
 <p>Now that's not really good enough since it would be good to know that something is changing so why don't we display the current date and time?  Another quick trip out to the Internet gives us this <a href="http://stackoverflow.com/questions/28594646/getting-the-current-date-and-or-time-in-elixir">page</a> and teaches us we can get the current date and time in Unix milliseconds with :os.system_time(:milli_seconds).  Now that's an Erlang primitive but Elixir runs on top of Erlang so it can call any and all of it easily.  So our new routine becomes this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>def fetch_pages() do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def fetch_pages() do
   IO.puts("The fetch_pages/0 routine has just been called at #{:os.system_time(:milli_seconds)}")
   fetch_pages()
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>You'll notice that string interpolation is actually the same as Ruby - #{} within a string.  That should make adapting to Elixir a bit easier.</p>
 
 <p>Now we want to see this actually run and the next step for that is to load the console and run it interactively.  So do the normal dance:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>iex -S mix
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex -S mix
+</code></pre></div></div>
 
 <p>And then enter:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>PageFetcher.fetch_pages
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PageFetcher.fetch_pages
+</code></pre></div></div>
 
 <p>And you'll see a swath of lines like these:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>The fetch_pages/0 routine has just been called at 1474506164424
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The fetch_pages/0 routine has just been called at 1474506164424
 The fetch_pages/0 routine has just been called at 1474506164424
 The fetch_pages/0 routine has just been called at 1474506164425
 The fetch_pages/0 routine has just been called at 1474506164425
 The fetch_pages/0 routine has just been called at 1474506164425
 The fetch_pages/0 routine has just been called at 1474506164425
 The fetch_pages/0 routine has just been called at 1474506164425
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="getting-our-redis-crap-together">Getting Our Redis Crap Together</h1>
 
@@ -271,11 +271,10 @@ The fetch_pages/0 routine has just been called at 1474506164425
 
 <p>If we can do that then its really all we need.  Here's the code:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="err">:ok,</span><span class="w"> </span><span class="err">client</span><span class="p">}</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">Exredis.start_link</span><span class="w">
-</span><span class="err">push_result</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">client</span><span class="w"> </span><span class="err">|&gt;</span><span class="w"> </span><span class="err">Exredis.Api.rpush(</span><span class="s2">"queue"</span><span class="err">,</span><span class="w"> </span><span class="s2">"1|table|http://"</span><span class="err">)</span><span class="w">
-</span><span class="err">pop_result</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="err">client</span><span class="w"> </span><span class="err">|&gt;</span><span class="w"> </span><span class="err">Exredis.Api.rpop(</span><span class="s2">"queue"</span><span class="err">)</span><span class="w">
-</span></code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{:ok, client} = Exredis.start_link
+push_result = client |&gt; Exredis.Api.rpush("queue", "1|table|http://")
+pop_result = client |&gt; Exredis.Api.rpop("queue")
+</code></pre></div></div>
 
 <p>What we're seeing here, to analogize it back to Ruby again, is that Exredis is the main "object" and then Api is a set of methods chained on top of it.  Yes I know that's not what is going on under the hood but this was an analogy.</p>
 
@@ -283,12 +282,11 @@ The fetch_pages/0 routine has just been called at 1474506164425
 
 <p>If we want to write a function to connect to Redis then this is going to bring up the issue of <a href="http://stackoverflow.com/questions/37445838/returning-values-in-elixir">returning something</a>, our redis client, from a method.  Since there is no explicit return statement, we simply need the client to be the last thing in our method so this should do it:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>def redis() do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def redis() do
   {:ok, client} = Exredis.start_link
   client
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Ideally there should be code to make sure we actually got back a valid client, failure handling, etc but we're just not there yet.</p>
 
@@ -296,12 +294,11 @@ end
 
 <p>We can finally get away from StackOverflow with a dive into the Elixir Lang docs to look up how to split out a string using <a href="http://elixir-lang.org/docs/stable/elixir/String.html#split/3">Split/3</a>.  This gives us:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>pop_result = client |&gt; Exredis.Api.rpop("queue")
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pop_result = client |&gt; Exredis.Api.rpop("queue")
 "1|table|http://"
 iex(9)&gt; parts = String.split(pop_result, "|")
 ["1", "table", "http://"]
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <table>
   <tbody>

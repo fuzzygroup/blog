@@ -142,6 +142,12 @@ My platform was a &quot;c...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -263,11 +269,10 @@ My platform was a &quot;c...">
 
 <p>The only real way to verify this is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/sbin/reboot
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/sbin/reboot
 log back into machine
 ps auwwx | grep side
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>If you see sidekiq running then you have things configured correctly and sidekiq is starting on boot.</p>
 
@@ -283,14 +288,13 @@ ps auwwx | grep side
 
 <p>At this point you're ready to actually launch the job using sidekiq and start processing on one instance.  You can do this with the Rails console or a Rake task.  I prefer a rake task. Here's what my rake task looked like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>task :some_large_job =&gt; :environment do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>task :some_large_job =&gt; :environment do
   search_urls = MiscClass.large_urls_collection
   search_urls.each do |search_url|
     MiscCkassWorker.perform_async(search_url)
   end
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>That built a redis queue and gave each method to sidekiq as an asynchronous call to be processed.  Check your sidekiq log file to make sure that things are going ok.</p>
 

@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -200,49 +206,43 @@
 
 <p>Change into your working directory.  For me that is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cd ~/me/fuzzygroup/elixir/page_fetcher
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd ~/me/fuzzygroup/elixir/page_fetcher
+</code></pre></div></div>
 
 <p>Now run mix test to make sure everything is still working:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mix test    
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mix test    
+</code></pre></div></div>
 
 <p>Open the file mix.exs in your editor and add the following:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="err">:exredis,</span><span class="w"> </span><span class="nt">"&gt;= 0.2.4"</span><span class="err">}</span><span class="w">
-</span></code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{:exredis, "&gt;= 0.2.4"}
+</code></pre></div></div>
 
 <p>This needs to go between the [] in the defp deps routine.  Think of it this way – you are updating Gemfile.  That's all this is.  Only its a more reliable Gemfile without the cruft and crap of bundler.  I love you Ruby but good lord the packaging infrastructure lately blows monkey chunks.  Not a day goes by that I don't hit some Gemfile / bundler crap.</p>
 
 <p>Now run mix test again:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mix test
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mix test
+</code></pre></div></div>
 
 <p>And you're going to see a failure like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sjohnson@ScottJohnsonMacbookAir:~/me/fuzzygroup/elixir/page_fetcher$ mix test
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sjohnson@ScottJohnsonMacbookAir:~/me/fuzzygroup/elixir/page_fetcher$ mix test
 Unchecked dependencies for environment test:
 * exredis (Hex package)
   the dependency is not available, run "mix deps.get"
 ** (Mix) Can't continue due to errors on dependencies
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So you're going to do what I think of as the <em>deps dance</em> and type:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mix deps.get
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mix deps.get
+</code></pre></div></div>
 
 <p>And you'll see something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>A new Hex version is available (0.13.0), please update with `mix local.hex`
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A new Hex version is available (0.13.0), please update with `mix local.hex`
 Running dependency resolution
 Dependency resolution completed
   eredis: 1.0.8
@@ -253,28 +253,26 @@ Dependency resolution completed
 * Getting eredis (Hex package)
   Checking package (https://repo.hex.pm/tarballs/eredis-1.0.8.tar)
   Fetched package    
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Your mileage may vary with respect to the "please update …" stuff.  Please bear in mind that Hex isn't perfect at present.  I've see issues but they are few and far between at least in my experience.</p>
 
 <p>The next step up is to modify your project to talk to your Redis server.  Do that by modifying config/config.exs with your server params.  Here are mine:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>config :exredis,
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>config :exredis,
   host: "127.0.0.1",
   port: 6379,
   password: "",
   db: 0,
   reconnect: :no_reconnect,
   max_queue: :infinity
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Since we're connecting on 127.0.0.1 you need to run this on the same machine where your redis server lives or adjust the ip address.</p>
 
 <p>As always when you change anything run your test suite which will compile your code and show you any errors.  Here's what mine looks like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mix test
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mix test
 ==&gt; eredis (compile)
 Compiled src/eredis_sub.erl
 Compiled src/eredis_parser.erl
@@ -295,8 +293,7 @@ Finished in 0.05 seconds
 1 test, 0 failures
 
 Randomized with seed 697093    
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So at this point we have an elixir application with a supervision tree for reliability and a redis client.  Given that I'm a strong believer in "deploy early; deploy often", I'll handle getting all this deployed onto an Ubuntu server.  After that I'll tackle getting this to run continuously popping things from the redis queue.</p>
 

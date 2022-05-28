@@ -135,6 +135,12 @@ I know, I know – it is 2019 and we're not supposed to be SSH'ing into boxes �
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -205,32 +211,29 @@ I know, I know – it is 2019 and we're not supposed to be SSH'ing into boxes �
 
 <p>Here's how to install ET on OSX:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>brew install MisterTea/et/et
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install MisterTea/et/et
+</code></pre></div></div>
 
 <h3 id="installing-et-on-your-server">Installing ET on your Server</h3>
 
 <p>Here's how to install ET on Ubuntu:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get install -y software-properties-common
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install -y software-properties-common
 sudo add-apt-repository ppa:jgmath2000/et
 sudo apt-get update
 sudo apt-get install et
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="starting-eternal-terminal-on-your-server">Starting Eternal Terminal on Your Server</h3>
 
 <p>After installation, ET should start automatically.  You can check its status with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>systemctl status et
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl status et
+</code></pre></div></div>
 
 <p>You should see something like this if ET is running:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>● et.service - Eternal Terminal
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>● et.service - Eternal Terminal
    Loaded: loaded (/lib/systemd/system/et.service; enabled; vendor preset: enabled)
    Active: active (running) since Tue 2019-11-26 21:37:24 UTC; 22min ago
   Process: 6052 ExecStart=/usr/bin/etserver --daemon --cfgfile=/etc/et.cfg (code=exited, status=0/SUCCESS)
@@ -242,8 +245,7 @@ sudo apt-get install et
 Nov 26 21:37:23 ip-172-31-3-194 systemd[1]: Starting Eternal Terminal...
 Nov 26 21:37:23 ip-172-31-3-194 systemd[1]: et.service: Can't open PID file /var/run/etserver.pid (yet?) after
 Nov 26 21:37:24 ip-172-31-3-194 systemd[1]: Started Eternal Terminal.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="opening-port-2022-on-your-security-group">Opening Port 2022 on Your Security Group</h3>
 
@@ -265,21 +267,19 @@ Nov 26 21:37:24 ip-172-31-3-194 systemd[1]: Started Eternal Terminal.
 
 <p>My normal ssh statement looks like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ssh -i "~/Downloads/adl_fuzzygroup.pem" ubuntu@xx.yy.zz.aa
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh -i "~/Downloads/adl_fuzzygroup.pem" ubuntu@xx.yy.zz.aa
+</code></pre></div></div>
 
 <p>To use ET, you need to have a "ssh statement" like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>et ubuntu@xx.yy.zz.aa -i "~/Downloads/adl_fuzzygroup.pem"
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>et ubuntu@xx.yy.zz.aa -i "~/Downloads/adl_fuzzygroup.pem"
+</code></pre></div></div>
 
 <h3 id="an-ansible-playbook-to-automate-server-setup">An Ansible Playbook to Automate Server Setup</h3>
 
 <p>If you have more than one server on AWS, you should be using a DevOps tool like Ansible to automate machine setup.  Here's a sample playbook:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>---
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
 
 - name: Configure servers for use with Eternal Terminal
   hosts: all
@@ -301,14 +301,12 @@ Nov 26 21:37:24 ip-172-31-3-194 systemd[1]: Started Eternal Terminal.
       apt: pkg= state=latest install_recommends=no
       with_items:
         - et
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Save the above to playbook_install_et.yml and then run it with a statement like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/inventory.txt playbook_install_et.yml
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible-playbook -i inventories/inventory.txt playbook_install_et.yml
+</code></pre></div></div>
 
 <h2 id="references">References</h2>
 

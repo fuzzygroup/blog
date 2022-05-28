@@ -136,6 +136,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -190,7 +196,7 @@
 
 <p>Let's start with installing Sidekiq as a service.  Happily <a href="http://www.sidekiq.org">Mike Perham</a> has built Sidekiq to run as a service (and thanks to Mike for the service configuration; noted and appreciated).  Here's what you need:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>playbook: playbook_service_install_and_start_sidekiq.yml
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>playbook: playbook_service_install_and_start_sidekiq.yml
 
 role: service_install_and_start_sidekiq.yml
 
@@ -313,12 +319,11 @@ changed: [fiworker3]
 
 PLAY RECAP *********************************************************************
 fiworker3                  : ok=3    changed=0    unreachable=0    failed=0
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Once you install this as service you <strong>do not</strong> want to log into N machines and check if its manually running so now you need this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>playbook: playbook_service_status_sidekiq.yml
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>playbook: playbook_service_status_sidekiq.yml
 
 role: service_status_sidekiq.yml
 
@@ -350,8 +355,7 @@ ok: [fiworker3] =&gt; {
         "sidekiq (0) start/running, process 7759"
     ]
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>As long as you see a process id here then you know its running.  Would it be better to have this report out something like "Out of N boxes, sidekiq is running on N-1"?  Sure.  And I suspect that I will get there at some point but I have critical pressing needs <strong>today</strong> – all these examples are being written as part of actual devops that I'm doing now.  These blog posts are the time stamped documentation that I can refer back to.</p>
 

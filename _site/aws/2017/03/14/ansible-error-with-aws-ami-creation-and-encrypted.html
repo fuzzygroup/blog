@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,10 +186,9 @@
   <div class="post-content" itemprop="articleBody">
     <p>Here is a bizarre Ansible / AWS error I just found:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>An exception occurred during task execution. To see the full traceback, use -vvv. The error was: TypeError: __init__() got an unexpected keyword argument 'encrypted'
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>An exception occurred during task execution. To see the full traceback, use -vvv. The error was: TypeError: __init__() got an unexpected keyword argument 'encrypted'
 fatal: [localhost]: FAILED! =&gt; {"changed": false, "failed": true, "module_stderr": "Traceback (most recent call last):\n  File \"/tmp/ansible_prCPvG/ansible_module_ec2_ami.py\", line 560, in &lt;module&gt;\n    main()\n  File \"/tmp/ansible_prCPvG/ansible_module_ec2_ami.py\", line 552, in main\n    create_image(module, ec2)\n  File \"/tmp/ansible_prCPvG/ansible_module_ec2_ami.py\", line 381, in create_image\n    bd = BlockDeviceType(**device)\nTypeError: __init__() got an unexpected keyword argument 'encrypted'\n", "module_stdout": "", "msg": "MODULE FAILURE"}
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>A quick google revealed <a href="https://github.com/ansible/ansible-modules-core/issues/1773">this solution</a>:</p>
 

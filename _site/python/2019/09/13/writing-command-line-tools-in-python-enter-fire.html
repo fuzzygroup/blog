@@ -135,6 +135,12 @@ So I'm starting with a command line that looks like thi...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,13 +190,12 @@ So I'm starting with a command line that looks like thi...">
 
 <p>So I'm starting with a command line that looks like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>python3 pol.py timeline
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 pol.py timeline
+</code></pre></div></div>
 
 <p>And I open up the Python script and search for a def timeline and there isn't one.  Sigh.  The module Fire was mentioned to me during conversations with another developer so I do a quick code search for File and, at the very bottom, I find:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
     <span class="n">Fire</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
         <span class="n">extract</span> <span class="o">=</span> <span class="n">extract_thread</span><span class="p">,</span>
         <span class="n">timeline</span> <span class="o">=</span> <span class="n">hatebase_timeline</span><span class="p">,</span>
@@ -199,26 +204,24 @@ So I'm starting with a command line that looks like thi...">
         <span class="n">urls</span> <span class="o">=</span> <span class="n">get_urls</span>
     <span class="p">))</span>
     <span class="k">raise</span> <span class="nb">SystemExit</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So we've got an if statement which is checking <strong>name</strong> which I guess is some kind of python special thing because double __ are damn ugly so they must be special to make us notice them.  The colon seems to indicate that the next bit of code is attached to the if (I do know that it does; explaining it helps me at least).  And then we get to the Fire statement which is defining a dict, which I assume is a hash, so that the keyword timeline is mapped to 'hatebase_timeline' which is a method inside this.  And if nothing in the dict is matched, I assume that it falls thru to "raise SystemExit" which causes the program to terminate.</p>
 
 <p>The nice thing about Fire is that it seems to automagically handle things like the user giving the wrong input.  Here's an example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>python3 pol.py foo
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 pol.py foo
 ERROR: Cannot find key: foo
 Usage: pol.py &lt;command&gt;
   available commands:    extract | timeline | count | proportions | urls
 
 For detailed information on this command, run:
   pol.py --help
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>It also handles generating help quite nicely when you omit an argument:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>python3 pol.py
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 pol.py
 
 NAME
     pol.py
@@ -230,19 +233,17 @@ COMMANDS
     COMMAND is one of the following:
 
 ... (I omitted the specific help)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>To use fire, all you need to do is have an import statement (and a line in requirements.txt):</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">FILE</span><span class="p">:</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
-<span class="n">fire</span><span class="o">==</span><span class="mf">0.2</span><span class="o">.</span><span class="mi">1</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">FILE</span><span class="p">:</span> <span class="n">requirements</span><span class="p">.</span><span class="n">txt</span>
+<span class="n">fire</span><span class="o">==</span><span class="mf">0.2</span><span class="p">.</span><span class="mi">1</span>
 
 
-<span class="n">FILE</span><span class="p">:</span> <span class="n">pol</span><span class="o">.</span><span class="n">py</span>
+<span class="n">FILE</span><span class="p">:</span> <span class="n">pol</span><span class="p">.</span><span class="n">py</span>
 <span class="kn">from</span> <span class="nn">fire</span> <span class="kn">import</span> <span class="n">Fire</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Python's Fire library comes from Google and is on <a href="https://github.com/google/python-fire">github</a>.  <strong>Recommended</strong>.</p>
 

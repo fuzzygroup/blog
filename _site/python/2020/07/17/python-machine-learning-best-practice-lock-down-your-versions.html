@@ -137,6 +137,12 @@ model_input...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,9 +192,8 @@ model_input...">
 
 <p>I recently took a Python and Ruby (but mostly Python) Machine Learning data pipeline live and, almost immediately, hit a pretty significant problem.  The issue was this line of code:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">model_input</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode_plus</span><span class="p">(</span><span class="n">text_to_classify</span><span class="p">,</span> <span class="n">add_special_tokens</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s">'pt'</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device_to_use</span><span class="p">)</span> 
-</code></pre>
-</div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model_input</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">encode_plus</span><span class="p">(</span><span class="n">text_to_classify</span><span class="p">,</span> <span class="n">add_special_tokens</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s">'pt'</span><span class="p">).</span><span class="n">to</span><span class="p">(</span><span class="n">device_to_use</span><span class="p">)</span> 
+</code></pre></div></div>
 
 <p>This, which worked, at least for a while, perfectly on my development box.  And then I deployed the code and that caused my requirements.txt file to be <strong>fulfilled</strong> and that's when the trouble started.  As I hope you know, requirements.txt is a list of any software components that your project uses along with, sometimes, the version numbers of those software components.</p>
 
@@ -196,9 +201,8 @@ model_input...">
 
 <p>So what happened when my code was deployed is that this command was executed:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>pip install -R requirements.txt
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install -R requirements.txt
+</code></pre></div></div>
 
 <p>as part of the underlying Docker build process.  And this brought in whatever the <strong>latest</strong> version of our underlying Machine Learning libraries happened to be.  And that broke the line of code above which then led to the expected scramble to:</p>
 

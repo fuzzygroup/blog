@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -182,9 +188,8 @@
 
 <p>The current state of things is that out of 187 tables that needed to be migrated over, we're down to the last one – big number 187 and nothing appears to be happening.  All I see at the console is the same thing I've seen for over 24 hours:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ubuntu@ip-172-31-43-176:~$ mysql -uappdata -pSOMEPASSWORD foo_production &lt; /mnt/old2/foo2016_m2s.sql
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ubuntu@ip-172-31-43-176:~$ mysql -uappdata -pSOMEPASSWORD foo_production &lt; /mnt/old2/foo2016_m2s.sql
+</code></pre></div></div>
 
 <p>And it just sits there.  Sigh.  Figuring out the next logical step means that you need to wrap your head around the quirky aspects of the MySQL load architecture.  Happily this isn't the first time for me so here goes.</p>
 
@@ -192,14 +197,13 @@
 
 <p>When you have a large table coming in the command line like this, well, MySQL gets seriously weird.  You can't select a row to see the status.  The best you can do is a SHOW FULL PROCESS LIST which makes the system go nuts.  Seriously - try it sometime.  What you get is an enormous SQL dump showing what's being loaded and since it scrolls by at like 90 miles per hour, well, that's not helpful.  Here's a little trick tho:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>pager less;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pager less;
 SHOW FULL PROCESS LIST\G
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And this will give you something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>*************************** 1. row ***************************
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>*************************** 1. row ***************************
       Id: 257
     User: appdata
     Host: localhost
@@ -208,14 +212,13 @@ SHOW FULL PROCESS LIST\G
     Time: 0
    State: update
     Info: INSERT INTO `foo2016_q1s` VALUES (240213,'2016-03-16 21:14:57','2016-
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Given that there 927,040 records in this table what this has shown us is that after 36 hours or so we're only 1/4 of the way thru.  Press ESC and run SHOW FULL PROCESS LIST a few times to make sure that id value keeps changing to get confirmation that the load is continuing.</p>
 
 <p>The only problem is that what I just wrote above may <strong>NOT</strong> be reliable – emphasis on the <strong>NOT</strong>.  Here's what I just got when I ran it again:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Id: 257
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Id: 257
     User: appdata
     Host: localhost
       db: banks_production
@@ -223,24 +226,21 @@ SHOW FULL PROCESS LIST\G
     Time: 0
    State: update
     Info: INSERT INTO `foo2016_q1s` VALUES (406347,'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>There's no way that roughly 200K records went in while I was writing two paragraphs so what we now know is that SHOW FULL PROCESS LIST tells you that the load is proceeding but it may be <strong>utterly useless</strong> as a monitoring tool.  Deep, Deep Sigh.</p>
 
-<h1 id="step-2---desc-foo2016m2s">Step 2 - DESC foo2016_m2s</h1>
+<h1 id="step-2---desc-foo2016_m2s">Step 2 - DESC foo2016_m2s</h1>
 
 <p>The next logical step is to check the schema to make sure nothing weird is going on.  This can be done with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>DESC foo2016_m2s;
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DESC foo2016_m2s;
+</code></pre></div></div>
 
 <p>In MySQL checking the schema tells you nothing about the index structures so you can check those with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>SHOW CREATE TABLE foo2016_m2s;
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SHOW CREATE TABLE foo2016_m2s;
+</code></pre></div></div>
 
 <p>My guess is that you won't learn anything from these operations but this is step by step, high value debugging so you check everything.</p>
 

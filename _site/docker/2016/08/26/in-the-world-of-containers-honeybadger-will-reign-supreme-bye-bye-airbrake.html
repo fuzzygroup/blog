@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -200,7 +206,7 @@
 
 <p>Here's how I'm handling this – I'm calling HoneyBadger directly from my rescue blocks.  Apologies if the code isn't elegant - I had to do some patches a few minutes ago.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>def self.honeybadger_notify(e, context = nil)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def self.honeybadger_notify(e, context = nil)
   return unless DEBUGGING_LOG_EXCEPTIONS_TO_HONEYBADGER
   error_class = "Custom Error"
 
@@ -240,8 +246,7 @@
     :context =&gt; context
   )
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>There might be an error or two (this hasn't gone live yet) but you get the essence.</p>
 

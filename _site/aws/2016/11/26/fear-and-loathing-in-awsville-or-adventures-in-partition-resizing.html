@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -293,11 +299,10 @@ partition?  You can just create one and then try things.  I'd strongly recommend
 
 <p>Here's an example from one of my boxes:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cat /etc/fstab
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /etc/fstab
 LABEL=cloudimg-rootfs	/	 ext4	defaults,discard	0 0
 /dev/xvdf  /mnt/old. ext4  defaults,discard 0 0
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This shows two logical drives, one from the AWS default setup and one volume I created.  Both are ext4 filesystems and they are mounted at / and /mnt/old respectively.</p>
 
@@ -314,16 +319,14 @@ LABEL=cloudimg-rootfs	/	 ext4	defaults,discard	0 0
 
 <p>Note: I'm going to add noatime and nodiratime into my mount statements shortly.  This is what I'm going to add to my fstab:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rw,noatime,nodiratime,nobarrier,data=ordered 
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rw,noatime,nodiratime,nobarrier,data=ordered 
+</code></pre></div></div>
 
 <p>which I sourced from <a href="http://www.zhongweicheng.com/?p=2494">here</a>.  Once that's set in /etc/fstab then I'm going to:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo service mysql stop (making certain that nothing is using the db first)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo service mysql stop (making certain that nothing is using the db first)
 mount -o remount
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>You can also do it <a href="http://serverfault.com/questions/346360/how-can-i-add-the-noatime-flag-to-my-filesystem-without-a-reboot">this way</a> without modifying fstab but then you lose the options on reboot so that's kind of suckass.</p>
 
@@ -331,35 +334,30 @@ mount -o remount
 
 <p>The mount command mounts the volumes identified in /etc/fstab.  You need to use this after you have attached a drive using the AWS console in order to make it available to the system.  If it helps you to understand this then think of the AWS Console's attach command as equivalent to plugging in a hardware cable to a drive whereas mount is the software side.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo mount -a 
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo mount -a 
+</code></pre></div></div>
 
 <p>You can also mount without an fstab file like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo mount /dev/sdg /vol -t ext4
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo mount /dev/sdg /vol -t ext4
+</code></pre></div></div>
 
 <h2 id="unmounting-a-drive---umount">Unmounting a Drive - umount</h2>
 
 <p>When you need to detach a volume with the AWS console you first need to unmount it with umount.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo umount /dev/xvdf
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo umount /dev/xvdf
+</code></pre></div></div>
 
 <p>When you can't unmount a volume with the AWS console, what do you do – you do this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo umount /devxda1
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo umount /devxda1
+</code></pre></div></div>
 
 <p>And when you get</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>umount: /: device is busy.
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>umount: /: device is busy.
+</code></pre></div></div>
 
 <p>then you need to figure out what process still has this open.  Two tools for this are lsof and fuser (I was much more successful with fuser).</p>
 
@@ -367,7 +365,7 @@ mount -o remount
 
 <p>The lsblk command shows you the logical block devices on your system.  A block device essentially means a disk but it could be something else.  This one was new to me or at least something I don't think I've used since I ran Fedora on my ThinkPad back in 2000.  Here's an example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>lsblk
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsblk
 NAME                                MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
 xvda                                202:0    0     8G  0 disk
 └─xvda1                             202:1    0     8G  0 part /
@@ -379,8 +377,7 @@ loop0                                 7:0    0   100G  0 loop
 loop1                                 7:1    0     2G  0 loop
 └─docker-202:1-276736-pool (dm-0)   252:0    0   100G  0 dm
   └─docker-202:1-276736-base (dm-1) 252:1    0    10G  0 dm
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This is showing all the block devices.  If you notice xvda this is showing a physical volume and then a logical volume within it.  It is also interesting to note that docker is actually a block device.  It makes sense that Docker went this route but until I saw it myself I don't think I really appreciated that; <strong>very, very cool</strong>.</p>
 
@@ -392,19 +389,17 @@ loop1                                 7:1    0     2G  0 loop
 
 <p>Here's an example of using file on a newly created volume:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo file -s /dev/xvdf
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo file -s /dev/xvdf
 /dev/xvdf: data
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>If you notice all it says is <strong>data</strong>.  This means that the volume is newly created and has no filesystem yet so you'll need to use mkfs covered below.</p>
 
 <p>Here's file when a filesystem exists:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo file -s /dev/xvdf
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo file -s /dev/xvdf
 /dev/xvdf: Linux rev 1.0 ext4 filesystem data, UUID=2a3476d6-cb01-44e6-a4c6-3c6d3c1cb675 (extents) (large files) (huge files)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Interesting URLS:</p>
 
@@ -419,9 +414,8 @@ loop1                                 7:1    0     2G  0 loop
 
 <p>The mkfs command actually creates a filesystem.  Years ago this was actually slow but in 2016 even with an enormous 4TB volume it was rippingly fast:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo mkfs -t ext4 /dev/xvdf
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo mkfs -t ext4 /dev/xvdf
+</code></pre></div></div>
 
 <h1 id="step-6---and-now-we-come-to-partition-resizing">Step 6 - And Now We Come to Partition Resizing</h1>
 
@@ -476,7 +470,7 @@ loop1                                 7:1    0     2G  0 loop
 
 <p>Here is my rough, meandering path thru resize2fs, parted and gpt in case anyone out there wants to tell me where I went wrong.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>__AWS_PRODUCTION__ ubuntu@ip-172-31-45-225:~$ resize2fs /dev/xvda1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>__AWS_PRODUCTION__ ubuntu@ip-172-31-45-225:~$ resize2fs /dev/xvda1
 resize2fs 1.42.9 (4-Feb-2014)
 open: Permission denied while opening /dev/xvda1
 __AWS_PRODUCTION__ ubuntu@ip-172-31-45-225:~$ sudo resize2fs /dev/xvda1
@@ -868,8 +862,7 @@ xvdm    202:192  0  3.9T  0 disk
 resize2fs 1.42.12 (29-Aug-2014)
 resize2fs: Bad magic number in super-block while trying to open /dev/xvdm
 Couldn't find valid filesystem superblock.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="step-7---why-having-partition-resizing-fail-was-ok">Step 7 - Why Having Partition Resizing Fail was Ok</h1>
 
@@ -879,20 +872,18 @@ Couldn't find valid filesystem superblock.
 
 <p>Due to the size generated and the need for load concurrency I generated my mysqldump files with a rake task.  All this has todo is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>all_tables = ActiveRecord::Base.connection.select_values("SHOW TABLES")
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>all_tables = ActiveRecord::Base.connection.select_values("SHOW TABLES")
+</code></pre></div></div>
 
 <p>And then a simple all_tables.each loop like this will do most of the work:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>all_tables.each_with_index do |table, ctr|
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>all_tables.each_with_index do |table, ctr|
   dump_statement = "#{mysqldump_executable} -u#{username} -p#{password} -h#{host} #{db} #{table} &gt; /mnt/transfer/#{table}.sql"
   puts "#{ctr} :: #{table} :: #{ctr.to_f/total*100}%"
   puts "  #{dump_statement}"
   `#{dump_statement}` if execute_dump        
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The advantage to this approach is rather than a single massive database dump you end up with a file for each table which lets you reload multiple tables in parallel.</p>
 
@@ -900,13 +891,12 @@ end
 
 <p>Here's a general bit of advice when you are dealing with multi-hour long / multi-day long mysqldump processes – make sure that they actually complete.  After all when you're looking at a directory listing and all you see is this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>215121716510 page2016_q2s.sql
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>215121716510 page2016_q2s.sql
+</code></pre></div></div>
 
 <p>How you to know that a file you basically identify as byte size / filename actually finished successfully?  An easy to check this is to just tail the file like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>tail long_urls.sql
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tail long_urls.sql
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
@@ -917,8 +907,7 @@ end
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2016-11-23  7:50:34
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>That's what the tail of a successful MySQL dump should look like.  The key thing is <strong>– Dump completed on 2016-11-23  7:50:34</strong>.</p>
 

@@ -160,6 +160,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -299,8 +305,8 @@
 <p>Here's a pretty good assumption when you have a machine in a data center and THEY gave you the machine's IP address:</p>
 
 <blockquote>
-  <p>Machines in data centers generally have consecutive IP addresses.  Let's say for example that your machine has the IP address: 216.40.225.70.  It's a pretty good bet that 216.40.225.71 will be another machine in that SAME data center.  What I do when troubleshooting failures is alter the IP address I am looking at by 1 or 2 digits on the last set of numbers.  This tells me whether or not the failure is the entire data center or just a machine or group of machines.
-## How to Troubleshoot a Remote Machine</p>
+  <p>Machines in data centers generally have consecutive IP addresses.  Let's say for example that your machine has the IP address: 216.40.225.70.  It's a pretty good bet that 216.40.225.71 will be another machine in that SAME data center.  What I do when troubleshooting failures is alter the IP address I am looking at by 1 or 2 digits on the last set of numbers.  This tells me whether or not the failure is the entire data center or just a machine or group of machines.</p>
+  <h2 id="how-to-troubleshoot-a-remote-machine">How to Troubleshoot a Remote Machine</h2>
 </blockquote>
 
 <p>This is one of those things that there are as many different opinions on as there are SysAdmins.  I tend to use this approach.</p>
@@ -330,9 +336,8 @@
 
 <p>When you have a failure, what you are looking for is something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> 21     *     some domain name  [207.218.223.34]  reports: Destination host unreachable.
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 21     *     some domain name  [207.218.223.34]  reports: Destination host unreachable.
+</code></pre></div></div>
 
 <p>This tells you that on hop 21 to the destination it found an error.  It's a pretty good certainty that if you can't get to your machine via ping to it's name, ping to its IP address or tracert to its IP address you need to call your SysAdmin.</p>
 

@@ -135,6 +135,12 @@ As I documented recently, I've become quite the fan of Streamlit for taking Mach
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -230,7 +236,7 @@ As I documented recently, I've become quite the fan of Streamlit for taking Mach
 
 <p>Here's an example of the output of sudo systemctl status rundashboard</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo systemctl status rundashboard
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo systemctl status rundashboard
 ● rundashboard.service - Example systemd service.
    Loaded: loaded (/etc/systemd/system/rundashboard.service; dis
    Active: active (running) since Wed 2019-11-13 17:55:37 UTC; 5
@@ -239,8 +245,7 @@ As I documented recently, I've become quite the fan of Streamlit for taking Mach
    CGroup: /system.slice/rundashboard.service
            ├─10449 /bin/bash /usr/bin/rundashboard.sh
            └─10459 /home/ubuntu/hate-language-modeling/venv/bin/
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>From an implementation perspective we need to things:</p>
 
@@ -255,18 +260,17 @@ As I documented recently, I've become quite the fan of Streamlit for taking Mach
 
 <p>Here's the shell script:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
 <span class="nb">cd</span> /home/ubuntu/hate-language-modeling
 <span class="nb">source</span> ./venv/bin/activate
-nohup streamlit run dashboard.py
-</code></pre>
-</div>
+<span class="nb">nohup </span>streamlit run dashboard.py
+</code></pre></div></div>
 
 <h3 id="the-systemd-unit-file">The SystemD Unit File</h3>
 
 <p>Here's the SystemD unit file:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="o">[</span>Unit]
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>Unit]
 <span class="nv">Description</span><span class="o">=</span>Run Streamlit Dashboard.
 
 <span class="o">[</span>Service]
@@ -275,23 +279,20 @@ nohup streamlit run dashboard.py
 
 <span class="o">[</span>Install]
 <span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="installing-this">Installing This</h3>
 
 <p>The shell script needs to be copied to to /usr/bin:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo mv rundashboard.sh /usr/bin/rundashboard.sh
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo mv rundashboard.sh /usr/bin/rundashboard.sh
+</code></pre></div></div>
 
 <p>The unit file needs to be copied to /etc/systemd/system/ and set to 644 permissions:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo cp rundashboard.service /etc/systemd/system
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo cp rundashboard.service /etc/systemd/system
 sudo chmod 644 /etc/systemd/system/rundashboard.service
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="an-ansible-playbook-for-deploying-streamlit">An Ansible Playbook for Deploying Streamlit</h2>
 
@@ -307,123 +308,115 @@ sudo chmod 644 /etc/systemd/system/rundashboard.service
 
 <p>Given that my specific machines have different IP addresses than yours, I've obfuscated them below.</p>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="s">aws_box1 ansible_ssh_host=1.2.3.4  ansible_ssh_private_key=/Users/sjohnson/Downloads/adl_fuzzygroup.pem ansible_python_interpreter=/usr/bin/python3</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">aws_box1 ansible_ssh_host=1.2.3.4  ansible_ssh_private_key=/Users/sjohnson/Downloads/adl_fuzzygroup.pem ansible_python_interpreter=/usr/bin/python3</span>
 
 <span class="s">aws_box2 ansible_ssh_host=5.6.7.8 ansible_ssh_private_key=/Users/sjohnson/Downloads/adl_fuzzygroup.pem ansible_python_interpreter=/usr/bin/python3</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="playbook">Playbook</h3>
 
 <p>Here's the playbook:</p>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="pi">-</span> <span class="s">hosts</span><span class="pi">:</span> <span class="s">aws_box1</span>
-  <span class="s">remote_user</span><span class="pi">:</span> <span class="s">ubuntu</span>
-  <span class="s">roles</span><span class="pi">:</span> 
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span> <span class="s">aws_box1</span>
+  <span class="na">remote_user</span><span class="pi">:</span> <span class="s">ubuntu</span>
+  <span class="na">roles</span><span class="pi">:</span> 
     <span class="pi">-</span> <span class="pi">{</span> <span class="nv">role</span><span class="pi">:</span> <span class="nv">deploy_hate-language-modeling_git_clone</span><span class="pi">,</span> <span class="nv">tags</span><span class="pi">:</span> <span class="nv">deploy</span> <span class="pi">}</span>
 
-<span class="pi">-</span> <span class="s">hosts</span><span class="pi">:</span> <span class="s">aws_box1</span>
-  <span class="s">become</span><span class="pi">:</span> <span class="s">true</span>
-  <span class="s">remote_user</span><span class="pi">:</span> <span class="s">ubuntu</span>
-  <span class="s">roles</span><span class="pi">:</span> 
+<span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span> <span class="s">aws_box1</span>
+  <span class="na">become</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">remote_user</span><span class="pi">:</span> <span class="s">ubuntu</span>
+  <span class="na">roles</span><span class="pi">:</span> 
     <span class="pi">-</span> <span class="pi">{</span> <span class="nv">role</span><span class="pi">:</span> <span class="nv">deploy_hate-language-modeling_systemd_setup</span><span class="pi">,</span> <span class="nv">tags</span><span class="pi">:</span> <span class="nv">deploy</span> <span class="pi">}</span>
     
-<span class="pi">-</span> <span class="s">hosts</span><span class="pi">:</span> <span class="s">aws_box1</span>
-  <span class="s">remote_user</span><span class="pi">:</span> <span class="s">ubuntu</span>
-  <span class="s">roles</span><span class="pi">:</span> 
+<span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span> <span class="s">aws_box1</span>
+  <span class="na">remote_user</span><span class="pi">:</span> <span class="s">ubuntu</span>
+  <span class="na">roles</span><span class="pi">:</span> 
     <span class="pi">-</span> <span class="pi">{</span> <span class="nv">role</span><span class="pi">:</span> <span class="nv">deploy_hate-language-modeling_git_pull</span><span class="pi">,</span> <span class="nv">tags</span><span class="pi">:</span> <span class="nv">deploy</span> <span class="pi">}</span>
     
-<span class="pi">-</span> <span class="s">hosts</span><span class="pi">:</span> <span class="s">aws_box1</span>
-  <span class="s">become</span><span class="pi">:</span> <span class="s">true</span>
-  <span class="s">remote_user</span><span class="pi">:</span> <span class="s">ubuntu</span>
-  <span class="s">roles</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span> <span class="s">aws_box1</span>
+  <span class="na">become</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">remote_user</span><span class="pi">:</span> <span class="s">ubuntu</span>
+  <span class="na">roles</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="pi">{</span> <span class="nv">role</span><span class="pi">:</span> <span class="nv">deploy_hate-language-modeling_systemd_start</span><span class="pi">,</span> <span class="nv">tags</span><span class="pi">:</span> <span class="nv">deploy</span> <span class="pi">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>You'll notice that this is split into four different sections.  The reason for this is that to handle the systemd stuff, the ansible role needs to run as root (the become: true) whereas the git pull / git clone needs to run as the ubuntu user.  And, yes, I know there is an ansible git module that is supposed to work.  And, this time, as <strong>every other</strong> time I have tried to use it, I failed; hence the work around.</p>
 
 <h3 id="the-git-clone-role">The Git Clone Role</h3>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="pi">-</span> <span class="s">name</span><span class="pi">:</span> <span class="s">Do a git clone if not already checked out</span>
-  <span class="s">shell</span><span class="pi">:</span> <span class="s">git clone git@github.com:adl-tech/hate-language-modeling.git</span>
-  <span class="s">args</span><span class="pi">:</span>
-    <span class="s">chdir</span><span class="pi">:</span> <span class="s">/home/ubuntu/</span>
-    <span class="s">executable</span><span class="pi">:</span> <span class="s">/bin/bash</span>
-    <span class="s">creates</span><span class="pi">:</span> <span class="s">/home/ubuntu/hate-language-modeling</span>
-</code></pre>
-</div>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Do a git clone if not already checked out</span>
+  <span class="na">shell</span><span class="pi">:</span> <span class="s">git clone git@github.com:adl-tech/hate-language-modeling.git</span>
+  <span class="na">args</span><span class="pi">:</span>
+    <span class="na">chdir</span><span class="pi">:</span> <span class="s">/home/ubuntu/</span>
+    <span class="na">executable</span><span class="pi">:</span> <span class="s">/bin/bash</span>
+    <span class="na">creates</span><span class="pi">:</span> <span class="s">/home/ubuntu/hate-language-modeling</span>
+</code></pre></div></div>
 
 <h3 id="the-systemd-role-setup-role">The Systemd Role Setup Role</h3>
 
 <p>An Ansible role is basically a YAML representation of the state of the server that you are trying to achieve.  And, in this case, we need to upload some files into certain locations so we need a files directory which stores them.  Here is the structure of the role that you need to create in your filesystem:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>roles/deploy_hate-language-modeling
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>roles/deploy_hate-language-modeling
 ├── files
 │   ├── rundashboard.service
 │   └── rundashboard.sh
 └── tasks
     └── main.yml
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here's the role itself:</p>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="pi">-</span> <span class="s">name</span><span class="pi">:</span> <span class="s">install the service</span>
-  <span class="s">copy</span><span class="pi">:</span>
-    <span class="s">src</span><span class="pi">:</span> <span class="s">files/rundashboard.service</span>
-    <span class="s">dest</span><span class="pi">:</span> <span class="s">/etc/systemd/system</span>
-    <span class="s">owner</span><span class="pi">:</span> <span class="s">root</span>
-    <span class="s">group</span><span class="pi">:</span> <span class="s">root</span>
-    <span class="s">mode</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0644'</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">install the service</span>
+  <span class="na">copy</span><span class="pi">:</span>
+    <span class="na">src</span><span class="pi">:</span> <span class="s">files/rundashboard.service</span>
+    <span class="na">dest</span><span class="pi">:</span> <span class="s">/etc/systemd/system</span>
+    <span class="na">owner</span><span class="pi">:</span> <span class="s">root</span>
+    <span class="na">group</span><span class="pi">:</span> <span class="s">root</span>
+    <span class="na">mode</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0644'</span>
 
-<span class="pi">-</span> <span class="s">name</span><span class="pi">:</span> <span class="s">install the shell script</span>
-  <span class="s">copy</span><span class="pi">:</span>
-    <span class="s">src</span><span class="pi">:</span> <span class="s">files/rundashboard.sh</span>
-    <span class="s">dest</span><span class="pi">:</span> <span class="s">/usr/bin/</span>
-    <span class="s">owner</span><span class="pi">:</span> <span class="s">root</span>
-    <span class="s">group</span><span class="pi">:</span> <span class="s">root</span>
-    <span class="s">mode</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0755'</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">install the shell script</span>
+  <span class="na">copy</span><span class="pi">:</span>
+    <span class="na">src</span><span class="pi">:</span> <span class="s">files/rundashboard.sh</span>
+    <span class="na">dest</span><span class="pi">:</span> <span class="s">/usr/bin/</span>
+    <span class="na">owner</span><span class="pi">:</span> <span class="s">root</span>
+    <span class="na">group</span><span class="pi">:</span> <span class="s">root</span>
+    <span class="na">mode</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0755'</span>
     
-<span class="pi">-</span> <span class="s">name</span><span class="pi">:</span> <span class="s">Stop the service if is already running</span>
-  <span class="s">systemd</span><span class="pi">:</span>
-    <span class="s">name</span><span class="pi">:</span> <span class="s">rundashboard</span>
-    <span class="s">state</span><span class="pi">:</span> <span class="s">stopped</span>
-</code></pre>
-</div>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Stop the service if is already running</span>
+  <span class="na">systemd</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">rundashboard</span>
+    <span class="na">state</span><span class="pi">:</span> <span class="s">stopped</span>
+</code></pre></div></div>
 
 <h3 id="the-git-pull-role">The Git Pull Role</h3>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="pi">-</span> <span class="s">name</span><span class="pi">:</span> <span class="s">Do a git pull</span>
-  <span class="s">shell</span><span class="pi">:</span> <span class="s">git pull origin dev</span>
-  <span class="s">args</span><span class="pi">:</span>
-    <span class="s">chdir</span><span class="pi">:</span> <span class="s">/home/ubuntu/hate-language-modeling/</span>
-    <span class="s">executable</span><span class="pi">:</span> <span class="s">/bin/bash</span>
-</code></pre>
-</div>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Do a git pull</span>
+  <span class="na">shell</span><span class="pi">:</span> <span class="s">git pull origin dev</span>
+  <span class="na">args</span><span class="pi">:</span>
+    <span class="na">chdir</span><span class="pi">:</span> <span class="s">/home/ubuntu/hate-language-modeling/</span>
+    <span class="na">executable</span><span class="pi">:</span> <span class="s">/bin/bash</span>
+</code></pre></div></div>
 
 <h3 id="the-systemd-start-role">The Systemd Start Role</h3>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="pi">-</span> <span class="s">name</span><span class="pi">:</span> <span class="s">start the service</span>
-  <span class="s">systemd</span><span class="pi">:</span>
-    <span class="s">name</span><span class="pi">:</span> <span class="s">rundashboard</span>
-    <span class="s">state</span><span class="pi">:</span> <span class="s">started</span>
-</code></pre>
-</div>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">start the service</span>
+  <span class="na">systemd</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">rundashboard</span>
+    <span class="na">state</span><span class="pi">:</span> <span class="s">started</span>
+</code></pre></div></div>
 
 <h3 id="running-all-this">Running All This</h3>
 
 <p>If you've put all the pieces together correctly then you can run this as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo ansible-playbook -i inventories/inventory.txt playbook_deploy_hate-language-modeling.yml
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo ansible-playbook -i inventories/inventory.txt playbook_deploy_hate-language-modeling.yml
+</code></pre></div></div>
 
 <p><strong>Note</strong>: I have to run my ansible-playbook with sudo due to messed up python installs on my personal MacBook.  That's a me thing / my mistake not an Ansible thing.</p>
 
 <p>When it runs you should see output like the following (depending on whether or not you have the delightful cowsay installed locally):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> _________________
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> _________________
 &lt; PLAY [aws_box1] &gt;
  -----------------
         \   ^__^
@@ -579,8 +572,7 @@ aws_box1                   : ok=10   changed=2    unreachable=0    failed=0    s
 
 adl/antihate/ansible on ☁️  us-west-2 took 25s
 ❯
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="next-step-jenkins">Next Step: Jenkins</h2>
 

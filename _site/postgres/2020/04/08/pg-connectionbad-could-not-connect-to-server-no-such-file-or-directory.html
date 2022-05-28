@@ -135,6 +135,12 @@ I've recently had the situation where my personal development box (OSX Mojave, R
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,9 +190,8 @@ I've recently had the situation where my personal development box (OSX Mojave, R
 
 <p>I've recently had the situation where my personal development box (OSX Mojave, Rails, Postgres) has become unstable with, at times, multiple crashes per day.  I logged in this morning and found myself getting errors like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>PG::ConnectionBad (could not connect to server: No such file or directory)
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PG::ConnectionBad (could not connect to server: No such file or directory)
+</code></pre></div></div>
 
 <p>I did some digging and even though Postgres appeared to be running to brew, it was a false positive due to a leftover postmaster.pd file.  Here was the fix:</p>
 

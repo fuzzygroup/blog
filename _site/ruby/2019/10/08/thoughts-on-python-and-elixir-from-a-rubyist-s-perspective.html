@@ -135,6 +135,12 @@ Note: I'm about 4 weeks into the learning python stage and I could be fairly wro
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -206,14 +212,13 @@ Note: I'm about 4 weeks into the learning python stage and I could be fairly wro
 
 <p>A fundamental difference between Ruby and Python is Python's approach of "invisible semantics".  I am referring here to the use of indentation as a structural mechanism for formatting code – get your indentation wrong and your code doesn't work.  This is particularly a problem with copy and paste from online code sites / blogs.  I find that this as well as the use of the : to indicate the start of a control structure are the two constant mistakes I make.</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">print_log</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">print_log</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>One of the things that I have found most irritating about python is that imported modules referenced in a main script are not available to "sub scripts" (i.e. other imported modules).  Here's an example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cat jsons/4chan_pol_has_slur.json | python3 expert_slurs.py --source=4chan
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat jsons/4chan_pol_has_slur.json | python3 expert_slurs.py --source=4chan
 Template Expert
 Traceback (most recent call last):
   File "expert_slurs.py", line 87, in &lt;module&gt;
@@ -223,14 +228,12 @@ Traceback (most recent call last):
   File "/Users/sjohnson/fuzzygroup/adl/antihate/antihate_experts/common_expert.py", line 3, in read_std_in_to_string
     for line in sys.stdin:
 NameError: name 'sys' is not defined
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Even though I have</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>from sys import stdin
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from sys import stdin
+</code></pre></div></div>
 
 <p>At the top of my expert_slurs.py file, it isn't available in common_expert.py (which comes <strong>after</strong> the inclusion) and has to be imported again at the top of common_expert.py.</p>
 

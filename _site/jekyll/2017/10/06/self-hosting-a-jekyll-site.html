@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -263,7 +269,7 @@
 
 <p>Here's what I have in my blog.conf file:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>server {
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server {
   listen 3301;
   server_name blog.gamenanny.io;
   root /home/ubuntu/gamenannyblog/_site;
@@ -295,16 +301,14 @@
     try_files $uri $uri.html $uri/ =404;
   }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The main changes that I made in blog.conf are these:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>listen 3301;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>listen 3301;
 server_name blog.gamenanny.io;
 root /home/ubuntu/gamenannyblog/_site;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Each of these is explained as follows:</p>
 
@@ -336,12 +340,11 @@ root /home/ubuntu/gamenannyblog/_site;
 
 <p>In order to handle deployment, I wrote a small shell script. deploy3.sh, which invokes jekyll build and then rsync's the content to the server.  I've now spent almost two years using Jekyll with Github pages and my one comment about the git push to get my content live is that <strong>it is slow</strong>.  I was absolutely shocked just how fast invoking jekyll build and then rsync was.  Here's my deploy3.sh script:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
 
-<span class="nv">JEKYLL_ENV</span><span class="o">=</span>production bundle <span class="nb">exec </span>jekyll build
-rsync -avr --rsh<span class="o">=</span><span class="s1">'ssh'</span> --delete-after --delete-excluded _site/ ubuntu@52.14.179.50:/home/ubuntu/gamenannyblog/_site
-</code></pre>
-</div>
+JEKYLL_ENV=production bundle exec jekyll build
+rsync -avr --rsh='ssh' --delete-after --delete-excluded _site/ ubuntu@52.14.179.50:/home/ubuntu/gamenannyblog/_site
+</code></pre></div></div>
 
 <p>This level of speed is just plain awesome.</p>
 

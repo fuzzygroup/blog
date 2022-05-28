@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,11 +192,11 @@
 
 <p>A lot of the examples below are based around SSH'ing into a server and diagnosing the error in context.  I've seen a lot of things since the advent of containers that seemingly want you to believe, that in this brave new world, you just don't SSH in anymore.  Now, perhaps I am doing things wrong, but I have not found that to be the case at all.  It may be that once I am out of active development that I will no longer be SSH'ing into servers but, for now, SSH is still a dear old friend.</p>
 
-<h1 id="failure-context---504-gateway-error">01: Failure Context - 504 Gateway Error</h1>
+<h1 id="01-failure-context---504-gateway-error">01: Failure Context - 504 Gateway Error</h1>
 
 <p>The general system for a failure on this application seems to be a 504 Gateway Error which basically means that the application load balancer (ALB) isn't receiving output back from one of the HTTP subsystems.</p>
 
-<h1 id="check-the-url-in-development-after-a-server-restart">02.  Check the Url in Development after a Server Restart</h1>
+<h1 id="02--check-the-url-in-development-after-a-server-restart">02.  Check the Url in Development after a Server Restart</h1>
 
 <p>Every single time you do a deploy with Docker, your entire Gem stack along with any initializers is rebuilt and that means that a stack level change that you made in development but failed to catch can break everything.  So the first diagnosis step is to stop the development server and make sure that things come back up correctly.  Each of my applications runs on a different port so I can't give a single example here – do the ctrl+c on Puma and then restart it and check the status.</p>
 
@@ -198,37 +204,33 @@
 
 <p>If your Rails app is running on say port 3200 then you can just do:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>curl http://localhost:3200/health
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl http://localhost:3200/health
+</code></pre></div></div>
 
 <p>and you should see:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ok
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ok
+</code></pre></div></div>
 
-<h1 id="test-the-health-check-logged-into-the-server">03: Test the Health Check Logged into the Server</h1>
+<h1 id="03-test-the-health-check-logged-into-the-server">03: Test the Health Check Logged into the Server</h1>
 
 <p>Once you've verified that things are correct in development, the next step is to log into the server and run the same curl test on the server where the failure is occurring.  In order to make this type of debugging extremely simple for me, I run all my applications server side on exactly the same port structure that I do in development.  Even http services like the main web site run on their development port since I can let the load balancer handle translation back to 80.  Having a deployment environment that mirrors development is a huge conceptual boon. Assuming our same 3200 port example, we would:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>curl http://localhost:3200/health
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl http://localhost:3200/health
+</code></pre></div></div>
 
 <p>and you should see:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ok
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ok
+</code></pre></div></div>
 
 <p><strong>Note:</strong> If the failure is happening solely within the same subsystem then this usually is sufficient to reveal the problem.</p>
 
-<h1 id="check-the-application-docker-logs">04: Check the Application Docker Logs</h1>
+<h1 id="04-check-the-application-docker-logs">04: Check the Application Docker Logs</h1>
 
 <p>The next step is the application level Docker logs.  My deployer engine, Dockerano, generates a per application shell script which generates logs for the "main" container called dshell so I see something like this</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>./dlogs
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./dlogs
 
 web_1        | 2017-08-11T21:51:59.474344180Z /app/config/initializers/constants_global.rb:6: warning: previous definition of REAL_SKYPE was here
 web_1        | 2017-08-11T21:51:59.474348492Z /app/config/initializers/constants_system.rb:6: warning: already initialized constant STATUS_OK
@@ -241,21 +243,19 @@ web_1        | 2017-08-11T21:52:00.421398929Z /app/app/controllers/home_controll
 web_1        | 2017-08-11T21:52:00.421438372Z /app/app/controllers/home_controller.rb:147: warning: key :course is duplicated and overwritten on line 153
 web_1        | 2017-08-11T21:52:01.118340090Z * Listening on tcp://0.0.0.0:3210
 web_1        | 2017-08-11T21:52:01.118720653Z Use Ctrl-C to stop
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>What this is doing under the hood is a simple:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
 docker-compose -f docker-compose.production.yml logs -f -t web
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h1 id="check-the-free-disc-space">05: Check the Free Disc Space</h1>
+<h1 id="05-check-the-free-disc-space">05: Check the Free Disc Space</h1>
 
 <p>As with anything, ever, resource consumption can always be an issue and our normal OS tools include df:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>df -h
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>df -h
 Filesystem      Size  Used Avail Use% Mounted on
 udev            3.9G     0  3.9G 0% /dev
 tmpfs           799M   83M  716M11% /run
@@ -264,60 +264,56 @@ tmpfs           3.9G  7.0M  3.9G 1% /dev/shm
 tmpfs           5.0M     0  5.0M 0% /run/lock
 tmpfs           3.9G     0  3.9G 0% /sys/fs/cgroup
 tmpfs           799M     0  799M 0% /run/user/1000
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I spent a lot of time on this project trying desperately to use T2.micro instances because, well, they're cheap and, at best, it was a false economy.  Severe bloat within the Docker AUFS filesystem found me continually running out of disc space after multiple deploys even though my containers were actually tiny.  This is a <a href="https://github.com/moby/moby/issues/22207">known Docker Moby issue</a> that has been open for over a year and a half now and is still <strong>unassigned</strong> to anyone.</p>
 
 <p>In order to avoid this bug, I ended up moving from multiple T2.micro instances to a single m4.large instance and then doubling the underlying storage from 8 gigs to 16.  And, when I did that, a lot of my issues just magically disappeared.  Being cheap truly was a false economy here because I ended up with fewer instances and not only did my reliability go up but my bill went down.</p>
 
-<h1 id="check-the-cpu-usage-and-ram-usage">06: Check the CPU Usage and Ram Usage</h1>
+<h1 id="06-check-the-cpu-usage-and-ram-usage">06: Check the CPU Usage and Ram Usage</h1>
 
 <p>If you don't have htop installed on all your instances then you really, really should.  htop kicks the absolute snot out of classic top.  Install it with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get install htop
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install htop
+</code></pre></div></div>
 
 <p>And then invoke it with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>htop
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>htop
+</code></pre></div></div>
 
 <p>At this point you can easily see the underlying machine load, etc.</p>
 
-<h1 id="look-at-individual-container-status">07: Look at Individual Container Status</h1>
+<h1 id="07-look-at-individual-container-status">07: Look at Individual Container Status</h1>
 
 <p>If you're having an issue with a given application then you want to look at all the containers for that application.  The easiest way is to grep by name.  Let's say that your underlying application is called seirawatchwebapp:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker ps | grep seirawatchwebapp
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker ps | grep seirawatchwebapp
 23c1b98a2add        fuzzygroup/seirawatchwebapp_web   "bundle exec clock..."   11 hours ago        Restarting (10) 9 seconds ago                              seirawatchwebapp_clockwork_1
 6eb89122ee73        fuzzygroup/seirawatchwebapp_web   "bundle exec sidek..."   11 hours ago        Up 11 hours                                                seirawatchwebapp_sidekiq_1
 36f49f07273f        fuzzygroup/seirawatchwebapp_web   "/bin/sh -c 'puma ..."   11 hours ago        Up 11 hours                     0.0.0.0:3210-&gt;3210/tcp     seirawatchwebapp_web_1
 49d72363de84        redis:3.2-alpine                  "docker-entrypoint..."   11 hours ago        Up 11 hours                     0.0.0.0:32820-&gt;6379/tcp    seirawatchwebapp_redis_1
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The thing to be concerned about here is 23c1b98a2add and the reason is that it generally shouldn't be continuously restarting which is what this view shows.</p>
 
-<h1 id="application-level-logs---timberio">08: Application Level logs - Timber.io</h1>
+<h1 id="08-application-level-logs---timberio">08: Application Level logs - Timber.io</h1>
 
 <p>I've recently started using <a href="https://www.timber.io">Timber.io</a> which is a cross application logging environment and I've been very, very happy with it.  If you haven't looked at Timber.io for your Rails development, I'd recommend it.  Even the free tier is actually quite useful.</p>
 
 <p>Timber.io is a full web app rather than a command line tool so you need to log into the Timber service and then select your application where you want to view the logs.</p>
 
-<h1 id="check-your-error-logger">09: Check Your Error Logger</h1>
+<h1 id="09-check-your-error-logger">09: Check Your Error Logger</h1>
 
 <p>If you aren't running a dedicated error tracker, whether HoneyBadger, BugSnag or Errbit, you really, really should.</p>
 
-<h1 id="the-answer-check-all-your-containers">10: The Answer: Check All Your Containers</h1>
+<h1 id="10-the-answer-check-all-your-containers">10: The Answer: Check All Your Containers</h1>
 
 <p>What I'm building is a multi-container system, a distributed system in truth, with formal APIs between each of the components and what this means is that a container failure in subsystem X can affect subsystem Y or subsystem Z without it being clear as to why.  The trouble with this type of debugging is getting a high enough level view to understand it as a whole.</p>
 
 <p>The easiest way to do this on a single machine is to use the <strong>docker stats</strong> command:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker stats
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker stats
 
 CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O           PIDS
 b17d34bf7268        0.01%               207.6MiB / 7.795GiB   2.60%               1.1MB / 1.53MB      20.5kB / 7.68MB     23
@@ -342,12 +338,11 @@ e34789eed4cc        0.00%               108.5MiB / 7.795GiB   1.36%             
 533d96fc2ce1        0.24%               120.7MiB / 7.795GiB   1.51%               9.18MB / 16.7MB     258kB / 0B          6
 6b60a945bff7        0.01%               188.3MiB / 7.795GiB   2.36%               14.5MB / 4.69MB     2.03MB / 0B         10
 9c2e8ec55a06        0.10%               6.215MiB / 7.795GiB   0.08%               16.7MB / 9.17MB     369kB / 475kB       3
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The curious thing here is that one container, c520fc5504f1, is showing – for CPU % and all other metrics.  Let's zoom in on that one.  Personally I find the view above to be more granular than needed and missing the application specific details that I need so my deployer generates a dstats shell script which does this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>./dstats 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./dstats 
 CONTAINER                      CPU %               MEM USAGE / LIMIT     CONTAINER ID
 seirawatchshop_sidekiq_1       --                  -- / --               c520fc5504f1321d44078ea3df8a2f1ffc9147d0cb117564e913596eda76db32
 seirawatchshop_web_1           0.01%               91.61MiB / 7.795GiB   cc24d6bcc576cc1ce0c7d04ba8af6b51a1b7599fbbfdcf0c1cb98bd1553e1224
@@ -371,8 +366,7 @@ seiraadmin_redis_1             0.11%               6.219MiB / 7.795GiB   4d978af
 shouldigem_sidekiq_1           0.06%               120.7MiB / 7.795GiB   533d96fc2ce1fb492faa477dfd171e370a30c107becce00e5a52d56bfe3b2622
 shouldigem_web_1               0.10%               187.1MiB / 7.795GiB   6b60a945bff74748f3c447ff7b57f75ef12518758c79e75bd587d59531771f3e
 shouldigem_redis_1             0.09%               6.215MiB / 7.795GiB   9c2e8ec55a066d382d0ee0ceadfb3e061196127f6b334e16b73e43551ee4f435
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Note 1: Source for dstats is <a href="https://gist.github.com/fuzzygroup/b4293b4a7d15a9d8ea88a50ddb2ab3f0">here</a>.</p>
 
@@ -380,17 +374,16 @@ shouldigem_redis_1             0.09%               6.215MiB / 7.795GiB   9c2e8ec
 
 <p>If I then docker ps and grep either with the name or the process id, I will see the same container:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker ps | grep seirawatchshop_sidekiq_1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker ps | grep seirawatchshop_sidekiq_1
 631359e0cec8        fuzzygroup/seirawatchshop_web     "bundle exec sidek..."   10 hours ago        Restarting (1) 46 seconds ago                             seirawatchshop_sidekiq_1
 
 docker ps | grep 631359e0cec8
 631359e0cec8        fuzzygroup/seirawatchshop_web     "bundle exec sidek..."   9 hours ago         Restarting (1) 26 seconds ago                             seirawatchshop_sidekiq_1
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Once we have this then we can get just the logs on this one container:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker logs 631359e0cec8
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker logs 631359e0cec8
 
 Error connecting to Redis on 127.0.0.1:6379 (Errno::ECONNREFUSED)
 /usr/local/bundle/gems/redis-3.3.3/lib/redis/client.rb:345:in `rescue in establish_connection'
@@ -421,14 +414,13 @@ Error connecting to Redis on 127.0.0.1:6379 (Errno::ECONNREFUSED)
 /usr/local/bundle/gems/sidekiq-4.2.7/bin/sidekiq:12:in `&lt;top (required)&gt;'
 /usr/local/bundle/bin/sidekiq:22:in `load'
 /usr/local/bundle/bin/sidekiq:22:in `&lt;top (required)&gt;'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So what's going on here is clearly at the Sidekiq stack layer and it is some type of connection to the underlying containerized Redis instance.  Once we know that, troubleshooting this should actually be pretty simple; it eventually turned out to be a missing pair of files - config/sidekiq.yml.erb and config/initializers/sidekiq.rb that had been overlooked in my initial configuration.</p>
 
 <p>Just as a sidebar, a docker ps -a is also sometimes useful:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker ps -a
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker ps -a
 CONTAINER ID        IMAGE                             COMMAND                  CREATED             STATUS                          PORTS       NAMES
 b17d34bf7268        fuzzygroup/seirasearch_web        "/bin/sh -c 'puma ..."   9 hours ago         Up 9 hours                      0.0.0.0:3230-&gt;3230/tcp    seirasearch_web_1
 5c5460a763b1        fuzzygroup/seirawatchwebapp_web   "bundle exec clock..."   9 hours ago         Up 9 hours       seirawatchwebapp_clockwork_1
@@ -457,16 +449,14 @@ e34789eed4cc        fuzzygroup/seiraadmin_web         "bundle exec clock..."   9
 8478172d0f2b        google/cadvisor:latest            "/usr/bin/cadvisor..."   11 hours ago        Exited (137) 11 hours ago       cadvisor
 5b5c1709c1af        errbit/errbit:latest              "bundle exec puma ..."   3 days ago          Exited (0) 10 hours ago       errbit_errbit_1
 ac91a943e789        mongo:3.2                         "docker-entrypoint..."   3 days ago          Exited (0) 10 hours ago       errbit_mongo_1
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h1 id="go-nuclear---restart-the-docker-daemon">11: Go Nuclear - Restart the Docker Daemon</h1>
+<h1 id="11-go-nuclear---restart-the-docker-daemon">11: Go Nuclear - Restart the Docker Daemon</h1>
 
 <p>The absolute nuclear approach here is to simply restart the <a href="https://docs.docker.com/engine/admin/">docker daemon</a> itself.  On Ubuntu, this is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo service docker restart
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo service docker restart
+</code></pre></div></div>
 
 <p>I'm not going to go so far as to say that you don't have to, rarely, restart the docker daemon but it is just that – <strong>rare</strong>.  Your problems are far, far, far more likely to be application side errors, even when it looks like Docker is at fault.  I've mistakenly pointed the finger at Docker too many times – and I was <strong>wrong</strong>.</p>
 

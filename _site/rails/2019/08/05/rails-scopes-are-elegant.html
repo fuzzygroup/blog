@@ -135,6 +135,12 @@ A scope is a Rails database query ...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,49 +190,43 @@ A scope is a Rails database query ...">
 
 <p>A scope is a Rails database query that operates much like a class method only it is much, much simpler to define.  Here's a class method that finds the active elements in a table called habits:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>def active
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def active
   Habit.where(active: true)
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Now that's not bad but a Rails scope looks like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>scope :active, -&gt; { where(active: true) }
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scope :active, -&gt; { where(active: true) }
+</code></pre></div></div>
 
 <p>But the real benefit here is that scopes are <strong>chainable</strong> so they can be inserted into an overall "query pipeline" where you can easily extend things.  In my case I had a site listing habits and I realized that habits needed a state of active (if it was true it should be displayed and if it was false then it shouldn't be).  Here was my initial view code:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;%plan.habits.each do |habit|%&gt;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%plan.habits.each do |habit|%&gt;
   &lt;li&gt;&lt;%=link_to(habit.name, habit_path(habit))%&gt;&lt;/li&gt;
 &lt;% end %&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Once I had the scope defined then all I had to do was this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;%plan.habits.active.each do |habit|%&gt;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%plan.habits.active.each do |habit|%&gt;
   &lt;li&gt;&lt;%=link_to(habit.name, habit_path(habit))%&gt;&lt;/li&gt;
 &lt;% end %&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And <strong>blammo</strong> I had an active list of habits.</p>
 
 <p>Now let's carry the example further and let's say that you want a list of habits sorted by name. You can define a scope called ordered_by_name like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>scope :order_by_name, -&gt; { order("name ASC")}
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scope :order_by_name, -&gt; { order("name ASC")}
+</code></pre></div></div>
 
 <p>and the scope into your view like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;%plan.habits.active.order_by_name.each do |habit|%&gt;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%plan.habits.active.order_by_name.each do |habit|%&gt;
   &lt;li&gt;&lt;%=link_to(habit.name, habit_path(habit))%&gt;&lt;/li&gt;
 &lt;% end %&gt;    
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And it will be sorted by name, easy peasy.  Now I've used scopes for <strong>years</strong> (prior to their current syntax actually) but their elegance has never struck me in quite the same way.  Perhaps it is just Monday …</p>
 

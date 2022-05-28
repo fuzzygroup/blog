@@ -137,6 +137,12 @@ Let's start with our ...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -188,7 +194,7 @@ Let's start with our ...">
 
 <p>Let's start with our SystemD unit file that doesn't work:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[Unit]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Unit]
 Description=Twitter To Kafka
 
 [Service]
@@ -204,12 +210,11 @@ Restart=always
 
 [Install]
 WantedBy=multi-user.target
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This generates errors like these:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ sudo systemctl status twitter_to_kafka.service
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ sudo systemctl status twitter_to_kafka.service
 ● twitter_to_kafka.service - Twitter To Kafka
    Loaded: loaded (/lib/systemd/system/twitter_to_kafka.service; enabled; vendor preset: enabled)
    Active: failed (Result: exit-code) since Thu 2020-02-13 12:57:48 UTC; 1min 54s ago
@@ -224,12 +229,11 @@ Feb 13 12:57:48 ip-172-31-24-213 systemd[1]: Stopped Twitter To Kafka.
 Feb 13 12:57:48 ip-172-31-24-213 systemd[1]: twitter_to_kafka.service: Start request repeated too quickly.
 Feb 13 12:57:48 ip-172-31-24-213 systemd[1]: twitter_to_kafka.service: Failed with result 'exit-code'.
 Feb 13 12:57:48 ip-172-31-24-213 systemd[1]: Failed to start Twitter To Kafka.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The problem is that rbenv is a shell extension so the shell has to be loaded to run this correctly.  Just adding /bin/bash -lc to ExecStart and ExecReload fixes this.  Here's the actual working unit file:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[Unit]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Unit]
 Description=Twitter To Kafka
 
 [Service]
@@ -245,8 +249,7 @@ Restart=always
 
 [Install]
 WantedBy=multi-user.target
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Sample github file where I found <a href="https://gist.github.com/unonasoft/48fd1df0f6a8a7a8e554632c9066178b">this</a>.</p>
 

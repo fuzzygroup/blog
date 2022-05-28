@@ -135,6 +135,12 @@ So I'm at the very early learning stage of Rust, that stage where almost nothing
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -192,7 +198,7 @@ So I'm at the very early learning stage of Rust, that stage where almost nothing
 
 <h3 id="pass-1-problems-with-scopes">Pass 1: Problems with Scopes</h3>
 
-<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">path</span><span class="p">::</span><span class="n">Path</span><span class="p">;</span>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">path</span><span class="p">::</span><span class="n">Path</span><span class="p">;</span>
 
 <span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">if</span> <span class="nf">path_exists</span><span class="p">(</span><span class="s">"/home"</span><span class="p">)</span> <span class="p">{</span> 
@@ -212,19 +218,17 @@ So I'm at the very early learning stage of Rust, that stage where almost nothing
     <span class="k">return</span> <span class="k">false</span>
   <span class="p">}</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This program has a core problem - the environment variable isn't in scope:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  Compiling playground v0.0.1 (/playground)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Compiling playground v0.0.1 (/playground)
 error[E0425]: cannot find value `environment` in this scope
   --&gt; src/main.rs:11:20
    |
 11 |     println!("{}", environment);
    |                    ^^^^^^^^^^^ not found in this scope
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The implication of this is that code within { } braces is a true local block and thus out of scope with what came  before.  The Ruby work around for something like this is to have an outer variable that "shadows" the name of the variable within the block and thus allows its value to pass out.  Unfortunately Rust identifies that technique as a bug since the outer variable is never read.  My refactor on this is to write a function which returns this.</p>
 
@@ -232,7 +236,7 @@ error[E0425]: cannot find value `environment` in this scope
 
 <p>Here was my first pass at moving environment fetching into a function of its own.  I got tired of typing environment so I moved to calling it my_env.</p>
 
-<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">path</span><span class="p">::</span><span class="n">Path</span><span class="p">;</span>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">path</span><span class="p">::</span><span class="n">Path</span><span class="p">;</span>
 
 <span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">let</span> <span class="n">my_env</span> <span class="o">=</span> <span class="nf">get_env</span><span class="p">();</span>
@@ -256,12 +260,11 @@ error[E0425]: cannot find value `environment` in this scope
     <span class="k">return</span> <span class="k">false</span>
   <span class="p">}</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here are the errors we have:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> Compiling playground v0.0.1 (/playground)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Compiling playground v0.0.1 (/playground)
 error[E0277]: `()` doesn't implement `std::fmt::Display`
  --&gt; src/main.rs:5:20
   |
@@ -289,33 +292,30 @@ For more information about an error, try `rustc --explain E0277`.
 error: could not compile `playground`.
 
 To learn more, run the command again with --verbose.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="pass-3-working">Pass 3: Working</h3>
 
 <p>The solution to the above was to add a return type or this odd bit of syntax:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>fn get_env() -&gt; &amp;'static str
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fn get_env() -&gt; &amp;'static str
+</code></pre></div></div>
 
 <p>Apparently the bit following the () identifies the return value of the function as a statically allocated string.  This is syntactically similar to the:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> -&gt; bool
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> -&gt; bool
+</code></pre></div></div>
 
 <p>but the single quote really threw me.</p>
 
-<div class="language-rust highlighter-rouge"><pre class="highlight"><code><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">path</span><span class="p">::</span><span class="n">Path</span><span class="p">;</span>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">path</span><span class="p">::</span><span class="n">Path</span><span class="p">;</span>
 
 <span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">let</span> <span class="n">my_env</span> <span class="o">=</span> <span class="nf">get_env</span><span class="p">();</span>
     <span class="nd">println!</span><span class="p">(</span><span class="s">"{}"</span><span class="p">,</span> <span class="n">my_env</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="k">fn</span> <span class="nf">get_env</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="o">&amp;</span><span class="err">'</span><span class="k">static</span> <span class="nb">str</span> <span class="p">{</span>
+<span class="k">fn</span> <span class="nf">get_env</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="o">&amp;</span><span class="nv">'static</span> <span class="nb">str</span> <span class="p">{</span>
     <span class="k">if</span> <span class="nf">path_exists</span><span class="p">(</span><span class="s">"/home"</span><span class="p">)</span> <span class="p">{</span> 
       <span class="k">return</span> <span class="s">"unix"</span><span class="p">;</span>
     <span class="p">}</span> 
@@ -332,8 +332,7 @@ To learn more, run the command again with --verbose.
     <span class="k">return</span> <span class="k">false</span>
   <span class="p">}</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="the-learnings">The Learnings</h2>
 

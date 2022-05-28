@@ -135,6 +135,12 @@ As I've written before, I personally find virtual environments to be the devil /
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,11 +192,10 @@ As I've written before, I personally find virtual environments to be the devil /
 
 <p>My problem was this persnickety little prick of an error:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/IPython/core/interactiveshell.py:931: 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/IPython/core/interactiveshell.py:931: 
 UserWarning: Attempting to work in a virtualenv. If you encounter problems, please install 
 IPython inside the virtualenv.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This starts with at least one problem – what the hell is iPython.  Apparently iPython is "interactive Python".  Now I don't really understand how Python or Python3 isn't interactive when both of them can load up a functional repl but, whatever.  Apparently iPython improves debugging or at least has some bit of color coding (so maybe think of it as ruby + <a href="https://rubygems.org/gems/awesome_print/versions/1.8.0">awesome_print</a>).  So this error message means:</p>
 
@@ -205,7 +210,7 @@ IPython inside the virtualenv.
 
 <p>Here turned out to be the approach for fixing it:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># edit your .bashrc or .zshrc (I use zsh)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># edit your .bashrc or .zshrc (I use zsh)
 vi ~/.zshrc
 
 # add this alias statement
@@ -213,14 +218,12 @@ alias ipy="python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance
 
 # make the alias active by sourcing it
 source ~/.zshrc
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>You now need to use the ipy alias whenever you want iPython:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cat jsons/reddit.json| ipy template_expert.py
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat jsons/reddit.json| ipy template_expert.py
+</code></pre></div></div>
 
 <p>While, I'm still not entirely sure why I need iPython but the cool kids seem to use it and the color coding and back traces are much better:</p>
 

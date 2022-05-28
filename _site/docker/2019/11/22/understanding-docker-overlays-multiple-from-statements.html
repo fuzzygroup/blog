@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -192,19 +198,18 @@
 
 <p>My first attempt to make this work failed to work and it failed to really adopt the zen of Docker.  One of the very cool features is that you can build up a Docker container with bits from different containers by using <strong>multiple</strong> from statements.  This lets you have something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>FROM continuumio/miniconda3:latest AS python
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM continuumio/miniconda3:latest AS python
 RUN apt-get update &amp;&amp; apt-get install build-essential python3-dev -y
 
 FROM ubuntu:latest
 FROM ruby:2.6.4-stretch
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The term for this is a <a href="https://dev.to/brpaz/using-docker-multi-stage-builds-during-development-35bc">Docker Multi Stage Build</a>.  The trick here is that the output from each FROM statement is logically isolated from each other.  The reason for this is actually pretty simple – standard directory structures.  Given that most *nix environments use similar top level structures like /opt, you simply can't combine things blindly – it needs to be an intentional choice using, <strong>drumroll</strong>, <strong>copy</strong>!</p>
 
 <p>Here's what this multi stage build stuff looked like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>FROM continuumio/miniconda3:latest AS python
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM continuumio/miniconda3:latest AS python
 RUN apt-get update &amp;&amp; apt-get install build-essential python3-dev -y
 RUN conda update -n base -c defaults conda
 RUN pip install twint
@@ -218,8 +223,7 @@ COPY --from=python /opt/conda/bin/twint /usr/bin
 RUN mkdir -p /opt/conda/bin/
 COPY --from=python /opt/conda /opt/conda/
 COPY --from=python /opt/conda/bin/python /opt/conda/bin/python
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The last block of lines above show the process of copying from python (the FROM line at the top is named with the "AS python") and there are two copy statements that were really necessary:</p>
 
@@ -242,16 +246,15 @@ COPY --from=python /opt/conda/bin/python /opt/conda/bin/python
 
 <p>Here's how I did this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mkdir ~/twint
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir ~/twint
 touch ~/twint/Dockerfile
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>Note</strong>: Docker likes to build directories mostly so it was just easier to give it a directory of its own with a single Dockerfile in it.</p>
 
 <p>The next step was to edit the Dockerfile and add the following lines:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>#FROM ruby:2.6.5-ubuntu
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#FROM ruby:2.6.5-ubuntu
 FROM continuumio/miniconda3:latest
 
 RUN apt-get update &amp;&amp; apt-get install build-essential python3-dev -y
@@ -260,16 +263,14 @@ RUN conda update -n base -c defaults conda
 RUN pip install twint
 # This trick keeps the container running so you can shell into it
 RUN while true; do sleep 1000; done
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Once I had this written, I could do a:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker build twint
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build twint
 docker ps | grep twint
 docker exec CONTAINER_HASH -it /bin/bash
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And then I was able to use a combination of ls and which to find the twint binary and gather the information needed for the copy statements above.</p>
 
@@ -279,7 +280,7 @@ docker exec CONTAINER_HASH -it /bin/bash
 
 <p>Here is how it all came together:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># All The Python Stuff
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># All The Python Stuff
 FROM continuumio/miniconda3:latest AS python
 RUN apt-get update &amp;&amp; apt-get install build-essential python3-dev -y
 RUN conda update -n base -c defaults conda
@@ -327,8 +328,7 @@ COPY . .
 RUN bundle exec rake RAILS_ENV=production DATABASE_URL=mysql2://user:pass@127.0.0.1/dbname SECRET_TOKEN=dummytoken assets:precompile
 
 CMD puma -C config/puma.rb
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="ubuntu-not-alpine">Ubuntu Not Alpine</h2>
 

@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -198,19 +204,17 @@
 
 <p>And, sure enough, when I removed the date by treating it as an internal constant, it worked perfectly.  Here's the workaround I came up with:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">compile</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">compile</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="p">)</span>
   <span class="k">if</span> <span class="n">date</span><span class="p">.</span><span class="nf">is_a?</span><span class="p">(</span><span class="no">String</span><span class="p">)</span>
     <span class="n">date</span> <span class="o">=</span> <span class="no">Date</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And then I call it as</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">CompileWorker</span><span class="p">.</span><span class="nf">perform_async</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">date</span><span class="p">.</span><span class="nf">to_s</span><span class="p">)</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">CompileWorker</span><span class="p">.</span><span class="nf">perform_async</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">date</span><span class="p">.</span><span class="nf">to_s</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p>This allows my internal use of the compile method where a date is passed in normally to function without issue but to work correctly when called in an asynchronous manner.</p>
 

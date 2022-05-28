@@ -135,6 +135,12 @@ So my scenario...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -190,7 +196,7 @@ So my scenario...">
 
 <p>So here was the first thing that I observed:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rsync -avh -e ssh Dropbox/"Camera Uploads"/ 192.168.1.25:/Users/sjohnson/backups/macbook_air/Dropbox/"Camera Uploads"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rsync -avh -e ssh Dropbox/"Camera Uploads"/ 192.168.1.25:/Users/sjohnson/backups/macbook_air/Dropbox/"Camera Uploads"
 Password:
 building file list ... done
 created directory /Users/sjohnson/backups/macbook_air/Dropbox/Camera
@@ -207,14 +213,13 @@ created directory /Users/sjohnson/backups/macbook_air/Dropbox/Camera
 2017-07-10 18.48.43.jpg
 2017-07-10 18.48.47.mov
 ^Crsync error: received SIGINT, SIGTERM, or SIGHUP (code 20) at /BuildRoot/Library/Caches/com.apple.xbs/Sources/rsync/rsync-52.200.1/rsync/rsync.c(244) [sender=2.6.9]'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So what you're seeing is that even tho the data came from "Camera Uploads", it got moved to "Camera".  The issue is obviously directory names with spaces.  And since I had started with an scp approach this meant that rsync was copying up data that it already had in place.  ARRGHH!</p>
 
 <p>And here's a second pass with a different approach to space encoded filenames:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rsync -avh -e ssh Dropbox/"Camera Uploads"/ 192.168.1.25:/Users/sjohnson/backups/macbook_air/Dropbox/Camera\ Uploads/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rsync -avh -e ssh Dropbox/"Camera Uploads"/ 192.168.1.25:/Users/sjohnson/backups/macbook_air/Dropbox/Camera\ Uploads/
 Password:
 building file list ... done
 ./
@@ -226,48 +231,42 @@ building file list ... done
 2017-07-30 09.27.13.jpg
 2017-07-30 09.27.23.jpg
 ^Crsync error: received SIGINT, SIGTERM, or SIGHUP (code 20) at /BuildRoot/Library/Caches/com.apple.xbs/Sources/rsync/rsync-52.200.1/rsync/rsync.c(244) [sender=2.6.9] 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Before the second pass:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> ls -ltr Camera | wc -l
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ls -ltr Camera | wc -l
       15
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>After the second pass</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ScottiMac:Dropbox sjohnson$ ls -ltr Camera | wc -l
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ScottiMac:Dropbox sjohnson$ ls -ltr Camera | wc -l
       36
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So even after changing how I handled the destination filename, it still went to "Camera".  Double ARGH.</p>
 
 <p>So what's the obvious workaround when rsync seems to entirely fsck up OSX filenames with spaces?  I'm sure there are other options but my approach was drop dead simple, rename each folder on source and destination from:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Camera Uploads
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Camera Uploads
+</code></pre></div></div>
 
 <p>to</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Camera_Uploads
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Camera_Uploads
+</code></pre></div></div>
 
 <p>and re-run the sync command:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rsync -avh -e ssh Dropbox/Camera_Uploads/ 192.168.1.25:/Users/sjohnson/backups/macbook_air/Dropbox/Camera_Uploads/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rsync -avh -e ssh Dropbox/Camera_Uploads/ 192.168.1.25:/Users/sjohnson/backups/macbook_air/Dropbox/Camera_Uploads/
 Password:
 building file list ... done
 .DS_Store
 
 sent 18.87K bytes  received 1.64K bytes  8.21K bytes/sec
 total size is 4.57G  speedup is 222553.34
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="problem-the-second---excluded-directories">Problem the Second - Excluded Directories</h1>
 
@@ -275,15 +274,14 @@ total size is 4.57G  speedup is 222553.34
 
 <p>Here was my first attempt:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>➜ rsync -avh --exclude '/Users/sjohnson/Library/' -e ssh ~ 192.168.1.25:/Users/sjohnson/backups/seas
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ rsync -avh --exclude '/Users/sjohnson/Library/' -e ssh ~ 192.168.1.25:/Users/sjohnson/backups/seas
 Password:
 building file list ... rsync: opendir "/Users/sjohnson/Library/Application Support/CallHistoryTransactions" failed: Operation not permitted (1)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So that clearly failed.  Now I've long been aware that Apple has old versions of core open source tools like rsync, so:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>➜ rsync --version
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜ rsync --version
 rsync  version 2.6.9  protocol version 29
 Copyright (C) 1996-2006 by Andrew Tridgell, Wayne Davison, and others.
 &lt;http://rsync.samba.org/&gt;
@@ -293,18 +291,16 @@ Capabilities: 64-bit files, socketpairs, hard links, symlinks, batchfiles,
 rsync comes with ABSOLUTELY NO WARRANTY.  This is free software, and you
 are welcome to redistribute it under certain conditions.  See the GNU
 General Public Licence for details.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Clearly the 2006 copyright date is a problem.  This calls for brew!</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>brew install rsync
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install rsync
+</code></pre></div></div>
 
 <p>And, naturally, brew does <a href="https://fuzzyblog.io/blog/ruby/2019/07/10/when-rbenv-well-won-t-rbenv-fixing-shell-extension-madness.html">shell magic trickery</a> that messed up for me.  Happily tho rsync is just an executable that I can fully path to (all brew executables always end up in /usr/local/bin):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/usr/local/bin/rsync --version
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/local/bin/rsync --version
 rsync  version 3.1.3  protocol version 31
 Copyright (C) 1996-2018 by Andrew Tridgell, Wayne Davison, and others.
 Web site: http://rsync.samba.org/
@@ -316,8 +312,7 @@ Capabilities:
 rsync comes with ABSOLUTELY NO WARRANTY.  This is free software, and you
 are welcome to redistribute it under certain conditions.  See the GNU
 General Public Licence for details.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>and that still failed but here was the magic (and Virginia, yes, the error was <strong>all damn mine</strong>, not the version of rsync):</p>
 
@@ -325,9 +320,8 @@ General Public Licence for details.
 
 <p>So that made my rsync command this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rsync -avh --exclude 'Library/' -e ssh ~ 192.168.1.25:/Users/sjohnson/backups/seas
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rsync -avh --exclude 'Library/' -e ssh ~ 192.168.1.25:/Users/sjohnson/backups/seas
+</code></pre></div></div>
 
 <p>And that worked like a charm.  Sigh.  Always read the docs well if at all possible.</p>
 

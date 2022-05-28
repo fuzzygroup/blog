@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -198,13 +204,12 @@
 
 <p>The ActiveRecord operation in question was a check to see if a row already existed in the table.  Here's the SQL that the ORM was generating:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>SELECT  `link2016_q1s`.* FROM `link2016_q1s` WHERE `link2016_q1s`.`site_id` = 215345 AND `link2016_q1s`.`page_id` = 2401963 AND `link2016_q1s`.`url_no_www_sha1` = 'fe9f2487051ac4ab2a86bdf5c501336c2bda315b'  ORDER BY `link2016_q1s`.`id` ASC LIMIT 1\G
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT  `link2016_q1s`.* FROM `link2016_q1s` WHERE `link2016_q1s`.`site_id` = 215345 AND `link2016_q1s`.`page_id` = 2401963 AND `link2016_q1s`.`url_no_www_sha1` = 'fe9f2487051ac4ab2a86bdf5c501336c2bda315b'  ORDER BY `link2016_q1s`.`id` ASC LIMIT 1\G
+</code></pre></div></div>
 
 <p>And here's the explain showing the query plan:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>explain SELECT  `link2016_q1s`.* FROM `link2016_q1s` WHERE `link2016_q1s`.`site_id` = 215345 AND `link2016_q1s`.`page_id` = 2401963 AND `link2016_q1s`.`url_no_www_sha1` = 'fe9f2487051ac4ab2a86bdf5c501336c2bda315b'  ORDER BY `link2016_q1s`.`id` ASC LIMIT 1\G *************************** 1. row ***************************
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>explain SELECT  `link2016_q1s`.* FROM `link2016_q1s` WHERE `link2016_q1s`.`site_id` = 215345 AND `link2016_q1s`.`page_id` = 2401963 AND `link2016_q1s`.`url_no_www_sha1` = 'fe9f2487051ac4ab2a86bdf5c501336c2bda315b'  ORDER BY `link2016_q1s`.`id` ASC LIMIT 1\G *************************** 1. row ***************************
        id: 1   select_type: SIMPLE
     table: link2016_q1s
      type: index possible_keys: s_c_p_u,s_c_d_p,index_links_on_site_id_and_crawl_id_and_page_id,site_id_url,site_id_url_no_www
@@ -213,8 +218,7 @@
       ref: NULL
      rows: 4306
     Extra: Using where
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>As you can see this is damn near a worst case as the only index being used is the PRIMARY meaning that none of our indices are being used.  <em>Grumble</em>.</p>
 
@@ -228,7 +232,7 @@
 
 <p>The first thing that I noticed here was that ActiveRecord was appending an order construct to the query, the "order by id asc" crap – I didn't put that into ActiveRecord where statement.  <em>more grumbling</em>.  So what happens to our query plan if we remove that?  Here you go:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>explain SELECT  `link2016_q1s`.* FROM `link2016_q1s` WHERE `link2016_q1s`.`site_id` = 215345 AND `link2016_q1s`.`page_id` = 2401963 AND `link2016_q1s`.`url_no_www_sha1` = 'fe9f2487051ac4ab2a86bdf5c501336c2bda315b'  LIMIT 1\G   *************************** 1. row ***************************
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>explain SELECT  `link2016_q1s`.* FROM `link2016_q1s` WHERE `link2016_q1s`.`site_id` = 215345 AND `link2016_q1s`.`page_id` = 2401963 AND `link2016_q1s`.`url_no_www_sha1` = 'fe9f2487051ac4ab2a86bdf5c501336c2bda315b'  LIMIT 1\G   *************************** 1. row ***************************
          id: 1
 select_type: SIMPLE
       table: link2016_q1s
@@ -238,8 +242,7 @@ select_type: SIMPLE
         ref: const
        rows: 16206
       Extra: Using index condition; Using where
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Hm… We're now at least using an index.  Even if it isn't the right index, I'd regard that as progress towards a positive direction.  There are times when the mysql query planner is damn hard to convince of changes so this is good.</p>
 
@@ -247,10 +250,9 @@ select_type: SIMPLE
 
 <p>Looking at the explain statement above still bothers me as we're dealing with 16K rows.  There has to be something better than that.  So digging into the possible indices shows this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>UNIQUE KEY `s_c_p_u` (`site_id`,`crawl_id`,`page_id`,`crawler_id`,`url_no_www_sha1`) USING BTREE,
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>UNIQUE KEY `s_c_p_u` (`site_id`,`crawl_id`,`page_id`,`crawler_id`,`url_no_www_sha1`) USING BTREE,
 KEY `s_c_d_p` (`site_id`,`crawl_id`,`domain_id`,`page_id`) USING BTREE
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Looking at these two indices, knowing that one of them is a UNIQUE key means that there will be less data in it – and it is <em>always</em> faster, even with indices, to deal with less data.  I remember debating this point at length with my Feedster cofounder back in the day when we were building our 64 bit XML search engine.  He took the position that the indices would be efficient enough that the amount of data wouldn't matter.  I took the position that it is always faster, even with an index, to have less data to sift through.</p>
 
@@ -258,7 +260,7 @@ KEY `s_c_d_p` (`site_id`,`crawl_id`,`domain_id`,`page_id`) USING BTREE
 
 <p>Thinking about this for a few minutes made realize that we can leverage both indices to support the underlying goal of quickly checking if this row already existed.  Why not leverage the s_c_d_p index to get the list of crawl_ids and then push that into the next query.  This fulfills the constraint of MySQL wanting the parameters in the index to all be fulfilled.  And after a few minutes of tinkering led to this method:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>def exists?(site_id, page_id, no_www_sha1)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def exists?(site_id, page_id, no_www_sha1)
   crawls = self.where(:site_id =&gt; site_id).select("distinct crawl_id").map(&amp;:crawl_id)
   
   result = self.where(:site_id =&gt; site_id, :crawl_id =&gt; crawls, :page_id =&gt; page_id, :url_no_www_sha1 =&gt; no_www_sha1).order("").limit(1).first
@@ -266,14 +268,12 @@ KEY `s_c_d_p` (`site_id`,`crawl_id`,`domain_id`,`page_id`) USING BTREE
   return true if result
   return false 
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This gave a nice rails style syntax method that I can use to abort the operation if the data already exists i.e.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>return if exists?(site_id, page_id, no_www_sha1)
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>return if exists?(site_id, page_id, no_www_sha1)
+</code></pre></div></div>
 
 <p>The only reason that I'm not having this method compute the no_www_sha1 value is that if we continue we're going to use it anyway so its better to pass it in directly.  I could have computed it in the method and then returned it back as a second parameter but then it should really be exists not exists? since my preference is that a ? postfixed method should really only return a single value either true or false.</p>
 

@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -188,11 +194,10 @@
 
 <p>Clockwork is a long standing Ruby gem which acts as a persistent daemon with its own scheduler that executes a simple DSL allow your models to be easily executed.  Here's an example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>every(1.day, 'Midnight.job -- PageArchive.update_everything', :at =&gt; '00:00') do |job|
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>every(1.day, 'Midnight.job -- PageArchive.update_everything', :at =&gt; '00:00') do |job|
   PageArchive.update_everything
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Unlike traditional cron syntax, I've never found an issue with reading the Clockwork dsl, this says:</p>
 
@@ -220,7 +225,7 @@ end
 
 <p>Write one or more clockwork expressions in clock.rb.  Here's an example from my application:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>require 'clockwork'
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'clockwork'
 include Clockwork
 
 require File.expand_path('../../config/boot', __FILE__)
@@ -242,8 +247,7 @@ module Clockwork
   end
 
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>To test this you can just use the command line:</p>
 
@@ -259,7 +263,7 @@ end
 
 <p>In this example I have a simple Rails app which exists to populate a page archive database consisting of data harvested daily from the Internet.  Here's the Dockerfile:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>FROM ruby:2.3.1-alpine
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM ruby:2.3.1-alpine
 
 RUN apk update &amp;&amp; apk add build-base nodejs mariadb-dev tzdata
 
@@ -272,8 +276,7 @@ RUN bundle install --binstubs
 COPY . .
 
 CMD bundle exec clockwork lib/clock.rb
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The secret to making the scheduling work is to execute the clockwork executable as the root command in the container. This causes the Clockwork executable to be launched when the container initializes.  At that point Clockwork will run the command until it finishes and then remain running, waiting for its next invocation.</p>
 

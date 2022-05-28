@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,33 +186,29 @@
   <div class="post-content" itemprop="articleBody">
     <p>So I'm starting work on a new project that promises to be interesting.  This is pure green field development – one of my very, very favorite things.  I did a skeleton application generation like this:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">rails</span> <span class="kp">new</span> <span class="n">exploder</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">active</span><span class="o">-</span><span class="n">record</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">action</span><span class="o">-</span><span class="n">cable</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">spring</span> <span class="o">--</span><span class="n">api</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rails</span> <span class="n">new</span> <span class="n">exploder</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">active</span><span class="o">-</span><span class="n">record</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">action</span><span class="o">-</span><span class="n">cable</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">spring</span> <span class="o">--</span><span class="n">api</span>
+</code></pre></div></div>
 
 <p>Then I did the normal repository initialization dance:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git init
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git init
 git add .
 git commit -m "First commit"
 git remote add origin git@github.com:fuzzygroup/exploder.git
 git push -u origin/master
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>No surprises so far.  Time for the first model:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rails g model TextCommon
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails g model TextCommon
+</code></pre></div></div>
 
 <p>And I got … nothing. Hm… Here's app/models:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ls -l app/models/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls -l app/models/
 total 0
 drwxr-xr-x@ 3 sjohnson  staff   102B Feb 20 08:32 concerns/
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><em>blink</em>  Oh right – skip-active-record.  This is going to be purely an API and one that processes a lot of text.  But, in an amazing lack of foresight, apparently there's no such thing as a model generator when you don't have ActiveRecord installed.  Sheesh.</p>
 

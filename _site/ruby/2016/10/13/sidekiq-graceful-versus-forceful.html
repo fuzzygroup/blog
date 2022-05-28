@@ -135,6 +135,12 @@ Running Sidekiq Intera...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,10 +192,9 @@ Running Sidekiq Intera...">
 
 <p>This is easy and we all should know this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cd /my_rails_app/where_ever_that_is
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /my_rails_app/where_ever_that_is
 bundle exec sidekiq
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This will run Sidekiq interactively.  Now if you want it to run even if your connection to the remote box drops then you need to use Tmux or something similar.</p>
 
@@ -212,16 +217,14 @@ bundle exec sidekiq
 
 <p>Here's an example of a Forceful shutdown:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ps -ef | grep sidekiq | grep -v grep | awk '{print $2}' | xargs kill -9
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ps -ef | grep sidekiq | grep -v grep | awk '{print $2}' | xargs kill -9
+</code></pre></div></div>
 
 <p>Here's an example of a Graceful shutdown:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ps auwwx | grep sidekiq  # and give the pid value to the next command where &lt;pid&gt; is
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ps auwwx | grep sidekiq  # and give the pid value to the next command where &lt;pid&gt; is
 sidekiqctl stop &lt;pid&gt; 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>My thanks to the fine community at <a href="http://www.sidekiq.com/">Stack Overflow</a> for these <a href="http://stackoverflow.com/questions/12143350/gracefully-shutting-down-sidekiq-processes">Sidekiq Graceful answers</a>.</p>
 

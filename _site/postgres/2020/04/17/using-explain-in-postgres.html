@@ -137,6 +137,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -200,9 +206,8 @@
 
 <p>Anyway - MySQL - I've been using <strong>explain</strong> to analyze queries in MySQL for decades i.e.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>explain SELECT foo FROM bars WHERE expression a = b
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>explain SELECT foo FROM bars WHERE expression a = b
+</code></pre></div></div>
 
 <p>And, as of late, I've been using Postgres for many, many projects including <a href="https://www.covidnearme.org">CovidNearMe</a> and my professional day job at the ADL and I've been thinking that explain doesn't work because my database client has, for the first time in my life been graphical, Postico, not a raw terminal and I was never able to make explain work in Postico.</p>
 
@@ -210,7 +215,7 @@
 
 <p>So the other day when I need to analyze a query and Google told met hat EXPLAIN was actually a thing, I got out the console and did this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>psql -U sjohnson -d covid_morbidity1_development
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>psql -U sjohnson -d covid_morbidity1_development
 psql (11.5)
 Type "help" for help.
 covid_morbidity1_development=# EXPLAIN select max(date_created_at) from locations;
@@ -219,18 +224,16 @@ covid_morbidity1_development=# EXPLAIN select max(date_created_at) from location
  Aggregate  (cost=3736.90..3736.91 rows=1 width=4)
    -&gt;  Seq Scan on locations  (cost=0.00..3525.32 rows=84632 width=4)
 (2 rows)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Now I don't use Postgres enough to really understand this but it isn't showing me that an index is <strong>NOT</strong> being used for the query and that's <strong>always</strong>, <strong>always</strong> bad.  So I added a simple index as per this example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>    table.index ["date_created_at"], name: "index_locations_on_date_created_at"
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    table.index ["date_created_at"], name: "index_locations_on_date_created_at"
+</code></pre></div></div>
 
 <p>And now we get:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ psql -U sjohnson -d covid_morbidity1_development
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ psql -U sjohnson -d covid_morbidity1_development
 psql (11.5)
 Type "help" for help.
 
@@ -243,8 +246,7 @@ covid_morbidity1_development=# EXPLAIN select max(date_created_at) from location
            -&gt;  Index Only Scan Backward using index_locations_on_date_created_at on locations  (cost=0.29..5992.46 rows=84633 width=4)
                  Index Cond: (date_created_at IS NOT NULL)
 (5 rows)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>What I can tell from this is that we're not dealing with a full table scan of 3736 row but instead a scan of 36 rows.</p>
 

@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -182,34 +188,30 @@
 
 <p>Note: To avoid the massive amount of errors that Rubocop detects via lefthook, I actually have the rubocop options in lefthook.yml commented out:</p>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="c1">#     rubocop:</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#     rubocop:</span>
 <span class="c1">#       tags: backend style</span>
 <span class="c1">#       glob: "*.rb"</span>
 <span class="c1">#       exclude: "application.rb|routes.rb"</span>
 <span class="c1">#       run: bundle exec rubocop --force-exclusion {all_files}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>and then I run the files individually using:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rubocop -c .rubocop.yaml app/controllers/streaks_controller
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rubocop -c .rubocop.yaml app/controllers/streaks_controller
+</code></pre></div></div>
 
 <p>Here was an interesting error that it just detected:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>app/controllers/streaks_controller.rb:43:7: C: Style/SafeNavigation: Use safe navigation (&amp;.) instead of checking if an object exists before calling the method.
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>app/controllers/streaks_controller.rb:43:7: C: Style/SafeNavigation: Use safe navigation (&amp;.) instead of checking if an object exists before calling the method.
       s.activate if s
       ^^^^^^^^^^^^^^^
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So what we have here is an ActiveRecord operation and then an if clause:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>  <span class="n">s</span> <span class="o">=</span> <span class="no">Streak</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">user_id: </span><span class="n">current_user</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> <span class="ss">id: </span><span class="n">streak_id</span><span class="p">).</span><span class="nf">first</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">s</span> <span class="o">=</span> <span class="no">Streak</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">user_id: </span><span class="n">current_user</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> <span class="ss">id: </span><span class="n">streak_id</span><span class="p">).</span><span class="nf">first</span>
   <span class="n">s</span><span class="p">.</span><span class="nf">activate</span> <span class="k">if</span> <span class="n">s</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The Safe Navigation operator, &amp;, is designed to be a more concise approach to something like the try operator in that it avoids errors when a method is called on nil:</p>
 
@@ -219,10 +221,9 @@
 
 <p>Using the safe navigation operator, the above code snippet can be written as:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>  <span class="n">s</span> <span class="o">=</span> <span class="no">Streak</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">user_id: </span><span class="n">current_user</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> <span class="ss">id: </span><span class="n">streak_id</span><span class="p">).</span><span class="nf">first</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">s</span> <span class="o">=</span> <span class="no">Streak</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">user_id: </span><span class="n">current_user</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> <span class="ss">id: </span><span class="n">streak_id</span><span class="p">).</span><span class="nf">first</span>
   <span class="n">s</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">activate</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This is one of those cases where I like the clarity of my original approach but the safe navigation operator does shorten up a coding paradigm that is almost everywhere in Ruby code.</p>
 

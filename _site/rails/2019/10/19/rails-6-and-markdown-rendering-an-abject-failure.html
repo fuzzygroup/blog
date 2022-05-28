@@ -135,6 +135,12 @@ Note: I am not bitching here about the quality of Rails, High Voltage or any of 
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -223,10 +229,9 @@ Note: I am not bitching here about the quality of Rails, High Voltage or any of 
 
 <p>When you are doing gem debugging on osx and using TextMate, it is really, really helpful to open the gem in question with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>bundle show high_voltage
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle show high_voltage
 mate /Users/sjohnson/.rvm/gems/ruby-2.6.3/gems/high_voltage-3.1.2 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This one, admittedly, I knew already but I always forget it when debugging gems.  This opens the gem in a TextMate window with the full file tree of the gem available so you can add byebug calls freely.</p>
 
@@ -258,7 +263,7 @@ mate /Users/sjohnson/.rvm/gems/ruby-2.6.3/gems/high_voltage-3.1.2
 
 <p>And to make it easier for me, I added a dynamic index template which handles giving me a list of all static pages so I can easily review them. This was a dead simple (and mildy crappy) view but at this point I was about dead on my feet and I just wanted it done.  Here's the view syntax:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Index</span><span class="o">&lt;</span><span class="sr">/h1&gt;
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Index</span><span class="o">&lt;</span><span class="sr">/h1&gt;
 &lt;ul&gt;
   &lt;% Dir.entries(File.join(Rails.root, "app/</span><span class="n">views</span><span class="o">/</span><span class="n">pages</span><span class="s2">")).sort.each do |file| %&gt;
     &lt;% next if file =~ /^_/%&gt;
@@ -269,8 +274,7 @@ mate /Users/sjohnson/.rvm/gems/ruby-2.6.3/gems/high_voltage-3.1.2
     &lt;li&gt;&lt;%=link_to(filename, "</span><span class="o">/</span><span class="n">pages</span><span class="o">/</span><span class="c1">#{filename}")%&gt;</span>
   <span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
 <span class="o">&lt;</span><span class="sr">/ul&gt;
-</span></code></pre>
-</div>
+</span></code></pre></div></div>
 
 <p>This could obviously be quite a bit better but this is one of those features that you write solely for yourself.  It isn't linked to from anywhere on the site and the only one using it should be me or people on the project.</p>
 

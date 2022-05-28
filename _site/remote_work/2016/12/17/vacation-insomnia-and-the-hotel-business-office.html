@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -194,13 +200,12 @@
 
 <p>I've now gotten it to this stage:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>crawl_struct = UrlTool.get_mechanize_links_on_a_page_from_struct(OpenStruct.new(:site =&gt; site))
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>crawl_struct = UrlTool.get_mechanize_links_on_a_page_from_struct(OpenStruct.new(:site =&gt; site))
+</code></pre></div></div>
 
 <p>which returns this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>OpenStruct {
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>OpenStruct {
            :num_pages =&gt; 1,
      :already_crawled =&gt; [
         [0] "14b461cc3eecf248213c23999ca33236363d083f"
@@ -210,8 +215,7 @@
       :mechanize_page =&gt; nil,
       :resolved_links =&gt; []
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>which means that I've made a crawler which, now, does not crawl.  <strong>Groan</strong>.  I wish I'd stayed in bed.  Happily that likely means that I've missed something basic like a conditional since at least my basic return structure is better.  And, while writing this, I just found it – I had omitted a conditional.</p>
 

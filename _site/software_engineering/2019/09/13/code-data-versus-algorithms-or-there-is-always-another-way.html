@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,7 +190,7 @@
 
 <p>And then it struck me – this is a side project, damn it.  The odds on any side project surviving for more than a year are low (although <a href="https://www.jobhound.io">Job Hound</a> has now beaten the odds at about 1.5 years old).  And Data is (generally) faster than code no matter how you cut it – so why not just hard code 5 years of Thanksgivings into the app.  I don't need a generalized solution that works for all time.  I just need a solution that is good enough to find out if there's a market for my side project.</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">DateCommon</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">DateCommon</span>
   
   <span class="c1"># Todo - this bites me in the ass in 2024</span>
   <span class="no">THANKSGIVING_2019</span> <span class="o">=</span> <span class="no">Date</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
@@ -224,14 +230,12 @@
     <span class="k">return</span> <span class="kp">false</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And this gives me:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  DateCommon.holiday?(self.created_at)
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  DateCommon.holiday?(self.created_at)
+</code></pre></div></div>
 
 <p><strong>Note</strong>: by using created_at, I need to call this as part of an after_create or after_save since otherwise created_at wouldn't be set.</p>
 

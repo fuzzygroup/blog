@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -207,13 +213,12 @@
 
 <p>You can also use the <a href="http://stackoverflow.com/questions/18839509/where-can-i-get-a-list-of-ansible-pre-defined-variables">setup</a> command which has a tricky syntax.  I finally got it to work with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible -m setup ficrawlerbig -i inventories/production2 -u ubuntu
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible -m setup ficrawlerbig -i inventories/production2 -u ubuntu
+</code></pre></div></div>
 
 <p>and it produced this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ficrawlerbig | SUCCESS =&gt; {
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ficrawlerbig | SUCCESS =&gt; {
     "ansible_facts": {
         "ansible_all_ipv4_addresses": [
             "172.31.36.55",
@@ -531,8 +536,7 @@
     },
     "changed": false
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Which isn't anything about the variables in my playbook but I think I have a much better handle on how to use ansible system level variables like the machine's memory size which would let me dynamically adjust my sidekiq thread count for example.</p>
 
@@ -540,7 +544,7 @@
 
 <p>create a playbook called playbook_dump_variables.yml and put this in it:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- hosts: all
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- hosts: all
   tasks:
   - template:
       src: templates/dump_variables
@@ -548,24 +552,21 @@
   - fetch:
       src: /tmp/ansible_variables
       dest: "_ansible_variables"
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>create a template called templates/dump_variables and put this in it:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>HOSTVARS (ANSIBLE GATHERED, group_vars, host_vars) :
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HOSTVARS (ANSIBLE GATHERED, group_vars, host_vars) :
 
 
 
 PLAYBOOK VARS:
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Run it with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> ansible-playbook -i inventories/production2 playbook_dump_variables.yml -u ubuntu
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ansible-playbook -i inventories/production2 playbook_dump_variables.yml -u ubuntu
+</code></pre></div></div>
 
 <p>Unfortunately this results in a low level python error ("RepresenterError: cannot represent an object: 172.31.36.55") at the Yaml class level as described <a href="https://github.com/openshift/openshift-ansible/issues/2401">here</a> which seems to be tied to Ansible's Unicode implementation.</p>
 
@@ -573,9 +574,8 @@ PLAYBOOK VARS:
 
 <p>After this failed, I tried the coderwall trick above and that failed with different errors:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>fatal: [ficrawler3]: FAILED! =&gt; {"changed": false, "failed": true, "msg": "AnsibleUndefinedVariable: Unable to look up a name or access an attribute in template string (Module Variables (\"group_vars\"):\n--------------------------------\n \n\n).\nMake sure your variable name does not contain invalid characters like '-': unbound method default() must be called with JSONEncoder instance as first argument (got StrictUndefined instance instead)"}
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fatal: [ficrawler3]: FAILED! =&gt; {"changed": false, "failed": true, "msg": "AnsibleUndefinedVariable: Unable to look up a name or access an attribute in template string (Module Variables (\"group_vars\"):\n--------------------------------\n \n\n).\nMake sure your variable name does not contain invalid characters like '-': unbound method default() must be called with JSONEncoder instance as first argument (got StrictUndefined instance instead)"}
+</code></pre></div></div>
 
 <p>Sheesh!  This shouldn't be all that hard.  Sigh.</p>
 

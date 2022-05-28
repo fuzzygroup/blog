@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -203,7 +209,7 @@
 
 <p>A quick addition to the end of Gemfile and then the bundle install dance lets me restart console and try it:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>fu = Fuzzyurl.from_string("http://www.foo.com/")
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fu = Fuzzyurl.from_string("http://www.foo.com/")
 {
     :protocol =&gt; "http",
     :username =&gt; nil,
@@ -214,12 +220,11 @@
        :query =&gt; nil,
     :fragment =&gt; nil
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And that's perfect.  Here's a 1:1 comparison with URI.parse:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>2.3.1 :009 &gt; fu = URI.parse("http://www.foo.com/")
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2.3.1 :009 &gt; fu = URI.parse("http://www.foo.com/")
 #&lt;URI::HTTP http://www.foo.com/&gt;
 2.3.1 :010 &gt; fu.protocol
 NoMethodError: undefined method `protocol' for #&lt;URI::HTTP http://www.foo.com/&gt;
@@ -244,8 +249,7 @@ nil
 2.3.1 :018 &gt; fu.fragment
 nil
 2.3.1 :019 &gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The only change that I would make here is that I would add an alias method on <em>protocol</em> to <em>scheme</em> which is what URI.parse calls protocol (personally I think Pete is actually right here – protocol is a better word – but if you added scheme as an alias – then you're closer to being a drop in replacement for URI.parse).  Maybe I'll submit a pull request perhaps.</p>
 
@@ -255,7 +259,7 @@ nil
 
 <p>One of the best and worst things about my job is that I'm never lacking for data.  We're currently crawling about 1/4 terabyte of data monthly so at any given point I have access to N million urls.  So why not just try to feed say 250,000 urls thru Fuzzyurl and see what happens.  This gives this simple rake task:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>task :verify_fuzzy_url =&gt; :environment do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>task :verify_fuzzy_url =&gt; :environment do
   pages = Page.order("id asc").select("id, url, long_url_id").limit(250000)
   pages.each_with_index do |page, ctr|
     puts "#{ctr} :: #{page.id} :: #{page.url}"
@@ -264,16 +268,14 @@ nil
     raise "error: #{fu}" if fu.hostname.nil?
   end
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Since all of these urls are supposed to be absolute urls we should always have a hostname and we'll stop if we don't.  Now we'll need to examine the stop and make sure that the input wasn't bad.  When we run this thru we hit a failure like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>fu = Fuzzyurl.from_string(p.url)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fu = Fuzzyurl.from_string(p.url)
 ArgumentError: Couldn't parse url string: http://www.theintelligencer.net
 from /var/www/apps/banks/shared/bundle/ruby/2.3.0/gems/fuzzyurl-0.9.0/lib/fuzzyurl/strings.rb:32:in from_string' from /var/www/apps/banks/shared/bundle/ruby/2.3.0/gems/fuzzyurl-0.9.0/lib/fuzzyurl.rb:169:infrom_string'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>p in this case was a page which a url which looked like "http://www.theintelligencer.net ".  That trailing space there is the reason for the failure.  I submitted a github issue and the author has agreed to address it when he has the time.  That's a great response - even tho this isn't technically a bug - since space characters are allowed as part of urls but since it does cause a failure, I appreciated him being willing to fix it.</p>
 
@@ -291,7 +293,7 @@ from /var/www/apps/banks/shared/bundle/ruby/2.3.0/gems/fuzzyurl-0.9.0/lib/fuzzyu
 
 <h3 id="embedded-space">Embedded Space</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>url = "http://fuzzygroup.github.io/blog/scott was here"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>url = "http://fuzzygroup.github.io/blog/scott was here"
 "http://fuzzygroup.github.io/blog/scott was here"
 2.3.1 :021 &gt; fu = Fuzzyurl.from_string(url)
 {
@@ -304,12 +306,11 @@ from /var/www/apps/banks/shared/bundle/ruby/2.3.0/gems/fuzzyurl-0.9.0/lib/fuzzyu
        :query =&gt; nil,
     :fragment =&gt; nil
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h3 id="instead-of--before-the-fragment">&amp; Instead of ? Before the Fragment</h3>
+<h3 id="-instead-of--before-the-fragment">&amp; Instead of ? Before the Fragment</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>url = "http://fuzzygroup.github.io/blog/scott was here&amp;foo=bar"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>url = "http://fuzzygroup.github.io/blog/scott was here&amp;foo=bar"
 "http://fuzzygroup.github.io/blog/scott was here&amp;foo=bar"
 2.3.1 :023 &gt; fu = Fuzzyurl.from_string(url)
 {
@@ -322,8 +323,7 @@ from /var/www/apps/banks/shared/bundle/ruby/2.3.0/gems/fuzzyurl-0.9.0/lib/fuzzyu
        :query =&gt; nil,
     :fragment =&gt; nil
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="conclusions">Conclusions</h2>
 

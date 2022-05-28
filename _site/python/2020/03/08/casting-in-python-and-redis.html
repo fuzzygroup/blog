@@ -136,6 +136,12 @@ redis.exceptions.ResponseError: WRONGTYPE Operation against a key holding the wr
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -183,52 +189,45 @@ redis.exceptions.ResponseError: WRONGTYPE Operation against a key holding the wr
   <div class="post-content" itemprop="articleBody">
     <p>I recently had this situation in <a href="https://redislabs.com/lp/python-redis/">Python and Redis</a>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>redis.lpush(kafka_topic_name, current_filename)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>redis.lpush(kafka_topic_name, current_filename)
 redis.exceptions.ResponseError: WRONGTYPE Operation against a key holding the wrong kind of value
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So I did my normal deal of debugging by adding:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>import pdb
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import pdb
+</code></pre></div></div>
 
 <p>and then a:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>pdb.set_trace()
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pdb.set_trace()
+</code></pre></div></div>
 
 <p>before the lpush call and I tried it manually by typing out <em>redis.lpush(kafka_topic_name, current_filename) ENTER</em> and it, naturally, worked fine.  <em>Grumble</em>. What I finally ended up doing is wrapping a str() call as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>redis.lpush(str(kafka_topic_name), (current_filename))
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>redis.lpush(str(kafka_topic_name), (current_filename))
+</code></pre></div></div>
 
 <p>And that let things work correctly.  In talking with another Python programmer, we came to the conclusion that Python's auto casting of things between <a href="https://stackoverflow.com/questions/6269765/what-does-the-b-character-do-in-front-of-a-string-literal">byte literals and strings</a> was the culprit.  Wrapping a str() call around both the list name and the list value solved things nicely.</p>
 
 <p><strong>Note</strong>: I figured this out by moving from a <strong>lpush</strong> operation on Redis to a <strong>sadd</strong> operation and then retrieving back a single entry which showed me the Python b prefix:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>b'/Users/sjohnson/Sync/fuzzygroup/adl/ohi_kafka/experts-all/data/twitter/25400bcd1142564b4476c178935bd736.json'
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>b'/Users/sjohnson/Sync/fuzzygroup/adl/ohi_kafka/experts-all/data/twitter/25400bcd1142564b4476c178935bd736.json'
+</code></pre></div></div>
 
 <h2 id="also---dont-forget-about-unicode">Also - Don't Forget About Unicode</h2>
 
 <p>I dug into this further and a least part of this issue for string conversion from Python byte ranges into actual strings is that you need to use a</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>current_filename.decode("utf-8")
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>current_filename.decode("utf-8")
+</code></pre></div></div>
 
 <p>call because the Python byte range has no idea what the encoding was.  Now I will admit that I'm surprised that Python didn't realize "Ok we're reading data from the filesystem's dir() operation" and it is OS-X so the encoding must be XYZ (utf-8 I would think).  Here's an example of this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt;&gt;&gt; import sys
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; import sys
 &gt;&gt;&gt; sys.stdout.encoding
 'UTF-8'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And since my coworker on this project uses Linux, I guess I need to embed that into my application (note - it isn't 100% clear to me that sys.stdout.encoding is the same as the encoding of the filesystem's directory output; there is also the  sys.setdefaultencoding('utf-8') call).</p>
 

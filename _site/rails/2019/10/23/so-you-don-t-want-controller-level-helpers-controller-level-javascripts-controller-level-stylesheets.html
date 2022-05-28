@@ -135,6 +135,12 @@ One of the better Rails tricks that my buddy Sean Kennedy taught me over the pas
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,7 +192,7 @@ One of the better Rails tricks that my buddy Sean Kennedy taught me over the pas
 
 <p>Let's take the issue of controller level helpers.  A helper script file is automatically generated when you create a controller so when you generate a controller named DataSource, you get:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>➜  police_crawl git:(master) ✗ rails g controller DataSource
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜  police_crawl git:(master) ✗ rails g controller DataSource
       create  app/controllers/data_source_controller.rb
       invoke  erb
       create    app/views/data_source
@@ -197,27 +203,24 @@ One of the better Rails tricks that my buddy Sean Kennedy taught me over the pas
       create      app/assets/javascripts/data_source.coffee
       invoke    scss
       create      app/assets/stylesheets/data_source.scss
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>But helpers are actually problematic because helpers have a <strong>global</strong> namespace.  What a global namespace means is that if you have def display_content in one helper and def display_content in a different helper, and you call the display_app/helpers/data_source_helper.rb, you actually get the display_dollars routine that was loaded <strong>last</strong>.  And the fact that you have say:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>app/helpers/data_source_helper.rb
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>app/helpers/data_source_helper.rb
 app/helpers/tweet_helper.rb
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>creates the idea in the developers mind that you will get the display_content routine from the context where you call it (either the views for data_source or the views for tweet).  I understand exactly why Rails works this way but it is, well, bullshite.  Getting rid of helpers spread across multiple files absolutely helps make this clear to developers – that there can only, ever be one method named display_content.</p>
 
 <p>Happily Rails isn't an asshole – even where it has strong opinions – and you can make Rails work the way that you want.  The way you do it, in this case, is you add an initializer:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>config/initializers/generators.rb
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>config/initializers/generators.rb
+</code></pre></div></div>
 
 <p>and here's the contents of the initializer:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">generators</span> <span class="k">do</span> <span class="o">|</span><span class="n">g</span><span class="o">|</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">generators</span> <span class="k">do</span> <span class="o">|</span><span class="n">g</span><span class="o">|</span>
   <span class="n">g</span><span class="p">.</span><span class="nf">orm</span>             <span class="ss">:active_record</span>
   <span class="n">g</span><span class="p">.</span><span class="nf">template_engine</span> <span class="ss">:erb</span>
   <span class="n">g</span><span class="p">.</span><span class="nf">test_framework</span>  <span class="ss">:rspec</span><span class="p">,</span> <span class="ss">fixture: </span><span class="kp">false</span>
@@ -225,12 +228,11 @@ app/helpers/tweet_helper.rb
   <span class="n">g</span><span class="p">.</span><span class="nf">javascripts</span>     <span class="kp">false</span>
   <span class="n">g</span><span class="p">.</span><span class="nf">helper</span> <span class="kp">false</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Now when I do that same generation step, I get:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>➜  police_crawl git:(master) ✗ rails g controller DataSources
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜  police_crawl git:(master) ✗ rails g controller DataSources
       create  app/controllers/data_sources_controller.rb
       invoke  erb
       create    app/views/data_sources
@@ -238,8 +240,7 @@ app/helpers/tweet_helper.rb
       create    spec/controllers/data_sources_controller_spec.rb
       invoke  assets
       invoke    coffee
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>Note</strong>: I switched it from DataSource controller to DataSources for proper restful style.</p>
 

@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,17 +190,15 @@
 
 <p>I ended up coming up with this command line snippet to address this:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>find . -maxdepth 1 -name <span class="s1">'*.html'</span> -delete
-</code></pre>
-</div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find <span class="nb">.</span> <span class="nt">-maxdepth</span> 1 <span class="nt">-name</span> <span class="s1">'*.html'</span> <span class="nt">-delete</span>
+</code></pre></div></div>
 
 <p>I had to change into each directory where these files existed and run it one by one.</p>
 
 <p>If I wanted to make this recursive then I could have started in the parent directory tree with this:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>find . -name <span class="s1">'*.html'</span> -exec rm -f <span class="o">{}</span> <span class="se">\;</span>
-</code></pre>
-</div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find <span class="nb">.</span> <span class="nt">-name</span> <span class="s1">'*.html'</span> <span class="nt">-exec</span> <span class="nb">rm</span> <span class="nt">-f</span> <span class="o">{}</span> <span class="se">\;</span>
+</code></pre></div></div>
 
 <p>but that felt riskier…  Here's a relevant <a href="https://stackoverflow.com/questions/11289551/argument-list-too-long-error-for-rm-cp-mv-commands">Stack Overflow</a> on this.</p>
 

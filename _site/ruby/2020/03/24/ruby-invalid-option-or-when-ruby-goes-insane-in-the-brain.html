@@ -135,6 +135,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -182,10 +188,9 @@
   <div class="post-content" itemprop="articleBody">
     <p>This is a short one but a weird one.  My main box rebooted today and when I went to create a blog post, I got this madness:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ jekyll post "A Social Media Marketing Strategy that Mom Would Approve"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ jekyll post "A Social Media Marketing Strategy that Mom Would Approve"
 ruby: invalid option -:  (-h will show valid options) (RuntimeError)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>In all my years of ruby, I've <em>never</em> seen <strong>-:</strong>.   All the normal jiggery pokery of:</p>
 
@@ -196,21 +201,19 @@ ruby: invalid option -:  (-h will show valid options) (RuntimeError)
 
 <p>etc failed to give me any insights.  I finally found the answer on an obscure <a href="https://github.com/asdf-vm/asdf-ruby/issues/154">Github issue</a> that said "unset RUBYOPT" so:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ unset RUBYOPT
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ unset RUBYOPT
+</code></pre></div></div>
 
 <p>And that gave me back:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>blog on  gh-pages [🤷‍] via 💎 v2.3.1 on ☁️  us-west-2 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>blog on  gh-pages [🤷‍] via 💎 v2.3.1 on ☁️  us-west-2 
 ❯ ruby --version
 ruby 2.3.1p112 (2016-04-26 revision 54768) [x86_64-darwin16]
 
 blog on  gh-pages [🤷‍] via 💎 v2.3.1 on ☁️  us-west-2 
 ❯ jekyll post "A Social Marketing Strategy that Mom Would Approve"
 New post created at _posts/2020-03-24-a-social-marketing-strategy-that-mom-would-approve.md.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And now, once again, I can (joyfully) write!</p>
 

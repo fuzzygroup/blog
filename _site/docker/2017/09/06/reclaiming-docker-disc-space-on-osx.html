@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -192,11 +198,10 @@
 
 <p>But a quick:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>09:41 $ du -shc ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/log
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>09:41 $ du -shc ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/log
  20K	/Users/sjohnson/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/log
  20K	total
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Nope – clearly 20K isn't anything for disc space usage.</p>
 
@@ -206,11 +211,10 @@
 
 <p>Here's what a du -shc showed me on this file:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
  57G	/Users/sjohnson/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
  57G	total
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="futile-attempts-to-reclaim-space">Futile Attempts to Reclaim Space</h1>
 
@@ -222,24 +226,22 @@
 
 <p>And when that failed, I tried a bash based approach:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-<span class="k">for </span>item <span class="k">in</span> <span class="k">$(</span>docker ps -aq<span class="k">)</span>; <span class="k">do
-</span>docker stop <span class="nv">$item</span>
-docker rm <span class="nv">$item</span>
-<span class="k">done
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
+for item in $(docker ps -aq); do
+docker stop $item
+docker rm $item
+done
 
-for </span>item <span class="k">in</span> <span class="k">$(</span>docker images --filter <span class="nv">dangling</span><span class="o">=</span><span class="nb">true</span> -q<span class="k">)</span>; <span class="k">do
-</span>docker rmi <span class="nv">$item</span>
-<span class="k">done</span>
-</code></pre>
-</div>
+for item in $(docker images --filter dangling=true -q); do
+docker rmi $item
+done
+</code></pre></div></div>
 
 <p>But even after both of these, I still had:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
  57G	total
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="my-solution">My Solution</h1>
 
@@ -258,21 +260,19 @@ for </span>item <span class="k">in</span> <span class="k">$(</span>docker images
 
 <p>I then built a container and then reverified disc space usage.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
 1.3G	total
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I then built some more containers and then checked disc space usage:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
 3.0G	total
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I then started my overall "build all containers" shell script and tracked progress as it went:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
 3.0G	total
 
 09:58 $ du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
@@ -283,23 +283,20 @@ du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-
 
 du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
 5.4G    total
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>By the time all containers were built:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
 7.2G    /Users/sjohnson/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And now, several days later and even more deploys, it has increased again:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>du -shc     ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
 8.2G	/Users/sjohnson/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
 8.2G	total
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="read-more">Read More</h1>
 <ul>

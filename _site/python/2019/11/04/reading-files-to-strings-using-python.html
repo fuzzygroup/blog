@@ -137,6 +137,12 @@ Using a With ...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -190,46 +196,41 @@ Using a With ...">
 
 <p>As a rubyist, I keep reading this as str is local to the with "block". Of course python doesn't have blocks …</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'data.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
-  <span class="nb">str</span> <span class="o">=</span> <span class="n">myfile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-</code></pre>
-</div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'data.txt'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
+  <span class="nb">str</span> <span class="o">=</span> <span class="n">myfile</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+</code></pre></div></div>
 
 <h2 id="python-35-path-statement-one-liner">Python 3.5 Path Statement One Liner</h2>
 
 <p>I really like this approach but pathlib always has to be imported.</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="nb">str</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s">'data.txt'</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
-</code></pre>
-</div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="nb">str</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s">'data.txt'</span><span class="p">).</span><span class="n">read_text</span><span class="p">()</span>
+</code></pre></div></div>
 
 <h2 id="non-auto-closing-not-recommended">Non Auto Closing Not Recommended</h2>
 
 <p>This is simple but leaves an open file hanging around.  Sigh.</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="nb">str</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'jsons/gab_02.json'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-</code></pre>
-</div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">str</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'jsons/gab_02.json'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">).</span><span class="n">read</span><span class="p">()</span>
+</code></pre></div></div>
 
 <h2 id="auto-closing-single-line">Auto Closing Single Line</h2>
 
 <p>This is elegant but it buries the assignment variable in the middle of the line which feels wrong.</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">_</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'jsons/gab_02.json'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">);</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_</span><span class="o">.</span><span class="n">read</span><span class="p">();</span> <span class="n">_</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</code></pre>
-</div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">_</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'jsons/gab_02.json'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">);</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_</span><span class="p">.</span><span class="n">read</span><span class="p">();</span> <span class="n">_</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
 
 <h2 id="loading-it-to-json">Loading it to JSON</h2>
 
 <p>The json.loads statement takes a string in and converts it to a Python dict / hash so all you need to do is inline the string reading call from above and get an easy one liner (if you disregard the import lines).</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
-<span class="n">gab</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s">'jsons/gab_02.json'</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
-</code></pre>
-</div>
+<span class="n">gab</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s">'jsons/gab_02.json'</span><span class="p">).</span><span class="n">read_text</span><span class="p">())</span>
+</code></pre></div></div>
 
 <h2 id="references">References</h2>
 

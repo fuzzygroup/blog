@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,7 +186,7 @@
   <div class="post-content" itemprop="articleBody">
     <p>One of the most vexing situations in any type of development is when something that you swear you've done literally hundreds of times fails to work – at all.  It always turns out to be that what you're doing is 99.995% the same as something previous – and .005% different.  Last night I went to do a docker-compose build on a new application using my standard stack of Ruby, Rails, Mechanize and the like and I got this, well, crap:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[24/1918]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[24/1918]
 Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
 
    current directory: /usr/local/bundle/gems/libxml-ruby-3.0.0/ext/libxml
@@ -240,8 +246,7 @@ An error occurred while installing libxml-ruby (3.0.0), and Bundler cannot
 continue.
 Make sure that `gem install libxml-ruby -v '3.0.0'` succeeds before bundling.
 ERROR: Service 'web' failed to build: The command '/bin/sh -c bundle install --binstubs' returned a non-zero code: 5
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>One of the major reasons I got into Docker in the first place was to get away from this kind of crap!  Gem builds, particularly where libxml is involved, well, suck.  I spent close to two hours last night tweaking things, updating libraries and such and it was a complete and utter failure.  I even installed Docker on a brand new dev machine and got the exact same result.</p>
 

@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,7 +186,7 @@
   <div class="post-content" itemprop="articleBody">
     <p>Man it was a hell of a busy week last week.  Here's an illustration:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>~/me/appdatallc/ansible-clean [master|✚ 1…1]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/me/appdatallc/ansible-clean [master|✚ 1…1]
 01:34 $ find . -name '*.yml' | xargs wc -l
 ...
 283 total
@@ -189,8 +195,7 @@
 find . -name '*.yml' | xargs wc -l
 ...
  1066 total
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Yep.  Starting last week, from Monday morning to Friday afternoon, working with <a href="http://winstonkotzan.com/">Winston</a> to teach him <a href="https://www.ansible.com/">Ansible</a>, I authored almost 1,300 lines of Ansible.</p>
 
@@ -277,7 +282,7 @@ ok: [monthly-categorization] =&gt; {
 
 <h2 id="rake-task-being-called-by-playbook">Rake task being called by Playbook:</h2>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>    <span class="n">task</span> <span class="ss">:echo_stats</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">task</span> <span class="ss">:echo_stats</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
       <span class="n">j</span> <span class="o">=</span> <span class="no">Job</span><span class="p">.</span><span class="nf">current</span>
       <span class="n">data_shard</span> <span class="o">=</span> <span class="no">ShardedData</span><span class="p">.</span><span class="nf">shard_for_date</span><span class="p">(</span><span class="s2">"service"</span><span class="p">,</span> <span class="n">j</span><span class="p">.</span><span class="nf">date</span><span class="p">)</span>
       <span class="n">distinct_entities</span> <span class="o">=</span> <span class="n">data_shard</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="s2">"entity_id"</span><span class="p">).</span><span class="nf">distinct</span><span class="p">.</span><span class="nf">count</span>
@@ -286,12 +291,11 @@ ok: [monthly-categorization] =&gt; {
       <span class="nb">puts</span> <span class="s2">"Total categorization records from </span><span class="si">#{</span><span class="n">j</span><span class="p">.</span><span class="nf">current</span><span class="p">.</span><span class="nf">id</span><span class="si">}</span><span class="s2"> = </span><span class="si">#{</span><span class="n">data_shard</span><span class="p">.</span><span class="nf">count</span><span class="si">}</span><span class="s2">"</span>    
       <span class="nb">puts</span> <span class="s2">"Total distinct entity_ids in categorization from </span><span class="si">#{</span><span class="n">j</span><span class="p">.</span><span class="nf">current</span><span class="p">.</span><span class="nf">id</span><span class="si">}</span><span class="s2"> = </span><span class="si">#{</span><span class="n">distinct_entities</span><span class="si">}</span><span class="s2">"</span>    
     <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>A more complex example of this based on Ruby meta-programming is shown below:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>    <span class="n">task</span> <span class="ss">:echo_other_stats</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">task</span> <span class="ss">:echo_other_stats</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
       <span class="n">tables</span> <span class="o">=</span> <span class="p">[]</span>
       <span class="n">tables</span> <span class="o">&lt;&lt;</span> <span class="s2">"rating_estimates"</span>
       <span class="n">tables</span> <span class="o">&lt;&lt;</span> <span class="s2">"type_estimates"</span>
@@ -307,8 +311,7 @@ ok: [monthly-categorization] =&gt; {
         <span class="nb">puts</span> <span class="s2">"Table: </span><span class="si">#{</span><span class="n">k</span><span class="si">}</span><span class="s2"> = </span><span class="si">#{</span><span class="n">v</span><span class="si">}</span><span class="s2"> for Processing Run </span><span class="si">#{</span><span class="no">ProcessingRun</span><span class="p">.</span><span class="nf">current</span><span class="p">.</span><span class="nf">id</span><span class="si">}</span><span class="s2">"</span>
       <span class="k">end</span>
     <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This approach was based on some internal analysis logic where we had an array of table names that we used for generating some SQL code dynamically.  It took about 5 minutes to convert that list of tables into this.  The table.classify.constantize call takes the name of the table and first converts it to a model name (classify) and the converts that model name to a constant that represents the class itself.  Once you have a class that inherits from ActiveRecord you can then call a .where statement to get a count.  Finally you inject the original table name and the count back into a hash to store the results.</p>
 

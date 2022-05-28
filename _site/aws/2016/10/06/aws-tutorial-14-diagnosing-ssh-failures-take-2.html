@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,7 +190,7 @@
 
 <p>Rule number 1 is always start with disk space.  The consultant brought this up first thing and I agree whole heartedly.  Happily I'm now an ansible user so I was able to show off this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible all -i inventories/production2 -u ubuntu -a "df -h"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible all -i inventories/production2 -u ubuntu -a "df -h"
 
 fiweb1 | SUCCESS | rc=0 &gt;&gt;
 Filesystem      Size  Used Avail Use% Mounted on
@@ -205,8 +211,7 @@ none            4.0K     0  4.0K   0% /sys/fs/cgroup
 none            5.0M     0  5.0M   0% /run/lock
 none             32G     0   32G   0% /run/shm
 none            100M     0  100M   0% /run/user
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="what-do-these-boxes-do">What Do These Boxes Do?</h1>
 
@@ -224,7 +229,7 @@ none            100M     0  100M   0% /run/user
 
 <p>Here's the ansible tasks for 2 and 3:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- name: Install fail2ban
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- name: Install fail2ban
   apt: name=fail2ban state=present
 
 - name: stop_sendmail
@@ -238,20 +243,17 @@ none            100M     0  100M   0% /run/user
   
 - name: stop_memcached
   service: name=memcached state=stopped
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>To run this against our fleet of boxes I can just do this for fail2ban (its part of the overall machine_setup role):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/production2  playbook_crawler.yml  --tags="machine_setup"
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible-playbook -i inventories/production2  playbook_crawler.yml  --tags="machine_setup"
+</code></pre></div></div>
 
 <p>And a similar statement will shut down the services:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/production2  playbook_crawler.yml  --tags="services"
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible-playbook -i inventories/production2  playbook_crawler.yml  --tags="services"
+</code></pre></div></div>
 
 <p>Originally I had been planning to have these boxes crawl and provide front end web services.  However that thinking is not only bad but also predated my mastering ansible.  Now that I can provision boxes to do exactly what I want, well, they will do only one thing – single purpose.</p>
 
@@ -299,9 +301,8 @@ none            100M     0  100M   0% /run/user
 
 <p>The next step was to get everything running.  Once we had ssh'd into the boxes and setup the tmux session, it was just a matter of executing this supervise statement:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cd /var/www/apps/banks/current &amp;&amp; supervise /var/www/apps/banks/current/supervise/banks_crawl_25
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /var/www/apps/banks/current &amp;&amp; supervise /var/www/apps/banks/current/supervise/banks_crawl_25
+</code></pre></div></div>
 
 <p>Supervise is from DJ Bernstein's <a href="https://cr.yp.to/daemontools.html">daemon tools</a> and is my all time favorite way to keep an unreliable process running.  Because this is ruby and there are threads involved, we'll see segfaults from time to time and supervise keeps everything running.  And, yes, I know that segfaults are another issue but I've lived with crappy ruby performance and reliability for so long now that it just doesn't phase me anymore.  I had hoped that they would go away with Ruby 2.3.1 but, well, sigh.</p>
 
@@ -325,7 +326,7 @@ none            100M     0  100M   0% /run/user
 
 <p>When a linux box runs out of memory, there is a software component called the <a href="https://lwn.net/Articles/317814/">OOM Killer</a> which is supposed to kill the offending process.  And, for some bizarre reason, it isn't working.  Or, perhaps, it is working and the process getting killed is actually OpenSSH itself.  Or maybe it just isn't working.  Here's an example from /var/log/syslog and this indicates to me that its not actually working:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>grep -i kill /var/log/syslog
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>grep -i kill /var/log/syslog
 Sep 29 13:53:11 ip-172-31-35-106 kernel: [   15.917391] init: failsafe main process (827) killed by TERM signal
 Sep 29 13:53:13 ip-172-31-35-106 kernel: [   18.105812] init: plymouth-upstart-bridge main process (231) killed by TERM signal
 Oct  3 14:26:12 ip-172-31-32-53 kernel: [   14.846657] init: failsafe main process (747) killed by TERM signal
@@ -337,8 +338,7 @@ Oct  4 08:13:15 ip-172-31-32-53 kernel: [   88.033317] init: failsafe main proce
 Oct  5 08:27:27 ip-172-31-32-53 kernel: [   76.630167] init: failsafe main process (834) killed by TERM signal
 Oct  5 15:38:54 ip-172-31-32-53 kernel: [   84.972034] init: failsafe main process (836) killed by TERM signal
 Oct  5 18:30:05 ip-172-31-32-53 kernel: [   21.974995] init: failsafe main process (836) killed by TERM signal
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This box had ssh go down on it repeatedly from the 3rd to 5th but there's no reference to OOM being invoked after the 3rd.  Bizarre.  So we've got a hypothesis:</p>
 

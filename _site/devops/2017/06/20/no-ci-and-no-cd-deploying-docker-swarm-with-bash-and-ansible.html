@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -188,11 +194,10 @@
 
 <p>The first stage is just building your Docker containers.  That looks like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker-compose build web
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose build web
 docker tag seirawatchsite_web fuzzygroup/seirawatchsite_web:latest
 docker push fuzzygroup/seirawatchsite_web:latest
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>As you can see I'm using the Docker Hub container registry here and the reason is that Docker Hub really gets this right.  Nick goes over some of the numbers about Docker Hub in a <a href="https://diveintodocker.com/blog/the-3-biggest-wins-when-using-alpine-as-a-base-docker-image">recent blog post</a> and the number of pulls is astonishing.</p>
 
@@ -200,11 +205,10 @@ docker push fuzzygroup/seirawatchsite_web:latest
 
 <p>The next stage is to simply copy of your .env, .env.production and docker-compose files up to all the hosts where your swarm runs.  I suppose if you <em>know</em> that these files won't change then you don't need to do this but, personally, I feel that you want this as part of your deploy process.  You can do this anyway you move files but I just used straight up scp commands:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>scp -i ~/.ssh/fuzzygroup2.pem .env  ubuntu@foo.com:~/seirawatchsite
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp -i ~/.ssh/fuzzygroup2.pem .env  ubuntu@foo.com:~/seirawatchsite
 scp -i ~/.ssh/fuzzygroup2.pem .env.production  ubuntu@foo.com:~/seirawatchsite
 scp -i ~/.ssh/fuzzygroup2.pem docker-compose.production.yml ubuntu@foo.com:~/seirawatchsite
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>These are just going up to a project level directory on the underlying linux box where the container will run.  Putting them in a directory allows for another container for this project to exist on the same hardware.</p>
 
@@ -212,9 +216,8 @@ scp -i ~/.ssh/fuzzygroup2.pem docker-compose.production.yml ubuntu@foo.com:~/sei
 
 <p>The final stage is telling Docker Swarm to use the new files.  This requires using this Docker specific command:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cd ~/seirawatchsite/ &amp;&amp; docker stack deploy -c docker-compose.production.yml --with-registry-auth seirawatchsite
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd ~/seirawatchsite/ &amp;&amp; docker stack deploy -c docker-compose.production.yml --with-registry-auth seirawatchsite
+</code></pre></div></div>
 
 <p>The trick here is that you need to run that on all your Docker swarm hosts – once you are logged into them.  Up to this point all of our commands have executed locally on a development system.  With this command we need to now run on the remote box where swarm is executing – and that's where Ansible comes in but first we have to learn a cool bash trick.</p>
 
@@ -222,7 +225,7 @@ scp -i ~/.ssh/fuzzygroup2.pem docker-compose.production.yml ubuntu@foo.com:~/sei
 
 <p>As I've alluded to in the past, I'm not a bash guy.  I initially grew up with DOS .bat files and I think that must have scarred me for life since while I use bash regularly, I've never, not once, really felt comfortable with.  For example, anyone who knows me personally knows that my bash prompt is never right.  One of the issues with deploy is that, in my opinion, when there is an error, it needs to HARD STOP IMMEDIATELY.  Otherwise you'll end up with your remote system in an arbitrary state which is <strong>dangerous</strong>.  So I turned to Google and StackOverflow with the phrase "bash script exit on error" and found a <a href="https://stackoverflow.com/questions/1378274">wonderful answer</a>.  You start by adding this function to the top of your bash script:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function run() {
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function run() {
   cmd_output=$(eval $1)
   return_value=$?
   if [ $return_value != 0 ]; then
@@ -234,16 +237,14 @@ scp -i ~/.ssh/fuzzygroup2.pem docker-compose.production.yml ubuntu@foo.com:~/sei
   fi
   return $return_value
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>You can then wrap each of your lines with the run command like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>run "date"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>run "date"
 run "false"
 run "date"
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And then it exits if there is an error and it tells you where it stopped.</p>
 
@@ -251,56 +252,54 @@ run "date"
 
 <p>Now that we have a mechanism for handling errors we can bring this all together into a single deploy.sh bash script:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
 
-<span class="c">#</span>
-<span class="c"># The Docker Specific Stuff</span>
-<span class="c">#</span>
+#
+# The Docker Specific Stuff
+#
 
-<span class="c">#function run comes from: https://stackoverflow.com/questions/1378274/ ; thank you velotron</span>
+#function run comes from: https://stackoverflow.com/questions/1378274/ ; thank you velotron
 
-<span class="k">function </span>run<span class="o">()</span> <span class="o">{</span>
-  <span class="nv">cmd_output</span><span class="o">=</span><span class="k">$(</span><span class="nb">eval</span> <span class="nv">$1</span><span class="k">)</span>
-  <span class="nv">return_value</span><span class="o">=</span><span class="nv">$?</span>
-  <span class="k">if</span> <span class="o">[</span> <span class="nv">$return_value</span> !<span class="o">=</span> 0 <span class="o">]</span>; <span class="k">then
-    </span><span class="nb">echo</span> <span class="s2">"Command </span><span class="nv">$1</span><span class="s2"> failed"</span>
-    <span class="nb">exit</span> -1
-  <span class="k">else
-    </span><span class="nb">echo</span> <span class="s2">"output: </span><span class="nv">$cmd_output</span><span class="s2">"</span>
-    <span class="nb">echo</span> <span class="s2">"Command succeeded."</span>
-  <span class="k">fi
-  return</span> <span class="nv">$return_value</span>
-<span class="o">}</span>
+function run() {
+  cmd_output=$(eval $1)
+  return_value=$?
+  if [ $return_value != 0 ]; then
+    echo "Command $1 failed"
+    exit -1
+  else
+    echo "output: $cmd_output"
+    echo "Command succeeded."
+  fi
+  return $return_value
+}
 
-<span class="nb">echo</span> <span class="s2">"Stage 1: Docker Build"</span>
-run <span class="s2">"docker-compose build web"</span>
-run <span class="s2">"docker tag seirawatchsite_web fuzzygroup/seirawatchsite_web:latest"</span>
-run <span class="s2">"docker push fuzzygroup/seirawatchsite_web:latest"</span>
+echo "Stage 1: Docker Build"
+run "docker-compose build web"
+run "docker tag seirawatchsite_web fuzzygroup/seirawatchsite_web:latest"
+run "docker push fuzzygroup/seirawatchsite_web:latest"
 
-<span class="nb">echo</span> <span class="s2">"Stage 2: Copy Up"</span>
+echo "Stage 2: Copy Up"
 
-run <span class="s2">"scp -i ~/.ssh/fuzzygroup2.pem .env  ubuntu@foo.com:~/seirawatchsite"</span>
-run <span class="s2">"scp -i ~/.ssh/fuzzygroup2.pem .env.production  ubuntu@foo.com:~/seirawatchsite"</span>
-run <span class="s2">"scp -i ~/.ssh/fuzzygroup2.pem docker-compose.production.yml ubuntu@foo.com:~/seirawatchsite"</span>
+run "scp -i ~/.ssh/fuzzygroup2.pem .env  ubuntu@foo.com:~/seirawatchsite"
+run "scp -i ~/.ssh/fuzzygroup2.pem .env.production  ubuntu@foo.com:~/seirawatchsite"
+run "scp -i ~/.ssh/fuzzygroup2.pem docker-compose.production.yml ubuntu@foo.com:~/seirawatchsite"
 
-<span class="nb">echo</span> <span class="s2">"Stage 3: Restart Docker Using Ansible"</span>
+echo "Stage 3: Restart Docker Using Ansible"
 
-run <span class="s2">"ansible-playbook -i script/ansible/inventories/production script/ansible/deploy.yml"</span>
-</code></pre>
-</div>
+run "ansible-playbook -i script/ansible/inventories/production script/ansible/deploy.yml"
+</code></pre></div></div>
 
 <p>The Ansible deploy.yml is about as simple as it gets for Ansible; damn close to a one liner:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>---
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
 - name: Restart Docker Swarm
   become: no
   shell:  "cd ~/seirawatchsite/ &amp;&amp; docker stack deploy -c docker-compose.production.yml --with-registry-auth seirawatchsite"
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Yes this needed to be wrapped in an entire Ansible environment including the full directory structure, etc but that really is pretty simple.  Here's what the whole thing looked like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>├── ansible.cfg
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>├── ansible.cfg
 ├── deploy.yml
 ├── group_vars
 ├── inventories
@@ -309,8 +308,7 @@ run <span class="s2">"ansible-playbook -i script/ansible/inventories/production 
     └── restart_docker_swarm
         └── tasks
             └── main.yml
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="closing-thoughts">Closing Thoughts</h1>
 

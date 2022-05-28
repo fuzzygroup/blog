@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,15 +186,13 @@
   <div class="post-content" itemprop="articleBody">
     <p>Having just gotten OSX Sierra on my new Macbook Pro, I added myself to the sudoers file and key getting sudo issues.  I found the answer on <a href="http://stackoverflow.com/questions/39474074">Stack Overflow</a>.  Essentially there is an undocumented change where you need to add:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Defaults !tty_tickets
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Defaults !tty_tickets
+</code></pre></div></div>
 
 <p>to the sudoers file when you run:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo visudo
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo visudo
+</code></pre></div></div>
 
 <p>Joy oh undocumented joy.</p>
 

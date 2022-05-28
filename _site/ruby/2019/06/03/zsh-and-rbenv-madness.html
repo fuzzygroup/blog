@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -195,19 +201,17 @@
 
 <p>The issue was this - if you ever have one terminal reporting a different version from another and both have the .ruby-version file contents then it HAS to be an issue of sourcing .zshrc.  There is likely no other way that this error can occur.  And, sure enough, I realized that this was my first time in this directory since I had changed over from Bash to Zsh.  Here are the suspect lines from .zshrc:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># rbenv
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>These lines add the current path before the system path and then evaluate the rbenv init function.  And this causes any calls for ruby, irb, bundle, gem, etc to go from the right place and not from system ruby.</p>
 
 <p>The solution was to go thru every Terminal Window and Terminal Tab and execute:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>source ~/.zshrc
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source ~/.zshrc
+</code></pre></div></div>
 
 <p>Note 1: This same type of thing exists for Python (virtual env) and many other languages.  And it is always the same type of fuckery.</p>
 

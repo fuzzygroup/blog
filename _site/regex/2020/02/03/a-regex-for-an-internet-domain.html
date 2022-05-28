@@ -139,6 +139,12 @@ Like Jeff, I too really, really love regular expressions or regex...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -192,9 +198,8 @@ Like Jeff, I too really, really love regular expressions or regex...">
 
 <p>Like Jeff, I too really, really <strong>love</strong> regular expressions or regexes.  I use this one a lot and I finally learned to use \S (Any non-whitespace character) so here's a regex</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>^\S+\.\S+$
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>^\S+\.\S+$
+</code></pre></div></div>
 
 <p>that I wrote yesterday to "validate" the permitted characters in an Internet domain.  I was all proud of this and wrote this blog post only to realize that pride really does goeth before a fall – this will NOT correctly validate an Internet domain.  As I write this post, I realize that the number of allowed characters in an Internet domain are actually NOT any non-whitespace characters and here's the proof that I actually got that wrong yesterday when I put something online using it:</p>
 
@@ -204,9 +209,8 @@ Like Jeff, I too really, really love regular expressions or regex...">
 
 <p>So the right way to do this, DAMN IT, is something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>^[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+$
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>^[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+$
+</code></pre></div></div>
 
 <p>And this actually works:</p>
 

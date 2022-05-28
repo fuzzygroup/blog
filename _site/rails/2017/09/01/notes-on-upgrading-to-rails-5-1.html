@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,17 +192,15 @@
 
 <p>Previously I had:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>gem 'rails', '~&gt; 5.0.2'
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem 'rails', '~&gt; 5.0.2'
 gem 'puma', '~&gt; 3.0'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>which I changed to</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>gem 'rails', '~&gt; 5.1.3'
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem 'rails', '~&gt; 5.1.3'
 gem 'puma', '~&gt; 3.10'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The reason for the Puma update turned out to be unneeded but it is a core part of my stack so it is likely good to upgrade.</p>
 
@@ -234,7 +238,7 @@ gem 'puma', '~&gt; 3.10'
 
 <p>Right after my Rails update and before I did the Puma update, I got this bit of joy when I started my server:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rails s -p3203
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec rails s -p3203
 =&gt; Booting Puma
 =&gt; Rails 5.1.3 application starting in development on http://localhost:3203
 =&gt; Run `rails server -h` for more startup options
@@ -266,8 +270,7 @@ Exiting
         from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/railties-5.1.3/lib/rails/command.rb:44:in `invoke'
         from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_admin/gems/railties-5.1.3/lib/rails/commands.rb:16:in `&lt;top (required)&gt;'
         from /Users/sjohnson/Dropbox/fuzzygroup/hyde/seira_watch/seira_admin/bin/rails:9:in `require'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This turned out to be a change somewhere in Rails where a space is now needed between the -p and the port number, so this:</p>
 
@@ -287,14 +290,13 @@ Exiting
 
 <p>What I am building uses a multi-tenant approach based on the <a href="https://github.com/influitive/apartment">Apartment gem</a> and this requires an initializer that specifies a middleware layer.  Prior to Rails 5.1, this was done as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Rails.application.config.middleware.use 'Apartment::Elevators::Subdomain'
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Rails.application.config.middleware.use 'Apartment::Elevators::Subdomain'
 (in config/initializers/apartment.rb)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>When I first started my application using Rails 5.1, I got this unpleasant result:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> bundle exec rails s -p 3210
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> bundle exec rails s -p 3210
 =&gt; Booting Puma
 =&gt; Rails 5.1.3 application starting in development on http://localhost:3210
 =&gt; Run `rails server -h` for more startup options
@@ -309,27 +311,24 @@ Did you mean?  next
         from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch/gems/railties-5.1.3/lib/rails/engine.rb:504:in `synchronize'
         from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch/gems/railties-5.1.3/lib/rails/engine.rb:504:in `app'
         from /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch/gems/railties-5.1.3/lib/rails/application/finisher.rb:45:in `block in &lt;module
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Apparently middleware layers that used to take a string now need a class constant so this needs to be rewritten as:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Rails.application.config.middleware.use Apartment::Elevators::Subdomain
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Rails.application.config.middleware.use Apartment::Elevators::Subdomain
+</code></pre></div></div>
 
 <p>This is discussed in this <a href="https://github.com/rails/rails/issues/28946">Rails Issue</a></p>
 
-<h1 id="skipbeforefilter-is-now-skipbeforeaction">skip_before_filter Is Now skip_before_action</h1>
+<h1 id="skip_before_filter-is-now-skip_before_action">skip_before_filter Is Now skip_before_action</h1>
 
 <p>Although I was able to start my application correctly in development mode with a still in place skip_before_filter, when I tried it in production, I got:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>=&gt; Run `rails server -h` for more startup options
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>=&gt; Run `rails server -h` for more startup options
 Exiting
 /Users/sjohnson/Dropbox/fuzzygroup/hyde/seira_watch/seira_watch_web_app/app/controllers/api_controller.rb:3:in   `&lt;class:ApiController&gt;': undefined method `skip_before_filter' for ApiController:Class (NoMethodError)
 Did you mean?  skip_before_action
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This was an easy change but it is still something that could easily trip you up.  Obviously I have been seeing the deprecation warnings for some time now and it is my bad for not having made these changes.</p>
 

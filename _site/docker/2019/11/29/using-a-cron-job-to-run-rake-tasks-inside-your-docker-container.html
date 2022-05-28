@@ -137,6 +137,12 @@ Note: Cron is the standard *nix technology for running tasks on a recurring basi
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -202,9 +208,8 @@ Note: Cron is the standard *nix technology for running tasks on a recurring basi
 
 <p>The first thing to understand is that you can easily execute a shell with in a container, from the outside, with this syntax:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker exec -it CONTAINER_HASH /bin/bash
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker exec -it CONTAINER_HASH /bin/bash
+</code></pre></div></div>
 
 <p>The CONTAINER_HASH is the docker equivalent of a *nix pid (process identifier).</p>
 
@@ -212,9 +217,8 @@ Note: Cron is the standard *nix technology for running tasks on a recurring basi
 
 <p>And if you can run a shell like /bin/bash within a container from the outside then, <em>drum roll please</em>, you can easily run anything from outside including a Rake task.  And if you have that then you can easily schedule it.  Here's an example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker exec -it 8d76da4ab481  bundle exec rake data_source:update_or_initial_load --trace
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker exec -it 8d76da4ab481  bundle exec rake data_source:update_or_initial_load --trace
+</code></pre></div></div>
 
 <p>The 8d76da4ab481, shown above, is an example of the CONTAINER_HASH.</p>
 
@@ -224,33 +228,30 @@ Note: Cron is the standard *nix technology for running tasks on a recurring basi
 
 <p>Here's the shell script from the dockerbash post:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-<span class="k">if</span> <span class="o">[</span> -z <span class="nv">$1</span> <span class="o">]</span>; <span class="k">then
-  </span><span class="nb">echo</span> <span class="s2">"You need to specify the name of the container you want to get into like:"</span>
-  <span class="nb">echo</span> <span class="s2">"dockerbash police"</span>
-<span class="k">else
-  </span><span class="nv">pid</span><span class="o">=</span><span class="sb">`</span>docker ps | grep <span class="nv">$1</span> | awk <span class="s1">'{print $1}'</span><span class="sb">`</span>
-  docker <span class="nb">exec</span> -it <span class="nv">$pid</span> /bin/bash
-<span class="k">fi</span>
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
+if [ -z $1 ]; then
+  echo "You need to specify the name of the container you want to get into like:"
+  echo "dockerbash police"
+else
+  pid=`docker ps | grep $1 | awk '{print $1}'`
+  docker exec -it $pid /bin/bash
+fi
+</code></pre></div></div>
 
 <p>Let's create another shell script calling it, say, docker_datasource_update:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-<span class="nv">pid</span><span class="o">=</span><span class="sb">`</span>docker ps | grep police | awk <span class="s1">'{print $1}'</span><span class="sb">`</span>
-docker <span class="nb">exec</span> -it <span class="nv">$pid</span> bundle <span class="nb">exec </span>rake data_source:update_or_initial_load --trace
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
+pid=`docker ps | grep police | awk '{print $1}'`
+docker exec -it $pid bundle exec rake data_source:update_or_initial_load --trace
+</code></pre></div></div>
 
 <p><strong>Note</strong>: This is for an application which has the word 'police' in its name hence the above grep for the word police.</p>
 
 <p>Let's say that this is now stored in /usr/local/bin/docker_datasource_update.  You then need to write a cron job to call it:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># m h  dom mon dow   command
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># m h  dom mon dow   command
 0 7 * * * /usr/local/bin/docker_datasource_update
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>Note</strong>: Add the crontab above with <strong>crontab -e</strong>.</p>
 

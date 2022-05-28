@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -212,9 +218,8 @@
 
 <p>The reason that it broke our crawlers is is that our crawlers are based on Rails but have their own dependency load structure so how they interact with Gemfile is complex.  And they also rely on this bit of trickery:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>class Mysql; alias :query :async_query; end
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Mysql; alias :query :async_query; end
+</code></pre></div></div>
 
 <p>That takes the async_query method in mysqlplus and dynamically replaces query with it.  This eliminates blocking at the query level and improves our threaded performance by roughly 50%.  And because this is dynamically injected, when something isn't present in Gemfile, there's no way to know except for actually executing the code.</p>
 

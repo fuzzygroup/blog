@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -199,7 +205,7 @@
 
 <p>On Ubuntu and most Linux platforms that I understand, the core Docker installation of your data is stored in /var/lib/docker and then a collection of subdirectories.  Here's an example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ls -l /var/lib/docker
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls -l /var/lib/docker
 total 44
 drwx------ 21 root root  4096 Aug 30 01:17 containers
 drwx------  3 root root  4096 Aug 30 01:10 image
@@ -210,8 +216,7 @@ drwx------  2 root root  4096 Aug 30 01:10 swarm
 drwx------  2 root root  4096 Aug 30 01:16 tmp
 drwx------  2 root root  4096 Aug 30 01:10 trust
 drwx------ 12 root root  4096 Aug 30 03:01 volumes
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>There are two interesting directories here: containers and overlay2.  You should note that on a default docker installation the overlay2 directory would be named aufs.  The directories overlay2 and aufs are different filesystems that Docker can use to store your containers, volumes, etc.  The default Docker filesystem is called aufs and it is the oldest Docker filesystem.  The overlay2 filesystem is newer and seems to have some dramatic advantages.</p>
 
@@ -221,7 +226,7 @@ drwx------ 12 root root  4096 Aug 30 03:01 volumes
 
 <p>My next step was to ssh into the box (yes, even with a containerized architecture, there are still servers and sshing in is still a thing) and look into /var/lib/docker once again.  My general tool for this was the command du -shc *  which translates to "show me the disc space usage at a summary level and translate it to human style (i.e. k / megs / gigs)".  Here's an example of my command flow:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo su - 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo su - 
 cd /var/lib/docker
 du -shc * 
 
@@ -236,14 +241,12 @@ du -shc *
 4.0K	trust
 3.3M	volumes
 13.5G	total
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I started to wonder what could possibly be in the containers directory with a size of <strong>10G</strong> so I changed into that directory and I found an anomaly, a single file, 6.2 gigs in size, like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>586e6e0b559281785d023097518ed9303e15db66eee04173792856ff7b2da528-json.log
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>586e6e0b559281785d023097518ed9303e15db66eee04173792856ff7b2da528-json.log
+</code></pre></div></div>
 
 <p>When I looked at that file, it was a log file showing the log output from the underlying crawler at the coder of the product I have been building.  And with this one discovery, the problem came into focus:</p>
 
@@ -273,12 +276,11 @@ du -shc *
 
 <p>The next step appears drastic and it is.  If you have important data in your Docker system then you're going to lose it at this stage but when I attempted to do this piecemeal, I got bizarre deployment errors related to missing containers and even redeploying did not fix it.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo su
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo su
 umount /var/lib/docker/overlay2
 cd /var/lib/docker
 rm -rf * 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This blows away everything in your Docker installation.  The second command line is only necessary if you have already switched your system to overlay2 as I had.</p>
 
@@ -294,15 +296,14 @@ rm -rf *
 
 <p>You should edit this file and make it look something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"storage-driver"</span><span class="p">:</span><span class="w"> </span><span class="s2">"overlay2"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"log-driver"</span><span class="p">:</span><span class="w"> </span><span class="s2">"json-file"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"log-opts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"max-size"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100m"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "storage-driver": "overlay2",
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  }
+}
+</code></pre></div></div>
 
 <p><strong>Disclaimer</strong>: I'm honestly not 100% certain that switching from aufs to overlay2 is absolutely required but it was a part of the overall solution and does seem to have benefits so I left it in here although I suspect that the logging is clearly the biggest win here.</p>
 
@@ -318,15 +319,14 @@ rm -rf *
 
 <p>On your local machine where you do your development, you need to set the logging options on a per container basis to your docker-compose file.  The lines to add are to each service are:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>logging:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>logging:
   options:
     max-size: 50m
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here's an example in the context of a full container:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>services:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>services:
   redis:
     image: 'redis:3.2-alpine'
     ports:
@@ -337,8 +337,7 @@ rm -rf *
     logging:
       options:
         max-size: 50m
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Theoretically I could have ignored this at a per container level and just relied on the log management defined in /etc/docker/daemon.json but when you have a system level config file, that often gets changed and not checked into version control, belt <strong>and</strong> suspenders is better.  Setting this at the application level and the system level should ensure that I don't get bit by this again.  This will also protect your local dev box from unlimited log growth which could otherwise be a problem since your local dev box isn't configured by the same /etc/docker/daemon.json file.</p>
 
@@ -346,12 +345,11 @@ rm -rf *
 
 <p>I added cron jobs to my underlying instance for cleaning up after dangling containers and volumes:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>#Ansible: docker rmi images
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#Ansible: docker rmi images
 1 1 * * * docker rmi -f $(docker images -a -q -f dangling=true)
 #Ansible: docker volume rm
 1 3 * * * docker volume rm -f $(docker volume ls -q -f dangling=true)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The #Ansible comment indicates that these were added by Ansible as part of my machine provisioning script (Step 8 below is now also part of that same script).</p>
 
@@ -367,19 +365,18 @@ rm -rf *
 
 <p>As I was finishing this post, I found the command docker system df which shows you the space docker uses.  Here's an example from my local dev box:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>FuzzygroupMacbookPro2016% docker system df
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FuzzygroupMacbookPro2016% docker system df
 TYPE                TOTAL               ACTIVE              SIZE                RECLAIMABLE
 Images              671                 67                  40.59GB             24.07GB (59%)
 Containers          84                  5                   742.2MB             718MB (96%)
 Local Volumes       41                  22                  634.5MB             1.553kB (0%)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="sidebar-2-docker-system-prune">Sidebar 2: docker system prune</h1>
 
 <p>The command docker system prune reclaims dangling images and stopped containers.  Here's an example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>FuzzygroupMacbookPro2016% docker system prune
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FuzzygroupMacbookPro2016% docker system prune
 WARNING! This will remove:
         - all stopped containers
         - all networks not used by at least one container
@@ -390,8 +387,7 @@ Deleted Containers:
 4fc625609ac8f86f8d8f9076a8e75d5ccb31c1e871ed6f4589b79de2721af02c
 ... (A long, long list of containers was here)
 Total reclaimed space: 28.72GB
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The interesting thing here is that before I ran this I had 46 gigs of free space on my local dev box and after I ran this, I still had 46 gigs free.  I don't know why Docker states that it reclaimed space when it doesn't.</p>
 

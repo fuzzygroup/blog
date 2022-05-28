@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,9 +192,8 @@
 
 <p>If you're on a Mac then brew, as always, is your very best friend:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>brew install zstd
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install zstd
+</code></pre></div></div>
 
 <h2 id="useful-command-lines">Useful Command Lines</h2>
 
@@ -196,42 +201,36 @@
 
 <p>Examining a handful of records:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>zstd -cd pol.zst | head -n100
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zstd -cd pol.zst | head -n100
+</code></pre></div></div>
 
 <p>this dumps a stream of records out that are then fed into head which limits the quantity to 100.</p>
 
 <p>The zstd -c and -d options mean:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>-c     : force write to standard output, even if it is the console
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-c     : force write to standard output, even if it is the console
 -d     : decompression
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Integrating the often useful jq (which just gets a single json element out):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>zstd -cd pol.zst | jq '.timestamp'
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zstd -cd pol.zst | jq '.timestamp'
+</code></pre></div></div>
 
 <p>And like all good *nix pipelines, this is composable (this example would extract the first 1000 records and then reduce them to only the comment element from the json):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>zstd -cd pol.zst | head -n1000 | jq '.comment'
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zstd -cd pol.zst | head -n1000 | jq '.comment'
+</code></pre></div></div>
 
 <p>To count the total records in the zst file:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>zstd -cd pol.zst | wc -l
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zstd -cd pol.zst | wc -l
+</code></pre></div></div>
 
 <p>Happily help is also available with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>zstd --help
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zstd --help
+</code></pre></div></div>
 
 <h2 id="thank-yous">Thank You's</h2>
 

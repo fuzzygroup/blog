@@ -135,6 +135,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,50 +190,44 @@
 
 <p>All of these tools tend to work the same way – they inject their own pathing in front of the system path so that the correct version of a binary gets called.  Here's an example from my development system when rbenv wasn't working:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>which ruby
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>which ruby
 /usr/bin/ruby
 
 ruby --version
 ruby 2.3.7p456 (2018-03-28 revision 63024) [universal.x86_64-darwin18]
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And when I made rbenv work, here's what I got:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>which ruby
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>which ruby
 /Users/sjohnson/.rbenv/shims/ruby
 
 ruby --version
 ruby 2.6.2p47 (2019-03-13 revision 67232) [x86_64-darwin18]
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Technically I should have been able to fix this issue by using this rbenv command:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rbenv local 2.6.2
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rbenv local 2.6.2
+</code></pre></div></div>
 
 <p>And if that didn't work then this should have:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rbenv rehash
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rbenv rehash
+</code></pre></div></div>
 
 <p>And either of those should have made things work by injecting into my path the correct values.  Sadly, albeit not surprisingly, it did not.  My personal development style seems to have a high entropy value and I suspect that's why but that's a different argument regarding excessive uptime, an abject refusal to reboot my machine, etc.</p>
 
 <p>Anyway here's the work around:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cd /to/my/development/directory
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /to/my/development/directory
 export PATH=/Users/sjohnson/.rbenv/shims:/Users/sjohnson/.rbenv/bin:$PATH
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>My pairing partner <a href="https;//csphere.github.io/">Sean Kennedy</a> corrected this to be:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>export PATH=$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export PATH=$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH
+</code></pre></div></div>
 
 <p>And while he's almost certainly right, I haven't tested his version so both are here.  Pick and choose as you like.</p>
 

@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,7 +192,7 @@
 
 <p>One of the cool things in here is the fun module which does, well, fun things.  Extending Betty with a new command is pretty much just writing a regular expression wrapper for what you want it match on and then defining its output.  Here's two I just added:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>if command.match(/^superman\s+vs\s+batman$/i)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if command.match(/^superman\s+vs\s+batman$/i)
   responses &lt;&lt; {
     say: [true,false].sample ? "Batman" : "Superman"
   }
@@ -197,16 +203,15 @@ if command.match(/^what\s+if\s+batman\s+does\snot\s+have\s+a?n?y?\s*kryptonite$/
     say: "Batman always has kryptonite"
   }
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Astute eyes will recognize the <a href="http://stackoverflow.com/questions/4252936/how-do-i-use-the-conditional-operator-in-ruby">ternary logic</a> there so Betty doesn't always answer the same way.</p>
 
-<h1 id="extending-betty-with-a-new-module----git">Extending Betty with a new Module – Git!</h1>
+<h1 id="extending-betty-with-a-new-module--git">Extending Betty with a new Module – Git!</h1>
 
 <p>In the lib directory create a new file named <strong>git.rb</strong>.  Here's what we're going to drop in there:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>module Git
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>module Git
   def self.interpret(command)
     responses = []
 
@@ -230,27 +235,27 @@ end
 end
 
 $executors &lt;&lt; Git
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>Here's what that actually means:
-* an overall module named Git
-* a class method named interpret which accepts a command and runs it against a regex which returns a response or responses
-* a help method which lets you know how betty can help you with git</p>
+<p>Here's what that actually means:</p>
+<ul>
+  <li>an overall module named Git</li>
+  <li>a class method named interpret which accepts a command and runs it against a regex which returns a response or responses</li>
+  <li>a help method which lets you know how betty can help you with git</li>
+</ul>
 
 <p>And that is, as best as I understand it so far, pretty much the simplest attempt to extend Betty with an entire module.  Now while Betty can actually execute commands for you like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>betty how many words are in this directory
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>betty how many words are in this directory
 Betty: Running find . -type f -exec wc -w {} \; | awk '{total += $1} END {print total}'
 37386
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I don't think that's appropriate for Betty to be making changes to git stuff on your behalf.  So I opted for Betty to just give you feedback.</p>
 
 <p>Adding this module gave Betty this feature:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>betty undo git add
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>betty undo git add
 Betty: To undo a single file use
 
 git reset filespec
@@ -259,17 +264,15 @@ git reset filespec
 To undo ALL files added (i.e. you want to undo git add .) then use
 
 git reset 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And this help text:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>betty help git
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>betty help git
 Betty: I can do that if you help me. Check out the following examples
 undo git add
 Please note: I am case sensitive. Watch out for my feelings...    
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Yes I know its a simple command line tool.  But I live and breathe in the command line so having this handy sounds great.  And contributing to it sounds even better.</p>
 

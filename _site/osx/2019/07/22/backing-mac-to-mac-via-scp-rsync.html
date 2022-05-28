@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,15 +192,13 @@
 
 <p>This led me to attempt to backup this Mac via an scp command to my big desktop Mac which has plenty of free disc space.  So I used this shell command:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>scp -p -r ~/Downloads/* 192.168.1.25:/Users/sjohnson/backups/macbook_air/Downloads/
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp -p -r ~/Downloads/* 192.168.1.25:/Users/sjohnson/backups/macbook_air/Downloads/
+</code></pre></div></div>
 
 <p>as a test command to backup the ~/Downloads directory from one machine to another.  And, annoyingly, I found that after only a few gigabytes, my scp would fail with a networking error.  After trying this again (and again and again), I came to the conclusion that I was fighting an untenable battle that felt a lot like a land war in Asia.  And this led me to Google which, rapidly, led me to rsync, a tool I love but which I never seem to think to use.  Here was the command I finally came up with</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rsync -avh -e ssh Downloads/* 192.168.1.25:/Users/sjohnson/backups/macbook_air/Downloads/
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rsync -avh -e ssh Downloads/* 192.168.1.25:/Users/sjohnson/backups/macbook_air/Downloads/
+</code></pre></div></div>
 
 <p>In case you aren't aware, the benefit to <a href="https://linux.die.net/man/1/rsync">rsync</a> is that it will keep track of your progress to date and resume incomplete copies.</p>
 

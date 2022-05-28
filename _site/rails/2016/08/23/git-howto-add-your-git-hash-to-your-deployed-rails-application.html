@@ -135,6 +135,12 @@ Lately I've been struggling with iss...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -188,21 +194,20 @@ Lately I've been struggling with iss...">
 
 <p>I finally settled on generating at the deployment level via rake remote_task.  Since we're using Vlad its already there anyway.  Here's all the code necessary:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>remote_task :set_git_hash_environment_variable do 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>remote_task :set_git_hash_environment_variable do 
   tmp = `git log -1 HEAD`
   parts = tmp.split(" ")
   git_hash = parts[1]
   path = "/home/banks/srv/current/config/git_hash.txt"
   run "echo #{git_hash} &gt; #{path}"
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The git log  command does all the heavy lifting.  I then split out the hash and finally drop it into a file just by running an echo statement piped to the canonical location.</p>
 
 <p>And then in our vlad deploy block there is a call to this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>task "vlad:deploy" =&gt; %w[
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>task "vlad:deploy" =&gt; %w[
   vlad:update
   vlad:bundle:install
   vlad:migrate
@@ -212,8 +217,7 @@ end
   vlad:cleanup
   vlad:set_git_hash_environment_variable
 ]
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And that's about it.  I know its not elegant but it wasn't needed to be elegant – just working for now.</p>
 

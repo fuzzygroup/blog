@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -182,13 +188,12 @@
 
 <p>The trick is to use <strong>RAILS_ENV=production</strong> in development mode and that causes syntax errors to get caught:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>RAILS_ENV=production bundle exec rails s -p3169
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RAILS_ENV=production bundle exec rails s -p3169
+</code></pre></div></div>
 
 <p>Here's an example stack trace:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>	20: from /Users/sjohnson/.rvm/rubies/ruby-2.7.0/lib/ruby/2.7.0/tsort.rb:228:in `block in tsort_each'
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	20: from /Users/sjohnson/.rvm/rubies/ruby-2.7.0/lib/ruby/2.7.0/tsort.rb:228:in `block in tsort_each'
 	19: from /Users/sjohnson/.rvm/gems/ruby-2.7.0/gems/railties-6.0.2.1/lib/rails/initializable.rb:61:in `block in run_initializers'
 	18: from /Users/sjohnson/.rvm/gems/ruby-2.7.0/gems/railties-6.0.2.1/lib/rails/initializable.rb:32:in `run'
 	17: from /Users/sjohnson/.rvm/gems/ruby-2.7.0/gems/railties-6.0.2.1/lib/rails/initializable.rb:32:in `instance_exec'
@@ -217,8 +222,7 @@
 /Users/sjohnson/Sync/coding/rails/covid_morbidity/app/controllers/symptoms_controller.rb:55: syntax error, unexpected '}', expecting `end'
     }
     ^
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Ideally you would never have to do this but it really can be a useful trick when you don't have a full CI environment setup.</p>
 

@@ -50,10 +50,9 @@ I recently had the situation where even the simplest docker command:
 docker run -it bash
 
 
-
 gave this error:
 
-docker: Got permission denied while trying to connect to the Docker daemon socket at...">
+docker: Got permission denied while trying to connect to the Docker daemon socket at ...">
   
 
   
@@ -143,6 +142,12 @@ docker: Got permission denied while trying to connect to the Docker daemon socke
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -192,17 +197,15 @@ docker: Got permission denied while trying to connect to the Docker daemon socke
 
 <p>I recently had the situation where even the simplest docker command:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker run -it bash
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -it bash
+</code></pre></div></div>
 
 <p>gave this error:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker: Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker: Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: 
 Post http://%2Fvar%2Frun%2Fdocker.sock/v1.40/containers/create: dial unix /var/run/docker.sock: connect: permission denied.
 See 'docker run --help'.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The solution for this is actually pretty simple:</p>
 
@@ -214,22 +217,20 @@ See 'docker run --help'.
 
 <p>Here's an ansible task which you can drop in a playbook to accomplish this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- name: Update the ubuntu user to be part of the docker group
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- name: Update the ubuntu user to be part of the docker group
   user:
     name: ubuntu
     shell: /bin/bash
     groups: docker
     append: yes
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="verifying-this">Verifying this</h2>
 
 <p>If you need to validate what groups a user is in then use:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>id -nG ubuntu
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>id -nG ubuntu
+</code></pre></div></div>
 
 <p><strong>Note</strong>: Thanks to Don Neufeld for teaching me this command; somehow despite N decades of unix experience, I missed the id command.  Bizarre.</p>
 

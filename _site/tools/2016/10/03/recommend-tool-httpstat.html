@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,13 +186,12 @@
   <div class="post-content" itemprop="articleBody">
     <p>I ran across Dave Cheney's httpstat tool recently and tried to get it working but I'm not a Go person so that failed.  I re-discovered it closing out a metric crap ton of browser tabs and thought "hm… I wonder if it is in brew yet".  So a quick:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>brew install httpstat
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install httpstat
+</code></pre></div></div>
 
 <p>gave it to me perfectly.  I can now do things like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>httpstat http://dave.cheney.net/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>httpstat http://dave.cheney.net/
 
 HTTP/1.1 200 OK
 Server: nginx/1.2.1
@@ -206,12 +211,11 @@ Body stored in: /var/folders/rf/3tfhwgrj1sl85y6rcs4x_s5c0000gn/T/tmpsGnFLB
                         connect:281ms             |                  |
                                       starttransfer:1213ms           |
                                                                  total:2160ms
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here's an example from one of my current sites (url omitted deliberately):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sjohnson@ScottJohnsonMacbookAir:~/me/fuzzygroup/gocode$ httpstat http://banks.OMITTED.com/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sjohnson@ScottJohnsonMacbookAir:~/me/fuzzygroup/gocode$ httpstat http://banks.OMITTED.com/
 
 HTTP/1.1 302 Found
 Cache-Control: no-cache
@@ -240,8 +244,7 @@ Body stored in: /var/folders/rf/3tfhwgrj1sl85y6rcs4x_s5c0000gn/T/tmp3wlc7H
                         connect:593ms             |                  |
                                       starttransfer:666ms            |
                                                                  total:667ms
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Looking at this very clearly shows me that the single biggest slow down here is actually dns.  Go figure.  If I was optimizing for performance, I would never have thought to investigate a half second of DNS delay.</p>
 

@@ -137,6 +137,12 @@ I fully admit to being a damn p...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -188,35 +194,32 @@ I fully admit to being a damn p...">
 
 <p>I fully admit to being a damn python noob but I can follow directions. I was attempting to use the <a href="https://spacy.io/">Spacy</a> library to detect the language of a string of text.  I started from the <a href="https://spacy.io/universe/project/spacy-langdetect">example here</a> as replicated below:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">spacy</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">spacy</span>
 <span class="kn">from</span> <span class="nn">spacy_langdetect</span> <span class="kn">import</span> <span class="n">LanguageDetector</span>
-<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">'en'</span><span class="p">)</span>
-<span class="n">nlp</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="n">LanguageDetector</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s">'language_detector'</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="s">'en'</span><span class="p">)</span>
+<span class="n">nlp</span><span class="p">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="n">LanguageDetector</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s">'language_detector'</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="n">text</span> <span class="o">=</span> <span class="s">'This is an english text.'</span>
 <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-<span class="c"># document level language detection. Think of it like average language of the document!</span>
-<span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">language</span><span class="p">)</span>
-<span class="c"># sentence level language detection</span>
-<span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">sents</span><span class="p">:</span>
-   <span class="k">print</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span> <span class="n">sent</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">language</span><span class="p">)</span>
-</code></pre>
-</div>
+<span class="c1"># document level language detection. Think of it like average language of the document!
+</span><span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="p">.</span><span class="n">_</span><span class="p">.</span><span class="n">language</span><span class="p">)</span>
+<span class="c1"># sentence level language detection
+</span><span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">.</span><span class="n">sents</span><span class="p">:</span>
+   <span class="k">print</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span> <span class="n">sent</span><span class="p">.</span><span class="n">_</span><span class="p">.</span><span class="n">language</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p>Now before I even tried this, I updated my requirements.txt file with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>spacy
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spacy
+</code></pre></div></div>
 
 <p>And that, not surprisingly, did not work.  Sigh.  I started with this error:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt;&gt;&gt; import spacy
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; import spacy
 &gt;&gt;&gt; from spacy_langdetect import LanguageDetector
 Traceback (most recent call last):
   File "&lt;stdin&gt;", line 1, in &lt;module&gt;
 ModuleNotFoundError: No module named 'spacy_langdetect'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And, not surprisingly, cursing followed.  Sadly my normal approach of:</p>
 
@@ -229,13 +232,12 @@ ModuleNotFoundError: No module named 'spacy_langdetect'
 
 <p>did not work.  In the absence of this working, I turned, disappointingly, to Google.  I discovered that there appeared to be a spacy-langdetect module so I added that to requirements.txt and did the pip dance:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>pip install -r requirements.txt
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install -r requirements.txt
+</code></pre></div></div>
 
 <p>And, wow!  That too failed but this time I got a different error so progress!</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt;&gt;&gt; nlp = spacy.load("en")
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; nlp = spacy.load("en")
 Traceback (most recent call last):
   File "&lt;stdin&gt;", line 1, in &lt;module&gt;
   File "/Users/sjohnson/fuzzygroup/adl/antihate/antihate_experts/venv/lib/python3.7/site-packages/spacy/__init__.py", line 27, in load
@@ -243,33 +245,30 @@ Traceback (most recent call last):
   File "/Users/sjohnson/fuzzygroup/adl/antihate/antihate_experts/venv/lib/python3.7/site-packages/spacy/util.py", line 171, in load_model
     raise IOError(Errors.E050.format(name=name))
 OSError: [E050] Can't find model 'en'. It doesn't seem to be a shortcut link, a Python package or a valid path to a data directory.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So while I considered returning to the fire and, perhaps, sacrificing a goat, I couldn't find an app that delivered live goats on demand and, thus, more googling ensued.  This gave me the command:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>python -m spacy download en
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python -m spacy download en
+</code></pre></div></div>
 
 <p>which automagically made the original snippet work.  Here it is again:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">spacy</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">spacy</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">spacy_langdetect</span> <span class="kn">import</span> <span class="n">LanguageDetector</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">'en'</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">nlp</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="n">LanguageDetector</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s">'language_detector'</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="s">'en'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nlp</span><span class="p">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="n">LanguageDetector</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s">'language_detector'</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">text</span> <span class="o">=</span> <span class="s">'This is an english text.'</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># document level language detection. Think of it like average language of the document!</span>
-<span class="o">...</span> <span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">language</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># document level language detection. Think of it like average language of the document!
+</span><span class="p">...</span> <span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="p">.</span><span class="n">_</span><span class="p">.</span><span class="n">language</span><span class="p">)</span>
 <span class="p">{</span><span class="s">'language'</span><span class="p">:</span> <span class="s">'en'</span><span class="p">,</span> <span class="s">'score'</span><span class="p">:</span> <span class="mf">0.9999978582631465</span><span class="p">}</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># sentence level language detection</span>
-<span class="o">...</span> <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">sents</span><span class="p">:</span>
-<span class="o">...</span>    <span class="k">print</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span> <span class="n">sent</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">language</span><span class="p">)</span>
-<span class="o">...</span>
-<span class="n">This</span> <span class="ow">is</span> <span class="n">an</span> <span class="n">english</span> <span class="n">text</span><span class="o">.</span> <span class="p">{</span><span class="s">'language'</span><span class="p">:</span> <span class="s">'en'</span><span class="p">,</span> <span class="s">'score'</span><span class="p">:</span> <span class="mf">0.9999968011919729</span><span class="p">}</span>
-</code></pre>
-</div>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># sentence level language detection
+</span><span class="p">...</span> <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">.</span><span class="n">sents</span><span class="p">:</span>
+<span class="p">...</span>    <span class="k">print</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span> <span class="n">sent</span><span class="p">.</span><span class="n">_</span><span class="p">.</span><span class="n">language</span><span class="p">)</span>
+<span class="p">...</span>
+<span class="n">This</span> <span class="ow">is</span> <span class="n">an</span> <span class="n">english</span> <span class="n">text</span><span class="p">.</span> <span class="p">{</span><span class="s">'language'</span><span class="p">:</span> <span class="s">'en'</span><span class="p">,</span> <span class="s">'score'</span><span class="p">:</span> <span class="mf">0.9999968011919729</span><span class="p">}</span>
+</code></pre></div></div>
 
 <p>And that's great but given that I did a <strong>nlp = spacy.load('en')</strong> call initially, do I need to load a library for other languages?  Sigh.  Well the other night I was wandering around an Ikea and I found a book on <a href="https://www.amazon.com/Kampen-Jonas-Froberg-Hardcover-Swedish/dp/9153435850/ref=sr_1_1?keywords=saab+froberg&amp;qid=1570178612&amp;sr=8-1">Saab</a> that I wanted to buy but when I looked on Amazon to find an english language version, all I found was the Swedish – but the Amazon description was in Swedish – so that was my source of a language other than English.  So I copied this text from the Amazon web page:</p>
 
@@ -279,39 +278,36 @@ OSError: [E050] Can't find model 'en'. It doesn't seem to be a shortcut link, a 
 
 <p>and I reran the last few lines of the code:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">text</span> <span class="o">=</span> <span class="s">'Initierat om Saabs dramatiska ödesår // Det var omöjligt. Dödsdömt. Men det gick. Det här är hela historien om Saabs årslånga kamp för överlevnad, en tempofylld reportagebok som bjuder på unika inblickar bakom kulisserna.'</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">text</span> <span class="o">=</span> <span class="s">'Initierat om Saabs dramatiska ödesår // Det var omöjligt. Dödsdömt. Men det gick. Det här är hela historien om Saabs årslånga kamp för överlevnad, en tempofylld reportagebok som bjuder på unika inblickar bakom kulisserna.'</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># document level language detection. Think of it like average language of the document!</span>
-<span class="o">...</span> <span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">language</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># document level language detection. Think of it like average language of the document!
+</span><span class="p">...</span> <span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="p">.</span><span class="n">_</span><span class="p">.</span><span class="n">language</span><span class="p">)</span>
 <span class="p">{</span><span class="s">'language'</span><span class="p">:</span> <span class="s">'sv'</span><span class="p">,</span> <span class="s">'score'</span><span class="p">:</span> <span class="mf">0.9999981443798187</span><span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So it is pretty clear that Spacy really does work and that nlp = spacy.load('en') does more than just english.  It is unclear to me though if this perhaps is limited to only western language character sets so let's feed some Japanese into it.</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">text</span> <span class="o">=</span> <span class="s">'日本語のキーボード'</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">text</span> <span class="o">=</span> <span class="s">'日本語のキーボード'</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">spacy</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">spacy_langdetect</span> <span class="kn">import</span> <span class="n">LanguageDetector</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">'en'</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">nlp</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="n">LanguageDetector</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s">'language_detector'</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="s">'en'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nlp</span><span class="p">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="n">LanguageDetector</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s">'language_detector'</span><span class="p">,</span> <span class="n">last</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># document level language detection. Think of it like average language of the document!</span>
-<span class="o">...</span> <span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">language</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># document level language detection. Think of it like average language of the document!
+</span><span class="p">...</span> <span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="p">.</span><span class="n">_</span><span class="p">.</span><span class="n">language</span><span class="p">)</span>
 <span class="p">{</span><span class="s">'language'</span><span class="p">:</span> <span class="s">'ja'</span><span class="p">,</span> <span class="s">'score'</span><span class="p">:</span> <span class="mf">0.999999998793732</span><span class="p">}</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># sentence level language detection</span>
-<span class="o">...</span> <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">sents</span><span class="p">:</span>
-<span class="o">...</span>    <span class="k">print</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span> <span class="n">sent</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">language</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># sentence level language detection
+</span><span class="p">...</span> <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">.</span><span class="n">sents</span><span class="p">:</span>
+<span class="p">...</span>    <span class="k">print</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span> <span class="n">sent</span><span class="p">.</span><span class="n">_</span><span class="p">.</span><span class="n">language</span><span class="p">)</span>
 <span class="p">{</span><span class="s">'language'</span><span class="p">:</span> <span class="s">'ja'</span><span class="p">,</span> <span class="s">'score'</span><span class="p">:</span> <span class="mf">0.999999998793732</span><span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>In closing I have to say that Spacy works impressively well.  I remember writing these types of routines back in the mid 1990s and while we had the same capabilities, we did it all in C and it took a fair bit of work for Dataware's Advanced Search team of John Munson and Trey Jones to do this.  Now it is an open source routine.  Damn!</p>
 
 <p>My one real objection here is this line:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>python -m spacy download en
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python -m spacy download en
+</code></pre></div></div>
 
 <p>To my way of thinking this is should be encapsulated into the requirements.txt file.  Without that you need a whole different step in your deployment architecture to make sure that this special little bit of python gets executed AFTER your python environment is setup.  And Ansible will do that but it is definitely something that will bite you in the ass at least a few times before you get that right.</p>
 

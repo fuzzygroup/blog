@@ -135,6 +135,12 @@ I am currently working on a project using Python that process data via standard 
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,16 +192,14 @@ I am currently working on a project using Python that process data via standard 
 
 <p>The problem that I've discovered is that <a href="https://www.tensorflow.org/">Tensor Flow</a> is extremely slow to startup.  This means that that my quickly running command line model hit an execution wall just due to the startup time of the Tensor Flow libraries.  The solution was to break my command line program into two parts.  I started with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>expert_white_supremacy_speech.py
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>expert_white_supremacy_speech.py
+</code></pre></div></div>
 
 <p>and that needs to become:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>expert_white_supremacy_speech.py
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>expert_white_supremacy_speech.py
 expert_white_supremacy_speech_service.py
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The "_service.py" version of this will be run via a Python library called <a href="https://rorodata.github.io/firefly/">Firefly</a> which provides "functions as a service" that are exposed via a restful API.</p>
 
@@ -205,60 +209,54 @@ expert_white_supremacy_speech_service.py
 
 <p>Firefly provides a persistently running daemon which should have all the libraries loaded one time.  This daemon is run with the following syntax:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>firefly base_script_name.method_name
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>firefly base_script_name.method_name
+</code></pre></div></div>
 
 <p>So in my case I will be running it as:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>firefly expert_white_supremacy_speech_service.opinion
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>firefly expert_white_supremacy_speech_service.opinion
+</code></pre></div></div>
 
 <p>The default for Firefly is to run on port 8000.  And this is where it gets interesting.  Because I'm going to have different experts that are all going to need to render opinions that are all coming from different routines, I went into firefly thinking "Ok; run one instance on port 8000 for method x; run another instance on part 8001 for method y and so on".  The actually approach is to use a config file which maps multiple methods from as many python files as you have.</p>
 
 <p>Let's illustrate this with two python scripts, fibs.py and squares.py and a config file, config.yml.  Here's the contents of each:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># this is squares.py</span>
-
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># this is squares.py
+</span>
 <span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># this is fibs.py</span>
-
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># this is fibs.py
+</span>
 <span class="k">def</span> <span class="nf">fib</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">version</span><span class="pi">:</span> <span class="s">0.001</span>
-<span class="s">token</span><span class="pi">:</span> <span class="s">plotti1234</span>
-<span class="s">functions</span><span class="pi">:</span>
-  <span class="s">fib</span><span class="pi">:</span>
-    <span class="s">path</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/fib"</span>
-    <span class="s">function</span><span class="pi">:</span> <span class="s2">"</span><span class="s">fibs.fib"</span>
-  <span class="s">square</span><span class="pi">:</span>
-    <span class="s">path</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/square"</span>
-    <span class="s">function</span><span class="pi">:</span> <span class="s2">"</span><span class="s">squares.square"</span>
-</code></pre>
-</div>
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="m">0.001</span>
+<span class="na">token</span><span class="pi">:</span> <span class="s">plotti1234</span>
+<span class="na">functions</span><span class="pi">:</span>
+  <span class="na">fib</span><span class="pi">:</span>
+    <span class="na">path</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/fib"</span>
+    <span class="na">function</span><span class="pi">:</span> <span class="s2">"</span><span class="s">fibs.fib"</span>
+  <span class="na">square</span><span class="pi">:</span>
+    <span class="na">path</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/square"</span>
+    <span class="na">function</span><span class="pi">:</span> <span class="s2">"</span><span class="s">squares.square"</span>
+</code></pre></div></div>
 
 <p>The syntax on the yaml file for the function line is "base_python_script_name.method".</p>
 
 <p>This means that my approach is going to be to run firefly with the config file:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>firefly -c config.yml
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>firefly -c config.yml
+</code></pre></div></div>
 
 <p>I can then run call the functions as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>(venv) ➜  scratch git:(master) ✗ python3
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(venv) ➜  scratch git:(master) ✗ python3
 Python 3.7.4 (v3.7.4:e09359112e, Jul  8 2019, 14:54:52)
 [Clang 6.0 (clang-600.0.57)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
@@ -276,22 +274,20 @@ firefly.client.FireflyError: Firefly functions only accept named arguments
 
 &gt;&gt;&gt; client.fib(n=5)
 8
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I left the error (client.find(5)) in place because it illustrates that firefly only works with named arguments which wasn't obvious (at least to me).</p>
 
 <p>If you watch the logs on the firefly execution, you see something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>(venv) ➜  scratch git:(master) ✗ firefly -c config.yml
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(venv) ➜  scratch git:(master) ✗ firefly -c config.yml
 2019-10-21 13:23:18 firefly [INFO] Starting Firefly...
 http://127.0.0.1:8000/
 2019-10-21 13:23:28 firefly [INFO] calling function square
 127.0.0.1 - - [21/Oct/2019 13:23:28] "POST /square HTTP/1.1" 200 2
 2019-10-21 13:23:32 firefly [INFO] calling function fib
 127.0.0.1 - - [21/Oct/2019 13:23:32] "POST /fib HTTP/1.1" 200 1
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="performance">Performance</h1>
 

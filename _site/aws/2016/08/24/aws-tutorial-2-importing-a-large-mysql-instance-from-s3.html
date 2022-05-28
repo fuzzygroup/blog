@@ -135,6 +135,12 @@ Yesterday I illustrated how to take your existing MySQL instance and move it, ta
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -209,9 +215,8 @@ Yesterday I illustrated how to take your existing MySQL instance and move it, ta
 
 <p>Once you have the aws tool configured you can use to move the data off your bucket onto the local machine where you can load it.  I presume that you might be able to pipe in from the bucket but I'm not going to be too sophisticated.  The first issue we are going to hit is that while you can easily get a list of your files like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>aws s3 ls s3://banks_production_db
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws s3 ls s3://banks_production_db
+</code></pre></div></div>
 
 <p>You can't actually copy them without specifying the region id.  I do not understand.  If ls knows that they are there then why, in Ghu's name, can I not copy them.  No matter - you can't.  This then invokes a spasm of IT thrashing, url looking, admin page rifling until i finally come up with the magic incantation of: –region="us-east-1".</p>
 
@@ -219,9 +224,8 @@ Yesterday I illustrated how to take your existing MySQL instance and move it, ta
 
 <p>So my process for getting the files FROM the bucket TO the machine is now reduced to an elegant single command:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>aws s3 sync s3://banks_production_db ~/from_s3 --region="us-east-1"
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws s3 sync s3://banks_production_db ~/from_s3 --region="us-east-1"
+</code></pre></div></div>
 
 <h2 id="sidebar-1-the-biggest-of-the-files-never-came-over-yesterday">Sidebar 1: The Biggest of the Files Never Came Over Yesterday</h2>
 
@@ -246,7 +250,7 @@ Yesterday I illustrated how to take your existing MySQL instance and move it, ta
 
 <p>As always there's some ruby.  I love ruby.  For the 4 giant files (each about 100 gigs in size) I can just flow them in one by one since they are coming down dribs and drabs.  But for the 200 odd other sql dumps a simple rake task will make it all good:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>task :from_s3 =&gt; :environment do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>task :from_s3 =&gt; :environment do
   password = "some_password"
   username = "some_user"
   db = "some_db"
@@ -266,19 +270,17 @@ Yesterday I illustrated how to take your existing MySQL instance and move it, ta
     `#{command}` if command &amp;&amp; execute_command
   end
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="sidebar-3-its-always-something">Sidebar 3: Its Always Something</h2>
 
 <p>So as I blearily wandered down to my office to check on all this I realize that something has gone awry as only about 1/3 of the split files have transferred down.  I do a quick ping test and get this crap:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>PING app1.foo.com (66.195.159.207): 56 data bytes
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PING app1.foo.com (66.195.159.207): 56 data bytes
 Request timeout for icmp_seq 0
 Request timeout for icmp_seq 1
 Request timeout for icmp_seq 2
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Sigh.  Its always something.  So I shut it down and actually go back to bed.  Tomorrow will arrive soon enough.</p>
 

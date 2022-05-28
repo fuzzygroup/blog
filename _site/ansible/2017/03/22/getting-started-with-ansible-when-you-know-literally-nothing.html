@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -291,7 +297,7 @@
 
 <p>Let's start with a sample makefile.  Here's one from the <a href="https://www.gnu.org/software/make/manual/html_node/Simple-Makefile.html">Gnu folks</a>:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>edit : main.o kbd.o command.o display.o 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>edit : main.o kbd.o command.o display.o 
 
 main.o : main.c defs.h
         cc -c main.c
@@ -312,16 +318,14 @@ utils.o : utils.c defs.h
 clean :
         rm edit main.o kbd.o command.o display.o \
            insert.o search.o files.o utils.o
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And while GC's makefile is certainly different, conceptually it should be much the same - a series of steps which result in the production of a binary file.  In GC's case that binary is checked into a version control system and that's what our Ansible playbook will operate on.</p>
 
 <p>What we're going to need to do is invoke our Ansible playbook at the end of the clean: stage with a line something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i /Users/sjohnson/me/fuzzygroup/ansible/gc01/inventories/hosts /Users/sjohnson/me/fuzzygroup/ansible/gc01/playbook_deployer.yml
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible-playbook -i /Users/sjohnson/me/fuzzygroup/ansible/gc01/inventories/hosts /Users/sjohnson/me/fuzzygroup/ansible/gc01/playbook_deployer.yml
+</code></pre></div></div>
 
 <p>As I don't know anything about the paths in GC's build system, I'm specifying absolute paths to everything but there's nothing stopping GC from embedding his ansible code into the build process itself – that's a choice that he could certainly make.  Obviously he would change the /sjohnson/ to something on his local system.</p>
 
@@ -329,10 +333,9 @@ clean :
 
 <p>The file /Users/sjohnson/me/fuzzygroup/ansible/gc01/inventories/hosts is just an ASCII file that might look something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[production]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[production]
 ansible_ssh_host=ec2-99-39-100-178.us-east-1.compute.amazonaws.com        ansible_ssh_private_key_file=/Users/sjohnson/.ssh/aws.pem
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>If we wanted this to execute on say 10 different hosts then we'd simply enumerate all 10 hosts here.  And if our local machine's SSH keys are setup to reach the remote box directly then we wouldn't even have to specify a .pem file.  The example above shows how I generally configure ansible to talk to AWS since that's a very, very common use case.</p>
 
@@ -349,7 +352,7 @@ ansible_ssh_host=ec2-99-39-100-178.us-east-1.compute.amazonaws.com        ansibl
 
 <p>Before we delve too deep into the specific ansible code, let's look at the file structure that makes up what we need to do.  Here is tree's output:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>~/me/fuzzygroup/ansible/gc01
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>~/me/fuzzygroup/ansible/gc01
 20:19 $ tree
 .
 ├── docs
@@ -363,14 +366,13 @@ ansible_ssh_host=ec2-99-39-100-178.us-east-1.compute.amazonaws.com        ansibl
     └── web_server_restart
         └── tasks
             └── main.yml
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="the-playbook">The Playbook</h2>
 
 <p>Here is the playbook that we'll need:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- hosts: production
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- hosts: production
   become: yes
   remote_user: ubuntu
   vars:
@@ -380,8 +382,7 @@ ansible_ssh_host=ec2-99-39-100-178.us-east-1.compute.amazonaws.com        ansibl
   roles:
     - { role: git_pull, tags: git}
     - { role: web_server_restart, tags: web_server}
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Each bit of this has the following purpose:</p>
 
@@ -397,25 +398,23 @@ ansible_ssh_host=ec2-99-39-100-178.us-east-1.compute.amazonaws.com        ansibl
 
 <p>Ansible uses what are called modules to interface with things and, happily, there is a <a href="https://docs.ansible.com/ansible/git_module.html">Git module</a>.  We can use that to handle the checkout and that reduces the complexity down to just a few lines:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># https://docs.ansible.com/ansible/git_module.html
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># https://docs.ansible.com/ansible/git_module.html
 - name: Check out from the Git Repo
   git:
     repo: ""
     dest: ""
     version: 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="the-web-server-restart">The Web Server Restart</h2>
 
 <p>Restarting the web server is a hard to define thing since web servers vary considerably so all I can do here is provide an example based on what I use for a web server – Apache:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># https://docs.ansible.com/ansible/shell_module.html
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># https://docs.ansible.com/ansible/shell_module.html
 - name: Restart web server
   shell: 
     cmd: "apache2ctl restart"
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="example-repo">Example Repo</h1>
 

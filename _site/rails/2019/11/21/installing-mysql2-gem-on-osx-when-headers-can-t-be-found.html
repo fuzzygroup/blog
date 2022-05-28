@@ -137,6 +137,12 @@ One of the single most frustrating things about the Rails ecosyste...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -190,17 +196,16 @@ One of the single most frustrating things about the Rails ecosyste...">
 
 <p>Here's the error:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ld: library not found for -lssl
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ld: library not found for -lssl
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 make: *** [mysql2.bundle] Error 1
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>My first suggestion was to try a "brew install mariadb" (mariadb is a fully compatible, <strong>better</strong> version of MySQL, written by the creator of MySQL).  It turned out that mariadb was already installed.</p>
 
 <p>So this led me to this <em>blink</em> and then I asked for "paste me the whole disgustingly long error message on bundle install".</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Installing mysql2 0.5.2 with native extensions
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Installing mysql2 0.5.2 with native extensions
 Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
 
 current directory:
@@ -270,14 +275,12 @@ An error occurred while installing mysql2 (0.5.2), and Bundler cannot
 continue.
 Make sure that gem install mysql2 -v '0.5.2' --source 'https://rubygems.org/'
 succeeds before bundling.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>My comment was pretty that it simply can't find the libraries, almost certainly the header files for openssl.  This is actually a common install problem for gems.  Happily my friend found the <a href="https://github.com/brianmario/mysql2/issues/795">answer</a> (and without me which is awesome).  Here is what turned out to be needed:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
+</code></pre></div></div>
 
 <p>This the kind of thing that differs across people's systems / environments so I get why it is an issue despite the mysql2 gem being what – a decade plus old?  But I wish that the build ecosystem for Rails better allowed for things like this because, well, when you can't bundle install, you effectively can't rails.</p>
 

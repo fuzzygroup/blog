@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -202,7 +208,7 @@
 
 <p>And here we go!  The first thing we need is the ability to know what's going on in our cluster of boxes.  This means the ability to know if sidekiq is running:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>playbook:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>playbook:
 
 role:
 
@@ -253,12 +259,11 @@ ok: [fiworker6] =&gt; {
         "ubuntu   23040  0.0  0.0  31808  9200 ?        Ss   Oct27  15:12 tmux new -s sidekiq"
     ]
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>As you can see in the first bit out output, fiworker5, I missed when I manually shut stuff down yesterday.  Oops.  And this brings us to our next playbook:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>playbook:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>playbook:
 #
 # MONDAY ansible-playbook -i ec2.py playbook_stop_sidekiq_with_prejudice.yml
 # ansible-playbook -i inventories/production2 playbook_stop_sidekiq_with_prejudice.yml
@@ -319,8 +324,7 @@ fiworker7                  : ok=2    changed=1    unreachable=0    failed=0
 fiworker8                  : ok=2    changed=1    unreachable=0    failed=0
 fiworker9                  : ok=2    changed=1    unreachable=0    failed=0
 fiworkerbig                : ok=2    changed=1    unreachable=0    failed=0
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Given my <a href="https://fuzzygroup.github.io/blog/unix/2016/11/23/pkill-rocks.html">previous praise of pkill</a>, readers may be wondering why I used the old xargs trick.  Simply put I couldn't make pkill work.  There are google posts on the topic but I didn't have time to dig into it – I <strong>knew</strong> that xargs had to work so I went with it.  Honestly I dont understand why Ansible doesn't have a process module – it just seems so absolutely needed.</p>
 

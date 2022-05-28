@@ -135,6 +135,12 @@ I had an abysmal day yesterday coding on my side project.  Ok – coding on one 
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -190,7 +196,7 @@ I had an abysmal day yesterday coding on my side project.  Ok – coding on one 
 
 <p>Here was the definition of the factory:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">FactoryBot</span><span class="p">.</span><span class="nf">define</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">FactoryBot</span><span class="p">.</span><span class="nf">define</span> <span class="k">do</span>
   <span class="n">factory</span> <span class="ss">:objective</span> <span class="k">do</span>
     <span class="nb">name</span> <span class="p">{</span><span class="no">Faker</span><span class="o">::</span><span class="no">Name</span><span class="p">.</span><span class="nf">first_name</span><span class="p">}</span>
     <span class="n">user</span>
@@ -200,8 +206,7 @@ I had an abysmal day yesterday coding on my side project.  Ok – coding on one 
     <span class="n">quarter</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>All this means is:</p>
 
@@ -217,7 +222,7 @@ I had an abysmal day yesterday coding on my side project.  Ok – coding on one 
 
 <p>Although this might seem complex, it is actually drop dead simple and something that I've probably done hundreds if not thousands of times.  And yet, yesterday, all I could get was some variant on this <em>censored</em> backtrace:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ActiveRecord::RecordInvalid:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ActiveRecord::RecordInvalid:
   Validation failed: Organization must exist, User can't be blank, Organization can't be blank
 # /Users/sjohnson/.rvm/gems/ruby-2.6.5/gems/fabrication-2.21.0/lib/fabrication/generator/base.rb:91:in `persist'
 # /Users/sjohnson/.rvm/gems/ruby-2.6.5/gems/fabrication-2.21.0/lib/fabrication/generator/base.rb:25:in `create'
@@ -241,8 +246,7 @@ I had an abysmal day yesterday coding on my side project.  Ok – coding on one 
 # /Users/sjohnson/.rvm/gems/ruby-2.6.5/gems/fabrication-2.21.0/lib/fabricate.rb:33:in `create'
 # /Users/sjohnson/.rvm/gems/ruby-2.6.5/gems/fabrication-2.21.0/lib/fabrication.rb:65:in `Fabricate'
 # ./spec/controllers/objectives_controller_spec.rb:20:in `block (4 levels) in &lt;top (required)&gt;'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I blew I don't know how much time on this in the early morning hours.  This is one of the problems with solo side projects – you don't have anyone you can ask when you hit a blocker like this.  Finally, around 6 am, I threw my hands up, muttered a few choice words and then went back to bed.</p>
 
@@ -252,19 +256,18 @@ I had an abysmal day yesterday coding on my side project.  Ok – coding on one 
 
 <p>Like a lot of classes in a Rails project that exist to simply support the database, I didn't actually have any methods in my User class.  Now, I would assume that this means that my class was was fine – but what if it wasn't?  So I thought to myself – what if the problem is something that I'm just not seeing?  And so I started to add a <strong>stupid</strong> method called foo to my user class both at the class level and the instance level:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">foo</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">foo</span>
   <span class="s1">'bar'</span>
 <span class="k">end</span>
 
 <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">foo</span>
   <span class="s1">'BAR'</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This gave me something that I could test:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">describe</span> <span class="s1">'#foo'</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">describe</span> <span class="s1">'#foo'</span> <span class="k">do</span>
   <span class="n">it</span> <span class="s1">'should return foo'</span> <span class="k">do</span>
     <span class="n">subject</span> <span class="o">=</span> <span class="no">FactoryBot</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>
     <span class="n">expect</span><span class="p">(</span><span class="n">subject</span><span class="p">.</span><span class="nf">foo</span><span class="p">).</span><span class="nf">to</span> <span class="n">eq</span> <span class="s1">'bar'</span>
@@ -276,12 +279,11 @@ I had an abysmal day yesterday coding on my side project.  Ok – coding on one 
     <span class="n">expect</span><span class="p">(</span><span class="no">User</span><span class="p">.</span><span class="nf">foo</span><span class="p">).</span><span class="nf">to</span> <span class="n">eq</span> <span class="s1">'BAR'</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>You will notice that my output between the two methods is different - 'bar' versus 'BAR' which I did deliberately to ensure that I'm not inadvertently calling a class method versus an instance method or vice versa.  And, happily, this worked perfectly.  Now, let's bring back our Factory definition for user:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">FactoryBot</span><span class="p">.</span><span class="nf">define</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">FactoryBot</span><span class="p">.</span><span class="nf">define</span> <span class="k">do</span>
   <span class="n">factory</span> <span class="ss">:objective</span> <span class="k">do</span>
     <span class="nb">name</span> <span class="p">{</span><span class="no">Faker</span><span class="o">::</span><span class="no">Name</span><span class="p">.</span><span class="nf">first_name</span><span class="p">}</span>
     <span class="n">user</span>
@@ -291,12 +293,11 @@ I had an abysmal day yesterday coding on my side project.  Ok – coding on one 
     <span class="n">quarter</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>My next step was to implement this same approach on organization.  And then on objective_type.  And then on okr_team – and that's where I hit a problem:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ bundle exec rspec spec/models/okr_team_spec.rb
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ bundle exec rspec spec/models/okr_team_spec.rb
 
 Randomized with seed 33038
 
@@ -340,14 +341,12 @@ Finished in 0.40894 seconds (files took 3.55 seconds to load)
 Failed examples:
 
 rspec ./spec/models/okr_team_spec.rb:24 # OkrTeam#foo should return foo
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>In my okr_team model, I discovered that I was missing a <strong>belongs_to</strong> relationship, specifically a:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>belongs_to :user
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>belongs_to :user
+</code></pre></div></div>
 
 <p>And that, dear reader, was sufficient to bring my whole house of software cards crashing to a pile.  I was actually fairly surprised by this; it was a dependency failure that I hadn't seen before.  My missing relationship was a consequence of my very productive <a href="https://fuzzyblog.io/blog/rails/2019/12/28/how-do-you-know-what-activerecord-table-has-a-user-id-attribute.html">Example Data</a> approach to building this side project.</p>
 

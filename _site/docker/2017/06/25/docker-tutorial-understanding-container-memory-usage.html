@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -192,11 +198,10 @@
   <p>free -m</p>
 </blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>              total        used        free      shared  buff/cache   available
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>              total        used        free      shared  buff/cache   available
 Mem:           1998        1163          90          22         743         554
 Swap:             0           0           0
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="docker-container-memory">Docker Container Memory</h1>
 
@@ -206,7 +211,7 @@ Swap:             0           0           0
   <p>docker stats</p>
 </blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>CONTAINER           CPU %               MEM USAGE / LIMIT       MEM %               NET I/O             BLOCK I/O           PIDS
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONTAINER           CPU %               MEM USAGE / LIMIT       MEM %               NET I/O             BLOCK I/O           PIDS
 a5251659f7c9        0.23%               15.29 MiB / 1.952 GiB   0.76%               35.5 MB / 20.3 MB   1.35 MB / 40.5 MB   3
 59ce2ad1dc64        0.01%               257.8 MiB / 1.952 GiB   12.90%              25.6 MB / 33.9 MB   143 kB / 0 B        6
 b4aaa4c36791        64.55%              237 MiB / 1.952 GiB     11.86%              639 MB / 115 MB     3.39 MB / 4.1 kB    14
@@ -215,8 +220,7 @@ ee27a6e37fef        0.00%               131.4 MiB / 1.952 GiB   6.57%           
 07d5252abf5f        0.00%               196.6 MiB / 1.952 GiB   9.84%               127 kB / 689 kB     1.63 MB / 0 B       23
 4aa705c8cf4b        0.07%               6.234 MiB / 1.952 GiB   0.31%               9.11 kB / 1.94 kB   0 B / 0 B           3
 78f495fcf733        0.06%               6.922 MiB / 1.952 GiB   0.35%               145 MB / 91.1 MB    766 kB / 2.97 MB    3
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>If you wanted to reduce the amount of output to the bare essentials then try:</p>
 
@@ -224,7 +228,7 @@ ee27a6e37fef        0.00%               131.4 MiB / 1.952 GiB   6.57%           
   <p>docker stats –format "table \t\t"</p>
 </blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>CONTAINER           CPU %               MEM USAGE / LIMIT
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONTAINER           CPU %               MEM USAGE / LIMIT
 a5251659f7c9        0.10%               15.29 MiB / 1.952 GiB
 59ce2ad1dc64        0.01%               239.1 MiB / 1.952 GiB
 b4aaa4c36791        21.33%              478.5 MiB / 1.952 GiB
@@ -233,18 +237,16 @@ ee27a6e37fef        0.00%               109 MiB / 1.952 GiB
 07d5252abf5f        0.00%               250.9 MiB / 1.952 GiB
 4aa705c8cf4b        0.05%               6.234 MiB / 1.952 GiB
 78f495fcf733        0.05%               6.664 MiB / 1.952 GiB
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>Now the clear and obvious problem here is that a5251659f7c9 or 59ce2ad1dc64 mean <strong>absolutely nothing</strong> to us.
-# But What is a5251659f7c9 or Understanding Docker Process IDs?</p>
+<p>Now the clear and obvious problem here is that a5251659f7c9 or 59ce2ad1dc64 mean <strong>absolutely nothing</strong> to us.</p>
+<h1 id="but-what-is-a5251659f7c9-or-understanding-docker-process-ids">But What is a5251659f7c9 or Understanding Docker Process IDs?</h1>
 
 <p>The a5251659f7c9 is a Docker process id and you need to grep the docker process list to find out.  Docker process ids change with every single container  deploy so you always have to look them up with the <em>docker ps</em> command.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker ps | grep a5251659f7c9
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker ps | grep a5251659f7c9
 a5251659f7c9        redis:3.2-alpine  "docker-entrypoint..."   27 minutes ago      Up 27 minutes       0.0.0.0:32771-&gt;6379/tcp   seiracrawler_redis_1
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So the way to interpret all this is the docker container with process id a5251659f7c9 corresponds to the named container seiracrawler_redis_1 and is using 15.29 mb RAM and 0.23% CPU.</p>
 
@@ -252,10 +254,9 @@ a5251659f7c9        redis:3.2-alpine  "docker-entrypoint..."   27 minutes ago   
 
 <p>If you're thinking that this two step process, well, <strong>sucks</strong>, yep.  I took a pass at cleaning this up into a single shell script but I found my bash skills, sadly weren't up to it.  Happily I did additional research and managed to put this together from some things I found on the web:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-docker stats --format <span class="s2">"table </span><span class="se">\t\t</span><span class="s2">"</span> <span class="k">$(</span>docker ps|grep -v <span class="s2">"NAMES"</span>|awk <span class="s1">'{ print $NF }'</span>|tr <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="s2">" "</span><span class="k">)</span>
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
+docker stats --format "table \t\t" $(docker ps|grep -v "NAMES"|awk '{ print $NF }'|tr "\n" " ")
+</code></pre></div></div>
 
 <p>If you put this into a shell script named dockerstats and then make it executable with:</p>
 
@@ -265,7 +266,7 @@ docker stats --format <span class="s2">"table </span><span class="se">\t\t</span
 
 <p>then you'll have a single shell script that produces this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>CONTAINER                                            CPU %               MEM USAGE / LIMIT
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONTAINER                                            CPU %               MEM USAGE / LIMIT
 seiracrawler_redis_1                                 0.12%               15.29 MiB / 1.952 GiB
 seiracrawler_rake_1                                  0.01%               239.1 MiB / 1.952 GiB
 seiracrawler_sidekiq_1                               11.99%              480.5 MiB / 1.952 GiB
@@ -274,8 +275,7 @@ seirawatchsite_sidekiq.1.8nxcvjx353725lsv70h72mzup   0.10%               109 MiB
 seirawatchsite_web.1.rxbzptnfuopfauqwjf4ib4bjr       0.01%               250.9 MiB / 1.952 GiB
 seiraadmin_redis.1.ws2hc37dihkbh0cejk6z75140         0.06%               6.234 MiB / 1.952 GiB
 seirawatchsite_redis.1.siatex4zd6xezsevxfk4no98n     0.09%               6.664 MiB / 1.952 GiB
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>You'll seem some redundancy here because one my Docker installations on this particular box is using Docker Swarm (not recommended btw) and there are  replicas of some of the containers due to my swarm configuration.</p>
 

@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,9 +186,8 @@
   <div class="post-content" itemprop="articleBody">
     <p>It is easy to forget at times just how powerful simple Linux shell commands here.  Here’s one I used recently that finds all files in a single directory that are older than 25 days and deletes them:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>find /apps/foo/shared/tmp/ -mtime +25 -maxdepth 1 -exec rm {} \;
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find /apps/foo/shared/tmp/ -mtime +25 -maxdepth 1 -exec rm {} \;
+</code></pre></div></div>
 
 <p>The -mtime param takes a number of days.  The maxdepth takes the number of directories below this to look (1 means the specified directory).  The exec takes the list of files produced and runs rm on each of them.  For reference, this was discovered from <a href="https://serverfault.com/questions/122824/linux-using-find-to-locate-files-older-than-date/122854#122854">ServerFault</a>.</p>
 
@@ -190,9 +195,8 @@
 
 <p>And you don’t just have to delete files of course.  If you wanted to say find all the files older than 25 days and list them out with the date and time stamp then you could use:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>find /apps/cas-seas3/shared/tmp/ -mtime +10 -maxdepth 1 -exec ls -al {} \;
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find /apps/cas-seas3/shared/tmp/ -mtime +10 -maxdepth 1 -exec ls -al {} \;
+</code></pre></div></div>
 
 <p>This was how we debugged this courtesy of a <a href="https://stackoverflow.com/questions/20893022/how-to-display-modified-date-time-with-find-command/20893429#20893429">Stack Overflow post</a>.</p>
 

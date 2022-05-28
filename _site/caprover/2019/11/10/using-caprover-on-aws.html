@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,27 +192,24 @@
 
 <p>I started by installing the CapRover software and here was the first problem that I hit:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo docker run -p 80:80 -p 443:443 -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain caprover/caprover
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo docker run -p 80:80 -p 443:443 -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain caprover/caprover
 docker: Error response from daemon: driver failed programming external connectivity on endpoint quizzical_snyder (f72be52bf809d139cc012debeadb87b813e02e8fd2ada6fbba97d4503d624c43): Error starting userland proxy: listen tcp 0.0.0.0:80: bind: address already in use.
 ERRO[0000] error waiting for container: context canceled
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The issue here is that one of these 3 ports is already in use.  And the easiest way to figure this out is to run a succession of netstat commands:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo netstat -pna | grep 3000
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo netstat -pna | grep 3000
+</code></pre></div></div>
 
 <p>That returned nothing.  So onto the next one, 443:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo netstat -pna | grep 443
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo netstat -pna | grep 443
+</code></pre></div></div>
 
 <p>Again this returned nothing, onto 80:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo netstat -pna | grep 80
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo netstat -pna | grep 80
 tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      21331/nginx: master
 tcp6       0      0 :::80                   :::*                    LISTEN      21331/nginx: master
 unix  2      [ ACC ]     STREAM     LISTENING     16380    1/init               @ISCSIADM_ABSTRACT_NAMESPACE
@@ -217,8 +220,7 @@ unix  3      [ ]         STREAM     CONNECTED     18081    954/dbus-daemon      
 unix  3      [ ]         STREAM     CONNECTED     38087    4225/python3
 unix  3      [ ]         STREAM     CONNECTED     18880    954/dbus-daemon
 unix  3      [ ]         STREAM     CONNECTED     18080    1010/systemd-logind    
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So the issue here is that I already have Nginx on this box listening on port 80.  This is clearly <strong>my issue</strong> and related to my initial work on using Capistrano to partially deploy a Ruby app.</p>
 
@@ -228,11 +230,10 @@ unix  3      [ ]         STREAM     CONNECTED     18080    1010/systemd-logind
 
 <p>I then installed docker using Snap and that led me to this error:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo docker run -p 80:80 -p 443:443 -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain caprover/caprover
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo docker run -p 80:80 -p 443:443 -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain caprover/caprover
 docker: Error response from daemon: error while creating mount source path '/captain': mkdir /captain: read-only file system.
 ERRO[0000] error waiting for container: context canceled    
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I've now used Docker for a bunch of years and this led to the typical, crap ass Docker troubleshooting approach of roaming thru Google, looking for a github issue that explains things.  I found one from a <a href="https://github.com/moby/moby/issues/34427">January 19, 2019</a> issue which said "don't use the snap version of Docker".</p>
 
@@ -242,40 +243,36 @@ ERRO[0000] error waiting for container: context canceled
 
 <p>Ok then:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>snap remove docker  
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>snap remove docker  
+</code></pre></div></div>
 
 <p>And then I reinstalled docker using <a href="https://phoenixnap.com/kb/how-to-install-docker-on-ubuntu-18-04">this guide</a>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get update
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get update
 sudo apt-get remove docker docker-engine docker.io
 sudo apt install docker.io
 sudo systemctl start docker
 sudo systemctl enable docker
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>At this point you need to log out and log back in and then do a:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker --version
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker --version
+</code></pre></div></div>
 
 <p>At this point docker should be cleanly installed.</p>
 
 <p>You probably want to be able to use docker without having to use sudo, so:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo groupadd docker
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo groupadd docker
 usermod -a -G docker ubuntu
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="setup---4">Setup - 4</h2>
 
 <p>If you are using AWS then your next likely problem will be this error:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker run -p 80:80 -p 443:443 -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain caprover/caprover
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -p 80:80 -p 443:443 -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain caprover/caprover
 
 &gt; caprover@0.0.0 start /usr/src/app
 &gt; node ./bin/www
@@ -314,8 +311,7 @@ Error: Port timed out: 3000
     at tryOnTimeout (timers.js:300:5)
     at listOnTimeout (timers.js:263:5)
     at Timer.processTimers (timers.js:223:10)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="setup---5">Setup - 5</h2>
 
@@ -323,9 +319,8 @@ Error: Port timed out: 3000
 
 <p>Once this is done then you can run:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker run -p 80:80 -p 443:443 -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain caprover/caprover        
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run -p 80:80 -p 443:443 -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock -v /captain:/captain caprover/caprover        
+</code></pre></div></div>
 
 <p>And have it actually get CapRover up and running.  And, yes, I actually did a happy dance when this worked.  I might have been holding hands with the cat while I did this.  The cat was not amused.</p>
 
@@ -333,19 +328,17 @@ Error: Port timed out: 3000
 
 <p>At this point you need to install the local CapRover tooling to setup the server component.  So, on your own machine, do this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>npm install -g caprover    
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install -g caprover    
+</code></pre></div></div>
 
 <p>And then:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>caprover serversetup
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>caprover serversetup
+</code></pre></div></div>
 
 <p>which walks you thru this process:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>------------
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>------------
 CapRover CLI has recently been refactored. Please report potential bugs here: https://github.com/caprover/caprover-cli/issues
 ------------
 
@@ -362,8 +355,7 @@ Setup CapRover machine on your server...
 CapRover server setup completed: it is available as captain-01 at https://captain.cartazzi.com
 
 For more details and docs see CapRover.com  
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="setup---7">Setup - 7</h2>
 
@@ -379,7 +371,7 @@ For more details and docs see CapRover.com
 
 <p>The magic of all this is tied to the Captain Definition file or captain-definition which is essentially a JSON formatted Dockerfile that defines how the application is built.  And this is where my Docker knowledge failed me.  Here's as far as I got:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cat captain-definition
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat captain-definition
 {
   "schemaVersion": 2,
   "dockerfileLines": [
@@ -408,18 +400,16 @@ For more details and docs see CapRover.com
 	"CMD [\"rackup\", \"config.ru\", \"--host\", \"0.0.0.0\", \"--port\", \"80\"]"
   ]
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Once you have written your captain-definition file, you deploy it with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>caprover deploy --default
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>caprover deploy --default
+</code></pre></div></div>
 
 <p>And, alas, this dies with errors:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ caprover deploy --default
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ caprover deploy --default
 
 
 ------------
@@ -497,8 +487,7 @@ Error: {"message":"ADD failed: stat /var/lib/docker/tmp/docker-builder803139007/
 ADD failed: stat /var/lib/docker/tmp/docker-builder803139007/src/Gemfile: no such file or directory
 
 Something bad happened. Cannot deploy cts-home-page at captain-01.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="conclusion">Conclusion</h2>
 
@@ -508,16 +497,15 @@ Something bad happened. Cannot deploy cts-home-page at captain-01.
 
 <p>I wrote the above a few hours ago, caught some sleep and then woke up and in the process of closing tabs about CapRover, I found out that you can use a standard Dockerfile by changing your captain-definition to:</p>
 
-<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"schemaVersion"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"dockerfilePath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./Dockerfile"</span><span class="w">
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"schemaVersion"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"dockerfilePath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./Dockerfile"</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre>
-</div>
+</span></code></pre></div></div>
 
 <p>and then here's a valid albeit simple Rails Dockerfile to run on an Ubuntu instance:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>#FROM ruby:2.6.5-ubuntu
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#FROM ruby:2.6.5-ubuntu
 FROM ubuntu:latest
 FROM ruby:2.6.5-stretch
 
@@ -543,8 +531,7 @@ COPY . .
 RUN bundle exec rake RAILS_ENV=production DATABASE_URL=mysql2://user:pass@127.0.0.1/dbname SECRET_TOKEN=dummytoken assets:precompile
 
 CMD puma -C config/puma.rb
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Now, let's run thru the deployment process once again, in full:</p>
 

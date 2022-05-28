@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -194,43 +200,39 @@
 
 <p>Use this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql -uroot -p -A
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql -uroot -p -A
 create database f1_history
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Load the data using:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql -uroot -p f1_history &lt; ~/Downloads/f1db.sql
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql -uroot -p f1_history &lt; ~/Downloads/f1db.sql
+</code></pre></div></div>
 
 <h1 id="build-the-app">Build the App</h1>
 
 <p>You want to build a basic app with a supervisor tree as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mix new f1_history --sup
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mix new f1_history --sup
+</code></pre></div></div>
 
 <h1 id="edit-mixexs">Edit mix.exs</h1>
 
 <p>Here are the dependencies you need for deps.get:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>defp deps do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defp deps do
   [
     {:ecto, "~&gt; 2.0"},
     {:mariaex, "~&gt; 0.7"}
   ]
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="edit-configexs">Edit config.exs</h1>
 
 <p>The config.exs file defines how you connect to the repo and should look as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>config :f1_history, F1History.Repo,
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>config :f1_history, F1History.Repo,
   adapter: Ecto.Adapters.MySQL,
   database: "f1",
   username: "root",
@@ -238,14 +240,13 @@ end
   hostname: "localhost"
   
 config :f1_history, ecto_repos: [F1History.Repo]
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h1 id="edit-f1historyexs">Edit f1_history.exs</h1>
+<h1 id="edit-f1_historyexs">Edit f1_history.exs</h1>
 
 <p>Here is what f1_history.exs should look like.  This was the root of my issues:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>defmodule F1History do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule F1History do
   use Application
   
   def start(_type, _args) do
@@ -260,8 +261,7 @@ config :f1_history, ecto_repos: [F1History.Repo]
   end
   
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Note that F1History.Repo needs to be one of the supervisor's children. This is critically important.</p>
 
@@ -269,7 +269,7 @@ end
 
 <p>The file race.ex defines a race "object" that we will be querying. Here's what that file looks like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>defmodule F1History.Race do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule F1History.Race do
   use Ecto.Schema
 
   @primary_key {:raceId, :id, autogenerate: true}
@@ -284,40 +284,36 @@ end
     field :url, :string
   end
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="edit-repoex">Edit repo.ex</h1>
 
 <p>The file repo.ex needs to live in lib and looks like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>defmodule F1History.Repo do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule F1History.Repo do
   use Ecto.Repo,
   otp_app: :f1_history
 end    
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="ecto-actually-working">Ecto Actually Working</h1>
 
 <p>Go into console with iex -S mix and enter a query like the following:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>iex(1)&gt; import Ecto.Query
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iex(1)&gt; import Ecto.Query
 Ecto.Query
 iex(2)&gt; F1History.Repo.one from race in F1History.Race, limit: 1
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>You should see something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>12:53:09.469 [debug] QUERY OK source="races" db=39.4ms decode=0.1ms queue=0.1ms
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>12:53:09.469 [debug] QUERY OK source="races" db=39.4ms decode=0.1ms queue=0.1ms
 SELECT r0.`raceId`, r0.`year`, r0.`round`, r0.`circuitId`, r0.`name`, r0.`date`, r0.`time`, r0.`url` FROM `races` AS r0 LIMIT 1 []
 %F1History.Race{__meta__: #Ecto.Schema.Metadata&lt;:loaded, "races"&gt;, circuitId: 1,
  date: #Ecto.Date&lt;2009-03-29&gt;, name: "Australian Grand Prix", raceId: 1,
  round: 1, time: #Ecto.Time&lt;06:00:00&gt;,
  url: "http://en.wikipedia.org/wiki/2009_Australian_Grand_Prix", year: 2009}
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="get-the-whole-thing">Get The Whole Thing</h1>
 

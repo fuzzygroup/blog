@@ -137,6 +137,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -198,7 +204,7 @@
 
 <p>Here's a directory listing from one of these tools.  The thing to understand is that "ohi" is the abbreviation for the project (which explains why you see it multiple times).</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ ls -l
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ls -l
 total 64
 -rw-r--r--@ 1 sjohnson  staff   189 Feb 24 09:58 Gemfile
 -rw-r--r--  1 sjohnson  staff  2083 Feb 24 09:58 Gemfile.lock
@@ -208,8 +214,7 @@ total 64
 -rw-r--r--@ 1 sjohnson  staff  1477 Feb 24 14:12 loader_kafka_to_ohi.rb
 -rw-r--r--@ 1 sjohnson  staff   436 Feb 24 10:29 loader_kafka_to_ohi.service
 -rw-r--r--@ 1 sjohnson  staff   125 Feb 24 10:22 loader_kafka_to_ohi.sh
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here is the role of each of these pieces:</p>
 
@@ -244,7 +249,7 @@ total 64
 
 <p>Here's the skeleton:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="c1">#</span>
 <span class="c1"># Execution Example</span>
 <span class="c1"># RAILS_ENV=development TOPIC=reddit ruby loader_reddit_to_kafka.rb</span>
@@ -265,8 +270,7 @@ total 64
 <span class="k">end</span>
 
 <span class="n">main</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>Note 0</strong>: You'll notice that I still use the convention of RAILS_ENV for the environment; I'm too damn trained at this point in my career to even consider naming that something else</p>
 
@@ -274,16 +278,14 @@ total 64
 
 <p>The second file, loader.rb, is a "God Class" which wraps every function used by main (or any of the functions that main calls) into a single class.  Given that the underlying function of this tool is to load data, well, I call the class: Loader i..e</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Loader</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Loader</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Even though a God class is generally a bad thing (poor use of name spaces, too big, etc.), I found it to be a decent compromise in terms of abstractions simply because it makes debugging <em>trivial</em>.  I find myself constantly switching between local development and remote development (where all my tooling like Kafka, my API server, etc) exist.  With a god class like loader, I can easily ssh into my production box and then just use irb in my deployment directory to:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">require_relative</span> <span class="s1">'loader'</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require_relative</span> <span class="s1">'loader'</span>
+</code></pre></div></div>
 
 <p>and then continue figuring out whatever problem has come up with easy access to functions in my god class (everything is just a def self.whatever method in loader.rb so all methods can be called trivially).</p>
 
@@ -293,7 +295,7 @@ total 64
 
 <p><strong>Note 3</strong>: But shouldn't you always have your development environment mirror your production environment?  Sure in an ideal world but Kafka servers are a <em>damn censored</em> pain in the arse to setup where as the AWS managed kafka service is almost brainless in its simplicity.  This is a very lightly staffed project and I chose to spend my time on coding rather than DevOps (and, yes, getting something complex installed locally is still DevOps).</p>
 
-<h2 id="use-requirerelative-to-import-a-god-class">Use require_relative to Import A God Class</h2>
+<h2 id="use-require_relative-to-import-a-god-class">Use require_relative to Import A God Class</h2>
 
 <p>The key technique to making this style of development work was my realizing that while <a href="https://www.thoughtco.com/requre-method-2908199">require</a> worked for gems, it worked poorly, if at all, for my own function libraries.  The reason for this is apparently Ruby madness with respect to the current working directory or cwd.  Happily <a href="https://stackoverflow.com/questions/9750610/ruby-require-error-cannot-load-such-file">require_relative solves this issue with flying colors</a>.</p>
 

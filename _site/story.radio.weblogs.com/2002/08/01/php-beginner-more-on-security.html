@@ -171,6 +171,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -294,7 +300,7 @@
 
 <p>{This story is written for those very patient people who used my PHP Beginner security code and found out that there were things missing from the article.  I tried to make it entertaining at least to make up for the apparent frustration that this as caused folks and I do apologize.}</p>
 
-<p>Once upon a time (hey!  all good geek stories begin with "once upon a time" or "a long, long time ago, in a galaxy far, far away"), there was a lad*.  A lad who said "I know, I know… I'll use PHP to make web security just plain easy.  And then my buddy Maxim will distribute it as far as the wires can reach.  To the ends of the land people will be able to authenticate and it will be good."   Little did that lad know that an evil wizard would cloud his mind at the last minute and cause the answers to critical questions to just disappear.  And, because the wizard was mighty indeed, he also clouded the vision of Maxim and the other fine, fine editors at <a href="http://www.phpbeginner.com/">www.phpbeginner.com</a>.  Hopefully the new counter magic that a powerful mage named Libby cast upon our lad will allow the answers to finally be disclosed.  If not, please direct counter magic to <a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;">&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;</a>.  And, so …</p>
+<p>Once upon a time (hey!  all good geek stories begin with "once upon a time" or "a long, long time ago, in a galaxy far, far away"), there was a lad*.  A lad who said "I know, I know… I'll use PHP to make web security just plain easy.  And then my buddy Maxim will distribute it as far as the wires can reach.  To the ends of the land people will be able to authenticate and it will be good."   Little did that lad know that an evil wizard would cloud his mind at the last minute and cause the answers to critical questions to just disappear.  And, because the wizard was mighty indeed, he also clouded the vision of Maxim and the other fine, fine editors at <a href="http://www.phpbeginner.com/">www.phpbeginner.com</a>.  Hopefully the new counter magic that a powerful mage named Libby cast upon our lad will allow the answers to finally be disclosed.  If not, please direct counter magic to <a href="mailto:scott@fuzzygroup.com">scott@fuzzygroup.com</a>.  And, so …</p>
 
 <h2 id="references">References</h2>
 
@@ -313,17 +319,15 @@
 
 <p>The first answer that was missing from the article was "Where does the user go after they login?".  Here's the code from the original article (original as on my website, not sure what code appeared where):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>if ($encryptedpassword == $passwordfromdb) {#set our cookies for our future security checks   setcookie ("ck_username", $username);  setcookie("ck_password", $password);  setcookie("ck_user_id", $user_id);#Create our results page showing them they are logged in  print "&lt;HTML&gt;";  print "&lt;HEAD&gt;";  print "&lt;TITLE&gt;";  print "You're Logged In!";  print "&lt;/TITLE&gt;";  print "&lt;BODY&gt;";  print "You're Logged In";#This needs to have a link added of course#If you wanted to automatically take them to the main screen#then use the header function to redirect them# NEW CODE HERE  print "Click Here to Continue";  print "&lt;/BODY&gt;";  print "&lt;/HTML&gt;";
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if ($encryptedpassword == $passwordfromdb) {#set our cookies for our future security checks   setcookie ("ck_username", $username);  setcookie("ck_password", $password);  setcookie("ck_user_id", $user_id);#Create our results page showing them they are logged in  print "&lt;HTML&gt;";  print "&lt;HEAD&gt;";  print "&lt;TITLE&gt;";  print "You're Logged In!";  print "&lt;/TITLE&gt;";  print "&lt;BODY&gt;";  print "You're Logged In";#This needs to have a link added of course#If you wanted to automatically take them to the main screen#then use the header function to redirect them# NEW CODE HERE  print "Click Here to Continue";  print "&lt;/BODY&gt;";  print "&lt;/HTML&gt;";
 
 //close the database// Closing connectionmysql_close($link);
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <font size="3">Add the line below (to the spot NEW CODE HERE indicated above and delete the next 3 print statements) to branch them to the right destination (change the index.php to the right filename):</font>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>header("Location: index.php");
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>header("Location: index.php");
+</code></pre></div></div>
 
 <h3 id="how-to-check-access-on-a-per-page-level">How to Check Access on a Per Page Level</h3>
 
@@ -331,23 +335,20 @@
 
 <p>At the top of every .PHP page, put this function call.  It should go after any include routines since you probably want to store it in 1 place (i.e. in your include file) so it can be maintained in 1 place.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>check_security();
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>check_security();
+</code></pre></div></div>
 
 <p>The code for the function is shown below.  This is not really a very secure approach but it does handle basic security.  Security is very difficult to get right and the rule of thumb that I recommend is to spend time on security proportional to the importance of the information in the application.  If it's credit card information then <strong>DO IT RIGHT</strong>.  If it's someone's bookmarks that you are guarding then it might be less important and make the right decision.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>function check_security() {// the global statement imports global variables from elsewhere in the script// since functions are local   global $ck_username;  global $ck_password;  global $ck_user_id;  if (empty($ck_username)) {    header("Location: accessdenied.htm");  }
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function check_security() {// the global statement imports global variables from elsewhere in the script// since functions are local   global $ck_username;  global $ck_password;  global $ck_user_id;  if (empty($ck_username)) {    header("Location: accessdenied.htm");  }
+</code></pre></div></div>
 
 <font size="3">The accessdenied.htm page looks like this (and customize it for your application):</font>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;HTML&gt;&lt;HEAD&gt;&lt;TITLE&gt;Access Denied&lt;/TITLE&gt;&lt;/HTML&gt;&lt;BODY&gt;&lt;H1 align="center"&gt;Access Denied&lt;/H1&gt;&lt;CENTER&gt;We're sorry but you don't have access to FuzzyOffice.  Please try logging in again.&lt;BR&gt;&lt;A href="index.htm"&gt;Log In&lt;/A&gt;&lt;/CENTER&gt;&lt;/BODY&gt;&lt;/HTML&gt;
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;HTML&gt;&lt;HEAD&gt;&lt;TITLE&gt;Access Denied&lt;/TITLE&gt;&lt;/HTML&gt;&lt;BODY&gt;&lt;H1 align="center"&gt;Access Denied&lt;/H1&gt;&lt;CENTER&gt;We're sorry but you don't have access to FuzzyOffice.  Please try logging in again.&lt;BR&gt;&lt;A href="index.htm"&gt;Log In&lt;/A&gt;&lt;/CENTER&gt;&lt;/BODY&gt;&lt;/HTML&gt;
+</code></pre></div></div>
 
-<h3 id="font-size3font"><font size="3"> </font></h3>
+<h3><font size="3"> </font></h3>
 
 <h2 id="acknowledgements">Acknowledgements</h2>
 

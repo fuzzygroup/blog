@@ -139,6 +139,12 @@ Poppycock.  Balderdash.  Fizzle Sticks.  Ok. Maybe.  Yes there's not sear...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -192,9 +198,8 @@ Poppycock.  Balderdash.  Fizzle Sticks.  Ok. Maybe.  Yes there's not sear...">
 
 <p>Poppycock.  Balderdash.  Fizzle Sticks.  Ok. Maybe.  Yes there's not search box at the top of my blog but anything on the Internet that has a distinct domain name is actually easily searchable just by using Google.  For example, here's how you'd find anything I ever wrote about MySQL:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>site:fuzzyblog.io mysql
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>site:fuzzyblog.io mysql
+</code></pre></div></div>
 
 <p>If you copy and paste that into google then you're get a search of my site for anything I ever wrote about mysql.</p>
 
@@ -210,26 +215,24 @@ Poppycock.  Balderdash.  Fizzle Sticks.  Ok. Maybe.  Yes there's not sear...">
 
 <p>Here's a basic html form:</p>
 
-<div class="language-html highlighter-rouge"><pre class="highlight"><code>  <span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">"search"</span> <span class="na">action=</span><span class="s">"https://www.google.com/search"</span><span class="nt">&gt;</span>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">"search"</span> <span class="na">action=</span><span class="s">"https://www.google.com/search"</span><span class="nt">&gt;</span>
     <span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"q"</span> <span class="na">name=</span><span class="s">"q"</span> <span class="na">size=</span><span class="s">50</span><span class="nt">&gt;</span>
     <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">form=</span><span class="s">"form1"</span> <span class="na">value=</span><span class="s">"Search"</span> <span class="na">onclick=</span><span class="s">"do_search();"</span><span class="nt">&gt;</span>Search<span class="nt">&lt;/button&gt;</span>
   <span class="nt">&lt;/form&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="step-2-javascript">Step 2: JavaScript</h2>
 
 <p>Here's the JavaScript:</p>
 
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"text/javascript"</span><span class="o">&gt;</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="dl">"</span><span class="s2">text/javascript</span><span class="dl">"</span><span class="o">&gt;</span>
   <span class="kd">function</span> <span class="nx">do_search</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">q</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'q'</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">searchQuery</span> <span class="o">=</span> <span class="s2">"site:fuzzyblog.io "</span> <span class="o">+</span> <span class="nx">q</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
-    <span class="nb">document</span><span class="p">.</span><span class="nx">location</span> <span class="o">=</span> <span class="s2">"https://www.google.com/search?q="</span> <span class="o">+</span> <span class="nx">searchQuery</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">q</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">q</span><span class="dl">'</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">searchQuery</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">site:fuzzyblog.io </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">q</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">location</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">https://www.google.com/search?q=</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">searchQuery</span><span class="p">;</span>
   <span class="p">}</span>
 <span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
-</span></code></pre>
-</div>
+</span></code></pre></div></div>
 
 <p>What this does is take the query in the search field and assign it to a variable.  It then merges it with the "site:fuzzyblog.io" bit of Google syntax.  And, yes, there might be an issue with multi word queries needing to be joined with the + character (that's how HTML rolls but Google is generally pretty flexible).  I'd test this now and rewrite the query but I'm in an aluminum tube at 35,000 feet without any access to Google (or most developer documentation). The final step is to set document.location to the google url for the search.  That forces the query to execute and positions the user on the Google results page.</p>
 

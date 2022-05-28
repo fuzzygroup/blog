@@ -135,6 +135,12 @@ This error bit me and a coworker hard yesterday and I haven't seen it well docum
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,28 +192,25 @@ This error bit me and a coworker hard yesterday and I haven't seen it well docum
 
 <p>In our case we had a machine learning model using Bert and PyTorch and the model file, in models/bertASmodel.pt appeared to check out correctly but here was what we actually got:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ls -l models/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls -l models/
 -rw-rw-r-- 1 ubuntu ubuntu 134 Oct 16 19:10 bertASmodel.pt
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Yep.  That's a 134 byte machine learning model!  W00t!  <strong>Snark</strong>. But when we look at it:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cat models/bertASmodel.pt
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat models/bertASmodel.pt
 
 version https://git-lfs.github.com/spec/v1
 oid sha256:de6988063e95c1775e0b84e256b2c58a5964845325c2263778cda4d33520f50a
 size 438039816
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>After we installed git lfs support, we get this</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ls -l models/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls -l models/
 total 427780
 -rw-rw-r-- 1 ubuntu ubuntu 438039816 Oct 17 18:19 bertASmodel.pt
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Yep.  That's now 400 odd megs.</p>
 
@@ -217,14 +220,13 @@ total 427780
 
 <p>Now the really, really interesting thing here was the error that PyTorch came up with when the model file was just this 138 byte file.  Because the model file wasn't actually missing, it seems like PyTorch went a tiny bit insane:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>UnpicklingError: invalid load key, 'v'.
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>UnpicklingError: invalid load key, 'v'.
 File "/home/ubuntu/.local/lib/python3.6/site-packages/streamlit/ScriptRunner.py", line 310, in _run_script exec(code, module.__dict__)
 File "/home/ubuntu/hate-language-modeling/dashboard.py", line 49, in &lt;module&gt; model = load_model(model_dir / 'bertASmodel.pt')
 File "/home/ubuntu/hate-language-modeling/dashboard.py", line 14, in load_model model = torch.load(filename, map_location=lambda storage, loc: storage)
 File "/home/ubuntu/.local/lib/python3.6/site-packages/torch/serialization.py", line 426, in load return _load(f, map_location, pickle_module, **pickle_load_args)
 File "/home/ubuntu/.local/lib/python3.6/site-packages/torch/serialization.py", line 603, in _load magic_number = pickle_module.load(f, **pickle_load_args)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Now this might make sense to someone with better Python skills than I but to me this is fairly maddening.</p>
 

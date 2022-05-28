@@ -135,6 +135,12 @@ What I've been doing is generating mysqldump load files on a normal MySQL instan
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -188,7 +194,7 @@ What I've been doing is generating mysqldump load files on a normal MySQL instan
 
 <p>Now given the convoluted gyrations with split, sync and cat to recombine, it would be easy to assume that the issue is mine but I only used split / cat on two tables of data and there are issues with at least 3 tables so one of the tables did NOT use split / cat.  Here's an example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>source:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source:
 select count(*) from large_table;
 +----------+
 | count(*) |
@@ -205,17 +211,18 @@ select count(*) from large_table;
 | 43012074 |
 +----------+
 1 row in set (30.66 sec)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And this was one of the non split files.  The files done with split are worse.</p>
 
 <p>I have an ec2 instance configured as a high performance db server so I'm loading one of the offending files into to see if I can eliminate Aurora as the issue.</p>
 
-<p>And I'm not going to definitely say that the issue is Aurora.  I've prematurely pointed the finger in the past and that's not fair.  What I do think is fair is to say the following:
-* Do not assume that because an import succeeded that all your data is there
-* Absolutely verify row counts from source to destination
-* I don't know that row counts indicate success; I think you need a checksum of sql statements from source to destination but that's a much harder problem</p>
+<p>And I'm not going to definitely say that the issue is Aurora.  I've prematurely pointed the finger in the past and that's not fair.  What I do think is fair is to say the following:</p>
+<ul>
+  <li>Do not assume that because an import succeeded that all your data is there</li>
+  <li>Absolutely verify row counts from source to destination</li>
+  <li>I don't know that row counts indicate success; I think you need a checksum of sql statements from source to destination but that's a much harder problem</li>
+</ul>
 
 <p>More later if / when I understand this.</p>
 

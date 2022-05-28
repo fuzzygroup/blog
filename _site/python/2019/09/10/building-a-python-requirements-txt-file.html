@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,22 +190,20 @@
 
 <p>Here's an example of a Gemfile:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>gem 'rails', '~&gt; 6'
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem 'rails', '~&gt; 6'
 gem 'puma', '~&gt; 3.11'
 gem 'mysql2', '&gt;= 0.4.4', '&lt; 0.6.0'
 gem 'bootsnap', '&gt;= 1.1.0', require: false    
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And here's a Python requirements.txt file:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Pygments==1.4
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Pygments==1.4
 SQLAlchemy==0.7.1
 South==0.7.3
 amqplib==0.6.1
 anyjson==0.3
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The syntax is different but they are clearly the same type of thing – a package name and a version number.  The reason that the version number is important is that this locks a package down to a specific version number.  I'll write later why this is so damn important these days but for now please accept that it is (its a security thing).</p>
 
@@ -212,7 +216,7 @@ anyjson==0.3
 
 <p>The first one is easy – you look for lines at the start of your Python program that begin like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  import iso8601
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  import iso8601
   import ujson as json
   import zstandard as zstd
   import numpy as np
@@ -220,49 +224,43 @@ anyjson==0.3
   -or-
   
   from fire import Fire
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Do I understand the difference between it beginning with "from" and "import"?  Nope.  Nor do I need to at this point.</p>
 
 <p>So my first entry in this requirements.txt file might be:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>zstandard==9999
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zstandard==9999
+</code></pre></div></div>
 
 <p>My guess was that Python would either give me an error message that helped me or let me know what was going on when I gave a crazy version number.  This is done with a command line like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>pip install -r requirements.txt
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install -r requirements.txt
+</code></pre></div></div>
 
 <p>Here's what happened:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Collecting zstandard==9999 (from -r requirements.txt (line 17))
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Collecting zstandard==9999 (from -r requirements.txt (line 17))
   ERROR: Could not find a version that satisfies the requirement zstandard==9999 
   (from -r requirements.txt (line 17)) (from versions: 0.0.1, 0.1, 0.2, 0.2.1, 0.2.2,
      0.3.0, 0.3.1, 0.3.2, 0.3.3, 0.4.0, 0.5.0, 0.5.1, 0.5.2, 0.6.0, 0.7.0, 0.8.0, 
      0.8.1, 0.8.2, 0.9.0, 0.9.1, 0.10.0, 0.10.1, 0.10.2, 0.11.0, 0.11.1)
 ERROR: No matching distribution found for zstandard==9999 (from -r requirements.txt 
   (line 17))
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And that tells us that 0.11.1 is a valid version number so our requirements line becomes:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>zstandard==0.11.1
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zstandard==0.11.1
+</code></pre></div></div>
 
 <p>The final trick is to build this up one dependency at a time.  That way you resolve everything as you go instead of N conflicts all at once.</p>
 
 <p>In closing there are also some standard libraries that follow the same from / import calls but don't actually need to be in requirements.txt.  Here are some seeming examples:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>import re 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import re 
 from sys import stdin
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>My best advice here is play around with the 9999 trick and see if a version number appears.  If it does then put it in requirements.txt and if not, well, kill it since then it is likely a Python built in.</p>
 

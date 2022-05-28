@@ -135,6 +135,12 @@ I did a simple but fascinating thing yesterday – I wrote a routine in python a
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,7 +192,7 @@ I did a simple but fascinating thing yesterday – I wrote a routine in python a
 
 <p>Let's start with the Ruby because it is way, way simpler:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">all_experts</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'expert_1.py'</span><span class="p">,</span> <span class="s1">'expert_2.py'</span><span class="p">,</span> <span class="s1">'expert_3.py'</span><span class="p">,</span> <span class="s1">'expert_4.py'</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">all_experts</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'expert_1.py'</span><span class="p">,</span> <span class="s1">'expert_2.py'</span><span class="p">,</span> <span class="s1">'expert_3.py'</span><span class="p">,</span> <span class="s1">'expert_4.py'</span><span class="p">]</span>
 
 <span class="n">experts_so_far</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'expert_1.py'</span><span class="p">]</span>
 
@@ -196,12 +202,11 @@ I did a simple but fascinating thing yesterday – I wrote a routine in python a
     <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="s2">"expert_3.py"</span><span class="p">,</span>
     <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="s2">"expert_4.py"</span>
 <span class="p">]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Now here is the python:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">all_experts</span> <span class="o">=</span> <span class="p">[</span><span class="s">'expert_1.py'</span><span class="p">,</span> <span class="s">'expert_2.py'</span><span class="p">,</span> <span class="s">'expert_3.py'</span><span class="p">,</span> <span class="s">'expert_4.py'</span><span class="p">]</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">all_experts</span> <span class="o">=</span> <span class="p">[</span><span class="s">'expert_1.py'</span><span class="p">,</span> <span class="s">'expert_2.py'</span><span class="p">,</span> <span class="s">'expert_3.py'</span><span class="p">,</span> <span class="s">'expert_4.py'</span><span class="p">]</span>
 
 <span class="n">experts_so_far</span> <span class="o">=</span> <span class="p">[</span><span class="s">'expert_1.py'</span><span class="p">]</span>
 
@@ -209,17 +214,15 @@ I did a simple but fascinating thing yesterday – I wrote a routine in python a
 
 <span class="k">print</span><span class="p">(</span><span class="n">remaining_experts</span><span class="p">)</span>
 <span class="p">[</span><span class="s">'expert_3.py'</span><span class="p">,</span> <span class="s">'expert_2.py'</span><span class="p">,</span> <span class="s">'expert_4.py'</span><span class="p">]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The interesting thing here is what's going on with the python.  My initial understanding of the python failure was that subtraction failed because it was lists of strings.  That's actually not the case.  Here's the result of two lists of integers being subtracted:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
   <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="nb">TypeError</span><span class="p">:</span> <span class="n">unsupported</span> <span class="n">operand</span> <span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="o">-</span><span class="p">:</span> <span class="s">'list'</span> <span class="ow">and</span> <span class="s">'list'</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>What's going on here with the python is that we are:</p>
 
@@ -231,11 +234,10 @@ I did a simple but fascinating thing yesterday – I wrote a routine in python a
 
 <p>The interesting thing here is that sets have unique memberships so:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">all_experts</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">all_experts</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">set</span><span class="p">(</span><span class="n">all_experts</span><span class="p">)</span>
 <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>From a rubyist's perspective here, the surprising things are</p>
 

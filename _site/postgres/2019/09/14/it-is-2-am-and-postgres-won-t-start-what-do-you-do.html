@@ -135,6 +135,12 @@ So I find myself awake, once again, in the wee hours and I went to work on my se
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,7 +190,7 @@ So I find myself awake, once again, in the wee hours and I went to work on my se
 
 <p>So I find myself awake, once again, in the wee hours and I went to work on my second side project; yeah, I know, I know.  So I started by writing a Rails migration and then when I went to execute it, I got:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake db:migrate
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec rake db:migrate
 rake aborted!
 PG::ConnectionBad: could not connect to server: No such file or directory
 	Is the server running locally and accepting
@@ -192,56 +198,50 @@ PG::ConnectionBad: could not connect to server: No such file or directory
 /Users/sjohnson/.rvm/gems/ruby-2.6.3/gems/pg-1.1.4/lib/pg.rb:56:in `initialize'
 /Users/sjohnson/.rvm/gems/ruby-2.6.3/gems/pg-1.1.4/lib/pg.rb:56:in `new'
 /Users/sjohnson/.rvm/gems/ruby-2.6.3/gems/pg-1.1.4/lib/pg.rb:56:in `connect'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Sigh.  This particular side project is built with <a href="https://jumpstartrails.com/">Jumpstart Rails</a> and Jumpstart Rails uses Postgres.  And while I have no particular object to Postgres, it isn't MySQL which is my "comfort db".  So I guess I have to roll my metaphorical sleeves up (they are metaphorical sleeves because I'm writing this at 2:47 am in bed and, well, naked) and figure this out.  I could just try and go back to sleep but, nah….</p>
 
 <p>The first thing I try is to look at Procfile.dev:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cat Procfile.dev
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat Procfile.dev
 
 web: bundle exec rails server
 webpack: bundle exec bin/webpack-dev-server
 sidekiq: bundle exec sidekiq
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>There is no reference to Postgres so maybe it just isn't running.  I rebooted two days ago (to the sound of much griping and cursing - but I digress) so I try and start Postgres using brew:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>brew services start postgres
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew services start postgres
 Service `postgresql` already started, use `brew services restart postgresql` to restart.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Fabulous.  So is it actually running or not:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ps auwwx | grep postg
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ps auwwx | grep postg
 sjohnson         44631   0.0  0.0  4295688    856 s029  S+    2:51AM   0:00.00 grep --color=auto --exclude-dir=.bzr --exclude-dir=CVS --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn postg
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>That seems to argue that it isn't.  Maybe there's a lock file left behind so I should restart it instead:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>brew services restart postgresql
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew services restart postgresql
 Stopping `postgresql`... (might take a while)
 ==&gt; Successfully stopped `postgresql` (label: homebrew.mxcl.postgresql)
 ==&gt; Successfully started `postgresql` (label: homebrew.mxcl.postgresql)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So I check the process list again:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ps auwwx | grep postg
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ps auwwx | grep postg
 sjohnson         44859   0.0  0.0  4268040    784 s029  S+    2:52AM   0:00.00 grep --color=auto --exclude-dir=.bzr --exclude-dir=CVS --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.svn postg
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This type of behavior with a "headless" process generally means that it is starting up, hitting an error condition and aborting – and failing to clean up its lock file (making brew think that its still running).  Sigh.</p>
 
 <p>Postgres is a background service which means that it is running behind the scenes and it is managed by brew.  So a little digging gave me brew services list:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>brew services list
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew services list
 Name          Status  User     Plist
 dnsmasq       stopped
 elasticsearch started sjohnson /Users/sjohnson/Library/LaunchAgents/homebrew.mxcl.elasticsearch.plist
@@ -251,12 +251,11 @@ postgresql    started sjohnson /Users/sjohnson/Library/LaunchAgents/homebrew.mxc
 rabbitmq      started sjohnson /Users/sjohnson/Library/LaunchAgents/homebrew.mxcl.rabbitmq.plist
 redis         stopped
 unbound       stopped
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>A bunch of years ago, Apple decided to replace the venerable cron with its own XML based launcher and the data structure that runs it is called a plist.  So I can just look at that:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cat /Users/sjohnson/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /Users/sjohnson/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
 
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
@@ -282,24 +281,21 @@ unbound       stopped
   &lt;string&gt;/usr/local/var/log/postgres.log&lt;/string&gt;
 &lt;/dict&gt;
 &lt;/plist&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>That log file at the end likely has the answer – log files always have the answer:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>tail -f /usr/local/var/log/postgres.log
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tail -f /usr/local/var/log/postgres.log
 2019-09-14 02:58:16.850 EDT [45173] FATAL:  database files are incompatible with server
 2019-09-14 02:58:16.850 EDT [45173] DETAIL:  The data directory was initialized by PostgreSQL version 9.6, which is not compatible with this version 11.4.
 2019-09-14 02:58:26.985 EDT [45174] FATAL:  database files are incompatible with server
 2019-09-14 02:58:26.985 EDT [45174] DETAIL:  The data directory was initialized by PostgreSQL version 9.6, which is not compatible with this version 11.4.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And that says to me "Google this little f* problem" which takes me to a <a href="https://olivierlacan.com/posts/migrating-homebrew-postgres-to-a-new-version/">great postgres blog post</a> which recommends that I run:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>brew postgresql-upgrade-database
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew postgresql-upgrade-database
+</code></pre></div></div>
 
 <p>And that doesn't seem to work because I went from 9.6 to 11.something.or.other – too large a version leap.  But it does make a backup of my Postgres database and maybe that will help me – only it doesn't.</p>
 
@@ -312,7 +308,7 @@ unbound       stopped
 
 <p>Here was all the jiggery pokery I had to endure:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> 3029  brew postgresql-upgrade-database
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 3029  brew postgresql-upgrade-database
  3030  psql --version
  3031  ls -l /usr/local/var/postgres
  3032  ls -l /usr/local/var/postgres/postgres.old
@@ -348,8 +344,7 @@ sjohnson         47729   0.0  0.0  4480560    996   ??  Ss    3:14AM   0:00.00 p
 sjohnson         47728   0.0  0.0  4480560   1104   ??  Ss    3:14AM   0:00.00 postgres: background writer
 sjohnson         47727   0.0  0.0  4480560    976   ??  Ss    3:14AM   0:00.00 postgres: checkpointer
 sjohnson         47717   0.0  0.1  4480840  17796   ??  S     3:14AM   0:00.04 /usr/local/opt/postgresql/bin/postgres -D /usr/local/var/postgres
-</code></pre>
-</div>
+</code></pre></div></div>
 
   </div>
   

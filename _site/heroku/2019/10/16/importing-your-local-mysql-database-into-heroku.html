@@ -135,6 +135,12 @@ It never fails to amaze me how poorly documented certain basic things are.  The 
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -201,17 +207,15 @@ It never fails to amaze me how poorly documented certain basic things are.  The 
 
 <p>You need to dump your database locally with something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysqldump -uroot -p$UIOUFEIRE change_me_now_development &gt; ~/change_me_now_development.sql
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysqldump -uroot -p$UIOUFEIRE change_me_now_development &gt; ~/change_me_now_development.sql
+</code></pre></div></div>
 
 <h2 id="step-3---make-a-command-line-to-import">Step 3 - Make a Command Line to Import</h2>
 
 <p>You can use a standard MySQL command line to import the database using the host parameter to comment to the Heroku hosted version over the Internet.  Here's an example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql -uYOUR_USERNAME -pYOUR_PASSWORD YOUR_DATABASE --host=YOUR_HOST &lt; lib/tasks/data/db_dumps/change_me_now_development_2019-09-26.sql
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql -uYOUR_USERNAME -pYOUR_PASSWORD YOUR_DATABASE --host=YOUR_HOST &lt; lib/tasks/data/db_dumps/change_me_now_development_2019-09-26.sql
+</code></pre></div></div>
 
 <p>Substitute the values you found in step 1 for the <strong>YOUR</strong> information and, of course, update the file you are importing from.</p>
 
@@ -219,18 +223,16 @@ It never fails to amaze me how poorly documented certain basic things are.  The 
 
 <p>After any type of database import from development to production, you really, really, <strong>really</strong> want to verify that all the data you sent in to the production database actually got in.  There are lots and lots of ways to do this but an easy way is to dump the data back and see if it is roughly the same size.  This can be done with the standard mysqldump tool:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysqldump -uYOUR_USERNAME -pYOUR_PASSWORD YOUR_DATABASE --host=YOUR_HOST &gt; lib/tasks/data/db_dumps/change_me_now_production_2019-10-16.sql
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysqldump -uYOUR_USERNAME -pYOUR_PASSWORD YOUR_DATABASE --host=YOUR_HOST &gt; lib/tasks/data/db_dumps/change_me_now_production_2019-10-16.sql
+</code></pre></div></div>
 
 <p>And then a simple ls -l tells us the truth of all this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ls -l lib/tasks/data/db_dumps/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls -l lib/tasks/data/db_dumps/
 total 1808
 -rw-r--r--  1 sjohnson  staff  457221 Oct 16 09:37 change_me_now_development_2019-09-26.sql
 -rw-r--r--  1 sjohnson  staff  457198 Oct 16 10:23 change_me_now_production_2019-10-16.sql
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>There is a difference of only 23 bytes between the import and the export and that's good enough for me!</p>
 

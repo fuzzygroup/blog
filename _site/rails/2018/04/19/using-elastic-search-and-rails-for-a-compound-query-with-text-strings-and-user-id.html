@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -191,9 +197,8 @@
 
 <p>I have a series of ActiveRecord models that I want to be able to search using Elastic Search.  This can easily be done with this code fragment:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Job.search_user(params[:q])
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Job.search_user(params[:q])
+</code></pre></div></div>
 
 <p>Given that I was initially the only user on this code base, I didn't even notice the issue until I thought about deployment.  At which point there was the obligatory light bulb / I'm an idiot moment.  The problem here is that this code searches everyone's jobs, not just the jobs that <strong>you</strong> created.  Now since every bit of data encompasses a user_id attribute, this should boil down to two problems:</p>
 
@@ -206,11 +211,11 @@
 
 <p>I'm sure a number of people are shouting out "Use <a href="https://github.com/ankane/searchkick">SearchKick</a> (dummy)" but whenever I tried to use SearchKick, I got odd errors and I eventually just pulled it from Gemfile.  Given that I'm a long time believer in Ankane's ChartKick, I'm sure it is me but I still couldn't make use of it.</p>
 
-<h1 id="step-1-getting-userid-into-the-index">Step 1: Getting user_id into the Index</h1>
+<h1 id="step-1-getting-user_id-into-the-index">Step 1: Getting user_id into the Index</h1>
 
 <p>I've opted to setup each of my searchable models as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>include Elasticsearch::Model
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>include Elasticsearch::Model
 include Elasticsearch::Model::Callbacks
 
 settings do
@@ -225,8 +230,7 @@ settings do
     indexes :user_id, type: :text
   end
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The :title^5 bumps the ranking of search results in the title or company attributes by a factor of 5.</p>
 
@@ -234,7 +238,7 @@ end
 
 <p>I ended up with a class method on each of my searchable objects like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>def self.search_user(query, user)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def self.search_user(query, user)
   self.search({
     query: {
       bool: {
@@ -254,14 +258,12 @@ end
     }
   })
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I can call this from my search controller like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>@jobs = Job.search_user(params[:q], current_user)
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@jobs = Job.search_user(params[:q], current_user)
+</code></pre></div></div>
 
 <p>and get results bound only to the logged in user – exactly what I was looking for.</p>
 
@@ -269,7 +271,7 @@ end
 
 <p>After making changes to your settings / mappings, you need to re-index everything.  I handle this with a simple rake task like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>namespace :search do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>namespace :search do
   # bundle exec rake search:index_all --trace
   task :index_all =&gt; :environment do
     klasses = [Job, Note, CoverLetter, Task]
@@ -278,8 +280,7 @@ end
     end
   end
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This re-indexes every model in full.  You don't always need this but it is very convenient to have for development when you're playing with schema changes and the like.</p>
 

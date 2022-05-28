@@ -162,6 +162,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -287,17 +293,17 @@
 
 <p>I have been a small part of the Open Source community since 1996 and I've been a regular Unix user since 1986.  These technologies, which grew up on the Internet, offer compelling benefits for most organizations.  A recent experience with an Open Source portal application, Drupal, pointed out to me just how good the performance of Open Source applications can be - when it is done correctly.</p>
 
-<h1 id="font-facearial-size3what-is-open-sourcefont"><em><font face="Arial" size="3">What Is Open Source?</font></em></h1>
+<h1 id="what-is-open-source"><em><font face="Arial" size="3">What Is Open Source?</font></em></h1>
 
 <font face="Arial">At its very heart, Open Source is a philosophy that basically says "People should have access to the source code of their software and not be controlled by a vendor". While Open Source software is usually free, this definition says nothing about money - the Open Source movement is about freedom. It's the freedom to make changes as needed and freedom from being locked in by vendors. What organization, in today's technology world, hasn't been harmed by one vendor or another? Horror stories abound about bad vendors and with good reason. Open Source solves these issues once and for all by giving your organization full control.</font>
 
 <font face="Arial"><b>NOTE</b>: The term Open Source is itself controversial.<span style="mso-spacerun: yes">  </span>Depending on the license agreement used, the term Free Software or Free Open Source Software is technically more accurate.<span style="mso-spacerun: yes">  </span>In this document Open Source, Free Software and Free Open Source Software are synonymous. </font>
 
-<h1 id="font-facearial-size3open-source-performance-issues-discussedfont"><em><font face="Arial" size="3">Open Source Performance Issues Discussed</font></em></h1>
+<h1 id="open-source-performance-issues-discussed"><em><font face="Arial" size="3">Open Source Performance Issues Discussed</font></em></h1>
 
 <font face="Arial">In software good performance is a function of good engineering.<span style="mso-spacerun: yes">  </span>And good engineering is found in both commercial and open source applications.<span style="mso-spacerun: yes">  </span>The interesting aspect of open source software (OSS) with respect to performance is that often OSS applications dramatically outperform commercial software by orders of magnitude with tiny engineering teams and outdated hardware to boot.<span style="mso-spacerun: yes">  </span>You should not, however, get the idea that all OSS has good performance.<span style="mso-spacerun: yes">  </span>OSS can be as bad or worse as commercial software in certain areas. </font>
 
-<h1 id="font-facearial-size3open-source-performance-illustrated-kerneltrapfont"><em><font face="Arial" size="3">Open Source Performance Illustrated: KernelTrap</font></em></h1>
+<h1 id="open-source-performance-illustrated-kerneltrap"><em><font face="Arial" size="3">Open Source Performance Illustrated: KernelTrap</font></em></h1>
 
 <font face="Arial">Performance is always one of those things that computer people debate at great length.<span style="mso-spacerun: yes">  </span>For myself, performance is best illustrated by example, not by statistic.<span style="mso-spacerun: yes">  </span>On May 28, 2002, the web site www.kerneltrap.org was featured on Slashdot.<span style="mso-spacerun: yes">  </span>Slashdot, for those unfamiliar with it, is a website which is extremely popular with computer people.<span style="mso-spacerun: yes">  </span>Its a virtual certainty, that whenever a web site is featured on Slashdot, tens of thousands of people will view it within a very short time generally a few hours.<span style="mso-spacerun: yes">  </span>This is now common enough that the phrase my site was slashdotted is actually common in web development circles.<span style="mso-spacerun: yes">  </span>More than a few websites have been brought to their knees by the Slashdot effect.</font>
 
@@ -307,7 +313,7 @@
 
 <font face="Arial"> </font>
 
-<h1 id="font-facearial-size3actual-performance-statisticsfont"><em><font face="Arial" size="3">Actual Performance Statistics</font></em></h1>
+<h1 id="actual-performance-statistics"><em><font face="Arial" size="3">Actual Performance Statistics</font></em></h1>
 
 <font face="Arial">Here are the actual statistics for the KernelTrap site for a portion of the month of May.<span style="mso-spacerun: yes">  </span>The day of the Slashdot reference is near the bottom, in the wider, red row.<span style="mso-spacerun: yes">  </span>Its important to note that the overall traffic load increased <b>six fold</b> due to the Slashdot effect yet Drupal kept running.</font>
 
@@ -2071,7 +2077,7 @@
 
 <font face="Arial"> </font>
 
-<h1 id="font-facearial-size3real-time-performance-metricsfont"><em><font face="Arial" size="3">Real Time Performance Metrics</font></em></h1>
+<h1 id="real-time-performance-metrics"><em><font face="Arial" size="3">Real Time Performance Metrics</font></em></h1>
 
 <font face="Arial">I am in fairly regular contact via Instant Messaging with one of the Drupal Team Leads and I learned about this in real time as it occurred.<span style="mso-spacerun: yes">  </span>By auditing the Apache log files, as the Slashdot traffic was first arriving (i.e. when the reference to the site was above the fold), Kjartan gave me these statistics:</font>
 
@@ -2085,7 +2091,7 @@
 
 <font face="Arial"> </font>
 
-<h1 id="font-facearial-size3hardwarefont"><em><font face="Arial" size="3">Hardware</font></em></h1>
+<h1 id="hardware"><em><font face="Arial" size="3">Hardware</font></em></h1>
 
 <font face="Arial">Performance is relative to lots of different factors but, by illustrating it with specific examples, a good feel for it can be arrived at.<span style="mso-spacerun: yes">   </span>Heres their current hardware and OS setup:</font>
 
@@ -2101,7 +2107,7 @@
 
 <p>q       <font face="Arial">Drupal 3.0.2 (with caching)</font></p>
 
-<h1 id="font-facearial-size3optimizationsfont"><em><font face="Arial" size="3">Optimizations</font></em></h1>
+<h1 id="optimizations"><em><font face="Arial" size="3">Optimizations</font></em></h1>
 
 <font face="Arial">The KernelTrap website took advantage of the standard Drupal caching option which reduces dynamic page generation to 2 database calls, 1 to fetch the user id and 1 to get the cached page from the database itself.<span style="mso-spacerun: yes">  </span>An additional optimization, turning off unused modules, was not used at first.<span style="mso-spacerun: yes">  </span>Once the site was getting &gt;60 hits per minute, this became necessary.<span style="mso-spacerun: yes">  </span>In real time, as Drupal was serving pages, the unused modules were turned off and performance increased.<span style="mso-spacerun: yes">  </span>An additional tuning step of increasing the cached setting from 30 seconds to 10 minutes was also used.<span style="mso-spacerun: yes">  </span>The total tuning time, admittedly by an experienced Drupal administrator, was <b>3 minutes</b>.</font>
 
@@ -2109,23 +2115,23 @@
 
 <font face="Arial"><b>NOTE:</b> This is not recommended.<span style="mso-spacerun: yes">  </span>It is far better to optimize your site before this happens.</font>
 
-<h1 id="font-facearial-size3a-side-note-supportfont"><em><font face="Arial" size="3">A Side Note: Support</font></em></h1>
+<h1 id="a-side-note-support"><em><font face="Arial" size="3">A Side Note: Support</font></em></h1>
 
 <font face="Arial">Just as a side note, people often complain about support in the OSS world.<span style="mso-spacerun: yes">  </span>Just as performance can be good or bad in the OSS world, so too can support be good or bad.<span style="mso-spacerun: yes">  </span>In this case the quality of support in the OSS world was illustrated as soon as one of the team leads for Drupal was alerted to the situation, he pitched in and helped tune the software.<span style="mso-spacerun: yes">  </span>What happened here was that when the owner of the Kernel Trap site noticed that the Drupal page was maxing out on performance due to his own poor tuning (his term, not mine), he sent a request for help to the Drupal support mailing list.<span style="mso-spacerun: yes">  </span>Within minutes, I had support from Kjartan, Dries and Marco and through their help the tuning was quickly accomplished and I was back in business. (source email correspondence). </font>
 
-<h1 id="font-facearial-size3summaryfont"><em><font face="Arial" size="3">Summary</font></em></h1>
+<h1 id="summary"><em><font face="Arial" size="3">Summary</font></em></h1>
 
 <font face="Arial">Clearly these performance levels are dramatically above those of competing applications be they open source or commercial software.<span style="mso-spacerun: yes">  </span>These numbers speak volumes about the scalability of Drupal.<span style="mso-spacerun: yes">  </span>If you have any concerns about performance of your web applications, you need to take a look at Drupal.</font>
 
-<h1 id="font-facearial-size3referencesfont"><em><font face="Arial" size="3">References</font></em></h1>
+<h1 id="references"><em><font face="Arial" size="3">References</font></em></h1>
 
 <font face="Arial">Download Drupal from <a href="http://www.drupal.org/">http://www.drupal.org/</a> and view a full community portal built with it at <a href="http://www.drop.org/">http://www.drop.org/</a>.<span style="mso-spacerun: yes">   </span>See <a href="http://kerneltrap.org/stats/usage_200205.html">http://kerneltrap.org/stats/usage_200205.html</a> for the full performance analysis.<span style="mso-spacerun: yes">  </span>KernelTrap is at <a href="http://kerneltrap.org/">http://kerneltrap.org/</a>.</font>
 
-<h1 id="font-facearial-size3disclaimerfont"><em><font face="Arial" size="3">Disclaimer</font></em></h1>
+<h1 id="disclaimer"><em><font face="Arial" size="3">Disclaimer</font></em></h1>
 
 <font face="Arial">The author of this document is also the author of a Drupal FAQ and is helping out on the project documentation.</font>
 
-<h1 id="font-facearial-size3creditsfont"><em><font face="Arial" size="3">Credits</font></em></h1>
+<h1 id="credits"><em><font face="Arial" size="3">Credits</font></em></h1>
 
 <p>Thanks go out to Jeremy Andrews and Guy Haas for assisting in the production of this document.</p>
 

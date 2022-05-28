@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -220,19 +226,17 @@
 
 <p>There are all kinds of ways to get memory stats on unix and I wasn't about to make this hard.  And you have to remember that at my core I'm a Ruby guy.  And while I mastered awk in 1990 or so, I haven't written a line of awk since about 1996 when my own implementation of awk, HyperAwk (see below), disappeared from this world.  I'm also not a shell guy; I struggle with bash / zsh.  So I wanted a ruby solution.  And I came up with this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="c1">#!/usr/local/rvm/rubies/ruby-2.3.1/bin/ruby</span>
-<span class="n">output</span> <span class="o">=</span> <span class="sx">%x(free)</span>
-<span class="nb">puts</span>  <span class="n">output</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">)[</span><span class="mi">9</span><span class="p">]</span>
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/usr/local/rvm/rubies/ruby-2.3.1/bin/ruby
+output = %x(free)
+puts  output.split(" ")[9]
+</code></pre></div></div>
 
 <p>Which I'm pretty sure I shamelessly stole from a Stack Overflow post somewhere.  I think I closed the tab in a browser crash.  Sorry.</p>
 
 <h1 id="the-ansible-side-of-things---an-ad-hoc-routine">The Ansible Side of things - An Ad Hoc Routine:</h1>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible all -i inventories/production2 -u ubuntu -a "/var/www/apps/banks/current/script/free_memory.rb"
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible all -i inventories/production2 -u ubuntu -a "/var/www/apps/banks/current/script/free_memory.rb"
+</code></pre></div></div>
 
 <h1 id="sidebar-hyperawk">Sidebar: HyperAwk</h1>
 

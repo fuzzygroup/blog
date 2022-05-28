@@ -135,6 +135,12 @@ When you know something well you always look to learn by analogy.  Today's short
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -188,40 +194,35 @@ When you know something well you always look to learn by analogy.  Today's short
 
 <h2 id="python---launching-the-console">Python - Launching the Console</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>python3
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3
+</code></pre></div></div>
 
 <h2 id="rails---launching-the-console">Rails - Launching the Console</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rails c    
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails c    
+</code></pre></div></div>
 
 <p><strong>Note</strong>: You may have to type this as bundle exec rails c (also knowing as the "bundle exec" tax).</p>
 
 <h2 id="python---reloading-the-console-when-you-change-your-code">Python - Reloading the Console When You Change Your Code</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>import importlib
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import importlib
 importlib.reload(your_module_name_here)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Example:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>import expert_classification
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import expert_classification
 # try some code; find bug; fix bug
 import importlib
 importlib.reload(expert_classification)
 # try code again
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="rails---reloading-the-console-when-you-change-your-code">Rails - Reloading the Console When You Change Your Code</h2>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>reload!    
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>reload!    
+</code></pre></div></div>
 
 <p><strong>Note</strong>: If you change your Rails gem stack then you have to exit the console entirely.  I'll give you that.</p>
 
@@ -235,22 +236,19 @@ importlib.reload(expert_classification)
 
 <p>Create your profile first:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ipython profile create
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ipython profile create
+</code></pre></div></div>
 
 <p>Edit it (your editor and path will be different but it will be something like this):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mate /Users/sjohnson/.ipython/profile_default/ipython_config.py
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mate /Users/sjohnson/.ipython/profile_default/ipython_config.py
+</code></pre></div></div>
 
 <p>Put these lines in place:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>c = get_config()
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>c = get_config()
 c.InteractiveShellApp.exec_lines = ['load_ext autoreload', 'autoreload 2']
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Save, exit and restart iPython and your changes will be handled automagically.</p>
 
@@ -260,24 +258,21 @@ c.InteractiveShellApp.exec_lines = ['load_ext autoreload', 'autoreload 2']
 
 <p>I did more digging and apparently iPython fixes this with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>load_ext autoreload
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>load_ext autoreload
 autoreload 2
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>Note</strong>: I'm still going to argue that this being 2 commands instead of 1 (although the 2 parameter to autoreload above does make subsequent code changes automatic) and yes you can supposedly make this automatic with an iPython profile configuration but even:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ipython profile create
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ipython profile create
+</code></pre></div></div>
 
 <p>and then modifying the profile to have:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>c = get_config()
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>c = get_config()
 c.InteractiveShellApp.code_to_run = 'load_ext autoreload'
 c.InteractiveShellApp.code_to_run = 'autoreload 2'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>isn't right because the 3rd line tosses a syntax error and when I eliminate the third line, the second line causes iPython to exit on startup – but they do work interactively.  And, yes, yes with sufficient googling I could fix this but I've got code to write and this is an <strong>endless rabbit hole of suckitude</strong> so route this entire blog post to /dev/null and just exit the REPL and re-enter or remember this:</p>
 

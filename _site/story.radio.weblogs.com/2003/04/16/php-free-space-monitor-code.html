@@ -154,6 +154,12 @@ Marketing 101. Consulting 101. PHP Consulting. Random geeky stuff. I Blog Theref
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -502,23 +508,23 @@ The FuzzyBlog!</a></b></font>
 
 <p>PHP Free Space Monitor Code</p>
 
-<p>&lt;?php<br />
-# script to get the amount of free space with df -h and email it<br />
-# to me daily</p>
+<p>&lt;?php</p>
+<h1 id="script-to-get-the-amount-of-free-space-with-df--h-and-email-it">script to get the amount of free space with df -h and email it</h1>
+<h1 id="to-me-daily">to me daily</h1>
 
 <p>include "../z/class.phpmailer.php";</p>
 
 <p>  $freespace = mysystem("df -h");<br />
   $fortune = mysystem ("/usr/games/fortune");</p>
 
-<p>  $email = "<a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;">&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;</a>";<br />
+<p>  $email = "<a href="mailto:scott@fuzzygroup.com">scott@fuzzygroup.com</a>";<br />
   <a href="//setup">//setup</a> the email object &amp; params<br />
   $mail = new phpmailer();<br />
   $mail-&gt;IsMail();<br />
-  $mail-&gt;From = "<a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#119;&#101;&#098;&#109;&#097;&#115;&#116;&#101;&#114;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;">&#119;&#101;&#098;&#109;&#097;&#115;&#116;&#101;&#114;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;</a>";<br />
+  $mail-&gt;From = "<a href="mailto:webmaster@fuzzygroup.com">webmaster@fuzzygroup.com</a>";<br />
   $mail-&gt;FromName = "Free Space Mailer";<br />
   $mail-&gt;AddAddress("$email");<br />
-  $mail-&gt;AddReplyTo("<a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;">&#115;&#099;&#111;&#116;&#116;&#064;&#102;&#117;&#122;&#122;&#121;&#103;&#114;&#111;&#117;&#112;&#046;&#099;&#111;&#109;</a>");<br />
+  $mail-&gt;AddReplyTo("<a href="mailto:scott@fuzzygroup.com">scott@fuzzygroup.com</a>");<br />
   $mail-&gt;IsHTML(false);<br />
   $mail-&gt;Subject = "Free Space On FuzzyGroup Server";<br />
   $mail-&gt;Body    = $freespace . "\n\n\n\n" . $fortune;</p>

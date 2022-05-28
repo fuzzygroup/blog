@@ -1,0 +1,16 @@
+---
+layout: post
+title: Forthy Good PHP Stuff
+date: 2002-10-11 16:19 +0000
+category: php
+tags: ["php"]
+---
+<h3>Frothy Good PHP Stuff</h3>
+<blockquote dir="ltr" style="MARGIN-RIGHT: 0px">
+<p>The PHP Cookbook has been announced by O'Reilly and Chapter 8 on Web Programming is&nbsp;available as a downloadable PDF.&nbsp; I'ved added it to my permanent collection and you should too.&nbsp; There's a very nice trick about "unregistering" users who register but don't confirm their account with you.&nbsp; It's also already in the Amazon listings (it's due out in November).&nbsp; It looks sweet ! (and it's on my wishlist too).&nbsp; I'd definitely but it from Amazon since they have it for a 30% savings.&nbsp; And, if you are a WaldenBooks preferred reader member, I have it on pretty good authority that WaldenBooks preferred reader members will shortly be able to use their discount cards at Amazon.&nbsp; That's cool.</p>
+<blockquote dir="ltr" style="MARGIN-RIGHT: 0px">
+<p><a href="https://web.archive.org/web/20021013031121/http://www.oreilly.com/catalog/phpckbk/index.html?CMP=IL7015">[ O'Reilly Home Page&nbsp;]</a> <a href="https://web.archive.org/web/20021013031121/http://www.oreilly.com/catalog/phpckbk/chapter/ch08.pdf">[ PDF of Chapter 8 ]</a> <a href="https://web.archive.org/web/20021013031121/http://www.amazon.com/exec/obidos/tg/detail/-/1565926811/qid=1034363150/sr=8-2/ref=sr_8_2/002-4202734-9602408?v=glance&amp;n=507846">[ Amazon ]</a></p></blockquote>
+<p dir="ltr">A really good article on working with Files in PHP over on O'Reilly's Lamp site.&nbsp; <a href="https://web.archive.org/web/20021013031121/http://www.onlamp.com/pub/a/php/2002/10/03/php_foundations.html">[ Go ]</a></p>
+<p dir="ltr">From <a href="https://web.archive.org/web/20021013031121/http://www.keithdevens.com/weblog/?id2890">Keith</a> comes a really good pointer to a PHP Builder article on vCalendar / iCalendar programming in PHP.&nbsp; Given that I'm regularly hacking <a href="https://web.archive.org/web/20021013031121/http://sourceforge.net/projects/webcalendar/">WebCalendar</a> (and want to add this), that's an awesome find.&nbsp; Thanks Man! <a href="https://web.archive.org/web/20021013031121/http://www.phpbuilder.com/columns/chow20021007.php3">[ Go ]</a>&nbsp;</p>
+<p dir="ltr">A pretty good article on PHP error messages.&nbsp; Good stuff to understand.&nbsp; <a href="https://web.archive.org/web/20021013031121/http://www.devarticles.com/art/1/211">[ Go ]</a></p>
+<p dir="ltr">An interesting class library, Eclipse, for PHP.&nbsp; It seems to be written by a <a href="https://web.archive.org/web/20021013031121/http://www.devarticles.com/printpage.php?articleId=218">rather arrogant fellow</a> who doesn't seem to even like the language.&nbsp; So why'd he even bother?&nbsp; Here's a quote: "The real war is between .NET and JSP. PHP will stand on the side, I think. The reason I use PHP is its high availability. Nothing more. "&nbsp; That's fine but he should really go use Perl if that's his criteria.&nbsp; Anyone ever used this puppy?&nbsp; It seems way too object oriented for my taste.&nbsp; <a href="https://web.archive.org/web/20021013031121/http://www.students.cs.uu.nl/people/voostind/eclipse/">[ Go ]</a></p></blockquote>

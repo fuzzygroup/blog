@@ -135,6 +135,12 @@ Earlier today I used an Ansible Galaxy role to set Sidekiq as a background proce
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,31 +190,27 @@ Earlier today I used an Ansible Galaxy role to set Sidekiq as a background proce
 
 <p>Earlier today I used an Ansible Galaxy role to set <a href="https://github.com/crushlovely/ansible-sidekiq-upstart/">Sidekiq as a background process started with an Ubuntu Upstart service</a>.  Unfortunately when I went to run the service, I found that it would not start at all.  While I like the concept of Ansible Galaxy, I have described it as:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Galaxy is DockerHub without the stars for ratings
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Galaxy is DockerHub without the stars for ratings
+</code></pre></div></div>
 
 <p>I was on the phone with <a href="http://nickjanetakis.com/">Nick Janetakis</a> yesterday, shooting the breeze as it were and he agreed but offered a slightly different perspective:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Galaxy is DockerHub without the approved packages
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Galaxy is DockerHub without the approved packages
+</code></pre></div></div>
 
 <p>Either one is true.  There are lots of great options on Galaxy but it is a bit of a crap shoot.  Let's diagnose the problem and see how it can be fixed.  Here's what the install looked like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible-galaxy install crushlovely.sidekiq-upstart,v1.0.0
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible-galaxy install crushlovely.sidekiq-upstart,v1.0.0
 - downloading role 'sidekiq-upstart', owned by crushlovely
 - downloading role from https://github.com/crushlovely/sidekiq-upstart/archive/master.tar.gz
 - extracting crushlovely.sidekiq-upstart to /usr/local/etc/ansible/roles/crushlovely.sidekiq-upstart
 - crushlovely.sidekiq-upstart was installed successfully
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here's how to use this in your playbook:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- { role: crushlovely.sidekiq-upstart, app_path: "/var/www/apps/banks", server_env: "production", tags: sidekiq}
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- { role: crushlovely.sidekiq-upstart, app_path: "/var/www/apps/banks", server_env: "production", tags: sidekiq}
+</code></pre></div></div>
 
 <p>That can go anywhere in your playbook after Sidekiq is installed.</p>
 

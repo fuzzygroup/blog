@@ -136,6 +136,12 @@ ficrawler10                : ok=53   change...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -183,7 +189,7 @@ ficrawler10                : ok=53   change...">
   <div class="post-content" itemprop="articleBody">
     <p>I just used Ansible to provision 8 new boxes and at the end I saw this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>PLAY RECAP *********************************************************************
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PLAY RECAP *********************************************************************
 ficrawler10                : ok=53   changed=18   unreachable=0    failed=0
 ficrawler3                 : ok=53   changed=18   unreachable=0    failed=0
 ficrawler4                 : ok=53   changed=27   unreachable=0    failed=0
@@ -192,8 +198,7 @@ ficrawler6                 : ok=53   changed=18   unreachable=0    failed=0
 ficrawler7                 : ok=53   changed=18   unreachable=0    failed=0
 ficrawler8                 : ok=53   changed=18   unreachable=0    failed=0
 ficrawler9                 : ok=53   changed=18   unreachable=0    failed=0
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>If you notice the box ficrawler5 has a state of failed=1 and this made me wonder:</p>
 
@@ -217,7 +222,7 @@ ficrawler9                 : ok=48   changed=6    unreachable=0    failed=0</p>
 
 <p>d</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>TASK [aws_cloudwatch_memory : add command to cron] *****************************
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TASK [aws_cloudwatch_memory : add command to cron] *****************************
 skipping: [ficrawler3]
 skipping: [ficrawler4]
 skipping: [ficrawler5]
@@ -247,8 +252,7 @@ ok: [ficrawler8] =&gt; (item=[u'apt-transport-https', u'ca-certificates', u'dock
 ok: [ficrawler7] =&gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
 ok: [ficrawler10] =&gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
 ok: [ficrawler9] =&gt; (item=[u'apt-transport-https', u'ca-certificates', u'docker', u'python-pip'])
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>git@github.com:appdatallc/honeybadger.git</p>
 

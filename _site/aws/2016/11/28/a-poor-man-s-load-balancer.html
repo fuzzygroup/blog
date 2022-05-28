@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -187,11 +193,10 @@
 
 <p>The situation is that a number of my IP addresses seem to have been dropped on a perma-ban list.  You can get around this a number of ways but one of the easier ones is to use a proxy server in between your content fetch and the content source.  Most of my content fetching software relies on the <a href="https://github.com/sparklemotion/mechanize">Ruby Mechanize library</a> so all I have to do is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>agent = Mechanize.new
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>agent = Mechanize.new
 agent.set_proxy(proxy_url, proxy_port)
 page = agent.get(url)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And that will cause the fetch to go thru the proxy server first and then to the content source.  This nicely gets around the block at the expense of some performance due to the proxying.</p>
 

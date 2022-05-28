@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,20 +190,18 @@
 
 <p>As with almost all my crazy CSS / Bootstrap issues, I reached out to my buddy <a href="http://dasari.me/">Dv</a> and a quick pairing session set it right.  The first solution we found was to add the following snippet to custom.scss in /app/assets/stylesheets:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>.fa-etsy:before {
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.fa-etsy:before {
   content: "\0045"
   font-family: georgia, serif
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And that fixed the Etsy icon – but it was really a work around and the credit goes to <a href="https://hayley.cc/2016/10/05/Font-Awesome-No-Etsy-icon-No-problem/">Hayley.cc</a> (brilliant but still a work around).  But only fixing the Etsy icon clearly wasn't enough.</p>
 
 <p>Dv did some digging and came up with the thesis that the <a href="https://github.com/bokmann/font-awesome-rails">font-awesome-rails gem</a> wasn't up to date and suggested I replace it with the CDN.  So by adding this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"&gt;
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"&gt;
+</code></pre></div></div>
 
 <p>The problem was entirely fixed.  Given the problems with CloudBleed, a month ago, I'm mildly paranoid with a CDN but this did simply and brilliantly fix the problem.</p>
 

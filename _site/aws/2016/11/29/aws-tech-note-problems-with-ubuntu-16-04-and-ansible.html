@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -182,7 +188,7 @@
 
 <p>Today was the first bad Ubuntu experience that I've really ever had.  What happened was I went to bring up a new EC2 instance and I noticed that the default Ubuntu was now 16.04.  Hm… That's different but I'll try it.  So I trot out my ansible playbook and here's what happened:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/proxy playbook_appdata_proxy.yml
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible-playbook -i inventories/proxy playbook_appdata_proxy.yml
 
 PLAY [all] *********************************************************************
 
@@ -197,8 +203,7 @@ NO MORE HOSTS LEFT *************************************************************
 PLAY RECAP *********************************************************************
 adproxy1                   : ok=0    changed=0    unreachable=0    failed=1
 adproxy2                   : ok=0    changed=0    unreachable=0    failed=1
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>What??? There error is here: <strong>"/bin/sh: 1: /usr/bin/python: not found\r\n"</strong>.  Apparently Python is NOT a default install on Ubuntu 16.04 LTS.  That means that you can't use Ansible to bootstrap a box into functionality until you've first installed Python.</p>
 

@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -222,14 +228,13 @@
 
 <p>When you look at Linux networking issues, two key tools are UFW (another firewall) and iptables (how to handle packets / networking).  Here's the result of ufw:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo ufw status verbose
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo ufw status verbose
 Status: inactive
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This ruled out ufw as a source of the problems so it was onto iptables:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo iptables -L
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo iptables -L
 Chain INPUT (policy ACCEPT)
 target     prot opt source               destination
 
@@ -269,8 +274,7 @@ RETURN     all  --  anywhere             anywhere
 Chain DOCKER-USER (1 references)
 target     prot opt source               destination
 RETURN     all  --  anywhere             anywhere
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And this is where ST came fully into play – he looked at the iptables and almost immediately seized on the 172-18 address as a key issue.  Apparently this is part of how he has configured our VPN.  And since the 172-18 issue was tied to  <a href="https://www.docker.com/">Docker</a>, we were on the hunt for how Docker might mess with networking that would break SSH.</p>
 
@@ -291,9 +295,8 @@ RETURN     all  --  anywhere             anywhere
 
 <p>The first step was for us to prove this and rather than mess with Docker configuration, the much easier approach was just to turn off Docker using:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>systemctl stop docker
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl stop docker
+</code></pre></div></div>
 
 <p>And after that, we repeated the earlier ping test:</p>
 
@@ -321,42 +324,38 @@ RETURN     all  --  anywhere             anywhere
 
 <p>Our first thought was that the 172-18 network address specification was located in docker-compose.yml.  And, while we knew that existed, we had no idea where it was but a quick:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo find / -name "docker-compose.yml"
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo find / -name "docker-compose.yml"
+</code></pre></div></div>
 
 <p>revealed its location.  Groveling through it, though, proved to be a wash – no networking commands.  A similar trawl through files on the machine proved fruitless as there were no Dockerfile(s) telling us what was going on.</p>
 
 <p>Google, as always, delivered the answer.  We learned that the core Docker daemon (the background program governing all of Docker) itself can be customized with a file called daemon.json.  So we did this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo vi /etc/docker/daemon.json
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo vi /etc/docker/daemon.json
+</code></pre></div></div>
 
 <p>and we discovered that by default, it simply isn't there.  Here's what we started with from the Internet:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"bip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.5/24"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"fixed-cidr"</span><span class="p">:</span><span class="w"> </span><span class="s2">"192.168.1.5/25"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"fixed-cidr-v6"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2001:db8::/64"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"mtu"</span><span class="p">:</span><span class="w"> </span><span class="mi">1500</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"default-gateway"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10.20.1.1"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"default-gateway-v6"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2001:db8:abcd::89"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"dns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"10.20.1.2"</span><span class="p">,</span><span class="s2">"10.20.1.3"</span><span class="p">]</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "bip": "192.168.1.5/24",
+  "fixed-cidr": "192.168.1.5/25",
+  "fixed-cidr-v6": "2001:db8::/64",
+  "mtu": 1500,
+  "default-gateway": "10.20.1.1",
+  "default-gateway-v6": "2001:db8:abcd::89",
+  "dns": ["10.20.1.2","10.20.1.3"]
+}
+</code></pre></div></div>
 
 <p>And here's what ended up working:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"default-address-pools"</span><span class="p">:[</span><span class="w">
-    </span><span class="p">{</span><span class="nt">"base"</span><span class="p">:</span><span class="s2">"10.10.0.0/16"</span><span class="p">,</span><span class="nt">"size"</span><span class="p">:</span><span class="mi">24</span><span class="p">},</span><span class="w">
-    </span><span class="p">{</span><span class="nt">"base"</span><span class="p">:</span><span class="s2">"10.11.0.0/16"</span><span class="p">,</span><span class="nt">"size"</span><span class="p">:</span><span class="mi">24</span><span class="p">}</span><span class="w">
-  </span><span class="p">]</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "default-address-pools":[
+    {"base":"10.10.0.0/16","size":24},
+    {"base":"10.11.0.0/16","size":24}
+  ]
+}
+</code></pre></div></div>
 
 <p>And we were certain that we were <strong>right</strong> and all would be good – only it didn't <em>censored</em> work.  Now I have been using Docker on and off for a bunch of years and this experience made me remember my opinion of Docker's engineering practices.  Docker often seems to run engineering as if they are dirty, lazy teenagers.  Specifically Docker doesn't seem to clean up after itself (example - tickets stay open way too long; things are poorly documented, etc).</p>
 
@@ -364,21 +363,19 @@ RETURN     all  --  anywhere             anywhere
 
 <p>So my suspicion was that Docker had modified something at the machine level and I needed to find out what that change was and delete it.  At this point, I'm going to cut to the chase now because this is way too long.  The short answer was a change was left behind by Docker in the routes table that needed to be deleted.  A quick look at routes gave us:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo ip route show
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo ip route show
 
 default via 172.31.16.1 dev ens5 proto dhcp src 172.31.23.113 metric 100
 10.10.0.0/24 dev docker0 proto kernel scope link src 10.10.0.1 linkdown
 172.18.0.0/16 dev br-9942c98d99d1 proto kernel scope link src 172.18.0.1 linkdown
 172.31.16.0/20 dev ens5 proto kernel scope link src 172.31.23.113
 172.31.16.1 dev ens5 proto dhcp scope link src 172.31.23.113 metric 100
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>and then it was just:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo route del -net 172.18.0.0/16
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo route del -net 172.18.0.0/16
+</code></pre></div></div>
 
 <p>With that and then a final Docker stop and start all this madness was done.  The final task was to then launch our test suite via Jenkins and watch it function correctly.</p>
 

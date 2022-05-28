@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -193,7 +199,7 @@
 
 <p>The last one of these, eliminating connection: local, requires a bit of explaining.  Details can be found <a href="https://github.com/ansible/ansible/issues/15019">here</a>.  When I first encountered this problem, my playbook looked like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- hosts: "fi_app_metadata_monthly"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- hosts: "fi_app_metadata_monthly"
   become: yes
   remote_user: ubuntu
   connection: local
@@ -219,12 +225,11 @@
     - rake_task: "bundle exec rake fi_farm_work:fi_app_metadata_update --trace"
   roles:
     - { role: ec2_make_redis_instance_from_ami, tags: ec2_make_redis_instance_from_ami}
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>When the above playbook was run, it resulted in boto not being found errors.  The solution was to remove the line <em>connection: local</em> from the playbook and move it to the task level:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- name: make the redis instance from the ami
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- name: make the redis instance from the ami
   # note - you used to be able to do this at the role level; now it has to be at the task level
   # note - think of this as you are setting the connection context for the task being executed
   connection: local
@@ -234,8 +239,7 @@
     region: ""
     image: ""
     ...
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This is one of those code errors that, honestly, I just don't understand.  From talking with another Ansible buddy, <a href="https://nickjanetakis.com/">Nick</a>, he confirmed that it used to work at the playbook level.  Perhaps this is just one of those perplexing changes that results from other other architectural work going on at the project level.</p>
 

@@ -139,6 +139,12 @@ Loading test envi...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -188,29 +194,26 @@ Loading test envi...">
 
 <p>This one is a short one but a good one.  One really useful trick is to launch Rails console in test mode:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ RAILS_ENV=test rails c
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ RAILS_ENV=test rails c
 Running via Spring preloader in process 41705
 Loading test environment (Rails 6.0.2.1)
 irb: warn: can't alias context from irb_context.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>You can check the Rails environment this way:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>2.7.0 :001 &gt; Rails.env
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2.7.0 :001 &gt; Rails.env
 "test"
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The benefit to this is that you can work directly with FactoryBot and experiment with factories:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>2.7.0 :002 &gt; project = FactoryBot.create(:project, name: "Scott's Project")
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2.7.0 :002 &gt; project = FactoryBot.create(:project, name: "Scott's Project")
+</code></pre></div></div>
 
 <p>FactoryBot is installed via Gemfile and locked into test environment only (which is why you need to launch Rails console in test mode):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>group :test do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>group :test do
   # Adds support for Capybara system testing and selenium driver
   gem "capybara", "&gt;= 2.15"
   gem "selenium-webdriver"
@@ -221,8 +224,7 @@ irb: warn: can't alias context from irb_context.
   # gem 'shoulda'
   # gem 'shoulda-matchers'
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
   </div>
   

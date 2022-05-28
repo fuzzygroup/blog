@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -216,11 +222,11 @@
   <li>Use another Tmux window to attach to it</li>
 </ul>
 
-<h1 id="example-1-for-aws-monitor---my-local-awsmonitorlocalyml">Example 1 for Aws Monitor - My Local aws_monitor_local.yml</h1>
+<h1 id="example-1-for-aws-monitor---my-local-aws_monitor_localyml">Example 1 for Aws Monitor - My Local aws_monitor_local.yml</h1>
 
 <p>My <a href="https://github.com/fuzzygroup/aws_monitor">AWS Monitor code base</a> is the one I chose to adapt for this.  Here's the local Tmuxinator file I use to run this (note since this is is such a minimal rails app, it only has two terminal windows):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># http://projectidealism.com/posts/2013/9/20/my-tmux-configuration-with-tmuxinator
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># http://projectidealism.com/posts/2013/9/20/my-tmux-configuration-with-tmuxinator
 # ~/.tmuxinator/tula.yml
 # you can make as many tabs as you wish...
 
@@ -233,14 +239,13 @@ pre_tab: rvm use ruby-2.3.1@aws_monitor
 windows:
   - cmdline:
   - console1: bundle exec rails c
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h1 id="example-2-for-aws-monitor---my-local-awsmonitordockeryml">Example 2 for Aws Monitor - My Local aws_monitor_docker.yml</h1>
+<h1 id="example-2-for-aws-monitor---my-local-aws_monitor_dockeryml">Example 2 for Aws Monitor - My Local aws_monitor_docker.yml</h1>
 
 <p>Here's the equivalent for Docker:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># http://projectidealism.com/posts/2013/9/20/my-tmux-configuration-with-tmuxinator
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># http://projectidealism.com/posts/2013/9/20/my-tmux-configuration-with-tmuxinator
 # ~/.tmuxinator/tula.yml
 # you can make as many tabs as you wish...
 
@@ -253,16 +258,14 @@ socket_path: /tmp/tmux-aws-monitor
 windows:
   - run_docker: cd ~/Dropbox/fuzzygroup/rails/aws_monitor &amp;&amp; docker-compose up --build
   - attach1: docker exec -it -v /Users:/Users awsmonitor_website_1 bash
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="dockerfile">Dockerfile</h1>
 
 <p>My Dockerfile file for the aws_monitor app isn't terribly interesting but it does have one interesting thing – it ends with a CMD statement which runs a rake task:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>CMD rake aws_monitor:ansible_hosts --trace 
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CMD rake aws_monitor:ansible_hosts --trace 
+</code></pre></div></div>
 
 <p>Since all we're looking for aws_monitor to do is run continuously checking the ability to ssh into boxes, this is fine.</p>
 
@@ -270,7 +273,7 @@ windows:
 
 <p>Here's the docker-compose.yml file</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>version: '2'
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version: '2'
 
 services:
   postgres:
@@ -332,15 +335,13 @@ services:
 volumes:
   redis:
   postgres:
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The one interesting thing here is this line:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>volumes:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>volumes:
   - '/Users:/Users'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>What this does is map my mac's host filesytem into the Docker filesystem.  The reason I'm doing this is that my aws_monitor code needs access to my PEM certificate for the SSH login (among other files).  By mapping this in as a logical volume I don't have to have have my PEM file as a part of my git repo.  I also don't have to worry about Figaro or another approach to environment configuration.</p>
 

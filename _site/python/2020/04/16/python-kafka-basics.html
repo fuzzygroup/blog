@@ -137,6 +137,12 @@ The output of a Python Kafka call is a Co...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -188,20 +194,19 @@ The output of a Python Kafka call is a Co...">
 
 <p>The output of a Python Kafka call is a Consumer Record which is a "set of named tuples (blah blah blah)" where what you actually want is the value tuple.  This can be gotten with the .value attribute:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c">#!/usr/bin/env python</span>
-<span class="kn">from</span> <span class="nn">kafka</span> <span class="kn">import</span> <span class="n">KafkaConsumer</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
+</span><span class="kn">from</span> <span class="nn">kafka</span> <span class="kn">import</span> <span class="n">KafkaConsumer</span>
 <span class="n">consumer</span> <span class="o">=</span> <span class="n">KafkaConsumer</span><span class="p">(</span>
    <span class="s">'dimon_tcpdump'</span><span class="p">,</span>
     <span class="n">group_id</span><span class="o">=</span><span class="s">'zhg_group'</span><span class="p">,</span>
-    <span class="n">value_deserializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)),</span>
+    <span class="n">value_deserializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">)),</span>
     <span class="n">bootstrap_servers</span><span class="o">=</span><span class="s">'192.168.100.9:9092'</span>
     <span class="p">)</span>
 <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">consumer</span><span class="p">:</span>
-    <span class="c"># this is what you actually want; </span>
-    <span class="k">print</span> <span class="n">msg</span><span class="o">.</span><span class="n">value</span>
-    <span class="c"># process msg here</span>
-</code></pre>
-</div>
+    <span class="c1"># this is what you actually want; 
+</span>    <span class="k">print</span> <span class="n">msg</span><span class="p">.</span><span class="n">value</span>
+    <span class="c1"># process msg here
+</span></code></pre></div></div>
 
 <h2 id="see-also">See Also</h2>
 <p><a href="https://stackoverflow.com/questions/38240515/how-to-fetch-a-field-in-consumerrecord">Stack Overflow</a></p>

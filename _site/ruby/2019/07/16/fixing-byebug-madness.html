@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,10 +186,9 @@
   <div class="post-content" itemprop="articleBody">
     <p>I learned an interesting and subtle trick today.  As is all too true lately, my pairing partner, <a href="https://csphere.github.io/">Sean Kennedy</a>, gets the credit for this one.  I had the ruby debugger, byebug, embedded in a view context and I noticed that while this should have brought up a breakpoint, it way, way, way, way overstepped the break point and shot beyond, going into core Rails stuff.  And then Sean told me this trick:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;%# a = 1; byebug; b = 2; %&gt;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%# a = 1; byebug; b = 2; %&gt;
 &lt;%= link_to "Sign in with OAuth 2 provider", user_doorkeeper_omniauth_authorize_path, class: "btn btn-primary" %&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Apparently byebug has a known issue with execution context and wrapping the byebug call inside two assignment statements gives it enough of an execution context for it to stop properly.</p>
 

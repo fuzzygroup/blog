@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,46 +190,41 @@
 
 <p>Migration:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>class AddUnitPreferencesJsonToUsers &lt; ActiveRecord::Migration[5.2]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class AddUnitPreferencesJsonToUsers &lt; ActiveRecord::Migration[5.2]
   def change
     add_column :users, :options, :text
   end
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Declaration at the top of your class:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>serialize :options, JSON
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>serialize :options, JSON
+</code></pre></div></div>
 
 <p>This will now add an options column to your table where you can store anything.  And since there is a serialize call, it will even act like an attribute so you can say something like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>user = User.first
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>user = User.first
 user.options
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>and get back:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
-    </span><span class="nt">"length"</span><span class="w"> </span><span class="err">=&gt;</span><span class="w"> </span><span class="nt">"inches"</span><span class="err">,</span><span class="w">
-    </span><span class="nt">"weight"</span><span class="w"> </span><span class="err">=&gt;</span><span class="w"> </span><span class="nt">"pounds"</span><span class="err">,</span><span class="w">
-      </span><span class="nt">"time"</span><span class="w"> </span><span class="err">=&gt;</span><span class="w"> </span><span class="nt">"hours"</span><span class="w">
-</span><span class="err">}</span><span class="w">
-</span></code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+    "length" =&gt; "inches",
+    "weight" =&gt; "pounds",
+      "time" =&gt; "hours"
+}
+</code></pre></div></div>
 
 <p>And if you really, really like working on a REPL like I do then you can set this globally for all users with this snippet:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>users = User.all
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>users = User.all
 users.each do |user|
   user.options = options = { "length" =&gt; "inches", "weight" =&gt; "pounds", "time" =&gt; "hours" }
   user.save
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Easy - no fuss, no muss, no need to write code in an editor for a one time, one off fix.</p>
 

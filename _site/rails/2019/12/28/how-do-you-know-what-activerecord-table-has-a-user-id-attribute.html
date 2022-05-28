@@ -135,6 +135,12 @@ Even though I'm a firm, firm believer in agile, I've recently been experimenting
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -200,7 +206,7 @@ Even though I'm a firm, firm believer in agile, I've recently been experimenting
 
 <p>One of the things that I noticed when I started filling in the basics like "belongs_to :user" was that I kept constantly jumping between the class I was working on and the schema file.  Finally it hit me – what I needed was a method that I could execute in the console that would tell me what classes had a user_id attribute.  And so I wrote a class called DataObject (for an ActiveRecord class which stores data) and a method .has_user_id.  What I was looking for was output that looked like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt; DataObject.has_user_id
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; DataObject.has_user_id
 Initiative
 Yes - has a user_id field
 KeyResultOwner
@@ -223,12 +229,11 @@ ResponsibilityRole
 State
 Yes - has a user_id field
 User
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here's the entirety of the DataObject class:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">DataObject</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">DataObject</span>
   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">all</span>
     <span class="p">[</span><span class="no">Initiative</span><span class="p">,</span> <span class="no">KeyResultOwner</span><span class="p">,</span> <span class="no">KeyResult</span><span class="p">,</span> <span class="no">ObjectiveOwner</span><span class="p">,</span> <span class="no">ObjectiveType</span><span class="p">,</span> <span class="no">Objective</span><span class="p">,</span> <span class="no">OkrTeamMember</span><span class="p">,</span> <span class="no">OkrTeam</span><span class="p">,</span> <span class="no">OrganizationGroup</span><span class="p">,</span> <span class="no">Organization</span><span class="p">,</span> <span class="no">Quarter</span><span class="p">,</span> <span class="no">ResponsibilityRole</span><span class="p">,</span> <span class="no">State</span><span class="p">,</span> <span class="no">User</span><span class="p">]</span>
   <span class="k">end</span>
@@ -245,8 +250,7 @@ User
     <span class="kp">nil</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>You'll notice the self.all class method returns a list of classes specific to my application.  These are the classes that actually make up the business logic.  I needed to NOT pull all classes in the application because I built this on top of a new framework, JumpStart Pro (see next section). JumpStart Pro has a bunch of its own classes for things like Credit Cards, Charges, etc.  I only wanted to focus on the classes that I implemented; hence the .all method.</p>
 
@@ -264,12 +268,11 @@ User
 
 <p>This last image, the drop down calendar, I did zero work to get that to appear.  All I did was change the field type from a text field to a date field:</p>
 
-<div class="language-html highlighter-rouge"><pre class="highlight"><code>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group"</span><span class="nt">&gt;</span>
-    <span class="err">&lt;</span>%= form.label :date_end_at %&gt;
-    <span class="err">&lt;</span>%= form.date_field :date_end_at, placeholder: "When Do You Need to Complete This?", autofocus: true, class: "form-control" %&gt;
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;</span><span class="err">%=</span> <span class="na">form</span><span class="err">.</span><span class="na">label</span> <span class="na">:date_end_at</span> <span class="err">%</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;</span><span class="err">%=</span> <span class="na">form</span><span class="err">.</span><span class="na">date_field</span> <span class="na">:date_end_at</span><span class="err">,</span> <span class="na">placeholder:</span> <span class="err">"</span><span class="na">When</span> <span class="na">Do</span> <span class="na">You</span> <span class="na">Need</span> <span class="na">to</span> <span class="na">Complete</span> <span class="na">This</span><span class="err">?",</span> <span class="na">autofocus:</span> <span class="na">true</span><span class="err">,</span> <span class="na">class:</span> <span class="err">"</span><span class="na">form-control</span><span class="err">"</span> <span class="err">%</span><span class="nt">&gt;</span>
   <span class="nt">&lt;/div&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I will fully admit that I don't actually know if this drop down comes from JumpStart Pro or from Rails 6 and the new form with style forms but, <strong>damn</strong> is it sexy as hell to get a drop down calendar without ever doing a damn thing.  Here's what I said to my wife as I discovered this in the car on the way home from seeing Trans Siberian Orchestra:</p>
 

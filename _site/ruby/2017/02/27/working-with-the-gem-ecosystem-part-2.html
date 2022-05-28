@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -212,9 +218,8 @@
 
 <p>My problem came when I added my fork of pattern_generator to my project's Gemfile and did a bundle install.  At first the gem came down perfectly but I noticed a few bugs.  I then updated my code and re-bundled and <em>nothing</em>.  I didn't get any of my changes.  Here's how I had it in my Gemfile initially:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">gem</span> <span class="s1">'pattern_generator'</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">'https://github.com/fuzzygroup/pattern_generator.git'</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gem</span> <span class="s1">'pattern_generator'</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">'https://github.com/fuzzygroup/pattern_generator.git'</span>
+</code></pre></div></div>
 
 <p>Naturally this was located in a development only section of the Gemfile since we don't want the memory overhead of this in production.</p>
 
@@ -232,9 +237,8 @@
 
 <p>I would have expected a bundle update pattern_generator to work but I did not find that to be the case.  But even with specifying the source explicitly I still did not get the right version of my code.  Happily Nick and I were about to pair anyway so I asked him and he honed right in on the branch i.e. specify the branch in the Gemfile.  Here's how that looks:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">gem</span> <span class="s1">'pattern_generator'</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">'https://github.com/fuzzygroup/pattern_generator.git'</span><span class="p">,</span> <span class="ss">:branch</span> <span class="o">=&gt;</span> <span class="s2">"master"</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gem</span> <span class="s1">'pattern_generator'</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">'https://github.com/fuzzygroup/pattern_generator.git'</span><span class="p">,</span> <span class="ss">:branch</span> <span class="o">=&gt;</span> <span class="s2">"master"</span>
+</code></pre></div></div>
 
 <p>And that worked perfectly.  I wrote several new parsers today and then used my <a href="https://github.com/fuzzygroup/sync-dot-rake">SyncDotRake</a> toolkit to merge the parsing code into a new Service Oriented API.  Overall it was a damn good day.  Thanks Nick!</p>
 

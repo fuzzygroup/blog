@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -202,38 +208,34 @@
 
 <p>Obviously press ENTER not type it and this will analyze your bash script and give you feedback.  Here are some examples and the errors it found for me:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ip-10-19-48-2% shellcheck deploy.sh
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ip-10-19-48-2% shellcheck deploy.sh
 
 In deploy.sh line 40:
 for host in "${hosts[@]}"; do
 ^-- SC1009: The mentioned parser error was in this for loop.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This was a problem in overall parsing of the shell script; <a href="https://github.com/koalaman/shellcheck/wiki/SC1009">more details</a>.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>In deploy.sh line 42:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In deploy.sh line 42:
   for file in "${files[@]}"; do
   ^-- SC1073: Couldn't parse this for loop.
                              ^-- SC1061: Couldn't find 'done' for this 'do'.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here I was missing the done terminator for the loop.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>In deploy.sh line 6:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In deploy.sh line 6:
   cmd_output=$(eval $1)
                     ^-- SC2086: Double quote to prevent globbing and word splitting.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Technically I should have been using double quotes around the variable to prevent any issues with globbing / splitting.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>In deploy.sh line 31:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In deploy.sh line 31:
 files=(".env", ".env.production", "dockerstats", "docker-compose.production.yml")
       ^-- SC2054: Use spaces, not commas, to separate array elements.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I'm a Ruby guy so my natural array syntax has commas between elements.  Here ShellCheck is pointing out that I just need to have spaces between them.</p>
 

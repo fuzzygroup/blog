@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,13 +190,12 @@
 
 <p>I just deployed my first ever Ubuntu 16.04 LTS box on AWS the other day and one of my surprises was that a which python <strong>failed</strong>.  Oy vey.  This means that you can't use Ansible without installing Python – or so I thought.  Happily a bit of googling and I discovered the <a href="https://docs.ansible.com/ansible/python_3_support.html">ansible_python_interpreter</a> option which lets you override the default of Python 2 and use Python 3.  This gets, oddly, embedded in the inventories file:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[web]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[web]
 site1 ansible_ssh_host=foo.com
 
 [web:vars]
 ansible_python_interpreter=/usr/bin/python3
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The way to interpret this is all boxes in the [web] group use the /usr/bin/python3 executable.</p>
 

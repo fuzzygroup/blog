@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,7 +186,7 @@
   <div class="post-content" itemprop="articleBody">
     <p>So I took the time to reload the data I described <a href="https://fuzzygroup.github.io/blog/2016/08/28/aws-tutorial-4-rds-data-loading-into-aurora-run-in-circles-scream-and-shout-the-oh-shite-moment.html">yesterday</a>, that we had fed into Aurora RDS, into a local MariaDB installation and I also eliminated split/cat from the equation by just using a file that had come straight from a mysql dump via an aws s3 sync operation and the results are disturbing:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Source db (vanilla mysql on our own hardware)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Source db (vanilla mysql on our own hardware)
 mysql&gt; select count(*) from a_big_table;
 +----------+
 | count(*) |
@@ -204,8 +210,7 @@ select count(*) from a_big_table;
 |   797121 |
 +----------+
 1 row in set (0.00 sec)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>That's not encouraging at all.</p>
 

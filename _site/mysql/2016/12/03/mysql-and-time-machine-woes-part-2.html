@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,7 +190,7 @@
 
 <p>The first step towards getting your databases back from Time Machine is to locate where they are supposed to be.  MySQL itself can tell you this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>SHOW VARIABLES WHERE Variable_Name LIKE "%dir";
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SHOW VARIABLES WHERE Variable_Name LIKE "%dir";
 +---------------------------+------------------------------------------------------+
 | Variable_name             | Value                                                |
 +---------------------------+------------------------------------------------------+
@@ -198,8 +204,7 @@
 | slave_load_tmpdir         | /var/folders/rf/3tfhwgrj1sl85y6rcs4x_s5c0000gn/T/    |
 | tmpdir                    | /var/folders/rf/3tfhwgrj1sl85y6rcs4x_s5c0000gn/T/    |
 +---------------------------+------------------------------------------------------+
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So we now know that our databases are supposed to be stored in /usr/local/var/mysql/.  That's what we need to get them back from Time Machine.</p>
 
@@ -207,9 +212,8 @@
 
 <p>The very first thing you need to do is stop mysql first:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>mysql.server stop
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql.server stop
+</code></pre></div></div>
 
 <h1 id="getting-them-back-from-time-machine">Getting Them Back from Time Machine</h1>
 
@@ -219,7 +223,7 @@
 
 <p>After my personal issues with Time Machine and MySQL I no longer have faith that any data outside of /User/my_username will be correctly restored.  Personally I would make a directory structure like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/Users/sjohnson
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/Users/sjohnson
 /Users/sjohnson/servers
 /Users/sjohnson/servers/mysql
 /Users/sjohnson/servers/mysql/data
@@ -229,8 +233,7 @@
 /Users/sjohnson/servers/redis/data
 /Users/sjohnson/servers/mongo
 /Users/sjohnson/servers/mongo/data
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>As best I can tell, I have lost every mysql database I've built since 2011 on my main development system and the only reason I'm not raging further is that I just don't have the mental energy given everything else I'm juggling.  I do think that if I do this approach then when Apple gets stupid in the future with Time Machine that this will protect me.</p>
 
@@ -240,10 +243,9 @@
 
 <p>After HomeBrew installs mysql for you it creates a shell routine mysql.server.  Find it with which:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>which mysql.server
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>which mysql.server
 /usr/local/bin/mysql.server
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This file tells mysql where to store its data and you're going to need to:</p>
 

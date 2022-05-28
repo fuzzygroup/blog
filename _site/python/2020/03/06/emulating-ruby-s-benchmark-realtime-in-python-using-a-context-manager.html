@@ -135,6 +135,12 @@ One of the most confusing aspects of multi language programming is when you know
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -192,14 +198,13 @@ One of the most confusing aspects of multi language programming is when you know
 
 <p>But enough of that foolishness, today's topic is code benchmarking.  Here's what I would do in Ruby:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">benchmarks</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">benchmarks</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">results</span> <span class="o">=</span> <span class="kp">nil</span>
 <span class="n">elapsed_time</span> <span class="o">=</span> <span class="no">Benchmark</span><span class="p">.</span><span class="nf">realtime</span> <span class="k">do</span> 
   <span class="n">results</span> <span class="o">=</span> <span class="n">some_long_running_method</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">baz</span><span class="p">)</span>
 <span class="k">end</span>
 <span class="n">benchmarks</span><span class="p">[</span><span class="s1">'some_long_running_method'</span><span class="p">]</span> <span class="o">=</span> <span class="n">elapsed_time</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>By defining the results variable outside the <strong>block</strong> of code (the bits between do and end), it basically gets a transitive scope that allows what is computed inside the block to exist outside the block.  And then I set the associative array (also known as a hash) to have a key for the method, some_long_running_method, and also the elapsed time.  This way I can build up a hash of all my methods and how long they take.</p>
 
@@ -214,7 +219,7 @@ One of the most confusing aspects of multi language programming is when you know
 
 <p>I found both of these very pythonic – which, for me, means I <em>didn't understand them at all</em>.  Happily I was able to cobble together a basic example:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
 <span class="k">def</span> <span class="nf">some_long_running_method1</span><span class="p">(</span><span class="n">amount</span><span class="p">):</span>
@@ -223,11 +228,11 @@ One of the most confusing aspects of multi language programming is when you know
 <span class="k">def</span> <span class="nf">some_long_running_method2</span><span class="p">(</span><span class="n">amount</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span>
 
-<span class="nd">@contextmanager</span>
+<span class="o">@</span><span class="n">contextmanager</span>
 <span class="k">def</span> <span class="nf">timer</span><span class="p">(</span><span class="n">benchmarks</span><span class="p">,</span> <span class="n">benchmark_key</span><span class="p">):</span>
-    <span class="n">t_0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">t_0</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">()</span>
     <span class="k">yield</span> 
-    <span class="n">run_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t_0</span>
+    <span class="n">run_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t_0</span>
     <span class="n">benchmarks</span><span class="p">[</span><span class="n">benchmark_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">run_time</span>
     
 <span class="n">benchmarks</span> <span class="o">=</span> <span class="p">{}</span>
@@ -237,41 +242,37 @@ One of the most confusing aspects of multi language programming is when you know
 
 <span class="k">with</span> <span class="n">timer</span><span class="p">(</span><span class="n">benchmarks</span><span class="p">,</span> <span class="s">'test_foo'</span><span class="p">):</span>
     <span class="n">some_long_running_method1</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>Note</strong>: The @contextmanager is apparently a "python decorator".  I don't really understand decorators any more than I understand interior decorators so, well, there's that.</p>
 
 <p>The end result of this is a Python dictionary like this:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="s">'some_long_running_method1'</span><span class="p">:</span> <span class="mf">4.696846008300781e-05</span><span class="p">,</span> <span class="s">'some_long_running_method2'</span><span class="p">:</span> <span class="mf">4.696846008300781e-05</span><span class="p">}</span>
-</code></pre>
-</div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="s">'some_long_running_method1'</span><span class="p">:</span> <span class="mf">4.696846008300781e-05</span><span class="p">,</span> <span class="s">'some_long_running_method2'</span><span class="p">:</span> <span class="mf">4.696846008300781e-05</span><span class="p">}</span>
+</code></pre></div></div>
 
 <p>And here's how this looks like in a production code refactor:</p>
 
 <h2 id="before">Before</h2>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">times</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">times</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="n">time_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">json_str</span> <span class="o">=</span> <span class="n">common_kafka</span><span class="o">.</span><span class="n">pop_from_topic</span><span class="p">(</span><span class="n">kafka_conn</span><span class="p">,</span> <span class="n">kafka_topic_name</span><span class="p">)</span>
-<span class="n">time_end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">times</span> <span class="o">=</span> <span class="n">common_debugging</span><span class="o">.</span><span class="n">benchmark</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">time_start</span><span class="p">,</span> <span class="n">time_end</span><span class="p">,</span> <span class="s">'common_kafka.pop_from_topic'</span><span class="p">)</span>
-</code></pre>
-</div>
+<span class="n">time_start</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">json_str</span> <span class="o">=</span> <span class="n">common_kafka</span><span class="p">.</span><span class="n">pop_from_topic</span><span class="p">(</span><span class="n">kafka_conn</span><span class="p">,</span> <span class="n">kafka_topic_name</span><span class="p">)</span>
+<span class="n">time_end</span> <span class="o">=</span> <span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">common_debugging</span><span class="p">.</span><span class="n">benchmark</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">time_start</span><span class="p">,</span> <span class="n">time_end</span><span class="p">,</span> <span class="s">'common_kafka.pop_from_topic'</span><span class="p">)</span>
+</code></pre></div></div>
 
 <h2 id="after">After</h2>
 
 <p>You should note that my timer routine now is located in a common file named common_debugger.py.</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">common_debugger</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">common_debugger</span>
 
 <span class="n">times</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">with</span> <span class="n">common_debugging</span><span class="o">.</span><span class="n">timer</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="s">'common_kafka.pop_from_topic'</span><span class="p">):</span>
-    <span class="n">json_str</span> <span class="o">=</span> <span class="n">common_kafka</span><span class="o">.</span><span class="n">pop_from_topic</span><span class="p">(</span><span class="n">kafka_conn</span><span class="p">,</span> <span class="n">kafka_topic_name</span><span class="p">)</span>
-</code></pre>
-</div>
+<span class="k">with</span> <span class="n">common_debugging</span><span class="p">.</span><span class="n">timer</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="s">'common_kafka.pop_from_topic'</span><span class="p">):</span>
+    <span class="n">json_str</span> <span class="o">=</span> <span class="n">common_kafka</span><span class="p">.</span><span class="n">pop_from_topic</span><span class="p">(</span><span class="n">kafka_conn</span><span class="p">,</span> <span class="n">kafka_topic_name</span><span class="p">)</span>
+</code></pre></div></div>
 
 <h2 id="conclusion">Conclusion</h2>
 

@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -188,15 +194,14 @@
 
 <p>And that gave me this example (not the real sql; just something I had open in a db console):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>results = ActiveRecord::Base.transaction do 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>results = ActiveRecord::Base.transaction do 
   ActiveRecord::Base.connection.select_rows
   ("
   select user_id, date_created_at, sum(int_val) from metrics where habit_id = 2 
   group by date_created_at order by date_created_at desc LIMIT 10;
   ") 
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And, sure enough, that worked.</p>
 

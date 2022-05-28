@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,7 +186,7 @@
   <div class="post-content" itemprop="articleBody">
     <p>My writing progress has slowed as of late while I have gone 100% heads down on learning Ansible.  Ansible is a provisioning tool which lets you describe a machine or machines as well as how you want them configured.  Ansible also offers an ad hoc mode where you can operate on a group of machines and execute a command or commands.  These examples are based on an Ansible inventory file located in the directory inventories/ as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>file: inventories/production_actual
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>file: inventories/production_actual
 
 [web]
 # format - english machinename   ssh host   ssh private key
@@ -189,8 +195,7 @@ web1  ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com  ansible
 [db]
 
 [log]
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Note - in my actual inventory file there are machines in each group section.</p>
 
@@ -198,7 +203,7 @@ web1  ansible_ssh_host=ec2-52-41-237-52.us-west-2.compute.amazonaws.com  ansible
 
 <p>Execute uptime against all machines in the inventories file with the user ubuntu:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>**ansible all -i inventories/production_actual -u ubuntu -a "uptime"**
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**ansible all -i inventories/production_actual -u ubuntu -a "uptime"**
 ec2-52-39-100-178.us-west-2.compute.amazonaws.com | success | rc=0 &gt;&gt;
  17:09:56 up 36 days,  4:05,  4 users,  load average: 0.99, 1.00, 0.97
 
@@ -213,20 +218,18 @@ ec2-52-42-166-105.us-west-2.compute.amazonaws.com | success | rc=0 &gt;&gt;
 
 52.40.224.171 | success | rc=0 &gt;&gt;
  17:10:54 up 20 days, 23:42,  1 user,  load average: 0.08, 0.04, 0.05
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Execute uptime against all machines in the db group in the inventories file with the user ubuntu:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>**ansible db -i inventories/production_actual -u ubuntu -a "uptime"**
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**ansible db -i inventories/production_actual -u ubuntu -a "uptime"**
 ec2-52-39-100-178.us-west-2.compute.amazonaws.com | success | rc=0 &gt;&gt;
  17:11:13 up 36 days,  4:06,  4 users,  load average: 0.90, 0.97, 0.96
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>You can also use this to do things like check the amount of free disc space on every box.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>**ansible all -i inventories/production_actual -u ubuntu -a "df -h"**
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**ansible all -i inventories/production_actual -u ubuntu -a "df -h"**
 ec2-54-68-16-169.us-west-2.compute.amazonaws.com | success | rc=0 &gt;&gt;
 Filesystem      Size  Used Avail Use% Mounted on
 udev            7.5G   12K  7.5G   1% /dev
@@ -276,12 +279,11 @@ none            4.0K     0  4.0K   0% /sys/fs/cgroup
 none            5.0M     0  5.0M   0% /run/lock
 none            3.9G     0  3.9G   0% /run/shm
 none            100M     0  100M   0% /run/user
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Ensure that a package is installed; don't update it if it isn't</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>**ansible all -i inventories/production_actual -u ubuntu -m apt -a "name=tree state=present"**
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**ansible all -i inventories/production_actual -u ubuntu -m apt -a "name=tree state=present"**
 ec2-52-39-100-178.us-west-2.compute.amazonaws.com | success &gt;&gt; {
     "changed": false
 }
@@ -303,8 +305,7 @@ ec2-52-42-166-105.us-west-2.compute.amazonaws.com | success &gt;&gt; {
 }
 
 **ansible all -i inventories/production_actual -u ubuntu --become -m apt -a "name=htop state=present"**
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>References:</p>
 

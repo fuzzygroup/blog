@@ -134,6 +134,12 @@ Below are my roughly stream of consciousness notes from Sonny Scrogson's Taking 
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -422,14 +428,13 @@ Below are my roughly stream of consciousness notes from Sonny Scrogson's Taking 
 
 <h3 id="function-plug-example">Function Plug Example</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>def json_header_plug(conn, opts) do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def json_header_plug(conn, opts) do
   conn 
   |&gt; put_resp_content_type("application/json")
 end
 
 Most of the applications I build now are like this - functions which transform state bit by bit
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="module-plugs">Module Plugs</h3>
 
@@ -447,14 +452,13 @@ Most of the applications I build now are like this - functions which transform s
 <p>defmodule JSONHeaderPlug do 
     import Plug.Conn</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>def init(opts), do: opts
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def init(opts), do: opts
   
 def call(conn, _opts) do
   conn
   |&gt; put_resp_content_type("application/json")
 end   end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="plugconn-is-huge-look-it-up">plug.conn is huge (look it up)</h4>
 
@@ -620,7 +624,7 @@ end</p>
 <p>%Ecto.Changeset{}
     #Ecto.Changeset&lt;action: nil, changes: %{}, errors: [], data: nil, valid?: false&gt;</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Workshop.User.changeset(%Workshop.User{})
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Workshop.User.changeset(%Workshop.User{})
 #Ecto.Changeset&lt;action: nil, changes: %{},
  errors: [name: {"can't be blank", []}, email: {"can't be blank", []},
   password: {"can't be blank", []},
@@ -652,8 +656,7 @@ end</p>
   quote do: if true, do: 1, else: 2
   
   {:if, [context: Elixir, import: Kernel], [true, [do: 1, else: 2]]}
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>https://hexdocs.pm/ecto/Ecto.html</p>
 

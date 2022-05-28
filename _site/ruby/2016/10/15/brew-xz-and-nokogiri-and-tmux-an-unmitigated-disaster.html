@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,26 +186,23 @@
   <div class="post-content" itemprop="articleBody">
     <p>It has been one really, really bad day this past 24 hours.  While my AWS stability problems have gone away entirely, I had to get a new Rails code base up and running locally today, one done by another developer here.  This required Gem install and since it was Rails, that meant a Nokogiri install.  And I love what Nokogiri does but I <em>hate</em>, <em>loathe</em>, <em>despise</em> the installation process.  In every single repo I work on there is a top level docs directory and then a file called gems.txt which lists what I internally refer to as <em>the incantations</em>.  These are those crap ass command lines that are so long you just can't remember them.  Here's the list of the tricks that I use to install Nokogiri when it inevitably fails:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>gem install nokogumbo -- --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2 --use-system-libraries
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem install nokogumbo -- --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2 --use-system-libraries
 gem install nokogiri -- --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2 --use-system-libraries
 gem install nokogiri -- --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2 --use-system-libraries --with-pkg-config=/usr/local/bin/pkg-config
 gem install nokogiri -- --with-xml2-include=/usr/local/opt/libxml2/lib --use-system-libraries --with-pkg-config=/usr/local/bin/pkg-config
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And not one of those worked.  The one that usually works without fail is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>gem install nokogiri -- --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2 --use-system-libraries
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem install nokogiri -- --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2 --use-system-libraries
+</code></pre></div></div>
 
 <p>but not today.  I knew this was going to be a bad day.  I told the other guy here "your code, doesn't install; give me solution".  He found this <a href="https://github.com/sparklemotion/nokogiri/issues/1483">nugget of disturbing truth</a>.  Apparently there is an incompatibility between Nokogiri and xz.  His suggestion was uninstall xz and I did that.  And Nokogiri was then fine – but I had to also reinstall ruby.   And that did work – until about an hour ago when I had a late night desire to write about Docker (hey - it is my Friday night; I can spend it however I please) – and I started getting this little gem of an error:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>jekyll post "Learning From a Docker Captain - Nick Janetakis - Making AWS Monitor Run Under Docker"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jekyll post "Learning From a Docker Captain - Nick Janetakis - Making AWS Monitor Run Under Docker"
 Your bundle is locked to i18n (0.7.0), but that version could not be found in any of the sources listed in your Gemfile. If you haven't changed sources, that means the author of i18n (0.7.0) has removed it. You'll need to update your bundle to a different version of i18n (0.7.0) that hasn't been removed in order to install.
 Run `bundle install` to install missing gems.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And this led to the inevitable cavalcade of swearing, muttering and normal gyrations when something absolutely essential to you is broken and you have no idea why.  Brew wouldn't work, Gem wouldn't work, Bundler wouldn't work, etc.  Here was the problem:</p>
 

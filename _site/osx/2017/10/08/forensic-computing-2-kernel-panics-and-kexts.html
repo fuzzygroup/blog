@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,10 +186,9 @@
   <div class="post-content" itemprop="articleBody">
     <p>As I've noted in <a href="http://fuzzyblog.io/blog/text/2017/10/08/forensic-computing-1-finding-textmate-untitled-documents.html">other places</a>, my Mac crashes a lot.  For some time now I've just sort of accepted this as a consequence of how I do things.  I'm a software developer and I tend to push the limits of everything.  Part of the reason that I accept it is that my computing usage is more than a bit non standard and I suspect that I'm running up against nothing more than resource limits.  Just as an example, at the start of my day, my terminal count looks something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ps auwwx | grep bash | wc -l
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ps auwwx | grep bash | wc -l
       50
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>That's at the start of my computing day (I open a lot of terminals and generally leave them running).  Just as a side note, my desktop Hackintosh, with double the RAM, also running OSX is pretty much rock solid so I tend to view this as a resource issue.  But what if it is not?  What if this is a solvable software issue?</p>
 
@@ -207,13 +212,12 @@
 
 <p>A quick google for the term <a href="https://www.google.com/search?tbs=li:1&amp;q=osx+fuse+kernel+panic">osx kernel panic fuse</a> gave me 49,100 results so I'm not the only one thinking this.  Googling instead for (com.github.kbfuse.filesystems.kbfuse)[https://www.google.com/search?tbs=li:1&amp;q=com.github.kbfuse.filesystems.kbfuse] took me to the github page for the <a href="https://github.com/keybase/client/tree/master/osx/Fuse">keybase fuse project</a> where I found the following uninstallation directions:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>// Check for any mounts (if there are you need to umount)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Check for any mounts (if there are you need to umount)
 mount -t kbfuse
 
 sudo kextunload -b com.github.kbfuse.filesystems.kbfuse
 sudo rm -rf /Library/Filesystems/kbfuse.fs
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="what-next">What Next?</h1>
 

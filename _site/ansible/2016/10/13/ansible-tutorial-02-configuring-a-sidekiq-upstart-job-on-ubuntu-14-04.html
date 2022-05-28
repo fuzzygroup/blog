@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -208,30 +214,28 @@
 
 <p>Let's begin with the structure of our role:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cd ~/whatever_your_ansible_root_is
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd ~/whatever_your_ansible_root_is
 mkdir -p roles/software_licenses/tasks
 mkdir -p roles/services
 mkdir roles/services/tasks
 mkdir roles/servies/templates
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="optional---adding-your-sidekiq-pro-software-license">Optional - Adding Your Sidekiq Pro Software License</h2>
 
 <p>Sidekiq Pro is commercial software, not open source, so if you're using it instead of the open source version, you'll need to authorize it.  Here's how to do this.  Here's what goes in your roles/software_licenses/tasks/main.yml:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="gd">--- 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--- 
 - name: set the licensing for sidekiq pro
-</span>  become: no
+  become: no
   shell:  "cd /var/www/apps/banks/current &amp;&amp; bundle config gems.contribsys.com YOUR_SECURITY_KEY"    
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="defining-your-group-vars">Defining Your Group Vars</h2>
 
 <p>Here's what goes in your group_vars context.  I had these in all but you may choose a different approach:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>app_name: banks
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>app_name: banks
 app_base: /var/www/apps/banks/
 app_path: /var/www/apps/banks/current/
 user_name: ubuntu
@@ -239,14 +243,13 @@ db_root_password: FDFJKSDJFKLSFJSLKFJSKLFSJFKLSDJF
 my_ip_address: 64.184.12.117
 server_env: production
 rvm_path: /usr/local/rvm/bin/rvm    
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="your-template-for-the-upstart-job">Your Template for the Upstart Job</h2>
 
 <p>Here's what goes in roles/services/templates/sidekiq_perham_init.j2:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code># /etc/init/sidekiq.conf - Sidekiq config
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># /etc/init/sidekiq.conf - Sidekiq config
 # source: https://github.com/mperham/sidekiq/blob/master/examples/upstart/sidekiq.conf
 
 # This example config should work with Ubuntu 12.04+.  It
@@ -321,8 +324,7 @@ exec /bin/bash &lt;&lt;'EOT'
   exec bundle exec sidekiq -i 0 -e production
 EOT
 end script
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Please note that the template above comes directly from Mike Perham's Sidekiq Wiki, <a href="https://github.com/mperham/sidekiq/blob/master/examples/upstart/sidekiq.conf">here</a>.  I modified it slightly to incorporate ansible variables and to remove the index parameter which didn't function, at least for me, on Ubuntu 14.04.</p>
 
@@ -330,7 +332,7 @@ end script
 
 <p>Here's what goes in roles/services/tasks/main.yml:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- name: prevent sidekiq init from running if it has already been done
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- name: prevent sidekiq init from running if it has already been done
   stat: path=/etc/init/sidekiq.conf
   register: sidekiq_init_installed
   
@@ -341,8 +343,7 @@ end script
 
 - name: start_sidekiq
   service: name=sidekiq state=started
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The only real Ansible trick here is to figure out how to make this idempotent so it only installs the upstart job once.  To do that I use the stat module to check the location of the upstart sidekiq.conf file and register a variable.  Then I only install the template when that variable is false.</p>
 
@@ -350,10 +351,9 @@ end script
 
 <p>The final step here is to pull the roles into the playbook so it can run.  Here's how:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>- { role: software_licenses, tags: software_licenses }
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- { role: software_licenses, tags: software_licenses }
 - { role: services, tags: services }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Because the service depends on the gem it is important that the software_licenses role run first so the gem is authorized.  Otherwise Sidekiq won't start and the service will be borked.</p>
 
@@ -365,13 +365,12 @@ end script
 
 <p>If you just want to run part the services and software_licenses role then you can use:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/ficrawler3 playbook_crawler.yml --tags="software_licenses, services"
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible-playbook -i inventories/ficrawler3 playbook_crawler.yml --tags="software_licenses, services"
+</code></pre></div></div>
 
 <p>Here's the output from running just the services role on a single one of my boxes:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/ficrawler3 playbook_crawler.yml --tags="services"
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible-playbook -i inventories/ficrawler3 playbook_crawler.yml --tags="services"
 
 [DEPRECATION WARNING]: Instead of sudo/sudo_user, use become/become_user and make sure become_method is 'sudo' (default).
 This feature will be removed in a future release. Deprecation warnings can be
@@ -402,8 +401,7 @@ changed: [ficrawler3]
 
 PLAY RECAP *********************************************************************
 ficrawler3                 : ok=6    changed=1    unreachable=0    failed=0
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Your results may differ a bit but it should be similar to that.</p>
 
@@ -411,9 +409,8 @@ ficrawler3                 : ok=6    changed=1    unreachable=0    failed=0
 
 <p>It is always terribly important with long running processes to know where their log file goes.  In this case it is located at:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/var/log/upstart/sidekiq_0.log  
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/var/log/upstart/sidekiq_0.log  
+</code></pre></div></div>
 
 <p>I'll return to that in a later Ansible tutorial when I configure cross server log management with Graylog.  For my work, sidekiq logs are critical so I added a bash command to the shells on all my boxes so I can tail them easily.  All it takes is to drop alias tailsidekiq='tail -f /var/log/upstart/sidekiq_0.log' into the .bashrc on all your boxes.</p>
 

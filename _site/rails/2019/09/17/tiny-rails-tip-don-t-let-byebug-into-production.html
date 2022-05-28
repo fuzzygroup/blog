@@ -140,6 +140,12 @@ group :development, :test do
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -190,20 +196,18 @@ group :development, :test do
 
 <p>The Ruby gem byebug is the Ruby debugger and this is normally installed into your Gemfile in this way:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>group :development, :test do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>group :development, :test do
   gem 'awesome_print'
   gem 'byebug'
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>What that says in people speak is "for the environments development and test, install the following gems".</p>
 
 <p>To use byebug, you simply put the byebug command into whatever bit of code you need to debug – controller, model, background job, view, etc.  But here's how most of us embed byebug:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  byebug
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  byebug
+</code></pre></div></div>
 
 <p>And, at some point, that is going to wend its way thru development, thru test, dodge past a code review and WHAM! arrive onto production – where things will quickly grind to a halt since the gem isn't available for production.</p>
 
@@ -218,17 +222,15 @@ end
 
 <p>One of the most elegant idioms in the Ruby world is the right hand if.  Here's how to apply it in this case:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>  <span class="n">byebug</span> <span class="k">if</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">development?</span> <span class="o">||</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">test?</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">byebug</span> <span class="k">if</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">development?</span> <span class="o">||</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">test?</span>
+</code></pre></div></div>
 
 <p>This is so damn superior to the alternative:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>  <span class="k">if</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">development?</span> <span class="o">||</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">test?</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">if</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">development?</span> <span class="o">||</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">test?</span>
     <span class="n">byebug</span>
   <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I know it is only two additional lines but you spend enough time in code and that additional "visual cruft" really comes to annoy.</p>
 
@@ -247,20 +249,19 @@ end
 
 <p>Here's an example of the output:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>➜  web_change_me_now git:(247-badges) ✗ git add app/models/habit.rb
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜  web_change_me_now git:(247-badges) ✗ git add app/models/habit.rb
 ➜  web_change_me_now git:(247-badges) ✗ git commit -m "revised habit.rb to check byebug"
 in .git/hooks/pre-commit
 app/models/habit.rb:
   TODO: Add a guard clause to your byebug call
     byebug
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>What just happened was I added a single file, a model.  The add will always happen cleanly since this is a pre-commit not a pre-add.  But when the commit happens, the code is checked for a naked byebug and the commit process is then halted and a todo note is generated.</p>
 
 <p>Here's the whole script:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="c1">#!/usr/bin/env ruby</span>
 <span class="c1">#</span>
 <span class="c1"># A hook script to verify that only syntactically valid ruby code is commited.</span>
@@ -366,14 +367,12 @@ app/models/habit.rb:
   <span class="c1"># All is well</span>
   <span class="nb">exit</span> <span class="mi">0</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>If you want to use this then create a pre-commit file in your .git/hooks directory in your application and make it executable with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> chmod +x .git/hooks/pre-commit
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> chmod +x .git/hooks/pre-commit
+</code></pre></div></div>
 
 <p><strong>Note</strong>: The files in .git/hooks are NOT checked into your repo with a commit.  They need to be manually distributed to each team member (or that's how it was a few years ago at least; that may have changed.)</p>
 

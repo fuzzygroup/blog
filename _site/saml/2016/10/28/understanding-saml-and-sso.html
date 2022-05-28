@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -216,11 +222,10 @@
 
 <p>A SAML assertion is a bit of XML containing a packet of security information.  The general format looks like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;saml:Assertion ...&gt;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;saml:Assertion ...&gt;
   ...
 &lt;/saml:Assertion&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I'm going to cheat here and blatantly cheat and quote wikipedia in case a subtle rewording of my writing interferes with the meaning:</p>
 
@@ -236,12 +241,11 @@
   <p>SAML assertions are usually transferred from identity providers to service providers. Assertions contain statements that service providers use to make access-control decisions. Three types of statements are provided by SAML:</p>
 </blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Authentication statements
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Authentication statements
 Attribute statements
 Authorization decision statements
 Authentication statements assert to the service provider that the principal did indeed authenticate with the identity provider at a particular time using a particular method of authentication. Other information about the authenticated principal (called the authentication context) may be disclosed in an authentication statement.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <blockquote>
   <p>An attribute statement asserts that a subject is associated with certain attributes. An attribute is simply a name-value pair. Relying parties use attributes to make access-control decisions.</p>
@@ -289,7 +293,7 @@ Authentication statements assert to the service provider that the principal did 
 
 <p>The lawrencepit gem is older and the sportngin gem appears to be a newer fork.  Unfortunately it seems as if the documentation on the sportngin gem is incorrect and you may need lawrencepit's documentation.  I'm still bringing up a functional IDP so I can't say definitively but there's a definite code smell of incorrectly made documentation in sportngin.  It should be noted though that sportngin has done a lot of work to make bringing up an IdP server better.  I'll hopefully update this blog post in the future when I have more concrete answers.</p>
 
-<h1 id="understanding-how-to-build-an-idp-with-rails-and-rubyidp">Understanding How to Build an IdP with Rails and ruby_idp</h1>
+<h1 id="understanding-how-to-build-an-idp-with-rails-and-ruby_idp">Understanding How to Build an IdP with Rails and ruby_idp</h1>
 
 <p>I took a stab at building a SAML system using ruby_idp and as part of that effort, I wrote the wiki page for <a href="https://github.com/sportngin/saml_idp/wiki">saml_idp</a>.  Honestly explaining things is the best way I've ever found to understand them so this is my give back to the community and my thanks to the author of saml_idp.</p>
 

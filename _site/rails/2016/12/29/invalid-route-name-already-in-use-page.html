@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -184,9 +190,8 @@
 
 <p>Today I integrated <a href="https://github.com/binarylogic/authlogic">authlogic</a> for authentication based on a <a href="https://www.sitepoint.com/rails-authentication-with-authlogic/">SitePoint AuthLogic tutorial</a>.  When I generated a Pages Controller and dropped a resources :pages into my routes file I got this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Invalid route name, already in use: 'page' 
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Invalid route name, already in use: 'page' 
+</code></pre></div></div>
 
 <p>My routes file right now is like 5 lines so I was actually certain that I didn't have pages in there already (embarrassingly though I did do a command+F anyway).  A bunch of googling turned up this <a href="https://github.com/thoughtbot/high_voltage/issues/109">answer</a>.  Apparently the <a href="https://github.com/thoughtbot/high_voltage">High Voltage gem</a> from <a href="https://github.com/thoughtbot">Thoughtbot</a> automagically inserts its pages route into the routes file.  And I get the desire for simplicity but when it doesn't even require a declaration in the Gemfile it makes tracking this kind of stuff down annoying.  Sigh.</p>
 

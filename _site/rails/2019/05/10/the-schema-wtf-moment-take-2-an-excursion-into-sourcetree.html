@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -182,7 +188,7 @@
 
 <p>The primary idea here isn’t much different from what I wrote about the other day but the core idea is the same — you only want to commit to version control the changes to the schema.rb file that your migration caused.  Let’s start with a sample migration:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>class AddUniqueIndexToThingss &lt; ActiveRecord::Migration[5.0]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class AddUniqueIndexToThingss &lt; ActiveRecord::Migration[5.0]
   def up
     execute "CREATE UNIQUE INDEX unique_index_things_on_id ON public.things USING btree (id, project_id) where deleted_at is null;"
   end
@@ -191,8 +197,7 @@
     execute "drop index unique_index_things_on_id"
   end
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>If you think thru this migration, it is going to introduce two changes to schema.rb:</p>
 

@@ -135,6 +135,12 @@ Note: You'll need to use sudo for alm...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -204,11 +210,10 @@ Note: You'll need to use sudo for alm...">
 
 <p>A simple rule to transform http to https:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>RewriteEngine On
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI}
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here's the <a href="http://stackoverflow.com/questions/16200501/http-to-https-apache-redirection">Stack Overflow</a> where I got this redirect from.</p>
 
@@ -236,7 +241,7 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI}
 
 <p>I always <strong>strongly recommend</strong> testing this kind of change with wget or curl because then you actually see the http header values.  Here's an example showing the http to https auto redirect with wget:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>wget http://foo.bar.com/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget http://foo.bar.com/
 --2017-02-03 15:06:25--  http://foo.bar.com/
 Resolving foo.bar.com... 23.23.164.47, 54.225.218.129, 2406:da00:ff00::36e1:da81, ...
 Connecting to foo.bar.com|23.23.164.47|:80... connected.
@@ -247,8 +252,7 @@ Connecting to foo.bar.com|23.23.164.47|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 2083 (2.0K) [text/html]
 Saving to: 'index.html.12'
-</code></pre>
-</div>
+</code></pre></div></div>
 
   </div>
   

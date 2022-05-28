@@ -135,6 +135,12 @@ Ever since 2008 when my pairing partner at the time, Jared, pushed me to basical
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,18 +192,17 @@ Ever since 2008 when my pairing partner at the time, Jared, pushed me to basical
 
 <p>Here's what I observed:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>2.6.3 :057 &gt; m.change_pct_today_over_goal?
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2.6.3 :057 &gt; m.change_pct_today_over_goal?
   Goal Load (65.2ms)  SELECT `goals`.* FROM `goals` WHERE `goals`.`habit_id` = 39 ORDER BY `goals`.`id` ASC LIMIT 1
   Habit Load (0.4ms)  SELECT `habits`.* FROM `habits` WHERE `habits`.`id` = 39 LIMIT 1
   Goal Load (0.5ms)  SELECT `goals`.* FROM `goals` WHERE `goals`.`habit_id` = 39 ORDER BY `goals`.`id` ASC LIMIT 1
   Goal Load (30.2ms)  SELECT `goals`.* FROM `goals` WHERE `goals`.`habit_id` = 39 ORDER BY `goals`.`id` ASC LIMIT 1
 true
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I simply can't think that the fact that we're loading the goal from the database 3 times is an optimal use of computing resources.  So I dug into the code and here's what I saw:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># original</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># original</span>
 <span class="k">def</span> <span class="nf">change_pct_today_over_goal?</span>
   <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="nb">self</span><span class="p">.</span><span class="nf">goal</span><span class="p">.</span><span class="nf">nil?</span>
   <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="nb">self</span><span class="p">.</span><span class="nf">habit</span><span class="p">.</span><span class="nf">goal</span><span class="p">.</span><span class="nf">amount</span><span class="p">.</span><span class="nf">nil?</span>
@@ -209,16 +214,15 @@ true
   <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="n">amount_over_goal</span> <span class="o">&lt;</span> <span class="mi">0</span>
   <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="n">amount_over_goal</span> <span class="o">==</span> <span class="mi">0</span>
   
-  <span class="k">return</span> <span class="kp">true</span> <span class="k">if</span> <span class="p">(</span><span class="n">amount_over_goal</span> <span class="o">/</span> <span class="n">goal_amount</span><span class="p">).</span><span class="nf">to_f</span> <span class="o">*</span> <span class="mi">100</span>  <span class="o">&gt;=</span> <span class="mi">25</span><span class="o">.</span><span class="mi">0</span>
+  <span class="k">return</span> <span class="kp">true</span> <span class="k">if</span> <span class="p">(</span><span class="n">amount_over_goal</span> <span class="o">/</span> <span class="n">goal_amount</span><span class="p">).</span><span class="nf">to_f</span> <span class="o">*</span> <span class="mi">100</span>  <span class="o">&gt;=</span> <span class="mf">25.0</span>
   
   <span class="k">return</span> <span class="kp">false</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The first 3 lines in the method above walk database associations back to the goal.  The simple optimization is to store the goal in a local variable so it is only read once:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># rewritten</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># rewritten</span>
 <span class="k">def</span> <span class="nf">change_pct_today_over_goal?</span>
   <span class="n">goal</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="nf">goal</span>
   <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="n">goal</span><span class="p">.</span><span class="nf">nil?</span>
@@ -231,12 +235,11 @@ true
   <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="n">amount_over_goal</span> <span class="o">&lt;</span> <span class="mi">0</span>
   <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="n">amount_over_goal</span> <span class="o">==</span> <span class="mi">0</span>
   
-  <span class="k">return</span> <span class="kp">true</span> <span class="k">if</span> <span class="p">(</span><span class="n">amount_over_goal</span> <span class="o">/</span> <span class="n">goal_amount</span><span class="p">).</span><span class="nf">to_f</span> <span class="o">*</span> <span class="mi">100</span>  <span class="o">&gt;=</span> <span class="mi">25</span><span class="o">.</span><span class="mi">0</span>
+  <span class="k">return</span> <span class="kp">true</span> <span class="k">if</span> <span class="p">(</span><span class="n">amount_over_goal</span> <span class="o">/</span> <span class="n">goal_amount</span><span class="p">).</span><span class="nf">to_f</span> <span class="o">*</span> <span class="mi">100</span>  <span class="o">&gt;=</span> <span class="mf">25.0</span>
   
   <span class="k">return</span> <span class="kp">false</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Now it is possible that with the right caching strategy server side, this change wouldn't be necessary but caching is always problem.  It is simply better to solve this without caching because not only will that speed things in production but it will also speed things in development.</p>
 

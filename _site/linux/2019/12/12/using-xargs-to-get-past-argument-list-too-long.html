@@ -51,8 +51,7 @@ grep '&quot;class&quot;:0' *.json | more
 zsh: argument list too long: grep
 
 
-
-That's a pr...">
+That's a pro...">
   
 
   
@@ -142,6 +141,12 @@ That's a pr...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -191,50 +196,43 @@ That's a pr...">
 
 <p>This one is a quick one.  I have about 25,000 files in a directory that I need to grep across.  I tried:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>grep '"class":0' *.json | more
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>grep '"class":0' *.json | more
 zsh: argument list too long: grep
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>That's a problem because when the argument list is too long, nothing can happen.  The solution here is a combination of find and xargs, specifically:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>find . -name '*.json' | xargs grep '"class":0'
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find . -name '*.json' | xargs grep '"class":0'
+</code></pre></div></div>
 
 <p>Here's the output from this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>./davidson-data-266118b4178f11ea80474c3275928de7.json:{"count":3,"hate_speech":3,"offensive_speech":0,"neither":0,"class":0,"tweet":"\"@JPantsdotcom @Todd__Kincannon @the__realtony I'm partial
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./davidson-data-266118b4178f11ea80474c3275928de7.json:{"count":3,"hate_speech":3,"offensive_speech":0,"neither":0,"class":0,"tweet":"\"@JPantsdotcom @Todd__Kincannon @the__realtony I'm partial
+</code></pre></div></div>
 
 <p>You should be able to use an approach like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>find -name '*.json' -exec grep '"class":0' 
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find -name '*.json' -exec grep '"class":0' 
+</code></pre></div></div>
 
 <p>but the embedded grep in find doesn't accept that and fails with this error:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>find: illegal option -- n
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find: illegal option -- n
 usage: find [-H | -L | -P] [-EXdsx] [-f path] path ... [expression]
        find [-H | -L | -P] [-EXdsx] -f path [path ...] [expression]
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The closest that I can get to make this work is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>find . -name '*.json' -exec grep 'class' {} +
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find . -name '*.json' -exec grep 'class' {} +
+</code></pre></div></div>
 
 <p>and that's not an exact match so, sigh.</p>
 
 <p>If we return to the original approach and add a -l option flag then we can list only filenames:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>find . -name '*.json' | xargs grep -l '"class":0'
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find . -name '*.json' | xargs grep -l '"class":0'
+</code></pre></div></div>
 
 <h2 id="see-also">See Also</h2>
 

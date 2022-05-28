@@ -140,6 +140,12 @@ train_...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -189,36 +195,33 @@ train_...">
 
 <p>As I write this it is 3:45 am and I am playing with Python.  I have a small script that looks like this:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
 <span class="n">DATA_PATH</span> <span class="o">=</span> <span class="s">"data/"</span>
 <span class="n">filename</span> <span class="o">=</span> <span class="s">"file.json"</span>
 <span class="n">train_sample_size</span> <span class="o">=</span> <span class="mi">45000</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_PATH</span><span class="p">,</span> <span class="n">filename</span><span class="p">),</span> <span class="n">lines</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="n">dataset_test</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">train_sample_size</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>    
-<span class="n">dataset_head</span> <span class="o">=</span> <span class="n">dataset_test</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">train_sample_size</span><span class="p">)</span>
-<span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
-</code></pre>
-</div>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_PATH</span><span class="p">,</span> <span class="n">filename</span><span class="p">),</span> <span class="n">lines</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">dataset_test</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">.</span><span class="n">copy</span><span class="p">().</span><span class="n">sample</span><span class="p">(</span><span class="n">train_sample_size</span><span class="p">).</span><span class="n">reset_index</span><span class="p">()</span>    
+<span class="n">dataset_head</span> <span class="o">=</span> <span class="n">dataset_test</span><span class="p">.</span><span class="n">head</span><span class="p">(</span><span class="n">train_sample_size</span><span class="p">)</span>
+<span class="n">pdb</span><span class="p">.</span><span class="n">set_trace</span><span class="p">()</span>
+</code></pre></div></div>
 
 <p>The pandas library give you a bunch of facilities for looking at data and organizing it into what are called data frames.  If you think of pandas as a spreadsheet that you can use programmatically, well, that's not far off.  Pandas is widely used for Python data processing and can read data from CSV and JSON formats (among others).</p>
 
 <p>If I want to investigate the length of a variable, I can do this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>(Pdb) len(dataset)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(Pdb) len(dataset)
 45648
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And if I want to know the type of a variable, I can do this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>type(dataset)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>type(dataset)
 &lt;class 'pandas.core.frame.DataFrame'&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And if I want to know the columns that Pandas as loaded from the json, I can do this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> dataset.columns
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> dataset.columns
 Index(['tweet_id', 'timestamp_us_eastern', 'author_handle',
        'author_screenname', 'authority', 'predicted_gender',
        'predicted_language', 'predicted_country',
@@ -227,36 +230,31 @@ Index(['tweet_id', 'timestamp_us_eastern', 'author_handle',
        'antisemitic_classification', 'author_bio', 'text', 'is_truncated',
        'is_retweet', 'lang', 'Majority Model', 'label'],
       dtype='object')
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>What this tells me is that I have a dataset variable with a text column that I can access by dataset.text.  And then if I want the first 'row' of data in this column, I can do this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>(Pdb) dataset.text[0]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(Pdb) dataset.text[0]
 "Jerry Seinfeld spent a lot of time in Israel's apartheid State supporting the Zionists and giving the bastards credibility. Think its fair to shun his crappy unfunny TV Shows. Let him know what people think of him brown nosing the terrorists of Israel.\n"
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So [0] gives the first bit of data.  And, correspondingly, [1] gives the next bit:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>(Pdb) dataset.text[1]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(Pdb) dataset.text[1]
 'RT @papicek: @BrncicIvo @fouadhaidar @MehDonaldTrump @AlyseRadenovicA @Sean_x_Larkin @Wandaspangler2 @z123Alpha @Mark_E_Noonan @pouria_63 @KirstyMartin19 @rico_hands @pickle_shmickle @_antizionism @MrBacteriaThief @AltRightJoseph @muld_ulme @kenmckelvey224 @kratze1935 @ExpertZionist @WorldneedsL0VE @amerikagulag @Loo_Siffa @Aristilus @gazaboatconvoy Zionists came up with jut about every form of terrorism you can think of: https://t.co/qvmuMpVWHQ https://t.co/EUg4EviJAe\n'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And now that we know this, if we wanted to loop over all the bits of data in dataset.text, a simple Python for loop would do this:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">.</span><span class="n">text</span><span class="p">:</span>
     <span class="k">print</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Let's say that you have a variable wordfreq and you want to look at the string version of a variable, you can do this with the <strong>str</strong> function:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> str(wordfreq)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> str(wordfreq)
 '[12, 1, 1, 1, 1, 10, 1, 1, 1, 10, 1, 3, 1, 2, 1, 1, 3, 1, 12, 1]'
-</code></pre>
-</div>
+</code></pre></div></div>
 
   </div>
   

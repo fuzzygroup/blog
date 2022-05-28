@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -182,13 +188,12 @@
 
 <p>Anyway the digression into wordiness is because like me, Rails log files are wordy son's of bitches – the number of times in my career that I've had to log into a box and do the log dance:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>bundle exec rake log:clear
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle exec rake log:clear
+</code></pre></div></div>
 
 <p>has to be measured in the hundreds if not thousands.  This morning I finally got mad enough to automate it with Ansible.  Here's how:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>playbook: playbook_logs_clear_rails_logs.yml
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>playbook: playbook_logs_clear_rails_logs.yml
 
 #
 # MONDAY ansible-playbook -i ec2.py playbook_logs_clear_rails_logs.yml
@@ -212,12 +217,11 @@ file: tasks/main.yml
 ---
 - name: logs_clear_rails_logs
   shell: "cd  &amp;&amp; bundle exec rake log:clear"
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here are the results:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ansible-playbook -i inventories/production2 playbook_logs_clear_rails_logs.yml
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ansible-playbook -i inventories/production2 playbook_logs_clear_rails_logs.yml
 
 PLAY [worker] ******************************************************************
 
@@ -256,8 +260,7 @@ fiworker7                  : ok=2    changed=1    unreachable=0    failed=0
 fiworker8                  : ok=2    changed=1    unreachable=0    failed=0
 fiworker9                  : ok=2    changed=1    unreachable=0    failed=0
 fiworkerbig                : ok=2    changed=1    unreachable=0    failed=0
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Right now this is working with a static inventory file.  If anyone expresses interest, on Monday, I'll publish a revised version which uses the python boto module to clear log files based on all boxes on EC2 dynamically matching a criteria like a name tag.</p>
 

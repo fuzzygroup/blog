@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -234,13 +240,12 @@
 
 <p>Passenger, the web server level Ruby extension that drives a Rails site, looks for the file restart.txt in the tmp directory underneath your web root.  I could have tried to figure out whether or not Capistrano was perhaps putting it in the wrong place but the easier approach was to simply extend Capistrano itself using a post deploy hook.</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># put this line in config/deploy/production.rb</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># put this line in config/deploy/production.rb</span>
 
 <span class="n">after</span> <span class="s1">'deploy:publishing'</span><span class="p">,</span> <span class="s1">'deploy:restart_passenger'</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># put this file in lib/capistrano/tasks/restart_passenger.rake</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># put this file in lib/capistrano/tasks/restart_passenger.rake</span>
 
 <span class="n">namespace</span> <span class="ss">:deploy</span> <span class="k">do</span>
   <span class="n">task</span> <span class="ss">:restart_passenger</span> <span class="k">do</span>
@@ -256,8 +261,7 @@
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>You'll notice that there are <strong>three</strong> different versions of this.  One of the issues with Capistrano extensions is that they run OUTSIDE of Rails itself so the normal magic that is Rails.root <strong>does not</strong> exist.  And, yes, there are ways to construct the correct path but I simply didn't have the time so I ticketed the issue in Jira and moved on.  On a historical note, I remember encountering this back in August of 2018 so there's that …</p>
 

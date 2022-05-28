@@ -135,6 +135,12 @@ feature/ATT-1551-f - And goodbye ... it all goes away like the bad drea...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -182,14 +188,13 @@ feature/ATT-1551-f - And goodbye ... it all goes away like the bad drea...">
   <div class="post-content" itemprop="articleBody">
     <p>So today was a day of epic software engineering failure.  Let's consider, just for a second, this string of commit messages:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>feature/ATT-1551-f - And goodbye ... it all goes away like the bad dream that it was
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>feature/ATT-1551-f - And goodbye ... it all goes away like the bad dream that it was
 feature/ATT-1551-e - It is called a constant; sigh; oh and an entire rewrite
 feature/ATT-1551-d - And let's go again - there are still hours in the day to get this wrong ...
 feature/ATT-1551-c - hopefully, possibly the last iteration on this humiliating bit of work
 feature/ATT-1551-b - Argggh !!!!
 feature/ATT-1551-a - Debugging hooks for understanding this bit of madness
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Any experienced engineer can read between the lines of that level of <em>gallows humor</em> in these commit messages and know, I mean <em>know</em>, what's coming.  This whole blog post is an illustration of how something that is drop dead simple can really, really bite you in the ass.  And you can take away from this either a smug feeling of "I'm smarter than that" or you are raising a glass to me somewhere and saying "you poor damn bastard, there, there".</p>
 
@@ -288,7 +293,7 @@ feature/ATT-1551-a - Debugging hooks for understanding this bit of madness
 
 <h3 id="before">BEFORE</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ok: [194.55.22.38] =&gt;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ok: [194.55.22.38] =&gt;
   msg: 'Actual free disc space: 5.3G'
 ok: [194.55.19.230] =&gt;
   msg: 'Actual free disc space: 5.6G'
@@ -316,12 +321,11 @@ ok: [194.55.29.170] =&gt;
   msg: 'Actual free disc space: 11G'
 ok: [194.55.29.107] =&gt;
   msg: 'Actual free disc space: 11G'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="after">AFTER</h3>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ok: [194.55.22.38] =&gt;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ok: [194.55.22.38] =&gt;
   msg: 'Actual free disc space: 5.3G'
 ok: [194.55.19.230] =&gt;
   msg: 'Actual free disc space: 5.8G'
@@ -349,8 +353,7 @@ ok: [194.55.29.170] =&gt;
   msg: 'Actual free disc space: 11G'
 ok: [194.55.29.107] =&gt;
   msg: 'Actual free disc space: 11G'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>You'll notice that boxes 194.55.30.37 and 194.55.31.216 went from 2 odd gigs of free disc space to 7 odd gigs of disc space.  That's a huge win.</p>
 

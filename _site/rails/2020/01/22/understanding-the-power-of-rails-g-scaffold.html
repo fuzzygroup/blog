@@ -135,6 +135,12 @@ Wow.  I am a damn idiot who has literally made his life harder than it ever need
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -196,7 +202,7 @@ Wow.  I am a damn idiot who has literally made his life harder than it ever need
 
 <p>And here's what this generated for me:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rails g scaffold Labels
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails g scaffold Labels
 Running via Spring preloader in process 78104
 [WARNING] The model name 'Labels' was recognized as a plural, using the singular 'Label' 
 instead. Override with --force-plural or setup custom inflection rules for 
@@ -228,14 +234,13 @@ this noun before running the generator.
       invoke  assets
       invoke    scss
       create      app/assets/stylesheets/labels.scss
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And this isn't just creating a raw file structure, the core controller itself and the tests are actually built for you.</p>
 
 <p>Here's the controller:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LabelsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LabelsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
   <span class="n">before_action</span> <span class="ss">:set_label</span><span class="p">,</span> <span class="ss">only: </span><span class="p">[</span><span class="ss">:show</span><span class="p">,</span> <span class="ss">:edit</span><span class="p">,</span> <span class="ss">:update</span><span class="p">,</span> <span class="ss">:destroy</span><span class="p">]</span>
 
   <span class="c1"># GET /labels</span>
@@ -294,12 +299,11 @@ this noun before running the generator.
     <span class="k">end</span>
 <span class="k">end</span>
 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And here's the controller test:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'test_helper'</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'test_helper'</span>
 
 <span class="k">class</span> <span class="nc">LabelsControllerTest</span> <span class="o">&lt;</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">IntegrationTest</span>
   <span class="n">setup</span> <span class="k">do</span>
@@ -347,20 +351,17 @@ this noun before running the generator.
     <span class="n">assert_redirected_to</span> <span class="n">labels_url</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I've always been using generators:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rails g model label 
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails g model label 
+</code></pre></div></div>
 
 <p>and</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>rails g controller Labels
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails g controller Labels
+</code></pre></div></div>
 
 <p>but then, for years, I've been manually writing my controllers, stubbing out my controller tests, adding stuff to the routes file, etc.  Wow.  I am just dumb founded in terms of how this:</p>
 

@@ -138,6 +138,12 @@ RAILS_ENV=development rails c
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -187,18 +193,16 @@ RAILS_ENV=development rails c
 
 <p>So I just hit this little gem of a pissant thing (yep - it is already that type of day):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>RAILS_ENV=development rails c
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RAILS_ENV=development rails c
 /Users/sjohnson/.rvm/gems/ruby-2.7.0/gems/railties-6.0.2.1/lib/rails/application/configuration.rb:241:in `database_configuration': Cannot load database configuration:
 Could not load database configuration. No such file - ["config/database.yml"] (RuntimeError)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The issue was that I changed my underlying project directory and then had to re clone at the git level.  The culprit, naturally, was Spring so it took a:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>bin/spring stop
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bin/spring stop
 bin/spring start
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And this time, I actually put the answer into <a href="https://stackoverflow.com/questions/32539062/rails-could-not-load-database-configuration-no-such-file/60024457#60024457">Stack Overflow</a>; I wonder if it will get accepted.</p>
 

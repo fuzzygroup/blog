@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,10 +186,9 @@
   <div class="post-content" itemprop="articleBody">
     <p>So <a href="http://winstonkotzan.com/">Winston</a> found this log message in our logs today:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>2017-03-02T18:18:31.561Z 32313 TID-osjfdq3bg ERROR: !!! ERROR HANDLER THREW AN ERROR !!!
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2017-03-02T18:18:31.561Z 32313 TID-osjfdq3bg ERROR: !!! ERROR HANDLER THREW AN ERROR !!!
 2017-03-02T18:18:34.696Z 32313 TID-osjfdq3bg ERROR: Too many open files @ rb_sysopen - /proc/meminfo
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>We were running a large data processing job using sidekiq for running our queue and this was causing the queue to stop being processed.  As the resident *nix nerd, this one was on me.  A quick google on increasing open file limits gave me a tutorial from <a href="https://easyengine.io/tutorials/linux/increase-open-files-limit/">Easy Engine</a> and the information was good but I think it could be documented better so here is the process I used.</p>
 
@@ -197,7 +202,7 @@
 
 <p>Here's the result:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo su - ubuntu -c 'ulimit -aHS' -s '/bin/bash'
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo su - ubuntu -c 'ulimit -aHS' -s '/bin/bash'
 core file size          (blocks, -c) 0
 data seg size           (kbytes, -d) unlimited
 scheduling priority             (-e) 0
@@ -214,8 +219,7 @@ cpu time               (seconds, -t) unlimited
 max user processes              (-u) 122314
 virtual memory          (kbytes, -v) unlimited
 file locks                      (-x) unlimited
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Clearly a limit of 1024 sounds low.</p>
 
@@ -229,12 +233,11 @@ file locks                      (-x) unlimited
 
 <p>Add to the end of this file the following content:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>*         hard    nofile      999999
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>*         hard    nofile      999999
 *         soft    nofile      999999
 root      hard    nofile      999999
 root      soft    nofile      999999
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Save the file and exit.</p>
 
@@ -252,7 +255,7 @@ root      soft    nofile      999999
 
 <p>This time you should see something like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>core file size          (blocks, -c) 0
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>core file size          (blocks, -c) 0
 data seg size           (kbytes, -d) unlimited
 scheduling priority             (-e) 0
 file size               (blocks, -f) unlimited
@@ -268,8 +271,7 @@ cpu time               (seconds, -t) unlimited
 max user processes              (-u) 122314
 virtual memory          (kbytes, -v) unlimited
 file locks                      (-x) unlimited
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="step-5-ansible">Step 5: Ansible</h1>
 

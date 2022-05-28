@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,13 +186,12 @@
   <div class="post-content" itemprop="articleBody">
     <p>Of all the multitude of sins that software engineers wreak upon the world, I have a personal hatred for crappy error messages.  Crappy error messages are an unforgivable sin that condemn all the people that ever get the error message to waste inordinate amounts of time on thinking, tinkering, google and more.  Here is my command:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>python /etc/ansible/inventory/ec2.py --list    
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python /etc/ansible/inventory/ec2.py --list    
+</code></pre></div></div>
 
 <p>What this is doing is executing the Ansible ec2.py script which talks to AWS and returns a list of resources.  And here is today's favorite crappy error message:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Traceback (most recent call last):
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Traceback (most recent call last):
   File "/etc/ansible/inventory/ec2.py", line 1701, in &lt;module&gt;
     Ec2Inventory()
   File "/etc/ansible/inventory/ec2.py", line 272, in __init__
@@ -224,14 +229,12 @@ jenkins@ip-172-31-19-205:/home/ubuntu$  python /etc/ansible/inventory/ec2.py --l
   "_meta": {
     "hostvars": {
       "199.31.18.123": {
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The trick here was reading enough of it to find "No handler was ready to authenticate."  I discovered this while setting up a new <a href="https://jenkins.io/">Jenkins</a> server and the error was that Ansible's AWS credentials hadn't yet been copied up the server in the directory:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>/home/jenkins/.aws/credentials
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/home/jenkins/.aws/credentials
+</code></pre></div></div>
 
 <p>Once I put them there this problem went away (another problem came up immediately but one down and N thousand to go).</p>
 

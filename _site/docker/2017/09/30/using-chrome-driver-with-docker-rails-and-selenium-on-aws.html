@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -180,19 +186,17 @@
   <div class="post-content" itemprop="articleBody">
     <p>I've done a lot of crawling in my professional career and I mean a <strong>lot</strong>.  The recent trend towards JavaScript based sites, however, has wreaked havoc on my traditional approach of low level html parsing.  For a new product I'm launching, I recently had to make the switch to using <a href="https://github.com/SeleniumHQ/">Selenium</a> for crawling.  Selenium, commonly known as a testing tool, can be used in an embedded fashion where you use code like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>browser = Selenium::WebDriver.for :chrome
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>browser = Selenium::WebDriver.for :chrome
 browser.get "https://www.google.com"
 html = browser.page_source
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here's a rough equivalent in Mechanize:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>agent = Mechanize.new
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>agent = Mechanize.new
 page = agent.get("https://www.google.com")
 html = page.body
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Although the lines of code look similar to something like <a href="https://github.com/sparklemotion/mechanize">Mechanize</a> this is actually an entirely different approach because underneath it all is a full browser including JavaScript which lets something like a page which sends its data down in a JavaScript array and then uses JavaScript to display it actually render and return back to you parseable html.</p>
 
@@ -208,7 +212,7 @@ html = page.body
 
 <p>Here's what you'll need for docker-compose.yml or docker-compose.production.yml:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>chromedriver:
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chromedriver:
   image: 'robcherry/docker-chromedriver'
   ports: 
     - 4444:4444
@@ -216,8 +220,7 @@ html = page.body
   shm_size: 1G    
   environment:
     - CHROMEDRIVER_WHITELISTED_IPS=""
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="step-2">Step 2</h3>
 
@@ -229,7 +232,7 @@ html = page.body
 
 <p>When you discover this you need to change your daemon.json file (normally located in /etc/docker/daemon.json) to have a larger shm_size like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cat daemon.json
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat daemon.json
 {
   "default-shm-size":"2g",
   "storage-driver": "overlay2",
@@ -238,8 +241,7 @@ html = page.body
     "max-size": "10m"
   }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Yes I'm aware that I use 1G in the first example and 2g in the second.  This is how I currently have it working and I'm leaving it alone until I play with it more.  I suspect you could sync these but I don't know that definitively.</p>
 
@@ -257,9 +259,8 @@ html = page.body
 
 <p>The solution to each of these is how you invoke the core browser object.  Here's what I used:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>browser = Selenium::WebDriver.for :chrome, url: "http://chromedriver:4444", :prefs =&gt; {:password_manager_enable =&gt; false, :credentials_enable_service =&gt; false}, :switches =&gt; ["disable-infobars", "no-sandbox"]
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>browser = Selenium::WebDriver.for :chrome, url: "http://chromedriver:4444", :prefs =&gt; {:password_manager_enable =&gt; false, :credentials_enable_service =&gt; false}, :switches =&gt; ["disable-infobars", "no-sandbox"]
+</code></pre></div></div>
 
 <h1 id="security-issues">Security Issues</h1>
 

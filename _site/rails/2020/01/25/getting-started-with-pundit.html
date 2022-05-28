@@ -135,6 +135,12 @@ Pundit, a Rails gem that my former boss, Taylor Williams, taught me is a tool fo
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -220,18 +226,17 @@ Pundit, a Rails gem that my former boss, Taylor Williams, taught me is a tool fo
 
 <p>The way that Pundit works is that authorization is handled at the Rails controller level via an <strong>authorize</strong> statement like this:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># GET /projects</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># GET /projects</span>
 <span class="k">def</span> <span class="nf">index</span>
   <span class="vi">@pagy</span><span class="p">,</span> <span class="vi">@projects</span> <span class="o">=</span> <span class="n">pagy</span><span class="p">(</span><span class="n">current_user</span><span class="p">.</span><span class="nf">projects</span><span class="p">.</span><span class="nf">order</span><span class="p">(</span><span class="s2">"id DESC"</span><span class="p">))</span>
   <span class="n">authorize</span> <span class="vi">@projects</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So you make an instance variable of what you want to display in your HTML view template and then you authorize it via Pundit.  The authorization is then defined by a Policy file stored in /app/policies/classname_policy.rb.  Here's an example for the project.rb class:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ProjectPolicy</span> <span class="o">&lt;</span> <span class="no">ApplicationPolicy</span>
-  <span class="kp">attr_reader</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">:project</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ProjectPolicy</span> <span class="o">&lt;</span> <span class="no">ApplicationPolicy</span>
+  <span class="nb">attr_reader</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">:project</span>
 
   <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span>
     <span class="vi">@user</span> <span class="o">=</span> <span class="n">user</span>
@@ -280,8 +285,7 @@ Pundit, a Rails gem that my former boss, Taylor Williams, taught me is a tool fo
   <span class="k">end</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
   </div>
   

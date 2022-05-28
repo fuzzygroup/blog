@@ -138,6 +138,12 @@ Ignore insecure directories and continue [y] or abort ...">
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -187,17 +193,15 @@ Ignore insecure directories and continue [y] or abort ...">
 
 <p>Ever since OSX Catalina, every time I open a new shell window I get this error:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>zsh compinit: insecure directories, run compaudit for list.
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zsh compinit: insecure directories, run compaudit for list.
 Ignore insecure directories and continue [y] or abort compinit [n]? y
 (eval):32: command not found: complete
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The issue with complete isn't the problem here – it is the insecure directories issue.  After a bunch of googling, I found this command:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>compaudit | xargs chmod g-w
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>compaudit | xargs chmod g-w
+</code></pre></div></div>
 
 <p>which fixed the issue entirely.</p>
 

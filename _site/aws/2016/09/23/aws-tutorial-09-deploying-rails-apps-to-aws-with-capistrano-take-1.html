@@ -136,6 +136,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -209,7 +215,7 @@
 
 <p>If your Gemfile you want something like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>group :development do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>group :development do
   # Use Capistrano for deployment
   gem 'capistrano', "3.6.1"
   gem 'capistrano3-puma'
@@ -218,14 +224,12 @@
   gem 'capistrano-rvm'
   gem 'capistrano-passenger'
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>After that you want to run bundle install:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>bundle install
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle install
+</code></pre></div></div>
 
 <p>As long as this runs correctly you should be fine to move onto the next step.</p>
 
@@ -233,23 +237,21 @@ end
 
 <p>Capistrano requires a one time setup step.  Do this now:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Cap install
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Cap install
+</code></pre></div></div>
 
 <p>This generates a file in the root of your Rails app called Capfile.  Open that file and uncomment these lines:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>require 'capistrano/rvm'
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'capistrano/rvm'
 require 'capistrano/bundler'
 require 'capistrano/rails/assets'    
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="modify-configdeployrb">Modify config/deploy.rb</h1>
 
 <p>The file config/deploy.rb covers the application level configuration for deployment. In this file you need to add lines like the ones below but specific to your code base / toolset:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>set :application, 'banks'
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>set :application, 'banks'
 set :repo_url, 'git@github.com:appdatallc/banks.git'
 
 set :ssh_options, {
@@ -259,8 +261,7 @@ set :ssh_options, {
 }
 
 set :deploy_to, '/var/www/apps/banks'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="modifying-configdeployproductionrb">Modifying config/deploy/production.rb</h1>
 
@@ -268,15 +269,13 @@ set :deploy_to, '/var/www/apps/banks'
 
 <p>Before you start does this section I strongly, strong, strongly advice you to read my <a href="https://fuzzygroup.github.io/blog/aws/2016/09/20/aws-tutorial-08-using-ssh-s-config-file-with-your-aws-boxes.html">AWS Tutorial on the SSH Config file</a>.  You can use the approach in that file to identify your boxes.  If you do then this line:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>server 'ec2-52-41-237-52.us-west-2.compute.amazonaws.com', user: 'ubuntu', roles: %w{web app}
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server 'ec2-52-41-237-52.us-west-2.compute.amazonaws.com', user: 'ubuntu', roles: %w{web app}
+</code></pre></div></div>
 
 <p>would be replaced by this line:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>server 'ficrawler1', roles: %w{web app}
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server 'ficrawler1', roles: %w{web app}
+</code></pre></div></div>
 
 <p>Not only is this simpler to understand but it centralizes all your EC2 machine addresses in one place.  That's a huge win.</p>
 
@@ -286,9 +285,8 @@ set :deploy_to, '/var/www/apps/banks'
 
 <p>Once all of this configured then you should be able to do a:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cap production deploy
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cap production deploy
+</code></pre></div></div>
 
 <p>to get your current code base onto all your boxes.  Please keep in mind that Capistrano executes everything via SSH and it generates a long stream of commands.  If you see errors then there are two things to understand:</p>
 

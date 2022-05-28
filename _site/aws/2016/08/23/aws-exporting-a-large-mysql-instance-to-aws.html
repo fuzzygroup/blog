@@ -135,6 +135,12 @@ I'm in the process of migrating a rather large Rails installation to AWS.  The i
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -214,7 +220,7 @@ I'm in the process of migrating a rather large Rails installation to AWS.  The i
 
 <p>This is a fairly classical automation problem so a quick Rake task should do it nicely.  Here you go:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>namespace :mysqldump do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>namespace :mysqldump do
   # bundle exec rake mysqldump:to_s3 --trace
   task :to_s3 =&gt; :environment do
     Kernel.silence_warnings do 
@@ -243,8 +249,7 @@ I'm in the process of migrating a rather large Rails installation to AWS.  The i
     end
   end
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>In closing there are dozens of ways to solve this particular problem but the number of different steps that I had to go thru just to get a mysql db moved to aws I thought warranted documentation.  I will forget this otherwise and there are many more databases before I sleep…</p>
 

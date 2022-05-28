@@ -149,6 +149,12 @@ Marketing 101. Consulting 101. PHP Consulting. Random geeky stuff. I Blog Theref
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -499,11 +505,10 @@ The FuzzyBlog!</a></b></font>
 
 <p>This code taken from Mastering PHP 4.1 from Sybex. Chapter 10, Listing 10.7. </p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  /*     * function email_works ($email)     * args: $email (address to test)     * We simulate an SMTP session to the server and use the 'RCPT TO'     * to see whether the mail server will accept mail for this user.     */
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  /*     * function email_works ($email)     * args: $email (address to test)     * We simulate an SMTP session to the server and use the 'RCPT TO'     * to see whether the mail server will accept mail for this user.     */
 
     function email_works ($email) {        // get the list of mail serves for the user's host/domain name        list ($addr, $hostname) = explode ("@", $email);        if (!getmxrr ($hostname, $mailhosts))            $mailhosts = array ($hostname); // if no MX records found                                            // simply try their hostname        $test_from = "me@domain.com"; // replace w/ your address        for ($i = 0; $i &lt; count ($mailhosts); $i++)        {            // open a connection on port 25 to the recipient's mail server            $fp = fsockopen ($mailhosts[$i], 25);            if (!$fp)                continue;            $r = fgets($fp, 1024);            // talk to the mail server            fwrite ($fp, "HELO " . $_SERVER['SERVER_NAME'] . "\r\n");            $r = fgets ($fp, 1024);            if (!eregi("^250", $r))            {                fwrite ($fp, "QUIT\r\n");                fclose ($fp);                continue;            }            fwrite ($fp, "MAIL FROM: &lt;" . $test_from . "&gt;\r\n");            $r = fgets ($fp, 1024);            if (!eregi("^250", $r))             {                fwrite ($fp, "QUIT\r\n");                fclose ($fp);                continue;           }            fwrite ($fp, "RCPT TO: &lt;" . $email . "&gt;\r\n");            $r = fgets ($fp, 1024);            if (!eregi("^250", $r))            {                fwrite ($fp, "QUIT\r\n");                fclose ($fp);                continue;            }            // if we got here, we can send email from $test_from to $mail            fwrite ($fp, "QUIT\r\n");            $r = fgets($fp, 1024);            fclose ($fp);            return true;        }        return false;    }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <table>
   <tbody>

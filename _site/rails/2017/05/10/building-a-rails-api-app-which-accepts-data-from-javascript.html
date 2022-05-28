@@ -133,6 +133,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -203,15 +209,14 @@
 
 <p>Here's all it takes to calculate a browser fingerprint:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;!-- bring in the library --&gt;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- bring in the library --&gt;
 &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js"&gt;&lt;/script&gt;
 &lt;!-- the hash will be in the variable result --&gt;
 &lt;script type="text/javascript"&gt;
     new Fingerprint2().get(function(result, components){
     }
 &lt;/script&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Now that we know how to calculate a browser fingerprint, the next step is the sending it to our API service either by jQuery or a native XHR call.</p>
 
@@ -219,7 +224,7 @@
 
 <p>Here's the jQuery code:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js"&gt;&lt;/script&gt;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
     new Fingerprint2().get(function(result, components){
  
@@ -236,14 +241,13 @@
  
    });
 &lt;/script&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h2 id="the-xhr-approach">The XHR Approach</h2>
 
 <p>Here's the XHR code:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>&lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js"&gt;&lt;/script&gt;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
     new Fingerprint2().get(function(result, components){
       var xhr = new XMLHttpRequest();
@@ -256,8 +260,7 @@
       xhr.send();
    });
 &lt;/script&gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="part-2-rails-api-server">Part 2: Rails API Server</h1>
 
@@ -293,23 +296,21 @@
 
 <p>I then wrote a simple method to capture the data and save it to a PageView object in the database:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>class ApiController &lt; ApplicationController
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class ApiController &lt; ApplicationController
   
   def log_it
     PageView.create_page_view(params[:fingerprint], request.remote_ip, params[:url], request.user_agent)
   end
 
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>I then needed to write a route for this as follows:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Rails.application.routes.draw do
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Rails.application.routes.draw do
   get '/api/log_it', to: 'api#log_it'
 end
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The PageView object is simply an ActiveRecord model which logs the view to the database and it is simple enough that I'm not going to cover it here.</p>
 
@@ -327,15 +328,14 @@ end
 
 <p>To test this from the browser just embed it in an HTML page and tail the logs on the API service.  Here's what those logs look like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Started GET "/api/log_it?api_key=foobarbaz&amp;url=http://localhost:3400/&amp;fingerprint=e82eaadd998e1aae0309b781029f8edb" for 127.0.0.1 at 2017-05-09 18:35:32 -0400
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Started GET "/api/log_it?api_key=foobarbaz&amp;url=http://localhost:3400/&amp;fingerprint=e82eaadd998e1aae0309b781029f8edb" for 127.0.0.1 at 2017-05-09 18:35:32 -0400
 Processing by ApiController#log_it as */*
   Parameters: {"api_key"=&gt;"hyde314159", "url"=&gt;"http://localhost:3400/", "fingerprint"=&gt;"e82eaadd998e1aae0309b781029f8edb"}
    (0.2ms)  BEGIN
   SQL (0.4ms)  INSERT INTO `page_views` (`created_at`, `updated_at`, `date_created_at`, `fingerprint`, `ip_address`, `user_agent`, `url`, `url_base`) VALUES ('2017-05-09 22:35:32', '2017-05-09 22:35:32', '2017-05-09', 'e82eaadd998e1aae0309b781029f8edb', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.96 Safari/537.36', 'http://localhost:3400/', 'localhost/')
    (0.8ms)  COMMIT
 Completed 204 No Content in 4ms (ActiveRecord: 1.4ms)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="conclusions">Conclusions</h1>
 

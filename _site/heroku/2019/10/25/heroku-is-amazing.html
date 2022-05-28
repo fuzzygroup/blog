@@ -142,6 +142,12 @@ I've been using Heroku quite a lot recently:
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -217,15 +223,14 @@ I've been using Heroku quite a lot recently:
 
 <p>Now, with the laudatory statements aside, I did hit an interesting bug / issue in Heroku today.  I use Heroku with MySQL because, well, I've put terabytes of data into MySQL over the years and it has never let me down.  Today tho I got this weirdness:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> mysql -ua_user_name -pa_passowrd a_database --host=a.rds.host.amazon.com &lt; lib/tasks/data/db_dumps/police_crawl_development_2019-10-25.sql
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> mysql -ua_user_name -pa_passowrd a_database --host=a.rds.host.amazon.com &lt; lib/tasks/data/db_dumps/police_crawl_development_2019-10-25.sql
  
 ERROR 1142 (42000) at line 40: INSERT command denied to user 'cbneustt0on66p30'@'208-70-45-211.bb.hrtc.net' for table 'ar_internal_metadata'
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>My first thought was that the database instance wasn't fully logically isolated from others and I used –ignore-table to not export ar_internal_metadata.  And, clearly, that was a stupid idea because it just failed on the next table.  I did some digging and ended up on an obscure Stack Overflow page which said something to the effect that "Heroku limits your space, perhaps you just have had your insert permissions disabled because you are out of space".  So I logged into MySQL remotely and got:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>MySQL [q0seyczrkn0dptvs]&gt; show grants;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MySQL [q0seyczrkn0dptvs]&gt; show grants;
 +--------------------------------------------------------------------------------------------------+
 | Grants for a_user@%                                                                              |
 +--------------------------------------------------------------------------------------------------+
@@ -234,20 +239,18 @@ ERROR 1142 (42000) at line 40: INSERT command denied to user 'cbneustt0on66p30'@
 | TRIGGER ON `something`.* TO 'a_user'@'%'                                                         |
   +------------------------------------------------------------------------------------------------+
 2 rows in set (0.04 sec)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Jinkies!  My insert permission is gone!  So I logged into the Heroku dashboard and upgraded the MySQL addin from the baseline - which only gives you 5 mb of data - to the $10 / month option which gives you a full gigabyte and then I re-ran my show grants query and got:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>MySQL [q0seyczrkn0dptvs]&gt; show grants;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MySQL [q0seyczrkn0dptvs]&gt; show grants;
 +------------------------------------------------------------------------+
 | Grants for cbneustt0on66p30@%                                          |
 +------------------------------------------------------------------------+
 | GRANT USAGE ON *.* TO 'cbneustt0on66p30'@'%'                           |
 | GRANT ALL PRIVILEGES ON `q0seyczrkn0dptvs`.* TO 'cbneustt0on66p30'@'%' |
 +------------------------------------------------------------------------+
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>When we talk about cloud computing, this is how it was supposed to work – you can get started easily and then buy facilities on the fly as you need them.  And I get that this is similar to AWS but AWS is selling a more raw level of service.  Heroku is tightly coupled into the tooling ecosystem so it just takes your application and makes it work.  With AWS I can still buy capacity dynamically but I have to work to make use of it.</p>
 

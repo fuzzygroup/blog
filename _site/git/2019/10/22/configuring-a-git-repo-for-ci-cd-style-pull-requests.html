@@ -138,6 +138,12 @@ Like a lot of senior software folk, I have a particular set of beliefs about how
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -203,7 +209,7 @@ Like a lot of senior software folk, I have a particular set of beliefs about how
 
 <p>When you start with your repo, look at the .git/config file.  Here's mine:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cat .git/config
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat .git/config
 [core]
 	repositoryformatversion = 0
 	filemode = true
@@ -211,12 +217,11 @@ Like a lot of senior software folk, I have a particular set of beliefs about how
 	logallrefupdates = true
 	ignorecase = true
 	precomposeunicode = true      
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This is actually what we want it to look like:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[core]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[core]
 	repositoryformatversion = 0
 	filemode = true
 	bare = false
@@ -232,24 +237,21 @@ Like a lot of senior software folk, I have a particular set of beliefs about how
 [branch "develop"]
 	remote = origin
 	merge = refs/heads/develop
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So our first step is to add a remote "origin".  This is done by going to github and creating a repo and then adding it to the existing git repo with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git remote add origin https://github.com/fuzzygroup/feed_finder.git
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git remote add origin https://github.com/fuzzygroup/feed_finder.git
 git push -u origin master   
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="step-2---adding-a-develop-branch">Step 2 - Adding a develop Branch</h1>
 
 <p>Our next step is to add a develop branch.  This is first done locally with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>git branch develop
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git branch develop
 git co develop
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>You next need to make a change and do the add / commit / push dance.  This can be done just by making a one line change to the readme on the repo.  After you push with git push origin develop, you need to:</p>
 
@@ -275,7 +277,7 @@ git co develop
 
 <p>When you have completed the changes above, you want to work in a branch and then push to that branch.  I illustrate this below:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>➜  feed_finder git:(1-circle-ci) git push origin 1-circle-ci
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜  feed_finder git:(1-circle-ci) git push origin 1-circle-ci
 Counting objects: 14, done.
 Delta compression using up to 4 threads.
 Compressing objects: 100% (13/13), done.
@@ -288,8 +290,7 @@ remote:      https://github.com/fuzzygroup/feed_finder/pull/new/1-circle-ci
 remote:
 To github.com:fuzzygroup/feed_finder.git
  * [new branch]      1-circle-ci -&gt; 1-circle-ci
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>You'll notice that Github now returns a url as part of the push.  This pull request needs to be approved at Github so after your push is done, follow the url onto Github and click the <strong>Create pull request</strong> button:</p>
 
@@ -339,80 +340,79 @@ To github.com:fuzzygroup/feed_finder.git
   <li>On the next page CircleCI directs you to add a .circleci/config.yml file to your project.  This is a yml file that describes how to build your software and run your tests.  Below I have a sample one for my project, feed_finder, a Ruby on Rails app.  Obviously yours would differ.</li>
 </ol>
 
-<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby CircleCI 2.0</span>
-<span class="s">version</span><span class="pi">:</span> <span class="s">2</span>
-<span class="s">jobs</span><span class="pi">:</span>
-  <span class="s">build</span><span class="pi">:</span>
-    <span class="s">docker</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">image</span><span class="pi">:</span> <span class="s">circleci/ruby:2.5.1-node-browsers</span>
-      <span class="pi">-</span> <span class="s">image</span><span class="pi">:</span> <span class="s">circleci/mysql:8.0.4</span>
-        <span class="s">command</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">--default-authentication-plugin=mysql_native_password</span><span class="pi">]</span>
-        <span class="s">environment</span><span class="pi">:</span>
-          <span class="s">MYSQL_ROOT_PASSWORD</span><span class="pi">:</span> <span class="s">testpass</span>
-          <span class="s">MYSQL_DATABASE</span><span class="pi">:</span> <span class="s">feed_finder_test</span>
-          <span class="s">MYSQL_USER</span><span class="pi">:</span> <span class="s">testuser</span>
-          <span class="s">MYSQL_PASSWORD</span><span class="pi">:</span> <span class="s">testpass</span>
-          <span class="s">MYSQL_ROOT_HOST</span><span class="pi">:</span> <span class="s2">"</span><span class="s">127.0.0.1"</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Ruby CircleCI 2.0</span>
+<span class="na">version</span><span class="pi">:</span> <span class="m">2</span>
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">docker</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">circleci/ruby:2.5.1-node-browsers</span>
+      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">circleci/mysql:8.0.4</span>
+        <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">--default-authentication-plugin=mysql_native_password</span><span class="pi">]</span>
+        <span class="na">environment</span><span class="pi">:</span>
+          <span class="na">MYSQL_ROOT_PASSWORD</span><span class="pi">:</span> <span class="s">testpass</span>
+          <span class="na">MYSQL_DATABASE</span><span class="pi">:</span> <span class="s">feed_finder_test</span>
+          <span class="na">MYSQL_USER</span><span class="pi">:</span> <span class="s">testuser</span>
+          <span class="na">MYSQL_PASSWORD</span><span class="pi">:</span> <span class="s">testpass</span>
+          <span class="na">MYSQL_ROOT_HOST</span><span class="pi">:</span> <span class="s2">"</span><span class="s">127.0.0.1"</span>
 
-    <span class="s">working_directory</span><span class="pi">:</span> <span class="s">~/repo</span>
+    <span class="na">working_directory</span><span class="pi">:</span> <span class="s">~/repo</span>
 
-    <span class="s">steps</span><span class="pi">:</span>
+    <span class="na">steps</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="s">checkout</span>
 
       <span class="c1"># Download and cache dependencies</span>
-      <span class="pi">-</span> <span class="s">restore_cache</span><span class="pi">:</span>
-          <span class="s">keys</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">restore_cache</span><span class="pi">:</span>
+          <span class="na">keys</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">v1-dependencies-</span>
             <span class="c1"># fallback to using the latest cache if no exact match is found</span>
             <span class="pi">-</span> <span class="s">v1-dependencies-</span>
 
-      <span class="pi">-</span> <span class="s">run</span><span class="pi">:</span>
-          <span class="s">name</span><span class="pi">:</span> <span class="s">install dependencies</span>
-          <span class="s">command</span><span class="pi">:</span> <span class="pi">|</span>
-            <span class="no">bundle install --jobs=4 --retry=3 --path vendor/bundle</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">install dependencies</span>
+          <span class="na">command</span><span class="pi">:</span> <span class="pi">|</span>
+            <span class="s">bundle install --jobs=4 --retry=3 --path vendor/bundle</span>
 
-      <span class="pi">-</span> <span class="s">save_cache</span><span class="pi">:</span>
-          <span class="s">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">save_cache</span><span class="pi">:</span>
+          <span class="na">paths</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">./vendor/bundle</span>
-          <span class="s">key</span><span class="pi">:</span> <span class="s">v1-dependencies-</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">v1-dependencies-</span>
 
-      <span class="pi">-</span> <span class="s">run</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span>
           <span class="c1"># Our primary container isn't MYSQL so run a sleep command until it's ready.</span>
-          <span class="s">name</span><span class="pi">:</span> <span class="s">Waiting for MySQL to be ready</span>
-          <span class="s">command</span><span class="pi">:</span> <span class="pi">|</span>
-            <span class="no">for i in `seq 1 30`;</span>
-            <span class="no">do</span>
-              <span class="no">nc -z 127.0.0.1 3306 &amp;&amp; echo Success &amp;&amp; exit 0</span>
-              <span class="no">echo -n .</span>
-              <span class="no">sleep 1</span>
-            <span class="no">done</span>
-            <span class="no">echo Failed waiting for MySQL &amp;&amp; exit 1</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">Waiting for MySQL to be ready</span>
+          <span class="na">command</span><span class="pi">:</span> <span class="pi">|</span>
+            <span class="s">for i in `seq 1 30`;</span>
+            <span class="s">do</span>
+              <span class="s">nc -z 127.0.0.1 3306 &amp;&amp; echo Success &amp;&amp; exit 0</span>
+              <span class="s">echo -n .</span>
+              <span class="s">sleep 1</span>
+            <span class="s">done</span>
+            <span class="s">echo Failed waiting for MySQL &amp;&amp; exit 1</span>
 
       <span class="c1"># Database setup</span>
-      <span class="pi">-</span> <span class="s">run</span><span class="pi">:</span> <span class="s">RAILS_ENV=test bundle exec rake db:create</span>
-      <span class="pi">-</span> <span class="s">run</span><span class="pi">:</span> <span class="s">RAILS_ENV=test bundle exec rake db:schema:load</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">RAILS_ENV=test bundle exec rake db:create</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">RAILS_ENV=test bundle exec rake db:schema:load</span>
 
       <span class="c1"># run tests</span>
-      <span class="pi">-</span> <span class="s">run</span><span class="pi">:</span>
-          <span class="s">name</span><span class="pi">:</span> <span class="s">run tests</span>
-          <span class="s">command</span><span class="pi">:</span> <span class="pi">|</span>
-            <span class="no">mkdir /tmp/test-results</span>
-            <span class="no">TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"</span>
-            <span class="no">bundle exec rspec --format progress \</span>
-              <span class="no">--format RspecJunitFormatter \</span>
-              <span class="no">--out /tmp/test-results/rspec.xml \</span>
-              <span class="no">--format progress \</span>
-              <span class="no">$TEST_FILES</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">run tests</span>
+          <span class="na">command</span><span class="pi">:</span> <span class="pi">|</span>
+            <span class="s">mkdir /tmp/test-results</span>
+            <span class="s">TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"</span>
+            <span class="s">bundle exec rspec --format progress \</span>
+              <span class="s">--format RspecJunitFormatter \</span>
+              <span class="s">--out /tmp/test-results/rspec.xml \</span>
+              <span class="s">--format progress \</span>
+              <span class="s">$TEST_FILES</span>
 
       <span class="c1"># collect reports</span>
-      <span class="pi">-</span> <span class="s">store_test_results</span><span class="pi">:</span>
-          <span class="s">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
-      <span class="pi">-</span> <span class="s">store_artifacts</span><span class="pi">:</span>
-          <span class="s">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
-          <span class="s">destination</span><span class="pi">:</span> <span class="s">test-results</span>
+      <span class="pi">-</span> <span class="na">store_test_results</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
+      <span class="pi">-</span> <span class="na">store_artifacts</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
+          <span class="na">destination</span><span class="pi">:</span> <span class="s">test-results</span>
 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>Note</strong>: A lot of this is cribbed from <a href="https://www.freecodecamp.org/news/first-steps-into-continuous-integration-with-circle-ci-emberjs-and-github-1e273ea62f0c/">this article on Ember</a>.</p>
 

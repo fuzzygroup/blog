@@ -137,6 +137,12 @@
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -214,12 +220,11 @@
 
 <p>Since our first plan failed, we need a new plan.  The program ping is a basic IP networking tool which lets us send a packet to a destination and if it answers, well, that means its alive.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>ping banks.finavd.com
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ping banks.finavd.com
 PING web-1166333941.us-west-2.elb.amazonaws.com (52.41.182.115): 56 data bytes
 64 bytes from 52.41.182.115: icmp_seq=0 ttl=47 time=67.589 ms
 64 bytes from 52.41.182.115: icmp_seq=1 ttl=47 time=67.301 ms
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Ah ha!  We have an ip address of 52.41.182.115.  I know! I know!  I know!  I'll just search for that ip address on EC2 dashboard.  And it will fail.  Now the smart kids in the back are already chuckling to themselves and they know the answer.</p>
 
@@ -227,9 +232,8 @@ PING web-1166333941.us-west-2.elb.amazonaws.com (52.41.182.115): 56 data bytes
 
 <p>If you look at the url that responded, NOT the ip address, the answer is revealed:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>web-1166333941.us-west-2.elb.amazonaws.com
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>web-1166333941.us-west-2.elb.amazonaws.com
+</code></pre></div></div>
 
 <p>You see the text string ".elb."?  That means that a piece of software called an Elastic Load Balancer is sitting in front of the http request and distributing the load out to one or more EC2 instances.  If you've ever used HAProxy, well, ELB is that only far, far better.  Let's goto the AWS Console and select the Load Balancers option from the choices on the left:</p>
 

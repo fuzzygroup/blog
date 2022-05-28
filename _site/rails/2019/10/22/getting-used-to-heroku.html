@@ -135,6 +135,12 @@ I remember using Heroku in its very infancy when it was mostly a web based user 
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,47 +192,41 @@ I remember using Heroku in its very infancy when it was mostly a web based user 
 
 <p>All of this assumes you have a Rails application and it is configured to use Heroku.  If you don't have the heroku executable then you can use brew on OSX to install it:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>brew tap heroku/brew &amp;&amp; brew install heroku
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew tap heroku/brew &amp;&amp; brew install heroku
+</code></pre></div></div>
 
 <h2 id="getting-help">Getting Help</h2>
 
 <p>Just use the –help flag to the heroku command.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>heroku --help
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>heroku --help
+</code></pre></div></div>
 
 <h2 id="running-the-rails-console">Running the Rails Console</h2>
 
 <p>To load up a Rails console for your project, change into the product directory and:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>heroku run rails console
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>heroku run rails console
+</code></pre></div></div>
 
 <h2 id="accessing-your-sql-database">Accessing Your SQL Database</h2>
 
 <p>Just use the host parameter of your sql database's client software and connect to it directly.  Here's an example from mine (details changed):</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> mysql -uUSERNAME -pPASSWORD DB_NAME --host=HOSTNAME
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> mysql -uUSERNAME -pPASSWORD DB_NAME --host=HOSTNAME
+</code></pre></div></div>
 
 <p>Get the details of what to connect to with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>heroku config | grep CLEARDB_DATABASE_URL
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>heroku config | grep CLEARDB_DATABASE_URL
+</code></pre></div></div>
 
 <h2 id="running-migrations">Running Migrations</h2>
 
 <p>Migrations should run automatically on deployment.  Apparently, however, that is not always true and they can be run manually with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>heroku run rake --trace db:migrate
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>heroku run rake --trace db:migrate
+</code></pre></div></div>
 
 <p>Thank you to the very first user of my new side project for finding this.  Hat Tip.</p>
 
@@ -234,9 +234,8 @@ I remember using Heroku in its very infancy when it was mostly a web based user 
 
 <p>Heroku only gives you access to the last 1500 lines of your logs:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>heroku logs
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>heroku logs
+</code></pre></div></div>
 
 <p>For access to more logging into then I strongly, strongly, strongly recommend <a href="https://fuzzyblog.io/blog/rails/2019/10/21/honeybadger-even-more-awesome-than-ever.html">HoneyBadger</a>.</p>
 
@@ -244,17 +243,15 @@ I remember using Heroku in its very infancy when it was mostly a web based user 
 
 <p>You can see your time zones or run any rake task with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>heroku rake time:zones:all
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>heroku rake time:zones:all
+</code></pre></div></div>
 
 <h2 id="to-view-your-configuration">To View Your Configuration</h2>
 
 <p>View configuration details with:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code> heroku config
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> heroku config
+</code></pre></div></div>
 
 <h2 id="importing-your-development-data">Importing Your Development Data</h2>
 

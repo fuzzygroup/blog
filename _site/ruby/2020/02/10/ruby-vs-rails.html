@@ -135,6 +135,12 @@ I always find it interesting when I hit a Rails-ism when I'm working in a pure R
           <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
           
         
+          
+        
+          
+        
+          
+        
       </div>
     </nav>
 
@@ -186,28 +192,26 @@ I always find it interesting when I hit a Rails-ism when I'm working in a pure R
 
 <p>Here's the first thing that bit me:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">TOPIC</span> <span class="o">=</span> <span class="no">ENV</span><span class="p">[</span><span class="s1">'TOPIC'</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">TOPIC</span> <span class="o">=</span> <span class="no">ENV</span><span class="p">[</span><span class="s1">'TOPIC'</span><span class="p">]</span>
 
 <span class="k">if</span> <span class="no">TOPIC</span><span class="p">.</span><span class="nf">blank?</span>
   <span class="nb">puts</span> <span class="s2">"No topic specified; exiting"</span>
   <span class="nb">exit</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And this gave an immediate failure:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ TOPIC=twitter RAILS_ENV=development ruby kafka_loader.rb
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ TOPIC=twitter RAILS_ENV=development ruby kafka_loader.rb
 Traceback (most recent call last):
 kafka_loader.rb:19:in `&lt;main&gt;': undefined method `blank?' for "twitter":String (NoMethodError)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>The easiest way to understand something like this is to test it in irb.  The irb tool is the underlying engine in rails console ("rails c") but without your application specific classes loaded in so it is just pure ruby.</p>
 
 <p>Here's how you would test something like this in irb:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>2.7.0 :001 &gt; "".blank?
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2.7.0 :001 &gt; "".blank?
 Traceback (most recent call last):
        16: from /Users/sjohnson/.rvm/rubies/ruby-2.7.0/lib/ruby/2.7.0/bundler/friendly_errors.rb:123:in `with_friendly_errors'
        15: from /Users/sjohnson/.rvm/rubies/ruby-2.7.0/lib/ruby/gems/2.7.0/gems/bundler-2.1.2/libexec/bundle:46:in `block in &lt;top (required)&gt;'
@@ -229,30 +233,27 @@ NoMethodError (undefined method `blank?' for "":String)
 2.7.0 :002 &gt; "".empty?
  =&gt; true
 2.7.0 :003 &gt;
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Off the top of my head, I knew that .empty? was the underlying method that .blank? was aliased to.  And I could test either of these on an empty string as a way to figure this out.  When you have this type of thing, a quick google for "rails whatever" often is all you need to understand it.  The top hit for <em>rails blank?</em> was a nicely written piece by <a href="https://blog.arkency.com/2017/07/nil-empty-blank-ruby-rails-difference/">Arkency</a>.</p>
 
 <p>Another example of this came up here:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Traceback (most recent call last):
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Traceback (most recent call last):
 	1: from kafka_loader.rb:188:in `&lt;main&gt;'
 kafka_loader.rb:77:in `kafka_connect': undefined method `second' for #&lt;Array:0x00007fe197c3d4c8&gt; (NoMethodError)
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>In this case, again, I knew that .second was a method that Rails sticks into the array class.  The fix here was to move to:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>[0]  and [1]
-</code></pre>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[0]  and [1]
+</code></pre></div></div>
 
 <p>to access the first and second elements in the array.</p>
 
 <p>You can easily see that .first actually works on arrays but I moved to [0] and [1] anyway to keep the semantics of the code the same:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>❯ irb
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ irb
 cannot load such file -- awesome_print
 2.7.0 :001 &gt; foo = []
 2.7.0 :002 &gt; foo.first
@@ -277,8 +278,7 @@ Traceback (most recent call last):
         1: from (irb):3
 NoMethodError (undefined method `second' for []:Array)
 Did you mean?  send
-</code></pre>
-</div>
+</code></pre></div></div>
 
   </div>
   
