@@ -1,0 +1,10 @@
+---
+layout: post
+title: ISP Horror Stories from Hell
+date: 2002-10-10 12:28 +0000
+category: tech
+tags: ["tech"]
+---
+<p>If you think that title is redundant then read Russell's <a href="https://web.archive.org/web/20021013031121/http://www.beattie.info/notebook/index.jsp?date=20021009#222556">Rant</a>.&nbsp; Ouch.&nbsp; In another post he states how he likes register.com as a Name Registrar.&nbsp; I'd caution him against that.&nbsp; Register.com is hugely expensive compared to competitors like <a href="https://web.archive.org/web/20021013031121/http://www.000domains.com/">000Domains</a> and if you need to transfer a domain to another registrar?&nbsp; Good luck.&nbsp; I tried all summer long without success (that's why I own fuzzygroup.net and fuzzygroup.com).&nbsp; I'd strongly recommend 000Domains.&nbsp; They seem to be rock solid and they just plain rock.&nbsp; Also like Register.com you don't need a name server.&nbsp; That's pretty damn cool.</p>
+<p>And to throw in a plug for the boys over at <a href="https://web.archive.org/web/20021013031121/http://www.rackspace.com/">RackSpace</a>, they aren't perfect but they're damn good.&nbsp; I often get asked why I pay for a premium priced server and now I'll just point them to Russell's rant.&nbsp; It says it all.&nbsp; It really says it all.&nbsp; As a general comment, hosting companies with options at the $10 per month or lower (even if they have higher priced options) seem to always end up with problems because the customers you attract drain the lifeblood from your support techs.&nbsp; And then service suffers.&nbsp; And then you get Russell.</p>
+<p>As <a href="https://web.archive.org/web/20021013031121/http://www.google.com/search?sourceid=navclient&amp;q=%22cwihosting%2E%2Bcom%22+sucks">this google search</a> shows he's not the only one with problems with CWI.&nbsp; The "Condompower" result near the end also shows why if you host Adult sites you don't want to intermix them with your non-adult sites.&nbsp; Searching for CWI juxtaposes the text interestingly.&nbsp; There are apparently postive ways to use the word "sucks".</p>

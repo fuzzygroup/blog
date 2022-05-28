@@ -1,0 +1,18 @@
+---
+layout: post
+title: Have You Faxed From DigitalConsumer.Org ?
+date: 2002-10-07 10:04 +0000
+category: politics
+tags: ["politics"]
+---
+<p>I just heard about <a href="https://web.archive.org/web/20021013031121/http://www.digitalconsumer.org/">Digital Consumer</a>&nbsp;and if you care about copyright, MP3, your online rights and similar issues then you should take a look.&nbsp; At only 6 months old it's up to 50,000 "members" (I'm not real sure what&nbsp;a "member" is).&nbsp; Even better than sending an email to your congress man, this site can automatically generate a customizable fax to your representative.&nbsp; <a href="https://web.archive.org/web/20021013031121/http://www.digitalconsumer.org/fax.html">Click Here to See</a>.&nbsp; I took the time to customize the fax (my changes are in <strong>bold</strong> below).&nbsp; Bear in mind that I know little about politics but I do know enough to relate it to local issues i.e. the industries for which my state (Massachusetts) is known.</p>
+<p dir="ltr" align="center"><strong>I really hope you take the 2 to 3&nbsp;minutes <br>to use this website to send a fax today.&nbsp; Thanks.</strong></p>
+<blockquote dir="ltr" style="MARGIN-RIGHT: 0px">
+<p>[The Fax]</p>
+<p>As a constituent and an ardent consumer of digital media, I write today to urge you to support a Consumer Technology Bill of Rights, and to express my concerns about the recent trend toward allowing one-sided copyright laws to eliminate my Fair Use rights.&nbsp; </p>
+<p><strong>Please bear in mind that the Massachusetts economy is dominated by the technology industry and this can only cost our state jobs.&nbsp; Given that we are not doing well these days, I'd strongly encourage you to keep this in mind when you have to vote on these issues.&nbsp;&nbsp;&nbsp; Another side of our Massachusetts economy are colleges and universities and these copyright extensions increase our educational costs by not allowing materials that students need to study to enter the public domain.&nbsp; Given that this can only cost us jobs and increase our cost of education, I just can't see that this bill is a good thing for Massachusetts</strong></p>
+<p>Historically, our country has enjoyed a balance between the rights of copyright holders and the rights of citizens who legally acquire copyrighted works. Generally speaking, rights holders have the exclusive right to distribute and profit from artistic works. Consumers like me who legally acquire these works are free to use them in most noncommercial ways. Unfortunately, this balance has shifted dramatically in recent years, much to the detriment of consumers.</p>
+<p>To prevent further erosion of my rights, I would like to add my voice to DigitalConsumer.org in calling for a "consumer technology bill of rights". It is simply an attempt to assert positively the public's personal use rights. These rights are not new; they are historic rights granted in previous legislation and court rulings that have over the last four years been whittled away.</p>
+<p>Under the guise of "preventing illegal copying" I believe Hollywood is vilifying their customers - people like me - and using the legislative process to create new lines of business at my expense. Their goal is to create a legal system that takes away my long-cherished personal use rights and then to charge me an additional fee to regain those rights!</p>
+<p>Copy protection, especially to prevent overseas piracy for illicit sale, is an important issue. But before Congress considers yet another change in the law at the behest of the copyright holders, I urge you in the strongest possible terms to protect my Fair Use rights.</p>
+<p>Thank you very much for your attention to this important matter.</p>

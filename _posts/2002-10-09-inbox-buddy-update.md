@@ -1,0 +1,9 @@
+---
+layout: post
+title: Inbox Buddy Update
+date: 2002-10-09 00:00 +0000
+category: inbox_buddy
+tags: ["inbox_buddy"]
+---
+<p>That new project I mentioned has kept me from blogging much about <a href="https://web.archive.org/web/20021013031121/http://www.inboxbuddy.com/">Inbox Buddy</a> but I thought a quick update is in order.&nbsp; The product is doing well although we do have some installation issues tied to Microsoft's lack of a view creation API for Outlook 2000 (sigh.&nbsp; APIs for lots of things but not that).&nbsp; We've got a new release coming out this week that adds a bunch of new features and after it goes through some more qa I'll post the 0.904 release.&nbsp; One of those features will be BCC warning so you at least know that you are replying to everyone on&nbsp;a BCC.&nbsp; Think about it -- we've all done that.&nbsp; Your boss BCC's (blind carbon copy) you on an email and then you think you are part of the conversation and accidentally reply.&nbsp; Oops.&nbsp; When I worked at the late, lamented Dataware this happened all the time.</p>
+<p>Oh and there has been some confusion about why Spam isn't automatically routed to a folder in Inbox Buddy.&nbsp; That's an easy thing to do and I'll blog a tutorial on it over on the Inbox Buddy Blog.&nbsp; This&nbsp;almost certainly&nbsp;should be a default although the natural developer fear of false positives has scared us away from it (we'll probably do it soon).&nbsp; Thanks to Matt Mower over at <a href="https://web.archive.org/web/20021013031121/http://www.novissio.com/">Novissio</a>&nbsp;for righteously hammering me on this early this morning.</p>
