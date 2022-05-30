@@ -6,9 +6,61 @@
 </description>
     <link>https://fuzzyblog.io/blog/</link>
     <atom:link href="http://fuzzyblog.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 29 May 2022 09:15:40 -0400</pubDate>
-    <lastBuildDate>Sun, 29 May 2022 09:15:40 -0400</lastBuildDate>
+    <pubDate>Mon, 30 May 2022 11:35:29 -0400</pubDate>
+    <lastBuildDate>Mon, 30 May 2022 11:35:29 -0400</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
+    
+      <item>
+        <title>When RVM Seems Insane Run bundle install</title>
+        <description>&lt;p&gt;So I just had this disconcerting moment of weirdness:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	❯ rvm use 3.1.0
+	Using /Users/sjohnson/.rvm/gems/ruby-3.1.0
+
+	coding/rails/cartazzi via  v18.2.0 via 💎 v3.1.0 on ☁️  (us-west-2)
+	❯ ruby -v
+	ruby 3.1.0p0 (2021-12-25 revision fb4df44d16) [x86_64-darwin19]
+
+	coding/rails/cartazzi via  v18.2.0 via 💎 v3.1.0 on ☁️  (us-west-2)
+	❯ bundle exec rails c
+	Your Ruby version is 2.6.3, but your Gemfile specified 3.1.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;What's going on here is:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I clearly told the system what ruby to us.&lt;/li&gt;
+  &lt;li&gt;I verified it.&lt;/li&gt;
+  &lt;li&gt;It told me &quot;OH HELL NO&quot;!&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This took more than a moment of head scratching and then I hit on it:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And, after that completed:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	coding/rails/cartazzi via  v18.2.0 via 💎 v3.1.0 on ☁️  (us-west-2)
+	❯ bundle exec rails c
+	Loading development environment (Rails 7.0.2.2)
+	3.1.0 :001 &amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Mon, 30 May 2022 11:31:00 -0400</pubDate>
+        <link>http://fuzzyblog.io/blog/rails/2022/05/30/when-rvm-seems-insane-run-bundle-install.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io/blog/rails/2022/05/30/when-rvm-seems-insane-run-bundle-install.html</guid>
+        
+        <category>rails</category>
+        
+        <category>ruby</category>
+        
+        <category>rvm</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>That Bad Client Job Posting</title>
@@ -19334,55 +19386,6 @@ scp -p 192.168.1.25:/Users/sjohnson/fuzzygroup/adl/pol-hate-analysis/read_catego
         
         
         <category>sync</category>
-        
-      </item>
-    
-      <item>
-        <title>The Python Equivalent of byebug is pdb.set_trace()</title>
-        <description>&lt;p&gt;In ruby the debugger is invoked by adding the statement&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;byebug&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;wherever you want to debug your code.  This is preceded, of course, by a reference in Gemfile that brings in the byebug gem.&lt;/p&gt;
-
-&lt;p&gt;The python equivalent of this is two fold:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;import the pdb (python debugger) gem&lt;/li&gt;
-  &lt;li&gt;add the line pdb.set_trace() call where you want it&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Here's the color coded example:&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pdb&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# lines of python code here
-&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pdb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set_trace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
- 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;That will launch the python debugger right before the line where the pdb.set_trace() call is inserted.  Here are some useful commands:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The &lt;strong&gt;s&lt;/strong&gt; key steps thru the code.&lt;/li&gt;
-  &lt;li&gt;The &lt;strong&gt;n&lt;/strong&gt; key goes to the next line.&lt;/li&gt;
-  &lt;li&gt;The &lt;strong&gt;q&lt;/strong&gt; key quits.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;More on &lt;a href=&quot;https://docs.python.org/3/library/pdb.html&quot;&gt;Python Debugging&lt;/a&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 24 Sep 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io/blog/python/2019/09/24/the-python-equivalent-of-byebug-is-pdb-set-trace.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io/blog/python/2019/09/24/the-python-equivalent-of-byebug-is-pdb-set-trace.html</guid>
-        
-        <category>python</category>
-        
-        <category>debugging</category>
-        
-        
-        <category>python</category>
         
       </item>
     
