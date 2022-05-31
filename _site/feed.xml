@@ -6,9 +6,295 @@
 </description>
     <link>https://fuzzyblog.io/blog/</link>
     <atom:link href="http://fuzzyblog.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 31 May 2022 00:39:08 -0400</pubDate>
-    <lastBuildDate>Tue, 31 May 2022 00:39:08 -0400</lastBuildDate>
+    <pubDate>Tue, 31 May 2022 08:57:21 -0400</pubDate>
+    <lastBuildDate>Tue, 31 May 2022 08:57:21 -0400</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
+    
+      <item>
+        <title>Using MeiliSearch in a Production Rails Environment</title>
+        <description>&lt;p&gt;I recently migrated &lt;a href=&quot;https://www.jobhound.io&quot;&gt;JobHound&lt;/a&gt; from its original hosting (DigitalOcean with a custom Docker based deployer) to a new environment (also DigitalOcean but now with deploys managed via &lt;a href=&quot;https://www.hatchbox.io&quot;&gt;HatchBox&lt;/a&gt;).  In the traditional spirit of all IT migrations where you both get something good and lose something good, I got:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Better Performance&lt;/li&gt;
+  &lt;li&gt;Working SSL; I have no idea why it stopped on the old box but it did and wasn't fixable&lt;/li&gt;
+  &lt;li&gt;Much better deployment (NO MORE DOCKER!)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;But I also lost something:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;ElasticSearch or ES&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I had implemented ES as a Docker component that was a part of my overall and it really did work beautifully – the simplest installation of ES that I've ever experienced.&lt;/p&gt;
+
+&lt;p&gt;When I found that I couldn't install ES on my Mac without messing about with the memory allocations because certain memory allocation options aren't available on Open Java platform, I started to get concerned.  And then ES just proved to be increasingly byzantine to make work (perhaps this is me).  So I was open to new search technologies and I quick perusal of the &lt;a href=&quot;https://gorails.com/episodes&quot;&gt;GoRails screencasts&lt;/a&gt; turned me onto &lt;a href=&quot;https://www.meilisearch.com/&quot;&gt;MeiliSearch&lt;/a&gt;, a relatively new Rust based search engine.&lt;/p&gt;
+
+&lt;p&gt;I will admit that I have a certain fondness for things written in Rust.  If you aren't aware, Rust is a language which a focus on preventing programmer errors.  And, in my experience, that tends to produce some really great pieces of software.&lt;/p&gt;
+
+&lt;h2 id=&quot;getting-started&quot;&gt;Getting Started&lt;/h2&gt;
+
+&lt;p&gt;This is the process I used to get MeiliSearch up and running for JobHound.  In about 2 hours, I went from never having used MeiliSearch to a fully working installation both locally and on production.  In my experience, that kicks the snot out of ElasticSearch.&lt;/p&gt;
+
+&lt;h3 id=&quot;desired-configuration&quot;&gt;Desired Configuration&lt;/h3&gt;
+
+&lt;p&gt;I'm working on a pretty standard multi box configuration:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;load balancer&lt;/li&gt;
+  &lt;li&gt;worker&lt;/li&gt;
+  &lt;li&gt;web1&lt;/li&gt;
+  &lt;li&gt;web2&lt;/li&gt;
+  &lt;li&gt;database&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;My plan was to setup MeiliSearch on the worker box and have that do al the indexing and querying.  This means that my web boxes would need to talk to MeiliSearch on the worker box over MeiliSearch's default port of 7700.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note 1&lt;/strong&gt;: I'm running all this on Digital Ocean using Ubuntu 18.04 Bionic.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note 2&lt;/strong&gt;: This is best read alongside the &lt;a href=&quot;https://blog.meilisearch.com/how-to-integrate-an-extremely-fast-and-relevant-search-into-your-rails-app-using-meilisearch-and-react/&quot;&gt;official docs&lt;/a&gt;.  And the docs are excellent but there are enough things I noticed doing a full installation into both development and production that I wanted to note them.&lt;/p&gt;
+
+&lt;h3 id=&quot;local-installation-for-development&quot;&gt;Local Installation for Development&lt;/h3&gt;
+
+&lt;p&gt;I installed MeiliSearch via brew:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew install meilisearch
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To confirm that your installation is working correctly, goto &lt;a href=&quot;http://localhost:7700/&quot;&gt;http://localhost:7700/&lt;/a&gt; and you should see a web based UI to verify your indices and perform queries.&lt;/p&gt;
+
+&lt;h3 id=&quot;server-installation-for-production-use&quot;&gt;Server Installation for Production Use&lt;/h3&gt;
+
+&lt;p&gt;Log into your server and change into the /tmp directory:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cd /tmp
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Run:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -L https://install.meilisearch.com | sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now you want to move meilisearch to the /usr/bin directory:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo mv meilisearch /usr/bin/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;and change its permissions to root:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo chown root:root /usr/bin/meilisearch
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;adding-an-api-key&quot;&gt;Adding an API Key&lt;/h3&gt;
+
+&lt;p&gt;Generate a random high entry token that you can used for an API key.  Here's one way:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cat /dev/urandom | base64 | head -c 24
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This gave me:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;AntypkbH8DITLhaRG8ru0SIP 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;which we will use in the next step.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: Not my actual API key.&lt;/p&gt;
+
+&lt;h3 id=&quot;setting-meilisearch-to-run-as-a-service&quot;&gt;Setting MeiliSearch to Run as a Service&lt;/h3&gt;
+
+&lt;p&gt;Once you have MeiliSearch installed, you need to create a SystemD service file which can be done like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	sudo cat &amp;lt;&amp;lt; EOF &amp;gt; /etc/systemd/system/meilisearch.service
+	[Unit]
+	Description=Meilisearch
+	After=systemd-user-sessions.service
+
+	[Service]
+	Type=simple
+	ExecStart=/usr/bin/meilisearch --http-addr 127.0.0.1:7700 --env production --master-key AntypkbH8DITLhaRG8ru0SIP
+
+	[Install]
+	WantedBy=default.target
+	EOF
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;VERY, VERY IMPORTANT&lt;/strong&gt;: If you are using this with a multi box install then you need to specify your machine's IP address above NOT 127.0.0.1.&lt;/p&gt;
+
+&lt;p&gt;Once you have installed the service file then you need to use commands like these:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl start meilisearch
+systemctl status meilisearch
+systemctl stop meilisearch
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;to maintain meilisearch.&lt;/p&gt;
+
+&lt;h3 id=&quot;locking-meilisearch-down&quot;&gt;Locking MeiliSearch Down&lt;/h3&gt;
+
+&lt;p&gt;There are two aspects to locking down MeiliSearch:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;API Key as mentioned above.  By using the same API key on the server process and on the client machine, only searches with that API key will be executed&lt;/li&gt;
+  &lt;li&gt;Limiting Access.  Use a firewall to govern access to certain ports and machines&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The ufw firewall is a standard Linux thing at this point.  What you need to do is add firewall rules which:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;allow access from web1&lt;/li&gt;
+  &lt;li&gt;allow access from web2&lt;/li&gt;
+  &lt;li&gt;allow access from yourself i.e. worker1's ip address&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;These rules are written as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo ufw allow from 138.x.y.z to any port 7700
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: This would be a real IP address above where x, y, z and replaced by the correct octets of the address.&lt;/p&gt;
+
+&lt;h3 id=&quot;sidebar-belt-and-suspenders&quot;&gt;Sidebar: Belt and Suspenders&lt;/h3&gt;
+
+&lt;p&gt;Given the number of API key breaches these days, I opted to lock down MeiliSearch using both API keys and a firewall rule.  This was very deliberate on my part as once upon a time, an engineer who worked for me, left an unprotected ElasticSearch instance running on a test server.  After that box was exploited for a $30,000 bandwidth, I swore that I'd try to never do that again.&lt;/p&gt;
+
+&lt;h3 id=&quot;gemfile&quot;&gt;Gemfile&lt;/h3&gt;
+
+&lt;p&gt;To start, you need to use this line in your Gemfile:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem &quot;meilisearch-rails&quot;, github: &quot;meilisearch/meilisearch-rails&quot;, branch: &quot;release-v0.5.1&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The 0.5.1 gem was never released to &lt;a href=&quot;https://rubygems.org/gems/meilisearch/versions&quot;&gt;Ruby Gems&lt;/a&gt; so without the line above, you will get the 0.3 version which does not work.  Yes they say that they have fixed this.  And no they haven't (as of the writing of this blog post; &lt;a href=&quot;https://github.com/meilisearch/meilisearch-rails/issues/114&quot;&gt;Github Issue&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;Once you put that in place, you need the obligatory dance of:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;initializers---just-say-no&quot;&gt;Initializers - Just Say No&lt;/h3&gt;
+
+&lt;p&gt;MeiliSearch has you use an initializer in config/initializers like this:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;MeiliSearch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configuration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;meilisearch_host: &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'http://127.0.0.1:7700'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;meilisearch_api_key: &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;I switched that to blocks of code in production.rb and development.rb:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;MeiliSearch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configuration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;meilisearch_api_key: &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'AntypkbH8DITLhaRG8ru0SIP'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;pagination_backend: :kaminari&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;timeout: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;max_retries: &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;meilisearch_host: &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'http://165.x.y.z:7700'&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;I skipped the initializers because no matter how I used Rails.env.development?, I couldn't make it work with MeiliSearch; bizarre.&lt;/p&gt;
+
+&lt;h3 id=&quot;model-code&quot;&gt;Model Code&lt;/h3&gt;
+
+&lt;p&gt;Here is all the code to add to your model:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;  &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;MeiliSearch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;meilisearch&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# all attributes will be sent to Meilisearch if block is left empty&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;displayed_attributes&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'title'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'description'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'location'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'why_rejected'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;searchable_attributes&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'company'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'title'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'why_rejected'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'location'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'name'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'domain'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'description'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'created_at'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'user_id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;filterable_attributes&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'user_id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;sortable_attributes&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:created_at&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:updated_at&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;example-search&quot;&gt;Example Search&lt;/h3&gt;
+
+&lt;p&gt;Here is an example search command that I used in console:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Job.search(&quot;ruby&quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;which returned all jobs matching the term &lt;strong&gt;ruby&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;You can also use filters to restrict what comes back to only the specified user:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@jobs = Job.search(&quot;ruby&quot;, filter: [&quot;user_id=1&quot;])
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;controller&quot;&gt;Controller&lt;/h3&gt;
+
+&lt;p&gt;While the MeiliSearch examples give you a lovely React based UI, I'm a bit more old school.  Here's a simple controller which executes the search:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SearchController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationController&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;index&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@jobs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Job&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;search&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;filter: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;user_id=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@notes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Note&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;search&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;filter: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;user_id=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@cover_letters&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;CoverLetter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;search&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;filter: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;user_id=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@tasks&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;search&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;filter: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;user_id=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current_user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;My controller is searching all the user's indexed objects at once and bringing up a UI which shows all of these to the user.&lt;/p&gt;
+
+&lt;h3 id=&quot;indexing-rake-task&quot;&gt;Indexing Rake Task&lt;/h3&gt;
+
+&lt;p&gt;Whenever you implement a search system, you are going to need to re-index everything.  There's just no way around it.  Here is an example rake task which handles re-indexing:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:search&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# bundle exec rake search:index_all --trace&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:index_all&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:environment&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;klasses&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Job&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Note&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;CoverLetter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;klasses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;klass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;klass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;reindex!&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;I'm now happier with MeiliSearch than I ever was with ElasticSearch.  It was not only simpler and easier to use but I feel I have a better grasp on how MeiliSearch works than I ever have with ElasticSearch.&lt;/p&gt;
+
+&lt;p&gt;Kudos to the team!  Well done!&lt;/p&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://gorails.com/episodes/how-to-use-meilisearch-rails?autoplay=1&quot;&gt;MeiliSearch screencast&lt;/a&gt; on GoRails&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.meilisearch.com/how-to-integrate-an-extremely-fast-and-relevant-search-into-your-rails-app-using-meilisearch-and-react/&quot;&gt;Official Rails Tutorial&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.meilisearch.com/&quot;&gt;MeiliSearch Home Page&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/gorails-screencasts/meilisearch-rails-example/&quot;&gt;Example Rails MeiliSearch App Source code from GoRails&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/meilisearch/meilisearch-rails&quot;&gt;Ruby Gem&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.meilisearch.com/learn/cookbooks/running_production.html#step-2-run-meilisearch-as-a-service&quot;&gt;MeiliSearch in Production&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.meilisearch.com/reference/api/filterable_attributes.html&quot;&gt;Understanding Filterable Attributes&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.meilisearch.com/learn/security/master_api_keys.html&quot;&gt;Master API Keys&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 31 May 2022 07:31:00 -0400</pubDate>
+        <link>http://fuzzyblog.io/blog/rails/2022/05/31/using-meilisearch-in-a-production-rails-environment.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io/blog/rails/2022/05/31/using-meilisearch-in-a-production-rails-environment.html</guid>
+        
+        <category>rails</category>
+        
+        <category>meilisearch</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
+    
+      <item>
+        <title>Specifying Ruby Version for HatchBox Deployment</title>
+        <description>&lt;p&gt;https://hatchbox.gitbook.io/hatchbox/apps/ruby-versions#how-do-i-specify-my-apps-ruby-version&lt;/p&gt;
+
+&lt;p&gt;.ruby-version&lt;/p&gt;
+
+&lt;p&gt;Gemfile&lt;/p&gt;
+</description>
+        <pubDate>Tue, 31 May 2022 07:13:00 -0400</pubDate>
+        <link>http://fuzzyblog.io/blog/2022/05/31/specifying-ruby-version-for-hatchbox-deployment.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io/blog/2022/05/31/specifying-ruby-version-for-hatchbox-deployment.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Git Error: failed to push some refs to</title>
@@ -19261,105 +19547,6 @@ OSError: [E050] Can't find model 'en'. It doesn't seem to be a shortcut link, a 
         
         
         <category>aws</category>
-        
-      </item>
-    
-      <item>
-        <title>iPython and Virtual Environments</title>
-        <description>&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/blog/assets/IMG_8780.jpeg&quot; alt=&quot;IMG_8780.jpeg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;As I've written before, I personally find virtual environments to be the &lt;a href=&quot;https://fuzzyblog.io/blog/ruby/2019/07/10/when-rbenv-well-won-t-rbenv-fixing-shell-extension-madness.html&quot;&gt;devil /  Satan's Step Child for programming&lt;/a&gt; but there's no other option so, well, &lt;a href=&quot;https://en.wikipedia.org/wiki/Fsck&quot;&gt;fsck&lt;/a&gt; ME.  Anyway this is now something I am wrestling with in terms of Python.&lt;/p&gt;
-
-&lt;p&gt;My problem was this persnickety little prick of an error:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/IPython/core/interactiveshell.py:931: 
-UserWarning: Attempting to work in a virtualenv. If you encounter problems, please install 
-IPython inside the virtualenv.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This starts with at least one problem – what the hell is iPython.  Apparently iPython is &quot;interactive Python&quot;.  Now I don't really understand how Python or Python3 isn't interactive when both of them can load up a functional repl but, whatever.  Apparently iPython improves debugging or at least has some bit of color coding (so maybe think of it as ruby + &lt;a href=&quot;https://rubygems.org/gems/awesome_print/versions/1.8.0&quot;&gt;awesome_print&lt;/a&gt;).  So this error message means:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;I'm in the virtual environment from VENV.&lt;/li&gt;
-  &lt;li&gt;iPython is likely coming in from the system layer so I'm probably getting a Python 2.x instead of a Python 3.x.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;A bunch of googles left me scratching my head until I found this &lt;a href=&quot;https://stackoverflow.com/questions/20327621/calling-ipython-from-a-virtualenv&quot;&gt;Stack Overflow page&lt;/a&gt; with about a half dozen approaches.  Hmmmph - this calls &lt;a href=&quot;https://wiki.python.org/moin/TOOWTDI&quot;&gt;TOOWTDI&lt;/a&gt; very much into question, imho.  And then that seemed to work and I wrote the first draft of this blog post.  And then it near immediately stopped working.  &lt;em&gt;grumble&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;A spate of more googling occurred and I found this &lt;a href=&quot;https://coderwall.com/p/xdox9a/running-ipython-cleanly-inside-a-virtualenv&quot;&gt;alias approach&lt;/a&gt; – which seemed to work nicely.&lt;/p&gt;
-
-&lt;p&gt;Here turned out to be the approach for fixing it:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# edit your .bashrc or .zshrc (I use zsh)
-vi ~/.zshrc
-
-# add this alias statement
-alias ipy=&quot;python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'&quot;
-
-# make the alias active by sourcing it
-source ~/.zshrc
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;You now need to use the ipy alias whenever you want iPython:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cat jsons/reddit.json| ipy template_expert.py
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;While, I'm still not entirely sure why I need iPython but the cool kids seem to use it and the color coding and back traces are much better:&lt;/p&gt;
-
-&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/blog/assets/without_ipython.png&quot; alt=&quot;without_ipython.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Note: This is without iPython.&lt;/p&gt;
-
-&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/blog/assets/with_ipython.png&quot; alt=&quot;with_ipython.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Note: This is with iPython.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: I'm intrigued by the idea of &lt;a href=&quot;https://github.com/asdf-vm/asdf&quot;&gt;ASDF&lt;/a&gt; possibly fixing shell extension madness by at least making this uniform across languages.  Anyone tried this yet?  I need a single solution for at least Python and Ruby (and preferably Elixir / Rust).&lt;/p&gt;
-</description>
-        <pubDate>Fri, 27 Sep 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io/blog/python/2019/09/27/ipython-and-virtual-environments.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io/blog/python/2019/09/27/ipython-and-virtual-environments.html</guid>
-        
-        <category>python</category>
-        
-        <category>ipython</category>
-        
-        
-        <category>python</category>
-        
-      </item>
-    
-      <item>
-        <title>It Sucks When You Are the Answer</title>
-        <description>&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/blog/assets/IMG_9069.jpeg&quot; alt=&quot;IMG_9069.jpeg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I was struggling with Font Awesome recently and my buddy suggested I google for a &quot;good blog post that explains it&quot;.  I did and I got this:&lt;/p&gt;
-
-&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/blog/assets/font_awesome_scott.png&quot; alt=&quot;font_awesome_scott.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Son Of A Bitch!  I am &lt;strong&gt;so not&lt;/strong&gt; the expert here.  But I kept digging and here's what I found:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Log into your &lt;a href=&quot;https://fontawesome.com/account&quot;&gt;font-awesome account&lt;/a&gt; and download stuff locally.&lt;/li&gt;
-  &lt;li&gt;Read this &lt;a href=&quot;https://nicholasshirley.com/using-font-awesome-5-and-the-rails-asset-pipeline/&quot;&gt;blog post&lt;/a&gt; and then copy into your app/assets/javascripts folder fontawesome.js and light.js&lt;/li&gt;
-  &lt;li&gt;Things magically start working!&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: There's an extra step if you are using Turbo Links.  Read the linked blog post.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 26 Sep 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io/blog/rails/2019/09/26/it-sucks-when-you-are-the-answer.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io/blog/rails/2019/09/26/it-sucks-when-you-are-the-answer.html</guid>
-        
-        <category>rails</category>
-        
-        <category>font-awesome</category>
-        
-        <category>google</category>
-        
-        
-        <category>rails</category>
         
       </item>
     
