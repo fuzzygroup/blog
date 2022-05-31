@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Specifying Ruby Version for HatchBox Deployment</title>
-  <meta name="description" content="https://hatchbox.gitbook.io/hatchbox/apps/ruby-versions#how-do-i-specify-my-apps-ruby-version">
+  <meta name="description" content="I recently had the situation where an application that I deployed to Hatchbox failed with a Ruby version conflict:">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/2022/05/31/specifying-ruby-version-for-hatchbox-deployment.html">
@@ -43,12 +43,10 @@
 
   
     <meta name="twitter:description"
-      content="https://hatchbox.gitbook.io/hatchbox/apps/ruby-versions#how-do-i-specify-my-apps-ruby-version
+      content="I recently had the situation where an application that I deployed to Hatchbox failed with a Ruby version conflict:
 
-.ruby-version
-
-Gemfile
-">
+	-----&amp;gt; Installing gems...
+	/home/deploy/.rbenv/versions/2.5.1/lib/ruby/ge...">
   
 
   
@@ -189,11 +187,25 @@ Gemfile
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>https://hatchbox.gitbook.io/hatchbox/apps/ruby-versions#how-do-i-specify-my-apps-ruby-version</p>
+    <p>I recently had the situation where an application that I deployed to Hatchbox failed with a Ruby version conflict:</p>
 
-<p>.ruby-version</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	-----&gt; Installing gems...
+	/home/deploy/.rbenv/versions/2.5.1/lib/ruby/gems/2.5.0/gems/bundler-1.17.3/lib/bundler/rubygems_integration.rb:200: warning: constant Gem::ConfigMap is deprecated
+	Your Gemfile lists the gem capybara (&gt;= 0) more than once.
+	You should probably keep only one of them.
+	Remove any duplicate entries and specify the gem only once (per group).
+	While it's not a problem now, it could cause errors if you change the version of one of them later.
+	Your Ruby version is 2.5.1, but your Gemfile specified 2.6.2
+</code></pre></div></div>
 
-<p>Gemfile</p>
+<p>I dug into the (excellent) <a href="https://hatchbox.gitbook.io/hatchbox/apps/ruby-versions#how-do-i-specify-my-apps-ruby-version">online help for Hatchbox</a> and found that you can specify your Ruby version with either the Gemfile or the .ruby-version file.  These files, however, serve different functions:</p>
+
+<ul>
+  <li>Gemfile - tells your application what to use</li>
+  <li>.ruby-version - tells RVM to switch the ruby version on change into the directory</li>
+</ul>
+
+<p>In my case I had <strong>both</strong> and they were <strong>different</strong>.  Synchronizing them both to 2.6.2 fixed the issue entirely.</p>
 
   </div>
   

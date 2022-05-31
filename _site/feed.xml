@@ -6,8 +6,8 @@
 </description>
     <link>https://fuzzyblog.io/blog/</link>
     <atom:link href="http://fuzzyblog.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 31 May 2022 08:57:21 -0400</pubDate>
-    <lastBuildDate>Tue, 31 May 2022 08:57:21 -0400</lastBuildDate>
+    <pubDate>Tue, 31 May 2022 09:12:17 -0400</pubDate>
+    <lastBuildDate>Tue, 31 May 2022 09:12:17 -0400</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
     
       <item>
@@ -283,11 +283,25 @@ systemctl stop meilisearch
     
       <item>
         <title>Specifying Ruby Version for HatchBox Deployment</title>
-        <description>&lt;p&gt;https://hatchbox.gitbook.io/hatchbox/apps/ruby-versions#how-do-i-specify-my-apps-ruby-version&lt;/p&gt;
+        <description>&lt;p&gt;I recently had the situation where an application that I deployed to Hatchbox failed with a Ruby version conflict:&lt;/p&gt;
 
-&lt;p&gt;.ruby-version&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	-----&amp;gt; Installing gems...
+	/home/deploy/.rbenv/versions/2.5.1/lib/ruby/gems/2.5.0/gems/bundler-1.17.3/lib/bundler/rubygems_integration.rb:200: warning: constant Gem::ConfigMap is deprecated
+	Your Gemfile lists the gem capybara (&amp;gt;= 0) more than once.
+	You should probably keep only one of them.
+	Remove any duplicate entries and specify the gem only once (per group).
+	While it's not a problem now, it could cause errors if you change the version of one of them later.
+	Your Ruby version is 2.5.1, but your Gemfile specified 2.6.2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Gemfile&lt;/p&gt;
+&lt;p&gt;I dug into the (excellent) &lt;a href=&quot;https://hatchbox.gitbook.io/hatchbox/apps/ruby-versions#how-do-i-specify-my-apps-ruby-version&quot;&gt;online help for Hatchbox&lt;/a&gt; and found that you can specify your Ruby version with either the Gemfile or the .ruby-version file.  These files, however, serve different functions:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Gemfile - tells your application what to use&lt;/li&gt;
+  &lt;li&gt;.ruby-version - tells RVM to switch the ruby version on change into the directory&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In my case I had &lt;strong&gt;both&lt;/strong&gt; and they were &lt;strong&gt;different&lt;/strong&gt;.  Synchronizing them both to 2.6.2 fixed the issue entirely.&lt;/p&gt;
 </description>
         <pubDate>Tue, 31 May 2022 07:13:00 -0400</pubDate>
         <link>http://fuzzyblog.io/blog/2022/05/31/specifying-ruby-version-for-hatchbox-deployment.html</link>
