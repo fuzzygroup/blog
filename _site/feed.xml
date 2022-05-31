@@ -6,9 +6,33 @@
 </description>
     <link>https://fuzzyblog.io/blog/</link>
     <atom:link href="http://fuzzyblog.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 30 May 2022 11:35:29 -0400</pubDate>
-    <lastBuildDate>Mon, 30 May 2022 11:35:29 -0400</lastBuildDate>
+    <pubDate>Tue, 31 May 2022 00:39:08 -0400</pubDate>
+    <lastBuildDate>Tue, 31 May 2022 00:39:08 -0400</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
+    
+      <item>
+        <title>Git Error: failed to push some refs to</title>
+        <description>&lt;p&gt;So I was just stumbling through setting up a new project and getting it deployed when I hit this little gem:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	❯ git push -u origin main
+	error: src refspec main does not match any
+	error: failed to push some refs to 'github.com:fuzzygroup/cartazzi.git'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I did the obligatory &quot;scratch my chin and play with my beard&quot; that you do when you are confused (and it is late and you are &lt;strong&gt;tired&lt;/strong&gt;).  And then I realized – &quot;Oh crap, it is NEW; I bet I never added yet.&quot;  And lo and behold – a simple add / commit and push worked!  Crappy ass error message though.  Sigh.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: Deployment first development is my new best practice – make things deploy initially when they are still simple.  This is particularly easy when you use a deployment engine like &lt;a href=&quot;https://www.hatchbox.io&quot;&gt;HatchBox&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 31 May 2022 00:34:00 -0400</pubDate>
+        <link>http://fuzzyblog.io/blog/git/2022/05/31/git-error-failed-to-push-some-refs-to.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io/blog/git/2022/05/31/git-error-failed-to-push-some-refs-to.html</guid>
+        
+        <category>git</category>
+        
+        
+        <category>git</category>
+        
+      </item>
     
       <item>
         <title>When RVM Seems Insane Run bundle install</title>
@@ -19336,56 +19360,6 @@ source ~/.zshrc
         
         
         <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Dear Drop Box You Suck</title>
-        <description>&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/blog/assets/IMG_5541.jpeg&quot; alt=&quot;IMG_5541.jpeg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: Manual synchronization is about this fun …&lt;/p&gt;
-
-&lt;p&gt;Synchronization is one of those things that is fundamentally important and yet hard as hell to get right.  I've been in the computer industry for a long, long time now and I've only ever seen it done well a few times:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Lotus Notes - say what you want about Notes, it got sync right=&lt;/li&gt;
-  &lt;li&gt;Palm III - Hawkins nailed it&lt;/li&gt;
-  &lt;li&gt;The Late, Lamented Dropbox of Yesteryear&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I say the &lt;a href=&quot;https://www.dropbox.com/&quot;&gt;Dropbox&lt;/a&gt; of yesteryear because the Dropbox I use today, well, &lt;strong&gt;sucks slimy green toads&lt;/strong&gt;.  Here's what I found myself doing yesterday as I left the office to work somewhere else:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scp -p 192.168.1.25:/Users/sjohnson/fuzzygroup/adl/pol-hate-analysis/categorical.parquet .
-scp -p 192.168.1.25:/Users/sjohnson/fuzzygroup/adl/pol-hate-analysis/read_categorical2.py .
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Yep.  That's right.  I manually scp'd files from my big desktop down to my laptop to work on them when I went remote.  It was a miserable experience and it reminded me of what life used to be like – when Dropbox worked.  It used to be that I would simply work on files in my ~/Dropbox directory and I was assured that sync would magically get files from my desktop to my laptop in damn near real time.&lt;/p&gt;
-
-&lt;p&gt;Here's what happens now:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Files never sync reliably - each of my machines is at a different point in the sync process continually&lt;/li&gt;
-  &lt;li&gt;Sync tries to sync files that haven't changed in 2 years – and not a few files; I've seen more than 500K files try and sync constantly&lt;/li&gt;
-  &lt;li&gt;Dropbox uses &amp;gt; 90% of my CPU&lt;/li&gt;
-  &lt;li&gt;I have one Dropbox account and I always have login issues&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I get that Dropbox feels the need to add new features to compete with Microsoft's OneDrive and GoogleDrive and Box.com and I don't begrudge them the ability to add new features.  What I want, however, is a working version of the features they originally promised me – machine to machine file synchronization.&lt;/p&gt;
-
-&lt;p&gt;I'm sorry Dropbox but you simply suck.  And I'm currently looking at &lt;a href=&quot;https://syncthing.net/&quot;&gt;SyncThing&lt;/a&gt; as a replacement; no it isn't exactly the same but maybe it will at least work.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note 1&lt;/strong&gt;: I am a paid customer of Dropbox.  The product they provide even their paying customers simply doesn't work.  Or at least it doesn't work as it used to.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note 2&lt;/strong&gt;: This isn't a complicated use case where I'm talking Mac to PC sync or something like that.  I'm simply saying &quot;Sync files in ~/Dropbox on Machine 1 to ~/Dropbox on Machine 2&quot;.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 25 Sep 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io/blog/sync/2019/09/25/dear-drop-box-you-suck.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io/blog/sync/2019/09/25/dear-drop-box-you-suck.html</guid>
-        
-        <category>drop_box</category>
-        
-        
-        <category>sync</category>
         
       </item>
     
