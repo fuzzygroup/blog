@@ -6,9 +6,86 @@
 </description>
     <link>https://fuzzyblog.io/blog/</link>
     <atom:link href="http://fuzzyblog.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 31 May 2022 09:12:17 -0400</pubDate>
-    <lastBuildDate>Tue, 31 May 2022 09:12:17 -0400</lastBuildDate>
+    <pubDate>Wed, 01 Jun 2022 19:17:48 -0400</pubDate>
+    <lastBuildDate>Wed, 01 Jun 2022 19:17:48 -0400</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
+    
+      <item>
+        <title>Keeping Your Sanity as a Solo Entrepreneur 01 - Make Everything as Easy as Possible</title>
+        <description>&lt;p&gt;I've now been a solo entrepreneur longer than I've been anything.  Being a solo entrepreneur is a very different experience and it isn't one that is taught – you generally learn only by doing.  I've started this series of essays to talk about practical things I've learned over the years.  The reason that I referred to it as &lt;em&gt;keeping your sanity&lt;/em&gt; is that is what, all too often, solo entrepreneurship feels like.&lt;/p&gt;
+
+&lt;p&gt;The first lesson I learned is &lt;strong&gt;make everything as easy as possible&lt;/strong&gt;.  I know this is obvious but there are all kinds of things that we do by &lt;em&gt;rote&lt;/em&gt; without ever thinking about how you can make it easier.&lt;/p&gt;
+
+&lt;h2 id=&quot;example-1-typing-your-link&quot;&gt;Example 1: Typing Your Link&lt;/h2&gt;
+
+&lt;p&gt;Let me ask you a simple thing – if you are running any kind of online business, how many times this year will you text someone a link to your business? Or your social media pages?&lt;/p&gt;
+
+&lt;p&gt;I build a lot of web applications and one thing I noticed is that when I'm using a phone and texting people, it was way too easy to mistype a link.  And it makes me just stupidly angry.  I tried putting them in a note on the phone but selecting text on an iPhone still sucks.  But then I discovered Text Replacement and it made me very, very happy.&lt;/p&gt;
+
+&lt;p&gt;Every iPhone (and I suspect Android Phone although I'm not an Android user) has a feature called &lt;strong&gt;Text Replacement&lt;/strong&gt;.  This feature lets you specify some text and then its replacement.  Every single time I build a new web application, I create one of these replacements.  Here are some examples:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I type &lt;strong&gt;jh&lt;/strong&gt; and it inserts https://www.jobhound.io for me&lt;/li&gt;
+  &lt;li&gt;I type &lt;strong&gt;pfu&lt;/strong&gt; and it inserts https://pizzaforukraine.com&lt;/li&gt;
+  &lt;li&gt;I type &lt;strong&gt;cnm&lt;/strong&gt; and it inserts https://www.covidnearme.org&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If, for example, you were a solo entrepreneur running company Metal Honey Foods (this is an unabashed plug; she's a friend with a great hot honey product) then she could define mhf and it could insert https://www.metalhoney.com/ for her.  Similarly she could have other key sequences that inserted her social media links.&lt;/p&gt;
+
+&lt;p&gt;This is, without question, a very simple example but almost anything you do can be made easier.  And, what I've found, is that each thing I make easier diminishes the cognitive burden of running my small business.&lt;/p&gt;
+
+&lt;h2 id=&quot;example-2-user-welcome-emails&quot;&gt;Example 2: User Welcome Emails&lt;/h2&gt;
+
+&lt;p&gt;I'm currently in the process of reviving a mildly moribund project – JobHound.  This is a site which I built 4 years ago and it has just ran steadily in the background servicing users and helping them find jobs.  It didn't cost me really anything to host it and I didn't have a business model for it so I just left it alone.  I recently got an email from an enthusiastic user who convinced me that:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It was still better than anything else on the market&lt;/li&gt;
+  &lt;li&gt;I should really fix some key issues&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;One thing I wanted to do is talk to the actual users of the site and see if they are getting value from it.  The current thinking in web development is I should set up an auto responder and a MailChimp campaign and such.  And, if this site had a large number of new users, well, that would be great.  But, I said this site is moribund, so you need to think of say 10 users every few days.&lt;/p&gt;
+
+&lt;p&gt;I thought about this and I realized that what I needed was:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;An admin tool that simply listed users by currency (most recent at the top)&lt;/li&gt;
+  &lt;li&gt;Gmail – I could simply send an email &lt;strong&gt;manually&lt;/strong&gt; to each user&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So I built the admin tool and started copying the email addresses, switching to a Gmail tab, clicking Compose and then pasting in the email address.  And, then, it hit me – maybe this too could be automated.  A quick Stack Overflow search gave me the syntax to build a clickable link which:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Opens Gmail&lt;/li&gt;
+  &lt;li&gt;Fills in the to field with the email address&lt;/li&gt;
+  &lt;li&gt;Fills in the Subject&lt;/li&gt;
+  &lt;li&gt;Fills in the Body&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This makes my writing a welcome email to 10 users literally the work of about 2 minutes.  And I guarantee that by the time I build a welcome campaign in MailChimp, figured out the data feed integration, tested it, etc, well, I'd have spent at least a few hours on it.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt; &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;link_for_welcome_email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;body&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;first_name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;,%0A%0AI'm Scott and I created JobHound. I wanted to welcome you to the product and wish you the best of luck with your job search.  %0A%0AI recently made a bunch of improvements to JobHound so if you have had any issues, you might want to try again.  %0A%0AIf you have any questions, you can always just email me for tech support.%0A%0ABest%0A%0AScott&quot;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;link_to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;https://mail.google.com/mail/?view=cm&amp;amp;fs=1&amp;amp;to=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;amp;su=Welcome%20to%20JobHound&amp;amp;body=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;target: &lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'new'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;If you are reading this then I suspect there is a good chance that you aren't a hard core software engineer as I am.  The take away here is not the code snippet above but the recognition that you help keep your sanity by making things easier for yourself.  You may not be able to code but there are absolutely things you can do to make your life easier.&lt;/p&gt;
+
+&lt;h2 id=&quot;see-also&quot;&gt;See Also&lt;/h2&gt;
+
+&lt;p&gt;Here's how to make that &lt;a href=&quot;https://stackoverflow.com/questions/6548570/url-to-compose-a-message-in-gmail-with-full-gmail-interface-and-specified-to-b&quot;&gt;email&lt;/a&gt; trick work.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 01 Jun 2022 19:13:00 -0400</pubDate>
+        <link>http://fuzzyblog.io/blog/startup/2022/06/01/keeping-your-sanity-as-a-solo-entrepreneur-01-make-everything-as-easy-as-possible.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io/blog/startup/2022/06/01/keeping-your-sanity-as-a-solo-entrepreneur-01-make-everything-as-easy-as-possible.html</guid>
+        
+        <category>startup</category>
+        
+        
+        <category>startup</category>
+        
+      </item>
     
       <item>
         <title>Using MeiliSearch in a Production Rails Environment</title>
@@ -19511,56 +19588,6 @@ OSError: [E050] Can't find model 'en'. It doesn't seem to be a shortcut link, a 
         
         
         <category>bash</category>
-        
-      </item>
-    
-      <item>
-        <title>Understanding AWS S3 Limitations and Performance</title>
-        <description>&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/blog/assets/IMG_6579.jpeg&quot; alt=&quot;IMG_6579.jpeg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I'm in the process of planning out a large scale system and one of the things I find myself worrying is obvious but still complex – &lt;strong&gt;storage&lt;/strong&gt;.  This is a data processing system where literally tens of millions of &quot;objects&quot; will be flowing thru the system and one of the design criteria is the need to take any &quot;object&quot; and re-process it from start to finish.  And, as this data is transitory in nature, this means that we need to be able to store the original inputs in the system on an ongoing basis.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: By &quot;object&quot; I mean something as simple as a comment or as complex as a social media post or a web page.&lt;/p&gt;
-
-&lt;p&gt;Given that we have a massive quantity of objects, the question comes up as to how you store tens of millions of variable length objects.  The solution we have come to is to use the AWS S3 storage architecture but is S3 a valid choice?&lt;/p&gt;
-
-&lt;p&gt;Here's the result of digging deeply into S3 as a storage solution:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;S3 divides storage into &quot;buckets&quot; (think directories although a bucket isn't quite a directory)&lt;/li&gt;
-  &lt;li&gt;S3 supports an unlimited number of objects per bucket&lt;/li&gt;
-  &lt;li&gt;S3 allows for a biggest object of 5 TB (not an issue for us; we're talking a few K per object)&lt;/li&gt;
-  &lt;li&gt;S3 supports 3500 puts, posts or deletes per second per bucket&lt;/li&gt;
-  &lt;li&gt;S3 supports 5000 get requests per second per bucket&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;At 3,500 posts (i.e. new object creations) per second, a single S3 bucket can support 3,500 * 3,600 new objects per hour or 12,600,000 (12.6 million).  Now that's a maximum and there are always reasons why maximums don't get achieved.&lt;/p&gt;
-
-&lt;p&gt;The implication here is that if you have different types of content then you could always use multiple buckets, one per content type in order to achieve better overall throughput.&lt;/p&gt;
-
-&lt;p&gt;Also for best performance on S3 operations although Amazon has reduced the need for name randomization (think use hashes for names) for best performance, this likely still makes a difference.&lt;/p&gt;
-
-&lt;h2 id=&quot;more&quot;&gt;More&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Reference&lt;/strong&gt;: &lt;a href=&quot;https://www.stitcher.com/podcast/amazon-web-services/aws-podcast/e/55957353?autoplay=true&quot;&gt;AWS Podcast #260&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Reference&lt;/strong&gt;: &lt;a href=&quot;https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html&quot;&gt;S3 and Metadata&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Reference&lt;/strong&gt;: &lt;a href=&quot;https://aws.amazon.com/about-aws/whats-new/2018/07/amazon-s3-announces-increased-request-rate-performance/?nc1=h_ls&amp;amp;source=post_page-----aff8e10ab51a----------------------&quot;&gt;AWS Performance and Name Randomization&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Reference: &lt;a href=&quot;https://medium.com/faun/aws-s3-buckets-whats-in-a-name-aff8e10ab51a&quot;&gt;Naming S3 Objects&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Note&lt;/strong&gt;: These performance numbers may have improved since my source is about a year old but I think they are still worthy numbers to benchmark with.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Pro Tip&lt;/strong&gt;: There are also lots of other excellent S3 tidbits here including that S3 bucket names are really DNS names and while you can use dots (period) characters in S3 bucket names, you really shouldn't as you will hit issues with https (I don't fully understand that).&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Mon, 30 Sep 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io/blog/aws/2019/09/30/understanding-aws-s3-limitations-and-performance.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io/blog/aws/2019/09/30/understanding-aws-s3-limitations-and-performance.html</guid>
-        
-        <category>aws</category>
-        
-        <category>s3</category>
-        
-        
-        <category>aws</category>
         
       </item>
     
