@@ -4,6 +4,8 @@ title: Converting a Ruby Class Library to a Gem
 category: ruby
 tags: ["ruby"]
 ---
+**Note**: Updated on 2022-06-04 to reflect experience with actually maintaining these gems.
+
 {:.center}
 ![IMG_4795.jpeg](/blog/assets/IMG_4795.jpeg)
 
@@ -27,8 +29,8 @@ Here is the quick tldr of how to build a gem.
 3. Change into the repo you just cloned.
 4. Do a gem signin
 5. Do a bundle gem project_name
-6. Edit project_name/project_name.gemspec
-7. Update your Gemfile with any dependencies.
+6. Edit project_name/project_name.gemspec - THIS NEEDS TO HAVE RELEASE LEVEL DEPENDENCIES
+7. Update your Gemfile with any dependencies - THIS NEEDS TO HAVE BOTH DEVELOPMENT LEVEL AND RELEASE LEVEL DEPENDENCIES
 8. Change into project_name
 9. Do a bundle install
 10. Do a bundle exec rake build; this gives you the pkg/* stuff below (see next command).
@@ -132,23 +134,61 @@ I hit this error:
 
 This came from this line of code:
 
-    def self.url_base(url, base_domain=nil)
-      if base_domain.nil?
-        base_domain = UrlCommon.get_base_domain(url)
-      end
-    #...
-    end
+```ruby
+def self.url_base(url, base_domain=nil)
+  if base_domain.nil?
+    base_domain = UrlCommon.get_base_domain(url)
+  end
+#...
+end
+```
 
 and the fix turned out to be:
 
-    def self.url_base(url, base_domain=nil)
-      if base_domain.nil?
-        base_domain = get_base_domain(url)
-      end
-    #...
-    end
+```ruby
+def self.url_base(url, base_domain=nil)
+  if base_domain.nil?
+    base_domain = get_base_domain(url)
+  end
+#...
+end
+```
 
 despite there being a def self.get_base_domain method defined in the module.  **Shrug**
+
+## Gems for Development versus Gems for Deployment
+
+When you develop a gem, it needs gems for development which are located in Gemfile.  The same gems also need to go into the gem_name.gemspec file.  So, for example, I have a file called:
+
+    url_common.gemspec
+
+which has lines like these:
+
+    spec.add_dependency 'fuzzyurl', '~> 0.9.0'
+    spec.add_dependency 'mechanize', '~> 2.6'
+    
+This allows you have say byebug in your main Gemfile for debugging but NOT have that be released with your gem.
+
+## The Release Process - Example
+
+The first step is to update the version.rb file to reflect a new version number.  Please note that for a new release to be made, there **must be** a new version number.
+
+I work on the url_common gem in this directory:
+
+    /Users/sjohnson/Sync/coding/gems/url_common/
+
+to do a release:
+
+    cd /Users/sjohnson/Sync/coding/gems/url_common/url_common
+    bundle exec rake build
+
+You will then see output like this:
+
+    url_common 0.1.1 built to pkg/url_common-0.1.1.gem.
+
+And you release it as:
+
+    gem push pkg/url_common-0.1.1.gem
 
 ## Conclusion
 
@@ -164,3 +204,4 @@ See these sources:
 * [Bundler.io (EXCELLENT)](https://bundler.io/guides/creating_gem.html)
 * [My First Gem -- url_common](https://github.com/fuzzygroup/url_common/tree/master)
 * [My First Gem -- url_common -- on RubyGems](https://rubygems.org/gems/url_common)
+* [Gem Dependencies and Gem Spec](https://stackoverflow.com/questions/30118627/how-do-i-add-a-dependency-to-a-private-gem-in-gemspec)

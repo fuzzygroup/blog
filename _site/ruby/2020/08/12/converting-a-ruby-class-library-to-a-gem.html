@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Converting a Ruby Class Library to a Gem</title>
-  <meta name="description" content="">
+  <meta name="description" content="Note: Updated on 2022-06-04 to reflect experience with actually maintaining these gems.">
 
   <link rel="stylesheet" href="/blog/css/main.css">
   <link rel="canonical" href="http://fuzzyblog.io/blog/ruby/2020/08/12/converting-a-ruby-class-library-to-a-gem.html">
@@ -43,9 +43,11 @@
 
   
     <meta name="twitter:description"
-      content="
+      content="Note: Updated on 2022-06-04 to reflect experience with actually maintaining these gems.
 
-This blog post talks about my experiences converting a handful of Ruby class libraries to gems.  As do a lot of software engineers, I have a series of routines that I bring into almost every Ruby...">
+
+
+This blog post talks about my experiences converting a handful of Ruby class libraries to gems.  As do a l...">
   
 
   
@@ -186,7 +188,9 @@ This blog post talks about my experiences converting a handful of Ruby class lib
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMG_4795.jpeg" alt="IMG_4795.jpeg" /></p>
+    <p><strong>Note</strong>: Updated on 2022-06-04 to reflect experience with actually maintaining these gems.</p>
+
+<p class="center"><img src="/blog/assets/IMG_4795.jpeg" alt="IMG_4795.jpeg" /></p>
 
 <p>This blog post talks about my experiences converting a handful of Ruby class libraries to gems.  As do a lot of software engineers, I have a series of routines that I bring into almost every Ruby project I tackle that deal with what I consider core stuff you always need: url handling, database stuff, time parsing and so on.  Normally I just copy these from project to project but the sheer plethora of them has recently made me see the need to go down the gem route:</p>
 
@@ -209,8 +213,8 @@ This blog post talks about my experiences converting a handful of Ruby class lib
   <li>Change into the repo you just cloned.</li>
   <li>Do a gem signin</li>
   <li>Do a bundle gem project_name</li>
-  <li>Edit project_name/project_name.gemspec</li>
-  <li>Update your Gemfile with any dependencies.</li>
+  <li>Edit project_name/project_name.gemspec - THIS NEEDS TO HAVE RELEASE LEVEL DEPENDENCIES</li>
+  <li>Update your Gemfile with any dependencies - THIS NEEDS TO HAVE BOTH DEVELOPMENT LEVEL AND RELEASE LEVEL DEPENDENCIES</li>
   <li>Change into project_name</li>
   <li>Do a bundle install</li>
   <li>Do a bundle exec rake build; this gives you the pkg/* stuff below (see next command).</li>
@@ -316,25 +320,65 @@ Could not locate Gemfile or .bundle/ directory
 
 <p>This came from this line of code:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def self.url_base(url, base_domain=nil)
-  if base_domain.nil?
-    base_domain = UrlCommon.get_base_domain(url)
-  end
-#...
-end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">url_base</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">base_domain</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">base_domain</span><span class="p">.</span><span class="nf">nil?</span>
+    <span class="n">base_domain</span> <span class="o">=</span> <span class="no">UrlCommon</span><span class="p">.</span><span class="nf">get_base_domain</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="c1">#...</span>
+<span class="k">end</span>
 </code></pre></div></div>
 
 <p>and the fix turned out to be:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def self.url_base(url, base_domain=nil)
-  if base_domain.nil?
-    base_domain = get_base_domain(url)
-  end
-#...
-end
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">url_base</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">base_domain</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">base_domain</span><span class="p">.</span><span class="nf">nil?</span>
+    <span class="n">base_domain</span> <span class="o">=</span> <span class="n">get_base_domain</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="c1">#...</span>
+<span class="k">end</span>
 </code></pre></div></div>
 
 <p>despite there being a def self.get_base_domain method defined in the module.  <strong>Shrug</strong></p>
+
+<h2 id="gems-for-development-versus-gems-for-deployment">Gems for Development versus Gems for Deployment</h2>
+
+<p>When you develop a gem, it needs gems for development which are located in Gemfile.  The same gems also need to go into the gem_name.gemspec file.  So, for example, I have a file called:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>url_common.gemspec
+</code></pre></div></div>
+
+<p>which has lines like these:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spec.add_dependency 'fuzzyurl', '~&gt; 0.9.0'
+spec.add_dependency 'mechanize', '~&gt; 2.6'
+</code></pre></div></div>
+
+<p>This allows you have say byebug in your main Gemfile for debugging but NOT have that be released with your gem.</p>
+
+<h2 id="the-release-process---example">The Release Process - Example</h2>
+
+<p>The first step is to update the version.rb file to reflect a new version number.  Please note that for a new release to be made, there <strong>must be</strong> a new version number.</p>
+
+<p>I work on the url_common gem in this directory:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/Users/sjohnson/Sync/coding/gems/url_common/
+</code></pre></div></div>
+
+<p>to do a release:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /Users/sjohnson/Sync/coding/gems/url_common/url_common
+bundle exec rake build
+</code></pre></div></div>
+
+<p>You will then see output like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>url_common 0.1.1 built to pkg/url_common-0.1.1.gem.
+</code></pre></div></div>
+
+<p>And you release it as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem push pkg/url_common-0.1.1.gem
+</code></pre></div></div>
 
 <h2 id="conclusion">Conclusion</h2>
 
@@ -351,6 +395,7 @@ end
   <li><a href="https://bundler.io/guides/creating_gem.html">Bundler.io (EXCELLENT)</a></li>
   <li><a href="https://github.com/fuzzygroup/url_common/tree/master">My First Gem – url_common</a></li>
   <li><a href="https://rubygems.org/gems/url_common">My First Gem – url_common – on RubyGems</a></li>
+  <li><a href="https://stackoverflow.com/questions/30118627/how-do-i-add-a-dependency-to-a-private-gem-in-gemspec">Gem Dependencies and Gem Spec</a></li>
 </ul>
 
   </div>
