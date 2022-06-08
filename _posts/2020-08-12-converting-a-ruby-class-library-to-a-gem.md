@@ -190,6 +190,14 @@ And you release it as:
 
     gem push pkg/url_common-0.1.1.gem
 
+And here's the really important part:
+
+* After you do a gem push, set a 3 minute timer on your phone
+* When it goes off, change to an app using your gem
+* Do a bundle update 
+
+It normally takes a bit for the Ruby Gems site to recognize an update.  The timer helps you remember to check.
+
 ## Conclusion
 
 I haven't tried to build a gem in **years**.  Building a gem is substantially easier in 2020 than it was circa 2007 - 2009.  Kudos to the entire Ruby tooling team.  Recommended.
