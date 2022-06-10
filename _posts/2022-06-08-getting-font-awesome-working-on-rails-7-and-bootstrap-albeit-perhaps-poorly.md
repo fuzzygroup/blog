@@ -29,10 +29,32 @@ Here's an example of the html to use to generate a font:
 
     <i class="fas fa-github"></i>
     <i class="fas fa-camera"></i>
+    
+## Sidebar: How to Add Bootstrap Icons Also
+
+This set of steps let you add the Bootstrap 5 icons to the mix also and is based on the same initializer above.
+
+1. Download the webfonts to your computer.
+2. Unzip the directory.
+3. Move the files from the fonts directory to public/webfonts.  There should be 2 files: public/webfonts/bootstrap-icons.woff and public/webfonts/bootstrap-icons.woff2
+4. Move the css file from the zip i.e bootstrap-icons.css to app/assets/stylesheets
+5. Add a stylesheet link tag to application.html.erb for bootstrap-icons.css
+6. Edit the bootstrap-icons.css file to reflect the pathing for your webfonts.  Originally mine had ./fonts as the initial path.  I had to change it to ./webfonts
+
+Stylesheet link tag example:
+
+    <%= stylesheet_link_tag "bootstrap-icons"%> 
+
+Test your bootstrap webfonts with code like this:
+
+    <i class="bi-alarm"></i>
+    <i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue;"></i>
 
 ## See Also
 
 Here are links to what guided me along this path:
+
+### Font Awesome Links
 
 * [Font Awesome Search Engine for Icons](https://fontawesome.com/search?q=time&s=brands%2Csolid)
 * [Self Hosting Documentation for Font Awesome](https://fontawesome.com/v5/docs/web/setup/host-font-awesome-yourself)
@@ -48,3 +70,9 @@ Here are links to what guided me along this path:
 * [SVG and JS and Font Awesome](https://fontawesome.com/docs/web/use-with/rails-turbolinks)
 
 But keep in mind that none of the above worked.
+
+### Bootstrap Links
+
+* [https://icons.getbootstrap.com/#install](https://icons.getbootstrap.com/#install)
+* [http://johna.compoutpost.com/blog/1189/how-to-use-the-new-bootstrap-icons-v1-2-web-font/](http://johna.compoutpost.com/blog/1189/how-to-use-the-new-bootstrap-icons-v1-2-web-font/)
+* [https://github.com/twbs/icons/releases/tag/v1.8.3](https://github.com/twbs/icons/releases/tag/v1.8.3)

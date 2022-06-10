@@ -215,9 +215,35 @@
 &lt;i class="fas fa-camera"&gt;&lt;/i&gt;
 </code></pre></div></div>
 
+<h2 id="sidebar-how-to-add-bootstrap-icons-also">Sidebar: How to Add Bootstrap Icons Also</h2>
+
+<p>This set of steps let you add the Bootstrap 5 icons to the mix also and is based on the same initializer above.</p>
+
+<ol>
+  <li>Download the webfonts to your computer.</li>
+  <li>Unzip the directory.</li>
+  <li>Move the files from the fonts directory to public/webfonts.  There should be 2 files: public/webfonts/bootstrap-icons.woff and public/webfonts/bootstrap-icons.woff2</li>
+  <li>Move the css file from the zip i.e bootstrap-icons.css to app/assets/stylesheets</li>
+  <li>Add a stylesheet link tag to application.html.erb for bootstrap-icons.css</li>
+  <li>Edit the bootstrap-icons.css file to reflect the pathing for your webfonts.  Originally mine had ./fonts as the initial path.  I had to change it to ./webfonts</li>
+</ol>
+
+<p>Stylesheet link tag example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;%= stylesheet_link_tag "bootstrap-icons"%&gt; 
+</code></pre></div></div>
+
+<p>Test your bootstrap webfonts with code like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;i class="bi-alarm"&gt;&lt;/i&gt;
+&lt;i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue;"&gt;&lt;/i&gt;
+</code></pre></div></div>
+
 <h2 id="see-also">See Also</h2>
 
 <p>Here are links to what guided me along this path:</p>
+
+<h3 id="font-awesome-links">Font Awesome Links</h3>
 
 <ul>
   <li><a href="https://fontawesome.com/search?q=time&amp;s=brands%2Csolid">Font Awesome Search Engine for Icons</a></li>
@@ -235,6 +261,14 @@
 </ul>
 
 <p>But keep in mind that none of the above worked.</p>
+
+<h3 id="bootstrap-links">Bootstrap Links</h3>
+
+<ul>
+  <li><a href="https://icons.getbootstrap.com/#install">https://icons.getbootstrap.com/#install</a></li>
+  <li><a href="http://johna.compoutpost.com/blog/1189/how-to-use-the-new-bootstrap-icons-v1-2-web-font/">http://johna.compoutpost.com/blog/1189/how-to-use-the-new-bootstrap-icons-v1-2-web-font/</a></li>
+  <li><a href="https://github.com/twbs/icons/releases/tag/v1.8.3">https://github.com/twbs/icons/releases/tag/v1.8.3</a></li>
+</ul>
 
   </div>
   
