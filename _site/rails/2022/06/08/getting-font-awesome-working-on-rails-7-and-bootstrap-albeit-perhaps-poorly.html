@@ -195,6 +195,15 @@
 
 <p>Still this works and it is conceptually simple.</p>
 
+<p><strong>NOTE</strong>: I full well expect to return to this and figure out the "right" way to do this.  However, I'm in heavy greenfield development mode and the desire to simply make it work and GIVE ME MY DAMN ICONS <strong>NOW</strong> is the paramount concern.  In greenfield development mode, nothing is more important than:</p>
+
+<ol>
+  <li>Productivity / not getting bogged down.</li>
+  <li>Not getting discouraged when trying to do something that should be simple (display a damn icon).  So much of modern front end development is just plain ridiculously complicated for simple things like making a font work or displaying an image.</li>
+</ol>
+
+<h2 id="font-awesome-steps">Font Awesome Steps</h2>
+
 <ol>
   <li>Download Font Awesome Locally and Decompress It.  This requires an <a href="https://fontawesome.com/account">account</a> I think.</li>
   <li>Move stylesheets/all.css to app/assets/stylesheets/</li>
@@ -237,6 +246,32 @@
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;i class="bi-alarm"&gt;&lt;/i&gt;
 &lt;i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue;"&gt;&lt;/i&gt;
+</code></pre></div></div>
+
+<p>application_helper method to generate the right formatting:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">font_icon</span><span class="p">(</span><span class="n">icon_name</span><span class="p">,</span> <span class="n">icon_style</span><span class="o">=</span><span class="s1">'fas'</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">''</span><span class="p">)</span>
+  <span class="n">extra</span> <span class="o">=</span> <span class="s1">''</span>
+  <span class="k">if</span> <span class="n">style</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="s2">" style='</span><span class="si">#{</span><span class="n">style</span><span class="si">}</span><span class="s2">'"</span>
+  <span class="k">end</span>
+  <span class="k">if</span> <span class="n">icon_name</span> <span class="o">=~</span> <span class="sr">/^bi-/</span>
+    <span class="n">formatting_string</span> <span class="o">=</span> <span class="s2">"&lt;i class='</span><span class="si">#{</span><span class="n">icon_name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">extra</span><span class="si">}</span><span class="s2">'&gt;&lt;/i&gt;"</span>
+  <span class="k">else</span>
+    <span class="n">formatting_string</span> <span class="o">=</span> <span class="s2">"&lt;i class='</span><span class="si">#{</span><span class="n">icon_style</span><span class="si">}</span><span class="s2"> fa-</span><span class="si">#{</span><span class="n">icon_name</span><span class="si">}</span><span class="s2">' </span><span class="si">#{</span><span class="n">extra</span><span class="si">}</span><span class="s2">'&gt;&lt;/i&gt;"</span>
+  <span class="k">end</span>
+  <span class="c1"># NOTE: Turn off the .html_safe method for debugging purposes</span>
+  <span class="k">return</span> <span class="n">formatting_string</span><span class="p">.</span><span class="nf">html_safe</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Text to drop into a .html.erb template file to see if it works:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 1. &lt;%=font_icon('bi-github')%&gt;&lt;br/&gt;
+# 2. &lt;%=font_icon('github')%&gt;&lt;br/&gt;
+# 3. &lt;%=font_icon('bi-github')%&gt;&lt;br/&gt;
+# 4. &lt;%=font_icon('github', 'fab', "font-size: 2rem; color: cornflowerblue;")%&gt;&lt;br/&gt;
+# 5. &lt;%=font_icon('bi-github','', "font-size: 2rem; color: cornflowerblue;")%&gt;&lt;br/&gt;
 </code></pre></div></div>
 
 <h2 id="see-also">See Also</h2>

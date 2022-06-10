@@ -14,6 +14,13 @@ I am not a front end engineer -- but I'm on a project right now with heavy front
 
 Still this works and it is conceptually simple.
 
+**NOTE**: I full well expect to return to this and figure out the "right" way to do this.  However, I'm in heavy greenfield development mode and the desire to simply make it work and GIVE ME MY DAMN ICONS **NOW** is the paramount concern.  In greenfield development mode, nothing is more important than:
+
+1. Productivity / not getting bogged down.
+2. Not getting discouraged when trying to do something that should be simple (display a damn icon).  So much of modern front end development is just plain ridiculously complicated for simple things like making a font work or displaying an image.
+
+## Font Awesome Steps
+
 1. Download Font Awesome Locally and Decompress It.  This requires an [account](https://fontawesome.com/account) I think.
 2. Move stylesheets/all.css to app/assets/stylesheets/
 3. Move webfonts (directory and all) to public/ (yes public)
@@ -49,6 +56,32 @@ Test your bootstrap webfonts with code like this:
 
     <i class="bi-alarm"></i>
     <i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue;"></i>
+
+application_helper method to generate the right formatting:
+
+```ruby
+def font_icon(icon_name, icon_style='fas', style='')
+  extra = ''
+  if style
+    extra = " style='#{style}'"
+  end
+  if icon_name =~ /^bi-/
+    formatting_string = "<i class='#{icon_name} #{extra}'></i>"
+  else
+    formatting_string = "<i class='#{icon_style} fa-#{icon_name}' #{extra}'></i>"
+  end
+  # NOTE: Turn off the .html_safe method for debugging purposes
+  return formatting_string.html_safe
+end
+```
+
+Text to drop into a .html.erb template file to see if it works:
+
+    # 1. <%=font_icon('bi-github')%><br/>
+    # 2. <%=font_icon('github')%><br/>
+    # 3. <%=font_icon('bi-github')%><br/>
+    # 4. <%=font_icon('github', 'fab', "font-size: 2rem; color: cornflowerblue;")%><br/>
+    # 5. <%=font_icon('bi-github','', "font-size: 2rem; color: cornflowerblue;")%><br/>
 
 ## See Also
 
