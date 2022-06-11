@@ -95,3 +95,150 @@ end
 ```
 
 And then, like magic, the failure is gone.
+
+## And then, like dark magic, it returns
+
+I wandered away from my pc for an age and when I returned and resumed testing with a different controller, I found that this had returned:
+
+    ❯ bundle exec rails test test/controllers/setup_controller_test.rb:99
+    Running 49 tests in a single process (parallelization threshold is 50)
+    Run options: --seed 27403
+
+    # Running:
+
+    E
+
+    Error:
+    SetupControllerTest#test_should_render_setup_form_for_paste_in_component_file_without_errors:
+    ActiveRecord::RecordInvalid: Validation failed: Password can't be blank, Password Must contain 8+ characters
+        test/controllers/setup_controller_test.rb:101:in `block in <class:SetupControllerTest>'
+
+This now happened uniformly and is it was generally happening in the test setup block, there wasn't much in the way of clues to figure it out.  My next step was to fire up Rails Console in test mode:
+
+    RAILS_ENV=test bundle exec rails c
+    Loading test environment (Rails 7.0.3)
+    3.0.0 :001 > @project = FactoryBot::create(:project)
+    /Users/sjohnson/.rvm/gems/ruby-3.0.0/gems/activerecord-7.0.3/lib/active_record/validations.rb:80:in `raise_validation_error': Validation failed: Password can't be blank, Password Must contain 8+ characters (ActiveRecord::RecordInvalid)
+    3.0.0 :002 > @project
+    nil    
+
+Previously I had been looking at the structure of the account object via a \d accounts sql command in the Postgres terminal.  However this made me wonder -- what if account is somehow (attr accessor I guess) validating email and password.  A quick look at account.rb showed me this:
+
+```ruby
+validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
+
+# The validation of password here is only for the following scenario :
+# An admin creates a new Account in the /admin dashboard.
+# 
+# Security of password of customers, in the "Sign up" screen, is a lot more secure.
+# See :password_complexity in class RodauthMain. Documented here :
+# http://rodauth.jeremyevans.net/rdoc/files/doc/password_complexity_rdoc.html
+validates :password, presence: true, on: :create, format: { with: /\A(?=.{8,})/x, message: "Must contain 8+ characters" }
+
+```
+
+Curiously there are no attr accessor's but there is a:
+
+    include Rodauth::Rails.model    
+
+which I guess must be somehow dynamically adding the equivalent of attr accessor's.
+
+At this point, I've simply thrown up my hands and posted a question on the RodAuth discussion forum:
+
+(and at this point when I tried to post it, the Green start discussion button on the Github discussion board for RodAuth refused to let me submit it.  Yes it had a title, body and the [ ] was selected).  Here's what I wrote up:
+
+Title:
+Testing applications built with rodauth using standard rails 7 tests and factorybot
+
+Body:
+
+Perhaps I'm stupid and perhaps it is just me but I keep having an absolutely horrible time trying to get tests working at all using FactoryBot and rodauth.
+
+My problem is that no matter what I do I can't get past FactoryBot issues where validations deeper in rodauth get triggered.  This happens whether it is a model test, controller test or whatever.  And given how much data is tied to the underlying concept of a user, it makes it virtually impossible to test anything.
+
+Here's an example:
+
+CONTROLLER TEST:
+
+
+❯ bundle exec rails test test/controllers/code_environments_controller_test.rb:16
+Running 7 tests in a single process (parallelization threshold is 50)
+Run options: --seed 20521
+
+# Running:
+
+E
+
+Error:
+CodeEnvironmentsControllerTest#test_should_get_index:
+ActiveRecord::RecordInvalid: Validation failed: Name has already been taken
+    test/controllers/code_environments_controller_test.rb:10:in `block in <class:CodeEnvironmentsControllerTest>'
+
+MODEL TEST:
+
+
+❯ bundle exec rails test test/models/project_test.rb:29
+Running 2 tests in a single process (parallelization threshold is 50)
+Run options: --seed 53205
+
+# Running:
+
+E
+
+Error:
+ProjectTest#test_Project.find_or_create_should_return_a_project_when_it_already_exists:
+ActiveRecord::RecordInvalid: Validation failed: Name has already been taken
+    test/models/project_test.rb:7:in `setup'
+
+
+rails test test/models/project_test.rb:29 
+
+Same error whether I'm testing controller or model (this isn't an issue of using capybara or not; I'm just trying to test very basic things like if I have a database object created (nothing to do with auth).  Here's the test on project_test.rb line 29:
+
+  test "Project.find_or_create should return a project when it already exists" do
+    result_create = Project.find_or_create(@struct)
+    assert_no_difference('Project.count') do
+      result_find = Project.find_or_create(@struct)
+      assert_equal result_create.id, result_find.id
+    end
+  end
+
+Here's the factory:
+
+FactoryBot.define do
+  factory :account do
+    email    { Faker::Internet.email }
+    password { 'password' }
+    status   { 'verified' }
+  end
+
+My underlying suspicion is that magic mixin via:
+
+include Rodauth::Rails.model
+
+is at fault.  
+
+Even when I explicitly build factories for all of the account_* tables as based on looking at \dt+ in postgres such as:
+
+FactoryBot.define do
+  factory :account do
+    email    { Faker::Internet.email }
+    password { 'password' }
+    status   { 'verified' }
+    association :account_login_change_key
+    association :account_password_hash   
+    association :account_password_reset_key
+    association :account_remember_key
+    association :account_verification_key
+
+  end
+end
+
+
+I get that this problem may be related to FactoryBot but the simple fact is that to build anything in ruby, you __have__ to have tests -- Ruby's dynamic nature means that tests are absolutely essential.
+
+And I don't mean to deprecate the clearly excellent work you've done with rodauth but the amount of underlying magic you have here and the lack of clear instructions for something as vital as tests makes using rodauth very, very hard.
+
+Blog post I wrote talking about these issues is linked below.  Yes the blog post says I got past it -- and I did -- but then a few hours later it came back with a bloody vengeance.
+
+[https://fuzzyblog.io/blog/2022/06/10/fixing-factorybot-validation-name-has-already-been-taken-controller-test-or-spec-errors.html](https://fuzzyblog.io/blog/2022/06/10/fixing-factorybot-validation-name-has-already-been-taken-controller-test-or-spec-errors.html)
