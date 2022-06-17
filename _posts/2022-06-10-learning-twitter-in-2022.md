@@ -48,3 +48,7 @@ Trying to pay attention to all of these at once is, for someone who isn't metric
 ## Rule 9: Don't Just Tweet Your Own Stuff
 
 Imagine Twitter as if it was a party.  If you are only posting your own stuff, it is analogous to that dude bro at a party who only talks about himself.  Figure out the intersection between your own content (for me that's ruby / rails / cloud) and stuff that other people talk about.  And then when you find something that's in that intersection, that is what you should tweet / retweet / like.
+
+## Rule 10: This is Link Blogging All Over Again
+
+## Rule 11: Flow and Tone Matter 
