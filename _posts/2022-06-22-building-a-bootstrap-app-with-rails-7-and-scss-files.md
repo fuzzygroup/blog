@@ -92,3 +92,6 @@ I won't claim to fully understand the asset pipeline but this is the closest I'v
 * [Stack Overflow 2](https://stackoverflow.com/questions/68909199/invalid-css-value-error-while-customizing-bootstrap-5-colors-with-sass-3)
 * [Bootstrap RFS](https://github.com/twbs/rfs/tree/v9.0.3#installation)
 * [Stack Overflow 3](https://stackoverflow.com/questions/66642300/error-undefined-variable-in-rails-sass-compilation)
+* [SASS Basics](https://sass-lang.com/guide)
+* [CSS Bundling and Rails](https://github.com/rails/cssbundling-rails)
+* [Stack Overflow 4](https://stackoverflow.com/questions/26171159/require-statement-in-application-css-scss)
