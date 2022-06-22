@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Thanks Mike!</title>
-  <meta name="description" content="Thanks Mike!">
+  <title>Building a Bootstrap App with Rails 7 and SCSS Files</title>
+  <meta name="description" content="As is too often the case, I find that the initial aspect of getting a modern app (Bootstrap, Tailwind, React) initially setup to be the most frustrating aspe...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/misc/2005/10/30/thanks-mike.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2022/06/22/building-a-bootstrap-app-with-rails-7-and-scss-files.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,12 +39,12 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Thanks Mike!">
+  <meta name="twitter:title" content="Building a Bootstrap App with Rails 7 and SCSS Files">
 
   
     <meta name="twitter:description"
-      content="Thanks Mike!
-">
+      content="As is too often the case, I find that the initial aspect of getting a modern app (Bootstrap, Tailwind, React) initially setup to be the most frustrating aspect of Rails.
+Given that I like to spin u...">
   
 
   
@@ -178,14 +178,126 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Thanks Mike!</h1>
-    <p class="I'll"><time datetime="2005-10-30T00:34:12-04:00" itemprop="datePublished">Oct 30, 2005</time> 
-       • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{"login"=>"fuzzyblog", "email"=>"eric@appdata.com", "display_name"=>"fuzzyblog", "first_name"=>"Scott", "last_name"=>"Johnson"}</span></span></p> 
+    <h1 class="post-title" itemprop="name headline">Building a Bootstrap App with Rails 7 and SCSS Files</h1>
+    <p class="I'll"><time datetime="2022-06-22T02:12:00-04:00" itemprop="datePublished">Jun 22, 2022</time> 
+      </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>Thanks <a href="http://airhead.typepad.com/">Mike!</a></p>
+    <p>As is too often the case, I find that the initial aspect of getting a modern app (Bootstrap, Tailwind, React) initially setup to be the most <strong>frustrating</strong> aspect of Rails.<br />
+Given that I like to spin up new apps pretty regularly, well, I spend a lot of time being frustrated with an old man's grumbling of:</p>
+
+<blockquote>
+  <p>It didn't used to be this hard.</p>
+</blockquote>
+
+<p>No it wasn't this hard.<br />
+And while I still don't really understand asset compilation, I did recently put together a new app where I pulled in SCSS files using variables from a different app and I can start to see it.</p>
+
+<p>This blog post walks through a Rails 7 app using .scss files.</p>
+
+<h2 id="step-1-rails-new">Step 1: Rails New</h2>
+
+<p>Here's your Rails 7 new command to generate a new app with Bootstrap:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails new scss_test1 --css bootstrap
+</code></pre></div></div>
+
+<p>Yep.  That's it.
+Whoa!!!<br />
+There are also options to use Tailwind.  I found this technique in the Saeloun article linked below and I will be forever grateful; seriously – <em>thank you</em>.</p>
+
+<h2 id="step-2-add-the-sassc-rails-gem">Step 2: Add the Sassc-Rails Gem</h2>
+
+<p>I believe this Gem is needed as sassc support is officially deprecated.<br />
+But I might be wrong about this; front end stuff changes with every Rails release so if I'm wrong, well, sigh.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem "sassc-rails"
+</code></pre></div></div>
+
+<h2 id="step-3-copy-in-your-scss-files">Step 3: Copy In Your SCSS Files</h2>
+
+<p>If you are pulling in SCSS files then you need to copy them into your:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>app/assets/stylesheets 
+</code></pre></div></div>
+
+<p>directory.<br />
+They can exist elsewhere but that directory is for stylesheets so differing on this point confuses me.</p>
+
+<h2 id="modify-your-include-directives">Modify Your Include Directives</h2>
+
+<p>This is the tricky bit and where you simply have to experiment.<br />
+The thing to understand is that asset compilation is just that – compilation.
+If you're old school enough that you understand the analogy of your stylesheet files becoming akin to a make file with all the <strong>dark magic</strong> that entails, perhaps that helps.
+In your stylesheets directory there will be an initial stylesheet file, for me, it was application_bootstrap.scss and then I had copied in a number of other stylesheet files like palette.scss, landing.scss, customized_bootstrap.scss and so on.
+In my core application_bootstrap.scss was this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// system level; installed by rails
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons';
+</code></pre></div></div>
+
+<p>Disclaimer: I added the comment to help my understand where things came from.</p>
+
+<p>I then modified it to look like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@import './customized_bootstrap.scss';
+ 
+// system level; installed by rails
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons';
+
+@import 'palette.scss';
+@import 'landing.scss';    
+</code></pre></div></div>
+
+<p>Please note that the order matters – this really is a make file and what you are doing is dealing with dependencies.
+As an example there are are variables defined in some files that need to be imported before other files.<br />
+In my customized_bootstrap.scss file, which I pulled in from elsewhere and another CSS engine (vite), I had to make a bunch of changes like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
+ *  import the necessary Bootstrap files 
+ */
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/mixins";
+@import '../node_modules/bootstrap/scss/variables';
+@import "../node_modules/bootstrap/scss/utilities";
+
+//@import "./node_modules/bootstrap/scss/_functions.scss";
+//@import "node_modules/bootstrap/scss/functions.scss";
+//@import "//node_modules/bootstrap/scss/variables";
+//@import "//node_modules/bootstrap/scss/utilities";
+</code></pre></div></div>
+
+<p>The commented out items where the initial state.</p>
+
+<p>I also had to do this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@import "//landing";
+</code></pre></div></div>
+
+<p>I don't understand the use of // versus ,/.<br />
+This was purely the desperate machinations of a developer with Stack Overflow access and the desire to make something work with an old app on the left and a new app on the right refreshing constantly until the two sites where in visual parity.
+Typing this triggered a Quantum Leap memory "Hoping against hope that the next refresh would be the last".</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I won't claim to fully understand the asset pipeline but this is the closest I've gotten to understanding it.
+In particular the analogy of a makefile for CSS very much helped me grok this.</p>
+
+<h2 id="see-also">See Also</h2>
+
+<ul>
+  <li><a href="https://blog.saeloun.com/2021/11/17/rails-7-added-css-app-generator.html">The Saeloun article</a></li>
+  <li><a href="https://www.reddit.com/r/rails/comments/pk7x5j/any_clue_what_with_cssscss_imports_in_rails_7/">Useful Reddit Thread</a></li>
+  <li><a href="https://stackoverflow.com/questions/71231622/idiomatic-sass-processing-in-rails-7">Stack Overflow 1</a></li>
+  <li><a href="https://guides.rubyonrails.org/asset_pipeline.html">Asset Pipeline Overview</a></li>
+  <li><a href="https://stackoverflow.com/questions/68909199/invalid-css-value-error-while-customizing-bootstrap-5-colors-with-sass-3">Stack Overflow 2</a></li>
+  <li><a href="https://github.com/twbs/rfs/tree/v9.0.3#installation">Bootstrap RFS</a></li>
+  <li><a href="https://stackoverflow.com/questions/66642300/error-undefined-variable-in-rails-sass-compilation">Stack Overflow 3</a></li>
+</ul>
 
   </div>
   
@@ -197,8 +309,20 @@
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#misc" >
-      #misc
+    <a href="http://fuzzyblog.io/blog/tag.html#rails" >
+      #rails
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#bootstrap" >
+      #bootstrap
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#sass" >
+      #sass
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#scss" >
+      #scss
     </a>
     
   </p>
@@ -209,8 +333,26 @@
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#misc" class="link_button">
-         misc
+       <a href="http://fuzzyblog.io/blog/tag.html#rails" class="link_button">
+         rails
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#bootstrap" class="link_button">
+         bootstrap
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#sass" class="link_button">
+         sass
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#scss" class="link_button">
+         scss
        </a>
      </li>
      
