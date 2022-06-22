@@ -43,8 +43,7 @@
 
   
     <meta name="twitter:description"
-      content="As is too often the case, I find that the initial aspect of getting a modern app (Bootstrap, Tailwind, React) initially setup to be the most frustrating aspect of Rails.
-Given that I like to spin u...">
+      content="As is too often the case, I find that the initial aspect of getting a modern app (Bootstrap, Tailwind, React) initially setup to be the most frustrating aspect of Rails.  Given that I like to spin ...">
   
 
   
@@ -185,15 +184,13 @@ Given that I like to spin u...">
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>As is too often the case, I find that the initial aspect of getting a modern app (Bootstrap, Tailwind, React) initially setup to be the most <strong>frustrating</strong> aspect of Rails.<br />
-Given that I like to spin up new apps pretty regularly, well, I spend a lot of time being frustrated with an old man's grumbling of:</p>
+    <p>As is too often the case, I find that the initial aspect of getting a modern app (Bootstrap, Tailwind, React) initially setup to be the most <strong>frustrating</strong> aspect of Rails.  Given that I like to spin up new apps pretty regularly, well, I spend a lot of time being frustrated with an old man's grumbling of:</p>
 
 <blockquote>
   <p>It didn't used to be this hard.</p>
 </blockquote>
 
-<p>No it wasn't this hard.<br />
-And while I still don't really understand asset compilation, I did recently put together a new app where I pulled in SCSS files using variables from a different app and I can start to see it.</p>
+<p>No it wasn't this hard.  And while I still don't really understand asset compilation, I did recently put together a new app where I pulled in SCSS files using variables from a different app and I can start to see it.</p>
 
 <p>This blog post walks through a Rails 7 app using .scss files.</p>
 
@@ -204,14 +201,11 @@ And while I still don't really understand asset compilation, I did recently put 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails new scss_test1 --css bootstrap
 </code></pre></div></div>
 
-<p>Yep.  That's it.
-Whoa!!!<br />
-There are also options to use Tailwind.  I found this technique in the Saeloun article linked below and I will be forever grateful; seriously – <em>thank you</em>.</p>
+<p>Yep.  That's it.  Whoa!!!  There are also options to use Tailwind.  I found this technique in the Saeloun article linked below and I will be forever grateful; seriously – <em>thank you</em>.</p>
 
 <h2 id="step-2-add-the-sassc-rails-gem">Step 2: Add the Sassc-Rails Gem</h2>
 
-<p>I believe this Gem is needed as sassc support is officially deprecated.<br />
-But I might be wrong about this; front end stuff changes with every Rails release so if I'm wrong, well, sigh.</p>
+<p>I believe this Gem is needed as sassc support is officially deprecated.  But I might be wrong about this; front end stuff changes with every Rails release so if I'm wrong, well, sigh.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem "sassc-rails"
 </code></pre></div></div>
@@ -223,16 +217,11 @@ But I might be wrong about this; front end stuff changes with every Rails releas
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>app/assets/stylesheets 
 </code></pre></div></div>
 
-<p>directory.<br />
-They can exist elsewhere but that directory is for stylesheets so differing on this point confuses me.</p>
+<p>directory.  They can exist elsewhere but that directory is for stylesheets so differing on this point confuses me.</p>
 
 <h2 id="modify-your-include-directives">Modify Your Include Directives</h2>
 
-<p>This is the tricky bit and where you simply have to experiment.<br />
-The thing to understand is that asset compilation is just that – compilation.
-If you're old school enough that you understand the analogy of your stylesheet files becoming akin to a make file with all the <strong>dark magic</strong> that entails, perhaps that helps.
-In your stylesheets directory there will be an initial stylesheet file, for me, it was application_bootstrap.scss and then I had copied in a number of other stylesheet files like palette.scss, landing.scss, customized_bootstrap.scss and so on.
-In my core application_bootstrap.scss was this:</p>
+<p>This is the tricky bit and where you simply have to experiment.  The thing to understand is that asset compilation is just that – compilation.If you're old school enough that you understand the analogy of your stylesheet files becoming akin to a make file with all the <strong>dark magic</strong> that entails, perhaps that helps.  In your stylesheets directory there will be an initial stylesheet file, for me, it was application_bootstrap.scss and then I had copied in a number of other stylesheet files like palette.scss, landing.scss, customized_bootstrap.scss and so on.  In my core application_bootstrap.scss was this:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// system level; installed by rails
 @import 'bootstrap/scss/bootstrap';
@@ -253,9 +242,7 @@ In my core application_bootstrap.scss was this:</p>
 @import 'landing.scss';    
 </code></pre></div></div>
 
-<p>Please note that the order matters – this really is a make file and what you are doing is dealing with dependencies.
-As an example there are are variables defined in some files that need to be imported before other files.<br />
-In my customized_bootstrap.scss file, which I pulled in from elsewhere and another CSS engine (vite), I had to make a bunch of changes like this:</p>
+<p>Please note that the order matters – this really is a make file and what you are doing is dealing with dependencies.  As an example there are are variables defined in some files that need to be imported before other files.  In my customized_bootstrap.scss file, which I pulled in from elsewhere and another CSS engine (vite), I had to make a bunch of changes like this:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
  *  import the necessary Bootstrap files 
@@ -278,14 +265,11 @@ In my customized_bootstrap.scss file, which I pulled in from elsewhere and anoth
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@import "//landing";
 </code></pre></div></div>
 
-<p>I don't understand the use of // versus ,/.<br />
-This was purely the desperate machinations of a developer with Stack Overflow access and the desire to make something work with an old app on the left and a new app on the right refreshing constantly until the two sites where in visual parity.
-Typing this triggered a Quantum Leap memory "Hoping against hope that the next refresh would be the last".</p>
+<p>I don't understand the use of // versus ,/  But it is all just path references and we are developers – we can get this.  This was purely the desperate machinations of a developer with Stack Overflow access and the desire to make something work with an old app on the left and a new app on the right refreshing constantly until the two sites where in visual parity.  Typing this triggered a Quantum Leap memory "Hoping against hope that the next refresh would be the last".</p>
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>I won't claim to fully understand the asset pipeline but this is the closest I've gotten to understanding it.
-In particular the analogy of a makefile for CSS very much helped me grok this.</p>
+<p>I won't claim to fully understand the asset pipeline but this is the closest I've gotten to understanding it.  In particular the analogy of a makefile for CSS very much helped me grok this.</p>
 
 <h2 id="see-also">See Also</h2>
 
