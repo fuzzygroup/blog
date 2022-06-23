@@ -237,27 +237,26 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [Losing the Signal](https://www.amazon.com/Losing-Signal-Extraordinary-Spectacular-BlackBerry-ebook/dp/B00Q20ASVS/ref=sr_1_1?crid=3G2PCID7ZJS79&keywords=Losing+the+Signal&qid=1656019556&s=books&sprefix=losing+the+signal%2Cstripbooks%2C203&sr=1-1) by McNish and Silcoff; "**I wasn't a BlackBerry guy but this explains the fire and furor.  A lost technology path similar to Palm and DEC**"
 * [The Decline and Fall of Nokia](https://www.amazon.com/Decline-Fall-Nokia-David-Cord-ebook/dp/B01FH1HWD4/ref=sr_1_1?crid=3DDKN7LP1YVWE&keywords=the+decline+and+fall+of+nokia&qid=1656019504&s=books&sprefix=the+decline+and+fall+of+noki%2Cstripbooks%2C156&sr=1-1) by Cord; "**HAVE NOT READ**"
 
-## Facebook / Web 2.0
-* Authoritas by Aaron Greenspan
-* The Accidental Billionaires by Ben Mezrichj
-* The Facebook Effect by David Kirkpatrick
-* dot Complicated by Randi Zuckerberg
-* The Facebook Era by Shih
-* The Boy Kings by Losse
-* Things a Little Bird Told Me by Biz Stone
-* Hatching Twitter by Nick Bilton
-* The Upstarts by Brad Stone
-* Valley of Genius by Adam Fisher
-* The Airbnb Story by Gallagher
-* No Filter by Sarah Frier; "**Instagram is more important than we realize and this dives into the why**"
-* Always Day One by Kantrowitz
-* A Truck Full of Money by Tracy Kidder; "**Not as good as Soul of a New Machine**"
-* Disrupted by Dan Lyons
+## Facebook / Twitter / Instagram / Web 2.0
+* [Authoritas](https://www.amazon.com/Authoritas-Students-Admissions-Founding-Facebook-ebook/dp/B0017S4UOQ/ref=sr_1_1?crid=123N6LNHU8TY0&keywords=Authoritas+Greenspan&qid=1656021367&s=books&sprefix=authoritas+greenspan%2Cstripbooks%2C179&sr=1-1) by Aaron Greenspan
+* [The Accidental Billionaires](https://www.amazon.com/Accidental-Billionaires-Founding-Facebook-Betrayal/dp/0307740986/ref=sr_1_1?crid=1ZB9UQKYK5JRF&keywords=The+Accidental+Billionaires&qid=1656021382&s=books&sprefix=authoritas+greenspan%2Cstripbooks%2C478&sr=1-1) by Ben Mezrichj
+* [The Facebook Effect](https://www.amazon.com/Facebook-Effect-Inside-Company-Connecting-ebook/dp/B003BHM85O/ref=sr_1_1?crid=34YD4U3UFB8KL&keywords=The+Facebook+Effect&qid=1656021432&s=books&sprefix=the+facebook+effect%2Cstripbooks%2C298&sr=1-1) by David Kirkpatrick
+* [dot Complicated](https://www.amazon.com/Dot-Complicated-Untangling-Wired-Lives-ebook/dp/B00BATNRH8/ref=sr_1_1?crid=1B833QRXBP1QI&keywords=dot+Complicated&qid=1656021446&s=books&sprefix=the+facebook+effect%2Cstripbooks%2C64&sr=1-1) by Randi Zuckerberg
+* [The Boy Kings](https://www.amazon.com/Boy-Kings-Journey-Social-Network/dp/1451668260/ref=sr_1_1?crid=38SKLO40EV074&keywords=The+Boy+Kings&qid=1656021479&s=books&sprefix=the+boy+kings%2Cstripbooks%2C178&sr=1-1) by Losse
+* [Things a Little Bird Told Me](https://www.amazon.com/Things-Little-Bird-Stone-2014-04-24/dp/B01K952OJ0/ref=sr_1_2?crid=2JIE61LHNIA3T&keywords=Things+a+Little+Bird+Told+Me+biz+stone&qid=1656021531&s=books&sprefix=things+a+little+bird+told+me+biz+stone%2Cstripbooks%2C60&sr=1-2) by Biz Stone
+* [Hatching Twitter](https://www.amazon.com/Hatching-Twitter-Story-Friendship-Betrayal/dp/1591847087/ref=sr_1_1?crid=TJP0BMRE3EKO&keywords=Hatching+Twitter&qid=1656021554&s=books&sprefix=hatching+twitter%2Cstripbooks%2C78&sr=1-1) by Nick Bilton
+* [The Upstarts](https://www.amazon.com/Upstarts-Airbnb-Companies-Silicon-Changing/dp/0316388394/ref=sr_1_1?keywords=the+upstarts+brad+stone&qid=1656021578&sprefix=The+Upstarts+bra%2Caps%2C58&sr=8-1) by Brad Stone
+* [Valley of Genius](https://www.amazon.com/Valley-Genius-Uncensored-History-Founders/dp/1455559024/ref=sr_1_1?crid=34AF34T27K8EB&keywords=Valley+of+Genius&qid=1656021594&sprefix=valley+of+genius%2Caps%2C107&sr=8-1) by Adam Fisher
+* [The Airbnb Story](https://www.amazon.com/Airbnb-Story-International-Gallagher-author/dp/1328530221/ref=sr_1_2?crid=2W9IA5E29VM19&keywords=The+Airbnb+Story&qid=1656021609&sprefix=the+airbnb+story%2Caps%2C85&sr=8-2) by Gallagher
+* [No Filter](https://www.amazon.com/No-Filter-Inside-Story-Instagram/dp/B07Y3TJ163/ref=sr_1_1?crid=XEY4YWHJSZ73&keywords=No+Filter+by&qid=1656021637&sprefix=no+filter+by%2Caps%2C85&sr=8-1) by Sarah Frier; "**Instagram is more important than we realize and this dives into the why**"
+* [Always Day One](https://www.amazon.com/Always-Day-One-Titans-Forever/dp/0593083482/ref=sr_1_1?crid=Z8DODQCH8DN&keywords=Always+Day+One&qid=1656021659&sprefix=always+day+one%2Caps%2C91&sr=8-1) by Kantrowitz
+* [A Truck Full of Money](https://www.amazon.com/Truck-Full-Money-Tracy-Kidder/dp/0812995244/ref=sr_1_1?crid=2FGVYGLMWKUCP&keywords=A+Truck+Full+of+Money&qid=1656021680&sprefix=a+truck+full+of+money%2Caps%2C87&sr=8-1) by Tracy Kidder; "**Not as good as Soul of a New Machine**"
+* [Disrupted](https://www.amazon.com/Disrupted-Dan-Lyons/dp/0316306096/ref=sr_1_1?keywords=disrupted+dan+lyons&qid=1656021699&sprefix=Disrupted+Dan+%2Caps%2C78&sr=8-1) by Dan Lyons
 * [Getting Acquired](https://www.amazon.com/dp/1544522894?psc=1&ref=ppx_yo2ov_dt_b_product_details) by Gazdecki
-* Bitcoin Billionaires by Ben Mezrich
-* Valley of the Gods by Wolfe
-* Beyond the Valley by Srinivasan
-* The Four by Galloway
+* [Bitcoin Billionaires](https://www.amazon.com/Bitcoin-Billionaires-Genius-Betrayal-Redemption/dp/1250217741/ref=sr_1_1?crid=JJ4E06I46L1C&keywords=Bitcoin+Billionaires&qid=1656021737&sprefix=bitcoin+billionaires%2Caps%2C157&sr=8-1) by Ben Mezrich; "**HAVE NOT YET READ AND GENERALLY I ABHOR CRYPTO; INSERT DUTCH TULIP BULB RANT HERE**"
+* [Valley of the Gods](https://www.amazon.com/Valley-Gods-Silicon-Story-ebook/dp/B0176M3XDK/ref=sr_1_1?crid=22MPMC6PCTIBU&keywords=Valley+of+the+Gods+wolfe&qid=1656021790&sprefix=valley+of+the+gods+wolfe%2Caps%2C151&sr=8-1) by Wolfe; "**HAVE NOT READ**"
+* [Beyond the Valley](https://www.amazon.com/Beyond-Valley-Innovators-Overcoming-Technologies/dp/0262043130/ref=sr_1_2?crid=3OTBPMSTTXCAK&keywords=Beyond+the+Valley&qid=1656020530&s=books&sprefix=beyond+the+valley%2Cstripbooks%2C75&sr=1-2) by Srinivasan; "**HAVE NOT READ YET**"
+* [The Four](https://www.amazon.com/Four-Hidden-Amazon-Facebook-Google/dp/0735213658/ref=sr_1_1?crid=2QWV8OO4AIC5V&keywords=The+Four+galloway&qid=1656020502&s=books&sprefix=the+four+galloway%2Cstripbooks%2C56&sr=1-1) by Galloway; "**HAVE NOT READ YET**"
 
 ## The Cellphone Wars
 * [Dogfight](https://www.amazon.com/Dogfight-Apple-Google-Started-Revolution/dp/0374109206/ref=sr_1_1?crid=15UK05DE7CP0Y&keywords=Dogfight+vogelstein&qid=1656019710&s=books&sprefix=dogfight+vogelstein%2Cstripbooks%2C123&sr=1-1) by Fred Vogelstein
