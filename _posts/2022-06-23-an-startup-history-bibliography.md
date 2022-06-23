@@ -92,18 +92,18 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [Sweating Bullets: Notes on Inventing PowerPoint](https://www.robertgaskins.com/powerpoint-history/sweating-bullets/gaskins-sweating-bullets-webpdf-isbn-9780985142414.pdf) by Robert Gaskins; PDF 500 odd pages; "**This is a damn good read**"
 
 ## Microsoft
-* The Microsoft Way by Randall Stross
-* Idea Man but Paul Allen
-* Breaking Windows by David Bank
-* Leaving Microsoft to Change the World by John Wood
-* Microsoft Secrets by Cusuman and Selby 
-* Proudly Serving my Corporate Masters by Adam Barr; "**A boots on the ground look at Microsoft by a software engineeer**"
-* All You Really Need to Know in Business I Learned at Microsoft by Julie Bick
-* Gates by Stephen Mane and Paul Andrews
-* Barbarians Led by Bill Gates by Jennifer Edstrom and Marlin Ellen
-* The Making of Microsoft by Ichbiah and Knepper
-* I Sing the Body Electric by Fred Moody; "**Best ever look at CD-ROM production realities.  The bit about Slayer Sucks stayed with me forever**"
-* Show Stopper by G. Pascal Zachary; "**Damn near perfect**"
+* [The Microsoft Way](https://www.amazon.com/Microsoft-Way-Company-Outsmarts-Competition/dp/0201409496/ref=sr_1_1?crid=AW1LY8AC4SJV&keywords=The+Microsoft+Way&qid=1656014198&s=books&sprefix=the+microsoft+way%2Cstripbooks%2C216&sr=1-1) by Randall Stross
+* [Idea Man](https://www.amazon.com/Idea-Man-Paul-Allen-audiobook/dp/B004X7GHC6/ref=sr_1_1?crid=2WE6XDJRD1DQP&keywords=Idea+Man+Paul+allen&qid=1656014223&s=books&sprefix=idea+man+paul+allen%2Cstripbooks%2C127&sr=1-1) by Paul Allen
+* [Breaking Windows](https://www.amazon.com/Breaking-Windows-Fumbled-Future-Microsoft/dp/0743203151/ref=sr_1_1?crid=2DUORJL47B7NS&keywords=Breaking+Windows+david+bank&qid=1656014243&s=books&sprefix=breaking+windows+david+bank%2Cstripbooks%2C177&sr=1-1) by David Bank
+* [Leaving Microsoft to Change the World](https://www.amazon.com/Leaving-Microsoft-Change-World-Entrepreneurs/dp/0061121088/ref=sr_1_1?crid=2KT7FAW0LS9YY&keywords=Leaving+Microsoft+to+Change+the+World&qid=1656014261&s=books&sprefix=breaking+windows+david+bank%2Cstripbooks%2C129&sr=1-1) by John Wood
+* [Microsoft Secrets](https://www.amazon.com/MICROSOFT-SECRETS-Powerful-Software-Technology/dp/0028740483/ref=sr_1_1?crid=10QTVOO59AOXC&keywords=Microsoft+Secrets&qid=1656014281&s=books&sprefix=microsoft+secrets%2Cstripbooks%2C297&sr=1-1) by Cusuman and Selby; "**This was the book that talked about employees leaving the office for coffee or soda and how detrimental it was for concentration.  At the company I was at when this came out, our founder read it on a plane and we had soda in the office the next day.  Only time he ever read a book that benefited engineers; ISO 9000 quality for software was one of the bad book fall outs.**"
+* [Proudly Serving my Corporate Masters](https://www.amazon.com/Proudly-Serving-Corporate-Masters-Programmer/dp/0595161286/ref=sr_1_1?crid=3V9E8RMYR5XYQ&keywords=Proudly+Serving+my+Corporate+Masters&qid=1656014392&s=books&sprefix=proudly+serving+my+corporate+masters%2Cstripbooks%2C156&sr=1-1) by Adam Barr; "**A boots on the ground look at Microsoft by a software engineeer**"
+* [All You Really Need to Know in Business I Learned at Microsoft](https://www.amazon.com/Really-Need-Business-Learned-Microsoft-ebook/dp/B012O6PJF8/ref=sr_1_1?crid=LRI12MOGDINU&keywords=All+You+Really+Need+to+Know+in+Business+I+Learned+at+Microsoft&qid=1656014414&s=books&sprefix=all+you+really+need+to+know+in+business+i+learned+at+microsoft%2Cstripbooks%2C114&sr=1-1) by Julie Bick
+* [Gates](https://www.amazon.com/Gates-Microsofts-Reinvented-Industry-Himself-ebook/dp/B00CB14A1Q/ref=sr_1_1?crid=10WHQIFSAYBB2&keywords=Gates+paul+andrews&qid=1656014435&s=books&sprefix=gates+paul+andrews%2Cstripbooks%2C57&sr=1-1) by Stephen Mane and Paul Andrews
+* [Barbarians Led by Bill Gates](https://www.amazon.com/Barbarians-Led-Bill-Gates-Corporation/dp/0805057552/ref=sr_1_1?crid=3074PMZL3VR1F&keywords=Barbarians+Led+by+Bill+Gates&qid=1656014454&s=books&sprefix=barbarians+led+by+bill+gates%2Cstripbooks%2C80&sr=1-1) by Jennifer Edstrom and Marlin Ellen
+* [The Making of Microsoft](https://www.amazon.com/Making-Microsoft-Created-Successful-Software/dp/1559580712/ref=sr_1_1?crid=261LIHRKH2LN2&keywords=The+Making+of+Microsoft&qid=1656014483&s=books&sprefix=the+making+of+microsoft%2Cstripbooks%2C61&sr=1-1) by Ichbiah and Knepper; "**Good coverage of the early years of the Microsoft / Softbank relationship**"
+* [I Sing the Body Electronic](https://www.amazon.com/Sing-Body-Electronic-Microsoft-Multimedia/dp/0756757584/ref=sr_1_1?crid=2TJ5BA7HV72OY&keywords=I+Sing+the+Body+Electronic&qid=1656014674&s=books&sprefix=i+sing+the+body+electronic%2Cstripbooks%2C354&sr=1-1) by Fred Moody; "**Best ever look at CD-ROM production realities.  The bit about Slayer Sucks stayed with me forever**"
+* [Show Stopper](https://www.amazon.com/Showstopper-Breakneck-Windows-Generation-Microsoft-ebook/dp/B00J5X5E9U/ref=sr_1_2?crid=2HGAVEAXCX7I3&keywords=Show+Stopper+Zachary&qid=1656014694&s=books&sprefix=show+stopper+zachary%2Cstripbooks%2C231&sr=1-2) by G. Pascal Zachary; "**Damn near perfect**"
 
 ## Apple / Jobs / Pixar / Next
 * Steve Jobs and the Next Big Thing by Randall Stross
