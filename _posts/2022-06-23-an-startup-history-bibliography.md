@@ -83,12 +83,12 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [Inside the Star Wars Empire](https://www.amazon.com/Inside-Star-Wars-Empire-Memoir/dp/1493032313/ref=sr_1_1?crid=RLMPTAJL3Y9T&keywords=Inside+the+Star+Wars+Empire&qid=1656013483&s=books&sprefix=inside+the+star+wars+empire%2Cstripbooks%2C72&sr=1-1)
 
 ## The PC Era
-* What You See Is What You Get by Alan Sugar
-* PC Roadkill by Michael Hyman
-* Almost Perfect by W.E. Pete Peterson
-* Open by Rod Canion; "**I agree with Bryan Cantrill that this should have been titled Compatible**"
+* [What You See Is What You Get](https://www.amazon.com/What-You-See-Get-Autobiography-ebook/dp/B0042JTAIS/ref=sr_1_1?crid=22VSQY4O7ZAC6&keywords=What+You+See+Is+What+You+Get+Alan+Sugar&qid=1656013590&s=books&sprefix=what+you+see+is+what+you+get+alan+sugar%2Cstripbooks%2C84&sr=1-1) by Alan Sugar
+* [PC Roadkill](https://www.amazon.com/PC-Roadkill-Michael-Hyman/dp/1568843488/ref=sr_1_1?crid=27RM6BBU2L6GC&keywords=PC+Roadkill&qid=1656013610&s=books&sprefix=pc+roadkill%2Cstripbooks%2C116&sr=1-1) by Michael Hyman
+* [Almost Perfect](https://www.amazon.com/Almost-Perfect-W-Pete-Peterson-ebook/dp/B003XKNWUE/ref=sr_1_1?crid=1F2WYZNZMQIA&keywords=Almost+Perfect+Pete+Peterson&qid=1656013636&s=books&sprefix=almost+perfect+pete+peterson%2Cstripbooks%2C296&sr=1-1) by W.E. Pete Peterson
+* [Open](https://www.amazon.com/Open-Compaq-Domination-Helped-Computing/dp/1937856992/ref=sr_1_1?crid=Q86BW9JX628V&keywords=Open+Rod+Canion&qid=1656013652&s=books&sprefix=open+rod+canion%2Cstripbooks%2C112&sr=1-1) by Rod Canion; "**I agree with Bryan Cantrill that this should have been titled Compatible**"
 * Adventures in Microland by Jerry Pournelle; "**Jerry Pournelle who is long gone was the quintessential tech blogger albeit in print form**"
-* Once Upon a Time in Computerland by Jonathan Littman; "**Uber style fraud before uber**"
+* [Once Upon a Time in Computerland](https://www.amazon.com/Once-Upon-Time-Computerland-Littman/dp/0895865025/ref=sr_1_1?crid=1ZD38YYU6G01Y&keywords=Once+Upon+a+Time+in+Computerland&qid=1656013671&s=books&sprefix=once+upon+a+time+in+computerland%2Cstripbooks%2C355&sr=1-1) by Jonathan Littman; "**Uber style fraud before uber**"
 * [Sweating Bullets: Notes on Inventing PowerPoint](https://www.robertgaskins.com/powerpoint-history/sweating-bullets/gaskins-sweating-bullets-webpdf-isbn-9780985142414.pdf) by Robert Gaskins; PDF 500 odd pages; "**This is a damn good read**"
 
 ## Microsoft
