@@ -68,19 +68,19 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [The Innovators](https://www.amazon.com/The-Innovators-Walter-Isaacson-audiobook/dp/B00M9KICAY/ref=sr_1_1?keywords=the+innovators+walter+isaacson&qid=1656012149&s=books&sprefix=The+Innovators%2Cstripbooks%2C104&sr=1-1) by Walter Isaacson
 
 ## Intel
-* Inside Intel by Tim Jackson
+* [Inside Intel](https://www.amazon.com/Inside-Intel-Worlds-Powerful-Company/dp/0452276438/ref=sr_1_1?crid=2ZRFQO4YDU41J&keywords=Inside+Intel&qid=1656013362&s=books&sprefix=inside+intel%2Cstripbooks%2C216&sr=1-1) by Tim Jackson
 * Andy Grove by Richard Tedlow
-* The Intel Trinity by Michael Malone; "**Fascinating particularly the bit about walking out the door and exiting the DRAM business**"
-* High Output Management by Andy Grove; "**Good but cold**"
+* [The Intel Trinity](https://www.amazon.com/Intel-Trinity-Robert-Important-Company/dp/0062226762/ref=sr_1_1?crid=1I0B97LFTYMMN&keywords=The+Intel+Trinity&qid=1656013378&s=books&sprefix=the+intel+trinity%2Cstripbooks%2C213&sr=1-1) by Michael Malone; "**Fascinating particularly the bit about walking out the door and exiting the DRAM business**"
+* [High Output Management](https://www.amazon.com/High-Output-Management-Andrew-Grove/dp/0679762884/ref=sr_1_1?keywords=high+output+management&qid=1656013396&s=books&sprefix=High+Outp%2Cstripbooks%2C258&sr=1-1) by Andy Grove; "**Good but cold**"
 
 ## Bloomberg
-* Bloomberg by Bloomberg by Michael Bloomberg and Matthew Winkler; "**Makes you realize just how fundamental Bloomberg is**"
+* [Bloomberg by Bloomberg](https://www.amazon.com/Bloomberg-Revised-Updated-Michael-R/dp/1119554268/ref=sr_1_1?keywords=bloomberg+by+bloomberg&qid=1656013414&s=books&sprefix=Bloomberg+by+%2Cstripbooks%2C73&sr=1-1) by Michael Bloomberg and Matthew Winkler; "**Makes you realize just how fundamental Bloomberg is**"
 
 ## George Lucas 
 * Note: A lot of our modern media tech comes out of Lucas intellectual heritage which is why this is here
-* Droid maker by Michael Rubin
-* Sky walking by Dale Pollock
-* Inside the Star Wars Empire
+* [Droid maker: George Lucas and the Digital Revolution](https://www.amazon.com/Droidmaker-George-Lucas-Digital-Revolution/dp/0937404675/ref=sr_1_1?crid=1FP8B75Z66U31&keywords=Droid+maker&qid=1656013436&s=books&sprefix=droid+maker%2Cstripbooks%2C96&sr=1-1) by Michael Rubin
+* [Sky walking](https://www.amazon.com/Skywalking-Films-George-Lucas-Updated-ebook/dp/B00292BIR6/ref=sr_1_2?crid=1HWUYCSSKSVDY&keywords=Sky+walking&qid=1656013463&s=books&sprefix=sky+walking%2Cstripbooks%2C54&sr=1-2) by Dale Pollock
+* [Inside the Star Wars Empire](https://www.amazon.com/Inside-Star-Wars-Empire-Memoir/dp/1493032313/ref=sr_1_1?crid=RLMPTAJL3Y9T&keywords=Inside+the+Star+Wars+Empire&qid=1656013483&s=books&sprefix=inside+the+star+wars+empire%2Cstripbooks%2C72&sr=1-1)
 
 ## The PC Era
 * What You See Is What You Get by Alan Sugar
