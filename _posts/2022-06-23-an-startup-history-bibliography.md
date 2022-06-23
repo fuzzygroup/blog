@@ -143,19 +143,19 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [Creative Capital](https://www.amazon.com/gp/product/1422101223/ref=ppx_yo_dt_b_asin_title_o05_s00?ie=UTF8&psc=1) by Ante; **HAVE NOT READ YET**
 
 ## Oracle
-* Software by Matthew Symonds
-* The Difference Between God and Larry Ellison by Mike Wilson; "**This book helps you understand Oracle and how sales people really work.  The Go for the Gold program and Oracle's insanity in paying commissions on order receipt not payment of order never left me.**"
+* [Softwar](https://www.amazon.com/Softwar-Intimate-Portrait-Ellison-Oracle/dp/0743225058/ref=sr_1_1?crid=1HVO6UKZCG94T&keywords=Softwar+symonds&qid=1656017971&s=books&sprefix=softwar+symonds%2Cstripbooks%2C76&sr=1-1) by Matthew Symonds
+* [The Difference Between God and Larry Ellison](https://www.amazon.com/Difference-Between-God-Larry-Ellison/dp/0060008768/ref=sr_1_1?crid=42Y0NSH9W545&keywords=The+Difference+Between+God+and+Larry+Ellison&qid=1656017990&s=books&sprefix=the+difference+between+god+and+larry+ellison%2Cstripbooks%2C187&sr=1-1) by Mike Wilson; "**This book helps you understand Oracle and how sales people really work.  The Go for the Gold program and Oracle's insanity in paying commissions on order receipt not payment of order never left me.**"
 
 ## Sun
-* The Java Handbook (this is here because of an excellent appendix covering the history of Java) by Patrick Naughton; "**Great explanation of the early Java days**"
-* Sunburst by Mark Hall and John Barry; "**Fascinating.  I'm still pissed we lost NEWS in favor of X11**"
-* High Noon by Karen Southwick
+* [The Java Handbook](https://www.amazon.com/Java-Handbook-Patrick-Naughton/dp/0074632906/ref=sr_1_1?crid=37U2H4GG3N5ZO&keywords=The+Java+Handbook+Naughton&qid=1656018019&s=books&sprefix=the+java+handbook+naughton%2Cstripbooks%2C59&sr=1-1) (this is here because of an excellent appendix covering the history of Java) by Patrick Naughton; "**Great explanation of the early Java days**"
+* [Sunburst](https://www.amazon.com/Sunburst-Ascent-Microsystems-Mark-Hall/dp/0809243687/ref=sr_1_1?crid=1BDSOA9JOY8LA&keywords=Sunburst+mark+hall&qid=1656018038&s=books&sprefix=sunburst+mark+hall%2Cstripbooks%2C60&sr=1-1) by Mark Hall and John Barry; "**Fascinating.  I'm still pissed we lost NEWS in favor of X11**"
+* [High Noon](https://www.amazon.com/High-Noon-Inside-McNealy-Microsystems/dp/0471297135/ref=sr_1_1?crid=1K9Q99IKS4O0G&keywords=High+Noon+Southwick&qid=1656018061&s=books&sprefix=high+noon+southwick%2Cstripbooks%2C57&sr=1-1) by Karen Southwick
 
 ## Cisco
-* Making the Cisco Connection by David Bunnell
+* [Making the Cisco Connection](https://www.amazon.com/Making-Cisco-Connection-Internet-Superpower/dp/0471357111/ref=sr_1_1?crid=3R5IYKPNQ1WBQ&keywords=Making+the+Cisco+Connection&qid=1656018089&s=books&sprefix=making+the+cisco+connection%2Cstripbooks%2C84&sr=1-1) by David Bunnell; "**Sandy Lerner's post Cisco career has to be the best heel turn in the history of the industry**"
 
 ## Amiga
-* The Future Was Here by Jimmy Maher; "**As much of a lost hope as BeOS**"
+* [The Future Was Here](https://www.amazon.com/Future-Was-Here-Commodore-Platform/dp/0262535696/ref=sr_1_1?crid=16SIZ6C7MND3B&keywords=The+Future+Was+Here+Maher&qid=1656018140&s=books&sprefix=the+future+was+here+maher%2Cstripbooks%2C75&sr=1-1) by Jimmy Maher; "**As much of a lost hope as BeOS**"
 
 ## Open Source
 * Just for Fun by Linus Thorvaldsen and David Diamond
