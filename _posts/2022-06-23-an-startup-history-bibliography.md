@@ -136,10 +136,10 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [Revolution In The Valley](https://www.amazon.com/gp/product/0596007191/ref=ppx_yo_dt_b_asin_title_o02_s00?ie=UTF8&psc=1) by Hertzfield; **HAVE NOT READ YET**
 
 ## Venture Capital
-* The Silicon Valley Way by Sherwin
-* Confessions of a Venture Capitalist by Quindlen
-* Valley Boy by Tom Perkins
-* LaunchPad by Randall Stross
+* [The Silicon Valley Way](https://www.amazon.com/Silicon-Valley-Way-Second-Successful-ebook/dp/B003ZDOVXG/ref=sr_1_1?crid=RGBOA3XYPA0A&keywords=The+Silicon+Valley+Way&qid=1656017872&s=books&sprefix=the+silicon+valley+way%2Cstripbooks%2C175&sr=1-1) by Sherwin
+* [Confessions of a Venture Capitalist](https://www.amazon.com/Confessions-Venture-Capitalist-High-Stakes-Financing-ebook/dp/B001GXP7O4/ref=sr_1_1?crid=1XX91H3LM17E9&keywords=Confessions+of+a+Venture+Capitalist&qid=1656017890&s=books&sprefix=confessions+of+a+venture+capitalist%2Cstripbooks%2C83&sr=1-1) by Quindlen
+* [Valley Boy](https://www.amazon.com/Valley-Boy-Education-Tom-Perkins/dp/1592403131/ref=sr_1_1?crid=39RHMH8GON7OJ&keywords=Valley+Boy&qid=1656017904&s=books&sprefix=valley+boy%2Cstripbooks%2C79&sr=1-1) by Tom Perkins
+* [LaunchPad](https://www.amazon.com/The-Launch-Pad-Randall-Stross-audiobook/dp/B009KFMK90/ref=sr_1_1?crid=2M2GX0RFK69UT&keywords=LaunchPad+randall+stross&qid=1656017925&s=books&sprefix=launchpad+randall+stross%2Cstripbooks%2C53&sr=1-1) by Randall Stross; "**A deep dive into Y Combinator**"
 * [Creative Capital](https://www.amazon.com/gp/product/1422101223/ref=ppx_yo_dt_b_asin_title_o05_s00?ie=UTF8&psc=1) by Ante; **HAVE NOT READ YET**
 
 ## Oracle
