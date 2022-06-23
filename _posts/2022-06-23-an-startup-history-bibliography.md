@@ -106,33 +106,33 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [Show Stopper](https://www.amazon.com/Showstopper-Breakneck-Windows-Generation-Microsoft-ebook/dp/B00J5X5E9U/ref=sr_1_2?crid=2HGAVEAXCX7I3&keywords=Show+Stopper+Zachary&qid=1656014694&s=books&sprefix=show+stopper+zachary%2Cstripbooks%2C231&sr=1-2) by G. Pascal Zachary; "**Damn near perfect**"
 
 ## Apple / Jobs / Pixar / Next
-* Steve Jobs and the Next Big Thing by Randall Stross
-* Odyssey by John Sculley
-* Apple by Jim Carlton
-* Infinite Loop by Michael Malone
-* Haunted Empire by Yukari Kane
-* Steve Jobs by Walter Isaacson
-* Return to the Little Kingdom by Michael Moritz
-* The Bite in the Apple by Chrisann Brennan
-* The Steve Jobs Way by Jay Elliot
-* iCon by Jeffrey Young and William Simon
-* The One Device by Brian Merchant
-* Inside Apple by Adam Lashinsky
-* The Macintosh Way by Guy Kawasaki; "**This book defined developer relations and evangelism for me and the industry**"
-* West of Eden by Frank Rose
-* The Second Coming of Steve Jobs boy Alan Deutschman
-* Apple Confidential by Owen Linzmayer
-* The Cult of Mac by Kahney
-* The Apple Way by Jeffrey Cruikshank
-* Insanely Great by Steven Levy
-* The Perfect Thing by Steven Levy
-* Inside Steve's Brain by Leander Kahney
-* iWoz by Steve Wozniak
-* Creative Selection by Ken Kocienda
-* Leading Apple with Steve Jobs by Jay Elliot
-* Becoming Steve Jobs by Brent Schlender and Rick Tetzeli
-* To Pixar and Beyond by Lawrence Levy
-* After Steve by Tripp Mickle
+* [Steve Jobs and the Next Big Thing](https://www.amazon.com/Steve-Jobs-NeXT-Big-Thing-ebook/dp/B006VOM5V6/ref=sr_1_1?crid=2LT7CLYSM5IM6&keywords=Steve+Jobs+and+the+Next+Big+Thing&qid=1656017033&s=books&sprefix=steve+jobs+and+the+next+big+thing+%2Cstripbooks%2C102&sr=1-1) by Randall Stross. 
+* [Odyssey](https://www.amazon.com/Odyssey-Pepsi-Journey-Adventure-Future/dp/0060157801/ref=sr_1_1?crid=R4IVP59DT7RM&keywords=Odyssey+Sculley&qid=1656017069&s=books&sprefix=odyssey+sculley%2Cstripbooks%2C66&sr=1-1) by John Sculley
+* [Apple](https://www.amazon.com/Apple-Intrigue-Egomania-Business-Blunders/dp/0812928512/ref=sr_1_1?crid=33EXMGLHPK7WB&keywords=Apple+Jim+Carlton&qid=1656017085&s=books&sprefix=apple+jim+carlton%2Cstripbooks%2C175&sr=1-1) by Jim Carlton
+* [Infinite Loop](https://www.amazon.com/Infinite-Loop-Michael-Malone/dp/0385486847/ref=sr_1_1?crid=2N0QGA423U6C4&keywords=Infinite+Loop+michael+malone&qid=1656017103&s=books&sprefix=infinite+loop+michael+malone%2Cstripbooks%2C60&sr=1-1) by Michael Malone
+* [Haunted Empire](https://www.amazon.com/Haunted-Empire-Apple-After-Steve/dp/B00I8OJ7VI/ref=sr_1_2?crid=5EMZVENGY3CF&keywords=Haunted+Empire&qid=1656017124&s=books&sprefix=haunted+empire+%2Cstripbooks%2C52&sr=1-2) by Yukari Kane
+* [Steve Jobs](https://www.amazon.com/Steve-Jobs-Walter-Isaacson-audiobook/dp/B07ZMKXMTG/ref=sr_1_1?crid=1AUX46OBPMSQW&keywords=steve+jobs+walter+isaacson&qid=1656017143&s=books&sprefix=Steve+Jobs%2Cstripbooks%2C103&sr=1-1) by Walter Isaacson
+* [Return to the Little Kingdom](https://www.amazon.com/Return-Little-Kingdom-Creation-Changed/dp/B004CWGZXI/ref=sr_1_1?crid=12G8QD9ETHXXV&keywords=Return+to+the+Little+Kingdom&qid=1656017162&s=books&sprefix=return+to+the+little+kingdom%2Cstripbooks%2C85&sr=1-1) by Michael Moritz
+* [The Bite in the Apple](https://www.amazon.com/Bite-Apple-Memoir-Life-Steve-ebook/dp/B00BY5QWUC/ref=sr_1_1?crid=36HNC11P3KF31&keywords=The+Bite+in+the+Apple+brennan&qid=1656017179&s=books&sprefix=the+bite+in+the+apple+brennan%2Cstripbooks%2C56&sr=1-1) by Chrisann Brennan
+* [The Steve Jobs Way](https://www.amazon.com/The-Steve-Jobs-Way-audiobook/dp/B004R0SLG4/ref=sr_1_1?crid=1NVPZF7K4L4IT&keywords=The+Steve+Jobs+Way&qid=1656017195&s=books&sprefix=the+steve+jobs+way%2Cstripbooks%2C69&sr=1-1) by Jay Elliot
+* [iCon](https://www.amazon.com/iCon-Steve-Jobs-Greatest-Business/dp/0471720836/ref=sr_1_1?crid=3GDK3BZZVEIGK&keywords=iCon+Jeffrey+Young&qid=1656017218&s=books&sprefix=icon+jeffrey+young%2Cstripbooks%2C115&sr=1-1) by Jeffrey Young and William Simon
+* [The One Device](https://www.amazon.com/The-One-Device-Brian-Merchant-audiobook/dp/B072QDKDRR/ref=sr_1_1?crid=LYUIYPSE78QW&keywords=the+one+device+the+secret+history+of+the+iphone&qid=1656017235&s=books&sprefix=The+One+Device+%2Cstripbooks%2C62&sr=1-1) by Brian Merchant
+* [Inside Apple](https://www.amazon.com/Inside-Apple-Americas-Admired-Secretive-Company-ebook/dp/B005LH4Y3G/ref=sr_1_1?crid=EDSEDTD62GM6&keywords=Inside+Apple&qid=1656017255&s=books&sprefix=inside+apple%2Cstripbooks%2C82&sr=1-1) by Adam Lashinsky
+* [The Macintosh Way](https://www.amazon.com/Macintosh-Way-Guy-Kawasaki/dp/0673461750/ref=sr_1_1?crid=3LIWZ99TPGVLA&keywords=The+Macintosh+Way&qid=1656017270&s=books&sprefix=the+macintosh+way%2Cstripbooks%2C71&sr=1-1) by Guy Kawasaki; "**This book defined developer relations and evangelism for me and the industry**"
+* [West of Eden](https://www.amazon.com/West-Eden-Innocence-Apple-Computer-ebook/dp/B00295MJHG/ref=sr_1_1?crid=364PLOYG69Y0K&keywords=West+of+Eden+frank+rose&qid=1656017294&s=books&sprefix=west+of+eden+frank+rose%2Cstripbooks%2C57&sr=1-1) by Frank Rose
+* [The Second Coming of Steve Jobs](https://www.amazon.com/Second-Coming-Steve-Jobs/dp/B0000547BZ/ref=sr_1_1?crid=343AV7AOYFGHX&keywords=The+Second+Coming+of+Steve+Jobs&qid=1656017312&s=books&sprefix=the+second+coming+of+steve+jobs%2Cstripbooks%2C82&sr=1-1) by Alan Deutschman
+* [Apple Confidential](https://www.amazon.com/Apple-Confidential-2-0-Definitive-Colorful/dp/1593270100/ref=sr_1_1?crid=3EUMWKI7J61O4&keywords=Apple+Confidential&qid=1656017335&s=books&sprefix=apple+confidential%2Cstripbooks%2C92&sr=1-1) by Owen Linzmayer
+* [The Cult of Mac](https://www.amazon.com/Cult-Mac-2nd-Leander-Kahney/dp/1593279140/ref=sr_1_1?crid=3N4B9UKMRC629&keywords=the+cult+of+mac&qid=1656017353&s=books&sprefix=the+cult+of+mac%2Cstripbooks%2C69&sr=1-1) by Kahney
+* [The Apple Way](https://www.amazon.com/The-Apple-Way/dp/B09B1DNBPW/ref=sr_1_1?crid=2LUODQP5ZD7L&keywords=The+Apple+Way+cruikshank&qid=1656017377&s=books&sprefix=the+apple+way+cruikshank%2Cstripbooks%2C64&sr=1-1) by Jeffrey Cruikshank
+* [Insanely Great](https://www.amazon.com/INSANELY-GREAT-Macintosh-Computer-Everything/dp/0670852449/ref=sr_1_1?crid=QAR4FG654MBB&keywords=Insanely+Great&qid=1656017396&s=books&sprefix=insanely+great%2Cstripbooks%2C313&sr=1-1) by Steven Levy
+* [The Perfect Thing](https://www.amazon.com/Perfect-Thing-Shuffles-Commerce-Coolness/dp/0743285220/ref=sr_1_1?crid=E26WZRI3QKGF&keywords=The+Perfect+Thing+levy&qid=1656017422&s=books&sprefix=the+perfect+thing+levy%2Cstripbooks%2C52&sr=1-1) by Steven Levy
+* [Inside Steve's Brain](https://www.amazon.com/Inside-Steves-Brain-Leander-Kahney-ebook/dp/B002N83GYE/ref=sr_1_1?crid=3LWRQTUF5VYB9&keywords=Inside+Steve%27s+Brain&qid=1656017438&s=books&sprefix=inside+steve%27s+brain%2Cstripbooks%2C80&sr=1-1) by Leander Kahney
+* [iWoz](https://www.amazon.com/iWoz-BYWozniak-Wozniak/dp/B006Q4IWXG/ref=sr_1_2?crid=1K5EODBI90E6B&keywords=iWoz&qid=1656017451&s=books&sprefix=iwoz%2Cstripbooks%2C93&sr=1-2) by Steve Wozniak
+* [Creative Selection](https://www.amazon.com/Creative-Selection-Inside-Apples-Process/dp/1250194466/ref=sr_1_1?crid=3EB43JEMB58Y4&keywords=creative+selection+ken+kocienda&qid=1656017470&s=books&sprefix=Creative+Selection+%2Cstripbooks%2C68&sr=1-1) by Ken Kocienda; "**This was written by the guy who created the auto correct algorithms on the iPhone and is amazing to understand how that one innovation came to be**"
+* [Leading Apple](https://www.amazon.com/Leading-Apple-Steve-Jobs-Controversial-ebook/dp/B008SGNIPC/ref=sr_1_1?crid=3AF728LY8JLDF&keywords=Leading+Apple&qid=1656017517&s=books&sprefix=leading+apple%2Cstripbooks%2C69&sr=1-1) with Steve Jobs by Jay Elliot
+* [Becoming Steve Jobs](https://www.amazon.com/Becoming-Steve-Jobs-audiobook/dp/B00R8IC37K/ref=sr_1_1?crid=EHMP6GQ5QJ66&keywords=Becoming+Steve+Jobs&qid=1656017533&s=books&sprefix=becoming+steve+jobs%2Cstripbooks%2C90&sr=1-1) by Brent Schlender and Rick Tetzeli
+* [To Pixar and Beyond](https://www.amazon.com/Pixar-Beyond-Unlikely-Journey-Entertainment-ebook/dp/B01912OSA0/ref=sr_1_1?crid=1KBD76I3UHI0E&keywords=To+Pixar+and+Beyond&qid=1656017565&s=books&sprefix=to+pixar+and+beyond%2Cstripbooks%2C68&sr=1-1) by Lawrence Levy
+* [After Steve](https://www.amazon.com/After-Steve-Became-Trillion-Dollar-Company/dp/B09CF3B8VH/ref=sr_1_1?crid=2VRN0RS8K6CI4&keywords=After+Steve&qid=1656017579&s=books&sprefix=after+steve%2Cstripbooks%2C93&sr=1-1) by Tripp Mickle
 * [Revolution In The Valley](https://www.amazon.com/gp/product/0596007191/ref=ppx_yo_dt_b_asin_title_o02_s00?ie=UTF8&psc=1) by Hertzfield; **HAVE NOT READ YET**
 
 ## Venture Capital
