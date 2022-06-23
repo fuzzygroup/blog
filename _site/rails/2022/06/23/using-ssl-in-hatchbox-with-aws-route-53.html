@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Building a Bootstrap App with Rails 7 and SCSS Files</title>
-  <meta name="description" content="As is too often the case, I find that the initial aspect of getting a modern app (Bootstrap, Tailwind, React) initially setup to be the most frustrating aspe...">
+  <title>Using SSL in HatchBox with AWS Route 53</title>
+  <meta name="description" content="HatchBox continues to be my favorite tool for Rails deployment hands down.  And this includes Dockarno – my own Bash based Docker deployment tool.  When some...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2022/06/22/building-a-bootstrap-app-with-rails-7-and-scss-files.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2022/06/23/using-ssl-in-hatchbox-with-aws-route-53.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,11 +39,11 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Building a Bootstrap App with Rails 7 and SCSS Files">
+  <meta name="twitter:title" content="Using SSL in HatchBox with AWS Route 53">
 
   
     <meta name="twitter:description"
-      content="As is too often the case, I find that the initial aspect of getting a modern app (Bootstrap, Tailwind, React) initially setup to be the most frustrating aspect of Rails.  Given that I like to spin ...">
+      content="HatchBox continues to be my favorite tool for Rails deployment hands down.  And this includes Dockarno – my own Bash based Docker deployment tool.  When something you pay for replaces something you...">
   
 
   
@@ -177,143 +177,130 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Building a Bootstrap App with Rails 7 and SCSS Files</h1>
-    <p class="I'll"><time datetime="2022-06-22T02:12:00-04:00" itemprop="datePublished">Jun 22, 2022</time> 
+    <h1 class="post-title" itemprop="name headline">Using SSL in HatchBox with AWS Route 53</h1>
+    <p class="I'll"><time datetime="2022-06-23T03:01:00-04:00" itemprop="datePublished">Jun 23, 2022</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>As is too often the case, I find that the initial aspect of getting a modern app (Bootstrap, Tailwind, React) initially setup to be the most <strong>frustrating</strong> aspect of Rails.  Given that I like to spin up new apps pretty regularly, well, I spend a lot of time being frustrated with an old man's grumbling of:</p>
+    <p>HatchBox continues to be my favorite tool for Rails deployment hands down.  And this includes Dockarno – my own Bash based Docker deployment tool.  When something you pay for replaces something you wrote yourself, that's a sign of its very, very strong goodness.</p>
 
-<blockquote>
-  <p>It didn't used to be this hard.</p>
-</blockquote>
+<p>I just used HatchBox to support SSL wildcard deployment for something I'm building and the process was a tad bit tricky so I thought I'd write it up.</p>
 
-<p>No it wasn't this hard.  And while I still don't really understand asset compilation, I did recently put together a new app where I pulled in SCSS files using variables from a different app and I can start to see it.</p>
+<p>HatchBox has excellent built in SSL support using Let's Encrypt but when you use wildcard SSL, you get asked for the Route 53 Key and the Route 53 secret.  Here's how you get those:</p>
 
-<p>This blog post walks through a Rails 7 app using .scss files.</p>
+<h2 id="on-aws-in-route-53">On AWS, in Route 53</h2>
 
-<h2 id="step-1-rails-new">Step 1: Rails New</h2>
+<p>In Route 53, make sure you have *.domain.extension defined to allow it to be wildcard.</p>
 
-<p>Here's your Rails 7 new command to generate a new app with Bootstrap:</p>
+<h2 id="on-aws-in-iam">On AWS, in IAM</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails new scss_test1 --css bootstrap
-</code></pre></div></div>
-
-<p>Yep.  That's it.  Whoa!!!  There are also options to use Tailwind.  I found this technique in the Saeloun article linked below and I will be forever grateful; seriously – <em>thank you</em>.</p>
-
-<h2 id="step-2-add-the-sassc-rails-gem">Step 2: Add the Sassc-Rails Gem</h2>
-
-<p>I believe this Gem is needed as sassc support is officially deprecated.  But I might be wrong about this; front end stuff changes with every Rails release so if I'm wrong, well, sigh.</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem "sassc-rails"
-</code></pre></div></div>
-
-<p><strong>NOTE</strong>: Please see the last section "That Mysterious Error"; you may not want this in your Gemfile or:</p>
-
-<h2 id="step-3-copy-in-your-scss-files">Step 3: Copy In Your SCSS Files</h2>
-
-<p>If you are pulling in SCSS files then you need to copy them into your:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>app/assets/stylesheets 
-</code></pre></div></div>
-
-<p>directory.  They can exist elsewhere but that directory is for stylesheets so differing on this point confuses me.</p>
-
-<h2 id="modify-your-include-directives">Modify Your Include Directives</h2>
-
-<p>This is the tricky bit and where you simply have to experiment.  The thing to understand is that asset compilation is just that – compilation.If you're old school enough that you understand the analogy of your stylesheet files becoming akin to a make file with all the <strong>dark magic</strong> that entails, perhaps that helps.  In your stylesheets directory there will be an initial stylesheet file, for me, it was application_bootstrap.scss and then I had copied in a number of other stylesheet files like palette.scss, landing.scss, customized_bootstrap.scss and so on.  In my core application_bootstrap.scss was this:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// system level; installed by rails
-@import 'bootstrap/scss/bootstrap';
-@import 'bootstrap-icons/font/bootstrap-icons';
-</code></pre></div></div>
-
-<p>Disclaimer: I added the comment to help my understand where things came from.</p>
-
-<p>I then modified it to look like this:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@import './customized_bootstrap.scss';
- 
-// system level; installed by rails
-@import 'bootstrap/scss/bootstrap';
-@import 'bootstrap-icons/font/bootstrap-icons';
-
-@import 'palette.scss';
-@import 'landing.scss';    
-</code></pre></div></div>
-
-<p>Please note that the order matters – this really is a make file and what you are doing is dealing with dependencies.  As an example there are are variables defined in some files that need to be imported before other files.  In my customized_bootstrap.scss file, which I pulled in from elsewhere and another CSS engine (vite), I had to make a bunch of changes like this:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
- *  import the necessary Bootstrap files 
- */
-@import "../node_modules/bootstrap/scss/functions";
-@import "../node_modules/bootstrap/scss/mixins";
-@import '../node_modules/bootstrap/scss/variables';
-@import "../node_modules/bootstrap/scss/utilities";
-
-//@import "./node_modules/bootstrap/scss/_functions.scss";
-//@import "node_modules/bootstrap/scss/functions.scss";
-//@import "//node_modules/bootstrap/scss/variables";
-//@import "//node_modules/bootstrap/scss/utilities";
-</code></pre></div></div>
-
-<p>The commented out items where the initial state.</p>
-
-<p>I also had to do this:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@import "//landing";
-</code></pre></div></div>
-
-<p>I don't understand the use of // versus ,/  But it is all just path references and we are developers – we can get this.  This was purely the desperate machinations of a developer with Stack Overflow access and the desire to make something work with an old app on the left and a new app on the right refreshing constantly until the two sites where in visual parity.  Typing this triggered a Quantum Leap memory "Hoping against hope that the next refresh would be the last".</p>
-
-<h2 id="that-mysterious-error-or-oh-crap-deploy-">That Mysterious Error or Oh Crap Deploy …</h2>
-
-<p>So I did all the above and had things working perfectly in development.  I got to deploy and got this crap:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SassC::SyntaxError: Error: Function rgb is missing argument $green.
-        on line 17800 of stdin
-&gt;&gt;   border-color: rgb(191 219 254/var(--tw-border-opacity));
-</code></pre></div></div>
-
-<p>A wee spot of googling had me traveling over to Github where I found this <a href="https://github.com/tailwindlabs/tailwindcss/discussions/6738">thread</a>.</p>
-
-<p>The answer turned out to be:</p>
+<p>In the IAM console, you need to:</p>
 
 <ul>
-  <li>Remove the sasc-rails gem from Gemfile</li>
-  <li>Do a bundle update</li>
-  <li>Test things by running an assets precompile locally but in <strong>PRODUCTION</strong> mode</li>
+  <li>Add a user</li>
+  <li>Add that user to a group</li>
+  <li>Add a JSON policy document</li>
 </ul>
 
-<p>Use the following command:</p>
+<p>Here is the JSON policy that you need to add:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RAILS_ENV=production bundle exec rake assets:precompile
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "route53:GetChange",
+            "Resource": "arn:aws:route53:::change/*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "route53:ChangeResourceRecordSets",
+            "Resource": "arn:aws:route53:::hostedzone/*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "route53:ListHostedZonesByName",
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "route53:ListHostedZones",
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "route53:ListResourceRecordSets",
+            "Resource": "*"
+        }
+    ]
+}
 </code></pre></div></div>
 
-<h2 id="conclusion">Conclusion</h2>
+<p>After you've added that user then you will be prompted with the normal AWS access key / secret key.  Save the credentials and then add them to HatchBox.  HatchBox will then got thru an API session with AWS and validate the key.</p>
 
-<p>I won't claim to fully understand the asset pipeline but this is the closest I've gotten to understanding it.  In particular the analogy of a makefile for CSS very much helped me grok this.</p>
+<h2 id="my-experience-and-chriss-brilliant-work">My Experience and Chris's Brilliant Work</h2>
+
+<p>I started from documentation I found online (see below) that turned out to be incomplete.  When I examined the HatchBox log for the transaction, I saw this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-----&gt; Connecting to SOMETHING3-lb (138.68.227.244 port 22) as root
+
+Uploaded /etc/logrotate.d/acme.sh
+
+Executing 'curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh | sh -s -- --install-online'
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100  211k  100  211k    0     0  4139k      0 --:--:-- --:--:-- --:--:-- 4139k
+[Thu Jun 23 06:55:55 UTC 2022] Installing from online archive.
+[Thu Jun 23 06:55:55 UTC 2022] Downloading https://github.com/acmesh-official/acme.sh/archive/master.tar.gz
+[Thu Jun 23 06:55:56 UTC 2022] Extracting master.tar.gz
+[Thu Jun 23 06:55:56 UTC 2022] It is recommended to install socat first.
+[Thu Jun 23 06:55:56 UTC 2022] We use socat for standalone server if you use standalone mode.
+[Thu Jun 23 06:55:56 UTC 2022] If you don't use standalone mode, just ignore this warning.
+[Thu Jun 23 06:55:56 UTC 2022] Installing to /root/.acme.sh
+[Thu Jun 23 06:55:56 UTC 2022] Installed to /root/.acme.sh/acme.sh
+[Thu Jun 23 06:55:56 UTC 2022] Installing alias to '/root/.bashrc'
+[Thu Jun 23 06:55:56 UTC 2022] OK, Close and reopen your terminal to start using acme.sh
+[Thu Jun 23 06:55:56 UTC 2022] Installing cron job
+53 0 * * * "/root/.acme.sh"/acme.sh --cron --home "/root/.acme.sh" &gt; /dev/null
+[Thu Jun 23 06:55:56 UTC 2022] Good, bash is found, so change the shebang to use bash as preferred.
+[Thu Jun 23 06:55:57 UTC 2022] OK
+[Thu Jun 23 06:55:57 UTC 2022] Install success!
+
+Executing '~/.acme.sh/acme.sh --set-default-ca --server letsencrypt'
+[Thu Jun 23 06:55:58 UTC 2022] Changed default CA to: https://acme-v02.api.letsencrypt.org/directory
+
+Executing 'AWS_ACCESS_KEY_ID='DELETEDCOZIMNOTSTUPID' AWS_SECRET_ACCESS_KEY='DELETEDCOZIMSTILLNOTSTUPID' AWS_DNS_SLOWRATE=1 ~/.acme.sh/acme.sh --issue -d *.SOMETHING.com -d SOMETHING.com --dns dns_aws --force --log'
+[Thu Jun 23 06:56:00 UTC 2022] Using CA: https://acme-v02.api.letsencrypt.org/directory
+[Thu Jun 23 06:56:00 UTC 2022] Multi domain='DNS:*.SOMETHING.com,DNS:SOMETHING.com'
+[Thu Jun 23 06:56:00 UTC 2022] Getting domain auth token for each domain
+[Thu Jun 23 06:56:02 UTC 2022] Getting webroot for domain='*.SOMETHING.com'
+[Thu Jun 23 06:56:02 UTC 2022] Getting webroot for domain='SOMETHING.com'
+[Thu Jun 23 06:56:02 UTC 2022] Adding txt value: fjN5n0AgRpvyYlqedjL-8KLS9rrgEzVAWdbb9gfh1kY for domain:  _acme-challenge.SOMETHING.com
+[Thu Jun 23 06:56:03 UTC 2022] Getting existing records for _acme-challenge.SOMETHING.com
+[Thu Jun 23 06:56:03 UTC 2022] Response error:
+SenderAccessDeniedUser: arn:aws:iam::835336135388:user/hatchboxdns2 is not authorized to perform: route53:ListResourceRecordSets on resource: arn:aws:route53:::hostedzone/Z1OSXVLV0259TW because no identity-based policy allows the route53:ListResourceRecordSets action427a3f8b-97ff-40fc-8079-3b2799e51463
+[Thu Jun 23 06:56:04 UTC 2022] Error add txt for domain:_acme-challenge.SOMETHING.com
+[Thu Jun 23 06:56:04 UTC 2022] Please check log file for more details: /root/.acme.sh/acme.sh.log
+
+-----&gt; Command returned exit code 1
+</code></pre></div></div>
+
+<p>This is where Chris did is normally brilliant work.  By passing through the full response error (and building a user viewable log facility), I was able to see:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SenderAccessDeniedUser: arn:aws:iam::835336135388:user/hatchboxdns2 is not authorized to perform: route53:ListResourceRecordSets on resource: arn:aws:route53:::hostedzone/Z1OSXVLV0259TW because no identity-based policy allows the route53:ListResourceRecordSets action427a3f8b-97ff-40fc-8079-3b2799e51463
+</code></pre></div></div>
+
+<p>And that told me I needed to add <strong>route53:ListResourceRecordSets</strong> to my JSON policy.</p>
+
+<p>Outstanding!</p>
 
 <h2 id="see-also">See Also</h2>
 
-<ul>
-  <li><a href="https://blog.saeloun.com/2021/11/17/rails-7-added-css-app-generator.html">The Saeloun article</a></li>
-  <li><a href="https://www.reddit.com/r/rails/comments/pk7x5j/any_clue_what_with_cssscss_imports_in_rails_7/">Useful Reddit Thread</a></li>
-  <li><a href="https://stackoverflow.com/questions/71231622/idiomatic-sass-processing-in-rails-7">Stack Overflow 1</a></li>
-  <li><a href="https://guides.rubyonrails.org/asset_pipeline.html">Asset Pipeline Overview</a></li>
-  <li><a href="https://stackoverflow.com/questions/68909199/invalid-css-value-error-while-customizing-bootstrap-5-colors-with-sass-3">Stack Overflow 2</a></li>
-  <li><a href="https://github.com/twbs/rfs/tree/v9.0.3#installation">Bootstrap RFS</a></li>
-  <li><a href="https://stackoverflow.com/questions/66642300/error-undefined-variable-in-rails-sass-compilation">Stack Overflow 3</a></li>
-  <li><a href="https://sass-lang.com/guide">SASS Basics</a></li>
-  <li><a href="https://github.com/rails/cssbundling-rails">CSS Bundling and Rails</a></li>
-  <li><a href="https://stackoverflow.com/questions/26171159/require-statement-in-application-css-scss">Stack Overflow 4</a></li>
-  <li><a href="https://stackoverflow.com/questions/51127038/sass-error-cant-find-stylesheet-to-import">Stack Overflow - The Extra Slash</a></li>
-  <li><a href="https://www.reddit.com/r/rails/comments/rjg2ql/rails_7_assetsprecompile_results_in_loaderror/">Reddit Again</a></li>
-  <li><a href="https://stackoverflow.com/questions/45624252/couldnt-find-file-css-font-awesome-with-type-text-css">Stack Overflow on Font Awesome</a></li>
-</ul>
+<p><a href="https://docs.certifytheweb.com/docs/dns/providers/awsroute53/">This</a> was helpful but not complete and I had to update the JSON policy document per above.  The one in the article wasn't complete enough; it was missing the last two actions above.</p>
 
   </div>
   
@@ -329,16 +316,20 @@
       #rails
     </a>
     
-    <a href="http://fuzzyblog.io/blog/tag.html#bootstrap" >
-      #bootstrap
+    <a href="http://fuzzyblog.io/blog/tag.html#hatchbox" >
+      #hatchbox
     </a>
     
-    <a href="http://fuzzyblog.io/blog/tag.html#sass" >
-      #sass
+    <a href="http://fuzzyblog.io/blog/tag.html#aws" >
+      #aws
     </a>
     
-    <a href="http://fuzzyblog.io/blog/tag.html#scss" >
-      #scss
+    <a href="http://fuzzyblog.io/blog/tag.html#route53" >
+      #route53
+    </a>
+    
+    <a href="http://fuzzyblog.io/blog/tag.html#cartazzi" >
+      #cartazzi
     </a>
     
   </p>
@@ -355,20 +346,26 @@
      </li>
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#bootstrap" class="link_button">
-         bootstrap
+       <a href="http://fuzzyblog.io/blog/tag.html#hatchbox" class="link_button">
+         hatchbox
        </a>
      </li>
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#sass" class="link_button">
-         sass
+       <a href="http://fuzzyblog.io/blog/tag.html#aws" class="link_button">
+         aws
        </a>
      </li>
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#scss" class="link_button">
-         scss
+       <a href="http://fuzzyblog.io/blog/tag.html#route53" class="link_button">
+         route53
+       </a>
+     </li>
+     
+     <li style="display: inline-block;">
+       <a href="http://fuzzyblog.io/blog/tag.html#cartazzi" class="link_button">
+         cartazzi
        </a>
      </li>
      

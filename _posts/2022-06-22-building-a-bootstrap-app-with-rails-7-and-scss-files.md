@@ -26,6 +26,8 @@ Yep.  That's it.  Whoa!!!  There are also options to use Tailwind.  I found this
 I believe this Gem is needed as sassc support is officially deprecated.  But I might be wrong about this; front end stuff changes with every Rails release so if I'm wrong, well, sigh.
 
     gem "sassc-rails"
+    
+**NOTE**: Please see the last section "That Mysterious Error"; you may not want this in your Gemfile or:
 
 ## Step 3: Copy In Your SCSS Files
 
@@ -79,6 +81,26 @@ I also had to do this:
 
 I don't understand the use of // versus ,/  But it is all just path references and we are developers -- we can get this.  This was purely the desperate machinations of a developer with Stack Overflow access and the desire to make something work with an old app on the left and a new app on the right refreshing constantly until the two sites where in visual parity.  Typing this triggered a Quantum Leap memory "Hoping against hope that the next refresh would be the last".
 
+## That Mysterious Error or Oh Crap Deploy ...
+
+So I did all the above and had things working perfectly in development.  I got to deploy and got this crap:
+
+    SassC::SyntaxError: Error: Function rgb is missing argument $green.
+            on line 17800 of stdin
+    >>   border-color: rgb(191 219 254/var(--tw-border-opacity));
+
+A wee spot of googling had me traveling over to Github where I found this [thread](https://github.com/tailwindlabs/tailwindcss/discussions/6738).
+
+The answer turned out to be:
+
+* Remove the sasc-rails gem from Gemfile
+* Do a bundle update
+* Test things by running an assets precompile locally but in **PRODUCTION** mode
+
+Use the following command:
+
+    RAILS_ENV=production bundle exec rake assets:precompile
+
 ## Conclusion
 
 I won't claim to fully understand the asset pipeline but this is the closest I've gotten to understanding it.  In particular the analogy of a makefile for CSS very much helped me grok this.
@@ -95,3 +117,6 @@ I won't claim to fully understand the asset pipeline but this is the closest I'v
 * [SASS Basics](https://sass-lang.com/guide)
 * [CSS Bundling and Rails](https://github.com/rails/cssbundling-rails)
 * [Stack Overflow 4](https://stackoverflow.com/questions/26171159/require-statement-in-application-css-scss)
+* [Stack Overflow - The Extra Slash](https://stackoverflow.com/questions/51127038/sass-error-cant-find-stylesheet-to-import)
+* [Reddit Again](https://www.reddit.com/r/rails/comments/rjg2ql/rails_7_assetsprecompile_results_in_loaderror/)
+* [Stack Overflow on Font Awesome](https://stackoverflow.com/questions/45624252/couldnt-find-file-css-font-awesome-with-type-text-css)
