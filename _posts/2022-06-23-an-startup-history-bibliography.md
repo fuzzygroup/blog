@@ -172,10 +172,10 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [Piloting Palm](https://www.amazon.com/Piloting-Palm-Handspring-Billion-Dollar-Handheld/dp/0471089656/ref=sr_1_2?crid=RB8S0QRD166Z&keywords=Piloting+Palm&qid=1656018236&sprefix=piloting+palm%2Caps%2C95&sr=8-2) by Butter and Pogue; "**We forget how important Palm was**"
 
 ## Netscape / Internet Stuff
-* How the Web Was Born by Gillies and Calliau
-* Netscape Time by Jim Clark and Owen Edwards
-* Competing on Internet Time by Cusumano and Yoffie
-* Architects of the Web by Robert Reid
+* [How the Web Was Born](https://www.amazon.com/How-Web-was-Born-Story/dp/0192862073/ref=sr_1_1?crid=1PL6REKOW1HPM&keywords=How+the+Web+Was+Born&qid=1656018622&s=books&sprefix=how+the+web+was+born%2Cstripbooks%2C105&sr=1-1) by Gillies and Calliau; "**I was at the conference where the WWW was first announced and all of us 'experienced hypertext folks' didn't see how big it was; probably me single greatest technical misjudgement**"
+* [Netscape Time](https://www.amazon.com/Netscape-Time-Billion-Dollar-Start-Up-Microsoft/dp/0312263619/ref=sr_1_1?crid=37GFMVT57R1VC&keywords=Netscape+Time&qid=1656018685&s=books&sprefix=netscape+time%2Cstripbooks%2C243&sr=1-1) by Jim Clark and Owen Edwards
+* [Competing on Internet Time](https://www.amazon.com/Competing-Internet-Time-Netscape-Microsoft-ebook/dp/B000FBJHAS/ref=sr_1_1?crid=1DROZWU3TG6TM&keywords=Competing+on+Internet+Time&qid=1656018719&s=books&sprefix=competing+on+internet+time%2Cstripbooks%2C162&sr=1-1) by Cusumano and Yoffie
+* [Architects of the Web](https://www.amazon.com/Architects-Web-Built-Future-Business/dp/0471171875/ref=sr_1_1?crid=10VQTWUDYYC9U&keywords=Architects+of+the+Web&qid=1656018784&s=books&sprefix=architects+of+the+web%2Cstripbooks%2C200&sr=1-1) by Robert Reid
 
 ## Web 1.0 - The Early Commercial Internet
 * Spam Kings by Brian McWilliams
