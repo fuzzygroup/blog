@@ -70,7 +70,7 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 
 ## Intel
 * [Inside Intel](https://www.amazon.com/Inside-Intel-Worlds-Powerful-Company/dp/0452276438/ref=sr_1_1?crid=2ZRFQO4YDU41J&keywords=Inside+Intel&qid=1656013362&s=books&sprefix=inside+intel%2Cstripbooks%2C216&sr=1-1) by Tim Jackson
-* Andy Grove by Richard Tedlow
+* [Andy Grove](https://www.amazon.com/Andy-Grove-Life-Times-American/dp/1591841399/ref=sr_1_3?crid=17U01TT8JASXV&keywords=Andy+Grove&qid=1656022660&s=books&sprefix=andy+grove%2Cstripbooks%2C313&sr=1-3) by Richard Tedlow
 * [The Intel Trinity](https://www.amazon.com/Intel-Trinity-Robert-Important-Company/dp/0062226762/ref=sr_1_1?crid=1I0B97LFTYMMN&keywords=The+Intel+Trinity&qid=1656013378&s=books&sprefix=the+intel+trinity%2Cstripbooks%2C213&sr=1-1) by Michael Malone; "**Fascinating particularly the bit about walking out the door and exiting the DRAM business**"
 * [High Output Management](https://www.amazon.com/High-Output-Management-Andrew-Grove/dp/0679762884/ref=sr_1_1?keywords=high+output+management&qid=1656013396&s=books&sprefix=High+Outp%2Cstripbooks%2C258&sr=1-1) by Andy Grove; "**Good but cold**"
 
