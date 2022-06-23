@@ -196,9 +196,9 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [The Hard Thing About Hard Things](https://www.amazon.com/dp/0062273205?psc=1&ref=ppx_yo2ov_dt_b_product_details) by Ben Horowitz
 
 ## Amazon
-* The Everything Store by Brad Stone
-* Amazon.com by Spector
-* 21 Dog Years by Mike Daisey
+* [The Everything Store](https://www.amazon.com/The-Everything-Store-Brad-Stone-audiobook/dp/B00FJFJOLC/ref=sr_1_1?crid=B009JIKWT4CD&keywords=The+Everything+Store&qid=1656019366&s=books&sprefix=the+everything+store%2Cstripbooks%2C69&sr=1-1) by Brad Stone
+* [Amazon.com](https://www.amazon.com/Amazon-com-Get-Fast-Robert-Spector/dp/0066620422/ref=sr_1_1?crid=1WSW85CP7Z8H&keywords=Amazon.com+spector&qid=1656019383&s=books&sprefix=amazon.com+spector%2Cstripbooks%2C178&sr=1-1) by Spector
+* [21 Dog Years](https://www.amazon.com/21-Dog-Years-Doing-Amazon-com-ebook/dp/B000FBJFBO/ref=sr_1_1?crid=1BE0DEI1HBAFI&keywords=21+Dog+Years&qid=1656019401&s=books&sprefix=21+dog+years%2Cstripbooks%2C75&sr=1-1) by Mike Daisey
 
 ## Google
 * What Would Google Do by Jeff Jarvis
