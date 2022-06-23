@@ -31,40 +31,41 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [DEC is Dead Long Live DEC](https://www.amazon.com/gp/product/1576753050/ref=ppx_yo_dt_b_asin_title_o04_s00?ie=UTF8&psc=1) by Schein; **HAVE NOT READ YET**
 
 ## Internet History
-* Where Wizards Stay Up Late by Katie Hefner and Matthew Lyon
-* Nerds a Brief History of the Internet
-* History of the Internet by Moschovitis, Poole, Schuyler, Senfit
+* [Where Wizards Stay Up Late](https://www.amazon.com/Where-Wizards-Stay-Up-Late/dp/0684832674/ref=sr_1_1?crid=QBSHOC7VBNWB&keywords=Where+Wizards+Stay+Up+Late&qid=1656011602&sprefix=where+wizards+stay+up+late%2Caps%2C119&sr=8-1) by Katie Hefner and Matthew Lyon
+* [Nerds a Brief History of the Internet](https://www.amazon.com/Nerds-2-0-1-Stephen-Segaller/dp/1575001063/ref=sr_1_1?crid=2LOGYRG5WJ3FV&keywords=Nerds+a+Brief+History+of+the+Internet&qid=1656011618&sprefix=nerds+a+brief+history+of+the+internet%2Caps%2C93&sr=8-1) by Segaller
+* [History of the Internet](https://www.amazon.com/History-Internet-Chronology-1843-Present/dp/1576071189/ref=sr_1_1?crid=3ULFRTIXWVT61&keywords=History+of+the+Internet+poole+moschovitis&qid=1656011663&sprefix=history+of+the+internet+poole+moschovitis%2Caps%2C53&sr=8-1) by Moschovitis, Poole, Schuyler, Senfit
+* [Casting the Net](https://www.amazon.com/Casting-Net-ARPANET-INTERNET-Beyond/dp/0201876744/ref=sr_1_1?crid=2RAE7FTXJ9T9W&keywords=Casting+the+Net+Salus&qid=1656010091&sprefix=casting+the+net+salus%2Caps%2C64&sr=8-1) by Salus; "**HAVE NOT READ YET**"
 
 ## The Phone Company
-* The Idea Factory by Jon Gertner
-* Telephone by John Brooks
-* End of the Line by Leslie Cauley
-* Tales of ITT by Thomas S. Burns
+* [The Idea Factory](https://www.amazon.com/Idea-Factory-Great-American-Innovation/dp/0143122797/ref=sr_1_1?crid=2SRWJWTGTSKEQ&keywords=The+Idea+Factory+gertner&qid=1656011687&sprefix=the+idea+factory+gertner%2Caps%2C79&sr=8-1) by Jon Gertner
+* [Telephone](https://www.amazon.com/Telephone-First-Hundred-John-Brooks/dp/0060105402/ref=sr_1_1?crid=3T0QLW4ZQA9PF&keywords=Telephone+john+brooks&qid=1656011709&sprefix=telephone+john+brooks%2Caps%2C63&sr=8-1) by John Brooks
+* [End of the Line](https://www.amazon.com/End-Line-Rise-Fall-AT/dp/0743250257/ref=sr_1_1?crid=148DTIYWL5G3Y&keywords=End+of+the+Line+cauley&qid=1656011726&sprefix=end+of+the+line+cauley%2Caps%2C73&sr=8-1) by Leslie Cauley
+* [Tales of ITT](https://www.amazon.com/Tales-ITT-insiders-Thomas-Burns/dp/0395184886/ref=sr_1_1?crid=2CYO35X8BRBEE&keywords=Tales+of+ITT&qid=1656011746&sprefix=tales+of+itt%2Caps%2C62&sr=8-1) by Thomas S. Burns
 
 ## MIT
-* The Dream Factory by Mitchell Waldrop
+* [The Dream Machine](https://www.amazon.com/Dream-Machine-M-Mitchell-Waldrop/dp/1732265119/ref=sr_1_1?crid=1HSOEA7PFTPGO&keywords=mitchell+waldrop&qid=1656011794&s=books&sprefix=Mitchell+waldrop%2Cstripbooks%2C59&sr=1-1) by Mitchell Waldrop
 * [Endless Frontier: Vannevar Bush](https://www.amazon.com/dp/1501196456?psc=1&ref=ppx_yo2ov_dt_b_product_details) by Zachary; **HAVE NOT READ YET**
 
 ## Xerox
-* Dealers of Lightning by Michael Hiltzik; "**It makes you realize just how bright the PARC folks were; sort of a mini manhattan project for computing**"
-* Copies in Second by David Owen; "**Explains how Xerox afforded PARC.  Today we don't realize the power of making copies but it was transformative**"
+* [Dealers of Lightning](https://www.amazon.com/Dealers-Lightning-Xerox-PARC-Computer/dp/0887309895/ref=sr_1_1?crid=371JECQDOTVR3&keywords=Dealers+of+Lightning&qid=1656011854&s=books&sprefix=dealers+of+lightning%2Cstripbooks%2C73&sr=1-1) by Michael Hiltzik; "**It makes you realize just how bright the PARC folks were; sort of a mini manhattan project for computing**"
+* [Copies in Seconds](https://www.amazon.com/Copies-Seconds-Communication-Breakthrough-Gutenberg-Chester-ebook/dp/B002Q0KS04/ref=sr_1_1?crid=SXMB2BUCLG03&keywords=Copies+in+Seconds&qid=1656011874&s=books&sprefix=copies+in+seconds%2Cstripbooks%2C84&sr=1-1) by David Owen; "**Explains how Xerox afforded PARC.  Today we don't realize the power of making copies but it was transformative**"
 
 ## Plato
-* The Friendly Orange Glow by Brian Dear; "**One of my absolute favorites; everything we do online today happened here first (and then in Lotus Notes by Ray Ozzie but thank the FSM that went away)**"
+* [The Friendly Orange Glow](https://www.amazon.com/Friendly-Orange-Glow-Untold-Cyberculture/dp/1101871555/ref=sr_1_1?crid=2XWIBK3PSA1A9&keywords=The+Friendly+Orange+Glow&qid=1656011897&s=books&sprefix=the+friendly+orange+glow%2Cstripbooks%2C88&sr=1-1) by Brian Dear; "**One of my absolute favorites; everything we do online today happened here first (and then in Lotus Notes by Ray Ozzie but thank the FSM that went away)**"
 
 ## Early Silicon Valley
-* Fire in the Valley by Michael Swaine; "**The second high tech book I ever ready**"
-* Accidental Empires by Robert Cringely
-* Bill & Dave by Michael Malone
-* What The Dormouse Said by John Markoff
-* Broken Genius by Joel Shurkin; "**The first proof that brains doesn't equal ethics; this was followed by Patrick Naughton, Hans Reiser and one of the php core team members**"
-* The HP Way by David Packard
-* Siliconnections by Forest Mims III
-* Hackers by Steven Levy; "**The first high tech book I ever read; utterly engrossing**"
-* Tandy's Money Machine by Irvin Farman; "**A deep dive into the Tandy ecosystem where I grew up**"
-* Sinclair and the Sunrise Technology by Ian Adamson and Richard Kennedy; "**Understanding the ZX 81**"
-* We Were Burning by Bob Johnstone; "**A good look at Japan**"
-* The Innovators by Walter Isaacson
+* [Fire in the Valley](https://www.amazon.com/Fire-in-Valley-audiobook/dp/B071YYZJG5/ref=sr_1_1?crid=1WSRBS8QCBVEI&keywords=Fire+in+the+Valley&qid=1656011951&s=books&sprefix=fire+in+the+valley%2Cstripbooks%2C59&sr=1-1) by Michael Swaine; "**The second high tech book I ever ready**"
+* [Accidental Empires](https://www.amazon.com/Accidental-Empires-Silicon-Millions-Competition/dp/0887308554/ref=sr_1_1?crid=1W4ZCWNRJEQH4&keywords=Accidental+Empires&qid=1656011965&s=books&sprefix=accidental+empires%2Cstripbooks%2C68&sr=1-1) by Robert Cringely
+* [Bill & Dave](https://www.amazon.com/Bill-Dave-Hewlett-Packard-Greatest/dp/1591841526/ref=sr_1_1?crid=ZZSTD5HZ8MZL&keywords=Bill+%26+Dave&qid=1656011987&s=books&sprefix=bill+%26+dave%2Cstripbooks%2C66&sr=1-1) by Michael Malone
+* [What The Dormouse Said](https://www.amazon.com/What-Dormouse-Said-Counterculture-Personal/dp/0143036769/ref=sr_1_1?crid=3HEXB7MNNYOR&keywords=What+The+Dormouse+Said&qid=1656012008&s=books&sprefix=what+the+dormouse+said%2Cstripbooks%2C50&sr=1-1) by John Markoff
+* [Broken Genius](https://www.amazon.com/Broken-Genius-Shockley-Electronic-Macmillan/dp/1403988153/ref=sr_1_2?crid=1TAA1VGYHIFJC&keywords=Broken+Genius&qid=1656012023&s=books&sprefix=broken+genius%2Cstripbooks%2C90&sr=1-2) by Joel Shurkin; "**The first proof that brains doesn't equal ethics; this was followed by Patrick Naughton, Hans Reiser and one of the php core team members**"
+* [The HP Way](https://www.amazon.com/HP-Way-Hewlett-Business-Essentials/dp/0060845791/ref=sr_1_1?crid=2WGKCBMHIGXWS&keywords=The+HP+Way&qid=1656012044&s=books&sprefix=the+hp+way%2Cstripbooks%2C87&sr=1-1) by David Packard
+* [Siliconnections](https://www.amazon.com/Siliconnections-Coming-Age-Electronic-Era/dp/007042411X/ref=sr_1_1?crid=BI534PM0EYTB&keywords=Siliconnections&qid=1656012060&s=books&sprefix=siliconnections%2Cstripbooks%2C99&sr=1-1) by Forest Mims III
+* [Hackers](https://www.amazon.com/Hackers-Heroes-Computer-Revolution-Anniversary/dp/B017RV1I3C/ref=sr_1_1?crid=11Y5YO37KGNXX&keywords=Hackers+levy&qid=1656012076&s=books&sprefix=hackers+levy%2Cstripbooks%2C92&sr=1-1) by Steven Levy; "**The first high tech book I ever read; utterly engrossing**"
+* [Tandy's Money Machine](https://www.amazon.com/Tandys-Money-Machine-Charles-Electronics/dp/0916371123/ref=sr_1_1?crid=1VCKRFPVJLEY&keywords=Tandy%27s+Money+Machine&qid=1656012094&s=books&sprefix=tandy%27s+money+machine%2Cstripbooks%2C157&sr=1-1) by Irvin Farman; "**A deep dive into the Tandy ecosystem where I grew up**"
+* [Sinclair and the Sunrise Technology](https://www.amazon.com/Sinclair-Sunrise-Technology-Ian-Adamson/dp/0140087745/ref=sr_1_1?crid=1C469XXFR6BB5&keywords=Sinclair+and+the+Sunrise+Technology&qid=1656012110&s=books&sprefix=sinclair+and+the+sunrise+technology%2Cstripbooks%2C61&sr=1-1) by Ian Adamson and Richard Kennedy; "**Understanding the ZX 81**"
+* [We Were Burning](https://www.amazon.com/Were-Burning-Entrepreneurs-Electronic-Revolution/dp/0465091172/ref=sr_1_1?crid=35SHQLDCEKZCU&keywords=We+Were+Burning&qid=1656012131&s=books&sprefix=we+were+burning%2Cstripbooks%2C232&sr=1-1) by Bob Johnstone; "**A good look at Japan**"
+* [The Innovators](https://www.amazon.com/The-Innovators-Walter-Isaacson-audiobook/dp/B00M9KICAY/ref=sr_1_1?keywords=the+innovators+walter+isaacson&qid=1656012149&s=books&sprefix=The+Innovators%2Cstripbooks%2C104&sr=1-1) by Walter Isaacson
 
 ## Intel
 * Inside Intel by Tim Jackson
@@ -160,7 +161,7 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * Just for Fun by Linus Thorvaldsen and David Diamond
 * Free for All by Peter Mayner
 * Free as in Freedom by Williams
-* Dreaming in Code by Scott Rosenberg; "**Mitch Kapor's second coming and his inability to give up on Lotus Agenda**"
+* Dreaming in Code by Scott Rosenberg; "**Mitch Kapor's second coming and his inability to give up on Lotus Agenda; seriously tho a great look at what happens when you don't have an MVP and a lot of money**"
 * Rebel Code by Glyn Moody
 * The Clue Train Manifesto by Levine, Locke, Searls, Weinberger
 * The Idealist by Justin Peters
