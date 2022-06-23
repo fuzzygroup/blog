@@ -10,6 +10,7 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 ## Change Log
 * 2022-06-23 - Started adding links, added books suggested on Twitter, Added Gaskins on PowerPoint History; fixed typos (how did I possibly misspell Torvalds; clearly was stupid yesterday)
 * 2022-06-23 - Apologies for where an Audible audio book is linked instead of hard or paperback; Amazon is inconsistent with this
+* 2022-06-23 - Added a bunch more notes from reading these.
 
 
 ## IBM / Mainframes / Super Computers
