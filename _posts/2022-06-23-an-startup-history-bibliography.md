@@ -266,12 +266,12 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [Blood, Sweat and Pixels](https://www.amazon.com/Blood-Sweat-and-Pixels-audiobook/dp/B0731MCF1R/ref=sr_1_1?crid=33YHJ1VE2TE56&keywords=Blood%2C+Sweat+and+Pixels&qid=1656019580&s=books&sprefix=blood%2C+sweat+and+pixels%2Cstripbooks%2C86&sr=1-1) by Schreier; "**HAVE NOT READ YET**"
 
 ## Space 2.0 / Tesla
-* Liftoff by Eric Berger
-* Silicon Sky by Gary Dorsey
-* Rocket Billionaires by Fernholz
-* Back Room Boys by Francis Spufford
-* Rocket Dreams by Marina Benjamin
-* How to Make a Spaceship by Julian Guthrie
-* Elon Musk by Vance
+* [Liftoff](https://www.amazon.com/Liftoff-Desperate-Early-Launched-SpaceX/dp/B089QRXBXB/ref=sr_1_1?crid=4B8PGODG3HL2&keywords=liftoff+eric+berger&qid=1656019792&s=books&sprefix=Liftoff%2Cstripbooks%2C89&sr=1-1) by Eric Berger
+* [Silicon Sky](https://www.amazon.com/Silicon-Sky-Start-Up-Satellite-Heaven/dp/0738200948/ref=sr_1_1?crid=269H3FSR4FHP5&keywords=Silicon+Sky+dorsey&qid=1656019808&s=books&sprefix=silicon+sky+dorsey%2Cstripbooks%2C213&sr=1-1) by Gary Dorsey; "**Yep.  Space 2.0 started before SpaceX -- 99**"
+* [Rocket Billionaires](https://www.amazon.com/Rocket-Billionaires-Tim-Fernholz-audiobook/dp/B07BB4FJM5/ref=sr_1_1?keywords=rocket+billionaires&qid=1656019847&s=books&sprefix=rocket+billi%2Cstripbooks%2C76&sr=1-1) by Fernholz; "**HAVE NOT READ YET**"
+* [Back Room Boys](https://www.amazon.com/Backroom-Boys-Secret-Return-British/dp/0571214975/ref=sr_1_9?crid=M9TV6DZ8KNZE&keywords=francis+spufford&qid=1656019899&s=books&sprefix=francis+spufford%2Cstripbooks%2C67&sr=1-9) by Francis Spufford; "**Fascinating since it isn't about America**"
+* [Rocket Dreams](https://www.amazon.com/Rocket-Dreams-Shaped-Vision-Beyond-ebook/dp/B000FC0TKY/ref=sr_1_2?crid=219OE4IQDAEUO&keywords=Rocket+Dreams&qid=1656019943&s=books&sprefix=rocket+dreams%2Cstripbooks%2C86&sr=1-2) by Marina Benjamin
+* [How to Make a Spaceship](https://www.amazon.com/How-to-Make-Spaceship-audiobook/dp/B01KIFUZL0/ref=sr_1_2?crid=3SWXEHGOLEO6I&keywords=How+to+Make+a+Spaceship&qid=1656019961&s=books&sprefix=how+to+make+a+spaceship%2Cstripbooks%2C54&sr=1-2) by Julian Guthrie
+* [Elon Musk](https://www.amazon.com/Elon-Musk-Ashlee-Vance-audiobook/dp/B00UVY52JO/ref=sr_1_1?crid=R97TFRKE23I4&keywords=Elon+Musk+vance&qid=1656020051&s=books&sprefix=elon+musk+vance%2Cstripbooks%2C165&sr=1-1) by Vance
 
 
