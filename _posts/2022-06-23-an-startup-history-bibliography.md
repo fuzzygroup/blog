@@ -9,6 +9,7 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 
 ## Change Log
 * 2022-06-23 - Started adding links, added books suggested on Twitter, Added Gaskins on PowerPoint History; fixed typos (how did I possibly misspell Torvalds; clearly was stupid yesterday)
+* Apologies for where an Audible audio book is linked instead of hard or paperback; Amazon is inconsistent with this
 
 
 ## IBM / Mainframes / Super Computers
@@ -201,16 +202,16 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [21 Dog Years](https://www.amazon.com/21-Dog-Years-Doing-Amazon-com-ebook/dp/B000FBJFBO/ref=sr_1_1?crid=1BE0DEI1HBAFI&keywords=21+Dog+Years&qid=1656019401&s=books&sprefix=21+dog+years%2Cstripbooks%2C75&sr=1-1) by Mike Daisey
 
 ## Google
-* What Would Google Do by Jeff Jarvis
-* Planet Google by Randall Stross
-* I'm Feeling Lucky by Douglas Edwards
-* The Google Story by Vise and Malseed
-* Work Rules by Lazlo Bock
-* Everything I Know About Marketing I Learned at Google by Aaron Goldman
-* How Google Works by Schmidt and Rosenberg
-* The Search by John Battelle
-* Into the Plex by Steven Levy
-* Googled by Ken Auletta
+* [What Would Google Do](https://www.amazon.com/What-Would-Google-Do-Reverse-Engineering/dp/0061709697/ref=sr_1_1?crid=2VV2LV6HV9LVS&keywords=What+Would+Google+Do&qid=1656020082&s=books&sprefix=what+would+google+do%2Cstripbooks%2C124&sr=1-1) by Jeff Jarvis
+* [Planet Google](https://www.amazon.com/Planet-Google-Companys-Audacious-Everything-ebook/dp/B001FA0W6Q/ref=sr_1_1?crid=2G8F5ER5RS0Z4&keywords=Planet+Google&qid=1656020100&s=books&sprefix=planet+google%2Cstripbooks%2C283&sr=1-1) by Randall Stross
+* [I'm Feeling Lucky](https://www.amazon.com/Im-Feeling-Lucky-Confessions-Employee/dp/0547416997/ref=sr_1_1?crid=1VPFK61EWXG4B&keywords=I%27m+Feeling+Lucky+Edwards&qid=1656020119&s=books&sprefix=i%27m+feeling+lucky+edwards%2Cstripbooks%2C167&sr=1-1) by Douglas Edwards; "**A good boots on the ground perspective from employee #59**"
+* [The Google Story](https://www.amazon.com/Google-Story-2018-Updated-Technology/dp/038534273X/ref=sr_1_1?crid=1F8EZHH0MMZUX&keywords=The+Google+Story&qid=1656020239&s=books&sprefix=the+google+story%2Cstripbooks%2C191&sr=1-1) by Vise and Malseed
+* [Work Rules](https://www.amazon.com/Work-Rules-Insights-Inside-Transform/dp/1455554790/ref=sr_1_1?crid=B0QYXESRTEWE&keywords=Work+Rules+bock&qid=1656020302&s=books&sprefix=work+rules+bock%2Cstripbooks%2C56&sr=1-1) by Lazlo Bock
+* [Everything I Know About Marketing I Learned from Google](https://www.amazon.com/Everything-about-Marketing-Learned-Google-ebook/dp/B0041G68K0/ref=sr_1_1?crid=2FAKL0FF98ZR2&keywords=google+aaron+goldman&qid=1656020342&s=books&sprefix=google+aaron+goldman%2Cstripbooks%2C60&sr=1-1) by Aaron Goldman
+* [How Google Works](https://www.amazon.com/How-Google-Works-audiobook/dp/B00MOZPSYW/ref=sr_1_1?crid=31Q15POCL9Y65&keywords=How+Google+Works&qid=1656020378&s=books&sprefix=how+google+works%2Cstripbooks%2C81&sr=1-1) by Schmidt and Rosenberg
+* [The Search](https://www.amazon.com/Search-Rewrote-Business-Transformed-Culture-ebook/dp/B004IE9QFO/ref=sr_1_1?crid=2A2WMDL74U23P&keywords=The+Search+battelle&qid=1656020397&s=books&sprefix=the+search+battelle%2Cstripbooks%2C70&sr=1-1) by John Battelle
+* [Into the Plex](https://www.amazon.com/Plex-Google-Thinks-Works-Shapes/dp/1416596585/ref=sr_1_1?crid=2YFDL53FZV4DI&keywords=Into+the+Plex&qid=1656020413&s=books&sprefix=into+the+plex%2Cstripbooks%2C201&sr=1-1) by Steven Levy
+* [Googled](https://www.amazon.com/Googled-End-World-As-Know/dp/1594202354/ref=sr_1_1?crid=288RVZ0ID1808&keywords=Googled+auletta&qid=1656020430&s=books&sprefix=googled+auletta%2Cstripbooks%2C66&sr=1-1) by Ken Auletta
 
 ## Misc / Software
 * Lucky That Way by Fregger
