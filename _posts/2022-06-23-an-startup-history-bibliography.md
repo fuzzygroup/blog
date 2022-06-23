@@ -141,6 +141,7 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [Valley Boy](https://www.amazon.com/Valley-Boy-Education-Tom-Perkins/dp/1592403131/ref=sr_1_1?crid=39RHMH8GON7OJ&keywords=Valley+Boy&qid=1656017904&s=books&sprefix=valley+boy%2Cstripbooks%2C79&sr=1-1) by Tom Perkins
 * [LaunchPad](https://www.amazon.com/The-Launch-Pad-Randall-Stross-audiobook/dp/B009KFMK90/ref=sr_1_1?crid=2M2GX0RFK69UT&keywords=LaunchPad+randall+stross&qid=1656017925&s=books&sprefix=launchpad+randall+stross%2Cstripbooks%2C53&sr=1-1) by Randall Stross; "**A deep dive into Y Combinator**"
 * [Creative Capital](https://www.amazon.com/gp/product/1422101223/ref=ppx_yo_dt_b_asin_title_o05_s00?ie=UTF8&psc=1) by Ante; **HAVE NOT READ YET**
+* [eBoys](https://www.amazon.com/eBoys-Randall-E-Stross-audiobook/dp/B0000547BY/ref=sr_1_1?crid=17V0WNJMKBSFB&keywords=eBoys&qid=1656019051&s=books&sprefix=eboys%2Cstripbooks%2C61&sr=1-1) by Randall Stross
 
 ## Oracle
 * [Softwar](https://www.amazon.com/Softwar-Intimate-Portrait-Ellison-Oracle/dp/0743225058/ref=sr_1_1?crid=1HVO6UKZCG94T&keywords=Softwar+symonds&qid=1656017971&s=books&sprefix=softwar+symonds%2Cstripbooks%2C76&sr=1-1) by Matthew Symonds
@@ -178,21 +179,20 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [Architects of the Web](https://www.amazon.com/Architects-Web-Built-Future-Business/dp/0471171875/ref=sr_1_1?crid=10VQTWUDYYC9U&keywords=Architects+of+the+Web&qid=1656018784&s=books&sprefix=architects+of+the+web%2Cstripbooks%2C200&sr=1-1) by Robert Reid
 
 ## Web 1.0 - The Early Commercial Internet
-* Spam Kings by Brian McWilliams
-* eBoys by Randall Stross
-* The PayPal Wars by Eric Jackson
-* StrikingItRich.com by Jaclyn Easton
-* The Silicon Boys by David Kaplan
-* Starving to Death on $200 Million by James Ledbetter
-* Startup by Jerry Kaplan
-* The Wikipedia Revolution by Andrew Lih
+* [Spam Kings](https://www.amazon.com/Spam-Kings-High-Rolling-Hucksters-Enlargements-ebook/dp/B00NF07FHI/ref=sr_1_1?crid=A3I6M9GVF85B&keywords=Spam+Kings&qid=1656019030&s=books&sprefix=spam+kings%2Cstripbooks%2C53&sr=1-1) by Brian McWilliams
+* [The PayPal Wars](https://www.amazon.com/PayPal-Wars-Battles-Media-Planet/dp/0974670103/ref=sr_1_1?crid=2TCUURPG642L1&keywords=The+PayPal+Wars&qid=1656019095&s=books&sprefix=the+paypal+wars%2Cstripbooks%2C114&sr=1-1) by Eric Jackson
+* [StrikingItRich.com](https://www.amazon.com/StrikingitRich-Com-Profiles-Incredibly-Successful-CommerceNet-ebook/dp/B000FA5LN6/ref=sr_1_1?crid=2VL7N1NTWJEVJ&keywords=StrikingItRich.com&qid=1656019109&s=books&sprefix=strikingitrich.com%2Cstripbooks%2C52&sr=1-1) by Jaclyn Easton
+* [The Silicon Boys](https://www.amazon.com/Silicon-Boys-Their-Valley-Dreams/dp/0688179061/ref=sr_1_1?crid=2VHG7Y55EH3T5&keywords=The+Silicon+Boys&qid=1656019127&s=books&sprefix=the+silicon+boys%2Cstripbooks%2C101&sr=1-1) by David Kaplan
+* [Starving to Death on $200 Million](https://www.amazon.com/Starving-Death-Million-James-Ledbetter/dp/1586481290/ref=sr_1_1?crid=Q3N88GKP77S9&keywords=Starving+to+Death+on+%24200+Million&qid=1656019143&s=books&sprefix=starving+to+death+on+200+million%2Cstripbooks%2C96&sr=1-1) by James Ledbetter
+* [Startup](https://www.amazon.com/Startup-Silicon-Adventure-Jerry-Kaplan/dp/0140257314/ref=sr_1_1?keywords=startup+jerry+kaplan&qid=1656019159&s=books&sprefix=Startup+Je%2Cstripbooks%2C72&sr=1-1) by Jerry Kaplan
+* [The Wikipedia Revolution](https://www.amazon.com/Wikipedia-Revolution-Nobodies-Greatest-Encyclopedia-ebook/dp/B001UQO41Y/ref=sr_1_1?crid=17FO2KCP4UFER&keywords=The+Wikipedia+Revolution&qid=1656019180&s=books&sprefix=the+wikipedia+revolution%2Cstripbooks%2C355&sr=1-1) by Andrew Lih
 * [High St@kes, No Prisoners](https://www.amazon.com/gp/product/060980698X/ref=ppx_yo_dt_b_asin_title_o03_s00?ie=UTF8&psc=1) by Charles Ferguson; "**FrontPage was amazing in the day and this covers it well**"
-* Obscene Profits by Lane
-* The CDNow Story by Olim, Olim and Kent
-* dot.con by John Cassidy 
-* That Will Never Work by Marc Randolph; "**A great look at Netflix**"
-* Netflixed by Gina Keating 
-* Year Zero By Rob Reid
+* [Obscene Profits](https://www.amazon.com/Obscene-Profits-Entrepreneurs-Pornography-Cyber/dp/0415931037/ref=sr_1_1?crid=209XDLAVF4FUP&keywords=Obscene+Profits&qid=1656019199&s=books&sprefix=obscene+profits%2Cstripbooks%2C154&sr=1-1) by Lane
+* [The CDNow Story](https://www.amazon.com/Cdnow-Story-Rags-Riches-Internet/dp/0966103262/ref=sr_1_1?crid=3PVUA30B1TE0X&keywords=The+CDNow+Story&qid=1656019217&s=books&sprefix=the+cdnow+story%2Cstripbooks%2C107&sr=1-1) by Olim, Olim and Kent
+* [dot.con](https://www.amazon.com/Dot-America-Lost-Money-Internet-ebook/dp/B000FC11HE/ref=sr_1_2?crid=2D1G4U10OKATJ&keywords=dot.con&qid=1656019237&s=books&sprefix=the+cdnow+story%2Cstripbooks%2C435&sr=1-2) by John Cassidy 
+* [That Will Never Work](https://www.amazon.com/That-Will-Never-Work-Netflix-ebook/dp/B07QLL7N7D/ref=sr_1_1?crid=2IAEEA935OIWG&keywords=That+Will+Never+Work&qid=1656019256&s=books&sprefix=dot.con%2Cstripbooks%2C370&sr=1-1) by Marc Randolph; "**A great look at Netflix**"
+* [Netflixed](https://www.amazon.com/Netflixed-Epic-Battle-Americas-Eyeballs/dp/1591846595/ref=sr_1_1?keywords=Netflixed&qid=1656019273&s=books&sr=1-1) by Gina Keating 
+* [Year Zero](https://www.amazon.com/Year-Zero-Rob-Reid-audiobook/dp/B008J9GD28/ref=sr_1_1?crid=35OXK4WFQ2JPO&keywords=year+zero+rob+reid&qid=1656019301&s=books&sprefix=Year+Zero%2Cstripbooks%2C89&sr=1-1) By Rob Reid
 * [The Hard Thing About Hard Things](https://www.amazon.com/dp/0062273205?psc=1&ref=ppx_yo2ov_dt_b_product_details) by Ben Horowitz
 
 ## Amazon
