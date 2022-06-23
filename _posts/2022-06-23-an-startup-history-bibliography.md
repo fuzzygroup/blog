@@ -7,23 +7,28 @@ tags: ["startup", "books"]
 ---
 I've been reading High Tech case studies now since the 80s -- just after I entered the business.  [Bryan Cantrill](https://twitter.com/bcantrill) from [Oxide Computer's podcast](https://feeds.transistor.fm/oxide-and-friends) inspired me to get all my books out and order them on a rough historical basis.  I thought listing them here might be interesting to someone.  All of these I've read and there are a ton of lessons for entrepreneurs here.  I put rough notes next to some of them **in bold** after the author name in quotes.
 
+## Change Log
+* 2022-06-23 - Started adding links, added books suggested on Twitter, Added Gaskins on PowerPoint History
+
 
 ## IBM / Mainframes / Super Computers
-* The Supermen by Charles J. Murray; "**The power of persistence**"
-* Who Says Elephants Can't Dance by Louis Gerstner Jr
-* The Computer Establishment by Katherine Davis Fishman
-* Big Blues by Paul Carroll
-* IBM Redux by Doug Garr
-* 1,000 Dollars and an Idea by Sam Wyly
-* Computing in the Middle Ages by Severo Ornstein
-* Computer Wars by Charles H Ferguson and Charles R. Morris
-* Building IBM by Pugh
-* Eniac by McCartney
+* [The Supermen](https://www.amazon.com/Supermen-Seymour-Technical-Wizards-Supercomputer/dp/0471048852/ref=sr_1_2?crid=JRJ13GN6RB6T&keywords=The+Supermen&qid=1656009625&sprefix=the+supermen%2Caps%2C85&sr=8-2) by Charles J. Murray; "**The power of persistence**"
+* [Who Says Elephants Can't Dance](https://www.amazon.com/Who-Says-Elephants-Cant-Dance/dp/0060523808/ref=sr_1_1?crid=3R418BAAFAFE3&keywords=Who+Says+Elephants+Can%27t+Dance&qid=1656009642&sprefix=who+says+elephants+can%27t+dance%2Caps%2C94&sr=8-1) by Louis Gerstner Jr
+* [The Computer Establishment](https://www.amazon.com/Computer-Establishment-Katharine-Davis-Fishman/dp/0060112832/ref=sr_1_1?crid=32LR7W5WTOFOV&keywords=The+Computer+Establishment+fishman&qid=1656009671&sprefix=the+computer+establishment+fishman%2Caps%2C108&sr=8-1) by Katherine Davis Fishman
+* [Big Blues](https://www.amazon.com/Big-Blues-Unmaking-Paul-Carroll/dp/0517591979/ref=sr_1_1?crid=11ZC9TUI26S26&keywords=Big+Blues+Carroll&qid=1656009697&sprefix=big+blues+carroll%2Caps%2C84&sr=8-1) by Paul Carroll
+* [IBM Redux](https://www.amazon.com/IBM-Redux-Gerstner-Business-Turnaround/dp/0887309437/ref=sr_1_1?crid=3LTE1H6VXCE2A&keywords=IBM+Redux&qid=1656009717&sprefix=ibm+redux%2Caps%2C85&sr=8-1) by Doug Garr
+* [1,000 Dollars and an Idea](https://www.amazon.com/000-Dollars-Idea-Entrepreneur-Billionaire/dp/1557048649/ref=sr_1_1?crid=26Z6GLZLO79KW&keywords=1%2C000+Dollars+and+an+Idea&qid=1656009740&sprefix=1%2C000+dollars+and+an+idea%2Caps%2C75&sr=8-1) by Sam Wyly
+* [Computing in the Middle Ages](https://www.amazon.com/Computing-Middle-Ages-Trenches-1955-1983/dp/1403315175/ref=sr_1_1?crid=1FMZ0OPAXYWTF&keywords=Computing+in+the+Middle+Ages&qid=1656009758&sprefix=computing+in+the+middle+ages%2Caps%2C87&sr=8-1) by Severo Ornstein
+* [Computer Wars](https://www.amazon.com/Computer-Wars-Future-Western-Technology/dp/0812921569/ref=sr_1_2?crid=2CYWMR96Q0IDO&keywords=Computer+Wars+ferguson&qid=1656009776&sprefix=computer+wars+ferguson%2Caps%2C62&sr=8-2) by Charles H Ferguson and Charles R. Morris
+* [Building IBM](https://www.amazon.com/Building-IBM-Shaping-Industry-Technology/dp/0262161478/ref=sr_1_1?crid=193Q0KQXOLO0D&keywords=building+ibm+pugh&qid=1656009796&sprefix=building+ibm+pugh%2Caps%2C67&sr=8-1) by Pugh
+* [Eniac](https://www.amazon.com/Eniac-Triumphs-Tragedies-Worlds-Computer/dp/0802713483/ref=sr_1_1?crid=3922ZLR3IHL2F&keywords=Eniac+McCartney&qid=1656009815&sprefix=eniac+mccartney%2Caps%2C78&sr=8-1) by McCartney
+* [A Few Good Men from Univac by Lundstrom](https://www.amazon.com/gp/product/0262620758/ref=ppx_yo_dt_b_asin_title_o01_s00?ie=UTF8&psc=1); **HAVE NOT READ YET**
 
 ## Minis
-* The Ultimate Entrepreneur by Glenn Rifkin and George Harrar; "**A fantastic read.  Cantrill argues in his podcast that DEC had too many people -- and they did -- but they grew up in an era where you made everything right down to the cases.  That leads to an incredible number of people.**"
-* Riding the Runaway Horse by Charles Kenney 
-* Soul of a New Machine by Tracy Kidder; "**The canonical high tech read; I've been re-reading this book roughly once a decade since the 80s**"
+* [The Ultimate Entrepreneur](https://www.amazon.com/Ultimate-Entrepreneur-Digital-Equipment-Corporation/dp/0809245590/ref=sr_1_1?crid=1Q6E1UWGOCM9R&keywords=The+Ultimate+Entrepreneur&qid=1656009989&sprefix=the+ultimate+entrepreneur%2Caps%2C90&sr=8-1) by Glenn Rifkin and George Harrar; "**A fantastic read.  Cantrill argues in his podcast that DEC had too many people -- and they did -- but they grew up in an era where you made everything right down to the cases.  That leads to an incredible number of people.**"
+* [Riding the Runaway Horse](https://www.amazon.com/Riding-Runaway-Horse-Decline-Laboratories/dp/0316489190/ref=sr_1_1?crid=28QBJ4A1DGO3Q&keywords=Riding+the+Runaway+Horse&qid=1656010007&sprefix=riding+the+runaway+horse%2Caps%2C264&sr=8-1) by Charles Kenney 
+* [Soul of a New Machine](https://www.amazon.com/Soul-New-Machine-Tracy-Kidder/dp/0316491977/ref=sr_1_1?crid=34OVARBMIXNOI&keywords=Soul+of+a+New+Machine&qid=1656010023&sprefix=soul+of+a+new+machine%2Caps%2C172&sr=8-1) by Tracy Kidder; "**The canonical high tech read; I've been re-reading this book roughly once a decade since the 80s**"
+* [DEC is Dead Long Live DEC](https://www.amazon.com/gp/product/1576753050/ref=ppx_yo_dt_b_asin_title_o04_s00?ie=UTF8&psc=1) by Schein; **HAVE NOT READ YET**
 
 ## Internet History
 * Where Wizards Stay Up Late by Katie Hefner and Matthew Lyon
@@ -38,6 +43,7 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 
 ## MIT
 * The Dream Factory by Mitchell Waldrop
+* [Endless Frontier: Vannevar Bush](https://www.amazon.com/dp/1501196456?psc=1&ref=ppx_yo2ov_dt_b_product_details) by Zachary; **HAVE NOT READ YET**
 
 ## Xerox
 * Dealers of Lightning by Michael Hiltzik; "**It makes you realize just how bright the PARC folks were; sort of a mini manhattan project for computing**"
@@ -82,6 +88,7 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * Open by Rod Canion; "**I agree with Bryan Cantrill that this should have been titled Compatible**"
 * Adventures in Microland by Jerry Pournelle; "**Jerry Pournelle who is long gone was the quintessential tech blogger albeit in print form**"
 * Once Upon a Time in Computerland by Jonathan Littman; "**Uber style fraud before uber**"
+* [Sweating Bullets: Notes on Inventing PowerPoint](https://www.robertgaskins.com/powerpoint-history/sweating-bullets/gaskins-sweating-bullets-webpdf-isbn-9780985142414.pdf) by Robert Gaskins; PDF 500 odd pages; "**This is a damn good read**"
 
 ## Microsoft
 * The Microsoft Way by Randall Stross
@@ -125,12 +132,14 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * Becoming Steve Jobs by Brent Schlender and Rick Tetzeli
 * To Pixar and Beyond by Lawrence Levy
 * After Steve by Tripp Mickle
+* [Revolution In The Valley](https://www.amazon.com/gp/product/0596007191/ref=ppx_yo_dt_b_asin_title_o02_s00?ie=UTF8&psc=1) by Hertzfield; **HAVE NOT READ YET**
 
 ## Venture Capital
 * The Silicon Valley Way by Sherwin
 * Confessions of a Venture Capitalist by Quindlen
 * Valley Boy by Tom Perkins
 * LaunchPad by Randall Stross
+* [Creative Capital](https://www.amazon.com/gp/product/1422101223/ref=ppx_yo_dt_b_asin_title_o05_s00?ie=UTF8&psc=1) by Ante; **HAVE NOT READ YET**
 
 ## Oracle
 * Software by Matthew Symonds
@@ -156,6 +165,7 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * The Clue Train Manifesto by Levine, Locke, Searls, Weinberger
 * The Idealist by Justin Peters
 * Unix A History and Memoir by Brian Kernighan; "**Damn near perfect**"
+* [A Quarter Century of Unix by Salus](https://www.amazon.com/Quarter-Century-UNIX-Peter-Salus/dp/0201547775); **HAVE NOT READ YET**
 
 ## Palm
 * Piloting Palm by Butter and Pogue; "**We forget how important Palm was**"
@@ -175,14 +185,14 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * Starving to Death on $200 Million by James Ledbetter
 * Startup by Jerry Kaplan
 * The Wikipedia Revolution by Andrew Lih
-* High St@kes, No Prisoners by Charles Ferguson; "**FrontPage was amazing in the day and this covers it well**"
+* [High St@kes, No Prisoners](https://www.amazon.com/gp/product/060980698X/ref=ppx_yo_dt_b_asin_title_o03_s00?ie=UTF8&psc=1) by Charles Ferguson; "**FrontPage was amazing in the day and this covers it well**"
 * Obscene Profits by Lane
 * The CDNow Story by Olim, Olim and Kent
 * dot.con by John Cassidy 
 * That Will Never Work by Marc Randolph; "**A great look at Netflix**"
 * Netflixed by Gina Keating 
 * Year Zero By Rob Reid
-* The Hard Thing About Hard Things by Ben Horowitz
+* [The Hard Thing About Hard Things](https://www.amazon.com/dp/0062273205?psc=1&ref=ppx_yo2ov_dt_b_product_details) by Ben Horowitz
 
 ## Amazon
 * The Everything Store by Brad Stone
@@ -240,7 +250,7 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * Always Day One by Kantrowitz
 * A Truck Full of Money by Tracy Kidder; "**Not as good as Soul of a New Machine**"
 * Disrupted by Dan Lyons
-* Getting Acquired by Gazdecki
+* [Getting Acquired](https://www.amazon.com/dp/1544522894?psc=1&ref=ppx_yo2ov_dt_b_product_details) by Gazdecki
 * Bitcoin Billionaires by Ben Mezrich
 * Valley of the Gods by Wolfe
 * Beyond the Valley by Srinivasan
