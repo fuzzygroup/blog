@@ -232,8 +232,9 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 ## Segway
 * Reinventing the Wheel by Kemper; "**Sigh.  Can't Kamen do something better**"
 
-## Blackberry
-* Losing the Signal by McNish and Silcoff; "**I wasn't a BlackBerry guy but this explains the fire and furor.  A lost technology path similar to Palm**"
+## Blackberry & Nokia
+* [Losing the Signal](https://www.amazon.com/Losing-Signal-Extraordinary-Spectacular-BlackBerry-ebook/dp/B00Q20ASVS/ref=sr_1_1?crid=3G2PCID7ZJS79&keywords=Losing+the+Signal&qid=1656019556&s=books&sprefix=losing+the+signal%2Cstripbooks%2C203&sr=1-1) by McNish and Silcoff; "**I wasn't a BlackBerry guy but this explains the fire and furor.  A lost technology path similar to Palm and DEC**"
+* [The Decline and Fall of Nokia](https://www.amazon.com/Decline-Fall-Nokia-David-Cord-ebook/dp/B01FH1HWD4/ref=sr_1_1?crid=3DDKN7LP1YVWE&keywords=the+decline+and+fall+of+nokia&qid=1656019504&s=books&sprefix=the+decline+and+fall+of+noki%2Cstripbooks%2C156&sr=1-1) by Cord; "**HAVE NOT READ**"
 
 ## Facebook / Web 2.0
 * Authoritas by Aaron Greenspan
@@ -258,10 +259,11 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * The Four by Galloway
 
 ## The Cellphone Wars
-* Dogfight by Fred Vogelstein
+* [Dogfight](https://www.amazon.com/Dogfight-Apple-Google-Started-Revolution/dp/0374109206/ref=sr_1_1?crid=15UK05DE7CP0Y&keywords=Dogfight+vogelstein&qid=1656019710&s=books&sprefix=dogfight+vogelstein%2Cstripbooks%2C123&sr=1-1) by Fred Vogelstein
 
 ## Gaming
-* Blood, Sweat and Pixels by Schreier 
+* Disclaimer: I'm not a gamer and there is a rich lore of game books that aren't here; send me recommendations on Twitter
+* [Blood, Sweat and Pixels](https://www.amazon.com/Blood-Sweat-and-Pixels-audiobook/dp/B0731MCF1R/ref=sr_1_1?crid=33YHJ1VE2TE56&keywords=Blood%2C+Sweat+and+Pixels&qid=1656019580&s=books&sprefix=blood%2C+sweat+and+pixels%2Cstripbooks%2C86&sr=1-1) by Schreier; "**HAVE NOT READ YET**"
 
 ## Space 2.0 / Tesla
 * Liftoff by Eric Berger
