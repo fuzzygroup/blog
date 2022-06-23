@@ -8,7 +8,7 @@ tags: ["startup", "books"]
 I've been reading High Tech case studies now since the 80s -- just after I entered the business.  [Bryan Cantrill](https://twitter.com/bcantrill) from [Oxide Computer's podcast](https://feeds.transistor.fm/oxide-and-friends) inspired me to get all my books out and order them on a rough historical basis.  I thought listing them here might be interesting to someone.  All of these I've read and there are a ton of lessons for entrepreneurs here.  I put rough notes next to some of them **in bold** after the author name in quotes.
 
 ## Change Log
-* 2022-06-23 - Started adding links, added books suggested on Twitter, Added Gaskins on PowerPoint History
+* 2022-06-23 - Started adding links, added books suggested on Twitter, Added Gaskins on PowerPoint History; fixed typos (how did I possibly misspell Torvalds; clearly was stupid yesterday)
 
 
 ## IBM / Mainframes / Super Computers
@@ -158,18 +158,18 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [The Future Was Here](https://www.amazon.com/Future-Was-Here-Commodore-Platform/dp/0262535696/ref=sr_1_1?crid=16SIZ6C7MND3B&keywords=The+Future+Was+Here+Maher&qid=1656018140&s=books&sprefix=the+future+was+here+maher%2Cstripbooks%2C75&sr=1-1) by Jimmy Maher; "**As much of a lost hope as BeOS**"
 
 ## Open Source
-* Just for Fun by Linus Thorvaldsen and David Diamond
-* Free for All by Peter Mayner
-* Free as in Freedom by Williams
-* Dreaming in Code by Scott Rosenberg; "**Mitch Kapor's second coming and his inability to give up on Lotus Agenda; seriously tho a great look at what happens when you don't have an MVP and a lot of money**"
-* Rebel Code by Glyn Moody
-* The Clue Train Manifesto by Levine, Locke, Searls, Weinberger
-* The Idealist by Justin Peters
-* Unix A History and Memoir by Brian Kernighan; "**Damn near perfect**"
+* [Just for Fun](https://www.amazon.com/Just-Fun-Story-Accidental-Revolutionary/dp/0066620732/ref=sr_1_1?crid=2VZOHA1LCCZ8Q&keywords=just+for+fun+linus+torvalds&qid=1656018264&sprefix=Just+for+Fun%2Caps%2C138&sr=8-1) by Linus Torvalds and David Diamond
+* [Free for All](https://www.amazon.com/Free-All-Software-Movement-High-Tech/dp/0066620503/ref=sr_1_1?crid=1NJZ6UWE5GROT&keywords=free+for+all+peter+wayner&qid=1656018405&s=books&sprefix=free+for+all+peter+wayner%2Cstripbooks%2C55&sr=1-1) by Peter Wayner
+* [Free as in Freedom](https://www.amazon.com/Free-Freedom-2-0-Sam-Williams/dp/0983159211/ref=sr_1_1?crid=1X8AXD0GQS81T&keywords=Free+as+in+Freedom+williams&qid=1656018436&s=books&sprefix=free+as+in+freedom+williams%2Cstripbooks%2C183&sr=1-1) by Williams
+* [Dreaming in Code](https://www.amazon.com/Dreaming-Code-Programmers-Transcendent-Software/dp/1400082471/ref=sr_1_1?crid=XUE6XTJOJ4HC&keywords=Dreaming+in+Code&qid=1656018466&s=books&sprefix=dreaming+in+code%2Cstripbooks%2C125&sr=1-1) by Scott Rosenberg; "**Mitch Kapor's second coming and his inability to give up on Lotus Agenda; seriously tho a great look at what happens when you don't have an MVP and a lot of money**"
+* [Rebel Code](https://www.amazon.com/Rebel-Code-Linux-Source-Revolution/dp/0738203335/ref=sr_1_1?crid=1HYW9IC0USUT9&keywords=Rebel+Code&qid=1656018485&s=books&sprefix=rebel+code%2Cstripbooks%2C150&sr=1-1) by Glyn Moody
+* [The Clue Train Manifesto](https://www.amazon.com/Cluetrain-Manifesto-10th-Anniversary/dp/0465018653/ref=sr_1_1?crid=ZO8RH0C631TY&keywords=The+Clue+Train+Manifesto&qid=1656018500&s=books&sprefix=the+clue+train+manifesto%2Cstripbooks%2C351&sr=1-1) by Levine, Locke, Searls, Weinberger
+* [The Idealist](https://www.amazon.com/Idealist-Justin-Peters-ebook/dp/B00BEZAY88/ref=sr_1_1?crid=2TKP5YHBU61EU&keywords=the+idealist+justin+peters&qid=1656018525&s=books&sprefix=the+idealist+justin+peteres%2Cstripbooks%2C111&sr=1-1) by Justin Peters; "**This breaks my heart.  I had dinner with Aaron once and he was a shining light**"
+* [Unix A History and Memoir](https://www.amazon.com/UNIX-History-Memoir-Brian-Kernighan/dp/1695978552/ref=sr_1_1?crid=P4ZENIGKRU1K&keywords=Unix+A+History+and+Memoir&qid=1656018581&s=books&sprefix=unix+a+history+and+memoir%2Cstripbooks%2C142&sr=1-1) by Brian Kernighan; "**Damn near perfect and I'm now ready for Unix Jeopardy**"
 * [A Quarter Century of Unix by Salus](https://www.amazon.com/Quarter-Century-UNIX-Peter-Salus/dp/0201547775); **HAVE NOT READ YET**
 
 ## Palm
-* Piloting Palm by Butter and Pogue; "**We forget how important Palm was**"
+* [Piloting Palm](https://www.amazon.com/Piloting-Palm-Handspring-Billion-Dollar-Handheld/dp/0471089656/ref=sr_1_2?crid=RB8S0QRD166Z&keywords=Piloting+Palm&qid=1656018236&sprefix=piloting+palm%2Caps%2C95&sr=8-2) by Butter and Pogue; "**We forget how important Palm was**"
 
 ## Netscape / Internet Stuff
 * How the Web Was Born by Gillies and Calliau
