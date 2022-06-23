@@ -9,7 +9,7 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 
 ## Change Log
 * 2022-06-23 - Started adding links, added books suggested on Twitter, Added Gaskins on PowerPoint History; fixed typos (how did I possibly misspell Torvalds; clearly was stupid yesterday)
-* Apologies for where an Audible audio book is linked instead of hard or paperback; Amazon is inconsistent with this
+* 2022-06-23 - Apologies for where an Audible audio book is linked instead of hard or paperback; Amazon is inconsistent with this
 
 
 ## IBM / Mainframes / Super Computers
@@ -214,24 +214,20 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [Googled](https://www.amazon.com/Googled-End-World-As-Know/dp/1594202354/ref=sr_1_1?crid=288RVZ0ID1808&keywords=Googled+auletta&qid=1656020430&s=books&sprefix=googled+auletta%2Cstripbooks%2C66&sr=1-1) by Ken Auletta
 
 ## Misc / Software
-* Lucky That Way by Fregger
-* The Tinkerers by Foege
-* Geektastic by Black and Castellucci
-* Goto by Lohr
-* Building a Successful Software Business by Radin
-* Programmers at Work by Susan Lakers; "**The first early look at software authors**"
-* Masterminds of Programming by Biancuzzi and Warden
-* Coders at Work by Siebel 
-* Hackers and Painters by Graham
+* [The Tinkerers](https://www.amazon.com/Tinkerers-Amateurs-DIYers-Inventors-America-ebook/dp/B00A9OF002/ref=sr_1_1?crid=2QIL8XSJ8LD7&keywords=The+Tinkerers+foege&qid=1656022307&s=books&sprefix=the+tinkerers+foege%2Cstripbooks%2C61&sr=1-1) by Foege
+* [Programmers at Work](https://www.amazon.com/Programmers-Work-Interviews-Computer-Industry/dp/1556152116/ref=sr_1_1?crid=1NUNPTHOS2UMY&keywords=Programmers+at+Work&qid=1656022391&s=books&sprefix=programmers+at+work%2Cstripbooks%2C77&sr=1-1) by Susan Lakers; "**The first early look at software authors**"
+* [Masterminds of Programming](https://www.amazon.com/Masterminds-Programming-Conversations-Creators-Languages/dp/0596515170/ref=sr_1_1?crid=W6BMIXUT5DQ&keywords=Masterminds+of+Programming&qid=1656022410&s=books&sprefix=masterminds+of+programming%2Cstripbooks%2C59&sr=1-1) by Biancuzzi and Warden
+* [Coders at Work](https://www.amazon.com/Coders-Work-Reflections-Craft-Programming/dp/1430219483/ref=sr_1_1?crid=V6F6SHCJIBYC&keywords=Coders+at+Work&qid=1656022429&s=books&sprefix=coders+at+work%2Cstripbooks%2C106&sr=1-1) by Siebel 
+* [Hackers and Painters](https://www.amazon.com/Hackers-Painters-Big-Ideas-Computer/dp/1449389554/ref=sr_1_1?crid=6BKU2DHK9YPY&keywords=Hackers+and+Painters&qid=1656022449&s=books&sprefix=hackers+and+painters%2Cstripbooks%2C71&sr=1-1) by Graham
 
 ## George Gilder
-* The Silicon Eye by George GIlder
-* Telecosm by George Gilder
-* Microcosm by George Gilder
-* Life After Google by George Gilder
+* [The Silicon Eye](https://www.amazon.com/Silicon-Eye-Swashbucklers-Innovation-Enterprise/dp/0393328414/ref=sr_1_1?crid=2IKWPR61E54RM&keywords=The+Silicon+Eye+Gilder&qid=1656022137&s=books&sprefix=the+silicon+eye+gilder%2Cstripbooks%2C288&sr=1-1) by George GIlder
+* [Telecosm](https://www.amazon.com/Telecosm-Infinite-Bandwidth-Revolutionize-World-ebook/dp/B000FC0V9I/ref=sr_1_1?crid=27Y2K8WR6Z514&keywords=telecosm+gilder&qid=1656022159&s=books&sprefix=telecosm+gilder%2Cstripbooks%2C62&sr=1-1) by George Gilder
+* [Microcosm](https://www.amazon.com/Microcosm-Quantum-Revolution-Economics-Technology/dp/067170592X/ref=sr_1_1?crid=1MGVSI1D5RRHG&keywords=microcosm+gilder&qid=1656022174&s=books&sprefix=microcosm+gilder%2Cstripbooks%2C58&sr=1-1) by George Gilder; "**A fascinating look at the personalities that makes chips; his discussion of people that make analog devices specifically has always stuck with me**"
+* [Life After Google](https://www.amazon.com/Life-After-Google-George-Gilder-audiobook/dp/B07FCRHKPD/ref=sr_1_1?crid=13PYPZMVZPGBW&keywords=Life+After+Google+gilder&qid=1656022235&s=books&sprefix=life+after+google+gilder%2Cstripbooks%2C75&sr=1-1) by George Gilder; "**HAVE NOT READ**"
 
 ## Segway
-* Reinventing the Wheel by Kemper; "**Sigh.  Can't Kamen do something better**"
+* [Reinventing the Wheel](https://www.amazon.com/Reinventing-Wheel-Genius-Innovation-Ambition-ebook/dp/B06XHCN3P4/ref=sr_1_2?crid=2T0Z73A209I7Z&keywords=Reinventing+the+Wheel&qid=1656022097&sprefix=reinventing+the+wheel%2Caps%2C124&sr=8-2) by Kemper; "**Sigh.  Can't Kamen do something better; what has he been doing since???**"
 
 ## Blackberry & Nokia
 * [Losing the Signal](https://www.amazon.com/Losing-Signal-Extraordinary-Spectacular-BlackBerry-ebook/dp/B00Q20ASVS/ref=sr_1_1?crid=3G2PCID7ZJS79&keywords=Losing+the+Signal&qid=1656019556&s=books&sprefix=losing+the+signal%2Cstripbooks%2C203&sr=1-1) by McNish and Silcoff; "**I wasn't a BlackBerry guy but this explains the fire and furor.  A lost technology path similar to Palm and DEC**"
@@ -264,6 +260,7 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 ## Gaming
 * Disclaimer: I'm not a gamer and there is a rich lore of game books that aren't here; send me recommendations on Twitter
 * [Blood, Sweat and Pixels](https://www.amazon.com/Blood-Sweat-and-Pixels-audiobook/dp/B0731MCF1R/ref=sr_1_1?crid=33YHJ1VE2TE56&keywords=Blood%2C+Sweat+and+Pixels&qid=1656019580&s=books&sprefix=blood%2C+sweat+and+pixels%2Cstripbooks%2C86&sr=1-1) by Schreier; "**HAVE NOT READ YET**"
+* [Lucky That Way](https://www.amazon.com/Lucky-That-Way-Brad-Fregger/dp/0977353532/ref=sr_1_1?crid=2M13Y13ISQZS0&keywords=Lucky+That+Way+fregger&qid=1656022265&s=books&sprefix=lucky+that+way+fregger%2Cstripbooks%2C126&sr=1-1) by Fregger
 
 ## Space 2.0 / Tesla
 * [Liftoff](https://www.amazon.com/Liftoff-Desperate-Early-Launched-SpaceX/dp/B089QRXBXB/ref=sr_1_1?crid=4B8PGODG3HL2&keywords=liftoff+eric+berger&qid=1656019792&s=books&sprefix=Liftoff%2Cstripbooks%2C89&sr=1-1) by Eric Berger
