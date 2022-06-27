@@ -16,7 +16,7 @@ gem 'json', '>=1.8.6'
 
 
 group :jekyll_plugins do
-  gem "hpricot"
+  #gem "hpricot"
   gem "open_uri_redirections"
   gem 'github-pages'
   gem "jekyll-compose"

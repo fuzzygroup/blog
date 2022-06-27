@@ -8,6 +8,9 @@ tags: ["startup", "books"]
 I've been reading High Tech case studies now since the 80s -- just after I entered the business.  [Bryan Cantrill](https://twitter.com/bcantrill) from [Oxide Computer's podcast](https://feeds.transistor.fm/oxide-and-friends) inspired me to get all my books out and order them on a rough historical basis.  I thought listing them here might be interesting to someone.  All of these I've read and there are a ton of lessons for entrepreneurs here.  I put rough notes next to some of them **in bold** after the author name in quotes.
 
 ## Change Log
+* 2022-06-26 - Cleaned my bookcase and looked for other books in this category and added entries for How Would You Move Mount Fuji (Microsoft category), Go To (Misc / Software Category), Building a Successful Software Business (Misc / Software Category), Side Hustles (Misc / Software Category), Facebook by Steven Levy (Web 2 category), Tim Cook (Apple Category), A Piece of the Computer Pie (IBM Category), In Search of Stupidity (Misc / Software Category), Crypto (Misc / Software Category), Smart and Gets Things Done (Software Category), The Effective Engineer (Misc / Software Category), Creativity Inc (Apple Category), The Chip (Intel Category), Lean In (Web 2 Category), No Such Thing as a Free Gift (Microsoft Category), The Phoenix Project (Misc / Software Category)
+* 2022-06-26 - Added Sub Categories in the Apple Section 
+* 2022-06-26 - Added Sub Categories in the Web 2 Section 
 * 2022-06-23 - Started adding links, added books suggested on Twitter, Added Gaskins on PowerPoint History; fixed typos (how did I possibly misspell Torvalds; clearly was stupid yesterday)
 * 2022-06-23 - Apologies for where an Audible audio book is linked instead of hard or paperback; Amazon is inconsistent with this
 * 2022-06-23 - Added a bunch more notes from reading these.
@@ -25,6 +28,7 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [Building IBM](https://www.amazon.com/Building-IBM-Shaping-Industry-Technology/dp/0262161478/ref=sr_1_1?crid=193Q0KQXOLO0D&keywords=building+ibm+pugh&qid=1656009796&sprefix=building+ibm+pugh%2Caps%2C67&sr=8-1) by Pugh
 * [Eniac](https://www.amazon.com/Eniac-Triumphs-Tragedies-Worlds-Computer/dp/0802713483/ref=sr_1_1?crid=3922ZLR3IHL2F&keywords=Eniac+McCartney&qid=1656009815&sprefix=eniac+mccartney%2Caps%2C78&sr=8-1) by McCartney
 * [A Few Good Men from Univac by Lundstrom](https://www.amazon.com/gp/product/0262620758/ref=ppx_yo_dt_b_asin_title_o01_s00?ie=UTF8&psc=1); **HAVE NOT READ YET**
+* [A Piece of the Computer Pie](https://www.amazon.com/piece-computer-pie-Ben-Voth/dp/0872011364/ref=sr_1_1?crid=1P48FP9KNFY54&keywords=a+piece+of+the+computer+pie+by+Ben+Voth&qid=1656293811&s=audible&sprefix=a+piece+of+the+computer+pie+by+ben+voth%2Caudible%2C65&sr=1-1)
 
 ## Minis
 * [The Ultimate Entrepreneur](https://www.amazon.com/Ultimate-Entrepreneur-Digital-Equipment-Corporation/dp/0809245590/ref=sr_1_1?crid=1Q6E1UWGOCM9R&keywords=The+Ultimate+Entrepreneur&qid=1656009989&sprefix=the+ultimate+entrepreneur%2Caps%2C90&sr=8-1) by Glenn Rifkin and George Harrar; "**A fantastic read.  Cantrill argues in his podcast that DEC had too many people -- and they did -- but they grew up in an era where you made everything right down to the cases.  That leads to an incredible number of people.**"
@@ -74,6 +78,7 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [Andy Grove](https://www.amazon.com/Andy-Grove-Life-Times-American/dp/1591841399/ref=sr_1_3?crid=17U01TT8JASXV&keywords=Andy+Grove&qid=1656022660&s=books&sprefix=andy+grove%2Cstripbooks%2C313&sr=1-3) by Richard Tedlow
 * [The Intel Trinity](https://www.amazon.com/Intel-Trinity-Robert-Important-Company/dp/0062226762/ref=sr_1_1?crid=1I0B97LFTYMMN&keywords=The+Intel+Trinity&qid=1656013378&s=books&sprefix=the+intel+trinity%2Cstripbooks%2C213&sr=1-1) by Michael Malone; "**Fascinating particularly the bit about walking out the door and exiting the DRAM business**"
 * [High Output Management](https://www.amazon.com/High-Output-Management-Andrew-Grove/dp/0679762884/ref=sr_1_1?keywords=high+output+management&qid=1656013396&s=books&sprefix=High+Outp%2Cstripbooks%2C258&sr=1-1) by Andy Grove; "**Good but cold**"
+* [The Chip](https://www.amazon.com/Chip-Americans-Invented-Microchip-Revolution-ebook/dp/B000XU4UT4/ref=sr_1_1?crid=15MQF69TPYRN4&keywords=the+chip&qid=1656293625&sprefix=The+Chip%2Caps%2C85&sr=8-1) by Reid
 
 ## Bloomberg
 * [Bloomberg by Bloomberg](https://www.amazon.com/Bloomberg-Revised-Updated-Michael-R/dp/1119554268/ref=sr_1_1?keywords=bloomberg+by+bloomberg&qid=1656013414&s=books&sprefix=Bloomberg+by+%2Cstripbooks%2C73&sr=1-1) by Michael Bloomberg and Matthew Winkler; "**Makes you realize just how fundamental Bloomberg is**"
@@ -106,36 +111,92 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [The Making of Microsoft](https://www.amazon.com/Making-Microsoft-Created-Successful-Software/dp/1559580712/ref=sr_1_1?crid=261LIHRKH2LN2&keywords=The+Making+of+Microsoft&qid=1656014483&s=books&sprefix=the+making+of+microsoft%2Cstripbooks%2C61&sr=1-1) by Ichbiah and Knepper; "**Good coverage of the early years of the Microsoft / Softbank relationship**"
 * [I Sing the Body Electronic](https://www.amazon.com/Sing-Body-Electronic-Microsoft-Multimedia/dp/0756757584/ref=sr_1_1?crid=2TJ5BA7HV72OY&keywords=I+Sing+the+Body+Electronic&qid=1656014674&s=books&sprefix=i+sing+the+body+electronic%2Cstripbooks%2C354&sr=1-1) by Fred Moody; "**Best ever look at CD-ROM production realities.  The bit about Slayer Sucks stayed with me forever**"
 * [Show Stopper](https://www.amazon.com/Showstopper-Breakneck-Windows-Generation-Microsoft-ebook/dp/B00J5X5E9U/ref=sr_1_2?crid=2HGAVEAXCX7I3&keywords=Show+Stopper+Zachary&qid=1656014694&s=books&sprefix=show+stopper+zachary%2Cstripbooks%2C231&sr=1-2) by G. Pascal Zachary; "**Damn near perfect**"
+* [No Such Thing as a Free Gift](https://www.amazon.com/Such-Thing-Free-Gift-Philanthropy/dp/1784786233/ref=sr_1_1?crid=2MF4E4WPPMNKJ&keywords=no+such+thing+as+a+free+gift&qid=1656293494&sprefix=no+such+thing+as+a+free+gift%2Caps%2C68&sr=8-1) by McGoey
+* [How Would You Move Mount Fuji](https://www.amazon.com/How-Would-Move-Mount-Fuji/dp/0316778494/ref=sr_1_1?keywords=how+would+you+move+mount+fuji&qid=1656295426&sprefix=how+would+you+move+m%2Caps%2C80&sr=8-1) by Poundstone.  "**THANK GHU THIS INTERVIEWING TREND IS LARGELY OVER**"
 
 ## Apple / Jobs / Pixar / Next
-* [Steve Jobs and the Next Big Thing](https://www.amazon.com/Steve-Jobs-NeXT-Big-Thing-ebook/dp/B006VOM5V6/ref=sr_1_1?crid=2LT7CLYSM5IM6&keywords=Steve+Jobs+and+the+Next+Big+Thing&qid=1656017033&s=books&sprefix=steve+jobs+and+the+next+big+thing+%2Cstripbooks%2C102&sr=1-1) by Randall Stross. 
+
+### Apple Early
+* [West of Eden](https://www.amazon.com/West-Eden-Innocence-Apple-Computer-ebook/dp/B00295MJHG/ref=sr_1_1?crid=364PLOYG69Y0K&keywords=West+of+Eden+frank+rose&qid=1656017294&s=books&sprefix=west+of+eden+frank+rose%2Cstripbooks%2C57&sr=1-1) by Frank Rose
 * [Odyssey](https://www.amazon.com/Odyssey-Pepsi-Journey-Adventure-Future/dp/0060157801/ref=sr_1_1?crid=R4IVP59DT7RM&keywords=Odyssey+Sculley&qid=1656017069&s=books&sprefix=odyssey+sculley%2Cstripbooks%2C66&sr=1-1) by John Sculley
+
+### Mac
+* [Revolution In The Valley](https://www.amazon.com/gp/product/0596007191/ref=ppx_yo_dt_b_asin_title_o02_s00?ie=UTF8&psc=1) by Hertzfield; **HAVE NOT READ YET**
+* [Insanely Great](https://www.amazon.com/INSANELY-GREAT-Macintosh-Computer-Everything/dp/0670852449/ref=sr_1_1?crid=QAR4FG654MBB&keywords=Insanely+Great&qid=1656017396&s=books&sprefix=insanely+great%2Cstripbooks%2C313&sr=1-1) by Steven Levy
+* [The Cult of Mac](https://www.amazon.com/Cult-Mac-2nd-Leander-Kahney/dp/1593279140/ref=sr_1_1?crid=3N4B9UKMRC629&keywords=the+cult+of+mac&qid=1656017353&s=books&sprefix=the+cult+of+mac%2Cstripbooks%2C69&sr=1-1) by Kahney
+* [The Macintosh Way](https://www.amazon.com/Macintosh-Way-Guy-Kawasaki/dp/0673461750/ref=sr_1_1?crid=3LIWZ99TPGVLA&keywords=The+Macintosh+Way&qid=1656017270&s=books&sprefix=the+macintosh+way%2Cstripbooks%2C71&sr=1-1) by Guy Kawasaki; "**This book defined developer relations and evangelism for me and the industry**"
+
+### The Middle Years
 * [Apple](https://www.amazon.com/Apple-Intrigue-Egomania-Business-Blunders/dp/0812928512/ref=sr_1_1?crid=33EXMGLHPK7WB&keywords=Apple+Jim+Carlton&qid=1656017085&s=books&sprefix=apple+jim+carlton%2Cstripbooks%2C175&sr=1-1) by Jim Carlton
+
+### Steve Wozniak
+* [iWoz](https://www.amazon.com/iWoz-BYWozniak-Wozniak/dp/B006Q4IWXG/ref=sr_1_2?crid=1K5EODBI90E6B&keywords=iWoz&qid=1656017451&s=books&sprefix=iwoz%2Cstripbooks%2C93&sr=1-2) by Steve Wozniak
+
+### Steve Jobs
+* [The Steve Jobs Way](https://www.amazon.com/The-Steve-Jobs-Way-audiobook/dp/B004R0SLG4/ref=sr_1_1?crid=1NVPZF7K4L4IT&keywords=The+Steve+Jobs+Way&qid=1656017195&s=books&sprefix=the+steve+jobs+way%2Cstripbooks%2C69&sr=1-1) by Jay Elliot
+* [Steve Jobs](https://www.amazon.com/Steve-Jobs-Walter-Isaacson-audiobook/dp/B07ZMKXMTG/ref=sr_1_1?crid=1AUX46OBPMSQW&keywords=steve+jobs+walter+isaacson&qid=1656017143&s=books&sprefix=Steve+Jobs%2Cstripbooks%2C103&sr=1-1) by Walter Isaacson
+* [Inside Steve's Brain](https://www.amazon.com/Inside-Steves-Brain-Leander-Kahney-ebook/dp/B002N83GYE/ref=sr_1_1?crid=3LWRQTUF5VYB9&keywords=Inside+Steve%27s+Brain&qid=1656017438&s=books&sprefix=inside+steve%27s+brain%2Cstripbooks%2C80&sr=1-1) by Leander Kahney
+* [The Second Coming of Steve Jobs](https://www.amazon.com/Second-Coming-Steve-Jobs/dp/B0000547BZ/ref=sr_1_1?crid=343AV7AOYFGHX&keywords=The+Second+Coming+of+Steve+Jobs&qid=1656017312&s=books&sprefix=the+second+coming+of+steve+jobs%2Cstripbooks%2C82&sr=1-1) by Alan Deutschman
+* [iCon](https://www.amazon.com/iCon-Steve-Jobs-Greatest-Business/dp/0471720836/ref=sr_1_1?crid=3GDK3BZZVEIGK&keywords=iCon+Jeffrey+Young&qid=1656017218&s=books&sprefix=icon+jeffrey+young%2Cstripbooks%2C115&sr=1-1) by Jeffrey Young and William Simon
+* [The Bite in the Apple](https://www.amazon.com/Bite-Apple-Memoir-Life-Steve-ebook/dp/B00BY5QWUC/ref=sr_1_1?crid=36HNC11P3KF31&keywords=The+Bite+in+the+Apple+brennan&qid=1656017179&s=books&sprefix=the+bite+in+the+apple+brennan%2Cstripbooks%2C56&sr=1-1) by Chrisann Brennan
+* [Becoming Steve Jobs](https://www.amazon.com/Becoming-Steve-Jobs-audiobook/dp/B00R8IC37K/ref=sr_1_1?crid=EHMP6GQ5QJ66&keywords=Becoming+Steve+Jobs&qid=1656017533&s=books&sprefix=becoming+steve+jobs%2Cstripbooks%2C90&sr=1-1) by Brent Schlender and Rick Tetzeli
+
+### Next
+* [Steve Jobs and the Next Big Thing](https://www.amazon.com/Steve-Jobs-NeXT-Big-Thing-ebook/dp/B006VOM5V6/ref=sr_1_1?crid=2LT7CLYSM5IM6&keywords=Steve+Jobs+and+the+Next+Big+Thing&qid=1656017033&s=books&sprefix=steve+jobs+and+the+next+big+thing+%2Cstripbooks%2C102&sr=1-1) by Randall Stross. 
+
+### Pixar
+* [To Pixar and Beyond](https://www.amazon.com/Pixar-Beyond-Unlikely-Journey-Entertainment-ebook/dp/B01912OSA0/ref=sr_1_1?crid=1KBD76I3UHI0E&keywords=To+Pixar+and+Beyond&qid=1656017565&s=books&sprefix=to+pixar+and+beyond%2Cstripbooks%2C68&sr=1-1) by Lawrence Levy
+* [Creativity, Inc](https://www.amazon.com/Creativity-Inc-Overcoming-Unseen-Inspiration/dp/0812993012/ref=sr_1_1?crid=L13FYPPX7R87&keywords=Creativity+Inc&qid=1656293697&sprefix=creativity+inc%2Caps%2C77&sr=8-1) by Catmull
+
+### Take 2: The Return of Steve and Beyond
 * [Infinite Loop](https://www.amazon.com/Infinite-Loop-Michael-Malone/dp/0385486847/ref=sr_1_1?crid=2N0QGA423U6C4&keywords=Infinite+Loop+michael+malone&qid=1656017103&s=books&sprefix=infinite+loop+michael+malone%2Cstripbooks%2C60&sr=1-1) by Michael Malone
 * [Haunted Empire](https://www.amazon.com/Haunted-Empire-Apple-After-Steve/dp/B00I8OJ7VI/ref=sr_1_2?crid=5EMZVENGY3CF&keywords=Haunted+Empire&qid=1656017124&s=books&sprefix=haunted+empire+%2Cstripbooks%2C52&sr=1-2) by Yukari Kane
-* [Steve Jobs](https://www.amazon.com/Steve-Jobs-Walter-Isaacson-audiobook/dp/B07ZMKXMTG/ref=sr_1_1?crid=1AUX46OBPMSQW&keywords=steve+jobs+walter+isaacson&qid=1656017143&s=books&sprefix=Steve+Jobs%2Cstripbooks%2C103&sr=1-1) by Walter Isaacson
+* [Tim Cook](https://www.amazon.com/Tim-Cook-Genius-Apple-Level/dp/0525537600/ref=tmm_hrd_swatch_0?_encoding=UTF8&qid=1656294109&sr=1-1-catcorr) by Kahney. "**AFTER READING THIS YOU STILL WON'T KNOW MUCH ABOUT TIM**"
 * [Return to the Little Kingdom](https://www.amazon.com/Return-Little-Kingdom-Creation-Changed/dp/B004CWGZXI/ref=sr_1_1?crid=12G8QD9ETHXXV&keywords=Return+to+the+Little+Kingdom&qid=1656017162&s=books&sprefix=return+to+the+little+kingdom%2Cstripbooks%2C85&sr=1-1) by Michael Moritz
-* [The Bite in the Apple](https://www.amazon.com/Bite-Apple-Memoir-Life-Steve-ebook/dp/B00BY5QWUC/ref=sr_1_1?crid=36HNC11P3KF31&keywords=The+Bite+in+the+Apple+brennan&qid=1656017179&s=books&sprefix=the+bite+in+the+apple+brennan%2Cstripbooks%2C56&sr=1-1) by Chrisann Brennan
-* [The Steve Jobs Way](https://www.amazon.com/The-Steve-Jobs-Way-audiobook/dp/B004R0SLG4/ref=sr_1_1?crid=1NVPZF7K4L4IT&keywords=The+Steve+Jobs+Way&qid=1656017195&s=books&sprefix=the+steve+jobs+way%2Cstripbooks%2C69&sr=1-1) by Jay Elliot
-* [iCon](https://www.amazon.com/iCon-Steve-Jobs-Greatest-Business/dp/0471720836/ref=sr_1_1?crid=3GDK3BZZVEIGK&keywords=iCon+Jeffrey+Young&qid=1656017218&s=books&sprefix=icon+jeffrey+young%2Cstripbooks%2C115&sr=1-1) by Jeffrey Young and William Simon
-* [The One Device](https://www.amazon.com/The-One-Device-Brian-Merchant-audiobook/dp/B072QDKDRR/ref=sr_1_1?crid=LYUIYPSE78QW&keywords=the+one+device+the+secret+history+of+the+iphone&qid=1656017235&s=books&sprefix=The+One+Device+%2Cstripbooks%2C62&sr=1-1) by Brian Merchant
 * [Inside Apple](https://www.amazon.com/Inside-Apple-Americas-Admired-Secretive-Company-ebook/dp/B005LH4Y3G/ref=sr_1_1?crid=EDSEDTD62GM6&keywords=Inside+Apple&qid=1656017255&s=books&sprefix=inside+apple%2Cstripbooks%2C82&sr=1-1) by Adam Lashinsky
-* [The Macintosh Way](https://www.amazon.com/Macintosh-Way-Guy-Kawasaki/dp/0673461750/ref=sr_1_1?crid=3LIWZ99TPGVLA&keywords=The+Macintosh+Way&qid=1656017270&s=books&sprefix=the+macintosh+way%2Cstripbooks%2C71&sr=1-1) by Guy Kawasaki; "**This book defined developer relations and evangelism for me and the industry**"
-* [West of Eden](https://www.amazon.com/West-Eden-Innocence-Apple-Computer-ebook/dp/B00295MJHG/ref=sr_1_1?crid=364PLOYG69Y0K&keywords=West+of+Eden+frank+rose&qid=1656017294&s=books&sprefix=west+of+eden+frank+rose%2Cstripbooks%2C57&sr=1-1) by Frank Rose
-* [The Second Coming of Steve Jobs](https://www.amazon.com/Second-Coming-Steve-Jobs/dp/B0000547BZ/ref=sr_1_1?crid=343AV7AOYFGHX&keywords=The+Second+Coming+of+Steve+Jobs&qid=1656017312&s=books&sprefix=the+second+coming+of+steve+jobs%2Cstripbooks%2C82&sr=1-1) by Alan Deutschman
 * [Apple Confidential](https://www.amazon.com/Apple-Confidential-2-0-Definitive-Colorful/dp/1593270100/ref=sr_1_1?crid=3EUMWKI7J61O4&keywords=Apple+Confidential&qid=1656017335&s=books&sprefix=apple+confidential%2Cstripbooks%2C92&sr=1-1) by Owen Linzmayer
-* [The Cult of Mac](https://www.amazon.com/Cult-Mac-2nd-Leander-Kahney/dp/1593279140/ref=sr_1_1?crid=3N4B9UKMRC629&keywords=the+cult+of+mac&qid=1656017353&s=books&sprefix=the+cult+of+mac%2Cstripbooks%2C69&sr=1-1) by Kahney
 * [The Apple Way](https://www.amazon.com/The-Apple-Way/dp/B09B1DNBPW/ref=sr_1_1?crid=2LUODQP5ZD7L&keywords=The+Apple+Way+cruikshank&qid=1656017377&s=books&sprefix=the+apple+way+cruikshank%2Cstripbooks%2C64&sr=1-1) by Jeffrey Cruikshank
-* [Insanely Great](https://www.amazon.com/INSANELY-GREAT-Macintosh-Computer-Everything/dp/0670852449/ref=sr_1_1?crid=QAR4FG654MBB&keywords=Insanely+Great&qid=1656017396&s=books&sprefix=insanely+great%2Cstripbooks%2C313&sr=1-1) by Steven Levy
-* [The Perfect Thing](https://www.amazon.com/Perfect-Thing-Shuffles-Commerce-Coolness/dp/0743285220/ref=sr_1_1?crid=E26WZRI3QKGF&keywords=The+Perfect+Thing+levy&qid=1656017422&s=books&sprefix=the+perfect+thing+levy%2Cstripbooks%2C52&sr=1-1) by Steven Levy
-* [Inside Steve's Brain](https://www.amazon.com/Inside-Steves-Brain-Leander-Kahney-ebook/dp/B002N83GYE/ref=sr_1_1?crid=3LWRQTUF5VYB9&keywords=Inside+Steve%27s+Brain&qid=1656017438&s=books&sprefix=inside+steve%27s+brain%2Cstripbooks%2C80&sr=1-1) by Leander Kahney
-* [iWoz](https://www.amazon.com/iWoz-BYWozniak-Wozniak/dp/B006Q4IWXG/ref=sr_1_2?crid=1K5EODBI90E6B&keywords=iWoz&qid=1656017451&s=books&sprefix=iwoz%2Cstripbooks%2C93&sr=1-2) by Steve Wozniak
-* [Creative Selection](https://www.amazon.com/Creative-Selection-Inside-Apples-Process/dp/1250194466/ref=sr_1_1?crid=3EB43JEMB58Y4&keywords=creative+selection+ken+kocienda&qid=1656017470&s=books&sprefix=Creative+Selection+%2Cstripbooks%2C68&sr=1-1) by Ken Kocienda; "**This was written by the guy who created the auto correct algorithms on the iPhone and is amazing to understand how that one innovation came to be**"
 * [Leading Apple](https://www.amazon.com/Leading-Apple-Steve-Jobs-Controversial-ebook/dp/B008SGNIPC/ref=sr_1_1?crid=3AF728LY8JLDF&keywords=Leading+Apple&qid=1656017517&s=books&sprefix=leading+apple%2Cstripbooks%2C69&sr=1-1) with Steve Jobs by Jay Elliot
-* [Becoming Steve Jobs](https://www.amazon.com/Becoming-Steve-Jobs-audiobook/dp/B00R8IC37K/ref=sr_1_1?crid=EHMP6GQ5QJ66&keywords=Becoming+Steve+Jobs&qid=1656017533&s=books&sprefix=becoming+steve+jobs%2Cstripbooks%2C90&sr=1-1) by Brent Schlender and Rick Tetzeli
-* [To Pixar and Beyond](https://www.amazon.com/Pixar-Beyond-Unlikely-Journey-Entertainment-ebook/dp/B01912OSA0/ref=sr_1_1?crid=1KBD76I3UHI0E&keywords=To+Pixar+and+Beyond&qid=1656017565&s=books&sprefix=to+pixar+and+beyond%2Cstripbooks%2C68&sr=1-1) by Lawrence Levy
 * [After Steve](https://www.amazon.com/After-Steve-Became-Trillion-Dollar-Company/dp/B09CF3B8VH/ref=sr_1_1?crid=2VRN0RS8K6CI4&keywords=After+Steve&qid=1656017579&s=books&sprefix=after+steve%2Cstripbooks%2C93&sr=1-1) by Tripp Mickle
-* [Revolution In The Valley](https://www.amazon.com/gp/product/0596007191/ref=ppx_yo_dt_b_asin_title_o02_s00?ie=UTF8&psc=1) by Hertzfield; **HAVE NOT READ YET**
+
+### iPod
+* [The Perfect Thing](https://www.amazon.com/Perfect-Thing-Shuffles-Commerce-Coolness/dp/0743285220/ref=sr_1_1?crid=E26WZRI3QKGF&keywords=The+Perfect+Thing+levy&qid=1656017422&s=books&sprefix=the+perfect+thing+levy%2Cstripbooks%2C52&sr=1-1) by Steven Levy
+
+### iPhone
+* [Creative Selection](https://www.amazon.com/Creative-Selection-Inside-Apples-Process/dp/1250194466/ref=sr_1_1?crid=3EB43JEMB58Y4&keywords=creative+selection+ken+kocienda&qid=1656017470&s=books&sprefix=Creative+Selection+%2Cstripbooks%2C68&sr=1-1) by Ken Kocienda; "**This was written by the guy who created the auto correct algorithms on the iPhone and is amazing to understand how that one innovation came to be**"
+* [The One Device](https://www.amazon.com/The-One-Device-Brian-Merchant-audiobook/dp/B072QDKDRR/ref=sr_1_1?crid=LYUIYPSE78QW&keywords=the+one+device+the+secret+history+of+the+iphone&qid=1656017235&s=books&sprefix=The+One+Device+%2Cstripbooks%2C62&sr=1-1) by Brian Merchant
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Venture Capital
 * [The Silicon Valley Way](https://www.amazon.com/Silicon-Valley-Way-Second-Successful-ebook/dp/B003ZDOVXG/ref=sr_1_1?crid=RGBOA3XYPA0A&keywords=The+Silicon+Valley+Way&qid=1656017872&s=books&sprefix=the+silicon+valley+way%2Cstripbooks%2C175&sr=1-1) by Sherwin
@@ -220,6 +281,14 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [Masterminds of Programming](https://www.amazon.com/Masterminds-Programming-Conversations-Creators-Languages/dp/0596515170/ref=sr_1_1?crid=W6BMIXUT5DQ&keywords=Masterminds+of+Programming&qid=1656022410&s=books&sprefix=masterminds+of+programming%2Cstripbooks%2C59&sr=1-1) by Biancuzzi and Warden
 * [Coders at Work](https://www.amazon.com/Coders-Work-Reflections-Craft-Programming/dp/1430219483/ref=sr_1_1?crid=V6F6SHCJIBYC&keywords=Coders+at+Work&qid=1656022429&s=books&sprefix=coders+at+work%2Cstripbooks%2C106&sr=1-1) by Siebel 
 * [Hackers and Painters](https://www.amazon.com/Hackers-Painters-Big-Ideas-Computer/dp/1449389554/ref=sr_1_1?crid=6BKU2DHK9YPY&keywords=Hackers+and+Painters&qid=1656022449&s=books&sprefix=hackers+and+painters%2Cstripbooks%2C71&sr=1-1) by Graham
+* [The Phoenix Project](https://www.amazon.com/Phoenix-Project-DevOps-Helping-Business/dp/1942788290/ref=sr_1_1?crid=394Q7AURS9LR&keywords=the+phoenix+project&qid=1656293360&sprefix=the+phoenix+project%2Caps%2C84&sr=8-1) by Kim, Behr, Spafford "**DISCLAIMER: IT IS A NOVEL ABOUT SOFTWARE**"
+* [Crypto](https://www.amazon.com/Crypto-Rebels-Government-Privacy-Digital/dp/B092RLYFTR/ref=sr_1_1?crid=2D3CLLD5EIX0K&keywords=Crypto+by+Levy&qid=1656293742&sprefix=crypto+by+levy%2Caps%2C76&sr=8-1) by Levy "**UTTERLY COMPELLING**"
+* [In Search of Stupidity: Over 20 Years of High Tech Marketing Disasters](https://www.amazon.com/Search-Stupidity-High-Tech-Marketing-Disasters/dp/1590591046/ref=sr_1_1?crid=DBX7T0JAMIFH&keywords=In+Search+of+Stupidity%3A+Over+20+Years+of+High+Tech+Marketing+Disasters&qid=1656293923&s=audible&sprefix=in+search+of+stupidity+over+20+years+of+high+tech+marketing+disasters%2Caudible%2C83&sr=1-1) by Chapman. "**YES IT HAS dbase IN THE INDEX; DON'T WAIT - READ THIS IMMEDIATELY; I'M GOING TO READ IT AGAIN THIS WEEK**"
+* [The Effective Engineer](https://www.amazon.com/Effective-Engineer-Engineering-Disproportionate-Meaningful/dp/0996128107/ref=sr_1_1?crid=4LUJZGYFQUVK&keywords=the+effective+engineer+lau&qid=1656294022&s=audible&sprefix=the+effective+engineer+lau%2Caudible%2C103&sr=1-1) by Lau
+* [Smart & Gets Things Done](https://www.amazon.com/Smart-Gets-Things-Done-Technical/dp/1590598385/ref=sr_1_1?crid=TCDRX2PZ54VR&keywords=Smart+and+Gets+Things+Done+spolsky&qid=1656294058&s=audible&sprefix=smart+and+gets+things+done+spolsky%2Caudible%2C65&sr=1-1) by Spolsky
+* [Side Hustle](https://www.amazon.com/Side-Hustle-Idea-Income-Days/dp/1524758841/ref=sr_1_1?crid=1RWGNWT1TTXCC&keywords=Side+Hustle&qid=1656294257&s=books&sprefix=side+hustle%2Cstripbooks%2C72&sr=1-1) by Guillebeau "**CURRENTLY ON MY DESK; MAKE OF THAT WHAT YOU WILL**"
+* [Building a Successful Software Business](https://www.amazon.com/Building-Successful-Software-Business-Radin/dp/1565920643/ref=sr_1_1?crid=VCW1RNJCTV07&keywords=building+a+successful+software+business&qid=1656294320&s=books&sprefix=building+a+successful+software+business%2Cstripbooks%2C69&sr=1-1) by Radin. "**THE SAS MODEL IS STILL SOFTWARE AND THIS IS A CLASSIC MARKETING TEXT APPLIED TO THE SOFTWARE BUSINESS; STILL VALID**"
+* [Go To](https://www.amazon.com/Engineers-Scientists-Iconoclasts-Programmers-Revolution/dp/0465042252/ref=sr_1_2?crid=1R1O50A41YXFU&keywords=Go+To+Steve+Lohr&qid=1656294410&s=books&sprefix=go+to+steve+lohr%2Cstripbooks%2C67&sr=1-2).  "**ESSAY SIZE SNIPPETS ACROSS THE SOFTWARE REVOLUTION; RECOMMENDED**"
 
 ## George Gilder
 * [The Silicon Eye](https://www.amazon.com/Silicon-Eye-Swashbucklers-Innovation-Enterprise/dp/0393328414/ref=sr_1_1?crid=2IKWPR61E54RM&keywords=The+Silicon+Eye+Gilder&qid=1656022137&s=books&sprefix=the+silicon+eye+gilder%2Cstripbooks%2C288&sr=1-1) by George GIlder
@@ -234,26 +303,48 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
 * [Losing the Signal](https://www.amazon.com/Losing-Signal-Extraordinary-Spectacular-BlackBerry-ebook/dp/B00Q20ASVS/ref=sr_1_1?crid=3G2PCID7ZJS79&keywords=Losing+the+Signal&qid=1656019556&s=books&sprefix=losing+the+signal%2Cstripbooks%2C203&sr=1-1) by McNish and Silcoff; "**I wasn't a BlackBerry guy but this explains the fire and furor.  A lost technology path similar to Palm and DEC**"
 * [The Decline and Fall of Nokia](https://www.amazon.com/Decline-Fall-Nokia-David-Cord-ebook/dp/B01FH1HWD4/ref=sr_1_1?crid=3DDKN7LP1YVWE&keywords=the+decline+and+fall+of+nokia&qid=1656019504&s=books&sprefix=the+decline+and+fall+of+noki%2Cstripbooks%2C156&sr=1-1) by Cord; "**HAVE NOT READ**"
 
-## Facebook / Twitter / Instagram / Web 2.0
+## Web 2.0 / Facebook / Twitter / Instagram / AirBnB / Etc
+
+### Facebook
 * [Authoritas](https://www.amazon.com/Authoritas-Students-Admissions-Founding-Facebook-ebook/dp/B0017S4UOQ/ref=sr_1_1?crid=123N6LNHU8TY0&keywords=Authoritas+Greenspan&qid=1656021367&s=books&sprefix=authoritas+greenspan%2Cstripbooks%2C179&sr=1-1) by Aaron Greenspan
 * [The Accidental Billionaires](https://www.amazon.com/Accidental-Billionaires-Founding-Facebook-Betrayal/dp/0307740986/ref=sr_1_1?crid=1ZB9UQKYK5JRF&keywords=The+Accidental+Billionaires&qid=1656021382&s=books&sprefix=authoritas+greenspan%2Cstripbooks%2C478&sr=1-1) by Ben Mezrichj
 * [The Facebook Effect](https://www.amazon.com/Facebook-Effect-Inside-Company-Connecting-ebook/dp/B003BHM85O/ref=sr_1_1?crid=34YD4U3UFB8KL&keywords=The+Facebook+Effect&qid=1656021432&s=books&sprefix=the+facebook+effect%2Cstripbooks%2C298&sr=1-1) by David Kirkpatrick
 * [dot Complicated](https://www.amazon.com/Dot-Complicated-Untangling-Wired-Lives-ebook/dp/B00BATNRH8/ref=sr_1_1?crid=1B833QRXBP1QI&keywords=dot+Complicated&qid=1656021446&s=books&sprefix=the+facebook+effect%2Cstripbooks%2C64&sr=1-1) by Randi Zuckerberg
+* [Lean In](https://www.amazon.com/Lean-Women-Work-Will-Lead/dp/0385349947/ref=sr_1_1?crid=3HXRPRY591FT4&keywords=lean+in+sheryl+sandberg&qid=1656293582&sprefix=Lean+in%2Caps%2C85&sr=8-1) by Sandberg
+* [Facebook: The Inside Story](https://www.amazon.com/Facebook-Inside-Story-Steven-Levy/dp/0735213151/ref=sr_1_1?crid=3A3YROHNHK6YJ&keywords=Facebook%3A+The+Inside+Story&qid=1656294190&s=books&sprefix=facebook+the+inside+story%2Cstripbooks%2C108&sr=1-1) by Levy.  "**IT IS LEVY; HE IS ALWAYS EXCELLENT**"
+
+### Multiple Companies Covered in One Book
+
 * [The Boy Kings](https://www.amazon.com/Boy-Kings-Journey-Social-Network/dp/1451668260/ref=sr_1_1?crid=38SKLO40EV074&keywords=The+Boy+Kings&qid=1656021479&s=books&sprefix=the+boy+kings%2Cstripbooks%2C178&sr=1-1) by Losse
-* [Things a Little Bird Told Me](https://www.amazon.com/Things-Little-Bird-Stone-2014-04-24/dp/B01K952OJ0/ref=sr_1_2?crid=2JIE61LHNIA3T&keywords=Things+a+Little+Bird+Told+Me+biz+stone&qid=1656021531&s=books&sprefix=things+a+little+bird+told+me+biz+stone%2Cstripbooks%2C60&sr=1-2) by Biz Stone
-* [Hatching Twitter](https://www.amazon.com/Hatching-Twitter-Story-Friendship-Betrayal/dp/1591847087/ref=sr_1_1?crid=TJP0BMRE3EKO&keywords=Hatching+Twitter&qid=1656021554&s=books&sprefix=hatching+twitter%2Cstripbooks%2C78&sr=1-1) by Nick Bilton
 * [The Upstarts](https://www.amazon.com/Upstarts-Airbnb-Companies-Silicon-Changing/dp/0316388394/ref=sr_1_1?keywords=the+upstarts+brad+stone&qid=1656021578&sprefix=The+Upstarts+bra%2Caps%2C58&sr=8-1) by Brad Stone
 * [Valley of Genius](https://www.amazon.com/Valley-Genius-Uncensored-History-Founders/dp/1455559024/ref=sr_1_1?crid=34AF34T27K8EB&keywords=Valley+of+Genius&qid=1656021594&sprefix=valley+of+genius%2Caps%2C107&sr=8-1) by Adam Fisher
-* [The Airbnb Story](https://www.amazon.com/Airbnb-Story-International-Gallagher-author/dp/1328530221/ref=sr_1_2?crid=2W9IA5E29VM19&keywords=The+Airbnb+Story&qid=1656021609&sprefix=the+airbnb+story%2Caps%2C85&sr=8-2) by Gallagher
-* [No Filter](https://www.amazon.com/No-Filter-Inside-Story-Instagram/dp/B07Y3TJ163/ref=sr_1_1?crid=XEY4YWHJSZ73&keywords=No+Filter+by&qid=1656021637&sprefix=no+filter+by%2Caps%2C85&sr=8-1) by Sarah Frier; "**Instagram is more important than we realize and this dives into the why**"
 * [Always Day One](https://www.amazon.com/Always-Day-One-Titans-Forever/dp/0593083482/ref=sr_1_1?crid=Z8DODQCH8DN&keywords=Always+Day+One&qid=1656021659&sprefix=always+day+one%2Caps%2C91&sr=8-1) by Kantrowitz
+* [Valley of the Gods](https://www.amazon.com/Valley-Gods-Silicon-Story-ebook/dp/B0176M3XDK/ref=sr_1_1?crid=22MPMC6PCTIBU&keywords=Valley+of+the+Gods+wolfe&qid=1656021790&sprefix=valley+of+the+gods+wolfe%2Caps%2C151&sr=8-1) by Wolfe; "**HAVE NOT READ**"
+* [The Four](https://www.amazon.com/Four-Hidden-Amazon-Facebook-Google/dp/0735213658/ref=sr_1_1?crid=2QWV8OO4AIC5V&keywords=The+Four+galloway&qid=1656020502&s=books&sprefix=the+four+galloway%2Cstripbooks%2C56&sr=1-1) by Galloway; "**HAVE NOT READ YET**"
+
+### Twitter
+
+* [Things a Little Bird Told Me](https://www.amazon.com/Things-Little-Bird-Stone-2014-04-24/dp/B01K952OJ0/ref=sr_1_2?crid=2JIE61LHNIA3T&keywords=Things+a+Little+Bird+Told+Me+biz+stone&qid=1656021531&s=books&sprefix=things+a+little+bird+told+me+biz+stone%2Cstripbooks%2C60&sr=1-2) by Biz Stone
+* [Hatching Twitter](https://www.amazon.com/Hatching-Twitter-Story-Friendship-Betrayal/dp/1591847087/ref=sr_1_1?crid=TJP0BMRE3EKO&keywords=Hatching+Twitter&qid=1656021554&s=books&sprefix=hatching+twitter%2Cstripbooks%2C78&sr=1-1) by Nick Bilton
+
+### Airbnb
+
+* [The Airbnb Story](https://www.amazon.com/Airbnb-Story-International-Gallagher-author/dp/1328530221/ref=sr_1_2?crid=2W9IA5E29VM19&keywords=The+Airbnb+Story&qid=1656021609&sprefix=the+airbnb+story%2Caps%2C85&sr=8-2) by Gallagher
+
+### Instagram
+
+* [No Filter](https://www.amazon.com/No-Filter-Inside-Story-Instagram/dp/B07Y3TJ163/ref=sr_1_1?crid=XEY4YWHJSZ73&keywords=No+Filter+by&qid=1656021637&sprefix=no+filter+by%2Caps%2C85&sr=8-1) by Sarah Frier; "**Instagram is more important than we realize and this dives into the why**"
+
+### Other
+
 * [A Truck Full of Money](https://www.amazon.com/Truck-Full-Money-Tracy-Kidder/dp/0812995244/ref=sr_1_1?crid=2FGVYGLMWKUCP&keywords=A+Truck+Full+of+Money&qid=1656021680&sprefix=a+truck+full+of+money%2Caps%2C87&sr=8-1) by Tracy Kidder; "**Not as good as Soul of a New Machine**"
 * [Disrupted](https://www.amazon.com/Disrupted-Dan-Lyons/dp/0316306096/ref=sr_1_1?keywords=disrupted+dan+lyons&qid=1656021699&sprefix=Disrupted+Dan+%2Caps%2C78&sr=8-1) by Dan Lyons
 * [Getting Acquired](https://www.amazon.com/dp/1544522894?psc=1&ref=ppx_yo2ov_dt_b_product_details) by Gazdecki
 * [Bitcoin Billionaires](https://www.amazon.com/Bitcoin-Billionaires-Genius-Betrayal-Redemption/dp/1250217741/ref=sr_1_1?crid=JJ4E06I46L1C&keywords=Bitcoin+Billionaires&qid=1656021737&sprefix=bitcoin+billionaires%2Caps%2C157&sr=8-1) by Ben Mezrich; "**HAVE NOT YET READ AND GENERALLY I ABHOR CRYPTO; INSERT DUTCH TULIP BULB RANT HERE**"
-* [Valley of the Gods](https://www.amazon.com/Valley-Gods-Silicon-Story-ebook/dp/B0176M3XDK/ref=sr_1_1?crid=22MPMC6PCTIBU&keywords=Valley+of+the+Gods+wolfe&qid=1656021790&sprefix=valley+of+the+gods+wolfe%2Caps%2C151&sr=8-1) by Wolfe; "**HAVE NOT READ**"
+
 * [Beyond the Valley](https://www.amazon.com/Beyond-Valley-Innovators-Overcoming-Technologies/dp/0262043130/ref=sr_1_2?crid=3OTBPMSTTXCAK&keywords=Beyond+the+Valley&qid=1656020530&s=books&sprefix=beyond+the+valley%2Cstripbooks%2C75&sr=1-2) by Srinivasan; "**HAVE NOT READ YET**"
-* [The Four](https://www.amazon.com/Four-Hidden-Amazon-Facebook-Google/dp/0735213658/ref=sr_1_1?crid=2QWV8OO4AIC5V&keywords=The+Four+galloway&qid=1656020502&s=books&sprefix=the+four+galloway%2Cstripbooks%2C56&sr=1-1) by Galloway; "**HAVE NOT READ YET**"
+
+
 
 ## The Cellphone Wars
 * [Dogfight](https://www.amazon.com/Dogfight-Apple-Google-Started-Revolution/dp/0374109206/ref=sr_1_1?crid=15UK05DE7CP0Y&keywords=Dogfight+vogelstein&qid=1656019710&s=books&sprefix=dogfight+vogelstein%2Cstripbooks%2C123&sr=1-1) by Fred Vogelstein
