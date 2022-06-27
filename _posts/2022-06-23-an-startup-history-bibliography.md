@@ -8,12 +8,23 @@ tags: ["startup", "books"]
 I've been reading High Tech case studies now since the 80s -- just after I entered the business.  [Bryan Cantrill](https://twitter.com/bcantrill) from [Oxide Computer's podcast](https://feeds.transistor.fm/oxide-and-friends) inspired me to get all my books out and order them on a rough historical basis.  I thought listing them here might be interesting to someone.  All of these I've read and there are a ton of lessons for entrepreneurs here.  I put rough notes next to some of them **in bold** after the author name in quotes.
 
 ## Change Log
+* 2022-06-27 - Added book of the week 
 * 2022-06-26 - Cleaned my bookcase and looked for other books in this category and added entries for How Would You Move Mount Fuji (Microsoft category), Go To (Misc / Software Category), Building a Successful Software Business (Misc / Software Category), Side Hustles (Misc / Software Category), Facebook by Steven Levy (Web 2 category), Tim Cook (Apple Category), A Piece of the Computer Pie (IBM Category), In Search of Stupidity (Misc / Software Category), Crypto (Misc / Software Category), Smart and Gets Things Done (Software Category), The Effective Engineer (Misc / Software Category), Creativity Inc (Apple Category), The Chip (Intel Category), Lean In (Web 2 Category), No Such Thing as a Free Gift (Microsoft Category), The Phoenix Project (Misc / Software Category)
 * 2022-06-26 - Added Sub Categories in the Apple Section 
 * 2022-06-26 - Added Sub Categories in the Web 2 Section 
 * 2022-06-23 - Started adding links, added books suggested on Twitter, Added Gaskins on PowerPoint History; fixed typos (how did I possibly misspell Torvalds; clearly was stupid yesterday)
 * 2022-06-23 - Apologies for where an Audible audio book is linked instead of hard or paperback; Amazon is inconsistent with this
 * 2022-06-23 - Added a bunch more notes from reading these.
+
+## Book of the Week
+### In Search of Stupidity: Over 20 Years of High Tech Marketing Disasters
+
+<p style="text-align: center">
+  <a href="https://www.amazon.com/Search-Stupidity-High-Tech-Marketing-Disasters/dp/1590591046/ref=sr_1_1?crid=DBX7T0JAMIFH&keywords=In+Search+of+Stupidity%3A+Over+20+Years+of+High+Tech+Marketing+Disasters&qid=1656293923&s=audible&sprefix=in+search+of+stupidity+over+20+years+of+high+tech+marketing+disasters%2Caudible%2C83&sr=1-1">
+  <img src="https://images-na.ssl-images-amazon.com/images/I/5177-0Bgz4L._SX336_BO1,204,203,200_.jpg">
+</a>
+</p>
+<p>This is an absolute gem of a book.  There is a lot of humor here but the best bits, the parts I underline, start on Page 308 where he outlines positioning for a software product.  In an extremely telling bit of analysis, he opens the book by looking at software companies in 1984 and then 2001. Even though there were a number of companies both larger than Microsoft or approximately Microsoft's size, in 2001, the next runner up, Adobe, is 1/20th of Microsoft's size.  This he attributes to Microsoft being the only company "that never made a fatal, stupid mistake".  And, yes, Ashton-Tate is part of the 1984 list.  Yes it is dated but it is also timeless.  <strong>Recommended</strong>.</p>
 
 
 ## IBM / Mainframes / Super Computers
