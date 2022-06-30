@@ -24,7 +24,7 @@ I've been reading High Tech case studies now since the 80s -- just after I enter
   <img src="https://images-na.ssl-images-amazon.com/images/I/5177-0Bgz4L._SX336_BO1,204,203,200_.jpg">
 </a>
 </p>
-<p>This is an absolute gem of a book.  There is a lot of humor here but the best bits, the parts I underline, start on Page 308 where he outlines positioning for a software product.  In an extremely telling bit of analysis, he opens the book by looking at software companies in 1984 and then 2001. Even though there were a number of companies both larger than Microsoft or approximately Microsoft's size, in 2001, the next runner up, Adobe, is 1/20th of Microsoft's size.  This he attributes to Microsoft being the only company "that never made a fatal, stupid mistake".  And, yes, Ashton-Tate is part of the 1984 list.  Yes it is dated but it is also timeless.  <strong>Recommended</strong>.</p>
+<p>This is an absolute gem of a book.  There is a lot of humor here but the best bits, the parts I underline, start on Page 308 where he outlines positioning for a software product.  In an extremely telling bit of analysis, he opens the book by looking at software companies in 1984 and then 2001. Even though there were a number of companies both larger than Microsoft or approximately Microsoft's size, in 2001, the next runner up, Adobe, is 1/20th of Microsoft's size.  This he attributes to Microsoft being the only company "that never made a fatal, stupid mistake".  And, yes, Ashton-Tate is part of the 1984 list.  Yes it is dated but it is also timeless.  <strong>Recommended</strong co>.</p>
 
 
 ## IBM / Mainframes / Super Computers
