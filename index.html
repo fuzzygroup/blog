@@ -14,14 +14,21 @@ layout: default
 
         <!-- note second span changed from an h2 on 11/29 -->
         <!-- date format wasI'll, %Y"-->
-  <ul class="post-list">
-    {% for post in site.posts %}
-      <li>
-        <span class="post-meta">{{ post.date | date: "%Y-%m-%d" }}</span>
-        <span><a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></span>
-      </li>
-    {% endfor %}
-  </ul>
+        {% for post in site.posts %}
+          {% assign currentdate = post.date | date: "%B %Y" %}
+          {% if currentdate != date %}
+            {% unless forloop.first %}</ul>{% endunless %}
+            <h1 id="y{{post.date | date: "%Y"}}">{{ currentdate }}</h1>
+            <ul>
+            {% assign date = currentdate %}
+          {% endif %}
+            <li><a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a> in 
+              <a href="{{site.baseurl}}/category.html#{{post.category}}">{{ post.category }}</a>
+            
+            
+            </li>
+          {% if forloop.last %}</ul>{% endif %}
+        {% endfor %}
 
   <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 
