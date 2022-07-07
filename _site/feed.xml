@@ -6,9 +6,136 @@
 </description>
     <link>https://fuzzyblog.io/blog/</link>
     <atom:link href="http://fuzzyblog.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 06 Jul 2022 23:16:15 -0400</pubDate>
-    <lastBuildDate>Wed, 06 Jul 2022 23:16:15 -0400</lastBuildDate>
+    <pubDate>Thu, 07 Jul 2022 03:01:35 -0400</pubDate>
+    <lastBuildDate>Thu, 07 Jul 2022 03:01:35 -0400</lastBuildDate>
     <generator>Jekyll v3.9.2</generator>
+    
+      <item>
+        <title>Creating a Rails App Using JumpStart Pro</title>
+        <description>&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/blog/assets/IMAGE_2022-07-05_18_58_55.jpg&quot; alt=&quot;The view of the shelling of Kharkiv at 4 am&quot; /&gt;&lt;/p&gt;
+
+&lt;p class=&quot;center&quot;&gt;The view of the shelling of Kharkiv at 4 am&lt;/p&gt;
+
+&lt;p class=&quot;center&quot;&gt;&lt;a href=&quot;https://www.pizzaforukraine.com/&quot;&gt;Donate Now to Pizza for Ukraine&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The following blog post is an excerpt from a series of articles I'm working on about JumpStart Pro.  I found myself referring to the steps below that I thought it might be generally useful for people.&lt;/p&gt;
+
+&lt;p&gt;I'm going to walk you through the &quot;post purchase&quot; experience with Jump Start Pro (JSP).  This will guide you through creating a new app using JSP.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-1-cloning-an-app-into-your-github&quot;&gt;Step 1: Cloning an App Into Your Github&lt;/h2&gt;
+
+&lt;p&gt;Here's what you do:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Purchase your Jumpstart Pro license.&lt;/li&gt;
+  &lt;li&gt;Log in to &lt;a href=&quot;https://Jumpstartrails.com/&quot;&gt;https://Jumpstartrails.com/&lt;/a&gt; if you haven't already.&lt;/li&gt;
+  &lt;li&gt;Click on your license name.&lt;/li&gt;
+  &lt;li&gt;You will end up at a page which tells you to visit your Github repo.  You need to goto: &lt;a href=&quot;https://github.com/orgs/Jumpstart-pro&quot;&gt;https://github.com/orgs/Jumpstart-pro&lt;/a&gt;.  This in turn will take you here: &lt;a href=&quot;https://github.com/Jumpstart-pro&quot;&gt;https://github.com/Jumpstart-pro&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Click into the Rails repository &lt;a href=&quot;https://github.com/Jumpstart-pro/Jumpstart-pro-rails&quot;&gt;https://github.com/Jumpstart-pro/Jumpstart-pro-rails&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Click the green Use This Template button.&lt;/li&gt;
+  &lt;li&gt;Change the owner to be &lt;strong&gt;your&lt;/strong&gt; github name&lt;/li&gt;
+  &lt;li&gt;Enter the name of the NEW repo:&lt;/li&gt;
+  &lt;li&gt;Set your description if you care (I never do).&lt;/li&gt;
+  &lt;li&gt;Change the setting to be &lt;strong&gt;private&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;I checked off [ ] include all branches (no clue if that was right or not)&lt;/li&gt;
+  &lt;li&gt;Click the green &lt;strong&gt;Create repository&lt;/strong&gt; from template button&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;step-2-getting-that-cloned-app-onto-your-machine&quot;&gt;Step 2: Getting that Cloned App Onto Your Machine&lt;/h2&gt;
+
+&lt;p&gt;Github is going to clone the Jumpstart pro rails repo over to your personal github account.  Here's what's next&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;On your new repo, click the green &lt;strong&gt;Code&lt;/strong&gt; drop down and get the clone url .&lt;/li&gt;
+  &lt;li&gt;On your development machine, change to your local development directory and clone the repo: git clone (what you copied)&lt;/li&gt;
+  &lt;li&gt;Set up your local ruby to be 3.1 if you don't have it.&lt;/li&gt;
+  &lt;li&gt;Run a bundle install&lt;/li&gt;
+  &lt;li&gt;Edit config/database.yml and change database names as needed.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Now you want to run:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bin/rails db:create
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;step-3-setup-and-getting-to-green-tests-in-a-rails-7-world&quot;&gt;Step 3: Setup and Getting to Green Tests in a Rails 7 World&lt;/h2&gt;
+
+&lt;p&gt;When you're starting with something complex that someone else built then tests are always, always, always your friend.  So this means that you start with:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bin/rails test
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This is going to fail but we're working from failure to success (a red / green refactor approach).&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Run npm install&lt;/li&gt;
+  &lt;li&gt;Run yarn install –check-files (Disclaimer – the whole asset pipeline largely remains a mystery to me; I think this is needed but, for all I really know, running it could kill Santa's elves and invoke the apocalypse).&lt;/li&gt;
+  &lt;li&gt;Run bin/rails test - if this passes, GREAT!  But if you get the error: DRb::DRbRemoteError: The asset &quot;application.js&quot; is not present in the asset pipeline. then revert your node version back to 16.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Here's how to check your node version:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ node -v
+v18.2.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Just like ruby has RVM, node has &lt;a href=&quot;https://github.com/nvm-sh/nvm&quot;&gt;NVM&lt;/a&gt; (node version manager) so install that.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nvm install 16.3.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;and then:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now you need to build the JavaScript for the app:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rails javascript:build
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The next error you will get is&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The asset &quot;application.css&quot; is not present in the asset pipeline&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;so now you need to do:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rails css:build
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And now you can do:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bin/rails test
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;and you should have passing tests!&lt;/p&gt;
+
+&lt;p&gt;Kudos to: &lt;a href=&quot;https://jumpstartrails.com/discussions/javascript-error-with-ruby-3-1-and-latest-commit&quot;&gt;Benjamin Huoy&lt;/a&gt;  for making this clear to me.  Thank you.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-4-add-your-gems&quot;&gt;Step 4: Add Your Gems&lt;/h2&gt;
+
+&lt;p&gt;My usual next steps are to add my normal suite of gems:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle add url_common &amp;amp;&amp;amp; bundle add text_common &amp;amp;&amp;amp; bundle add date_common &amp;amp;&amp;amp; bundle add time_common
+bundle add factory_bot_rails --group test
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Disclaimer: The gems named something_common are ones that I wrote.  They are on my &lt;a href=&quot;https://github.com/fuzzygroup&quot;&gt;Github&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 07 Jul 2022 02:36:00 -0400</pubDate>
+        <link>http://fuzzyblog.io/blog/rails/2022/07/07/creating-a-rails-app-using-jumpstart-pro.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io/blog/rails/2022/07/07/creating-a-rails-app-using-jumpstart-pro.html</guid>
+        
+        <category>rails</category>
+        
+        <category>jumpstart</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>Surviving Polyphasic Sleeping</title>
@@ -21170,32 +21297,6 @@ mate /Users/sjohnson/.rvm/gems/ruby-2.6.3/gems/high_voltage-3.1.2
         
         
         <category>python</category>
-        
-      </item>
-    
-      <item>
-        <title>You Don't Need Catalina to Give Your Laptop a Second Monitor</title>
-        <description>&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/blog/assets/IMG_9499.jpeg&quot; alt=&quot;IMG_9499.jpeg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The single best feature of Catalina that I was looking forward to was Sidecar, the ability to use an iPad as a second monitor.  So I was fairly crushed to discover that Apple has limited Sidecar to their new series of MacBooks.  This, imho, sucks green monkey chunks because a lot of hardcore developers have stuck with the older MacBooks due to the lack of ports, the significantly worse keyboard, the annoyingly large trackpad, etc.&lt;/p&gt;
-
-&lt;p&gt;While I'm not one of developers who can't function without their second monitor, I do find a second monitor useful.  Happily there is &lt;a href=&quot;https://www.duetdisplay.com/&quot;&gt;Duet Display&lt;/a&gt; which is a $10 AppStore purchase that gives you a second monitor via your iPad.  Strongly, strongly recommended.&lt;/p&gt;
-
-&lt;p&gt;Shown below I happily have a status memo on the left hand iPad with &lt;a href=&quot;https://ranchero.com/netnewswire/&quot;&gt;NetNewsWire&lt;/a&gt; peeking out above it  while I write this post in TextMate.&lt;/p&gt;
-
-&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/blog/assets/IMG_9510.jpeg&quot; alt=&quot;IMG_9510.jpeg&quot; /&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 17 Oct 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io/blog/osx/2019/10/17/you-don-t-need-catalina-to-give-your-laptop-a-second-monitor.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io/blog/osx/2019/10/17/you-don-t-need-catalina-to-give-your-laptop-a-second-monitor.html</guid>
-        
-        <category>osx</category>
-        
-        <category>ipad</category>
-        
-        
-        <category>osx</category>
         
       </item>
     

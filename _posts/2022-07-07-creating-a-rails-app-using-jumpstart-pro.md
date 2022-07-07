@@ -5,6 +5,17 @@ date: 2022-07-07 02:36 -0400
 category: rails
 tags: ["rails", "jumpstart"]
 ---
+{:.center}
+![The view of the shelling of Kharkiv at 4 am](/blog/assets/IMAGE_2022-07-05_18_58_55.jpg)
+
+{:.center}
+The view of the shelling of Kharkiv at 4 am
+
+{:.center}
+[Donate Now to Pizza for Ukraine](https://www.pizzaforukraine.com/)
+
+
+
 The following blog post is an excerpt from a series of articles I'm working on about JumpStart Pro.  I found myself referring to the steps below that I thought it might be generally useful for people.
 
 I'm going to walk you through the "post purchase" experience with Jump Start Pro (JSP).  This will guide you through creating a new app using JSP.
