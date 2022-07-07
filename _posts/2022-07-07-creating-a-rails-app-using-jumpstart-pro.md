@@ -80,7 +80,7 @@ Now you need to build the JavaScript for the app:
 
     rails javascript:build
 
-The next error you will get is
+The next error you will get, if you try to test again, is:
 
 > The asset "application.css" is not present in the asset pipeline
 

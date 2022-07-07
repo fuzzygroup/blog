@@ -6,9 +6,46 @@
 </description>
     <link>https://fuzzyblog.io/blog/</link>
     <atom:link href="http://fuzzyblog.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 07 Jul 2022 03:01:35 -0400</pubDate>
-    <lastBuildDate>Thu, 07 Jul 2022 03:01:35 -0400</lastBuildDate>
+    <pubDate>Thu, 07 Jul 2022 10:06:10 -0400</pubDate>
+    <lastBuildDate>Thu, 07 Jul 2022 10:06:10 -0400</lastBuildDate>
     <generator>Jekyll v3.9.2</generator>
+    
+      <item>
+        <title>Registering a Domain with Name Silo</title>
+        <description>&lt;p&gt;So I needed to register a .IO domain today.  Amazon had .io domains at &lt;strong&gt;$71&lt;/strong&gt; per and Google had them at &lt;strong&gt;$60&lt;/strong&gt;.  A quick check with my &lt;a href=&quot;https://nickjanetakis.com/blog/why-i-have-started-to-move-my-domains-from-internetbs-to-namesilo&quot;&gt;guru of cheapness&lt;/a&gt;, Nick Janetakis, said:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;https://www.namesilo.com/&quot;&gt;NameSilo.com&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;And he convinced me.  Here are some tips:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Do not accept any of their options.&lt;/li&gt;
+  &lt;li&gt;Just the domain, Sir, just the domain.&lt;/li&gt;
+  &lt;li&gt;Use DDOS protection from CloudFlare instead of their option.  CloudFlare is free.&lt;/li&gt;
+  &lt;li&gt;Once you are registered then the option you likely need is to create an A record.  This is done by selecting the domain from the Domain Manager view and then clicking the blue icon.&lt;/li&gt;
+  &lt;li&gt;Amazon is way prettier but double the price is a hard sell.&lt;/li&gt;
+  &lt;li&gt;After you create it, wait some period of time and ping it.  Verify the ip address is yours.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References:&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://nickjanetakis.com/blog/why-i-have-started-to-move-my-domains-from-internetbs-to-namesilo&quot;&gt;Review of NameSilo&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://nickjanetakis.com/blog/how-to-transfer-a-domain-name-with-zero-downtime&quot;&gt;Mass Migration to NameSilo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 07 Jul 2022 09:12:00 -0400</pubDate>
+        <link>http://fuzzyblog.io/blog/dns/2022/07/07/registering-a-domain-with-name-silo.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io/blog/dns/2022/07/07/registering-a-domain-with-name-silo.html</guid>
+        
+        <category>dns</category>
+        
+        
+        <category>dns</category>
+        
+      </item>
     
       <item>
         <title>Creating a Rails App Using JumpStart Pro</title>
@@ -94,7 +131,7 @@ v18.2.0
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rails javascript:build
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;The next error you will get is&lt;/p&gt;
+&lt;p&gt;The next error you will get, if you try to test again, is:&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;The asset &quot;application.css&quot; is not present in the asset pipeline&lt;/p&gt;
@@ -21263,40 +21300,6 @@ mate /Users/sjohnson/.rvm/gems/ruby-2.6.3/gems/high_voltage-3.1.2
         
         
         <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>An Observation on TensorFlow and PyTorch Startup Time</title>
-        <description>&lt;p&gt;I'm in the process of designing a STANDARD IN processing system implemented in Python using some fairly simple data processing and now some PyTorch machine learning.  The shocking thing to me was just how slowly all the required PyTorch libraries load in Python.&lt;/p&gt;
-
-&lt;p&gt;We have:&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pathlib&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Path&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;torch&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pandas&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;transformers&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BertTokenizer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BertForSequenceClassification&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;as dependencies.  And when you evaluate that in in the console I can count up to 6 one thousand (MacBook Pro 2015) as it evaluates.  I suspect the big deal here comes from BertTokenizer, BertForSequenceClassification because that must wrap in TensorFlow.&lt;/p&gt;
-
-&lt;p&gt;Yes, yes, yes I know that's not exactly scientific but this is a process that we were treating as a data processing pipeline with each new input launching the process.  That type of lag means that I need to abstract my PyTorch / TensorFlow stuff into a persistently running service to which my pipeline talks.  Sigh.&lt;/p&gt;
-
-&lt;p&gt;Looks like I need to wrap it in &lt;a href=&quot;https://github.com/rorodata/firefly&quot;&gt;FireFly&lt;/a&gt;.  At least I like the name …&lt;/p&gt;
-</description>
-        <pubDate>Fri, 18 Oct 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io/blog/python/2019/10/18/an-observation-on-pytorch-startup-time.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io/blog/python/2019/10/18/an-observation-on-pytorch-startup-time.html</guid>
-        
-        <category>pytorch</category>
-        
-        <category>python</category>
-        
-        <category>tensorflow</category>
-        
-        
-        <category>python</category>
         
       </item>
     

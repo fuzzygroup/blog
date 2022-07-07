@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Creating a Rails App Using JumpStart Pro</title>
-  <meta name="description" content="">
+  <title>Registering a Domain with Name Silo</title>
+  <meta name="description" content="So I needed to register a .IO domain today.  Amazon had .io domains at $71 per and Google had them at $60.  A quick check with my guru of cheapness, Nick Jan...">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2022/07/07/creating-a-rails-app-using-jumpstart-pro.html">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/dns/2022/07/07/registering-a-domain-with-name-silo.html">
   <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
@@ -39,17 +39,17 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@fuzzygroup">
   <meta name="twitter:creator" content="@fuzzygroup">
-  <meta name="twitter:title" content="Creating a Rails App Using JumpStart Pro">
+  <meta name="twitter:title" content="Registering a Domain with Name Silo">
 
   
     <meta name="twitter:description"
-      content="
+      content="So I needed to register a .IO domain today.  Amazon had .io domains at $71 per and Google had them at $60.  A quick check with my guru of cheapness, Nick Janetakis, said:
 
-The view of the shelling of Kharkiv at 4 am
 
-Donate Now to Pizza for Ukraine
+  NameSilo.com
 
-The following blog post is an excerpt from a series of articles I'm working on about JumpStart Pro.  I found myself r...">
+
+And he ...">
   
 
   
@@ -185,124 +185,36 @@ The following blog post is an excerpt from a series of articles I'm working on a
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Creating a Rails App Using JumpStart Pro</h1>
-    <p class="I'll"><time datetime="2022-07-07T02:36:00-04:00" itemprop="datePublished">Jul 7, 2022</time> 
+    <h1 class="post-title" itemprop="name headline">Registering a Domain with Name Silo</h1>
+    <p class="I'll"><time datetime="2022-07-07T09:12:00-04:00" itemprop="datePublished">Jul 7, 2022</time> 
       </p> 
   </header>
   
 
   <div class="post-content" itemprop="articleBody">
-    <p class="center"><img src="/blog/assets/IMAGE_2022-07-05_18_58_55.jpg" alt="The view of the shelling of Kharkiv at 4 am" /></p>
-
-<p class="center">The view of the shelling of Kharkiv at 4 am</p>
-
-<p class="center"><a href="https://www.pizzaforukraine.com/">Donate Now to Pizza for Ukraine</a></p>
-
-<p>The following blog post is an excerpt from a series of articles I'm working on about JumpStart Pro.  I found myself referring to the steps below that I thought it might be generally useful for people.</p>
-
-<p>I'm going to walk you through the "post purchase" experience with Jump Start Pro (JSP).  This will guide you through creating a new app using JSP.</p>
-
-<h2 id="step-1-cloning-an-app-into-your-github">Step 1: Cloning an App Into Your Github</h2>
-
-<p>Here's what you do:</p>
-
-<ol>
-  <li>Purchase your Jumpstart Pro license.</li>
-  <li>Log in to <a href="https://Jumpstartrails.com/">https://Jumpstartrails.com/</a> if you haven't already.</li>
-  <li>Click on your license name.</li>
-  <li>You will end up at a page which tells you to visit your Github repo.  You need to goto: <a href="https://github.com/orgs/Jumpstart-pro">https://github.com/orgs/Jumpstart-pro</a>.  This in turn will take you here: <a href="https://github.com/Jumpstart-pro">https://github.com/Jumpstart-pro</a></li>
-  <li>Click into the Rails repository <a href="https://github.com/Jumpstart-pro/Jumpstart-pro-rails">https://github.com/Jumpstart-pro/Jumpstart-pro-rails</a></li>
-  <li>Click the green Use This Template button.</li>
-  <li>Change the owner to be <strong>your</strong> github name</li>
-  <li>Enter the name of the NEW repo:</li>
-  <li>Set your description if you care (I never do).</li>
-  <li>Change the setting to be <strong>private</strong>.</li>
-  <li>I checked off [ ] include all branches (no clue if that was right or not)</li>
-  <li>Click the green <strong>Create repository</strong> from template button</li>
-</ol>
-
-<h2 id="step-2-getting-that-cloned-app-onto-your-machine">Step 2: Getting that Cloned App Onto Your Machine</h2>
-
-<p>Github is going to clone the Jumpstart pro rails repo over to your personal github account.  Here's what's next</p>
-
-<ol>
-  <li>On your new repo, click the green <strong>Code</strong> drop down and get the clone url .</li>
-  <li>On your development machine, change to your local development directory and clone the repo: git clone (what you copied)</li>
-  <li>Set up your local ruby to be 3.1 if you don't have it.</li>
-  <li>Run a bundle install</li>
-  <li>Edit config/database.yml and change database names as needed.</li>
-</ol>
-
-<p>Now you want to run:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bin/rails db:create
-</code></pre></div></div>
-
-<h2 id="step-3-setup-and-getting-to-green-tests-in-a-rails-7-world">Step 3: Setup and Getting to Green Tests in a Rails 7 World</h2>
-
-<p>When you're starting with something complex that someone else built then tests are always, always, always your friend.  So this means that you start with:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bin/rails test
-</code></pre></div></div>
-
-<p>This is going to fail but we're working from failure to success (a red / green refactor approach).</p>
-
-<ol>
-  <li>Run npm install</li>
-  <li>Run yarn install –check-files (Disclaimer – the whole asset pipeline largely remains a mystery to me; I think this is needed but, for all I really know, running it could kill Santa's elves and invoke the apocalypse).</li>
-  <li>Run bin/rails test - if this passes, GREAT!  But if you get the error: DRb::DRbRemoteError: The asset "application.js" is not present in the asset pipeline. then revert your node version back to 16.</li>
-</ol>
-
-<p>Here's how to check your node version:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ node -v
-v18.2.0
-</code></pre></div></div>
-
-<p>Just like ruby has RVM, node has <a href="https://github.com/nvm-sh/nvm">NVM</a> (node version manager) so install that.</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nvm install 16.3.0
-</code></pre></div></div>
-
-<p>and then:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install
-</code></pre></div></div>
-
-<p>Now you need to build the JavaScript for the app:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails javascript:build
-</code></pre></div></div>
-
-<p>The next error you will get, if you try to test again, is:</p>
+    <p>So I needed to register a .IO domain today.  Amazon had .io domains at <strong>$71</strong> per and Google had them at <strong>$60</strong>.  A quick check with my <a href="https://nickjanetakis.com/blog/why-i-have-started-to-move-my-domains-from-internetbs-to-namesilo">guru of cheapness</a>, Nick Janetakis, said:</p>
 
 <blockquote>
-  <p>The asset "application.css" is not present in the asset pipeline</p>
+  <p><a href="https://www.namesilo.com/">NameSilo.com</a></p>
 </blockquote>
 
-<p>so now you need to do:</p>
+<p>And he convinced me.  Here are some tips:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rails css:build
-</code></pre></div></div>
+<ol>
+  <li>Do not accept any of their options.</li>
+  <li>Just the domain, Sir, just the domain.</li>
+  <li>Use DDOS protection from CloudFlare instead of their option.  CloudFlare is free.</li>
+  <li>Once you are registered then the option you likely need is to create an A record.  This is done by selecting the domain from the Domain Manager view and then clicking the blue icon.</li>
+  <li>Amazon is way prettier but double the price is a hard sell.</li>
+  <li>After you create it, wait some period of time and ping it.  Verify the ip address is yours.</li>
+</ol>
 
-<p>And now you can do:</p>
+<h2 id="references">References:</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bin/rails test
-</code></pre></div></div>
-
-<p>and you should have passing tests!</p>
-
-<p>Kudos to: <a href="https://jumpstartrails.com/discussions/javascript-error-with-ruby-3-1-and-latest-commit">Benjamin Huoy</a>  for making this clear to me.  Thank you.</p>
-
-<h2 id="step-4-add-your-gems">Step 4: Add Your Gems</h2>
-
-<p>My usual next steps are to add my normal suite of gems:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle add url_common &amp;&amp; bundle add text_common &amp;&amp; bundle add date_common &amp;&amp; bundle add time_common
-bundle add factory_bot_rails --group test
-</code></pre></div></div>
-
-<p>Disclaimer: The gems named something_common are ones that I wrote.  They are on my <a href="https://github.com/fuzzygroup">Github</a>.</p>
+<ul>
+  <li><a href="https://nickjanetakis.com/blog/why-i-have-started-to-move-my-domains-from-internetbs-to-namesilo">Review of NameSilo</a></li>
+  <li><a href="https://nickjanetakis.com/blog/how-to-transfer-a-domain-name-with-zero-downtime">Mass Migration to NameSilo</a></li>
+</ul>
 
   </div>
   
@@ -314,12 +226,8 @@ bundle add factory_bot_rails --group test
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://fuzzyblog.io/blog/tag.html#rails" >
-      #rails
-    </a>
-    
-    <a href="http://fuzzyblog.io/blog/tag.html#jumpstart" >
-      #jumpstart
+    <a href="http://fuzzyblog.io/blog/tag.html#dns" >
+      #dns
     </a>
     
   </p>
@@ -330,14 +238,8 @@ bundle add factory_bot_rails --group test
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#rails" class="link_button">
-         rails
-       </a>
-     </li>
-     
-     <li style="display: inline-block;">
-       <a href="http://fuzzyblog.io/blog/tag.html#jumpstart" class="link_button">
-         jumpstart
+       <a href="http://fuzzyblog.io/blog/tag.html#dns" class="link_button">
+         dns
        </a>
      </li>
      
