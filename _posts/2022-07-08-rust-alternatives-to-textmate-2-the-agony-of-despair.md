@@ -290,7 +290,9 @@ I wasn't able to confirm this on any of the tools.  This is one of those arcane 
 | [lapce](https://github.com/lapce/lapce) | N; maybe it has it but if so it isn't easily discoverable. |  
 | [zee](https://github.com/zee-editor/zee) | N | 
 
-This doesn't seem to be in any editor.
+This doesn't seem to be in any editor.  
+
+**IMPORTANT**: However not only is Auto Save lacking but Lapce allows you to quit without prompting for save.  I only just discovered that or I'd have cut it from the options right here.  That's not just user hostile but basic hating on the user (imho).
 
 ### Extensibility 
 
@@ -537,6 +539,10 @@ Actually I just figured it out.  Solargraph is an executable gem and when you ru
     solargraph stdio
 
 It runs as a LSP server which then Helix can use for autocomplete.  It still doesn't color code the syntax but the autocomplete options were slick as all get out.  Absolute Kudos here.
+
+## Helix Weirdness
+
+I tried to brew install helix as per the instructions.  This led to my needing to re-install XCode which still isn't done.  I got past it with a pure Rust install and then using Cargo.  
 
 ## Conclusion
 
