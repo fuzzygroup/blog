@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Rust Editors to Replace TextMate 2 - The Agony of Despair</title>
+  <meta name="description" content="The older I get and remain an active software engineer, the less accepting I am of poor software quality.  All of us know that software crashes, generally, a...">
+
+  <link rel="stylesheet" href="/blog/css/main.css">
+  <link rel="canonical" href="http://localhost:4000/blog/rust/2022/07/08/rust-alternatives-to-textmate-2-the-agony-of-despair.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://localhost:4000/blog/feed.xml">
+  
+  <!-- favicons -->
+  <!-- shout out to: http://www.favicon-generator.org/ --> 
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/assets/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="/blog/assets/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/blog/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/assets/favicon-16x16.png">
+  <link rel="manifest" href="/blog/assets/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/blog/assets/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- end_favicons -->
+  
+  <!-- twitter specific head tags -->
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@fuzzygroup">
+  <meta name="twitter:creator" content="@fuzzygroup">
+  <meta name="twitter:title" content="Rust Editors to Replace TextMate 2 - The Agony of Despair">
+
+  
+    <meta name="twitter:description"
+      content="The older I get and remain an active software engineer, the less accepting I am of poor software quality.  All of us know that software crashes, generally, are a choice of the developer in terms of...">
+  
+
+  
+    <meta name="twitter:image"
+      content="http://fuzzyblog.io/blog/assets/scott_johnson.jpg">
+  
+  
+  
+  
+  
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-83931583-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+    
+  <script type="text/javascript">
+    function do_search() {
+      var searchForm = document.getElementById('search');
+      var q = document.getElementById('q');
+      var searchQuery = "site:fuzzyblog.io " + q.value;
+      document.location = "https://www.google.com/search?q=" + searchQuery;
+    }
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/blog/">FuzzyBlog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/blog/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/blog/aws.html">AWS</a>
+          
+        
+          
+          <a class="page-link" href="/blog/category.html">Category</a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+          <a class="page-link" href="/blog/resume.html">Resume for J. Scott Johnson</a>
+          
+        
+          
+          <a class="page-link" href="/blog/tag.html">Tag</a>
+          
+        
+          
+          <a class="page-link" href="/blog/youtube.html">Watch Scott Live</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div style="width: 50%; float:left; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed red">
+              <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound:<br/>Make applying for tech jobs suck less!</a>
+            </p>
+        </div>
+        <div style="width: 40%; float:right; text-align: center; valign: center; padding: 10px; border: 2px dashed blue">
+
+            <form id="search" action="https://www.google.com/search">
+              <input id="q" name="q" size=40>
+              <button type="submit" form="form1" value="Search" onclick="do_search();">Search</button><br/>&nbsp;
+            </form>
+
+        </div>
+        
+        <!--
+        <div style="width: 75%; float:left; ">&nbsp;&nbsp;&nbsp;</div>
+        -->
+          <!--
+        <div style="width: 20%; float:right; ">
+            <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+              <a href="http://www.fuzzyblog.io/" class="cta-button-blue">Hire Me!</a>
+            </p>
+        </div>
+            -->
+        <div style="clear: both;"></div>
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Rust Editors to Replace TextMate 2 - The Agony of Despair</h1>
+    <p class="I'll"><time datetime="2022-07-08T08:59:00-04:00" itemprop="datePublished">Jul 8, 2022</time> 
+      </p> 
+  </header>
+  
+
+  <div class="post-content" itemprop="articleBody">
+    <p>The older I get and remain an active software engineer, the less accepting I am of <strong>poor software quality</strong>.  All of us know that software crashes, generally, are a choice of the developer in terms of his:</p>
+
+<ul>
+  <li>technology platform – some technologies are inherently riskier than others i.e. "Friends don't let friends use C++"  or "Practice safe computing my son"</li>
+  <li>development practices – things like test driven development and pair programming (stop it Bryan; we can debate that someday) that demonstrably improve code quality</li>
+  <li>engineering philosophy – Erlang is a fabulous demonstration that by embracing failure you can make more reliable software</li>
+</ul>
+
+<p>But when you fail to address any of the above, you end up with today's software crisis.  And, honestly, I'm tired of it.</p>
+
+<p>This morning, at about 6:53 am, my beloved TextMate 2, an editor that less than 2 hours ago, I had typed into a Discourse thread "You can pry out of my cold dead hands", went insane once again.  TextMate 2 has a lockup context where it won't crash but it will just sit there and refuse to respond to keystrokes.  Then you have to force quit it and depending on the severity of its insanity will recover its context on restart or not.  This is why I write down posts like:</p>
+
+<ul>
+  <li><a href="https://fuzzyblog.io/blog/textmate/2020/01/15/fixing-textmate-2-when-it-goes-insane.html">Fixing TextMate 2 When It Goes Insane</a></li>
+  <li><a href="https://fuzzyblog.io/blog/text/2017/10/08/forensic-computing-1-finding-textmate-untitled-documents.html">Forensic Computing 1 - Finding TextMate Untitled Documents</a></li>
+  <li><a href="Adding AutoSave on Focus Lost to TextMate 2">Adding AutoSave on Focus Lost to TextMate 2</a></li>
+</ul>
+
+<blockquote>
+  <p>Sidebar: When TextMate had to be Force Quit, it was using 1.76 gigs of RAM.  Now, despite doing nothing but opening this one document (and all my history it recovered), it is now using 2.93 gigs of RAM.  This document is only 562 words.  Somehow, maybe it is just me, that doesn't explain the additional 1.18 gigs of RAM used for just 562 words.  I am on a computer with 64 gigs of RAM and 1/20th of that is my FSCKING TEXT EDITOR!!!</p>
+</blockquote>
+
+<p>Every time you have a crash in something as fundamental as an editor for a software developer, it is an excuse for us to lose focus, stop, take a break, etc.  Me?  I went to the grocery story – at a point when I had been closing in on making a release of an open source package I've been promising myself to finish for <strong>6 years</strong>.  I still haven't gotten back to that Zen point of coding I had been at even though hours have passed.  This is why I hate crashes.  And I have now been writing about this since 2003:</p>
+
+<blockquote>
+
+</blockquote>
+
+<p>It has been said that insanity is doing the same thing repeatedly and expecting different results.  And, yes, I've been expecting classically written software to simply get better over time.  This isn't going to happen so it is time to look for alternatives.</p>
+
+<h2 id="about-rust">About Rust</h2>
+
+<p>Rust is a relatively new programming language with a focus on speed, correctness and memory safety.  Rust essentially makes the crazy gyrations that are so common – and inherently wrong – in C derived languages so hard that you simply don't make them.  And this:</p>
+
+<ol>
+  <li>Makes Rust hard to learn.</li>
+  <li>Self selects the programmers willing to learn rust down to an elite handful.</li>
+  <li>Results in higher quality software.</li>
+</ol>
+
+<p>I don't think I'm incorrect in saying that when a piece of software written in Rust exists, it is going to be higher quality than something written in C / Swift / C++ / Java.  And, because of that, I have started using more software written in Rust whenever possible.  I recently switched my terminal from iTerm 2 to <a href="https://www.warp.dev/">Warp.dev</a> because of this.</p>
+
+<h2 id="what-do-i-need-in-an-editor">What Do I Need in an Editor</h2>
+
+<p>I'm a hard core rubyist with a focus on Rails.  Yes I do other languages but the Ruby stuff is not going to change.  Here's what I need in an editor:</p>
+
+<ol>
+  <li>Graphical; Sorry I do like the WIMP interface; I did my half million lines of code in VIM and I love Bram Moolenar but no; just no</li>
+  <li>Basic conformation to platform conventions</li>
+  <li>Able to be invoked easily from the command line and open a directory of files with a tree view on the left</li>
+  <li>Able to be used for documents (markdown / ascii) as well as code</li>
+  <li>Syntax highlighting</li>
+  <li>Keystroke macro recording</li>
+  <li>Autosave on focus lost</li>
+  <li>Extensibility if at all possible; TextMate succeeded in large part because there are bundles for everything</li>
+  <li>A window menu that lists all windows</li>
+  <li>Configurable keystrokes</li>
+  <li>Fuzzy Finder for quick navigation to files</li>
+  <li>Cross file search</li>
+  <li>Features need to be discoverable</li>
+  <li>Fast</li>
+  <li>Side by Side display.  TextMate doesn't have this but I noticed it in Lapce and added it to the list because it was that damn impressive.</li>
+</ol>
+
+<p>And I don't have to have everything but that's the core nexus of what I use daily.</p>
+
+<h2 id="lets-look-at-some-options">Let's Look at Some Options</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Syntax</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Header</td>
+      <td>Title</td>
+    </tr>
+    <tr>
+      <td>Paragraph</td>
+      <td>Text</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>I took a <a href="https://www.reddit.com/r/rust/comments/rfx8az/thoughts_on_some_of_the_actively_developed_text/">Reddit post</a> which listed a bunch of Rust editors and thought I'd use this exercise as a way to learn MarkDown table structures.  I took his list and graded them against my criteria. One interesting thing I did was, since so many of these are written in public, I included the commit count in the table below.  Just looking at the commit count shows me that of the editors listed, only a few are actually real i.e. something that is being regularly developed enough to live on as a daily driver.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Editor</th>
+      <th style="text-align: center">Commit Count</th>
+      <th style="text-align: center">1 Graphical</th>
+      <th style="text-align: center">2 Platform</th>
+      <th style="text-align: center">3 Open</th>
+      <th style="text-align: center">4 Documents</th>
+      <th style="text-align: center">5 Syntax</th>
+      <th style="text-align: center">6 Macros</th>
+      <th style="text-align: center">7 Auto Save</th>
+      <th style="text-align: center">8 Extensibility</th>
+      <th style="text-align: center">9 Window</th>
+      <th style="text-align: center">10 Keystrokes</th>
+      <th style="text-align: center">11 Fuzzy</th>
+      <th style="text-align: center">12 Search</th>
+      <th style="text-align: center">13 Discoverable</th>
+      <th style="text-align: center">14 Fast</th>
+      <th style="text-align: center">15 Side By Side</th>
+      <th style="text-align: center">Default Key Bindings</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/jmacdonald/amp">amp</a></td>
+      <td style="text-align: center">1,170</td>
+      <td style="text-align: center">N</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/zackradisic/glyph">glyph</a></td>
+      <td style="text-align: center">50</td>
+      <td style="text-align: center">N</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/helix-editor/helix">helix</a></td>
+      <td style="text-align: center">3,028</td>
+      <td style="text-align: center">Y</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/sidju/hired">hired</a></td>
+      <td style="text-align: center">78</td>
+      <td style="text-align: center">N</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/ilai-deutel/kibi">kibi</a></td>
+      <td style="text-align: center">179</td>
+      <td style="text-align: center">N</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/lapce/lapce">lapce</a></td>
+      <td style="text-align: center">1,669</td>
+      <td style="text-align: center">Y</td>
+      <td style="text-align: center">N</td>
+      <td style="text-align: center">N</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">Y</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">N</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">N</td>
+      <td style="text-align: center">Y</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/vamolessa/pepper">pepper</a></td>
+      <td style="text-align: center">3,133</td>
+      <td style="text-align: center">N</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">N</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td><a href="https://zed.dev/">Zed</a></td>
+      <td style="text-align: center">???</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/zee-editor/zee">zee</a></td>
+      <td style="text-align: center">137</td>
+      <td style="text-align: center">N</td>
+      <td style="text-align: center">Nope!</td>
+      <td style="text-align: center">Yes</td>
+      <td style="text-align: center">I think so</td>
+      <td style="text-align: center">N</td>
+      <td style="text-align: center">Don't care if it doesn't syntax highlight</td>
+      <td style="text-align: center">Don't Know</td>
+      <td style="text-align: center">Yes</td>
+      <td style="text-align: center">No</td>
+      <td style="text-align: center">Yes</td>
+      <td style="text-align: center">Emacs; Alas</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Notes:</p>
+
+<ul>
+  <li>Kibi is notable for being a clone of Kilo by AntiRez; Kilo is one of the great current lessons in software engineering</li>
+  <li>Zed is conceptual afaict - exists only on a web page; sounds great but absolutely NOT filling</li>
+  <li>Zee explicitly doesn't load the <a href="https://github.com/tree-sitter/tree-sitter-ruby">Ruby TreeSitter</a> grammar; for Ghu's sake Zee, Why?  It isn't like you have an anti-package philosophy like Pepper</li>
+  <li>Zee is absolutely impressive.  Just watching the crates it uses as it compiles is like a laundry list of editor related goodness (yes I'm an editor wonk)</li>
+</ul>
+
+  </div>
+  
+  <!--
+    http://fuzzyblog.io/blog/tag.html#aws
+    http://localhost:5000/blog/category.html#facebook
+  -->
+  
+  <hr/><br/>
+  <p><strong>Posted In:</strong>
+  
+    <a href="http://localhost:4000/blog/tag.html#rust" >
+      #rust
+    </a>
+    
+  </p>
+  
+  <!--
+  <hr/><br/>
+  <div style="text-align: center;">
+      <ul class="list-inline tags" >       
+     
+     <li style="display: inline-block;">
+       <a href="http://localhost:4000/blog/tag.html#rust" class="link_button">
+         rust
+       </a>
+     </li>
+     
+    </ul>
+
+  </div>
+-->  
+
+
+  
+  
+  
+
+</article>
+
+<!--
+<div class="just-comments" data-apikey="2fb5b93f-dad4-41c0-a9c4-645079ddc541"></div>
+<script async src="https://just-comments.com/w.js"></script>
+-->
+
+      </div>
+    </div>
+
+    <div class="wrapper">
+  <div style="">
+    <!--
+    <p style="text-align: center; padding: 10px; border: 2px dashed #000">
+      <a href="https://www.gamenanny.io/" class="cta-button-blue">My new product is Game Nanny: Never be surprised by your kid's Xbox spending again!</a>
+    </p>
+      -->
+      <p style="text-align: center; padding: 10px; border: 2px dashed red">
+        <a href="https://www.jobhound.io/" class="cta-button-blue">My new product is Job Hound:<br/>Make applying for tech jobs suck less!</a>
+      </p>
+      
+  </div>
+</div>
+
+<footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">FuzzyBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>FuzzyBlog</li>
+          <li><a href="mailto:fuzzygroup@gmail.com">fuzzygroup@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/fuzzygroup"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/fuzzygroup"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">fuzzygroup</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Scott Johnson writing about the usual array of nerd stuff: AWS / Ansible / Ruby / Rails / Elixir / Misc / Hyde.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
