@@ -14,6 +14,7 @@ Pizza courtesy of Pizza for Ukraine!
 {:.center}
 [Donate Now to Pizza for Ukraine](https://www.pizzaforukraine.com/)
 
+**Note**: This has now appeared on Hacker News -- thank you for the upvotes; I'm very flattered.  I got some good information on Lapce from - maybe - the author and I've updated that.
 
 The older I get and remain an *active* software engineer, the less accepting I am of **poor software quality**.  I think all of us gray beards know that software crashes, generally, are a choice of the developer in terms of his:
 
@@ -105,10 +106,12 @@ I know this isn't listed above but it is one of the great Litmus tests for edito
 | ----------- | ----------- |
 | [amp](https://github.com/jmacdonald/amp)      | Emacs |
 | [helix](https://github.com/helix-editor/helix) | VI | 
-| [lapce](https://github.com/lapce/lapce) | Graphical |  
+| [lapce](https://github.com/lapce/lapce) | Graphical; modal mode for VI fans in settings(1) |  
 | [zee](https://github.com/zee-editor/zee) | Emacs  | 
 
 Normally I'd toss out anything Emacs style right from the jump but it is already a small pool.
+
+1 - source: [Jakub Panek](https://twitter.com/panekj_dev) on Twitter
 
 ### Graphical vs Character Mode
 
@@ -146,9 +149,11 @@ Lapce gets huge props for integrating a Terminal into its environment giving a v
 | ----------- | ----------- |
 | [amp](https://github.com/jmacdonald/amp)      | N |
 | [helix](https://github.com/helix-editor/helix) | YES - Beautifully implemented; Kudos | 
-| [lapce](https://github.com/lapce/lapce) | N - Seems to be a single editor window only |  
+| [lapce](https://github.com/lapce/lapce) | There is a basic CLI interface in HEAD not yet released so its coming!(1) |  
 | [pepper](https://github.com/vamolessa/pepper) | ? | 
 | [zee](https://github.com/zee-editor/zee) | ? | 
+
+1 - source: [Jakub Panek](https://twitter.com/panekj_dev) on Twitter
 
 ### Useful for Documents
 
@@ -348,11 +353,13 @@ I'm pretty sure this is in at least Helix and Pepper but I didn't specifically u
 | ----------- | ----------- |
 | [amp](https://github.com/jmacdonald/amp)      | ? |
 | [helix](https://github.com/helix-editor/helix) | ? | 
-| [lapce](https://github.com/lapce/lapce) | ? |  
+| [lapce](https://github.com/lapce/lapce) | Y (1) |  
 | [pepper](https://github.com/vamolessa/pepper) | ?| 
 | [zee](https://github.com/zee-editor/zee) | ? | 
 
 I'm unsure of this feature because, honestly, I couldn't really find info on it.
+
+1 - source: [Jakub Panek](https://twitter.com/panekj_dev) on Twitter
 
 ### Discoverable Features
 
@@ -401,6 +408,8 @@ Uniformly these felt fast.  Hooray!
 With none of the editors supporting save on loss of focus, I wouldn't come close to thinking I could use them in this way.   Auto Save, in 2022, should be a default (imho).  To paraphrase the great Ted Nelson who said something like "Real people trust the car to shift itself", I would argue "Real people trust the editor to automatically save".
 
 ### LSP Support
+
+Some reached out to me on Twitter and confirmed that Lapce does have LSP integration -- "although we don't have much LSP plugins yet, only Rust/Go/Clangd".  That's awesome and I'll be sure to experiment with it.
 
 Digging through Helix docs brought up the issue of LSP (language server protocol) support and the hx --health command.  Here is how it looks on my machine:
 
