@@ -107,6 +107,7 @@ I know this isn't listed above but it is one of the great Litmus tests for edito
 | [amp](https://github.com/jmacdonald/amp)      | Emacs |
 | [helix](https://github.com/helix-editor/helix) | VI | 
 | [lapce](https://github.com/lapce/lapce) | Graphical; modal mode for VI fans in settings(1) |  
+| [Zed](https://zed.dev/) | Graphical; configurable key bindings although rough - keymap.json file  | 
 | [zee](https://github.com/zee-editor/zee) | Emacs  | 
 
 Normally I'd toss out anything Emacs style right from the jump but it is already a small pool.
@@ -121,11 +122,12 @@ Normally I'd toss out anything Emacs style right from the jump but it is already
 | [helix](https://github.com/helix-editor/helix) | N | 
 | [lapce](https://github.com/lapce/lapce) | Y |  
 | [pepper](https://github.com/vamolessa/pepper) | N | 
+| [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) | N | 
 
 Note 1: I left Zee in here because of its 100 fps claim.  Performance really matters; they get props for realizing that.
 
-Note 2: With exactly 1 graphical editor, I have to relax this criteria (perhaps).
+Note 2: With exactly 2 graphical editors, I have to relax this criteria (perhaps).
 
 ### Basic Conformation to Platform Conventions
 
@@ -137,11 +139,14 @@ Computing platforms have a style and conforming to that style / conventions matt
 | [helix](https://github.com/helix-editor/helix) | N | 
 | [lapce](https://github.com/lapce/lapce) | N - Only a single menu; File picker responds to ~ but doesn't allow pasting in a path |  
 | [pepper](https://github.com/vamolessa/pepper) | N | 
+| [Zed](https://zed.dev/) | Yes; Clearly early days but going the right direction | 
 | [zee](https://github.com/zee-editor/zee) | N | 
 
 Note: Given that nothing conforms to platform conventions, either I give up and go home or plow on and accept change.
 
 Lapce gets huge props for integrating a Terminal into its environment giving a very integrated feeling.
+
+Zed gets huge props for being recognizably a modern style programming editor.  I had no issues conceptually mapping it in the Sublime / TextMate school of design.
 
 ### Invoke from Command Line and Open Directory
 
@@ -151,9 +156,16 @@ Lapce gets huge props for integrating a Terminal into its environment giving a v
 | [helix](https://github.com/helix-editor/helix) | YES - Beautifully implemented; Kudos | 
 | [lapce](https://github.com/lapce/lapce) | There is a basic CLI interface in HEAD not yet released so its coming!(1) |  
 | [pepper](https://github.com/vamolessa/pepper) | ? | 
+| [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) | ? | 
 
 1 - source: [Jakub Panek](https://twitter.com/panekj_dev) on Twitter
+
+**Note**: There is an Install CLI option and while it didn't have feedback at all, once I did it and typed:
+
+    zed .
+
+The directory I was in opened instantly; **beautiful**.
 
 ### Useful for Documents
 
@@ -163,6 +175,7 @@ Lapce gets huge props for integrating a Terminal into its environment giving a v
 | [helix](https://github.com/helix-editor/helix) | ? | 
 | [lapce](https://github.com/lapce/lapce) | N - Seems to be a single editor window only |  
 | [pepper](https://github.com/vamolessa/pepper) | ? | 
+| [Zed](https://zed.dev/) | Y - it even highlights markdown syntax; swoon | 
 | [zee](https://github.com/zee-editor/zee) | ? | 
 
 ### Syntax Highlighting for Ruby
@@ -173,7 +186,10 @@ Lapce gets huge props for integrating a Terminal into its environment giving a v
 | [helix](https://github.com/helix-editor/helix) |  N | 
 | [lapce](https://github.com/lapce/lapce) | Y |  
 | [pepper](https://github.com/vamolessa/pepper) | N  | 
-| [zee](https://github.com/zee-editor/zee) |  | 
+| [Zed](https://zed.dev/) | N | 
+| [zee](https://github.com/zee-editor/zee) | N  | 
+
+**Note**: I'm really not sure why I'm not getting syntax highlighting more and I'm worried that I'm doing something wrong.  The lack of it deeply surprises me in programming editors.  Perhaps it is a generalized shift to LSP support; unclear.
 
 I was really quite sorry to see Pepper drop out here.  I was even more annoyed to see that Helix has support for syntax highlighting in Elvish but not for ruby:
 
@@ -282,6 +298,7 @@ And, yes, Ruby is in the damn list but opening a .rb file doesn't highlight squa
 | [amp](https://github.com/jmacdonald/amp)      | ? |
 | [helix](https://github.com/helix-editor/helix) |  ? | 
 | [lapce](https://github.com/lapce/lapce) |  ?|  
+| [Zed](https://zed.dev/) | N | 
 | [zee](https://github.com/zee-editor/zee) |  ?| 
 
 I wasn't able to confirm this on any of the tools.  This is one of those arcane features.
@@ -293,9 +310,10 @@ I wasn't able to confirm this on any of the tools.  This is one of those arcane 
 | [amp](https://github.com/jmacdonald/amp)      | N |
 | [helix](https://github.com/helix-editor/helix) |  N | 
 | [lapce](https://github.com/lapce/lapce) | N; maybe it has it but if so it isn't easily discoverable. |  
+| [Zed](https://zed.dev/) | N | 
 | [zee](https://github.com/zee-editor/zee) | N | 
 
-This doesn't seem to be in any editor.  
+This doesn't seem to be in any editor. However, as much as I believe in autosave, if the underlying editor is actually stable then it matters less. 
 
 **IMPORTANT**: However not only is Auto Save lacking but Lapce allows you to quit without prompting for save.  I only just discovered that or I'd have cut it from the options right here.  That's not just user hostile but basic hating on the user (imho).
 
@@ -307,6 +325,7 @@ This doesn't seem to be in any editor.
 | [helix](https://github.com/helix-editor/helix) | Unknown | 
 | [lapce](https://github.com/lapce/lapce) | Unknown |  
 | [pepper](https://github.com/vamolessa/pepper) | Unknown | 
+| [Zed](https://zed.dev/) | Unknown | 
 | [zee](https://github.com/zee-editor/zee) | Unknown | 
 
 Yes I need to do more research here.  I freely admit that I punted on this one as I've spent far more time on this than I wanted.
@@ -319,6 +338,7 @@ Yes I need to do more research here.  I freely admit that I punted on this one a
 | [helix](https://github.com/helix-editor/helix) |N  | 
 | [lapce](https://github.com/lapce/lapce) | N - Lapce skips this by only having 1 menu! |  
 | [pepper](https://github.com/vamolessa/pepper) | N | 
+| [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) | N | 
 
 The reason for specifically listing this feature is that I'm also running Warp.dev as a terminal manager and it is written in Rust and the bizarre feature omission is a Window menu that lists all the windows.
@@ -331,9 +351,10 @@ The reason for specifically listing this feature is that I'm also running Warp.d
 | [helix](https://github.com/helix-editor/helix) | ? | 
 | [lapce](https://github.com/lapce/lapce) | ? |  
 | [pepper](https://github.com/vamolessa/pepper) | ? | 
+| [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) | ? | 
 
-As with extensibility, I punted on this one.
+As with extensibility, I punted on this one.  I was only able to confirm this for Zed but I suspect it is coming down the pike for Lapce.
 
 ### Fuzzy Finder
 
@@ -343,9 +364,10 @@ As with extensibility, I punted on this one.
 | [helix](https://github.com/helix-editor/helix) | ? | 
 | [lapce](https://github.com/lapce/lapce) |  N |  
 | [pepper](https://github.com/vamolessa/pepper) |  ?| 
+| [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) |  ?| 
 
-I'm pretty sure this is in at least Helix and Pepper but I didn't specifically use it.
+I'm pretty sure this is in at least Helix and Pepper but I didn't specifically use it.  I did use this in Zed and it worked perfectly.  Zed also had the more traditional C language style Go to Symbol / Definition stuff you use for C / Java style programming.
 
 ### Cross File Search
 
@@ -355,6 +377,7 @@ I'm pretty sure this is in at least Helix and Pepper but I didn't specifically u
 | [helix](https://github.com/helix-editor/helix) | ? | 
 | [lapce](https://github.com/lapce/lapce) | Y (1) |  
 | [pepper](https://github.com/vamolessa/pepper) | ?| 
+| [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) | ? | 
 
 I'm unsure of this feature because, honestly, I couldn't really find info on it.
@@ -369,6 +392,7 @@ I'm unsure of this feature because, honestly, I couldn't really find info on it.
 | [helix](https://github.com/helix-editor/helix) |  N| 
 | [lapce](https://github.com/lapce/lapce) |  N|  
 | [pepper](https://github.com/vamolessa/pepper) |  N| 
+| [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) |  N| 
 
 None of these editors are particularly discoverable.  The lack of overt user interfaces means they get out of the way but that has a cost of making features unknown unless you really dig in -- and you aren't likely to dig in when you can't tell if it has the features you need.
@@ -381,6 +405,7 @@ None of these editors are particularly discoverable.  The lack of overt user int
 | [helix](https://github.com/helix-editor/helix) | Y | 
 | [lapce](https://github.com/lapce/lapce) |  Y|  
 | [pepper](https://github.com/vamolessa/pepper) | Y | 
+| [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) | Y | 
 
 Uniformly these felt fast.  Hooray!
@@ -393,6 +418,7 @@ Uniformly these felt fast.  Hooray!
 | [helix](https://github.com/helix-editor/helix) | ? | 
 | [lapce](https://github.com/lapce/lapce) |  Y |  
 | [pepper](https://github.com/vamolessa/pepper) |  N| 
+| [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) |  N| 
 
 ### Treat Buffers as Virtual Paper
@@ -403,6 +429,7 @@ Uniformly these felt fast.  Hooray!
 | [helix](https://github.com/helix-editor/helix) |N  | 
 | [lapce](https://github.com/lapce/lapce) | N |  
 | [pepper](https://github.com/vamolessa/pepper) |  N| 
+| [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) | N | 
 
 With none of the editors supporting save on loss of focus, I wouldn't come close to thinking I could use them in this way.   Auto Save, in 2022, should be a default (imho).  To paraphrase the great Ted Nelson who said something like "Real people trust the car to shift itself", I would argue "Real people trust the editor to automatically save".
@@ -555,9 +582,17 @@ I tried to brew install helix as per the instructions.  This led to my needing t
 
 ## Conclusion
 
+### My Original Conclusion
+
 I really, really, really wanted to make the shift away from TextMate 2 into something written in Rust.  I suspect I'll experiment with Lapce since it supports a mouse.  I'm deeply sorry that Helix didn't work out.  I could, maybe, make the transition to character mode editing if highlighting worked (and I'm sure with the right sorcery it would; I'm just too old to mess about any more).
 
 Overall it is very early in the Rust editor space and what I use is frightfully mature -- crappy quality but damn mature.  I hope that in another year or so, I'll have better options.
+
+### My Current Conclusion
+
+I wrote this on a Friday morning in the fit of rage inspired by another horrific experience (I hate crashes).  On Saturday morning it showed up on Hacker News and someone who I didn't know (Hello and thank you again; I'm sorry I can't remember your handle) messaged me and say "Here's a Zed invite"'.  I just finished reviewing Zed and its awfully impressive.  I think enough of it that I'm going to try actually shifting my usage away from TextMate into Zed for next week (I'm also intrigued by Lapce but I think the next release is where I need to be).
+
+Zed looks damn good.  
 
 ## Notes: 
 
