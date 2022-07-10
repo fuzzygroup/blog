@@ -14,7 +14,14 @@ Pizza courtesy of Pizza for Ukraine!
 {:.center}
 [Donate Now to Pizza for Ukraine](https://www.pizzaforukraine.com/)
 
-**Note**: This has now appeared on Hacker News -- thank you for the upvotes; I'm very flattered.  I got some good information on Lapce from - maybe - the author and I've updated that.
+**Note**: This has now appeared on [Hacker News](https://news.ycombinator.com/item?id=32034893#32036250) -- thank you for the upvotes; I'm very flattered.  I got some good information on Lapce from - maybe - the author and I've updated that.
+
+## Change Log
+* Updated: 2022-07-10 added Neovide, a description of each editor, github start count and more. Oh and this Change Log.
+Updated: 2022-07-09 updated with additional info on Lapce and Zed thanks to input from people related to those projects on Twitter (thank you)
+* Authored: 2022-07-08 in a post crash state of despair
+
+## Introduction
 
 The older I get and remain an *active* software engineer, the less accepting I am of **poor software quality**.  I think all of us gray beards know that software crashes, generally, are a choice of the developer in terms of his:
 
@@ -51,6 +58,20 @@ Rust is a relatively new programming language with a focus on speed, correctness
 
 I don't think I'm incorrect in saying that when a piece of software written in Rust exists, it is going to be higher quality than something written in C / Swift / C++ / Java.  And, because of that, I have started using more software written in Rust whenever possible.  I recently switched my terminal from iTerm 2 to [Warp.dev](https://www.warp.dev/) because of this.
 
+## The Hacker News Reaction and Rebuttal
+
+Much to my surprise, this blog post got picked up on [Hacker News to mixed response](https://news.ycombinator.com/item?id=32034893#32036250) -- and a lot of the comments were right.  Rust doesn't automatically make things better and there is (apparently) a lot of bad rust out there.  The Hacker News audience was very kind to my rant and made me think.  Thank you.
+
+## Examples of Good End Users, Graphical Software Written in Rust
+
+A point in the Hacker News article was my assertion that Rust makes things better but that I hadn't proven this.  Here are my examples:
+
+* [StarShip](https://starship.rs/) command prompt (ok maybe not so graphical)
+* [NuShell](https://www.nushell.sh/)
+* [Warp.dev](https://www.warp.dev/)
+
+Yes this isn't a big sample but I'm a software engineer and I live in three things: My Shell, My Terminal and My Editor.  My shell and prompt were improved by Rust. And now I'm trying a Rust editor.  Maybe Rust won't save the world but it is making my life demonstrably better.
+
 ## What Do I Need in an Editor
 
 I'm a hard core rubyist with a focus on Rails.  Yes I do other languages but the Ruby stuff is not going to change.  Here's what I need in an editor:
@@ -86,17 +107,29 @@ And now for the feature level comparison.  I tried to write this as a traditiona
 
 This looks at the editors by commit count and it pretty clearly shows you what is actively under development.  With this analysis, we can reduce 8 editors down to 4.
 
-| Editor      | Commit Count |
-| ----------- | ----------- |
-| [amp](https://github.com/jmacdonald/amp)      | 1,170 |
-| [glyph](https://github.com/zackradisic/glyph)      | 50| 
-| [helix](https://github.com/helix-editor/helix) | 3,028 | 
-| [hired](https://github.com/sidju/hired)| 78 | 
-| [kibi](https://github.com/ilai-deutel/kibi) | 179 | 
-| [lapce](https://github.com/lapce/lapce) | 1,669 |  
-| [pepper](https://github.com/vamolessa/pepper) | 3,133 | 
-| [Zed](https://zed.dev/)| ??? | 
-| [zee](https://github.com/zee-editor/zee) | 137 | 
+| Editor      | Commit Count | Stars |
+| ----------- | ----------- | ----------- |
+| [amp](https://github.com/jmacdonald/amp)      | 1,170 | 3.2K |
+| [glyph](https://github.com/zackradisic/glyph)      | 50| 68 |
+| [helix](https://github.com/helix-editor/helix) | 3,028 | 10.5K |
+| [hired](https://github.com/sidju/hired)| 78 | 14 |
+| [kibi](https://github.com/ilai-deutel/kibi) | 179 | 784 |
+| [lapce](https://github.com/lapce/lapce) | 1,669 | 12.9K |
+| [Neovide](https://github.com/neovide/neovide) | 887 | 7.6K|
+| [pepper](https://github.com/vamolessa/pepper) | 3,133 | 247 |
+| [Zed](https://zed.dev/)| 1,200 |1.9K |
+| [zee](https://github.com/zee-editor/zee) | 137 | 1k |
+
+### Sidebar: Each Editor Briefly Described
+
+With the number of editors winnowed down from 8, I've now had some additional time to assess each editor and I can try and craft a coherent paragraph on each.  Think of this as the tldr for each editor.  My apologies to the project authors where I got stuff wrong; I know you all work hard on your project and I do appreciate it.
+
+* Amp -- A light weight character mode editor with a VI like feel.
+* Helix -- A very impressive character mode editor.  It feels like there's a lot of tech under the hood.
+* Lapce -- A graphical editor with split screening and an embedded terminal.  There is a lot of good stuff in the head branch of the git repo so it looks like it will be getting much better in the near future.
+* Neovide -- The only one I wasn't able to try.  This is a graphical front end on top of NeoVim.  Unfortunately Apple wouldn't let it execute either from Brew or a cargo build (cargo is the Rust build tool).
+* Zed -- A very impressive graphical editor and the one that is robust enough for me to use today.  One of its most intriguing promises is the ability to edit files concurrently with another person.  I suspect this is a pair programming style business model.  Overall Zed having a commmercial focus is I think good because it argues for a long live span.
+* Zee -- A light weight character mode editor.
 
 ### Editing Style - Vim or Emacs
 
@@ -107,6 +140,7 @@ I know this isn't listed above but it is one of the great Litmus tests for edito
 | [amp](https://github.com/jmacdonald/amp)      | Emacs |
 | [helix](https://github.com/helix-editor/helix) | VI | 
 | [lapce](https://github.com/lapce/lapce) | Graphical; modal mode for VI fans in settings(1) |  
+| [Neovide](https://github.com/neovide/neovide) | VI|
 | [Zed](https://zed.dev/) | Graphical; configurable key bindings although rough - keymap.json file  | 
 | [zee](https://github.com/zee-editor/zee) | Emacs  | 
 
@@ -121,6 +155,7 @@ Normally I'd toss out anything Emacs style right from the jump but it is already
 | [amp](https://github.com/jmacdonald/amp)      | N |
 | [helix](https://github.com/helix-editor/helix) | N | 
 | [lapce](https://github.com/lapce/lapce) | Y |  
+| [Neovide](https://github.com/neovide/neovide) | Y |
 | [pepper](https://github.com/vamolessa/pepper) | N | 
 | [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) | N | 
@@ -128,6 +163,8 @@ Normally I'd toss out anything Emacs style right from the jump but it is already
 Note 1: I left Zee in here because of its 100 fps claim.  Performance really matters; they get props for realizing that.
 
 Note 2: With exactly 2 graphical editors, I have to relax this criteria (perhaps).
+
+Note 3: Neovide is graphical but it is also a VIM style editor (technically a front end to NeoVim) so the graphics are minimal (but if you are a VI person that's what you want).
 
 ### Basic Conformation to Platform Conventions
 
@@ -138,6 +175,7 @@ Computing platforms have a style and conforming to that style / conventions matt
 | [amp](https://github.com/jmacdonald/amp)      | N |
 | [helix](https://github.com/helix-editor/helix) | N | 
 | [lapce](https://github.com/lapce/lapce) | N - Only a single menu; File picker responds to ~ but doesn't allow pasting in a path |  
+| [Neovide](https://github.com/neovide/neovide) | ?|
 | [pepper](https://github.com/vamolessa/pepper) | N | 
 | [Zed](https://zed.dev/) | Yes; Clearly early days but going the right direction | 
 | [zee](https://github.com/zee-editor/zee) | N | 
@@ -145,6 +183,8 @@ Computing platforms have a style and conforming to that style / conventions matt
 Note: Given that nothing conforms to platform conventions, either I give up and go home or plow on and accept change.
 
 Lapce gets huge props for integrating a Terminal into its environment giving a very integrated feeling.
+
+Neovide - I couldn't try it so its hard for me to say but it appears to follow platform conventions as much as you can while being true to VI styling.
 
 Zed gets huge props for being recognizably a modern style programming editor.  I had no issues conceptually mapping it in the Sublime / TextMate school of design.
 
@@ -155,6 +195,7 @@ Zed gets huge props for being recognizably a modern style programming editor.  I
 | [amp](https://github.com/jmacdonald/amp)      | N |
 | [helix](https://github.com/helix-editor/helix) | YES - Beautifully implemented; Kudos | 
 | [lapce](https://github.com/lapce/lapce) | There is a basic CLI interface in HEAD not yet released so its coming!(1) |  
+| [Neovide](https://github.com/neovide/neovide) | Y |
 | [pepper](https://github.com/vamolessa/pepper) | ? | 
 | [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) | ? | 
@@ -174,6 +215,7 @@ The directory I was in opened instantly; **beautiful**.
 | [amp](https://github.com/jmacdonald/amp)      | ? |
 | [helix](https://github.com/helix-editor/helix) | ? | 
 | [lapce](https://github.com/lapce/lapce) | N - Seems to be a single editor window only |  
+| [Neovide](https://github.com/neovide/neovide) | Y|
 | [pepper](https://github.com/vamolessa/pepper) | ? | 
 | [Zed](https://zed.dev/) | Y - it even highlights markdown syntax; swoon | 
 | [zee](https://github.com/zee-editor/zee) | ? | 
@@ -185,6 +227,7 @@ The directory I was in opened instantly; **beautiful**.
 | [amp](https://github.com/jmacdonald/amp)      | Y |
 | [helix](https://github.com/helix-editor/helix) |  N | 
 | [lapce](https://github.com/lapce/lapce) | Y |  
+| [Neovide](https://github.com/neovide/neovide) | ?|
 | [pepper](https://github.com/vamolessa/pepper) | N  | 
 | [Zed](https://zed.dev/) | N | 
 | [zee](https://github.com/zee-editor/zee) | N  | 
@@ -298,6 +341,7 @@ And, yes, Ruby is in the damn list but opening a .rb file doesn't highlight squa
 | [amp](https://github.com/jmacdonald/amp)      | ? |
 | [helix](https://github.com/helix-editor/helix) |  ? | 
 | [lapce](https://github.com/lapce/lapce) |  ?|  
+| [Neovide](https://github.com/neovide/neovide) | ?|
 | [Zed](https://zed.dev/) | N | 
 | [zee](https://github.com/zee-editor/zee) |  ?| 
 
@@ -310,6 +354,7 @@ I wasn't able to confirm this on any of the tools.  This is one of those arcane 
 | [amp](https://github.com/jmacdonald/amp)      | N |
 | [helix](https://github.com/helix-editor/helix) |  N | 
 | [lapce](https://github.com/lapce/lapce) | N; maybe it has it but if so it isn't easily discoverable. |  
+| [Neovide](https://github.com/neovide/neovide) | ?|
 | [Zed](https://zed.dev/) | N | 
 | [zee](https://github.com/zee-editor/zee) | N | 
 
@@ -324,6 +369,7 @@ This doesn't seem to be in any editor. However, as much as I believe in autosave
 | [amp](https://github.com/jmacdonald/amp)      | Unknown |
 | [helix](https://github.com/helix-editor/helix) | Unknown | 
 | [lapce](https://github.com/lapce/lapce) | Unknown |  
+| [Neovide](https://github.com/neovide/neovide) | Y|
 | [pepper](https://github.com/vamolessa/pepper) | Unknown | 
 | [Zed](https://zed.dev/) | Unknown | 
 | [zee](https://github.com/zee-editor/zee) | Unknown | 
@@ -337,6 +383,7 @@ Yes I need to do more research here.  I freely admit that I punted on this one a
 | [amp](https://github.com/jmacdonald/amp)      | N |
 | [helix](https://github.com/helix-editor/helix) |N  | 
 | [lapce](https://github.com/lapce/lapce) | N - Lapce skips this by only having 1 menu! |  
+| [Neovide](https://github.com/neovide/neovide) | N|
 | [pepper](https://github.com/vamolessa/pepper) | N | 
 | [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) | N | 
@@ -350,6 +397,7 @@ The reason for specifically listing this feature is that I'm also running Warp.d
 | [amp](https://github.com/jmacdonald/amp)      | ? |
 | [helix](https://github.com/helix-editor/helix) | ? | 
 | [lapce](https://github.com/lapce/lapce) | ? |  
+| [Neovide](https://github.com/neovide/neovide) | Y|
 | [pepper](https://github.com/vamolessa/pepper) | ? | 
 | [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) | ? | 
@@ -363,6 +411,7 @@ As with extensibility, I punted on this one.  I was only able to confirm this fo
 | [amp](https://github.com/jmacdonald/amp)      | ? |
 | [helix](https://github.com/helix-editor/helix) | ? | 
 | [lapce](https://github.com/lapce/lapce) |  N |  
+| [Neovide](https://github.com/neovide/neovide) | ?|
 | [pepper](https://github.com/vamolessa/pepper) |  ?| 
 | [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) |  ?| 
@@ -376,6 +425,7 @@ I'm pretty sure this is in at least Helix and Pepper but I didn't specifically u
 | [amp](https://github.com/jmacdonald/amp)      | ? |
 | [helix](https://github.com/helix-editor/helix) | ? | 
 | [lapce](https://github.com/lapce/lapce) | Y (1) |  
+| [Neovide](https://github.com/neovide/neovide) | Y|
 | [pepper](https://github.com/vamolessa/pepper) | ?| 
 | [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) | ? | 
@@ -391,6 +441,7 @@ I'm unsure of this feature because, honestly, I couldn't really find info on it.
 | [amp](https://github.com/jmacdonald/amp)      |  N|
 | [helix](https://github.com/helix-editor/helix) |  N| 
 | [lapce](https://github.com/lapce/lapce) |  N|  
+| [Neovide](https://github.com/neovide/neovide) | N|
 | [pepper](https://github.com/vamolessa/pepper) |  N| 
 | [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) |  N| 
@@ -404,6 +455,7 @@ None of these editors are particularly discoverable.  The lack of overt user int
 | [amp](https://github.com/jmacdonald/amp)      |  Y|
 | [helix](https://github.com/helix-editor/helix) | Y | 
 | [lapce](https://github.com/lapce/lapce) |  Y|  
+| [Neovide](https://github.com/neovide/neovide) | Y|
 | [pepper](https://github.com/vamolessa/pepper) | Y | 
 | [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) | Y | 
@@ -417,6 +469,7 @@ Uniformly these felt fast.  Hooray!
 | [amp](https://github.com/jmacdonald/amp)      | N |
 | [helix](https://github.com/helix-editor/helix) | ? | 
 | [lapce](https://github.com/lapce/lapce) |  Y |  
+| [Neovide](https://github.com/neovide/neovide) | ?|
 | [pepper](https://github.com/vamolessa/pepper) |  N| 
 | [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) |  N| 
@@ -425,9 +478,10 @@ Uniformly these felt fast.  Hooray!
 
 | Editor      | Open |
 | ----------- | ----------- |
-| [amp](https://github.com/jmacdonald/amp)      |N  |
+| [amp](https://github.com/jmacdonald/amp)      |Y |
 | [helix](https://github.com/helix-editor/helix) |N  | 
 | [lapce](https://github.com/lapce/lapce) | N |  
+| [Neovide](https://github.com/neovide/neovide) | Y|
 | [pepper](https://github.com/vamolessa/pepper) |  N| 
 | [Zed](https://zed.dev/) | Y | 
 | [zee](https://github.com/zee-editor/zee) | N | 
@@ -576,6 +630,8 @@ Actually I just figured it out.  Solargraph is an executable gem and when you ru
 
 It runs as a LSP server which then Helix can use for autocomplete.  It still doesn't color code the syntax but the autocomplete options were slick as all get out.  Absolute Kudos here.
 
+**NOTE**: I got this to work one time.  A second go around, I was entirely unable to make it work.
+
 ## Helix Weirdness
 
 I tried to brew install helix as per the instructions.  This led to my needing to re-install XCode which still isn't done.  I got past it with a pure Rust install and then using Cargo.  
@@ -593,6 +649,8 @@ Overall it is very early in the Rust editor space and what I use is frightfully 
 I wrote this on a Friday morning in the fit of rage inspired by another horrific experience (I hate crashes).  On Saturday morning it showed up on Hacker News and someone who I didn't know (Hello and thank you again; I'm sorry I can't remember your handle) messaged me and say "Here's a Zed invite"'.  I just finished reviewing Zed and its awfully impressive.  I think enough of it that I'm going to try actually shifting my usage away from TextMate into Zed for next week (I'm also intrigued by Lapce but I think the next release is where I need to be).
 
 Zed looks damn good.  
+
+Update the Next Morning: I've now been using Zed as both a document and code editor.  Markdown support is good and it is quite functional as a document editor.  As a code editor, I'm missing auto complete and syntax highlighting but I'm surving and the overall experience is lovely.
 
 ## Notes: 
 

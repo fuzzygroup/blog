@@ -198,7 +198,16 @@ Note: This has now appeared on Hacker News – thank you for the upvotes; I'm ve
 
 <p class="center"><a href="https://www.pizzaforukraine.com/">Donate Now to Pizza for Ukraine</a></p>
 
-<p><strong>Note</strong>: This has now appeared on Hacker News – thank you for the upvotes; I'm very flattered.  I got some good information on Lapce from - maybe - the author and I've updated that.</p>
+<p><strong>Note</strong>: This has now appeared on <a href="https://news.ycombinator.com/item?id=32034893#32036250">Hacker News</a> – thank you for the upvotes; I'm very flattered.  I got some good information on Lapce from - maybe - the author and I've updated that.</p>
+
+<h2 id="change-log">Change Log</h2>
+<ul>
+  <li>Updated: 2022-07-10 added Neovide, a description of each editor, github start count and more. Oh and this Change Log.
+Updated: 2022-07-09 updated with additional info on Lapce and Zed thanks to input from people related to those projects on Twitter (thank you)</li>
+  <li>Authored: 2022-07-08 in a post crash state of despair</li>
+</ul>
+
+<h2 id="introduction">Introduction</h2>
 
 <p>The older I get and remain an <em>active</em> software engineer, the less accepting I am of <strong>poor software quality</strong>.  I think all of us gray beards know that software crashes, generally, are a choice of the developer in terms of his:</p>
 
@@ -242,6 +251,22 @@ Note: This has now appeared on Hacker News – thank you for the upvotes; I'm ve
 
 <p>I don't think I'm incorrect in saying that when a piece of software written in Rust exists, it is going to be higher quality than something written in C / Swift / C++ / Java.  And, because of that, I have started using more software written in Rust whenever possible.  I recently switched my terminal from iTerm 2 to <a href="https://www.warp.dev/">Warp.dev</a> because of this.</p>
 
+<h2 id="the-hacker-news-reaction-and-rebuttal">The Hacker News Reaction and Rebuttal</h2>
+
+<p>Much to my surprise, this blog post got picked up on <a href="https://news.ycombinator.com/item?id=32034893#32036250">Hacker News to mixed response</a> – and a lot of the comments were right.  Rust doesn't automatically make things better and there is (apparently) a lot of bad rust out there.  The Hacker News audience was very kind to my rant and made me think.  Thank you.</p>
+
+<h2 id="examples-of-good-end-users-graphical-software-written-in-rust">Examples of Good End Users, Graphical Software Written in Rust</h2>
+
+<p>A point in the Hacker News article was my assertion that Rust makes things better but that I hadn't proven this.  Here are my examples:</p>
+
+<ul>
+  <li><a href="https://starship.rs/">StarShip</a> command prompt (ok maybe not so graphical)</li>
+  <li><a href="https://www.nushell.sh/">NuShell</a></li>
+  <li><a href="https://www.warp.dev/">Warp.dev</a></li>
+</ul>
+
+<p>Yes this isn't a big sample but I'm a software engineer and I live in three things: My Shell, My Terminal and My Editor.  My shell and prompt were improved by Rust. And now I'm trying a Rust editor.  Maybe Rust won't save the world but it is making my life demonstrably better.</p>
+
 <h2 id="what-do-i-need-in-an-editor">What Do I Need in an Editor</h2>
 
 <p>I'm a hard core rubyist with a focus on Rails.  Yes I do other languages but the Ruby stuff is not going to change.  Here's what I need in an editor:</p>
@@ -284,47 +309,75 @@ Note: This has now appeared on Hacker News – thank you for the upvotes; I'm ve
     <tr>
       <th>Editor</th>
       <th>Commit Count</th>
+      <th>Stars</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td><a href="https://github.com/jmacdonald/amp">amp</a></td>
       <td>1,170</td>
+      <td>3.2K</td>
     </tr>
     <tr>
       <td><a href="https://github.com/zackradisic/glyph">glyph</a></td>
       <td>50</td>
+      <td>68</td>
     </tr>
     <tr>
       <td><a href="https://github.com/helix-editor/helix">helix</a></td>
       <td>3,028</td>
+      <td>10.5K</td>
     </tr>
     <tr>
       <td><a href="https://github.com/sidju/hired">hired</a></td>
       <td>78</td>
+      <td>14</td>
     </tr>
     <tr>
       <td><a href="https://github.com/ilai-deutel/kibi">kibi</a></td>
       <td>179</td>
+      <td>784</td>
     </tr>
     <tr>
       <td><a href="https://github.com/lapce/lapce">lapce</a></td>
       <td>1,669</td>
+      <td>12.9K</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>887</td>
+      <td>7.6K</td>
     </tr>
     <tr>
       <td><a href="https://github.com/vamolessa/pepper">pepper</a></td>
       <td>3,133</td>
+      <td>247</td>
     </tr>
     <tr>
       <td><a href="https://zed.dev/">Zed</a></td>
-      <td>???</td>
+      <td>1,200</td>
+      <td>1.9K</td>
     </tr>
     <tr>
       <td><a href="https://github.com/zee-editor/zee">zee</a></td>
       <td>137</td>
+      <td>1k</td>
     </tr>
   </tbody>
 </table>
+
+<h3 id="sidebar-each-editor-briefly-described">Sidebar: Each Editor Briefly Described</h3>
+
+<p>With the number of editors winnowed down from 8, I've now had some additional time to assess each editor and I can try and craft a coherent paragraph on each.  Think of this as the tldr for each editor.  My apologies to the project authors where I got stuff wrong; I know you all work hard on your project and I do appreciate it.</p>
+
+<ul>
+  <li>Amp – A light weight character mode editor with a VI like feel.</li>
+  <li>Helix – A very impressive character mode editor.  It feels like there's a lot of tech under the hood.</li>
+  <li>Lapce – A graphical editor with split screening and an embedded terminal.  There is a lot of good stuff in the head branch of the git repo so it looks like it will be getting much better in the near future.</li>
+  <li>Neovide – The only one I wasn't able to try.  This is a graphical front end on top of NeoVim.  Unfortunately Apple wouldn't let it execute either from Brew or a cargo build (cargo is the Rust build tool).</li>
+  <li>Zed – A very impressive graphical editor and the one that is robust enough for me to use today.  One of its most intriguing promises is the ability to edit files concurrently with another person.  I suspect this is a pair programming style business model.  Overall Zed having a commmercial focus is I think good because it argues for a long live span.</li>
+  <li>Zee – A light weight character mode editor.</li>
+</ul>
 
 <h3 id="editing-style---vim-or-emacs">Editing Style - Vim or Emacs</h3>
 
@@ -349,6 +402,10 @@ Note: This has now appeared on Hacker News – thank you for the upvotes; I'm ve
     <tr>
       <td><a href="https://github.com/lapce/lapce">lapce</a></td>
       <td>Graphical; modal mode for VI fans in settings(1)</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>VI</td>
     </tr>
     <tr>
       <td><a href="https://zed.dev/">Zed</a></td>
@@ -388,6 +445,10 @@ Note: This has now appeared on Hacker News – thank you for the upvotes; I'm ve
       <td>Y</td>
     </tr>
     <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>Y</td>
+    </tr>
+    <tr>
       <td><a href="https://github.com/vamolessa/pepper">pepper</a></td>
       <td>N</td>
     </tr>
@@ -405,6 +466,8 @@ Note: This has now appeared on Hacker News – thank you for the upvotes; I'm ve
 <p>Note 1: I left Zee in here because of its 100 fps claim.  Performance really matters; they get props for realizing that.</p>
 
 <p>Note 2: With exactly 2 graphical editors, I have to relax this criteria (perhaps).</p>
+
+<p>Note 3: Neovide is graphical but it is also a VIM style editor (technically a front end to NeoVim) so the graphics are minimal (but if you are a VI person that's what you want).</p>
 
 <h3 id="basic-conformation-to-platform-conventions">Basic Conformation to Platform Conventions</h3>
 
@@ -431,6 +494,10 @@ Note: This has now appeared on Hacker News – thank you for the upvotes; I'm ve
       <td>N - Only a single menu; File picker responds to ~ but doesn't allow pasting in a path</td>
     </tr>
     <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>?</td>
+    </tr>
+    <tr>
       <td><a href="https://github.com/vamolessa/pepper">pepper</a></td>
       <td>N</td>
     </tr>
@@ -448,6 +515,8 @@ Note: This has now appeared on Hacker News – thank you for the upvotes; I'm ve
 <p>Note: Given that nothing conforms to platform conventions, either I give up and go home or plow on and accept change.</p>
 
 <p>Lapce gets huge props for integrating a Terminal into its environment giving a very integrated feeling.</p>
+
+<p>Neovide - I couldn't try it so its hard for me to say but it appears to follow platform conventions as much as you can while being true to VI styling.</p>
 
 <p>Zed gets huge props for being recognizably a modern style programming editor.  I had no issues conceptually mapping it in the Sublime / TextMate school of design.</p>
 
@@ -472,6 +541,10 @@ Note: This has now appeared on Hacker News – thank you for the upvotes; I'm ve
     <tr>
       <td><a href="https://github.com/lapce/lapce">lapce</a></td>
       <td>There is a basic CLI interface in HEAD not yet released so its coming!(1)</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>Y</td>
     </tr>
     <tr>
       <td><a href="https://github.com/vamolessa/pepper">pepper</a></td>
@@ -520,6 +593,10 @@ Note: This has now appeared on Hacker News – thank you for the upvotes; I'm ve
       <td>N - Seems to be a single editor window only</td>
     </tr>
     <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>Y</td>
+    </tr>
+    <tr>
       <td><a href="https://github.com/vamolessa/pepper">pepper</a></td>
       <td>?</td>
     </tr>
@@ -555,6 +632,10 @@ Note: This has now appeared on Hacker News – thank you for the upvotes; I'm ve
     <tr>
       <td><a href="https://github.com/lapce/lapce">lapce</a></td>
       <td>Y</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>?</td>
     </tr>
     <tr>
       <td><a href="https://github.com/vamolessa/pepper">pepper</a></td>
@@ -697,6 +778,10 @@ Grammar 'zig' checked out at '93331b8bd8b4ebee2b575490b2758f16ad4e9f30'.
       <td>?</td>
     </tr>
     <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>?</td>
+    </tr>
+    <tr>
       <td><a href="https://zed.dev/">Zed</a></td>
       <td>N</td>
     </tr>
@@ -730,6 +815,10 @@ Grammar 'zig' checked out at '93331b8bd8b4ebee2b575490b2758f16ad4e9f30'.
     <tr>
       <td><a href="https://github.com/lapce/lapce">lapce</a></td>
       <td>N; maybe it has it but if so it isn't easily discoverable.</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>?</td>
     </tr>
     <tr>
       <td><a href="https://zed.dev/">Zed</a></td>
@@ -767,6 +856,10 @@ Grammar 'zig' checked out at '93331b8bd8b4ebee2b575490b2758f16ad4e9f30'.
     <tr>
       <td><a href="https://github.com/lapce/lapce">lapce</a></td>
       <td>Unknown</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>Y</td>
     </tr>
     <tr>
       <td><a href="https://github.com/vamolessa/pepper">pepper</a></td>
@@ -808,6 +901,10 @@ Grammar 'zig' checked out at '93331b8bd8b4ebee2b575490b2758f16ad4e9f30'.
       <td>N - Lapce skips this by only having 1 menu!</td>
     </tr>
     <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>N</td>
+    </tr>
+    <tr>
       <td><a href="https://github.com/vamolessa/pepper">pepper</a></td>
       <td>N</td>
     </tr>
@@ -845,6 +942,10 @@ Grammar 'zig' checked out at '93331b8bd8b4ebee2b575490b2758f16ad4e9f30'.
     <tr>
       <td><a href="https://github.com/lapce/lapce">lapce</a></td>
       <td>?</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>Y</td>
     </tr>
     <tr>
       <td><a href="https://github.com/vamolessa/pepper">pepper</a></td>
@@ -886,6 +987,10 @@ Grammar 'zig' checked out at '93331b8bd8b4ebee2b575490b2758f16ad4e9f30'.
       <td>N</td>
     </tr>
     <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>?</td>
+    </tr>
+    <tr>
       <td><a href="https://github.com/vamolessa/pepper">pepper</a></td>
       <td>?</td>
     </tr>
@@ -923,6 +1028,10 @@ Grammar 'zig' checked out at '93331b8bd8b4ebee2b575490b2758f16ad4e9f30'.
     <tr>
       <td><a href="https://github.com/lapce/lapce">lapce</a></td>
       <td>Y (1)</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>Y</td>
     </tr>
     <tr>
       <td><a href="https://github.com/vamolessa/pepper">pepper</a></td>
@@ -966,6 +1075,10 @@ Grammar 'zig' checked out at '93331b8bd8b4ebee2b575490b2758f16ad4e9f30'.
       <td>N</td>
     </tr>
     <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>N</td>
+    </tr>
+    <tr>
       <td><a href="https://github.com/vamolessa/pepper">pepper</a></td>
       <td>N</td>
     </tr>
@@ -1002,6 +1115,10 @@ Grammar 'zig' checked out at '93331b8bd8b4ebee2b575490b2758f16ad4e9f30'.
     </tr>
     <tr>
       <td><a href="https://github.com/lapce/lapce">lapce</a></td>
+      <td>Y</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
       <td>Y</td>
     </tr>
     <tr>
@@ -1044,6 +1161,10 @@ Grammar 'zig' checked out at '93331b8bd8b4ebee2b575490b2758f16ad4e9f30'.
       <td>Y</td>
     </tr>
     <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>?</td>
+    </tr>
+    <tr>
       <td><a href="https://github.com/vamolessa/pepper">pepper</a></td>
       <td>N</td>
     </tr>
@@ -1070,7 +1191,7 @@ Grammar 'zig' checked out at '93331b8bd8b4ebee2b575490b2758f16ad4e9f30'.
   <tbody>
     <tr>
       <td><a href="https://github.com/jmacdonald/amp">amp</a></td>
-      <td>N</td>
+      <td>Y</td>
     </tr>
     <tr>
       <td><a href="https://github.com/helix-editor/helix">helix</a></td>
@@ -1079,6 +1200,10 @@ Grammar 'zig' checked out at '93331b8bd8b4ebee2b575490b2758f16ad4e9f30'.
     <tr>
       <td><a href="https://github.com/lapce/lapce">lapce</a></td>
       <td>N</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/neovide/neovide">Neovide</a></td>
+      <td>Y</td>
     </tr>
     <tr>
       <td><a href="https://github.com/vamolessa/pepper">pepper</a></td>
@@ -1245,6 +1370,8 @@ zig                           ✘ zls                         None              
 
 <p>It runs as a LSP server which then Helix can use for autocomplete.  It still doesn't color code the syntax but the autocomplete options were slick as all get out.  Absolute Kudos here.</p>
 
+<p><strong>NOTE</strong>: I got this to work one time.  A second go around, I was entirely unable to make it work.</p>
+
 <h2 id="helix-weirdness">Helix Weirdness</h2>
 
 <p>I tried to brew install helix as per the instructions.  This led to my needing to re-install XCode which still isn't done.  I got past it with a pure Rust install and then using Cargo.</p>
@@ -1262,6 +1389,8 @@ zig                           ✘ zls                         None              
 <p>I wrote this on a Friday morning in the fit of rage inspired by another horrific experience (I hate crashes).  On Saturday morning it showed up on Hacker News and someone who I didn't know (Hello and thank you again; I'm sorry I can't remember your handle) messaged me and say "Here's a Zed invite"'.  I just finished reviewing Zed and its awfully impressive.  I think enough of it that I'm going to try actually shifting my usage away from TextMate into Zed for next week (I'm also intrigued by Lapce but I think the next release is where I need to be).</p>
 
 <p>Zed looks damn good.</p>
+
+<p>Update the Next Morning: I've now been using Zed as both a document and code editor.  Markdown support is good and it is quite functional as a document editor.  As a code editor, I'm missing auto complete and syntax highlighting but I'm surving and the overall experience is lovely.</p>
 
 <h2 id="notes">Notes:</h2>
 
