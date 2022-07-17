@@ -1,6 +1,7 @@
 ---
 layout: post
 title: The Complete Idiot's Guide to Refactoring Python Using Multiprocessing Pools
+date: 2020-07-31 01:48 -0400
 category: python
 tags: ["python", "scalability"]
 ---

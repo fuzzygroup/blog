@@ -1,6 +1,7 @@
 ---
 layout: post
 title: An Email to a Fellow Founder Regarding a Possible Acquihire
+date: 2020-08-01 01:48 -0400
 category: startup
 tags: ["startup", "acquisition", "acquihire"]
 ---

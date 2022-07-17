@@ -3,6 +3,7 @@ layout: post
 title: The Importance of Git Hooks
 category: git
 tags: ["ruby", "git", "hooks"]
+date: 2014-08-29 01:48 -0400
 
 ---
 So I was working this morning and got one of those bloody awful Rails stack traces -- every error was at the system layer and I could not make any progress debugging it.  So I looked at git status and there were like 25 + files all tied to an overall CSV import process (2 data models, 1 controller, system level UI changes, etc) and then it hit me -- I need my .git hooks setup on this project!  Every bit of source code under management by git has a .git directory at the top level and under it a hooks directory.  Hooks are executable files that are run when you do an atomic level git action.  For example there is one called pre-commit and this is code that is executed BEFORE a commit actually happens.  What you can do with a pre-commit hook is tie in a code evaluation process (think lint if you're a C guy) to find any errors before they are committed.  Now I've set these up in almost every project but not here so a quick copy of a file from another project to .git/hooks gave me this:

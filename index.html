@@ -23,7 +23,10 @@ layout: default
             {% assign date = currentdate %}
           {% endif %}
             <li><a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a> in 
-              <a href="{{site.baseurl}}/category.html#{{post.category}}">{{ post.category }}</a>
+              <a href="{{site.baseurl}}/category.html#{{post.category}}">{{ post.category }}</a> 
+              tagged as {% for tag in post.tags %}
+              <a href="{{site.baseurl}}/tag.html#{{tag}}">{{ tag }}</a>{% if forloop.last %}{% else %},{% endif %}
+                {% endfor %}
             
             
             </li>

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Converting a Ruby Class Library to a Gem
+date: 2020-08-12 01:48 -0400
 category: ruby
 tags: ["ruby"]
 ---

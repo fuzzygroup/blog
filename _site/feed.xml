@@ -6,9 +6,272 @@
 </description>
     <link>https://fuzzyblog.io/blog/</link>
     <atom:link href="http://fuzzyblog.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 15 Jul 2022 03:41:07 -0400</pubDate>
-    <lastBuildDate>Fri, 15 Jul 2022 03:41:07 -0400</lastBuildDate>
+    <pubDate>Sun, 17 Jul 2022 18:38:55 -0400</pubDate>
+    <lastBuildDate>Sun, 17 Jul 2022 18:38:55 -0400</lastBuildDate>
     <generator>Jekyll v3.9.2</generator>
+    
+      <item>
+        <title>Getting NuShell Usable Under OSX for Myself</title>
+        <description>&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/blog/assets/pfu/2022_05_19_thursday_04.jpg&quot; alt=&quot;Pizza&quot; /&gt;&lt;/p&gt;
+
+&lt;p class=&quot;center&quot;&gt;Pizza courtesy of Pizza for Ukraine!&lt;/p&gt;
+
+&lt;p class=&quot;center&quot;&gt;&lt;a href=&quot;https://www.pizzaforukraine.com/&quot;&gt;Donate Now to Pizza for Ukraine&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;As I've written, I'm acutely interested in using software written in Rust as my daily drivers.  What I've seen so far is that programs written in Rust, based on an admittedly tiny sample, seem to be higher quality than programs not written in Rust.&lt;/p&gt;
+
+&lt;p&gt;In this blog post, I'm going to talk about what I had to do to make NuShell be usable for myself under OSX Monterey.  To be perfectly honest, I don't know if my experiences are normal or not.  I seem to have a high personal level of entropy with respect to software and it appears that at least sometimes this level of entropy causes bugs.  This is the main reason that I document things so dogmatically – I often need to refer to my own blog.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-00-changing-your-shell-to-nushell&quot;&gt;Step 00: Changing Your Shell to NuShell&lt;/h2&gt;
+
+&lt;p&gt;After you install NuShell, you are left a bit on your own.  You can invoke it via the nu command but what you really want is it to come up as the default shell.  This is done with chsh:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo chsh -s /usr/local/bin/nu sjohnson
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;NOTE&lt;/strong&gt;: DO NOT CLOSE ALL YOUR OLD TERMINALS!!!  If you are like me and are heavily reliant on history then you want to do this in an existing Bash / Zshell / Fish / Whatever terminal window:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;history &amp;gt; ~/history_old.txt
+chmod +r ~/history_old.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Yes - I think that strongly about history that I want this read only so it doesn't get killed inadvertently.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-01-getting-brew-to-function&quot;&gt;Step 01: Getting Brew to Function&lt;/h2&gt;
+
+&lt;p&gt;After you switch over to using NuShell, you may find that programs like brew aren't found.  This is a path issue (isn't everything???).  Here's an example:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/Users/sjohnson/Sync/coding/flow_analytics〉brew                                                                                 07/17/2022 10:59:12 AM
+Error: nu::shell::external_command (link)
+
+  × External command
+   ╭─[entry #11:1:1]
+ 1 │ brew
+   · ──┬─
+   ·   ╰── can't run executable
+   ╰────
+  help: No such file or directory (os error 2)      
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The solution is to add brew's path into the NuShell environment.  Back in your old shell window, type:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Sync/coding/flow_analytics on ☁️  (us-west-2)
+❯ which brew
+/usr/local/bin/brew
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This tells us we want to add &lt;strong&gt;/usr/local/bin/&lt;/strong&gt; to our path.  This can be done in two ways:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Locally in the current shell window's execution context (so this only affects your current session).&lt;/li&gt;
+  &lt;li&gt;In the configuration file for Nu.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;setting-path-locally&quot;&gt;Setting Path Locally&lt;/h3&gt;
+
+&lt;p&gt;Your overall environment is available in the $env variable:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/Users/sjohnson/Sync/coding/flow_analytics〉$env                                                                                 07/17/2022 11:18:06 AM
+╭────────────────────────────┬────────────────────────────────────────────────────────────────────╮
+│ CMD_DURATION_MS            │ 4                                                                  │
+│ COLORFGBG                  │ 7;0                                                                │
+│ COLORTERM                  │ truecolor                                                          │
+│ COMMAND_MODE               │ unix2003                                                           │
+│ DISPLAY                    │ /private/tmp/com.apple.launchd.irNmAizE05/org.macosforge.xquartz:0 │
+│ ENV_CONVERSIONS            │ {record 2 fields}                                                  │
+│ HOME                       │ /Users/sjohnson                                                    │
+│ ITERM_PROFILE              │ Default                                                            │
+│ ITERM_SESSION_ID           │ w3t2p0:CCE4A07C-C0EC-4B6A-BEF4-CA697D4905C9                        │
+│ LANG                       │ en_US.UTF-8                                                        │
+│ LAST_EXIT_CODE             │ 1                                                                  │
+│ LC_TERMINAL                │ iTerm2                                                             │
+│ LC_TERMINAL_VERSION        │ 3.3.9                                                              │
+│ LOGNAME                    │ sjohnson                                                           │
+│ LaunchInstanceID           │ 680CF766-28B5-428D-A77C-A7F910569794                               │
+│ NUSHELL_CURRENT_SHELL      │ 0                                                                  │
+│ NUSHELL_SHELLS             │ [list 1 item]                                                      │
+│ NU_LIB_DIRS                │ [list 1 item]                                                      │
+│ NU_PLUGIN_DIRS             │ [list 1 item]                                                      │
+│ OLDPWD                     │ /Users/sjohnson/Sync/coding                                        │
+│ PATH                       │ [list 5 items]                                                     │
+│ PROMPT_COMMAND             │ &amp;lt;Block 42&amp;gt;                                                         │
+│ PROMPT_COMMAND_RIGHT       │ &amp;lt;Block 43&amp;gt;                                                         │
+│ PROMPT_INDICATOR           │ &amp;lt;Block 44&amp;gt;                                                         │
+│ PROMPT_INDICATOR_VI_INSERT │ &amp;lt;Block 45&amp;gt;                                                         │
+│ PROMPT_INDICATOR_VI_NORMAL │ &amp;lt;Block 46&amp;gt;                                                         │
+│ PROMPT_MULTILINE_INDICATOR │ &amp;lt;Block 47&amp;gt;                                                         │
+│ PWD                        │ /Users/sjohnson/Sync/coding/flow_analytics                         │
+│ SECURITYSESSIONID          │ 186a6                                                              │
+│ SHELL                      │ /usr/local/bin/nu                                                  │
+│ SSH_AUTH_SOCK              │ /private/tmp/com.apple.launchd.FNFdrFKEZA/Listeners                │
+│ TERM                       │ xterm-256color                                                     │
+│ TERM_PROGRAM               │ iTerm.app                                                          │
+│ TERM_PROGRAM_VERSION       │ 3.3.9                                                              │
+│ TERM_SESSION_ID            │ w3t2p0:CCE4A07C-C0EC-4B6A-BEF4-CA697D4905C9                        │
+│ TMPDIR                     │ /var/folders/t1/8wysbvsx2h50nm_26pqnq2780000gn/T/                  │
+│ USER                       │ sjohnson                                                           │
+│ XPC_FLAGS                  │ 0x0                                                                │
+│ XPC_SERVICE_NAME           │ 0                                                                  │
+│ __CFBundleIdentifier       │ com.googlecode.iterm2                                              │
+│ __CF_USER_TEXT_ENCODING    │ 0x1F5:0x0:0x0                                                      │
+│ config                     │ {record 26 fields}                                                 │
+╰────────────────────────────┴────────────────────────────────────────────────────────────────────╯
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here's how to view the current path:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;env.PATH                                                                            07/17/2022 11:18:52 AM
+╭───┬─────────────────────╮
+│ 0 │ /usr/bin            │
+│ 1 │ /bin                │
+│ 2 │ /usr/sbin           │
+│ 3 │ /sbin               │
+│ 4 │ /usr/local/bin/brew │
+╰───┴─────────────────────╯
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here's how to update your local path:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let-env PATH = ($env.PATH | append &quot;/usr/local/bin&quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;After that a which brew gives you:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;which brew                                                                           07/17/2022 11:33:30 AM
+╭───┬──────┬─────────────────────┬──────────╮
+│ # │ arg  │        path         │ built-in │
+├───┼──────┼─────────────────────┼──────────┤
+│ 0 │ brew │ /usr/local/bin/brew │ false    │
+╰───┴──────┴─────────────────────┴──────────╯
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;setting-path-persistently&quot;&gt;Setting Path Persistently&lt;/h3&gt;
+
+&lt;p&gt;Your configuration file is located here (change your login directory appropriately):&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&quot;/Users/sjohnson/Library/Application Support/nushell/config.nu&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So you can edit this with vi:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vi &quot;/Users/sjohnson/Library/Application Support/nushell/config.nu&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And then you can add a line at the end like:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let-env PATH = ($env.PATH | append &quot;/usr/local/bin&quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;step-02-never-type-bundle-exec-again---an-alias&quot;&gt;Step 02: Never Type Bundle Exec Again - An Alias&lt;/h2&gt;
+
+&lt;p&gt;Aliases allow shells to expand text commands into their underlying syntax.  For example, I've long had &lt;strong&gt;be&lt;/strong&gt; aliased to &lt;strong&gt;bundle exec&lt;/strong&gt; (which any rubyist knows and loathes).&lt;/p&gt;
+
+&lt;p&gt;The command for aliases is:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alias be = bundle exec
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;As with path, you can execute this locally for your current session or you can put it in your config.nu file.  Here's what my config.nu file is starting to look like:&lt;/p&gt;
+
+&lt;h2 id=&quot;step-03-adding-mate-as-an-alias&quot;&gt;Step 03: Adding mate As an Alias&lt;/h2&gt;
+
+&lt;p&gt;Yeah, yeah.  I want to get out of my 20 year long dysfunctional relationship with TextMate but I'm not there yet.  Here's what to alias to make it work for now:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alias mate = /usr/local/bin/mate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;step-04-loading-configuration-changes-from-confignu&quot;&gt;Step 04: Loading Configuration Changes from config.nu&lt;/h2&gt;
+
+&lt;p&gt;It is important to understand that if you make changes to config.nu and then launch a new terminal, you will NOT get the changes you just added to config.nu.  This seems insane to me but my assumption is that there is a master process which has a cached copy of the config.nu file from when the first terminal was launched.&lt;/p&gt;
+
+&lt;p&gt;To get your changes, you need to source the config.nu file just as you would source a .bashrc or .zshrc file.  Your config.nu file can be accessed from the variable:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$nu.config-path                                                                      07/17/2022 01:31:28 PM
+/Users/sjohnson/Library/Application Support/nushell/config.nu
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There is one issue – you can't source that value as, apparently, the nushell environment is compiled.&lt;/p&gt;
+
+&lt;p&gt;What you would think would work would be:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;source $&quot;($nu.config-path)&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;or some variant but it simply will not work.  So you need to do this manually:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;source &quot;/Users/sjohnson/Library/Application Support/nushell/config.nu&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This feels damn weird to me but just memorize &lt;strong&gt;$nu.config-path&lt;/strong&gt; and then write a source command manually with copy and paste.  And, alas, you have to have &quot;&quot; around the path expression because Apple was insane in the brain when they named it &quot;Application Support&quot; and not &quot;ApplicationSupport&quot;.  Cupertino at its absolute most stupid.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-known-issue--any-errors-in-confignu-stop-all-confignu-changes&quot;&gt;A Known Issue – Any Errors in config.nu STOP all config.nu changes&lt;/h2&gt;
+
+&lt;p&gt;I originally attempted to execute this in my config.nu file:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;source /Users/sjohnson/.rvm/scripts/rvm
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That threw an error since it doesn't work in NuShell (there isn't Bash compatibility).  And, interestingly, even though that came AFTER my alias lines, nothing from my config.nu came thru until I removed this line.&lt;/p&gt;
+
+&lt;h2 id=&quot;and-the-killer-issue-is-lack-of-rvm-support&quot;&gt;And the Killer Issue is Lack of RVM Support&lt;/h2&gt;
+
+&lt;p&gt;After getting to those point, I finally dealt with my RVM issue (the source line above) and discovered that &lt;a href=&quot;https://github.com/nushell/nushell/issues/1960&quot;&gt;there isn't support for this in NuShell&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So I guess the likely answer for me is:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo chsh -s /bin/bash sjohnson
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;For right now I have enough existing windows where RVM had run that I don't have to switch back yet but the minute I have a machine crash, well, I'm toast and then back to Bash.&lt;/p&gt;
+
+&lt;p&gt;And if I want NuShell, I'm going to have to just execute nu.  DAMN IT; I really like NuShell and I want it to work.  NuShell feels to me the way ZShell did when I first tried it but without that awful feeling of all the Bash compatibility it lugs around.&lt;/p&gt;
+
+&lt;h2 id=&quot;sidebar-nushell-is-aware-of-virtual-environment-issues&quot;&gt;Sidebar: NuShell is Aware of Virtual Environment Issues&lt;/h2&gt;
+
+&lt;p&gt;I had a bit of a discussion with some of the NuShell folk about this with respect to RVM.  They are aware of it and they do have support for &lt;a href=&quot;https://github.com/nushell/nu_scripts/tree/main/virtual_environments&quot;&gt;Python's Conda&lt;/a&gt;.  There was a long &lt;a href=&quot;https://github.com/nushell/nushell/issues/1960&quot;&gt;RVM github issue&lt;/a&gt; written up 2 years ago but it had gone stale until recently.&lt;/p&gt;
+
+&lt;p&gt;NuShell is looking for help on this topic (I looked at the Conda example and I suspect my shell scripting isn't up to the task; alas).&lt;/p&gt;
+
+&lt;p&gt;I suspect if I had to give NuShell advice, they should look into supporting &lt;a href=&quot;https://asdf-vm.com/&quot;&gt;asdf&lt;/a&gt; since asdf supports multiple languages.  While I like RVM, it only gives me support for Ruby while I've used asdf with lots of things including Elixir.&lt;/p&gt;
+
+&lt;h2 id=&quot;thank-yous&quot;&gt;Thank You's&lt;/h2&gt;
+
+&lt;p&gt;The following folks on the NuShell discord server were enormously helpful - welcoming, gracious and knowledgable:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rgwood&quot;&gt;Reilly&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;JT&lt;/li&gt;
+  &lt;li&gt;EpThinker&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Thank you all.  Truly appreciated.&lt;/p&gt;
+
+&lt;h2 id=&quot;see-also&quot;&gt;See Also&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/nushell/nu_scripts/tree/main/virtual_environments&quot;&gt;NuShell and Virtual Environments&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/nushell/nushell/issues/1960&quot;&gt;NuShell and RVM&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.nushell.sh/book/configuration.html&quot;&gt;NuShell Configuration&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.nushell.sh/book/working_with_strings.html#string-interpolation&quot;&gt;NuShell and String Interpolation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.nushell.sh/cookbook/setup.html#how-to-list-your-environment-variables&quot;&gt;NuShell and Environment Variables&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.nushell.sh/book/aliases.html#how-to-write-an-alias-with-pipes&quot;&gt;NuShell and Aliases&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/rgwood/dotfiles/blob/master/nu/config.nu#L3&quot;&gt;Reilly's NuShell Configuration File&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://discord.com/channels/601130461678272522&quot;&gt;NuShell Discord Server&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Sun, 17 Jul 2022 11:20:00 -0400</pubDate>
+        <link>http://fuzzyblog.io/blog/nushell/2022/07/17/getting-nushell-usable-under-osx-for-myself.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io/blog/nushell/2022/07/17/getting-nushell-usable-under-osx-for-myself.html</guid>
+        
+        <category>nushell</category>
+        
+        <category>rust</category>
+        
+        
+        <category>nushell</category>
+        
+      </item>
     
       <item>
         <title>Value Statements for My New Company</title>
@@ -7379,7 +7642,7 @@ bundle exec rake build
   &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/30118627/how-do-i-add-a-dependency-to-a-private-gem-in-gemspec&quot;&gt;Gem Dependencies and Gem Spec&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Wed, 12 Aug 2020 00:00:00 -0400</pubDate>
+        <pubDate>Wed, 12 Aug 2020 01:48:00 -0400</pubDate>
         <link>http://fuzzyblog.io/blog/ruby/2020/08/12/converting-a-ruby-class-library-to-a-gem.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io/blog/ruby/2020/08/12/converting-a-ruby-class-library-to-a-gem.html</guid>
         
@@ -7428,7 +7691,7 @@ bundle exec rake build
   &lt;li&gt;&lt;a href=&quot;https://hacksformacs.wordpress.com/2015/01/12/spotlight-on-the-command-line-part-1-introducing-mdfind-and-xargs/&quot;&gt;Hacks for Macs&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Wed, 12 Aug 2020 00:00:00 -0400</pubDate>
+        <pubDate>Wed, 12 Aug 2020 01:48:00 -0400</pubDate>
         <link>http://fuzzyblog.io/blog/osx/2020/08/12/a-shorty-but-a-goody-sorting-mdfind-results-by-date.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io/blog/osx/2020/08/12/a-shorty-but-a-goody-sorting-mdfind-results-by-date.html</guid>
         
@@ -7484,7 +7747,7 @@ Some Person On the Internet
   &lt;li&gt;Find another founder they bought out – NOT a reference they gave you – and talk to them.&lt;/li&gt;
 &lt;/ol&gt;
 </description>
-        <pubDate>Sat, 01 Aug 2020 00:00:00 -0400</pubDate>
+        <pubDate>Sat, 01 Aug 2020 01:48:00 -0400</pubDate>
         <link>http://fuzzyblog.io/blog/startup/2020/08/01/an-email-to-a-fellow-founder-regarding-a-possible-acquihire.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io/blog/startup/2020/08/01/an-email-to-a-fellow-founder-regarding-a-possible-acquihire.html</guid>
         
@@ -7575,7 +7838,7 @@ Some Person On the Internet
   &lt;li&gt;&lt;a href=&quot;https://pythonspeed.com/articles/python-multiprocessing/&quot;&gt;The Shark Approach to Multiprocessing&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Fri, 31 Jul 2020 00:00:00 -0400</pubDate>
+        <pubDate>Fri, 31 Jul 2020 01:48:00 -0400</pubDate>
         <link>http://fuzzyblog.io/blog/python/2020/07/31/the-complete-idiot-s-guide-to-refactoring-python-using-multiprocessing-pools.html</link>
         <guid isPermaLink="true">http://fuzzyblog.io/blog/python/2020/07/31/the-complete-idiot-s-guide-to-refactoring-python-using-multiprocessing-pools.html</guid>
         
@@ -22088,96 +22351,6 @@ app/helpers/tweet_helper.rb
         
         
         <category>osx</category>
-        
-      </item>
-    
-      <item>
-        <title>Getting Used to Heroku and Rails</title>
-        <description>&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/blog/assets/IMG_9604.jpeg&quot; alt=&quot;IMG_9604.jpeg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I remember using &lt;a href=&quot;https://www.heroku.com&quot;&gt;Heroku&lt;/a&gt; in its very infancy when it was mostly a web based user interface for authoring Rails apps.  I looked at it, thought &quot;why would you want to author code in a browser; that's dumb af&quot; and promptly moved on.  Now, more than a decade later, I find myself using Heroku daily for my latest side project – and absolutely loving it.  This blog post lays out some tips and tricks that I've learned.&lt;/p&gt;
-
-&lt;p&gt;All of this assumes you have a Rails application and it is configured to use Heroku.  If you don't have the heroku executable then you can use brew on OSX to install it:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;brew tap heroku/brew &amp;amp;&amp;amp; brew install heroku
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;getting-help&quot;&gt;Getting Help&lt;/h2&gt;
-
-&lt;p&gt;Just use the –help flag to the heroku command.&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;heroku --help
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;running-the-rails-console&quot;&gt;Running the Rails Console&lt;/h2&gt;
-
-&lt;p&gt;To load up a Rails console for your project, change into the product directory and:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;heroku run rails console
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;accessing-your-sql-database&quot;&gt;Accessing Your SQL Database&lt;/h2&gt;
-
-&lt;p&gt;Just use the host parameter of your sql database's client software and connect to it directly.  Here's an example from mine (details changed):&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; mysql -uUSERNAME -pPASSWORD DB_NAME --host=HOSTNAME
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Get the details of what to connect to with:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;heroku config | grep CLEARDB_DATABASE_URL
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;running-migrations&quot;&gt;Running Migrations&lt;/h2&gt;
-
-&lt;p&gt;Migrations should run automatically on deployment.  Apparently, however, that is not always true and they can be run manually with:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;heroku run rake --trace db:migrate
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Thank you to the very first user of my new side project for finding this.  Hat Tip.&lt;/p&gt;
-
-&lt;h2 id=&quot;tailing-your-logs&quot;&gt;Tailing Your Logs&lt;/h2&gt;
-
-&lt;p&gt;Heroku only gives you access to the last 1500 lines of your logs:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;heroku logs
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;For access to more logging into then I strongly, strongly, strongly recommend &lt;a href=&quot;https://fuzzyblog.io/blog/rails/2019/10/21/honeybadger-even-more-awesome-than-ever.html&quot;&gt;HoneyBadger&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;listing-all-time-zones-or-running-any-damn-rake-task&quot;&gt;Listing All Time Zones (or Running Any Damn Rake Task)&lt;/h2&gt;
-
-&lt;p&gt;You can see your time zones or run any rake task with:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;heroku rake time:zones:all
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;to-view-your-configuration&quot;&gt;To View Your Configuration&lt;/h2&gt;
-
-&lt;p&gt;View configuration details with:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; heroku config
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;importing-your-development-data&quot;&gt;Importing Your Development Data&lt;/h2&gt;
-
-&lt;p&gt;See this &lt;a href=&quot;https://fuzzyblog.io/blog/heroku/2019/10/16/importing-your-local-mysql-database-into-heroku.html&quot;&gt;blog post&lt;/a&gt; if you want to import your development data.&lt;/p&gt;
-
-&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
-
-&lt;p&gt;This is a &lt;a href=&quot;https://devcenter.heroku.com/articles/getting-started-with-rails5&quot;&gt;good article&lt;/a&gt; on Heroku.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 22 Oct 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io/blog/rails/2019/10/22/getting-used-to-heroku.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io/blog/rails/2019/10/22/getting-used-to-heroku.html</guid>
-        
-        <category>rails</category>
-        
-        <category>heroku</category>
-        
-        
-        <category>rails</category>
         
       </item>
     
