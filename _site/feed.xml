@@ -6,9 +6,136 @@
 </description>
     <link>https://fuzzyblog.io/blog/</link>
     <atom:link href="http://fuzzyblog.io/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 17 Jul 2022 18:38:55 -0400</pubDate>
-    <lastBuildDate>Sun, 17 Jul 2022 18:38:55 -0400</lastBuildDate>
+    <pubDate>Mon, 18 Jul 2022 09:33:54 -0400</pubDate>
+    <lastBuildDate>Mon, 18 Jul 2022 09:33:54 -0400</lastBuildDate>
     <generator>Jekyll v3.9.2</generator>
+    
+      <item>
+        <title>Running Multiple Rails Apps Concurrently with Foreman and Procfile.dev</title>
+        <description>&lt;p class=&quot;center&quot;&gt;&lt;img src=&quot;/blog/assets/pfu/289214624_134557099241886_3934308353915036057_n.jpeg&quot; alt=&quot;Pizza&quot; /&gt;&lt;/p&gt;
+
+&lt;p class=&quot;center&quot;&gt;Pizza courtesy of Pizza for Ukraine!&lt;/p&gt;
+
+&lt;p class=&quot;center&quot;&gt;&lt;a href=&quot;https://www.pizzaforukraine.com/&quot;&gt;Donate Now to Pizza for Ukraine&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;As I've said, I build a lot of side projects and I really, really like the model of having:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;ALL MY APPS RUNNING CONCURRENTLY&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I may be a scattered, distracted developer trying to do too damn much but that's my damn right.  And I have 64 gigs of RAM so why shouldn't I be this way.&lt;/p&gt;
+
+&lt;p&gt;What I want is to be able to switch from app to app and make changes.  This is important because some apps provide APIs which other apps rely on and having to figure out what thing is on what port, etc, is just plain distracting.&lt;/p&gt;
+
+&lt;p&gt;Foreman and Procfile.dev is a way around this but there's a major hitch in your getalong (as my Texas wife might say).&lt;/p&gt;
+
+&lt;p&gt;Here's a sample Procfile.dev for an app I'm building called Cartazzi which makes a developer's life easier:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;web: bin/rails server -p 5000
+css: yarn build:css --watch
+js: yarn build --reload
+# docker: docker-compose up
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And here's a Profile.dev for another application called Poolwizard which helps you maintain your swimming pool:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#web: bin/rails server -p $PORT
+web: bin/rails server -p 5700
+css: yarn build:css --watch
+js: yarn build --reload
+# docker: docker-compose up
+worker: bundle exec sidekiq
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If you run Cartazzi and Poolwizard together then you're going to get crashes and here's the error:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ foreman start -f Procfile.dev
+09:11:53 web.1    | started with pid 72877
+09:11:53 css.1    | started with pid 72878
+09:11:53 js.1     | started with pid 72879
+09:11:53 worker.1 | started with pid 72881
+09:11:53 js.1     | yarn run v1.22.5
+09:11:53 css.1    | yarn run v1.22.5
+09:11:53 css.1    | $ tailwindcss --postcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --watch
+09:11:53 js.1     | $ node esbuild.config.js --reload
+09:11:54 js.1     | node:events:371
+09:11:54 js.1     |       throw er; // Unhandled 'error' event
+09:11:54 js.1     |       ^
+09:11:54 js.1     |
+09:11:54 js.1     | Error: listen EADDRINUSE: address already in use :::5200
+09:11:54 js.1     |     at Server.setupListenHandle [as _listen2] (node:net:1306:16)
+09:11:54 js.1     |     at listenInCluster (node:net:1354:12)
+09:11:54 js.1     |     at Server.listen (node:net:1441:7)
+09:11:54 js.1     |     at buildAndReload (/Users/sjohnson/Sync/coding/rails/poolwizard/esbuild.config.js:54:6)
+09:11:54 js.1     |     at Object.&amp;lt;anonymous&amp;gt; (/Users/sjohnson/Sync/coding/rails/poolwizard/esbuild.config.js:100:3)
+09:11:54 js.1     |     at Module._compile (node:internal/modules/cjs/loader:1109:14)
+09:11:54 js.1     |     at Object.Module._extensions..js (node:internal/modules/cjs/loader:1138:10)
+09:11:54 js.1     |     at Module.load (node:internal/modules/cjs/loader:989:32)
+09:11:54 js.1     |     at Function.Module._load (node:internal/modules/cjs/loader:829:14)
+09:11:54 js.1     |     at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:76:12)
+09:11:54 js.1     | Emitted 'error' event on Server instance at:
+09:11:54 js.1     |     at emitErrorNT (node:net:1333:8)
+09:11:54 js.1     |     at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+09:11:54 js.1     |   code: 'EADDRINUSE',
+09:11:54 js.1     |   errno: -48,
+09:11:54 js.1     |   syscall: 'listen',
+09:11:54 js.1     |   address: '::',
+09:11:54 js.1     |   port: 5200
+09:11:54 js.1     | }
+09:11:54 js.1     | error Command failed with exit code 1.
+09:11:54 js.1     | info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+09:11:54 js.1     | exited with code 1
+09:11:54 system   | sending SIGTERM to all processes
+09:11:54 worker.1 | terminated by SIGTERM
+09:11:54 css.1    | exited with code 1
+09:11:54 web.1    | terminated by SIGTERM
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The first time I looked at this, I saw the port error and I assumed that the error was the rails server because I &lt;strong&gt;knew&lt;/strong&gt; that was running on a specific port.  The actual error though here is node – which ISN'T EVEN IN THE Procfile.dev because it is run behind the scenes by yarn.&lt;/p&gt;
+
+&lt;p&gt;Here's the fix:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#web: bin/rails server -p $PORT
+web: bin/rails server -p 5700
+css: yarn build:css --watch
+js: PORT=5701 yarn build --reload
+# docker: docker-compose up
+worker: bundle exec sidekiq
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To understand this we need to put on our Unix underpinning's hat and think about this.  You have Yarn executing and running Node as a process.  Node inherits the environment variables that Yarn had which means if we set the PORT variable for Yarn then Node will inherit it.&lt;/p&gt;
+
+&lt;p&gt;The convention I'm adopting is this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;In all my Procfile.dev's, yarn build will get the port number of the Rails server + 1.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;thank-you&quot;&gt;Thank You&lt;/h2&gt;
+
+&lt;p&gt;I didn't figure this out on my own, a fellow Rails guy on Twitter, &lt;a href=&quot;https://twitter.com/@kylekeesling&quot;&gt;Kyle Keesling&lt;/a&gt; told me that this should work.  That was enough for me to know that it could be figured out and to force me back into diagnostic mode.  Thanks Kyle!  Also Kyle is building a course on Stripe and Rails which looks good.  Check it out &lt;a href=&quot;https://store.kylekeesling.com/stripe-on-rails&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;see-also&quot;&gt;See Also&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://stackoverflow.com/questions/39472215/how-to-run-the-node-app-in-different-port-as-temporarily&quot;&gt;Running Node on a Port&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 18 Jul 2022 09:15:00 -0400</pubDate>
+        <link>http://fuzzyblog.io/blog/rails/2022/07/18/running-multiple-rails-apps-concurrently-with-foreman-and-procfile-dev.html</link>
+        <guid isPermaLink="true">http://fuzzyblog.io/blog/rails/2022/07/18/running-multiple-rails-apps-concurrently-with-foreman-and-procfile-dev.html</guid>
+        
+        <category>rails</category>
+        
+        <category>foreman</category>
+        
+        <category>procfile</category>
+        
+        
+        <category>rails</category>
+        
+      </item>
     
       <item>
         <title>Getting NuShell Usable Under OSX for Myself</title>
@@ -257,6 +384,7 @@ Error: nu::shell::external_command (link)
   &lt;li&gt;&lt;a href=&quot;https://www.nushell.sh/book/aliases.html#how-to-write-an-alias-with-pipes&quot;&gt;NuShell and Aliases&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/rgwood/dotfiles/blob/master/nu/config.nu#L3&quot;&gt;Reilly's NuShell Configuration File&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://discord.com/channels/601130461678272522&quot;&gt;NuShell Discord Server&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.nushell.sh/book/coming_from_bash.html&quot;&gt;Coming from Bash&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 </description>
@@ -22324,33 +22452,6 @@ app/helpers/tweet_helper.rb
         
         
         <category>rails</category>
-        
-      </item>
-    
-      <item>
-        <title>Turn Off Automatic Prompting for OSX Updates Because Catalina is Bad So Far</title>
-        <description>&lt;p&gt;Between &lt;a href=&quot;http://morrick.me/archives/8599&quot;&gt;Riccardo Mori's&lt;/a&gt; piece on Catalina and &lt;a href=&quot;https://mjtsai.com/blog/2019/10/15/catalina-system-issues/&quot;&gt;Michael Tsai's excellent writings&lt;/a&gt;, I flat out don't want to update to Catalina.  But I'm also tired of Apple prompting (harassing) me to update.   Here's how to stop it&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Apple menu.&lt;/li&gt;
-  &lt;li&gt;System Preferences&lt;/li&gt;
-  &lt;li&gt;Software Update&lt;/li&gt;
-  &lt;li&gt;Advanced&lt;/li&gt;
-  &lt;li&gt;Turn off Check for Updates&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;This is the first time I've ever turned these options off.  Normally I just say no to it until it is time to do an update; this time I don't have any clue when that might be.&lt;/p&gt;
-
-&lt;p&gt;Note: Apple has changed this from 2017.  If you aren't running Mojave then &lt;a href=&quot;https://gadgets.ndtv.com/laptops/features/how-to-enable-or-disable-automatic-updates-on-mac-1681435&quot;&gt;this&lt;/a&gt; may help you.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 22 Oct 2019 00:00:00 -0400</pubDate>
-        <link>http://fuzzyblog.io/blog/osx/2019/10/22/turn-off-automatic-prompting-for-osx-updates-because-catalina-is-bad-so-far.html</link>
-        <guid isPermaLink="true">http://fuzzyblog.io/blog/osx/2019/10/22/turn-off-automatic-prompting-for-osx-updates-because-catalina-is-bad-so-far.html</guid>
-        
-        <category>osx</category>
-        
-        
-        <category>osx</category>
         
       </item>
     

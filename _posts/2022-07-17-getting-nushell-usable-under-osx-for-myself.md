@@ -231,4 +231,5 @@ Thank you all.  Truly appreciated.
 * [NuShell and Aliases](https://www.nushell.sh/book/aliases.html#how-to-write-an-alias-with-pipes)
 * [Reilly's NuShell Configuration File](https://github.com/rgwood/dotfiles/blob/master/nu/config.nu#L3)
 * [NuShell Discord Server](https://discord.com/channels/601130461678272522)
+* [Coming from Bash](https://www.nushell.sh/book/coming_from_bash.html)
 
