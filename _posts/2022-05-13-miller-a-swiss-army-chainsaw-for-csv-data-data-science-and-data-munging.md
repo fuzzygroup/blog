@@ -5,6 +5,8 @@ date: 2022-05-13 12:54 -0400
 category: data_science
 tags: ["data_science", "csv", "miller"]
 ---
+{% pizzaforukraine  %}
+
 Every so often I run into a tool which just impresses me.  This time it is [Miller](https://miller.readthedocs.io/en/latest/).  And when I find such a tool, I write up a blog post to firm up my learnings.  Here is the official description:
 
  >> Miller is a command-line tool for querying, shaping, and reformatting data files in various formats including CSV, TSV, JSON, and JSON Lines.

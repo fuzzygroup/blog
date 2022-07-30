@@ -5,6 +5,8 @@ date: 2021-05-27 09:02 -0400
 category: laravel
 tags: ["laravel", "php"]
 ---
+{% pizzaforukraine  %}
+
 As of late I've been working in Laravel and figuring out how Laravel differs from Rails.  And while I have a bigger blog post in the works, I thought there was learning value in a simple Hello World implemented in Laravel.  Hello World is a simple program that just puts Hello World on the screen. 
 
 Here's how I thought a Laravel version of this should work:

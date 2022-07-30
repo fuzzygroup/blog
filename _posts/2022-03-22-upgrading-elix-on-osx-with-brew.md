@@ -5,6 +5,8 @@ date: 2022-03-22 13:42 -0400
 category: elixir
 tags: ["elixir"]
 ---
+{% pizzaforukraine  %}
+
 This is simple but I keep needing to look it up.  
 
 First check your elixir version:

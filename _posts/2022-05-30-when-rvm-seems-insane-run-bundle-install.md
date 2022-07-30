@@ -5,6 +5,8 @@ date: 2022-05-30 11:31 -0400
 category: rails
 tags: ["rails", "ruby", "rvm"]
 ---
+{% pizzaforukraine  %}
+
 So I just had this disconcerting moment of weirdness:
 
 		❯ rvm use 3.1.0

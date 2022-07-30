@@ -5,6 +5,8 @@ date: 2021-08-27 10:11 -0400
 category: laravel
 tags: ["shopify", "laravel", "php"]
 ---
+{% pizzaforukraine  %}
+
 This blog post tackles the odd topic of taking a Laravel application and converting it to a Shopify app.  
 
 ## Overview

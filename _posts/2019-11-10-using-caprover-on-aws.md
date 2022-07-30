@@ -4,6 +4,8 @@ title: Using CapRover on AWS
 category: caprover
 tags: ["caprover", "aws"]
 ---
+{% pizzaforukraine  %}
+
 I am a Ruby on Rails guy and I **censored** hate deploying Ruby stuff.  I've been deploying Rails stuff now since 2007 and, quite honestly, it sucked in 2007 and it sucks today.  The only way I've ever found Rails deployment to not suck is by using Heroku which is absolutely magical and wonderful -- but expensive.  Now I've recently become hooked on Heroku and the ease of its Git push based deployment structure.  The problem is that I need more power / flexibility with respect to what I'm deploying and this has let me to the [CapRover](https://caprover.com/) open source project.  
 
 This project aims to give you a version of Heroku but running on your own hardware.  Given that I'm an AWS guy, I wanted to use CapRover on AWS EC2 instances.  

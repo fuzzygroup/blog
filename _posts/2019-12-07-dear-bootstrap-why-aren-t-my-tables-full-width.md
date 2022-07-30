@@ -4,6 +4,8 @@ title: Dear Bootstrap Why Aren't My Tables Full Width
 category: bootstrap
 tags: ["bootstrap", "css"]
 ---
+{% pizzaforukraine  %}
+
 Perhaps I shouldn't have insomnia and then code into the wee hours because this is an exchange that I can see happening if only I could email Bootstrap in the style of Ann Landers ...
 
 

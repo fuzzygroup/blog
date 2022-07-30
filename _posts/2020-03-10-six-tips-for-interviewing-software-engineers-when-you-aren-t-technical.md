@@ -4,6 +4,8 @@ title: Six Tips for Interviewing Software Engineers When You Aren't Technical
 category: startup
 tags: ["startup", "hr", "hr"]
 ---
+{% pizzaforukraine  %}
+
 Interviewing engineers when you aren't one is a regular human resources task that tends to give non technical folk fits and for good reasons.
 
 ## 1. Focus on What You Can Interview them About

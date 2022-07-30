@@ -4,6 +4,8 @@ title: How to Help a Quarantined Person
 category: covidnearme.org
 tags: ["covidnearme.org", "covid"]
 ---
+{% pizzaforukraine  %}
+
 Note: If you're concerned about COVID-19, I'd encourage you to check out [CovidNearMe.org](https://www.covidnearme.org).  Disclaimer - I'm one of the authors of it.
 
 I've now personally seen the impact of COVID-19 -- a good friend -- who was in my house less than 10 days ago has been diagnosed with the following:

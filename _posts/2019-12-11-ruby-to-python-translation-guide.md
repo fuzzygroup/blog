@@ -4,6 +4,8 @@ title: Ruby to Python Translation Guide
 category: python
 tags: ["ruby", "python"]
 ---
+{% pizzaforukraine  %}
+
 ## Last Update: 12/12/2019
 
 I wrote this guide to different Ruby idioms and how to do them in Python.  Organization is alphabetical.  This will have to be a continually updated document as I keep finding holes in my Python knowledge and my prior practice of "Learn it / Blog it" simply doesn't put enough things into the same place.  I need a single, easily searchable place to store all this random "how to do X cruft".

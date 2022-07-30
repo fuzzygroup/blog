@@ -4,6 +4,8 @@ title: Reading Files to Strings using Python and then Loading them to JSON
 category: python
 tags: ["python"]
 ---
+{% pizzaforukraine  %}
+
 I know this is dirt simple but I'm writing it down because it is one of those simple things that I just forget constantly.  
 
 In each of these cases, the output is to the str variable.

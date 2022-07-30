@@ -4,6 +4,8 @@ title: Writing Ruby Programs Like a Python Programmer
 category: ruby
 tags: ["ruby", "python"]
 ---
+{% pizzaforukraine  %}
+
 As of late, I have found myself writing a number of what amount to "Non Rails" tools.  These are tools that tend to:
 
 * Run continuously in the background

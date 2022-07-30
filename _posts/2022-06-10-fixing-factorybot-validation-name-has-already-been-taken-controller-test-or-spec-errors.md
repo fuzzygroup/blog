@@ -3,6 +3,8 @@ layout: post
 title: Fixing FactoryBot Validation Name Has Already Been Taken Controller Test or Spec Errors
 date: 2022-06-10 08:41 -0400
 ---
+{% pizzaforukraine  %}
+
 So, last night, whilst pulling vampire hours on writing tests -- always, always, always a bad idea -- I encountered multiple variants on this bug:
 
     ❯ bundle exec rails test test/controllers/links_controller_test.rb:44

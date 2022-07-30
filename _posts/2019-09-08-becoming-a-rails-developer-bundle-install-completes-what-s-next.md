@@ -4,6 +4,8 @@ title: Becoming a Rails Developer - Bundle Install Completes; What's Next
 category: rails
 tags: ["rails"]
 ---
+{% pizzaforukraine  %}
+
 I currently bootstrapping a friend into a Rails development cycle and here's their status:
 
 1. RbEnv is installed.

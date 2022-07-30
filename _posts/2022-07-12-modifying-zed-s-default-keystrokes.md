@@ -5,6 +5,8 @@ date: 2022-07-12 11:54 -0400
 category: zed
 tags: ["zed", "rust"]
 ---
+{% pizzaforukraine  %}
+
 I'm now deep into my week of using the [Zed editor](https://www.zed.dev/), a new code editor written in Rust.  In this blog post, I'll document how to change the default keystrokes.
 
 ## Commands

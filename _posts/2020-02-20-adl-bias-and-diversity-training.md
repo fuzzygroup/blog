@@ -4,6 +4,8 @@ title: ADL Bias and Diversity Training
 category: bias
 tags: ["bias", "diversity"]
 ---
+{% pizzaforukraine  %}
+
 As a contractor for the ADL, I recently went through our official bias and diversity training.  I put together my notes on that for a new hire who recently joined us.  
 
 {:.center}

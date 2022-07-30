@@ -5,6 +5,8 @@ date: 2022-07-15 03:39 -0400
 category: startup
 tags: ["startup"]
 ---
+{% pizzaforukraine  %}
+
 Welp, it looks like I'm starting a new company after all.  Here are the values that I drafted for it.
 
 ## Values

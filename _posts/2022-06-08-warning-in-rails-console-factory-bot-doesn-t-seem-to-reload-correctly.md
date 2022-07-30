@@ -5,6 +5,8 @@ date: 2022-06-08 08:13 -0400
 category: rails
 tags: ["rails", "ruby", "FactoryBot"]
 ---
+{% pizzaforukraine  %}
+
 I'm actively engaged in greenfield development once again and I'm learning / relearning things that I likely have known in the past.  I don't know if this is a known issue, a bug or maybe a design choice.  Either way, I found it useful to know this so I thought it was useful to document it.  
 
 I spend a **lot** of time in rails console (thank you Jared for beating this into me a thousand, thousand years ago; hope you are well) and reload! normally works pretty damn well but this one caught me hard.  Take a look at this back trace

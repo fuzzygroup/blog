@@ -5,6 +5,8 @@ date: 2022-05-31 07:31 -0400
 category: rails
 tags: ["rails", "meilisearch"]
 ---
+{% pizzaforukraine  %}
+
 I recently migrated [JobHound](https://www.jobhound.io) from its original hosting (DigitalOcean with a custom Docker based deployer) to a new environment (also DigitalOcean but now with deploys managed via [HatchBox](https://www.hatchbox.io)).  In the traditional spirit of all IT migrations where you both get something good and lose something good, I got:
 
 * Better Performance

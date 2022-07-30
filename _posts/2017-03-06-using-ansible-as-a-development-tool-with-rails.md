@@ -48,15 +48,15 @@ This status would need to include:
 
 Sure in an idealized world this would be a pretty, graphical dashboard available on the web to all people in the company.  Practically speaking, the following is sufficient:
 
-TASK [run_rake_task_and_show_output : debug] *****************************
-ok: [monthly-categorization] => {
-    "msg": [
-        "in LoadError rescue statement",
-        "Queue Size = 0",
-        "Total categorization records = 271408",
-        "Total distinct entities in categorization = 6783"
-    ]
-}
+    TASK [run_rake_task_and_show_output : debug] *****************************
+    ok: [monthly-categorization] => {
+        "msg": [
+            "in LoadError rescue statement",
+            "Queue Size = 0",
+            "Total categorization records = 271408",
+            "Total distinct entities in categorization = 6783"
+        ]
+    }
 
 The ability to run this at any point in the process is hugely useful and here's an example of how simple that code can be.  There are three key pieces:
 

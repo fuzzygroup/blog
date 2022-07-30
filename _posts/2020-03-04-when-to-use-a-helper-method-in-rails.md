@@ -4,6 +4,8 @@ title: When to Use a Helper Method in Rails
 category: rails
 tags: ['rails', 'ruby', 'netlabeler']
 ---
+{% pizzaforukraine  %}
+
 One of the more interesting facilities in Rails *helpers* which reside in app/helpers/*.rb and are used, well, as helpers.  Helpers are basically display level execution of Ruby code.  I recently wrote what I thought was a great example of a helper so I thought I'd document it.  What I had was a object, stored in the database which had a bunch of data that I needed to display:
 
     the object, called a label

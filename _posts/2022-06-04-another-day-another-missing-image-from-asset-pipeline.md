@@ -5,6 +5,8 @@ date: 2022-06-04 05:21 -0400
 category: rails
 tags: ["rails", "asset_pipeline"]
 ---
+{% pizzaforukraine  %}
+
 The asset pipeline is the component of Rails that I, well, let me quote myself from a recent email:
 
 > I've been tracking down that crazy image related issue for an age now and I think I just got it.  Every single time it is always the damn asset pipeline (this is the one component in Rails that I have a literal deep and abiding hatred for; it is finicky code and instead of sticking with a solution they keep replacing it which I have the deep suspicion means that the heisenbugs keep migrating).

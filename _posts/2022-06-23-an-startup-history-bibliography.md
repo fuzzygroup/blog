@@ -5,6 +5,8 @@ date: 2022-06-23 04:43 -0400
 category: startup
 tags: ["startup", "books"]
 ---
+{% pizzaforukraine  %}
+
 I've been reading High Tech case studies now since the 80s -- just after I entered the business.  [Bryan Cantrill](https://twitter.com/bcantrill) from [Oxide Computer's podcast](https://feeds.transistor.fm/oxide-and-friends) inspired me to get all my books out and order them on a rough historical basis.  I thought listing them here might be interesting to someone.  All of these I've read and there are a ton of lessons for entrepreneurs here.  I put rough notes next to some of them **in bold** after the author name in quotes.
 
 ## Change Log

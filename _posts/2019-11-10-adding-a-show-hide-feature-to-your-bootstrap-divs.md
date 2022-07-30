@@ -4,6 +4,8 @@ title: Adding a Show / Hide Feature to Your Bootstrap 4 Divs
 category: bootstrap
 tags: ["bootstrap", "html", "css"]
 ---
+{% pizzaforukraine  %}
+
 I know this is simple but I am JavaScript / CSS challenged so I'm writing it down because I've had continuous problems with it in the past and I know that this solution works for Bootstrap 4. 
 
 Let's say that you have a div that you want hidden and only displayed by a button when you click it.  Here's the solution:

@@ -5,6 +5,8 @@ date: 2022-04-21 09:33 -0400
 category: postgres
 tags: ["postgres", "osx"]
 ---
+{% pizzaforukraine  %}
+
 Perhaps it is me but I've found that homebrew seems to give more errors and take longer than it used it.  I just got hit with this error:
 
 		/usr/local/opt/postgresql/bin/postgres -v

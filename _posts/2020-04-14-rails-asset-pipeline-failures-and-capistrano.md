@@ -4,6 +4,8 @@ title: Rails Asset Pipeline Failures and Capistrano
 category: rails
 tags: ["rails", "deploy", "capistrano"]
 ---
+{% pizzaforukraine  %}
+
 One of the single worst parts of being a one man show on an engineering effort is that when you hit a serious snag, well, you're *fscked*.  I'm at the death march phase of a project, that wonderful stage, where you're so far into it that you can see the end but it seemingly never arrives -- like the speed of light, it feels like you can never quite get there.  
 
 Pro Tip: At this stage being asked by your manager, on a continuous basis, "anything that you can show me" is not helpful.  It is actually an antipattern which simply slows the project by making the engineer feel even worse (yes I'm late and I can argue for scope creep, etc but I'll own it and I'm still late).

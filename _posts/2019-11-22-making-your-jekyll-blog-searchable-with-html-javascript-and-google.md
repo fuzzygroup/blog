@@ -4,6 +4,8 @@ title: Making Your Jekyll Blog Searchable with HTML, JavaScript and Google
 category: search
 tags: ["search", "jekyll"]
 ---
+{% pizzaforukraine  %}
+
 So yesterday someone said this to me:
 
 > You know the problem with your blog -- you write so much and its not searchable.  

@@ -5,6 +5,8 @@ date: 2022-06-02 00:22 -0400
 category: rails
 tags: ["rails"]
 ---
+{% pizzaforukraine  %}
+
 In tonight's category of "Crazy Rails Errors that Even I haven't hit", I was deploying a new app via HatchBox and I hit this one:
 
     No such middleware to insert before: ActionDispatch::Static

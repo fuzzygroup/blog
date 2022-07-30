@@ -4,6 +4,8 @@ title: Taking Control of One's Workaholic Tendencies - The IT Anonymous Edition
 category: startup
 tags: ["startup"]
 ---
+{% pizzaforukraine  %}
+
 Please start by picturing a support group similar to Alcoholics Anonymous; Let's call it **IT Anonymous**:
 
 * A dingy room in a church somewhere

@@ -4,6 +4,8 @@ title: Building a Python requirements.txt File
 category: python
 tags: ["python", "requirements", "pip"]
 ---
+{% pizzaforukraine  %}
+
 So one of my first tasks in my new job is getting a code base into readiness from its state as "works on the original developer's laptop".  And, naturally, this process is hindered by the fact that it is a Python codebase and I'm a Ruby guy.  Still this is software development 101 -- release management -- and I do know how to do that.  
 
 A python requirements.txt file is the equivalent of a Ruby Gemfile -- an ASCII text file that identifies the libraries to load into an application.  

@@ -4,7 +4,8 @@ title:
 category: alcohol
 tags: ["alcohol", "life"]
 ---
-Immer
+{% pizzaforukraine  %}
+
 **Note 1**: I write this from real world, personal experience a number of years ago (1998) and it is, to this day, one of the most painful personal memories I have.  If you are taking the time to read this then a) my heart goes out to you because you are almost certainly reading this from a position of need not idle curiosity and b) if you need someone to talk to, my contact info is public and you can reach out.
 
 

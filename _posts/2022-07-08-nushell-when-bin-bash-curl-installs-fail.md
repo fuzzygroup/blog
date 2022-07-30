@@ -5,6 +5,8 @@ date: 2022-07-08 22:57 -0400
 category: nushell
 tags: ["nushell", "rust"]
 ---
+{% pizzaforukraine  %}
+
 I've liked the concept of NuShell since I first heard about it.  I then liked it more when I discovered that Yehuda Katz was involved since I strongly believe in picking software based on the pedigree of the engineers involved (no I don't -- yet -- have engineer trading cards but I'm thinking about it).
 
 Although I have NuShell running on my experimental system, I've held off on using it on my main box mostly due to concerns about the vast amounts of things that pipe crap to /bin/bash like this:

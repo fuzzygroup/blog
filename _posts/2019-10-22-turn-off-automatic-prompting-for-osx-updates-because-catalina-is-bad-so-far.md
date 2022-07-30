@@ -4,6 +4,8 @@ title: Turn Off Automatic Prompting for OSX Updates Because Catalina is Bad So F
 category: osx
 tags: ["osx"]
 ---
+{% pizzaforukraine  %}
+
 Between [Riccardo Mori's](http://morrick.me/archives/8599) piece on Catalina and [Michael Tsai's excellent writings](https://mjtsai.com/blog/2019/10/15/catalina-system-issues/), I flat out don't want to update to Catalina.  But I'm also tired of Apple prompting (harassing) me to update.   Here's how to stop it
 
 1. Apple menu.

@@ -5,6 +5,8 @@ date: 2022-06-30 01:52 -0400
 category: rust
 tags: ["rust"]
 ---
+{% pizzaforukraine  %}
+
 I am not, alas, a compiled languages guy.  I do find Rust absolutely fascinating because by inverting the common assumptions, a whole class of software errors are being avoided.  Given that we live in a constant shite show of software quality, any engineering practices that generate better code are **highly desirable**.  Discovering testing and pair programming for me was I suspect as life changing as Rust feels to a C programmer.
 
 Even though I don't really do compiled stuff, I do admit to being more than a bit of a language wonk -- if it is weird, interpreted and has a repl or is a stream process, well, that I'm good at.  My tools have included Ruby, Elixir, Python, JavaScript, PHP, Perl, Prolog (both Borland and Quintus on Sun 2), , Perl, VB, Awk, HyperAwk, Elm, OmniMark and others. So learning a bit about Rust feels pretty normal to me.

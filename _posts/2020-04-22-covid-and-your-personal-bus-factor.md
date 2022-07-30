@@ -4,6 +4,8 @@ title: Covid and Your Personal Bus Factor
 category: covid
 tags: ["covid", "startup"]
 ---
+{% pizzaforukraine  %}
+
 In the world of software engineering, the term **Bus Factor** refers to the number of people on your team that have to get hit by a bus for your project to collapse:
 
 > The bus factor is a measurement of the risk resulting from information and capabilities not being shared among team members, derived from the phrase "in case they get hit by a bus." It is also known as the bread truck scenario, lottery factor, truck factor, bus/truck number, or lorry factor.  [Wikipedia](https://en.wikipedia.org/wiki/Bus_factor)

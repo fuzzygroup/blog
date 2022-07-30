@@ -4,6 +4,8 @@ title: The Python Equivalent of byebug is pdb.set_trace()
 category: python
 tags: ["python", "debugging"]
 ---
+{% pizzaforukraine  %}
+
 In ruby the debugger is invoked by adding the statement
 
 ```ruby

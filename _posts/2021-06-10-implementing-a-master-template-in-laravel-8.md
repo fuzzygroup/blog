@@ -5,6 +5,8 @@ date: 2021-06-10 10:19 -0400
 category: laravel
 tags: ["laravel", "php"]
 ---
+{% pizzaforukraine  %}
+
 This blog post continues from my Hello World tutorial and adds a master layout that you can use to add a consistent HTML structure to all pages.  This is very similar, in a Rails context, to application.html.erb. 
 
 ## Step 1: Create a layouts Directory

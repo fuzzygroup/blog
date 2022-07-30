@@ -4,6 +4,8 @@ title: Casting in Python and Redis
 category: python
 tags: ["python", "redis"]
 ---
+{% pizzaforukraine  %}
+
 I recently had this situation in [Python and Redis](https://redislabs.com/lp/python-redis/):
 
     redis.lpush(kafka_topic_name, current_filename)

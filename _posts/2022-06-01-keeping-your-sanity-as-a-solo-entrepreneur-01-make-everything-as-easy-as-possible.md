@@ -1,11 +1,12 @@
 ---
 layout: post
-title: Keeping Your Sanity as a Solo Entrepreneur 01 - Make Everything as Easy as
-  Possible
+title: Keeping Your Sanity as a Solo Entrepreneur 01 - Make Everything as Easy as Possible
 date: 2022-06-01 19:13 -0400
 category: startup
 tags: ["startup"]
 ---
+{% pizzaforukraine  %}
+
 I've now been a solo entrepreneur longer than I've been anything.  Being a solo entrepreneur is a very different experience and it isn't one that is taught -- you generally learn only by doing.  I've started this series of essays to talk about practical things I've learned over the years.  The reason that I referred to it as *keeping your sanity* is that is what, all too often, solo entrepreneurship feels like.
 
 The first lesson I learned is **make everything as easy as possible**.  I know this is obvious but there are all kinds of things that we do by *rote* without ever thinking about how you can make it easier.

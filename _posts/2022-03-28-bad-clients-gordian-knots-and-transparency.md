@@ -5,6 +5,8 @@ date: 2022-03-28 13:01 -0400
 category: consulting
 tags: ["consulting"]
 ---
+{% pizzaforukraine  %}
+
 I have now been doing consulting professionally since 1988 (first client was the EPA) and despite that, bad clients, are always problematic. That's longer than my adult child has been alive, longer than I've ever been married, etc.  I'd like to think I'm excellent at consulting but no one, no matter how experienced, can fail to make mistakes.  This is a tale of when a consulting project goes wrong and how to extricate one's self.
 
 Today I finished up a project with a bad client and I wanted to write up my solution as a help for other developers in similar situations. I'm not writing this up as a humble brag or an "I'm so smart" but rather as a way to point out that:

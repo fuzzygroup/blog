@@ -5,6 +5,8 @@ date: 2022-04-01 11:57 -0400
 category: elixir
 tags: ["elixir", "phoenix"]
 ---
+{% pizzaforukraine  %}
+
 In my last blog post, I dug into Elm and while I like a number of things conceptually about Elm, the process of implementing nothing more than a maybe 8 element HTML form left me hugely frustrated and annoyed.  I also didn't like the way that Elm bundles code and display into one thing.  I may be a traditionalist perhaps but the separation of views and code really does work well in practice.  I get that Elm is a different thing but it shouldn't be this hard to just put some text and an html form on the screen.
 
 And, so, I'm putting Elm to the side for a bit and going to experiment with using Elixir and Phoenix for my previous Laravel application.  If nothing else this should be much more straightforward as it is moving from one MVC style framework to another albeit from an OO lang (php) to a functional lang (elixir).

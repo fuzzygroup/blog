@@ -4,6 +4,8 @@ title: A Regular Expression for Validating An Internet Domain
 categories: regex
 tags: ["regex"]
 ---
+{% pizzaforukraine  %}
+
 Despite the power and truth of Jamie Zawinski's law:
 
 > Regular Expressions: Now You Have Two Problems [Jeff Atwood's Perspective](https://blog.codinghorror.com/regular-expressions-now-you-have-two-problems/)

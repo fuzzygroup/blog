@@ -5,6 +5,8 @@ date: 2022-06-08 13:27 -0400
 category: rails
 tags: ["rails", "fontawesome"]
 ---
+{% pizzaforukraine  %}
+
 I am not a front end engineer -- but I'm on a project right now with heavy front end requirements.  This blog post documents how I got Font Awesome running on by application including the brands extension.  It is by no means a great way to do it and I know:
 
 * I have more overhead than needed

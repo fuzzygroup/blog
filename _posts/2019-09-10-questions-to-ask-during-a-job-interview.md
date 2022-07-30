@@ -4,6 +4,8 @@ title: Questions to Ask During a Job Interview
 category: jobhound
 tags: ["hiring", "jobhound", "interview"]
 ---
+{% pizzaforukraine  %}
+
 I don't normally just blog links to stuff but this is actually pretty good.  It is a well written set of questions to ask during a job interview.  And there's a Hacker News discussion which also surfaces more than a few things:
 
 * [Job Interview Questions](https://github.com/viraptor/reverse-interview)

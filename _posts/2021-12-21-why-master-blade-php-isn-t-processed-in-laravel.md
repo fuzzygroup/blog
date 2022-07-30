@@ -5,6 +5,8 @@ date: 2021-12-21 20:17 -0500
 category: laravel
 tags: ["laravel", "php"]
 ---
+{% pizzaforukraine  %}
+
 I had the situation earlier where commands like:
 
     @extends('layouts.master')

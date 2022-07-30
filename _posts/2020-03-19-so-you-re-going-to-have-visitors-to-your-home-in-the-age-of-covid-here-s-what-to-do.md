@@ -4,6 +4,8 @@ title: So You're Going to Have Visitors to Your Home in the Age of Covid - Here'
 category: covidnearme.org
 tags: ["covidnearme.org", "covid"]
 ---
+{% pizzaforukraine  %}
+
 I had a really, really interesting talk with a friend yesterday about the current times and they commented to me:
 
 > My mom has come to live with me and she is immuno-compromised (COPD) so we're taking this really, really seriously.

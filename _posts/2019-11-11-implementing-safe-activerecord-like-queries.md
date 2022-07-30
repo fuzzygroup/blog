@@ -4,6 +4,8 @@ title: Implementing Safe ActiveRecord Like Queries for Rails
 category: rails
 tags: ["rails", "activerecord"]
 ---
+{% pizzaforukraine  %}
+
 In any SQL based database, a like query is generally an SQL injection attack waiting to happen because the underlying sql statement looks like this:
 
 ```sql

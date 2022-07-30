@@ -4,6 +4,8 @@ title: A Universal Resume Tool
 category: jobhound
 tags: ["jobhound", "hiring", "job", "resume"]
 ---
+{% pizzaforukraine  %}
+
 Ah insomnia.  I clearly should not be out on the Internet late at night -- I should be sleeping but the result is a swath of Internet goodness that I've found and am now writing about.  This find is "Universal Resume" which is an NPM project to produce a good looking resume website for yourself.  [Here's an example](https://universal-resume.netlify.com/).
 
 Here are the links:

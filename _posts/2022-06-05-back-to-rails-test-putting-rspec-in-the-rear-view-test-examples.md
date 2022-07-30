@@ -5,6 +5,8 @@ date: 2022-06-05 08:54 -0400
 category: rails
 tags: ["rails", "test", "rspec"]
 ---
+{% pizzaforukraine  %}
+
 I find myself building a new application, Cartazzi, and since the "template app" I'm building from uses Rails Test not rspec, I'm back to the past using the native rails testing framework -- something I probably last touched by in 2009.  
 
 This blog post summarizes different Rails testing examples and is a work in progress as I come up with new examples.

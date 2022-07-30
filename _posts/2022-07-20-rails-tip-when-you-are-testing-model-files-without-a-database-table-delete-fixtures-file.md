@@ -5,6 +5,8 @@ date: 2022-07-20 10:02 -0400
 category: rails
 tags: ["rails", "software_testing", "flow_analytics"]
 ---
+{% pizzaforukraine  %}
+
 I generate a lot of models without ActiveRecord backing.  The reason for this is I try and follow a fairly functional style of Ruby coding where I use class methods.  The reason I use models for this:
 
 * I don't know what to call them other than a model

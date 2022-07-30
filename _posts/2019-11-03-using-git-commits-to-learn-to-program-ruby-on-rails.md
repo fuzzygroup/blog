@@ -4,6 +4,8 @@ title: Using Git Commits to Learn to Program Ruby on Rails
 category: rails
 tags: ["rails", "git", "learning"]
 ---
+{% pizzaforukraine  %}
+
 I've been actively working on a side project for the past several months and one of the people who has been helping out a bit around the edges wants to learn how to program Ruby on Rails.  Since this, like everything I always do, is a distributed, remote effort, an in person teaching effort just doesn't work.  
 
 When they pushed back on the feature set I was making and said that it wouldn't work for them, I said "Well that's fine, tell me what **you** want".  And they responded with a detailed set of Agile User Stories.  I took a look at these and I realized that if I mapped them into Github issues (aka tickets) and then Github Pull Requests that this might be exactly the right tool to get this person past the learning hump.  

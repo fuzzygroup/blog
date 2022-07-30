@@ -5,6 +5,8 @@ date: 2022-06-15 02:35 -0400
 category: ruby
 tags: ["ruby", "rvm", "rbenv"]
 ---
+{% pizzaforukraine  %}
+
 I had a bloody awful Sunday three days ago.  I had started work on a new application that had Ruby 3.1 set in its Gemfile and I blithely installed Ruby 3.1 using RVM.  And then my life began to suck slimy green toads with errors like this:
 
     /System/Library/Frameworks/Ruby.framework/Versions/2.6/usr/lib/ruby/2.6.0/yaml.rb:3: warning: It seems your ruby installation is missing psych (for YAML output).

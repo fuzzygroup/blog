@@ -4,6 +4,8 @@ title: Great Con Signage
 category: cons
 tags: ["cons", "gender", "consent"]
 ---
+{% pizzaforukraine  %}
+
 I spent a lot of time in the world of Science Fiction and Fantasy conventions and it has fascinated me how far that world is beyond the normal (aka muggle or mundane) world when it comes to concepts like consent.  I was recently at the [Confusion](http://confusionsf.org/) convention in Detroit and I captured the signage that talked about these things because they did such a good job with it (and with integrating it into the con's How To Train Your Confusion theme).
 
 ## Consent Related Signage

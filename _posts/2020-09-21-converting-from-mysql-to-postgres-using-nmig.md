@@ -5,6 +5,8 @@ date: 2020-09-21 20:11 -0400
 category: mysql
 tags: ["mysql", "postgres"]
 ---
+{% pizzaforukraine  %}
+
 {:.center}
 ![IMG_9563.jpeg](/blog/assets/IMG_9563.jpeg)
 

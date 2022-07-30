@@ -4,6 +4,8 @@ title: The Ruby Safe Navigation Operator
 category: ruby
 tags: ["ruby"]
 ---
+{% pizzaforukraine  %}
+
 So I recently moved to running my Ruby code thru [RuboCop](https://github.com/rubocop-hq/rubocop) prior to each submission courtesy of the magic that is [Lefthook](https://evilmartians.com/chronicles/lefthook-knock-your-teams-code-back-into-shape).  I don't always fix everything that RuboCop detects but I tend to read thru the reports.  I'm using the "Boy Scout" approach to campsites, i.e. leave your campsite (code base) better than you found it, to at least make some of the changes each time.  
 
 Note: To avoid the massive amount of errors that Rubocop detects via lefthook, I actually have the rubocop options in lefthook.yml commented out:

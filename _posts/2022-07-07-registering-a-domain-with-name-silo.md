@@ -5,6 +5,8 @@ date: 2022-07-07 09:12 -0400
 category: dns
 tags: ["dns"]
 ---
+{% pizzaforukraine  %}
+
 So I needed to register a .IO domain today.  Amazon had .io domains at **$71** per and Google had them at **$60**.  A quick check with my [guru of cheapness](https://nickjanetakis.com/blog/why-i-have-started-to-move-my-domains-from-internetbs-to-namesilo), Nick Janetakis, said:
 
 > [NameSilo.com](https://www.namesilo.com/)

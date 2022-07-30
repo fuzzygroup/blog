@@ -4,6 +4,8 @@ title: Making DevSecOps Easier - Ticket Squirrely Little Installation Steps NOW
 category: devops
 tags: ["devops", "devsecops", "python"]
 ---
+{% pizzaforukraine  %}
+
 Note: I'm writing this post for a friend who is doing machine learning for the U.S. DOD.  The DOD calls DevOps "DevSecOps" to emphasize the importance of security at all times.  Hence my use of the term DevSecOps when I don't normally.
 
 I recently wrote about using [Spacy in python](https://fuzzyblog.io/blog/python/2019/10/04/get-it-right-spacy-get-it-right.html) and the need for this squirrely little step to use Spacy's language detection:

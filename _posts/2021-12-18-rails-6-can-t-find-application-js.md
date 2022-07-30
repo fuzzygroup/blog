@@ -5,6 +5,8 @@ date: 2021-12-18 09:51 -0500
 category: rails
 tags: ["rails"]
 ---
+{% pizzaforukraine  %}
+
 So I started fiddling about with a new Rails project and after finding a likely starting point, I immediately ended up with this:
 
     Webpacker can't find application.js in

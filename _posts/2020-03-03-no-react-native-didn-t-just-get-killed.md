@@ -4,6 +4,8 @@ title: No React Native Didn't Just Get Killed
 category: react
 tags: ["react"]
 ---
+{% pizzaforukraine  %}
+
 Once upon a time I blogged about the controversial things but now, well, I mostly don't care.  Still every so often you come along someone getting things so, so, so wrong that you feel compelled to respond.  I'm speaking to this tweet by DHH, someone I deeply, deeply respect:
 
 > Did Facebook just kill off React Native? Either way, it's funny that I actually agree. [More](https://twitter.com/dhh/status/1234644555258978304)

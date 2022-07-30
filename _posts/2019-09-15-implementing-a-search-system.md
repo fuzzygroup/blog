@@ -4,6 +4,8 @@ title: Implementing a Search System
 category: search
 tags: ["search"]
 ---
+{% pizzaforukraine  %}
+
 I started selling software with a search engine back in 1988 in our first hypertext product, Black Magic.  Our first release had close to zero search features but NASA contracted with us to add search features to our second release since they were using our software as the online documentation for the NASP project.  And ever since then I have been pretty intimately involved with search: 
 
 * We grew our initial search engine thru a bunch of release culminating in a CD-ROM grade search and retrieval system.

@@ -4,6 +4,8 @@ title: Updating to the Latest Ansible on Ubuntu
 category: ansible
 tags: ["ansible", "ubuntu"]
 ---
+{% pizzaforukraine  %}
+
 One of the tricky bits about Ansible is that new features in the "language" always require the latest version of Ansible itself.  And, while logical, this can easily bite you.  Here's an example:
 
 ```yaml

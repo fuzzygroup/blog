@@ -5,6 +5,8 @@ date: 2022-07-20 05:36 -0400
 category: nushell
 tags: ["nushell"]
 ---
+{% pizzaforukraine  %}
+
 I really, really like NuShell.  The realization that maybe I had to leave was, I'll admit, [mildly crushing](https://fuzzyblog.io/blog/nushell/2022/07/17/getting-nushell-usable-under-osx-for-myself.html).  And then I just had the realization that maybe I don't have to leave NuShell and slink back to the dirty, byte infested corners of Bash and Zsh.  Here's what just happened:
 
     /Users/sjohnson/Sync/coding/flow_analytics/open_source〉rails new pool_api --api                                                            

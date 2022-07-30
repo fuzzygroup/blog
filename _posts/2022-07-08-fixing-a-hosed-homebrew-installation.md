@@ -5,6 +5,8 @@ date: 2022-07-08 22:40 -0400
 category: osx
 tags: ["osx", "homebrew"]
 ---
+{% pizzaforukraine  %}
+
 **NOTE**: I'm not telling you to do this.  This blog post advocates bulk permission changing and that's risky but HomeBrew was entirely broken and brew doctor did not work.  And this solution did.  Use at your own risk.
 
 I have two primary machines -- a Mac Desktop and a dual monitor Mac Laptop.  I use the laptop more mostly from habit but I'd really like to use the desktop for something that makes me feel better about it being next to me and yet rarely used.  One of the reasons for two machines is one is my daily driver and one is experimental.  For example, my desktop I installed NuShell on recently as I didn't (yet) trust it enough.  

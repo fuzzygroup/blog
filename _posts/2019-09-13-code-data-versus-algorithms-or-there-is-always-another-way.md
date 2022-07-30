@@ -4,6 +4,8 @@ title: Code - Data Versus Algorithms or There Is Always Another Way
 category: software_engineering
 tags: ["software_engineering", "ruby"]
 ---
+{% pizzaforukraine  %}
+
 I'm currently writing an active side project.  I describe active as something that I think about every single day and I've been at for several months.  It is still in stealth mode but at more than 4k lines of code, it is pretty damn real.  This is also the first thing I've ever built where gamification plays an important role.  One of the things that I need for the gamification is to know if a date is a holiday.  The date centric holidays are pretty easy -- Date.new(this_year, 10, 31) for halloween, just for example.  But the stickler is thanksgiving -- that 4th Thursday of the damn month.
 
 A simple Ruby solution is to construct a date range - Nov 1 and Nov 30 and then walk up, counting the Thursdays when you go.  And I'm certain there are better / more elegant ways but I'm not a whizbang date math kinda engineer.  But this is a method which gets called for every single metric that the system captures (for just a few months of data, there are over 700 metrics for my usage alone).  So I don't want that much iteration.  I looked at the [Holidays gem](https://github.com/holidays/holidays) and considered it but I only, for now, need simple holidays.  

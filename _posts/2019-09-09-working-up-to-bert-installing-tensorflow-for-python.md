@@ -4,6 +4,8 @@ title: Working Up to Bert - Installing TensorFlow for Python
 category: python
 tags: ["python", "tensorflow", "pip", "virtualenv"]
 ---
+{% pizzaforukraine  %}
+
 I'm gearing myself up mentally for a bunch of upcoming machine learning worth using Bert / Roberta and that means getting my head around just working with Python as a tool.  So today's exercise is installing TensorFlow for Python since Bert / Roberta have TensorFlow as a dependency.
 
 I worked from the [official TensorFlow instructions using pip](https://www.tensorflow.org/install/pip).

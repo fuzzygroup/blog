@@ -4,6 +4,8 @@ title: Two New Tools for Git
 category: git
 tags: ["git"]
 ---
+{% pizzaforukraine  %}
+
 Despite my friend Sean Kennedy's best efforts, I'm still a damn command line git user but he has tried.  Old dogs / new tricks.  Two new tools for git (or new to me at least) are:
 
 * [Sublime Merge](https://www.sublimemerge.com/)

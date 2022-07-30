@@ -5,6 +5,8 @@ date: 2022-05-16 14:35 -0400
 category: podcasting
 tags: ["podcasting"]
 ---
+{% pizzaforukraine  %}
+
 The quality of your recorded audio for an at home podcaster is a black art.  Audio is a fundamentally analog process and Once upon a time, in the antediluvian ages of podcasting (2005 / 2006), I was a podcaster.  And then, a decade later, my friend Nick Janetakis, a producer of online courses also taught me a bunch of things about audio quality.  
 
 Here's one thing to know:

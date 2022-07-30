@@ -4,6 +4,8 @@ title: The Bullcrappery That is Offering Only Magic Link Authentication
 category: login
 tags: ["authentication", "login"]
 ---
+{% pizzaforukraine  %}
+
 So I just signed up a new service, [SimpleAnalytics](https://simpleanalytics.com/) because, well, if I never look again at Google Analytics then I'll be happy as hell.  I can't say enough bad things about Google Analytics -- and I've been using it since it was [Urchin](https://en.wikipedia.org/wiki/Urchin_(software)).
 
 Simple Analytics appears to be an impressive tool and I want to launching something, well, **TODAY** so when they offered a simple signup and easy to use workflow, I bit.  I even gave them a credit card.  And then I went to add my co-founder on this project to it and, well, *crap*.  They **only** offer Magic Link authentication.  Sigh.  **censored**

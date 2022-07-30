@@ -4,6 +4,8 @@ title: Having Hatchbox Redirect All http Sites it Manages to https
 category: hatchbox
 tags: ["hatchbox", "https"]
 ---
+{% pizzaforukraine  %}
+
 When you are using hatchbox and SSL in cluster mode you end up with:
 
 * a load balanced cluster

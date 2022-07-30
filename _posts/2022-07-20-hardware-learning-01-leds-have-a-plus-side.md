@@ -5,6 +5,8 @@ date: 2022-07-20 23:32 -0400
 category: flow_analytics
 tags: ["flow_analytics", "hardware_learning"]
 ---
+{% pizzaforukraine  %}
+
 As part of the yet to be announced Flow Analytics startup, I have to learn quite a bit more about building hardware.  All of my learnings will be blogged for anyone who wants to follow along.
 
 Tonight's learning is simple:

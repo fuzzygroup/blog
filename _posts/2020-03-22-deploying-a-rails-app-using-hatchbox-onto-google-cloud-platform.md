@@ -4,6 +4,8 @@ title: Deploying a Rails App Using HatchBox onto Google Cloud Platform
 category: rails
 tags: ["rails", "hatchbox"]
 ---
+{% pizzaforukraine  %}
+
 This blog post is a quickie where I document how I deployed CovidNearMe onto Google Cloud Platform or GCP using [HatchBox.io](https://www.hatchbox.io).  I need to start by giving a huge shout out to **Tony Carnevale** from Google who went above and beyond in providing outstanding support.
 
 Here are the stages.

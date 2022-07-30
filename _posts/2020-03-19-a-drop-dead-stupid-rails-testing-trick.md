@@ -4,6 +4,8 @@ title: A Drop Dead Stupid Rails Testing Trick
 category: rails
 tags: ["rails", "testing"]
 ---
+{% pizzaforukraine  %}
+
 This is an old school trick that you use when you don't have a robust test suite and / or a CI environment.  When you run Rails in development mode it is VERY, VERY forgiving of little details like syntax errors -- the type of thing that grind your web server to a hard stop.  
 
 The trick is to use **RAILS_ENV=production** in development mode and that causes syntax errors to get caught:

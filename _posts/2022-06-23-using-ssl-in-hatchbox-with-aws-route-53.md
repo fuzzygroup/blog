@@ -5,6 +5,8 @@ date: 2022-06-23 03:01 -0400
 category: rails
 tags: ["rails", "hatchbox", "aws", "route53", "cartazzi"]
 ---
+{% pizzaforukraine  %}
+
 HatchBox continues to be my favorite tool for Rails deployment hands down.  And this includes Dockarno -- my own Bash based Docker deployment tool.  When something you pay for replaces something you wrote yourself, that's a sign of its very, very strong goodness.
 
 I just used HatchBox to support SSL wildcard deployment for something I'm building and the process was a tad bit tricky so I thought I'd write it up.

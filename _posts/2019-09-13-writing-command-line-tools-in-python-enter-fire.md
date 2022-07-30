@@ -4,6 +4,8 @@ title: Writing Command Line Tools in Python - Enter Fire
 category: python
 tags: ["python"]
 ---
+{% pizzaforukraine  %}
+
 One of the better ways to understand code is to figure out how exactly something runs.  And this can be done from the outside to the inside. 
 
 So I'm starting with a command line that looks like this:

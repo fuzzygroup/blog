@@ -3,6 +3,8 @@ layout: post
 title: Specifying Ruby Version for HatchBox Deployment
 date: 2022-05-31 07:13 -0400
 ---
+{% pizzaforukraine  %}
+
 I recently had the situation where an application that I deployed to Hatchbox failed with a Ruby version conflict:
 
 		-----> Installing gems...

@@ -5,6 +5,8 @@ date: 2022-05-29 08:41 -0400
 category: consulting
 tags: ["consulting"]
 ---
+{% pizzaforukraine  %}
+
 I've gotten quite a bit of feedback on my Bad Client story and the underlying theme has been "why the heck did you hang in so long?".  There were a couple of reasons:
 
 1. I'm stubborn af.  That was definitely a part of it.

@@ -4,6 +4,8 @@ title: Assembly Line Workers and COVID-19 - What Does An Employer Do About Touch
 category: covidnearme.org
 tags: ["covidnearme.org", "covid"]
 ---
+{% pizzaforukraine  %}
+
 I have a number of friends who work on assembly lines and all of them are:
 
 * Terrified of getting sick

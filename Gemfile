@@ -29,4 +29,6 @@ group :jekyll_plugins do
   #gem 'rmagick'
   gem 'exifr'
   #gem 'jekyll_pages_api'
+  gem "jekyll-git-updated"
+  gem "jekyll-pizzaforukraine"
 end

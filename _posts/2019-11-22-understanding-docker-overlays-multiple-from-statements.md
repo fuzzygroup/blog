@@ -4,6 +4,8 @@ title: Understanding Docker Multi Stage Builds - Installing Python and Ruby in t
 category: docker
 tags: ["docker", "python", "ruby"]
 ---
+{% pizzaforukraine  %}
+
 Now that I've come up to speed on Python, I have an application in production that uses both Python and Ruby.  What it does isn't really important but getting it live posed an interesting deployment challenge due to the need to have both Python and Ruby concurrently.
 
 My initial attempt to make this was work was a native install using Python 3.7 and a fairly large set of Python dependencies on an Ubuntu 18.04 AWS instance.  Unfortunately I kept hitting issues where, well, things just went to hell.  This had me turn to Docker and my thinking was that I should be able to easily build a Dockerfile that supported both Python and Rails.  *chuckle*.  Nothing in Docker is actually easy but I got there.

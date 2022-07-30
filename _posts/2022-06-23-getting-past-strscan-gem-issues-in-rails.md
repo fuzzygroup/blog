@@ -5,6 +5,8 @@ date: 2022-06-23 03:51 -0400
 category: rails
 tags: ["rails", "hatchbox", "cartazzi"]
 ---
+{% pizzaforukraine  %}
+
 Yesterday I deployed a new thing via HatchBox and I was using the very, very latest -- Rails 7.0.3. My deploy was textbook perfect and then I viewed it in Chrome and got that awful, awful message:
 
 > Web application could not be started

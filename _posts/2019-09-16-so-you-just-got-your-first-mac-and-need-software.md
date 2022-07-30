@@ -4,6 +4,7 @@ title: So You Just Got Your First Mac and You Need Software
 category: osx
 tags: ["osx", "mac"]
 ---
+{% pizzaforukraine  %}
 
 ## Great Software
 

@@ -4,6 +4,8 @@ title: Ruby Madness - Right Hand If Statements and Syntax Error, Unexpected end-
 category: ruby
 tags: ["ruby", "debugging"]
 ---
+{% pizzaforukraine  %}
+
 {:.center}
 ![IMG_7793.jpeg](/blog/assets/IMG_7793.jpeg)
 

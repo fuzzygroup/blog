@@ -4,6 +4,8 @@ title: Testing Sites on Mobile - Responsinator Rocks
 category: mobile
 tags: ["webdev", "mobile"]
 ---
+{% pizzaforukraine  %}
+
 Let's say that you are the webmaster of a fan run science fiction convention, say [Star Base Indy](https://www.starbaseindy.org), and someone tells you "Feature xyz doesn't work on mobile" -- what do you do?  You might dig up a phone but you could also try out Responsinator!
 
 Responsinator is a tool which lets you put in your own url and then view it as if it was a mobile site.  [Try it here](https://www.responsinator.com/?url=https%3A%2F%2Fstarbaseindy.org).

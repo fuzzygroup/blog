@@ -4,6 +4,8 @@ title: Equity Allocation in Startups
 category: startup
 tags: ["startup", "equity"]
 ---
+{% pizzaforukraine  %}
+
 Once upon a time, I was speaking with a company founder and they mentioned that they had a VP of Engineering to whom they have given a 1/3 stake in the company.  I **immediately** commented that was too much and then said "I'll write this down in a blog post" -- and then I never did.  Last night, oddly, I woke up from a deep sleep with the desire to write this down.  And that brings us to this post. 
 
 Here's what I can remember from that conversation:

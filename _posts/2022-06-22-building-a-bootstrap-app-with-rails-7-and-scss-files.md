@@ -5,6 +5,8 @@ date: 2022-06-22 02:12 -0400
 category: rails
 tags: ["rails", "bootstrap", "sass", "scss"]
 ---
+{% pizzaforukraine  %}
+
 As is too often the case, I find that the initial aspect of getting a modern app (Bootstrap, Tailwind, React) initially setup to be the most **frustrating** aspect of Rails.  Given that I like to spin up new apps pretty regularly, well, I spend a lot of time being frustrated with an old man's grumbling of:
 
 > It didn't used to be this hard.

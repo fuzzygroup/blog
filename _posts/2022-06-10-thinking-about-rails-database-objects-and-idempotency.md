@@ -5,6 +5,8 @@ date: 2022-06-10 12:47 -0400
 category: rails
 tags: ["rails"]
 ---
+{% pizzaforukraine  %}
+
 I've been dealing with a new application with a lot of objects and one of my concerns is idempotency.  Idempotency is the idea that you can do the same thing over and over and only create a new object when 
 
 >> Idempotence (UK: /ˌɪdɛmˈpoʊtəns/,[1] US: /ˈaɪdəm-/)[2] is the property of certain operations in mathematics and computer science whereby they can be applied multiple times without changing the result beyond the initial application. [Idempotence](https://en.wikipedia.org/wiki/Idempotence)

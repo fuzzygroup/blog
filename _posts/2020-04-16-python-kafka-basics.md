@@ -4,6 +4,8 @@ title: Python Kafka Basics
 category: python
 tags: ["kafka"]
 ---
+{% pizzaforukraine  %}
+
 This is a starting point blog post where different things I learn about using Python Kafka will be documented.
 
 ## Getting the Value out of a Consumer Record

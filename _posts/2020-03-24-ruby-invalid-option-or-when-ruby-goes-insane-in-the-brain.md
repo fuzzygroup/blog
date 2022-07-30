@@ -4,6 +4,8 @@ title: ruby invalid option dash colon Or When Ruby Goes Insane in the Brain
 category: ruby
 tags: ["ruby", "jekyll"]
 ---
+{% pizzaforukraine  %}
+
 This is a short one but a weird one.  My main box rebooted today and when I went to create a blog post, I got this madness:
 
     ❯ jekyll post "A Social Media Marketing Strategy that Mom Would Approve"

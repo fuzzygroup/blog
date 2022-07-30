@@ -4,6 +4,8 @@ title: Restart ID sequences in Postgres on Truncation
 category: sql
 tags: ["sql", "postgres", "rails"]
 ---
+{% pizzaforukraine  %}
+
 **Note**: This is from a real world thing that I'm about to release.
 
 Like a lot of database apps in the world, mine generally tend to use auto incrementing ids for object identifiers.  An object identifier is a value in a system which uniquely identifies something.  Let's say you have a url like this:

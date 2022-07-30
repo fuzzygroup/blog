@@ -4,6 +4,8 @@ title: What is covidnearme.org ?
 category: covidnearme.org
 tags: ["covidnearme.org", "covid"]
 ---
+{% pizzaforukraine  %}
+
 I'd like to say that I'm happy to announce:
 
 > [https://www.covidnearme.org/](https://www.covidnearme.org/)

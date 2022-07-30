@@ -5,6 +5,8 @@ date: 2022-03-29 08:58 -0400
 category: elm
 tags: ["elm"]
 ---
+{% pizzaforukraine  %}
+
 Elm is an interesting new front end language technology based on a functional language that generates JavaScript transparently and has a focus on great documentation and ease of learning.  [A good starting point is the Guide](https://guide.elm-lang.org/install/elm.html).
 
 In this blog post, I'm going to walk through the initial steps.  Along the way I'll draw some comparisons to things like Rails or Laravel.  My goal in all this is re-implementing a recent project I built with a JavaScript front end and a Laravel back end.  I'll us the same Laravel back end to see how Elm stacks up.

@@ -4,6 +4,8 @@ title: Machine Learning Datasets for NLP
 category: netlabeler
 tags: ["netlabeler", "machine_learning"]
 ---
+{% pizzaforukraine  %}
+
 Today is a short one, just pointers to some datasets for Machine Learning data sets that I keep losing.
 
 * [Kaggle](https://www.kaggle.com/datasets)

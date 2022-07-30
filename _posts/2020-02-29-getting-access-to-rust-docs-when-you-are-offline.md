@@ -4,6 +4,8 @@ title: Getting Access to Rust Docs When You are Offline
 category: rust
 tags: ["rust", "docs"]
 ---
+{% pizzaforukraine  %}
+
 This one is short but simple since I didn't have it on my last flight and I fly again tomorrow.  To access your Rust documentation when you aren't online:
 
     rustup docs --book

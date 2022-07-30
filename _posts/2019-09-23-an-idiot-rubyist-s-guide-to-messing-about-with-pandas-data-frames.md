@@ -4,6 +4,8 @@ title: An Idiot Rubyist's Guide to Messing About with Pandas Data Frames
 category: python
 tags: ["python", "data_science", "pandas", "data_frame"]
 ---
+{% pizzaforukraine  %}
+
 I am an unabashed rubyist -- I have spent since 2006 doing close to ruby exclusively (well as exclusively as you can in today's modern polyglot world).  And I now find myself in a machine learning, python world.  Today I had to tackle some ad hoc data analysis using a Parquet file created as part of an analysis of some 4chan data and, well, it was interesting.  
 
 Let's start with the requirements:

@@ -4,6 +4,8 @@ title: Fixing TextMate 2 When It Goes Insane
 category: textmate
 tags: ["textmate"]
 ---
+{% pizzaforukraine  %}
+
 If you find that TextMate won't start up or if it does that you can't type and it won't respond to commands then this is a sign that TextMate's startup data has gotten hosed.  What you need to do is:
 
 1. Locate where TextMate [stores its unsaved documents](https://fuzzyblog.io/blog/text/2017/10/08/forensic-computing-1-finding-textmate-untitled-documents.html).  For me this is ls -l /Users/sjohnson/Library/Application\ Support/TextMate/Session/

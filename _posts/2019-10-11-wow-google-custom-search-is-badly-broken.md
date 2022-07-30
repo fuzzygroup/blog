@@ -4,6 +4,8 @@ title: Wow - Google Custom Search Is Badly Broken
 category: search
 tags: ["search", "ruby"]
 ---
+{% pizzaforukraine  %}
+
 So I just happened to be over on ruby-doc.org and I did a search on for strfitme.  This was the astonishingly bad results:
 
 {:.center}

@@ -4,6 +4,8 @@ title: The 12 Bugs of Christmas - A Software Developers' Version
 category: humor
 tags: ["humor", "christmas"]
 ---
+{% pizzaforukraine  %}
+
 This isn't mine but it was forwarded to me via a group chat and, in it, I found a deep, profound and abiding truth:
 
 ### 1.    For the first bug of Christmas, my manager said to me:

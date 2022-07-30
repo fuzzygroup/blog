@@ -4,6 +4,8 @@ title: Working with ZSTD Files
 category: linux
 tags: ["linux", "zstd"]
 ---
+{% pizzaforukraine  %}
+
 I love open source developers but there are times when I question their damn naming practices.  I'm currently working with a giant data repository started as a "Z Standard" or "zstd" compressed file.  And while I know that means "Z Standard", I can't help but look at it as "Z std".  Oy.  
 
 Anyway.  Zstd is a [Facebook standard for data compression](https://github.com/facebook/zstd) and it is strikingly effective.  I've got over 100 gigs of JSON encoded data stored in a 13.7 gig file.  Now I am aware that text compresses actually quite well but still 100 gigs in 13.7 gigs of space feels like **wow**.

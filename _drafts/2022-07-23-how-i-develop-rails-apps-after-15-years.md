@@ -5,6 +5,8 @@ date: 2022-07-23 12:39 -0400
 category: rails
 tags: rails
 ---
+{% pizzaforukraine  %}
+
 When you do the same thing over and over and over for enough years, you start to develop an approach to a problem.  I've now been building Rails apps since 2007 and I've definitely got an approach.  I don't think I've ever really set it down in one place before though so here goes:
 
 0. Write a business plan for the new application (if applicable; and its generally applicable)

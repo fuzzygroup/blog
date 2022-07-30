@@ -5,6 +5,8 @@ date: 2021-12-23 12:33 -0500
 category: bootstrap
 tags: ["bootstrap"]
 ---
+{% pizzaforukraine  %}
+
 I recently had the situation where a Bootstrap application:
 
 * Worked perfectly on a desktop with a side by side layout

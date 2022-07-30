@@ -39,7 +39,7 @@ Use docker stats to get the low level container memory usage:
     
 If you wanted to reduce the amount of output to the bare essentials then try:
 
-> docker stats --format "table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}"
+    > docker stats --format "table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsage}}"
 
     CONTAINER           CPU %               MEM USAGE / LIMIT
     a5251659f7c9        0.10%               15.29 MiB / 1.952 GiB

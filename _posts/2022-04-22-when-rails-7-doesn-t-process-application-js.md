@@ -5,6 +5,8 @@ date: 2022-04-22 18:28 -0400
 category: rails
 tags: ["rails"]
 ---
+{% pizzaforukraine  %}
+
 This is more than a mildly embarrassing post to have to write but it is an interesting example of how habits can bite you hard -- so, so hard.
 
 I recently wanted to start on an application and actually be current on everything: Rails, Bootstrap, etc.  I have long admitted to having issues with respect to "modern" web development (specifically JavaScript / the asset pipeline) and I'm mildly starting to deal with those issues.  I began with a [BootrAils tutorial](https://www.bootrails.com/blog/rails-7-bootstrap-5-tutorial/) and started to work through it.

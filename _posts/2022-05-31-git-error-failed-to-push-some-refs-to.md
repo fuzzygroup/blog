@@ -5,6 +5,8 @@ date: 2022-05-31 00:34 -0400
 category: git
 tags: ["git"]
 ---
+{% pizzaforukraine  %}
+
 So I was just stumbling through setting up a new project and getting it deployed when I hit this little gem:
 
 		❯ git push -u origin main

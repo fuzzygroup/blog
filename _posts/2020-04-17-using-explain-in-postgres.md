@@ -4,6 +4,8 @@ title: Using Explain in Postgres
 category: postgres
 tags: ["postgres", "sql"]
 ---
+{% pizzaforukraine  %}
+
 I've been a MySQL user professionally since 1999 when I abandoned the land of Windows NT server side development due to quality abomination that was Microsoft Site Server -- "sh|t, fsck, censored, censored, censored --- if Microsoft's quality is this bad, I may as well not pay for software."  I can remember that moment with the crystal clear clarity of:
 
 * a fog of comic book cursing that surrounded me as I worked in my attic garret like office

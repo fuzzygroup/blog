@@ -4,6 +4,8 @@ title: An Observation on TensorFlow and PyTorch Startup Time
 category: python
 tags: ["pytorch", "python", "tensorflow"]
 ---
+{% pizzaforukraine  %}
+
 I'm in the process of designing a STANDARD IN processing system implemented in Python using some fairly simple data processing and now some PyTorch machine learning.  The shocking thing to me was just how slowly all the required PyTorch libraries load in Python.  
 
 We have:

@@ -4,6 +4,8 @@ title: A Social Marketing Strategy that Mom Would Approve
 category: marketing
 tags: ["marketing", "covidnearme"]
 ---
+{% pizzaforukraine  %}
+
 There are a lot of times in life when I don't know what to do and so I ask myself:
 
 > WWMD?  This is also known as *What Would Mom Do*?

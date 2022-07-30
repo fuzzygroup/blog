@@ -5,6 +5,8 @@ date: 2022-06-10 04:12 -0400
 category: rails
 tags: ["rails", "rodauth", "testing"]
 ---
+{% pizzaforukraine  %}
+
 I'm working on a new project and, as I am front end challenged, I started by purchasing a copy of the BootRails framework as it seemed to have sensible defaults and an appearance that vastly outstrips my personal ability to manipulate Bootstrap.  Previously I've worked with the JumpStart framework from Go Rails and while I love, love, love Chris Oliver, GoRails, HatchBox and everything Chris has done (yes I'm a super fan), I just can't get past JumpStart's use of Tailwind.
 
 BootRails makes a bunch of fairly opinionated decisions including the choice of RodAuth for authentication.  They also use minitest and fixtures instead of rspec and FactoryBot.
