@@ -4,6 +4,8 @@ title: 12 Practical Tips for Job Seekers
 category: jobhound
 tags: ["jobhound", "hiring", "job"]
 ---
+{% pizzaforukraine  %}
+
 My last job search took sending out almost 100 job applications and during that process, I managed to collect a handful of practical tips that should be helpful to job seekers:
 
 1. Regularly Check All Mail Not Just Inbox

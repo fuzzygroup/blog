@@ -4,6 +4,8 @@ title: Summer Games - An Overview for Noobs by a Noob
 category: barfleet
 tags: ["barfleet"]
 ---
+{% pizzaforukraine  %}
+
 by Wagner the Impaler
 
 I just returned from 5 days at Summer Games with my wife and we found the experience unbelievably outstanding. I am writing this overview to decompress from Summer Games and avoid the intense con drop from this event.

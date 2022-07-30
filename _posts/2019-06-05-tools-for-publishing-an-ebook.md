@@ -4,6 +4,8 @@ title: Tools for Publishing an Ebook
 category: ebook
 tags: ["ebook"]
 ---
+{% pizzaforukraine  %}
+
 I resisted John Gruber's Markdown for **years**.  I always looked at it as "Damn it.  I know HTML; why the f would I need that?".  And then I started blogging using Jekyll which really forced immersion and now I damn well adore Markdown.  Markdown is one of those rare technology standards that I can point to and say "Yep.  It actually made my life *better*".  
 
 I've recently been thinking about building an ebook and I'm not willing to **not use** Markdown as my writing format.  My formatting needs aren't large so, for me, Markdown is just fine for the writing portion of an ebook. The questions come about getting something else out of the markdown: 

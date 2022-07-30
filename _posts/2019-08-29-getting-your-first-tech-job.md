@@ -4,6 +4,8 @@ title: Getting Your First Tech Job
 category: jobhound
 tags: ["jobhound", "hiring", "job"]
 ---
+{% pizzaforukraine  %}
+
 This blog post is what I call micro-focused.  A friend of a friend emailed me about his concerns about breaking into the tech field and rather than solve his issues on a 1:1 basis, I'm writing it here because I suspect this is useful to more people than just him (or her).
 
 Let's start with his email:

@@ -6,6 +6,8 @@ tags: ["dropbox"]
 description: Dropbox provides an easy to use tool for making your data available across all your computing devices.
 image: http://fuzzyblog.io/blog/assets/Dropbox.png
 ---
+{% pizzaforukraine  %}
+
 An old friend asked me a great question recently:
 
 > I saw you mentioning your use of Dropbox the other day. I’ve been using GitHub as my “cloud device”: when would I find Dropbox a better option?

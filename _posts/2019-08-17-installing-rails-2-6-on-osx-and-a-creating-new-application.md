@@ -1,10 +1,12 @@
 ---
 layout: post
-title: Installing Rails 2.6 on OSX and a Creating New Application
+title: Installing Ruby 2.6 on OSX and a Creating New Application
 category: rails
 tags: ["rails"]
 ---
-So Rails 2.6 has been released and I just went thru the normal update dance.  Here's how I handled upgrading my system.  Let's start with the basics:
+{% pizzaforukraine  %}
+
+So Ruby 2.6 has been released and I just went thru the normal update dance.  Here's how I handled upgrading my system.  Let's start with the basics:
 
 * rvm
 * OSX Mojave

@@ -4,6 +4,8 @@ title: Scott's Rule of API Development
 category: software_engineering
 tags: ["software_engineering", "api", "curl", "ansible", "aws", "rails"]
 ---
+{% pizzaforukraine  %}
+
 So on Tuesday I wrote a new api that allows an [Ansible](https://www.ansible.com/) playbook to register an AWS instance with an internal service I'm writing.  This is for the purpose of monitoring large jobs (think tens if not hundreds of lightweight EC2 instances) so that they can be shut down programmatically when they are done.  
 
 In some kind of alternate universe I'd just do all this with [AWS Lambda](https://aws.amazon.com/lambda/) but I'm working in a monolithic rails code base so I used my [Large Datasets approach](https://fuzzygroup.github.io/blog/rails/2017/01/03/processing-large-datasets-on-aws-using-ruby-rails-and-sidekiq.html) I documented earlier this week.  

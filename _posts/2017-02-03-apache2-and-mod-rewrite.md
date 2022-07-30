@@ -4,6 +4,8 @@ title: Apache2 and Mod Rewrite and Automatic Redirect to https
 category: apache
 tags: ["apache", "mod_rewrite"]
 ---
+{% pizzaforukraine  %}
+
 **Note:** If you're using AWS and an Elastic Load Balancer (ELB) this is actually tricky and will not work.  I documented that process in my [AWS Redirection](http://fuzzyblog.io/blog/aws/2017/02/03/redirecting-http-to-https-with-aws-and-elb.html) post.
 
 **Note:** You'll need to use sudo for almost all the commands here.  Keep that in mind.

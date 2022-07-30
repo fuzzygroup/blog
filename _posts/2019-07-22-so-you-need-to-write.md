@@ -4,6 +4,8 @@ title: So You Need to Write
 category: writing
 tags: ["writing", "blogging", "heinlein"]
 ---
+{% pizzaforukraine  %}
+
 I'm a long time blogger and from time to time I get people asking me how I produce as many words as I do.  I know a few people looking to start writing projects and I thought I'd put together a few notes on the topic of how I'm productive.
 
 # My Guidelines for Writing Productively

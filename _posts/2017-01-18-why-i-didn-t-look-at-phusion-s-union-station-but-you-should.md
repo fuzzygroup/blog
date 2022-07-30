@@ -6,6 +6,8 @@ tags: ["rails", "ruby", "startup", "marketing", "oobe", "hyde", "phusion"]
 description: Phusion Union Station is a powerful performance analysis tool for Rails that you should look at.
 image: https://www.unionstationapp.com/images/dashboard.png
 ---
+{% pizzaforukraine  %}
+
 Of all the companies that populate the Ruby and Rails world, I think my absolute favorite is [Phusion](http://www.phusion.nl).  I was early into the Rails space -- 2007 so I date back to the days of Mongrel based rails installations and when [Passenger](https://www.phusionpassenger.com/) from Phusion came out, it was a revelation.  Running a rails application went from a "How the F do I do this" to "I'll use Passenger and it will just work".  And Hong Lai is to me a stellar example of how to support an Open Source product.  I cannot say how many times I've been researching something and, damn, there's Hong Lai answering stuff.  The man is a damn machine and I mean that in the very best of ways.  Once upon a time I was a Ruby Enterprise Edition customer for Passenger and other times I've been a paid support customer.  And it is all because of the quality of Passenger and the tireless work of Hong Lai.  Every single time I go to deploy a Rails app, I reach for Passenger -- it is just that good.
 
 Phusion has a new product, [Union Station](https://www.unionstationapp.com/):

@@ -4,6 +4,8 @@ title: Programming versus Software Engineering or The Parable of Jim and Ed
 category: software_engineering
 tags: ["mtum_chapter1", "startup", "mtum"]
 ---
+{% pizzaforukraine  %}
+
 Once upon a time there was an American software company on the fast track to going public in an exploding industry.  Let’s call them *D*.  The VP of Engineering was a brilliant engineer named Jim.  Jim is one of those guys who, in a nerd discussion of “what’s your first computer,” always wins because he tells the tale of how he toggled in the boot loader on his KIM-1[1] until his fingers bled.  Jim was, and is, an engineer’s engineer.  All of D’s software was written either in straight C or C + assembly and shipping on DOS and Windows.
 
 Ed was a new hire, 2 years roughly out of school, who had just joined the company off a job doing AI programming[2] in Manhattan mostly using LISP.  As a new hire, Jim gave Ed a task which was fairly generic and didn’t require knowledge of D’s large code base: write a memory manager.  This was a very abstract task[3] and really required knowing your stuff at a pretty low level.  And while Ed, at the time, obviously wasn’t Jim’s equal, Ed was also damn smart.  He would later go on to a number of senior industry roles ultimately ending up at one of the industry’s largest and most successful companies (but that’s years and years later).  So Ed went off and works on this for about a month.  And he prints it ou[4]t and brings it to Jim for approval.

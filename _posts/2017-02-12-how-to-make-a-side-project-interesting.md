@@ -5,6 +5,8 @@ category: side_project
 tags: ["side_project", "hyde"]
 description: Make a side project technically interesting by figuring out what bothered you about your last project and addressing it but beware of the second system effect.
 ---
+{% pizzaforukraine  %}
+
 Taking a quick look at the different development directories on the various hard discs that I use for code related stuff shows that I've started over 20 different side projects since 2006.  Generally speaking that averages out to about 2 a year.  My current side project, while not at release stage yet, has now sustained over 45 days of continuous coding -- at least 2+ hours every day.  This morning, after making sure my wife was up, I had an mild epiphany as I walked back to my basement office.  The reason that I've been able to keep working is that I've been **interested**.
 
 Sure building projects is interesting but that's actually not what I mean.  A very big reason that I've been able to keep working on this so consistently is that I've looked at the what bothers the crap out of me about building data intensive SAAS apps (which this is) and I've figured out how to **minimize** those bad things.  I know exactly what was technically wrong with the [last SAAS app](http://www.appdata.com) I built and I don't want that to hit me again.  When I built my last SAAS app, I looked at it after the day I launched it and I thought to myself, "Whelp - I can spend the next decade of my life actually managing it" and here it is 3/4 of a decade later and, until recently, I was tied to it by a ball and chain.  

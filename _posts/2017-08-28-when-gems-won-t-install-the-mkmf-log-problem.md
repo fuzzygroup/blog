@@ -5,6 +5,8 @@ category: rails
 tags: ["rails", "ruby", "gems"]
 description: When a gem won't install due to a build error, you need the mkmf.log file -- but how do you find that file?
 ---
+{% pizzaforukraine  %}
+
 Computing is rich enough and deep enough as a profession that you can spent literally over a decade at something and still learn new things.  And, as frustrating as this is, I find that one of the best parts.   Personally I've been using Ruby now since 2006 and one of the things that is absolutely bedeviling is when a gem won't install.  
 
 **Upfront Disclaimer**: This problem was one of my own making but it proved to be an interesting exercise as I waited for someone to arrive for a meeting.  Far better than simply surfing the web or playing on my phone.

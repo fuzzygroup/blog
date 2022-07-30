@@ -4,6 +4,8 @@ title: If I Was a Science Fiction Author, I Would Read This
 category: writing
 tags: ["writing", "sciencefiction", "sf"]
 ---
+{% pizzaforukraine  %}
+
 I'm not a science fiction writer.  Nor do I even play one on the Internet but I do know people who are.  Here are two fantastic books that I suspect could easy provide the "science" in your "science fiction":
 
 * [How To](https://www.amazon.com/How-Absurd-Scientific-Real-World-Problems/dp/0525537090/ref=sr_1_1?crid=UQX5KJ82O5ML&keywords=randall+munroe&qid=1561645604&s=books&sprefix=randall+munr%2Caps%2C279&sr=1-1)

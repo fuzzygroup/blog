@@ -4,6 +4,8 @@ title: Understanding a Small Organization's Agile Model
 category: software_engineering
 tags: ["software_engineering", "startup", "agile"]
 ---
+{% pizzaforukraine  %}
+
 Agile is a an approach to software development that replaces traditional top down project management with a working style  that is characterized by the division of tasks into short phases of work and frequent reassessment and adaptation of plans.  This definition was provided courtesy of Google and I'm not certain as to its exact source.  Here is the [Wikipedia description of Agile](https://en.wikipedia.org/wiki/Agile_software_development).
 
 Agile is one of those things that most of us have some version of what it means in our heads but everyone seems to have a different set of working practices.  This is my version of agile for how I approach software development in a fast paced, greenfield context.  I have worked this way for about 20 years now and I have found that it is more than agile enough even though I deliberately ignore a lot of the agile concepts.

@@ -4,6 +4,8 @@ title: The Power of Why
 category: mtu
 tags: ["software_engineering", "chapter_02"]
 ---
+{% pizzaforukraine  %}
+
 **Note:** I wrote this as a section of an unfinished book about managing software engineers, "Managing the Unmanageables", when you are **not** a software engineer.  I keep copying it and pasting it to people so I thought it should just live here.
 
 # Applying Psychology: The Power of Why

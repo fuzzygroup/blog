@@ -6,6 +6,8 @@ tags: ["startup", "freelance", "accounting", "quicken", "hurdlr", "freshbooks"]
 description: If you're a freelancer, choosing personal accounting software is tricky.  Here I review three packages.
 image: http://fuzzyblog.io/blog/assets/accounting_software.png
 ---
+{% pizzaforukraine  %}
+
 I'm in the process of gearing up for a return to the freelance lifestyle.  One thing I've never done, since I started as a real freelancer, is actually use accounting software.  I know, I know, I know -- bad decision.  Well accounting and taxes are among my least favorite things in life so that's why I've justified it but that's kind of being a child about it.  Ignoring something does not make it better so one of my 2017 resolutions was "Deal with Accounting / Taxes". 
 
 # Requirements

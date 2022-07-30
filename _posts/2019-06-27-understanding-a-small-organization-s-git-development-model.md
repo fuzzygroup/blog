@@ -4,6 +4,8 @@ title: Understanding a Small Organization's Git Development Model
 category: git
 tags: ["software_engineering", "git", "github"]
 ---
+{% pizzaforukraine  %}
+
 I am actively working on a new codebase for a personal project and I thought it might be instructive to document how I am using Git.  The first thing to understand is that we are using Github at the Organization level which means, yep, paid Github.  Github is pricey but it is absolutely worth it.  Anyway ...
 
 The development style we are using is what I would generally term branch based development.  This means that there are three branches / types of branches: 

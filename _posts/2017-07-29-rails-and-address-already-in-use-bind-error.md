@@ -5,6 +5,8 @@ category: rails
 tags: ["rails", "sysadmin", "bind"]
 description: When you can't run your Rails server because of a bind error, use lsof to find the process which has that port in use and then kill it.
 ---
+{% pizzaforukraine  %}
+
 Lately I've seen this error come up quite a few times:
 
   /Users/sjohnson/.rvm/gems/ruby-2.3.1@seira_watch_web_app_api/gems/puma-3.9.1/lib/puma/binder.rb:269:in `initialize': Address already in use - bind(2) for "::1" port 3220 (Errno::EADDRINUSE)

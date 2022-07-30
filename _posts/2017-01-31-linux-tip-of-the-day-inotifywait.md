@@ -6,6 +6,8 @@ tags: ["linux_tip_of_the_day", "linux", "git", "sys_admin"]
 description: Linux Tip of the Day - Use inotifywait to view all file access across a given directory structure
 image: http://fuzzyblog.io/blog/assets/inotifywait.png
 ---
+{% pizzaforukraine  %}
+
 My podcast listening, which has always been on the nerdy side, has recently taken a trip down the far, far nerdier rabbit hole.  Whereas I used to listen to things with at least some connection to pop culture such as [Major Spoilers](http://majorspoilers.com/category/podcast/), I now find myself listening to the [Ubuntu Podcast](http://ubuntupodcast.org/), a British podcast covering the Ubuntu community.  It was there that I learned about inotifywait and I had a feeling it was brilliant.  I tried it out and it is brilliant!
 
 To install on Linux, use:

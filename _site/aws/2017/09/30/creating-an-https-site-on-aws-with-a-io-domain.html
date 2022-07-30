@@ -7,11 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Creating an HTTPS Site on AWS with a .IO Domain</title>
-  <meta name="description" content="I recently registered my first .io domain using an all AWS stack (Route 53, EC2, Elastic Load Balancer or ELB, Amazon Certificate Manager or ACM) and I found...">
+  <meta name="description" content="Pizza courtesy of Pizza for Ukraine!Donate Now to Pizza for Ukraine&nbsp;">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/blog/aws/2017/09/30/creating-an-https-site-on-aws-with-a-io-domain.html">
-  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://localhost:4000/blog/feed.xml">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/aws/2017/09/30/creating-an-https-site-on-aws-with-a-io-domain.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
   <!-- shout out to: http://www.favicon-generator.org/ --> 
@@ -193,7 +193,15 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>I recently registered my first .io domain using an all AWS stack (Route 53, EC2, Elastic Load Balancer or ELB, Amazon Certificate Manager or ACM) and I found the process mildly odd – to the degree that I know that it will either bite me again or it will bite someone else.  Either way I thought that it would be best to fully document the process.</p>
+    <p><img style="display: block; margin-left: auto; margin-right: auto; width: 75%; height: 75%" src="http://pizzaforukraine.com:443/assets/random/DSC01593.JPG" /></p>
+
+<p class="center">Pizza courtesy of Pizza for Ukraine!</p>
+
+<p class="center"><a href="https://www.pizzaforukraine.com/">Donate Now to Pizza for Ukraine</a></p>
+
+<p>&nbsp;</p>
+
+<p>I recently registered my first .io domain using an all AWS stack (Route 53, EC2, Elastic Load Balancer or ELB, Amazon Certificate Manager or ACM) and I found the process mildly odd – to the degree that I know that it will either bite me again or it will bite someone else.  Either way I thought that it would be best to fully document the process.</p>
 
 <p>The site I'm building has login and as such https is important for this site.  Although I could have used <a href="https://nickjanetakis.com/blog/lets-encrypt-vs-cloudflare-for-https">Let's Encrypt or CloudFlare</a> for the https, if you're using https on AWS then there's a good chance that you are using an ELB and ACM as they make SSL brilliantly simple.  In all my years of deploying SSL, it has never been as simple as using this AWS stack and I sincerely recommend it.  The oddness occurred when I had to bind the .io domain into the certificate itself.  This process requires an email authentication to the owner of the domain to ensure that no one compromised your AWS credentials.  When you are using a normal .com or .net domain and you do this, Amazon sends the email to the email address on the domain registration itself, easy peasy.  When you are using a .io account, the email is NOT sent to the email address on the domain registration but it is instead sent to all of these:</p>
 
@@ -237,15 +245,15 @@
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://localhost:4000/blog/tag.html#aws" >
+    <a href="http://fuzzyblog.io/blog/tag.html#aws" >
       #aws
     </a>
     
-    <a href="http://localhost:4000/blog/tag.html#io" >
+    <a href="http://fuzzyblog.io/blog/tag.html#io" >
       #io
     </a>
     
-    <a href="http://localhost:4000/blog/tag.html#https" >
+    <a href="http://fuzzyblog.io/blog/tag.html#https" >
       #https
     </a>
     
@@ -257,19 +265,19 @@
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://localhost:4000/blog/tag.html#aws" class="link_button">
+       <a href="http://fuzzyblog.io/blog/tag.html#aws" class="link_button">
          aws
        </a>
      </li>
      
      <li style="display: inline-block;">
-       <a href="http://localhost:4000/blog/tag.html#io" class="link_button">
+       <a href="http://fuzzyblog.io/blog/tag.html#io" class="link_button">
          io
        </a>
      </li>
      
      <li style="display: inline-block;">
-       <a href="http://localhost:4000/blog/tag.html#https" class="link_button">
+       <a href="http://fuzzyblog.io/blog/tag.html#https" class="link_button">
          https
        </a>
      </li>

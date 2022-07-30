@@ -4,6 +4,8 @@ title: Patterns and Anti-Patterns
 category: anti_patterns
 tags: ["software_development", "anti_patterns"]
 ---
+{% pizzaforukraine  %}
+
 There times when I use terms so common to software engineering that I forget that there is a wide audience out there to whom these aren't native concepts.  That's my bad -- using things before you define them is not a good thing.  
 
 Earlier today I referenced "[anti-patterns](https://fuzzyblog.io/blog/anti_patterns/2019/07/26/development-anti-pattern-two-objects-with-almost-the-same-structure.html)" but failed to define it.  The idea of an anti-pattern is intimately tied to the idea of a pattern and let's let Wikipedia do the talking:

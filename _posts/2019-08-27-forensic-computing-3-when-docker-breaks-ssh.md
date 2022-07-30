@@ -4,6 +4,8 @@ title: Forensic Computing 3 - When Docker Breaks SSH
 category: docker
 tags: ["docker", "linux", "networking", "ssh"]
 ---
+{% pizzaforukraine  %}
+
 I've written a few of these now.  I term it "forensic computing" when I've been given a problem to solve that I really have no idea how to approach and it is just a damn mystery.  The problem here was that for my day job:
 
 * We are an AWS shop and all of this happens on AWS

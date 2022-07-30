@@ -6,6 +6,8 @@ tags: ["rails", "font_awesome", "asset_pipeline"]
 description: Font Awesome is, well, awesome but when the Rails asset pipeline gets involved you can run into things working correctly in production but failing in development.
 image: https://fuzzyblog.io/blog/assets/font_awesome_working.png
 ---
+{% pizzaforukraine  %}
+
 [Font Awesome](http://fontawesome.io/) is one of those staggeringly good open source projects that you don't realize just how good it is until you use it -- and then it goes away.  The degree of *polish* and *finish* that an easy to use, inline icon adds to a project honestly just astounds me.  That's why, when I moved some code to production recently, and Font Awesome failed to render, well, I was **beyond frustrated**.
 
 My current production platform is Rails 5.x and this is how I got past that particular hellish little bit of the Rails asset pipeline.  The context is that I've been developing with Font Awesome for over 8 months now and I even spent the $$$ to back their [KickStarter](https://www.kickstarter.com/projects/232193852/font-awesome-5/comments) since Font Awesome is just that, well, **awesome** and I've been viewing their icons daily for 8 months -- until I deployed at which point they vanished.  

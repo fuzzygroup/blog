@@ -5,6 +5,8 @@ category: bash
 tags: ["devops", "deploy", "bash"]
 description: When you know that you're going to be woken up in the middle of the night with a new service, the smart thing is to make sure that your deploy routines take care of not only error checking but making it very obvious if there's a problem.
 ---
+{% pizzaforukraine  %}
+
 I'm doing a lot more bash scripting these days -- ever since I opted to write my new deployer, dockerano, in Bash.  Tackling something significant in Bash has absolutely forced me, 20 years plus after I started using it, to finally start to understand it.  By no means do I feel that I have a good handle on Bash -- I'm still heavily reliant on [ShellCheck](http://fuzzyblog.io/blog/bash/2017/07/17/improving-your-bash-scripting-with-shellcheck.html) but I can actually do things with Bash that I feel somewhat confident about.
 
 Here's a bash function that I extended this morning to add OSX specific audio output after a deploy.  The problem at hand is what I call the "2 AM sleep blind deploy".  We all know what this is: 

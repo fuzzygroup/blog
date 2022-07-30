@@ -4,6 +4,8 @@ title: Testing A Health Check Endpoint with Curl
 category: curl
 tags: ["curl", "serverless"]
 ---
+{% pizzaforukraine  %}
+
 Given the move to auto scaling architectures front ended by load balancers, it is increasingly important to build into your application what is called a "health check".  This is nothing more than a known url that some external service can monitor to ensure that your application is "up".  A health check does nothing more than return an HTTP 200 (and sometimes it returns a JSON representation).  Here's a simple Rails controller that I use for health checks:
 
     class HealthController < ApplicationController

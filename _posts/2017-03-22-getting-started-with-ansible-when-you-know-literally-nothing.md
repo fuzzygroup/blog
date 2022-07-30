@@ -6,6 +6,8 @@ tags: ["ansible"]
 description: While Ansible is a powerful devops tool, getting started with it can be challenging.  This post offers a case study on how to integrate Ansible with a conventional software development build process.
 image: https://avatars3.githubusercontent.com/u/1507452?v=3&s=200
 ---
+{% pizzaforukraine  %}
+
 An old friend, let's call him GC, emailed me earier today about ansible:
 
 > Hi Scott,

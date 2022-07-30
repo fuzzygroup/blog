@@ -4,6 +4,8 @@ title: Enabling Github Security Alerts on Your Private Repositories
 category: github
 tags: ["github", "git", "security", "rails"]
 ---
+{% pizzaforukraine  %}
+
 Github recently announced that they would be providing [security alerts for github repositories](https://github.com/blog/2470-introducing-security-alerts-on-github).  These alerts let you know when a dependency that you're relying on has a critical vulnerability.  Given the importance of security, this is an excellent idea.  Thank you Github!  These alerts are turned on automatically for public repositories but they require you to opt in for your private repositories.  And while this isn't hard, Github doesn't make it clear exactly how to set this option for your private repositories.  I just spent an hour or so turning this on for all my private repositories and here's the step by step approach:
 
 1.  Go to [github](https://www.github.com).

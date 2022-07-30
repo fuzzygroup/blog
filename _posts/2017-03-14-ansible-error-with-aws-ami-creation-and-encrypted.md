@@ -5,6 +5,8 @@ description: Hitting bizarre AWS / Ansible errors that reference encrypted?  Try
 category: aws
 tags: ["aws"]
 ---
+{% pizzaforukraine  %}
+
 Here is a bizarre Ansible / AWS error I just found:
 
     An exception occurred during task execution. To see the full traceback, use -vvv. The error was: TypeError: __init__() got an unexpected keyword argument 'encrypted'

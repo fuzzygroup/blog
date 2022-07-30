@@ -4,6 +4,8 @@ title: Remote Work 02 - Use Video Conferencing
 category: remote_work
 tags: ["remote_work"]
 ---
+{% pizzaforukraine  %}
+
 This is the second in an N part series of short, succinct articles about Remote Work that I'll be writing.
 
 [All Remote Articles](https://fuzzyblog.io/blog/category.html#remote-work)

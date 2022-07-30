@@ -4,6 +4,8 @@ title: So You Want to Delete Temp Files - An Excursion into Software Engineering
 category: software_engineering
 tags: ["software_engineering", "rails", "ruby"]
 ---
+{% pizzaforukraine  %}
+
 So today was a day of epic software engineering failure.  Let's consider, just for a second, this string of commit messages:
 
     feature/ATT-1551-f - And goodbye ... it all goes away like the bad dream that it was

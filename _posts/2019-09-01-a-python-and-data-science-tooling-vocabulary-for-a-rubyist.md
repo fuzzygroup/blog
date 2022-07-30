@@ -4,6 +4,8 @@ title: A Python and Data Science Tooling Vocabulary for a Rubyist
 category: python
 tags: ["python", "data_science", "machine_learning"]
 ---
+{% pizzaforukraine  %}
+
 A Python and Data Science Tooling Vocabulary for a Rubyist
 
 I am unabashedly a Ruby guy.  I've now spent 13 years immersed in Ruby on a daily basis.  But a new consulting gig has me delving into Python both as a light implementer and as a likely remote manager of some Python folk in a Data Science / Machine Learning context.  

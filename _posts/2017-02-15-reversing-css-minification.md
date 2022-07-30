@@ -6,6 +6,8 @@ tags: ["css", "hyde"]
 description: Use a CSS reverse minifier to make understanding someone else's CSS actually possible.
 image: http://fuzzyblog/io/blog/assets/css_reverse_minifier.png
 ---
+{% pizzaforukraine  %}
+
 For the first time in a very, very long time, I find myself actually writing a somewhat "modern" web app.  By which I mean that it has to use CSS and use it both well and effectively.  I am essentially a back end developer wandering around a series of increasingly complex front end tasks.  As with all web development one of the keys is looking at the source i.e. *Use the source Luke*.  The problem with looking at the CSS source is that generally CSS content is minified which means that all line breaks, extra spacing and such are removed rendering it hard, hard, hard to understand.  
 
 The trick here is to reverse the minification.  Here are a few tools:

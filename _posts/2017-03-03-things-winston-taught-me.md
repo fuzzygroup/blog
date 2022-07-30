@@ -5,6 +5,8 @@ category: git
 tags: ["git", "terminal"]
 description: Working with another developer always shows you new tricks.  Here Winston gave me a good set of git shortcuts for easing commits in the terminal.
 ---
+{% pizzaforukraine  %}
+
 As I discussed in my article on what [Ganesh taught me](http://fuzzyblog.io/blog/learning/2017/03/02/things-ganesh-taught-me.html), working with another engineer is a great way to learn new things.  Last week I also worked with [Winston](http://winstonkotzan.com/) and he showed me some git short cuts you can add to your bash profile.
 
 # How I Use Git

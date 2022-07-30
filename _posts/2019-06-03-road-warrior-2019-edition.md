@@ -4,6 +4,8 @@ title: Road Warrior 2019 Edition
 category: startup
 tags: ["road_warrior", "startup", "travel"]
 ---
+{% pizzaforukraine  %}
+
 It has been an age and a half since I did the road warrior gig.  Due to some family health issues with respect to elder care, I suspect that I'm going to travel quite a bit in 2019.  Here are some of the things that I've learned about doing the Road Warrior as of late:
 
  * *Disease*.  Don't ever touch the tray table and seat pocket.  I commented to a friend at the FDA about how I always seem to get sick on planes and I blamed the air.  Her response was that the air is just fine but that the seat pockets and tray tables are "Mos Eisley for germs" (ok I may have rewritten her description to make it more cool but that's my take on it).  My reaction was to stop touching them entirely -- and I no longer get sick after flights.  I no longer get drinks on board; I bring a resealable water bottle with me so I don't have to worry about a drink needing a place to rest.

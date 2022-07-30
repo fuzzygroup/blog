@@ -5,6 +5,8 @@ category: rails
 tags: ["rails", "apartment", "tenancy", "multi_tenant", "sidekiq"]
 description: Implementing a multitenant database architecture when you use an asynchronous job process like Sidekiq can be really challenging.  Here I walk through multitenancy in Rails 5 with Sidekiq.
 ---
+{% pizzaforukraine  %}
+
 
 # TLDR
 

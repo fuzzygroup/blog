@@ -4,6 +4,8 @@ title: When RbEnv, well, Won't RbEnv - Fixing Shell Extension Madness
 category: ruby
 tags: ["ruby", "rbenv", "rails"]
 ---
+{% pizzaforukraine  %}
+
 If you have ever used Ruby's [rbenv](https://github.com/rbenv/rbenv), or [rvm](https://rvm.io/) or [Python's virtual env](https://virtualenv.pypa.io/en/latest/) or any of the different approaches to managing multiple editions of the same language binary on a machine, this post is for you.
 
 All of these tools tend to work the same way -- they inject their own pathing in front of the system path so that the correct version of a binary gets called.  Here's an example from my development system when rbenv wasn't working:

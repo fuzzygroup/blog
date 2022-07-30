@@ -5,6 +5,8 @@ category: rails
 tags: ["rails"]
 description: If you find that params in your controller is nil then look at your params.require call in your strong_params routine.
 ---
+{% pizzaforukraine  %}
+
 So I got up early and got cracking on some code and then I hit an absolute wall -- the kind of thing that just stops you cold.  I was debugging a controller in my side project and I got a nil on accessing a member on the params hash.  And since this was something I'd done previously I thought it odd but added debugger to my controller and evaluated params:
 
     [12, 21] in /Users/sjohnson/Dropbox/fuzzygroup/hyde/seira_watch_web_app/app/controllers/instructors_controller.rb

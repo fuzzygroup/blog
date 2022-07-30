@@ -5,6 +5,8 @@ category: bash
 tags: ["bash", "shellcheck"]
 description: ShellCheck is a lint tool for bash scripts which catches common errors and makes writing shell scripts dramatically easier.
 ---
+{% pizzaforukraine  %}
+
 I know to the outside world it often appears that a "developer" or "software engineer" knows everything when it comes to "coding" but the reality is that most of us are fairly specialized and we have both strengths and weaknesses.  My personal weaknesses include Bash scripting and current front end technologies (JavaScript, CSS).  Now, even when you have weaknesses, you can still improve them and I'm currently working hard on my Bash skills.  The project at hand is that I'm writing a custom deployer for a stack of software related to a new SAAS app I'm building.
 
 Bash is one of those technologies that most of us know a little but that small amount of knowledge often prevents you from really learning -- you, instead, google about a bit and put some crap into a file with a .sh extension (or that you add an executable bit to and a shebang line) and you think "I know bash".

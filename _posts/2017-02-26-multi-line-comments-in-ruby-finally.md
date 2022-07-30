@@ -5,6 +5,7 @@ category: ruby
 tags: ["ruby", "rails"]
 description: I've wanted multi line comments in Ruby since, well, forever.  Sure this is /* and */ but it still works.
 ---
+{% pizzaforukraine  %}
 
 I've wanted multi line comments in Ruby forever and I just, thanks to [this Stack Overflow post](http://stackoverflow.com/questions/2989762/multi-line-comments-in-ruby), found out that they exist thanks to =begin and =end:
 

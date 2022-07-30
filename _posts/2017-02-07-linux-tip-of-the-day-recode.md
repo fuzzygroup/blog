@@ -6,6 +6,8 @@ tags: ["linux_tip_of_the_day", "linux", "jq"]
 description: Linux Tip of the Day - Use jq for command line JSON processing.
 image: http://fuzzyblog.io/blog/assets/recode.png
 ---
+{% pizzaforukraine  %}
+
 As I discussed [yesterday](http://fuzzyblog.io/blog/linux/2017/02/06/linux-tip-of-the-day-jq.html), I'm currently talking about the dependencies in John Graham Cummings, [hncomments](https://github.com/jgrahamc/hncomments/blob/master/hncomments) bash script.  At the end of this I'm hoping that I have all the pieces that I can actually run this myself.  
 
 The recode tool, a utility I had never even heard of, converts files between various character sets.  Given all the troubles I've had over the years with crawling the different app stores and encodings, I'm glad to learn about this.

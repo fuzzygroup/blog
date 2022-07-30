@@ -4,6 +4,8 @@ title: Rails Scopes are Elegant
 category: rails
 tags: ["rails", "database"]
 ---
+{% pizzaforukraine  %}
+
 This post is obvious to any advanced Rails user (hell even any middling Rails user) but I know there are some readers who aren't that sophisticated so here goes. 
 
 A scope is a Rails database query that operates much like a class method only it is much, much simpler to define.  Here's a class method that finds the active elements in a table called habits:

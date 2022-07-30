@@ -5,6 +5,8 @@ category: css
 tags: ["css", "fontawesome"]
 description: If you are having problems with Font Awesome icons displaying then try replacing your Font Awesome Rails gem with the Font Awesome CDN.
 ---
+{% pizzaforukraine  %}
+
 I'm a fan of [Font Awesome](http://fontawesome.io/) and I think enough of it that it was actually the **first** bit of software I purchased for use on my side project.  
 
 I recently had the situation where most of my Font Awesome icons would show up but a few wouldn't.  I knew it wasn't a layout problem because the code was all machine generated and the Amazon icon was showing up just a few lines earlier.  An example of an icon which wouldn't show up is the Etsy icon.

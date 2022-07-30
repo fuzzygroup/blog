@@ -4,6 +4,8 @@ title: Anatomy of an Accidental Product Launch with Metrics - Day 1
 category: jobhound
 tags: ["jobhound", "startup", "metrics"]
 ---
+{% pizzaforukraine  %}
+
 I'm a software engineer and I am decidedly **not** a marketing guy (I play one on the Internet from time to time but I really just write code).  I recently launched a side project, [Job Hound](https://www.jobhound.io), that had an unexpectedly successful first day and I thought documenting it might help someone out there (and certainly help me; that's usually why I blog anything; it helps me understand things).
 
 # What is Job Hound?

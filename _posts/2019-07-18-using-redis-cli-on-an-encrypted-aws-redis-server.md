@@ -4,6 +4,8 @@ title: Using redis-cli on An Encrypted AWS Redis Server
 category: redis
 tags: ["redis", "aws"]
 ---
+{% pizzaforukraine  %}
+
 So I find myself needing to use [redis-cli](https://redis.io/topics/rediscli) to modify the keys on a running Redis instance to deal with a few [Sidekiq issues](https://github.com/mperham/sidekiq/blob/master/Changes.md#413).  And, much to my surprise, I can't simply connect to it and make changes because I keep getting **Error: Connection reset by peer** errors.  A bit of a deep dive taught me this:
 
 * Our redis instance is encrypted both at rest and in transit

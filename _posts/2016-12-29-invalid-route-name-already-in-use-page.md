@@ -4,6 +4,8 @@ title: Invalid route name, already in use 'page'
 category: rails
 tags: ["rails", "pages", "authlogic", "bootstrap"]
 ---
+{% pizzaforukraine  %}
+
 It seems that whenever you start a new Rails project you hit some kind of wackiness with respect to an error message that you've never seen before.  Yesterday I started a new project and I wanted to use Bootstrap for my layout.  Well I couldn't make it work and then [Dv](http://dv.dasari.me) couldn't make it work so I finally turned to the [RailsApps](https://github.com/RailsApps/) project and used their [bootstrap template app](https://github.com/RailsApps/rails-bootstrap/blob/master/config/routes.rb).  And that worked so Huzzah! both for them and me.  Thanks Guys!
 
 Note: Dv and I have both used bootstrap on I can't tell you how many different sites and its always a pain in the neck to initially get going.  We were using the bootstrap gem and we had the scss stuff configured correctly at least by comparing to a reference site.

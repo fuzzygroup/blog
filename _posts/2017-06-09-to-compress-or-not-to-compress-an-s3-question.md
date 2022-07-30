@@ -4,6 +4,8 @@ title: To Compress or Not to Compress - An S3 Question
 category: aws
 tags: ["aws", "hosting", "s3", "pricing"]
 ---
+{% pizzaforukraine  %}
+
 I'm finally at what I refer to derisively as the "Turd Polishing" stage of a new SAAS application that I hope to roll out over the next month or so.  I've validated the:
 
 * the market

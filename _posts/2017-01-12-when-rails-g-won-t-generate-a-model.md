@@ -4,6 +4,8 @@ title: When rails g won't generate a Model
 category: rails
 tags: ["rails", "model", "spring", "listen", "hyde"]
 ---
+{% pizzaforukraine  %}
+
 I just saw about an hour of precious, early morning development time disappear because this failed:
 
     bundle exec rails g model TextCommon    

@@ -4,6 +4,8 @@ title: Electron Development is Like Mos Eisley
 category: electron
 tags: ["javascript", "electron", "hyde"]
 ---
+{% pizzaforukraine  %}
+
 So for my side project there is, for the first time in years, a client side component.  I already have 3 target users in mind and one of them uses Windows exclusively so that rules out any type of Mac development tool.  And because I really do believe that we are now in a [postmac](http://fuzzygroup.github.io/blog/category.html#postmac) world, I also need to support Linux.  All of that rolls up into the nigh inescapable conclusion that I'm going to have to use [Electron](http://electron.atom.io/) for development.
 
 Given that the Atom editor and Slack are both based on Electron and run across OSX, Windows and Linux you really can't argue against Electron at this point.  Atom and Slack are both best of breed applications and my only objection to them is resource usage.  And arguing against resource usage is a sucker's bet -- you always, always, always build for tomorrow's platform because machines get faster (or at least stay the same) and memory gets larger.

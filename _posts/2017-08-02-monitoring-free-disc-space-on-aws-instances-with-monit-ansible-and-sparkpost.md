@@ -5,6 +5,8 @@ category: aws
 tags: ["aws", "ansible", "monit", "SparkPost"]
 description: Monit when paired with Ansible and SparkPost provides a simple and easy way to monitor free disc space on all your AWS instances.
 ---
+{% pizzaforukraine  %}
+
 There are lots and lots of things that can go wrong with an AWS instance but I have always found that the single most common problem is nothing more than running out of disc space -- log files fill up, too many things get deployed, etc.  And with low end AWS instances being only 8 gigs of free disc space, well, this is bound to happen.
 
 The expensive solution is simple -- buy more disc space -- but I'm **cheap** and that means that the real solution is **monitoring** and **alerting**.  Here's what this means: 

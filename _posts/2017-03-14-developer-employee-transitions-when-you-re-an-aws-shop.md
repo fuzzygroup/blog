@@ -4,6 +4,8 @@ title: Developer Employee Transitions When You're an AWS Shop
 category: aws
 tags: ["aws", "management"]
 ---
+{% pizzaforukraine  %}
+
 So I find myself advising a former employer on how to lock out an employee with fairly pervasive access (and, yes, I am the employee).  Here was my advice:
 
 1.  The safest option would be to move to white listing **all** ip addresses needed for SSH login.  That would be an absolute ban on any incoming SSH logins from the old employee and, while inconvenient, is a wonderful means to lock down a system.

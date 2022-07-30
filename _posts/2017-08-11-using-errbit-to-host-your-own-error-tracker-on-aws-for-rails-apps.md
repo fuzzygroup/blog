@@ -5,6 +5,8 @@ category: aws
 tags: ["rails", "aws", "errbit"]
 description: A hosted error tracking service is a great development tool but at $29+ per month, they can be expensive if what you're building is just a side project.  Here I document how to install the Errbit project on an AWS instance using Docker.
 ---
+{% pizzaforukraine  %}
+
 In this tutorial, I walk you through using [the Errbit project](https://github.com/errbit/errbit), an open source error tracker to host your own error tracker.  Errbit is a competitor to [HoneyBadger](http://www.honeybadger.io), [BugSnag](http://www.bugsnagcom/), [AirBrake](http://www.airbrake.io) and other similar hosted error tracking tools that generally cost $29 to $49 / month or more.  Using Errbit means you only pay for infrastructure capacity and end up with a solution you can maintain yourself.
 
 I've written about HoneyBadger [previously](http://fuzzyblog.io/blog/containers/2016/08/26/in-the-world-of-containers-honeybadger-will-reign-supreme-bye-bye-airbrake.html) and it really is an excellent, excellent tool but I'm cheap and I wanted to experiment with an open source project that I've known about for years and never had the opportunity.  Although Errbit really is excellent, I found the getting started documentation lacking hence this post.

@@ -6,6 +6,8 @@ tags: ["linux_tip_of_the_day", "linux", "git", "linux_tip_of_the_day"]
 description: Linux Tip of the Day - Use git recall to see what you did recently
 image: http://fuzzyblog.io/blog/assets/git_recall1.png
 ---
+{% pizzaforukraine  %}
+
 Every so often your boss asks you what you've been working on and if you have been all over a code base it can actually be hard to break it down.  The new git recall command actually makes this pretty easy.  This is a new Linux tool I just learned about - [Docs](https://github.com/Fakerr/git-recall) / [Hacker News Discussion](https://news.ycombinator.com/item?id=13517486).
 
 Install it on Linux as follows:

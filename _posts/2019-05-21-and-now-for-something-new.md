@@ -3,8 +3,9 @@ layout: post
 title: And Now for Something New
 category: slumgullion
 tags: ["rails", "slumgullion"]
-
 ---
+{% pizzaforukraine  %}
+
 Io, Io, its off to code I go.  From bit to byte I build my stack. Io, Io its off to code I go....  
 
     cd development_project_path

@@ -4,6 +4,8 @@ title: Setting Up a Github Pages Jekyll Blog
 category: jekyll
 tags: ["jekyll", "blogging"]
 ---
+{% pizzaforukraine  %}
+
 I don't recommend that anyone blog the way I do.  Git and Jekyll are both fairly user hostile but I found myself having to do this the other day so i thought I'd document it at least for myself.
 
 Note the First: This assumes that you have a working local ruby installation and the Jekyll gem installed.  

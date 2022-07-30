@@ -4,6 +4,8 @@ title: Nerd Humor - When You Blog in Bright Sunlight in a Convertible
 category: humor
 tags: ["humor", "blogging"]
 ---
+{% pizzaforukraine  %}
+
 Disclaimer: There is likely only one person on the planet who will find this funny.  Hi!
 
 So I found myself last night in a convertible with my wife driving and I thought to myself, "I know; I'll write something".  And I began writing a screed on the use of the underlying Rails Migration commands that manipulate the state of your database.  Rails has a number of these commands that, after MORE THAN A DECADE of daily rails programming, I've never bothered to use.  I have known for a long time I need to master these and I finally have.  

@@ -5,6 +5,8 @@ category: docker
 tags: ["docker", "osx", "mac"]
 description: Docker on OSX can consume lots and lots of disc space.  Here's how to identify it and reclaim it safely.
 ---
+{% pizzaforukraine  %}
+
 A few nights ago, after a truly horrible night's sleep complete with my first ever incidence of acid reflux, I woke to find my Mac nattering at me about being **out of disc space**.  And by out of disc space I mean that I was down to about 3 gigs out of a terabyte sized SSD.  Yikes!
 
 Taking a look at the normal culprits yielded no surprise increases and I can distinctly recall having in excess of 30 gigs just a day or two ago.  Given all the [server side problems with respect to Docker and disc space](http://fuzzyblog.io/blog/docker/2017/08/30/running-out-of-disc-space-with-docker.html) that I have written about previously, I had a strong hunch that somehow Docker was involved.

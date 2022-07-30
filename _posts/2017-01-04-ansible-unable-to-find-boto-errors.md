@@ -4,6 +4,8 @@ title: Ansible Unable to Find Boto Errors
 category: ansible
 tags: ["ansible", "boto", "aws"]
 ---
+{% pizzaforukraine  %}
+
 Over the past several days I have been doing quite a bit of work with the ansible [EC2](http://docs.ansible.com/ansible/ec2_module.html) and [AMI](http://docs.ansible.com/ansible/ec2_ami_module.html) modules for dynamically creating instances and AMIs on AWS.  Ansible, however, doesn't actually talk directly to AWS; it talks to AWS thru a python module named [**boto**](https://github.com/boto/boto).
 
 There are a number of common problems that you might find when you the error "boto required for this module" or "unable to find boto":

@@ -5,6 +5,8 @@ category: marketing
 tags: ["marketing101", "marketing"]
 description: When you're a small startup if you can credibly attach yourself to a wave, it can dramatically accelerate your overall marketing.
 ---
+{% pizzaforukraine  %}
+
 **Note**: I haven't written a Marketing 101 piece since 2003 but a friend recently pointed out that even [my old ones](http://fuzzyblog.io/blog/tag.html#marketing101) were pretty good so I'm giving it a shot.
 
 One of the more difficult things in marketing to grasp is the idea of a *wave*.  I don't know if there's a better term for this but wave is how I've been thinking of this for the better part of two decades now.  A wave is an underlying meme or movement that resonates at the industry or even society level and I think the best way to illustrate this is with an example.  My first company, founded in 1987, was a hypertext authoring system (think FrontPage with an integrated browser but back in the DOS days).  There was a small burst of interest in all things hyper* due to Apple's HyperCard but that pretty much subsided by late 1988 / early 1999.  And then, over the next few years the industry shifted, in a huge way, to **multimedia**.  Multimedia became a huge wave -- and we shifted our product features slightly and our marketing dramatically to ride the multimedia wave: 

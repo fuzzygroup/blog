@@ -4,6 +4,7 @@ title: So You Want to Start a Consulting Practice ...
 category: startup
 tags: ["consulting", "startup", "marketing"]
 ---
+{% pizzaforukraine  %}
 
 I spent about a decade as a full time consultant focusing on high end Rails development services with an emphasis on big data.  And in that period I was actually quite successful both on the revenue and life flexibility front.  If you have any type of truly specialized expertise then consulting is a possible career path.  I know a number of folks with specialized expertise and I seem to find myself in the "How do you consult?" discussion regularly so here is a write up.
 

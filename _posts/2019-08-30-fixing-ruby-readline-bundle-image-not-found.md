@@ -4,6 +4,8 @@ title: Fixing Ruby readline.bundle Image Not Found
 category: ruby
 tags: ruby
 ---
+{% pizzaforukraine  %}
+
 I've seen a lot of ruby weirdness over the years but this one was new to me:
 
     1) Metric#color reps should be green when the goal is increase_is_better = true and the change is +

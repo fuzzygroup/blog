@@ -4,6 +4,8 @@ title: Getting AWS Costs Under Control
 category: aws
 tags: ["aws"]
 ---
+{% pizzaforukraine  %}
+
 *Note:* AWS is an abbreviation for Amazon Web Services, the Amazon cloud computing platform.
 
 I am presently responsible for a monthly AWS budget that is running about $20,000 per month.  And that is up from about $11,000 per month only eight months ago.  I was recently tasked with bringing that down through *reserved instances* and I thought that writing up the learnings from doing a deep dive into reserved instances and AWS Cost Control was worth writing up.  Even though I’ve worked with AWS now since 2008, I found the results of my research pretty damn surprising.

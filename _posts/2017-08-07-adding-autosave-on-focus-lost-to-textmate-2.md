@@ -4,6 +4,8 @@ title: Adding AutoSave on Focus Lost to TextMate 2
 category: textmate
 tags: ["textmate"]
 ---
+{% pizzaforukraine  %}
+
 I've looked this up and set this on every single mac I've used since I switched to [TextMate 2](https://macromates.com/) so I guess it is time to finally write it down for myself:
 
 1.  Open a command prompt.

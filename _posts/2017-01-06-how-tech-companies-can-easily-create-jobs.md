@@ -4,6 +4,8 @@ title: How Tech Companies Can Easily Create Jobs
 category: startup
 tags: ["jobs", "economy", "ross_mayfield"]
 ---
+{% pizzaforukraine  %}
+
 A few days ago Ross Mayfield wrote an absolutely compelling piece about jobs, tech companies and the original [Luddite movement](https://en.wikipedia.org/wiki/Luddite):
 
 > 50% of the jobs will be gone in ~20 years. Not from the great sucking sound of jobs to Mexico that can be stopped with a wall. Not from moving offshore to China. From automation that is moving quickly from blue collar manufacturing to white collar information work. Second only to climate change, this is the greatest disruption of our time, and I don’t mean that word in a good way. [Link](https://shift.newco.co/the-coming-tech-backlash-82b22e0c1198)

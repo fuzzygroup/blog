@@ -4,6 +4,8 @@ title: Processing Large Datasets On AWS Using Ruby, Rails and SideKiq
 tags: ["ruby", "rails", "sidekiq", "aws"]
 category: rails
 ---
+{% pizzaforukraine  %}
+
 Two days ago I did a data processing task which previously took me a week -- overnight.  I did this using the following technology stack:
 
 * Ruby

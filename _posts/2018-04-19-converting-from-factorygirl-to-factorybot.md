@@ -5,6 +5,8 @@ category: rails
 tags: ["rails", "ruby", "testing"]
 description: While the FactoryGirl to FactoryBot conversion isn't hard, using the standard search and replace approach means you don't necessarily understand what happened to your code base.  Here I do it step by step.
 ---
+{% pizzaforukraine  %}
+
 This blog post talks about the renaming of FactoryGirl to FactoryBoy  and the necessary refactoring that you have to do to a current Rails app to support it.  The official guide to converting your Rails from [FactoryGirl to FactoryBot](https://github.com/thoughtbot/factory_bot/blob/4-9-0-stable/UPGRADE_FROM_FACTORY_GIRL.md) is here.  Their solution is a search and replace approach and while that works, I wanted to go thru this step by step.
 
 ## Step 0: Update Your Gemfile

@@ -5,6 +5,8 @@ category: bash
 tags: ["bash", "linux", "shell"]
 description: Stringing together cat, wc, xargs and expr gives a word count tool and a calculation of the printed pages.
 ---
+{% pizzaforukraine  %}
+
 I'm in the process of starting a new writing project and I wanted to make the process of getting metrics easier so I rolled together this bash script:
 
     #!/bin/bash

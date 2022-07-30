@@ -4,6 +4,8 @@ title: Employee Transitions - Don't Kill Your Organizational Memory
 category: startup
 tags: ["startup", "hr"]
 ---
+{% pizzaforukraine  %}
+
 A lot of companies have moved to organizational chat systems like Slack or the late, unlamented HipChat.  And, from what I have seen, none of those companies have ever dealt with employee transitions in a remotely rational fashion.  Here's what generally happens:
 
 1.  Employee leaves.

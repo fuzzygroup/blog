@@ -4,6 +4,8 @@ title: Managing An Attack of Hives
 category: health
 tags: ["health", "hives"]
 ---
+{% pizzaforukraine  %}
+
 *Disclaimer:* I am not a doctor.  I am not a nurse.  I do not even play a doctor or a nurse on the Internet.  But I have been unlucky enough to suffer from poison ivy on N (N rounds up pretty high; it involves the number of fingers on both hands) occasions so I know a lot about suffering through itchiness.  And I’ve had hives myself.
 
 I recently watched a dear, dear friend come down with hives out of the clear blue.  One day they were fine and the next day there were “an itchy, splotchy mess”.  Hives are one of those things that generally are an allergic reaction that you never quite understand.  They come over you, your life sucks beyond belief and then they go away.  As another friend would say, “How Rude!”.  

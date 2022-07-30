@@ -6,6 +6,8 @@ tags: ["software_engineering", "caching", "aws"]
 description: Complex caching schemes always seem to be problematic.  Here I profile a client's conversation with me about AWS caching strategies down to 458 words of simple advice.
 image: http://fuzzyblog.io/blog/assets/elasticache.png
 ---
+{% pizzaforukraine  %}
+
 It is reputed to have been said:
 
 > There are only two hard things in Computer Science: cache invalidation and naming things. [Link](https://martinfowler.com/bliki/TwoHardThings.html)

@@ -5,8 +5,9 @@ tags: ["software_engineering", "version_control", "merge", "git", "diff"]
 category: software_engineering
 description: When you really, really break the code base, you need tools to put it back together.  Here I look at diff tools.
 image: http://fuzzyblog.io/blog/assets/open_diff.png
-
 ---
+{% pizzaforukraine  %}
+
 There are certain skills as a software developer that take, in my experience, a lifetime to master.  I have now been using version control since the mid 1990s and I still don't consider myself, by any means, a master.  I'm good, don't get me wrong, but I don't feel that I have yet fully internalized all the benefits that version control offers.  So, when I have a chance to really take advantage of version control, I truly relish the opportunity.  
 
 I recently had a refactoring situtation where I was, shall we say, overly ambitious.  And, yes, that's the positive version of what I'd refer to as "Humpty Dumpty" code syndrome where you have so thoroughly broken a critical bit of code that you just can't put it back together.  Specifically:

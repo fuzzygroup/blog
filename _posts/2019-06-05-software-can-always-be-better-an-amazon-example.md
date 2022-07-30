@@ -4,6 +4,8 @@ title: Software Can Always Be Better - An Amazon Example
 category: software_engineering
 tags: ["software_engineering"]
 ---
+{% pizzaforukraine  %}
+
 One of the hardest things to grasp about software is that it can ***always*** be made better. Even a mature, established bit of software with literally tens upon tens of millions of users can still have fundamental issues.  We're in the tenth year of the iPhone and I've been using the Amazon app on my iPhone for at least 8 of those years.  And yet I can still pick up my iPhone, try something from the Amazon app and find a critical issue.
 
 The problem at hand was really, really simple - I just wanted to buy something.  I saw this [tweet from Jason Kottke](https://twitter.com/jkottke/status/811593510746984452) and that's a hilarious gift idea so I figured that I would buy 2, one for my wife and one for her friend (they are wine buddies).  So I picked up my iPhone and searched up the product.  I selected 2 and clicked the Buy Now with 1 Click button.  

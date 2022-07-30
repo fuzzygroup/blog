@@ -4,6 +4,8 @@ title: Your Daily Remote Worker Management Tip
 category: remote_work
 tags: ["startup", "remote"]
 ---
+{% pizzaforukraine  %}
+
 Dear Manager of a Remote Employee, 
 
 My apologies in advance that this is bitter and salty like the code brewed coffee that I just swilled in a frazzle but I find myself at the end of my rope. And so I will give you a remote worker management tip.  

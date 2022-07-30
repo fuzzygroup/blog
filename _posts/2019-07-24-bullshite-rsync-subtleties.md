@@ -4,6 +4,8 @@ title: Bullshite rsync Subtleties
 category: osx
 tags: ["osx", "rsync", "mac"]
 ---
+{% pizzaforukraine  %}
+
 So yesterday or the day before [I blogged about rsync](https://fuzzyblog.io/blog/osx/2019/07/22/backing-mac-to-mac-via-scp-rsync.html) and how good it was.  And that's true but rsync is notoriously tricky and today I became very, very aware of rsync's trickiness.
 
 So my scenario was that I had an old MacBook Air which I was trying to get all the data off of since DropBox seemed to have an incomplete sync.  And I figured that if I just got all the files copied up to my big desktop then I could reformat the machine and give it to my wife as a replacement for her laptop on which the keyboard died.

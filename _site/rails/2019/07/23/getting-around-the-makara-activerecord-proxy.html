@@ -7,11 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Getting Around the Makara ActiveRecord Proxy</title>
-  <meta name="description" content="One of the key approaches to database scalability is the use of a replica server so that read only queries (i.e. SELECT queries) get shunted away from the ma...">
+  <meta name="description" content="Pizza courtesy of Pizza for Ukraine!Donate Now to Pizza for Ukraine&nbsp;">
 
   <link rel="stylesheet" href="/blog/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/blog/rails/2019/07/23/getting-around-the-makara-activerecord-proxy.html">
-  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://localhost:4000/blog/feed.xml">
+  <link rel="canonical" href="http://fuzzyblog.io/blog/rails/2019/07/23/getting-around-the-makara-activerecord-proxy.html">
+  <link rel="alternate" type="application/rss+xml" title="FuzzyBlog" href="http://fuzzyblog.io/blog/feed.xml">
   
   <!-- favicons -->
   <!-- shout out to: http://www.favicon-generator.org/ --> 
@@ -43,7 +43,15 @@
 
   
     <meta name="twitter:description"
-      content="One of the key approaches to database scalability is the use of a replica server so that read only queries (i.e. SELECT queries) get shunted away from the master database.  When you use a framework...">
+      content="
+
+Pizza courtesy of Pizza for Ukraine!
+
+Donate Now to Pizza for Ukraine
+
+&amp;nbsp;
+
+One of the key approaches to database scalability is the use of a replica server so that read only queries (i.e....">
   
 
   
@@ -193,7 +201,15 @@
   
 
   <div class="post-content" itemprop="articleBody">
-    <p>One of the key approaches to database scalability is the use of a replica server so that read only queries (i.e. SELECT queries) get shunted away from the master database.  When you use a framework based approach to development such as Rails, this is generally implemented as an ActiveRecord connector that sits between your SQL and the server on which it gets executed.  One such example is <a href="https://github.com/taskrabbit/makara">Makara</a> from TaskRabbit.</p>
+    <p><img style="display: block; margin-left: auto; margin-right: auto; width: 75%; height: 75%" src="http://pizzaforukraine.com:443/assets/random/IMAGE 2022-07-29 13:35:40.jpg" /></p>
+
+<p class="center">Pizza courtesy of Pizza for Ukraine!</p>
+
+<p class="center"><a href="https://www.pizzaforukraine.com/">Donate Now to Pizza for Ukraine</a></p>
+
+<p>&nbsp;</p>
+
+<p>One of the key approaches to database scalability is the use of a replica server so that read only queries (i.e. SELECT queries) get shunted away from the master database.  When you use a framework based approach to development such as Rails, this is generally implemented as an ActiveRecord connector that sits between your SQL and the server on which it gets executed.  One such example is <a href="https://github.com/taskrabbit/makara">Makara</a> from TaskRabbit.</p>
 
 <p>The problem here is that not all SELECT queries are created equally and not all select queries can run correctly on a replica.  I recently had the situation where a given query was complex enough (think 500+ lines of select query) that it could only execute on the replica server maybe 3 times out of 10 with a 45 plus second runtime.  I was assured by the query author that this would execute correctly on the production database.  And while I was absolutely dubious about this, I realized that there was literally no way to prove this without getting around Makara.</p>
 
@@ -224,11 +240,11 @@ end
   <hr/><br/>
   <p><strong>Posted In:</strong>
   
-    <a href="http://localhost:4000/blog/tag.html#ruby" >
+    <a href="http://fuzzyblog.io/blog/tag.html#ruby" >
       #ruby
     </a>
     
-    <a href="http://localhost:4000/blog/tag.html#rails" >
+    <a href="http://fuzzyblog.io/blog/tag.html#rails" >
       #rails
     </a>
     
@@ -240,13 +256,13 @@ end
       <ul class="list-inline tags" >       
      
      <li style="display: inline-block;">
-       <a href="http://localhost:4000/blog/tag.html#ruby" class="link_button">
+       <a href="http://fuzzyblog.io/blog/tag.html#ruby" class="link_button">
          ruby
        </a>
      </li>
      
      <li style="display: inline-block;">
-       <a href="http://localhost:4000/blog/tag.html#rails" class="link_button">
+       <a href="http://fuzzyblog.io/blog/tag.html#rails" class="link_button">
          rails
        </a>
      </li>

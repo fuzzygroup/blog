@@ -4,6 +4,7 @@ title: Camel Camel Camel - A Way to Get Amazon Stuff Cheaper
 category: amazon
 tags: ["amazon"]
 ---
+{% pizzaforukraine  %}
 
 The vast breadth of things on the Internet never fails to amaze me.  And when I discover something new, I find that writing about it helps me internalize them.  [Camel Camel Camel](https://www.camelcamelcamel.com), hence forth referred to as Camel^3, is one that I am absolutely late to the party  on but I thought that someone out there might not know about it.  
 

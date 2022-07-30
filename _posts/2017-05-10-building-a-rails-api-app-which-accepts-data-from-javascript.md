@@ -5,6 +5,8 @@ category: rails
 tags: ["rails", "javascript", "api", "cors", "fingerprint"]
 description: If you ever wondered how to build a web tracker and integrate it JavaScript on the front end and an API service on the back end, keep on reading.
 ---
+{% pizzaforukraine  %}
+
 A friend recently described a web tracking problem to me and we discussed looking at it via Google Analytics or by rolling our own approach.  Google Analytics is tremendously powerful but I looked at this as a chance to improve my JavaScript skills which are, admittedly, not my strongest part of my technical skill set so I went with the roll my own approach.  As with most things I do, I'm writing this out in full to clarify my own thinking and understanding of the problem as well as to make this information publicly available.
 
 # Problem

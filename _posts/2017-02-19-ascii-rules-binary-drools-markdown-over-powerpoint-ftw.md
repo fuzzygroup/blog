@@ -4,6 +4,8 @@ title: ASCII Rules; Binary Drools - Markdown Over PowerPoint FTW
 category: software_engineering
 tags: ["markdown", "writing", "udemy", "deckset", "software_engineering", "knowledge_capture"]
 ---
+{% pizzaforukraine  %}
+
 When an engineer leaves an organization there is a vital need to capture knowledge from that engineer.  In short that engineer needs to give a presentation or presentations.  And if they've been there a long time, say 7 years or so, capturing that amount of knowledge is damn near impossible.  Or so I would have thought.  Over the past 48 hours I have authored over 243 slides organized into 22 presentations outlining my knowledge on a project that I am transitioning out of.  Yeah -- the 7 years is me.  
 
 My secret weapon for this was actually MarkDown.  Here's what I did:

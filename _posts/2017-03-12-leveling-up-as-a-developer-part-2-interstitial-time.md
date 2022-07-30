@@ -6,6 +6,8 @@ tags: ["software_engineering", "learning"]
 description: Taking advantage of interstitial time, the time between times, is one of the best ways for you to level up your skills as a developer by learning while you do something else.
 image: https://softwareengineeringdaily.com/wp-content/uploads/2015/08/sed_logo_updated.png
 ---
+{% pizzaforukraine  %}
+
 I recently wrote about [Leveling Up as a Developer](http://fuzzyblog.io/blog/software_engineering/2017/02/24/leveling-up-as-a-developer.html).  Leveraging Interstitial Time is another approach to improve your skills.  As a developer there are at least two very different types of learning that you have to do:
 
 * **Deep, Focused Learning**.  The classic example here is the syntax of a language.  Some of us can do that by simply reading a book but most of us need the focused, "muscle memory" effort of actually doing it.  

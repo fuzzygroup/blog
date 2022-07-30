@@ -6,6 +6,8 @@ tags: ["devops", "sysadmin", "windows"]
 description: Ever need to backup machines using a virtual machine as the mechanism?  Here's how.
 image: http://fuzzyblog.io/blog/assets/hyperv_manager.jpg
 ---
+{% pizzaforukraine  %}
+
 So that [data center migration](http://fuzzyblog.io/blog/aws/2017/01/26/s3-ruby-api-programming-tip.html) that I mentioned recently has turned into not, well a disaster, but a bit of challenge.  The problem at hand was how to get data off three large MySQL databases, about 4 terabytes in size and then capture whatever else was desired and do it all in about 10 days to avoid getting hit with another $5 K data center monthly fee.
 
 **Note**: If you want a hilarious tale of how this data actually got to the data center in the first place then I highly recommend [Anatomy of a Business Trip Gone Horribly Wrong](http://fuzzyblog.io/blog/humor/2014/08/21/anatomy-of-a-business-trip-gone-horribly-wrong.html).  It was awful at the time but it is funny as hell now.  It is also the last time I was in New York, pretty close to where the person who helped me on this actually lives.  Small, small world.

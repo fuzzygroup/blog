@@ -4,6 +4,8 @@ title: A Stupid Mac Performance Optimization for 2019
 category: mac
 tags: ["mac", "osx"]
 ---
+{% pizzaforukraine  %}
+
 It is 2019 people, 2019.  And this is the stupidest performance optimization thing that I've seen in years.  I take screenshots quite a bit and I've recently noticed that it was taking a considerable amount of time from the point when I pressed the OSX screenshot key (command + shift + 4 and then enter) to the screenshot becoming available on the Desktop -- something like 20 to 30 seconds.  
 
 What I did this morning was create a single folder on the desktop called "old" and then I moved almost everything into "old".  Then I took a screenshot and it appeared in almost real time.  

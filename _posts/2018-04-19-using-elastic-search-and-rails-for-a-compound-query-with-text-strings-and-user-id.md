@@ -5,6 +5,8 @@ category: rails
 tags: ["rails", "ruby", "elastic_search"]
 description: Using ElasticSearch and Rails to search the contents of a model is drop dead simple -- when you only want to search text.  Here I go over how to search text alongside an attribute like user_id.
 ---
+{% pizzaforukraine  %}
+
 I'm writing this blog post, my first in quite a while, because I recently had to implement [ElasticSearch for Rails](https://github.com/elastic/elasticsearch-rails) for a [new application I'm building](https://www.jobhound.io) and I find life in the Elastic world a bit different than I had expected.  If you're an Elastic Search veteran then you should definitely move along because:
 
 * This is fairly basic

@@ -4,6 +4,8 @@ title: Utter and Complete Heroku Fail
 category: fail
 tags: ["heroku", "fail", "rails"]
 ---
+{% pizzaforukraine  %}
+
 So this morning I wanted to get a self hosted version of the [Errbit](https://github.com/errbit/errbit) project running.  This is an equivalent to BugSnag, Airbrake, HoneyBadger -- a tool for tracking errors in live apps.  The inspiration for this was [Jeff Atwood's Developer on Fire interview](http://developeronfire.com/podcast/episode-258-jeff-atwood-sharing-the-house) where he advised three things: 
 
     Jeff's top 3 tips for delivering more value:

@@ -6,6 +6,8 @@ tags: ["game_nanny", "startup"]
 description: Ever wonder exactly how a product comes into being?  Well I just launched a new product, Game Nanny, and this is the story.
 image: http://blog.gamenanny.io/assets/gamenanny_blog.png
 ---
+{% pizzaforukraine  %}
+
 I have built a lot of products in my career:
 
 * search engines

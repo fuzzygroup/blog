@@ -5,6 +5,8 @@ category: how_to_be_a_developer
 tags: ["how_to_be_a_developer", "software_development"]
 description: If you want to be a developer you have to commit to problem solving, no matter how arcane the problem.
 ---
+{% pizzaforukraine  %}
+
 # Background
 
 I've taken on a new project recently.  I'm helping teach some local (Indianapolis) homeless youth basic software engineering using the web developer curriculum from [Free Code Camp](http://www.freecodecamp.com).  Initially I'm teaching two students and we're working out of the [Outreach Indiana](https://outreachindiana.org/) facility in downtown Indianapolis.  Outreach Indiana is a fantastic charity that truly does good work.

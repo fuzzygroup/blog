@@ -5,6 +5,8 @@ category: rails
 tags: ["rails", "docker", "cron", "clockwork"]
 description: It isn't obvious how to make Docker handle scheduled tasks for a Rails application.  In this blog post I walk through the process of scheduling tasks in a containerized application and then explore the issues associated with performance and deploy.
 ---
+{% pizzaforukraine  %}
+
 If you talk to any computer scientist they will easily tell you that 50 plus years into the computer age, scheduling is NOT a solved problem.  Even something as simple as cron which is decades old can still be challenging under different environments (example - cron and RVM is a bloody nightmare).  And then when you add containers into the mix, well ...  In this blog post I outline how I'm handling a daily scheduled process using Docker and Clockwork (a cron like gem for Ruby).
 
 # Why is Cron and Docker a Problem

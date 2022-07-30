@@ -5,6 +5,8 @@ category: docker
 tags: ["docker", "rails", "ruby", "selenium", "aws"]
 description: Although normally thought of as a testing tool, Selenium can also allow you to do crawling in Rails not through low level parsing but also through an embedded browser.  However getting Selenium working on a headless AWS server is tedious and non-obvious.  Here is how I did it.
 ---
+{% pizzaforukraine  %}
+
 I've done a lot of crawling in my professional career and I mean a **lot**.  The recent trend towards JavaScript based sites, however, has wreaked havoc on my traditional approach of low level html parsing.  For a new product I'm launching, I recently had to make the switch to using [Selenium](https://github.com/SeleniumHQ/) for crawling.  Selenium, commonly known as a testing tool, can be used in an embedded fashion where you use code like this:
 
     browser = Selenium::WebDriver.for :chrome

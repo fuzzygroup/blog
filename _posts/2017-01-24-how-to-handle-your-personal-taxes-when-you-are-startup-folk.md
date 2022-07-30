@@ -4,6 +4,8 @@ title: How to Handle Your Personal Taxes when You Are Startup Folk
 category: startup
 tags: ["startup", "taxes"]
 ---
+{% pizzaforukraine  %}
+
 Please note the following: 
 
 * This is a U.S. centric post; I don't know how taxes work anywhere but here

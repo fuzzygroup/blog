@@ -6,6 +6,8 @@ tags: ["mysql", "index", "performance", "rails"]
 description: Migrations in Rails don't always get things right.  Here's a step by step analysis of performance problems on a table with 313 million rows and how to address it.
 image: http://fuzzyblog.io/blog/assets/rails.png
 ---
+{% pizzaforukraine  %}
+
 # The Problem
 
 I had a weird thing recently -- a table with 313 million rows had 30+ second queries on a unique index -- that's way, way too long.  Here's how I went about troubleshooting this. 

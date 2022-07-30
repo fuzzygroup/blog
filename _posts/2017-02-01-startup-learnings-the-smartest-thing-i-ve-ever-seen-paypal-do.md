@@ -6,6 +6,8 @@ tags: ["startup", "learnings", "paypal"]
 description: PayPal's automatic currency translation simplifies commerce by making things easier for you and they make money from it.
 image: http://fuzzyblog.io/blog/assets/paypal_is_smart.png
 ---
+{% pizzaforukraine  %}
+
 PayPal is one of those companies that we all love to hate.  They work with money so we all feel about PayPal the way we sort of naturally feel about banks -- mildly distrustful.  Also the tales of PayPal woes are legendary.  And then there are the login / password issues that seem to surround PayPal like a cloud of flies.  All of that has always made me think that PayPal got to where it is now by luck but I'm really starting to reconsider that.  In fact my current thinking is that we should all realize that PayPal is **smart**. And when I say smart, I am starting to think that PayPal is *Amazon Smart*.  
 
 In order to explain this I have to disclose a personal preference of mine -- if I have a choice as to a software engineer's nationality, I always tend to lean British.  I've had remarkable success over the years in hiring British software engineers and, more than any other nationalities, the results have skewed dramatically positive.  I'm not sure whether it is the educational system, the way they refer to computers as 'kit', extensive reading of Dick Pountain when I was young causing me bias, the fact that all the engineers my age learned on either a Sinclair or a BBC Micro (systems so limited that they forced you to be good to survive) or something else but something about the U.K. seems to produce great software engineers.

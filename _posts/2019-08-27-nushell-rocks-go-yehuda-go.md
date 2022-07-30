@@ -4,6 +4,8 @@ title: Nushell Rocks - Go Yehuda Go
 category: nushell
 tags: ["nushell", "rust"]
 ---
+{% pizzaforukraine  %}
+
 NuShell is a damn interesting approach to a shell.  Here's a description:
 
 "Today, we’re introducing a new shell, written in Rust. It draws inspiration from the classic Unix philosophy of pipelines, the structured data approach of PowerShell, functional programming, systems programming, and more."

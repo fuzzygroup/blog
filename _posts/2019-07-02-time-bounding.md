@@ -4,6 +4,8 @@ title: Time Bounding
 category: software_engineering
 tags: ["mtum_chapter4", "startup", "mtum"]
 ---
+{% pizzaforukraine  %}
+
 Time Bounding is one of those brilliant techniques that is so simple that you often don’t even think to use it.  The idea behind time bounding is simple — some things are only worth so much time.  Here’s an example of a ticket that I wrote not 5 minutes ago for one of my engineers:
 
   Hi, 

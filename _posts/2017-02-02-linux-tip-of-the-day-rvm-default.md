@@ -4,6 +4,8 @@ title: Linux Tip of the Day rvm --default
 category: linux
 tags: ["ruby", "rails", "linux", "rvm", "linux_tip_of_the_day"]
 ---
+{% pizzaforukraine  %}
+
 I normally don't intersect Ruby and Linux Tip of the Day but I just used this and it is really, really useful. The rvm or Ruby Version Manager tool manages your installed rubies makes ruby development, well, just plain easier.  
 
 To install rvm on Linux, use:

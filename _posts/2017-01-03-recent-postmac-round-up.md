@@ -4,6 +4,8 @@ title: Recent PostMac Round Up
 category: postmac
 tags: ["apple", "osx", "postmac", "windows", "mac"]
 ---
+{% pizzaforukraine  %}
+
 Well a new year and people are still unhappy about the state of the Mac.  Here are some interesting links worth following:
 
 * [Apple 2016 in Review](https://chuqui.com/2017/01/apples-2016-in-review/) [HN Commentary](https://news.ycombinator.com/item?id=13307040)  His point on Apple relying on data too much is likely correct.

@@ -4,6 +4,8 @@ title: Sales, Marketing, Advertising and Public Relations
 category: startup
 tags: ["startup", "marketing"]
 ---
+{% pizzaforukraine  %}
+
 In undergrad I majored in Management but I took enough marketing classes that I can still summon [Ries and Trout](https://en.wikipedia.org/wiki/Positioning_(marketing)) on occasion.  Let's start with some basic definitions.
 
 # Sales Versus Marketing

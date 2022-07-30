@@ -4,6 +4,8 @@ title: Linux Tip - Find All Files Older than 10 Days and Delete Them
 category: Linux
 tags: ["linux"]
 ---
+{% pizzaforukraine  %}
+
 It is easy to forget at times just how powerful simple Linux shell commands here.  Here’s one I used recently that finds all files in a single directory that are older than 25 days and deletes them:
 
     find /apps/foo/shared/tmp/ -mtime +25 -maxdepth 1 -exec rm {} \;

@@ -4,6 +4,8 @@ title: 17 Years of Blogging
 category: blogging
 tags: ["blogging", "linux"]
 ---
+{% pizzaforukraine  %}
+
 So I was looking up information on using the wc or Word Count command in *nix on [Stack Overflow](https://askubuntu.com/questions/351326/how-do-i-list-word-count-in-multiple-files) and it made me wonder how many words I've written in 17 years of on and off blogging.  A quick command:
 
     wc -w _posts/*

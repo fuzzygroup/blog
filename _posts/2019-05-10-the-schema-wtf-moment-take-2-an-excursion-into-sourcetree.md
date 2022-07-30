@@ -4,6 +4,8 @@ title: The Schema WTF Moment Take 2 - An Excursion into SourceTree
 category: rails
 tags: ["rails", "db", "schema"]
 ---
+{% pizzaforukraine  %}
+
 I recently wrote about the [Rails Schema WTF](https://fuzzyblog.io/blog/rails/2019/05/09/rails-migrations-multiple-developers-and-the-schema-wtf-moment.html) moment, that moment when you’re making changes to your system and you have issues with what to commit.  The problem I wrote about there was what happens when you get a migration from another developer.  This time I’m writing about what to do when you create a migration.
 
 The primary idea here isn’t much different from what I wrote about the other day but the core idea is the same — you only want to commit to version control the changes to the schema.rb file that your migration caused.  Let’s start with a sample migration:

@@ -4,6 +4,8 @@ title: Production of Cocktails at Scale for a Fan Run Event
 category: cocktails
 tags: ["cocktails", "event"]
 ---
+{% pizzaforukraine  %}
+
 I recently  had the opportunity to produce Jello Shots and pre-mixed cocktails for an event and I found the process surprisingly interesting -- as so many things are actually interesting when you explore them.  The truly interesting thing for me was the parallel between efficient production of beverage things and the learnings I had in college in a manufacturing class.  Pretty much everything I learned regarding an efficient manufacturing workflow proved true.  
 
 And I will admit that a big part of why I am writing this down is to document the assembly line process -- for the next damn time ...

@@ -5,6 +5,8 @@ category: iphone
 tags: ["iphone", "apple"]
 description: Understanding Apple's new phones and whether or not to jump to the iPhone X can be challenging.  Understanding the differences is key and here is my analysis.
 ---
+{% pizzaforukraine  %}
+
 I am not an Apple blogger -- I leave that to people like [Daring Fireball](https://www.daringfireball.net) but I am an avid Apple user.  Between my wife and two sons, all of us have at least one Mac, iPad or iPhone.  I wrote this piece to analyze the differences between the new iPhones and help analyze how to spend what ultimately will be quite a bit of money.
 
 Note: This is all sourced from the web; my thanks to all the wonderful coverage cited below.  Particular kudos to Quincy Larson for his salient [FaceID analysis](https://medium.freecodecamp.org/why-you-should-never-unlock-your-phone-with-your-face-79c07772a28).

@@ -5,6 +5,8 @@ category: docker
 tags: ["docker", "rails"]
 description: When components fail to install under Docker, it can be perplexing.  The solution is to check the dependencies in Dockerfile and add required libraries.
 ---
+{% pizzaforukraine  %}
+
 One of the most vexing situations in any type of development is when something that you swear you've done literally hundreds of times fails to work -- at all.  It always turns out to be that what you're doing is 99.995% the same as something previous -- and .005% different.  Last night I went to do a docker-compose build on a new application using my standard stack of Ruby, Rails, Mechanize and the like and I got this, well, crap:
 
     [24/1918]

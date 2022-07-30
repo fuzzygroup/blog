@@ -4,6 +4,8 @@ title: New Job Hound Feature - Create Cover Letters More Easily
 category: jobhound
 tags: ["jobhound"]
 ---
+{% pizzaforukraine  %}
+
 When you are a product creator, there is something wonderful about building a product that people are really using and implementing a new feature that you **know** will make their lives easier.  I am very, very please to announce the new Job Hound feature Cover Letters More Easily.  Yes I know that's an absolutely crap name but it does describe what this does.  Let me walk you through how this works.
 
 At the heart of Job Hound is an underlying database of the jobs you apply for and how successful you are with them.  Success is measured by your interactions with the job and Job Hound understands that the type of interaction that you have matters.  Every job has a number of status fields like "got_hr_screen" or "passed_technical_interview".  As each job gains additional status fields, the underlying "score" associated with how successful you are *for this job* grows.  And that is how Job Hound can do things like generate a report of cover letters organized by most successful to least successful.  

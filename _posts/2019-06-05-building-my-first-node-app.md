@@ -4,6 +4,8 @@ title: Building My First Node App
 category: node
 tags: ["node", "javascrpt"]
 ---
+{% pizzaforukraine  %}
+
 As anyone who reads this blog knows, I am a Ruby / Rails guy.  Yes I flirt with other things from time to but but, at heart, I am a ruby guy and specifically of the Rails flavor.  Part of the reason for that is that I adore the set of choices that Rails as a whole makes for me. I look at other communities, say Python or Node, and I always think "Man do I really want to figure out a collection of libraries for Task X, Task Y and Task Z and then figure out if they work together?".  I adore that Rails has put together a set of defaults that just plain work together.
 
 Now, that said, sometimes you do have to go farther afield than Rails and this week I found myself needing to put together a basic Node app for [one of my students](http://fuzzyblog.io/blog/how_to_be_a_developer/2017/07/02/how-to-be-a-developer-001.html) to run with.

@@ -4,6 +4,8 @@ title: Remote Work 01 - Write It Down
 category: remote_work
 tags: ["remote_work"]
 ---
+{% pizzaforukraine  %}
+
 This is the first in an N part series of short, succinct articles about Remote Work that I'll be writing.  I'm taking a new remote gig and I'm finding that codifying my thoughts on remote work is useful both for me and for people that I will likely end up managing.
 
 [All Remote Articles](https://fuzzyblog.io/blog/category.html#remote-work)

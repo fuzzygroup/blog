@@ -4,6 +4,8 @@ title: Never Type Bundle Exec Again
 category: rails
 tags: ["rails", "ruby"]
 ---
+{% pizzaforukraine  %}
+
 The command prefix "bundle exec" is something that I've typed probably a thousand, thousand, thousand times.  The bundle exec prefix goes in front of so many damn Rails commands and while I've seen other developers alias it to "be", that never felt right to me.  And now there's a workaround where I don't even have to type that thanks to the miracle of [Z-Shell](https://en.wikipedia.org/wiki/Z_shell) and [Oh My Zsh](https://ohmyz.sh/).  
 
 Edit your ~/.zshrc and add search for the word plugins and then change that line to this:

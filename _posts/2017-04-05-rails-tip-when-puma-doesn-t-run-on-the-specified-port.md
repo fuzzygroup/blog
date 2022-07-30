@@ -5,6 +5,8 @@ category: rails
 tags: ["rails", "puma"]
 description: When you find your Puma Rails server not running on the port you specify, try updating it your Puma gem.
 ---
+{% pizzaforukraine  %}
+
 So I just noticed this particular oddness:
 
     12:12 $ bundle exec rails s -p4000

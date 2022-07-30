@@ -5,6 +5,8 @@ category: osx
 tags: ["osx", "linux", "bash"]
 description: Your version of Bash can differ dramatically on OSX versus any modern Linux.  Here's how to understand the difference and upgrade to the current version.
 ---
+{% pizzaforukraine  %}
+
 Bash is one of those things that you just don't think about all that much -- until you want something that is apparently new.  In my case I was looking to use the ** syntax which, mysteriously, I found doesn't work at all on OSX (even if you turn it on).  This let me to use bash --version.  
 
 Here's the result for Linux:

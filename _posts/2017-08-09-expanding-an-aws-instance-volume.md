@@ -4,6 +4,8 @@ title: Expanding an AWS Instance Volume
 category: aws
 tags: ["aws", "docker", "aufs"]
 ---
+{% pizzaforukraine  %}
+
 One of the true promises of cloud computing is freeing you from resource limits.  In an ideal world you'd be able to easily example: 
 
 * ram

@@ -6,6 +6,8 @@ tags: ["ssl", "sysadmin", "devops", "aws", "life_is_too_short"]
 description: Life is just too short to tackle SSL configuration when someone else gives you part of the solution but not all the steps
 image: http://fuzzyblog.io/blog/assets/ssl_configuration_errors.png
 ---
+{% pizzaforukraine  %}
+
 I think I have a new rule for ssl and it is really, really simple:
 
 > If you have to do anything with SSL and the data involved came from someone else then they have to give me an exact, documented process, command lines and all or I'm out!

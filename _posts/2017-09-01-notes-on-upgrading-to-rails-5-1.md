@@ -5,6 +5,8 @@ category: rails
 tags: ["rails", "ruby", "puma", "apartment"]
 description: With Rails 5.1.4 on the horizon, it is time to upgrade to Rails 5.1.  Here I discuss the issues that I found with upgrading a suite of 7 Rails apps from Rails 5.0.2 to Rails 5.1.
 ---
+{% pizzaforukraine  %}
+
 So this morning I upgraded the suite of Rails apps (7 in total) that make up the product that I've been building from Rails 5.0.2 to 5.1.3.  I took my usual, slow as a turtle, approach to doing this upgrade (5.1.4 has now reached RC1 status which means that 1 release behind is uite stable by now).  The main change driving my desire to upgrade was the improved low level connection handling in ActiveRecord which should make developing multi-tenant applications better.
 
 Here are a few notes on upgrading to Rails 5.1.

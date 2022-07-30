@@ -6,6 +6,8 @@ tags: ["linux_tip_of_the_day", "linux", "curl"]
 description: Linux Tip of the Day - Use curl to fetch urls all kinds of different ways
 image: http://fuzzyblog.io/blog/assets/curl.png
 ---
+{% pizzaforukraine  %}
+
 While I try hard to write things described as "* of the day" regularly there are times when life throws you a curve ball.  Yesterday's curve ball was the intersection of sick child, snow and a failed sewage lift pump led to, well, personal hell at home.  After a very busy work day I spent the evening that I had allocated to writing, well, playing clean up man before the real plumber showed up.  Anyway ... on to curl!
 
 The standard Linux tool curl seems to always be present on Linux / OSX systems so I can skip over the installation issues and I suspect most of us know the basics i.e.:

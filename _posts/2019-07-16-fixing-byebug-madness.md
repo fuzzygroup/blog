@@ -4,6 +4,8 @@ title: Fixing ByeBug Madness
 category: ruby
 tags: ["ruby", "rails"]
 ---
+{% pizzaforukraine  %}
+
 I learned an interesting and subtle trick today.  As is all too true lately, my pairing partner, [Sean Kennedy](https://csphere.github.io/), gets the credit for this one.  I had the ruby debugger, byebug, embedded in a view context and I noticed that while this should have brought up a breakpoint, it way, way, way, way overstepped the break point and shot beyond, going into core Rails stuff.  And then Sean told me this trick:
 
     <%# a = 1; byebug; b = 2; %>

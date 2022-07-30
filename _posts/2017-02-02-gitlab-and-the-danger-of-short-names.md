@@ -4,6 +4,8 @@ title: Gitlab and The Danger of Short Names
 category: sysadmin
 tags: ["sysadmin", "devops", "gitlab", "iterm"]
 ---
+{% pizzaforukraine  %}
+
 So the other day we had the gitlab disaster.  As my friend Nick described it to me via chat: 
 
 > did you hear about gitlab?

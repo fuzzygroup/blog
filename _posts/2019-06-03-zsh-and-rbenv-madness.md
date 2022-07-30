@@ -4,6 +4,8 @@ title: Zsh and RbEnv Madness
 category: ruby
 tags: ["ruby", "zsh", "rbenv "]
 ---
+{% pizzaforukraine  %}
+
 I'm a Mac user and I recently switched over from Bash to Zsh.  I then got massive weirdness when I switched from Terminal Window 1, Tab 1 to say Terminal Window 3, Tab 9 (yes I have a problem; I'm sure you have your own problems; now shoo!).  Specifically I would see that in the first Terminal Window, I would get the right version of Ruby and then in the second Terminal Window, I would get the "system ruby".  
 
 This requires a bit of an explanation for the less than Ruby familiar:

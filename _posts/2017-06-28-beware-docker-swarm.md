@@ -4,6 +4,8 @@ title: Beware Docker Swarm
 category: docker
 tags: ["docker", "swarm", "devops"]
 ---
+{% pizzaforukraine  %}
+
 I have previously mentioned that I was using Docker Swarm and fairly happy with it.  I even went so far as to document the [deploy process](http://fuzzyblog.io/blog/devops/2017/06/20/no-ci-and-no-cd-deploying-docker-swarm-with-bash-and-ansible.html).  I now have to retract everything positive I said about Docker Swarm.  I have now reverted to just using Docker and Docker Compose and bare containers with an AWS ELB on top of it.  Here's why:
 
 1.  I attempted to have multiple apps with Docker Swarm on the same instance.  Nothing seemed to work and I had continuous troubles including containers running out of memory and the instance itself becoming hugely unresponsive.  This led me to the conclusion that Docker Swarm wasn't really ready for production.

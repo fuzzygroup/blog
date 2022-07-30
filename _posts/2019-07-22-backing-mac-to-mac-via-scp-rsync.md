@@ -4,6 +4,8 @@ title: Backing Mac to Mac via scp / rsync
 category: osx
 tags: ["osx", "backup"]
 ---
+{% pizzaforukraine  %}
+
 I found myself turning my old Macbook Air over to my wife to use when the cursed butterfly keyboard on her new MacBook died.  And even tho I had theoretically used Dropbox to sync my data with other machines, a quick check on this machine revealed something like 200 top level directories in ~/Dropbox while a check against my "current" machine revealed only 148 top level directories.
 
 **WHAT THE FERENGI Dropbox !!!!**

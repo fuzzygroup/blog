@@ -5,6 +5,8 @@ category: osx
 tags: ["osx", "kernel_panics", "kexts"]
 description: When your Mac crashes regularly but without a clear cause, how do you look for a solution?
 ---
+{% pizzaforukraine  %}
+
 As I've noted in [other places](http://fuzzyblog.io/blog/text/2017/10/08/forensic-computing-1-finding-textmate-untitled-documents.html), my Mac crashes a lot.  For some time now I've just sort of accepted this as a consequence of how I do things.  I'm a software developer and I tend to push the limits of everything.  Part of the reason that I accept it is that my computing usage is more than a bit non standard and I suspect that I'm running up against nothing more than resource limits.  Just as an example, at the start of my day, my terminal count looks something like this: 
 
     ps auwwx | grep bash | wc -l

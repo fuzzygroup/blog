@@ -5,6 +5,8 @@ category: mysql
 tags: ["osx", "mysql", "mariadb", "saas", "ruby", "hyde"]
 description: Undertanding how your data is stored is key to estimating the size of the servers you need to lease.  Here I look into mysql disc usage.
 ---
+{% pizzaforukraine  %}
+
 Your permanent storage for a SAAS app is always one of your single biggest per user costs.  There are two ways to get this info -- at the SQL layer with a query and at the filesystem layer.  Each method is explained.
 
 # Getting Disc Space From MySQL With a Query

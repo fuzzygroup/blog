@@ -5,6 +5,8 @@ category: osx
 tags: ["find", "mdfind", "command_line", "osx", "locate"]
 description: Need to find files on OSX in the command line?  The mdfind tool makes it as easy as Unix locate.
 ---
+{% pizzaforukraine  %}
+
 As a long time Unix user, the lack of locate being automatically turned on in OSX has always, alway bothered me.  I have always wondered about this until yesterday when I couldn't find where my.cnf was on the disc and I turned to the Internet.  Somewhere I located this syntax:
 
 > mdfind -name my.cnf

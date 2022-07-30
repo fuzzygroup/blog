@@ -4,6 +4,8 @@ title: Jumpstart and GoRails Has Outstanding Tech Support - Go Chris Oliver Go -
 category: rails
 tags: ["rails", "jumpstart"]
 ---
+{% pizzaforukraine  %}
+
 Technical support gets a bad rap in the industry but there are time when technical support proves **just how good a product or service can be** -- and this is one of those times.  
 
 I'm very much a Rails guy and I've been debating trying [Jumpstart Pro](https://jumpstartrails.com/) for some time.  I finally have a crappy little SAAS idea and this is likely the perfect time for me to try it -- because I have written **zero** code so far.  Now JumpStart is a paid product that amounts to a pre-build starting Rails app with all the necessary cruft for a SAAS app already built.  So it really only works when you are in a pure greenfield state.  So this is perfect for JumpStart Pro.  

@@ -5,6 +5,8 @@ category: rails
 tags: ["rails", "javascript", "css", "images"]
 description: When you're an old school web developer, sometimes today's front end world can be challenging.  Here I talk about how to use JavaScript and CSS to improve image zooming in a Rails app.
 ---
+{% pizzaforukraine  %}
+
 I am, as I have often written, front end challenged.  I grew up on the Internet writing HTML long before JavaScript and CSS and there's that old aphorism about old dogs, new tricks... Happily, the people in my nerd life, offer to teach me a trick or two from time to time and, well, [Nick](https://www.nickjanetakis.com/blog/) came thru for me this morning so I thought I'd write it all down.
 
 The problem at hand was a landing page for a SAAS app with screenshots where it was hard to read the text in the screenshots (think a dense, information packed dashboard).  Nick said to me "those should be zoomable; just [zoom.js](http://github.com/fat/zoom.js)".  I made my usual grumbles about being front end challenged but then realized that I was basically being a **winer** -- and I hate winers, so to work!

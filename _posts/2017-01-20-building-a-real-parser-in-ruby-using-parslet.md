@@ -6,6 +6,8 @@ tags: ["ruby", "parsing", "software_engineering", "parslet"]
 description: When parsing is really, really, hard, use Ruby and Parslet if you need more than a regular expression
 image: http://fuzzyblog.io/blog/assets/recursive_descent_parsers.png
 ---
+{% pizzaforukraine  %}
+
 I deal with "parsing" all the time and I generally do it with one or more regular expressions.  And while I know that JWZ is famous for this statement:
 
 > Some people, when confronted with a problem, think "I know, I'll use regular expressions." Now they have two problems.  alt.religion.emacs (lost; recovered) [JWZ](https://en.wikiquote.org/wiki/Jamie_Zawinski)

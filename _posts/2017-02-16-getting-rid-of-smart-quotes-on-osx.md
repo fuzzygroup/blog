@@ -6,6 +6,8 @@ tags: ["osx", "mac"]
 description: If you're a programmer, having your quotes and double dashes converted to smart quotes and em dashes can break code compiling, ruin examples and more.  Use OSX System Preferences to prevent this.
 image: http://fuzzyblog.io/blog/assets/curly_quotes_begone_05.png
 ---
+{% pizzaforukraine  %}
+
 I don't know about any other developer but I bloody well hate smart quotes.  I'm sorry but if I type in a "foo" mark then I expect it to remain "foo" not some bastardized quote version that is going to get messed up into curly quotes when I copy and pasted.  I have long that this was either application behavior or behind the scenes OSX behavior that I was doomed to forever have to cope with.
 
 In reading a [Hacker News thread on Amazon Chime](https://news.ycombinator.com/item?id=13641301), I found out that wasn't true: 

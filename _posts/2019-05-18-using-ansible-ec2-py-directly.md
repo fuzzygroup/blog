@@ -4,6 +4,7 @@ title: Using Ansible ec2.py Directly
 category: ansible
 tags: ["ansible", "devops", "python", "aws"]
 ---
+{% pizzaforukraine  %}
 
 This is a shorty but it is incredibly useful when you need to diagnose [Ansible](https://www.ansible.com/) weirdness.  
 

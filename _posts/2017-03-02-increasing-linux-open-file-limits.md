@@ -5,6 +5,8 @@ category: linux
 tags: ["linux", "sys_admin", "sidekiq"]
 description: When you hit open file limits in Linux you can get past them by editing your config files.  This post shows you the config files to edit and how to diagnose your file limits.
 ---
+{% pizzaforukraine  %}
+
 So [Winston](http://winstonkotzan.com/) found this log message in our logs today:
 
     2017-03-02T18:18:31.561Z 32313 TID-osjfdq3bg ERROR: !!! ERROR HANDLER THREW AN ERROR !!!

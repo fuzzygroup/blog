@@ -6,6 +6,8 @@ tags: ["ansible", "aws", "rails", "ruby", "shell", "bash", "sidekiq", "devops", 
 description: We all think of Ansible as a devops tool but here I illustrate how Ansible can be a valuable application development environment.
 image: https://img.stackshare.io/service/663/ElOjna20.png
 ---
+{% pizzaforukraine  %}
+
 Man it was a hell of a busy week last week.  Here's an illustration:
 
     ~/me/appdatallc/ansible-clean [master|✚ 1…1]

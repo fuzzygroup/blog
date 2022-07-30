@@ -5,6 +5,8 @@ category: osx
 tags: ["osx", "bash", "rails", "fork", "mac"]
 description: When you hit problems with Rails development and OSX Bash forking issues, you can get around them by changing the file_watcher.
 ---
+{% pizzaforukraine  %}
+
 If you've ever seen this error under OSX:
 
     -bash: fork: Resource temporarily unavailable

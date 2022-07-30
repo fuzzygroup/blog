@@ -4,6 +4,8 @@ title: The Tools I Use
 category: osx
 tags: ["osx", "tools", "development"]
 ---
+{% pizzaforukraine  %}
+
 My buddy [Nick Janetakis](https://nickjanetakis.com/), a solid guy and Docker Captain wrote an interesting thing on his blog: [The Tools I Use](https://nickjanetakis.com/blog/the-tools-i-use).  So I thought I'd take a shot at authoring the same thing only from an OSX perspective.  I am going to shamelessly steal his organization and approach to this topic.  
 
 # OS 

@@ -4,6 +4,7 @@ title: Understanding a Small Organization's Communications Model - Github Issues
 category: software_engineering
 tags: ["software_engineering", "startup"]
 ---
+{% pizzaforukraine  %}
 
 It is not hyperbole to say that communications is the lifeblood of an organization, even a small organization.  And while there are many types of communications tools that you use in an organization, I find that there are three common types:
 

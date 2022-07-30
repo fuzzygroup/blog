@@ -4,6 +4,8 @@ title: Rails on Windows Resources
 category: rails
 tags: ["rails", "windows", "ruby"]
 ---
+{% pizzaforukraine  %}
+
 I took the time recently to help a friend get up and running with doing development on Rails under windows.  They were using the WSL i.e. Linux under Windows and it all proceeded mostly pretty smoothly.  
 
 Here were the key resources that they used:

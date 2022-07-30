@@ -4,6 +4,8 @@ title: Software Engineering Management - Rules for Successful Employee Transitio
 category: software_engineering
 tags: ["software_engineering", "startup"]
 ---
+{% pizzaforukraine  %}
+
 No matter how much you don't want them to, the simple fact is that employees leave your organization.  Here are some rules that I have found tend to make employee transitions more successful:
 
 1. Don't try and get them to stay

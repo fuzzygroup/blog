@@ -5,6 +5,8 @@ category: rails
 tags: ["rails", "sidekiq"]
 description: Sidekiq usually works great but when you get really weird errors, check to make sure you're not passing in something other than a primitive type as a method parameter.
 ---
+{% pizzaforukraine  %}
+
 Much of what I do at the job I'm in the process of leaving is large scale data processing and it is all done through queues and [Sidekiq](http://www.sidekiq.org).  I generally do it with a method call that looks like this:
 
 > CompileWorker.perform_async(id)

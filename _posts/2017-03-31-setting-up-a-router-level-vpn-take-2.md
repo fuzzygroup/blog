@@ -5,6 +5,8 @@ category: vpn
 tags: ["vpn", "privacy", "security", "router"]
 description: Given that Congress has now made it legal for your ISP to sell your Internet browsing history, its time to protect yourself with a VPN that allows you to use Netflix.  Here's how.
 ---
+{% pizzaforukraine  %}
+
 Three days ago [I wrote up how to configure a Router level vpn](http://fuzzyblog.io/blog/vpn/2017/03/29/setting-up-a-router-level-vpn-to-secure-your-browsing.html) to secure your Internet browsing so your ISP can't know where you're visiting and sell your Internet history.  That tutorial is still very relevant but the commercial VPN provider I used, [StrongVPN](http://www.strongvpn.com/), prevented me from using Netflix.  My initial plan had been to turn the VPN on / off at the router level when we wanted to use Netflix but my kids apparently use Netflix very regularly when I'm at work so that's kind of a non starter.  This meant that I needed a different VPN solution -- one that I ran myself and not a commercial provider.
 
 The reason that Netflix blocks VPN access is that they don't want customers in other countries buying the US version of Netflix to get around country specific content licensing.  And since any VPN provider is an ongoing business with a persistent set of IP ranges, Netflix can easily block any centralized VPN provider just by noting "Ok - StrongVPN is using xxx.yyy.vvv.zzz" so using any commercial provider is always going to play cat and mouse.  The one I used, StrongVPN, had a history of being Netflix compliant but that's apparently no longer the case.  

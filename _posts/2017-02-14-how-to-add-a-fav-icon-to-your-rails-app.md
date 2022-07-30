@@ -6,6 +6,8 @@ tags: ["rails", "hyde", "design", "user_interface", "ui", "rails_in_10_minutes"]
 description: Adding a favicon to your Rails app means that people can use a link to your app by an easy to remember icon not just a name when they add it to their browser link bar.
 image: http://fuzzyblog.io/blog/assets/browser_link_bar.png
 ---
+{% pizzaforukraine  %}
+
 I am a huge, huge believer in what are called "favicons".  These are the tiny icons that your web application declares to the world:
 
 > "here's a visual representation of **this site** to use when someone creates a bookmark link to me on their browser link bar"

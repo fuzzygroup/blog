@@ -5,6 +5,8 @@ category: medium
 tags: ["medium", "blogging"]
 description: How can Medium have such basic problems with usability at this stage in its life?
 ---
+{% pizzaforukraine  %}
+
 Yesterday I was at the movies with my son and during the endless roll of trailers, promos and advertisements, I was terribly, terribly bored so I dropped into the Medium app and saw something that I **knew** I wanted to read in more depth so I hearted it (by hearted I mean I clicked on the heart icon on the toolbar and watched it change color).  I figured that would be enough to find it later.  I also remembered a little bit about it:
 
 * author: james altschuler

@@ -5,6 +5,8 @@ category: ruby
 tags: ["ruby", "rails", "generators", "pattern_generator", "hyde"]
 description: When you create your own gem it can sometimes be hard to get it to update in the Gemfile where you use it.
 ---
+{% pizzaforukraine  %}
+
 In case you haven't figured out yet that I write stuff here as much for myself as for anyone else, well, its true.  Almost every single day I find myself going back to my own blog as a reference tool.  Today I'm writing a part two to my [Working with the Gem Ecosystem](http://fuzzyblog.io/blog/ruby/2016/08/17/working-with-the-gem-ecosystem.html) post.
 
 My thanks are extended to [Nick](http://www.nickjanetakis.com/blog/) who helped clarify the Gem update process and pointed out the need to embed the branch name in the Gemfile.  He picked this up from his work on the [Orats gem](https://github.com/nickjj/orats) which is very useful if you're into Rails and Docker.

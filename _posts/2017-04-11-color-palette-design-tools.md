@@ -6,6 +6,8 @@ tags: ["design", "color"]
 description: Ever try and read dark gray text on a light gray background?  If more designers used color palette tools like these, maybe that wouldn't happen.
 image: http://fuzzyblog.io/blog/assets/color_palette_tool.png
 ---
+{% pizzaforukraine  %}
+
 Well Google released their new color palette tool for [Material](https://material.io/color/) and I thought I should point out some of the other tools for this: 
 
 * [Sankk.in](https://www.sankk.in/material-mixer/)

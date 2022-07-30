@@ -4,6 +4,8 @@ title: Moving to Zsh on OSX in 2019
 category: shell
 tags: ["shell", "zsh", "osx"]
 ---
+{% pizzaforukraine  %}
+
 Note: Before you follow these instructions, see Postscript at the end.
 
 I have a long and twisted relationship with *nix shells.  My computing history started on 8 bit boxes where the was close to no shell (just Basic) and then transitioned to DOS.  I moved to Unix initially in 88 (Sun 3s) and then went to Linux full time in '99 and OSX finally in 2005.  And despite all that, I still struggle with *nix shells; my prompt is never right, my shell scripting blows chunks, etc.  Sigh.  But the one thing I hate, hate, hate, *censored* hate is that with Bash, my history is always screwed up.  I actually like Bash a bit but I am so damn tired of every Bash session on my machine having a different history and each terminal window racing in a Darwinian competition of "let my history win!".  

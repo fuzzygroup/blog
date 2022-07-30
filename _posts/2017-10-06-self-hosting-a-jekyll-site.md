@@ -6,6 +6,8 @@ tags: ["jekyll", "blogging", "startup"]
 description: Jekyll can be ridiculously easy to work with when you're using it with Github Pages but what about when Jekyll is running on your own server, how do you handle it?
 image: http://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2015/02/1424055625jekyll.png
 ---
+{% pizzaforukraine  %}
+
 I've been a blogger since 2002 and over the years there have been a lot of different blogging tools: Radio, WordPress, Serendipity, Movable Type, TypePad, b2, etc.  After a long, on and off hiatus, I made the decision in 2016 to get serious about blogging again and at that point I committed to [Jekyll](https://jekyllrb.com/).  The reason was really the simplicity of: 
 
 * Having all my blog posts in a filesystem, not a database, was a transformative and wonderful experience

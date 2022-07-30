@@ -4,6 +4,8 @@ title: Welcome to An Alexa House
 category: alexa
 tags: ["alexa", "amazon"]
 ---
+{% pizzaforukraine  %}
+
 Our house is largely powered by Amazon Alexa's devices.  I have even gone so far as to put them into our guest bedroom.  This blog post was written as something I put on the dresser for our first house guests using the room after I changed the lighting over to be Alexa powered.  Yep.  I've just written documentation for the guest room.  Deep Sigh.  On the positive side my house now has a very, very Star Trek feel to it.  This makes me happy.
 
 For people who don't know what an Alexa is, an Alexa is a voice based computing platform that allows you to issue voice commands that can do lots and lots of different things like play music, turn on lights, supply a romantic or dimmed light mood instead of using candles, set timers, etc.  

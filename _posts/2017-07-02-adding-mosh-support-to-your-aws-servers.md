@@ -5,6 +5,8 @@ category: aws
 tags: ["aws", "mosh", "devops", "osx", "ansible"]
 description: When you find that your SSH connections are unreliable, particularly on mobile, the using mosh instead of ssh can improve the reliability of your server access.
 ---
+{% pizzaforukraine  %}
+
 Mosh is an open source project that I've been tracking for the past several years as an SSH replacement and it appears that it is finally at a point where it is ready for me to put it into production.  In this tutorial I document the process of installing Mosh client side and server side along with the necessary security group configuration.  In case you're not aware of Mosh, [Mosh](https://mosh.org/) is a UDP based addition to SSH which improves the reliability of connecting to your servers, particularly on mobile.  One of the notable benefits of mosh over ssh is that mosh doesn't fill up buffers so a CTRL+C key sequence actually stops things immediately. 
 
 # Step 1: Installing the Mosh Client Software

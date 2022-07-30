@@ -4,6 +4,8 @@ title: Development Anti Pattern - Two Objects with Almost the Same Structure
 category: anti_patterns
 tags: ["software_development", "anti_patterns"]
 ---
+{% pizzaforukraine  %}
+
 One of the beautiful things about greenfield development, that joyous process of starting anew on something, is that it lets you see errors that you make much more cleanly.  And this is a combination of a few things:
 
 1.  The Forest for the Trees.  In a big code base, any errors you make aren't that visible because they are drowned out by all the other bits of code.

@@ -6,6 +6,8 @@ tags: ["linux_tip_of_the_day", "linux", "jq"]
 description: Linux Tip of the Day - Use jq for command line JSON processing.
 image: http://fuzzyblog.io/blog/assets/jq.png
 ---
+{% pizzaforukraine  %}
+
 I made either the happy decision to do some late night Hacker News reading last night and I found a really interesting bash script -- **[hncomments](https://github.com/jgrahamc/hncomments/blob/master/hncomments)**.  This is a tool which looks at a data feed from HackerNews, through the algolia search engine, and emails you when comments matching what you are interested in appear.  My interest in it stemmed from its author - [John Graham Cumming (jgrahamc)](http://www.jgc.org/).  He's one of those programmers who I've always admired purely from an intellectual basis.  Anyone who can write books with the intellectual breadth of [Geek Atlas](https://www.amazon.com/gp/product/0596523203?ie=UTF8&tag=jgcorg-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0596523203), [Gnu Make](https://www.nostarch.com/gnumake) and [Introduction to Go](http://shop.oreilly.com/product/0636920035305.do) has to be worth admiring.
 
 Anyway I went to get this running and realized that it requires dependencies of jq, recode, sed and curl -- and I didn't even know what jq was so my thought was *this is a series of Linux Tips of the Day!*.  For the next few days I'll be talking about each of these starting with jq.  So, John, thank you for the idea and here's a tip on JQ.  After I write tips for each of these, I'll follow through with getting this whole thing running.

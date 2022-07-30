@@ -4,6 +4,8 @@ title: Ten Things I Learned from a Job Hunt for a Senior Engineering Role
 category: jobhound
 tags: ["jobhound", "jobs"]
 ---
+{% pizzaforukraine  %}
+
 I recently went on a search for a new full time gig and I learned that today's job search is **not** what it used to be.  Here's the quick summary of what I learned:
 
 1.  The job search takes much, much longer than it used to.

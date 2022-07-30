@@ -4,6 +4,8 @@ title: Rails Migration Tips and Tricks
 category: rails
 tags: ['rails', 'migration', 'db', 'database']
 ---
+{% pizzaforukraine  %}
+
 A migration is the Rails facility which alters a database's structure.  Migrations are an essential aspect of all database development with Rails and they generally work quite well with the default command: 
 
     bundle exec rake db:migrate

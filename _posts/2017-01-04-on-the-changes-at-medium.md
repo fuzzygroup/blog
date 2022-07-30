@@ -4,6 +4,8 @@ title: On the Changes at Medium
 category: medium
 tags: ["medium", "blogging", "startup"]
 ---
+{% pizzaforukraine  %}
+
 So Ev has just announced major layoffs at Medium:
 
 > I’ll start with the hard part: As of today, we are reducing our team by about one third — eliminating 50 jobs, mostly in sales, support, and other business functions. We are also changing our business model to more directly drive the mission we set out on originally. [Renewing Medium](https://blog.medium.com/renewing-mediums-focus-98f374a960be#.kh7coodv8)

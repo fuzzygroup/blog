@@ -5,6 +5,8 @@ category: music
 tags: ["music", "random", "echo", "alexa", "10x", "david_rovics"]
 description: If I was a traveling musician, here's how I would make money from touring...
 ---
+{% pizzaforukraine  %}
+
 My friend David Rovics, on his blog and email newsletter, [laments the loss of CDs as a revenue stream for the traveling musician](http://songwritersnotebook.blogspot.com/2017/01/why-do-they-keep-begging.html).  I'm not a traveling musician but I suspect that he is absolutely right.  As I gaze across my desk of computing hardware:
 
 ![my_desk.jpg](/blog/assets/my_desk.jpg)

@@ -4,6 +4,8 @@ title: So You Get Ideas In the Car And Don't Want to Die
 category: phone
 tags: ["phone", "writing"]
 ---
+{% pizzaforukraine  %}
+
 One of my very best friends has a great saying “There’s no dying in xyz” and I firmly agree with her. The topic today is “I get ideas in the car and I forget them / I don’t want to die trying to write them down”.  A friend recently referenced this and this is my approach to this.  I also have a teenage son who is working on his license.  And while I will tell him "phone in glove box while driving", I'm also realistic enough to know that he might not follow that.  And perhaps this will help him also.
 
 1.  The safest approach is to use your phone's voice recorder.  But the key thing is to move the voice recorder app to your home screen.  It can't be buried on the fifth page of icons. 

@@ -4,6 +4,8 @@ title: HTTPS And Your Custom Domain on Github Pages
 category: https
 tags: ["https", "blogging", "GitHub", "git"]
 ---
+{% pizzaforukraine  %}
+
 Github for sometime now has supported https for *.github.io (aka GitHub pages).  And they have allowed it for custom domains as well.  However I was never able to figure this out until yesterday.  Here was the magic process and well as some references.
 
 My issue was that I had three “sites” hosted on GitHub pages:

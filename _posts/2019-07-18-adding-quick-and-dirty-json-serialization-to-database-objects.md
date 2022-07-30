@@ -4,6 +4,8 @@ title: Adding Quick and Dirty JSON Serialization to Database Objects
 category: rails
 tags: ["rails", "ruby"]
 ---
+{% pizzaforukraine  %}
+
 So let's say that you're building a system where you need to configure things like measurements and you know that some people like pounds and some people like kilograms.  One option is to hard code a database structure where you have an attribute for each.  And while that works, there are always going to be some more measurement types in the world and this approach leads you to an endless array of sucking database column changes.  
 
 Another approach is to add a text column to your database and store a JSON blob in it.  Rails actually makes this pretty easy with a migration and a declaration:

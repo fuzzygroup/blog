@@ -4,6 +4,8 @@ title: What to Do When an Engineer Leaves Your Organization
 category: management
 tags: ["management", "hr", "startup"]
 ---
+{% pizzaforukraine  %}
+
 No one likes it when an employee leaves the company, let alone an engineer, let alone a senior engineer.  However, the reality is that employees leave companies all the time and the role of the company in this situation is really, really simple: **protect itself**.  Once an employee leaves, the only rational choice of the company is to assume that the interests of the company and the employee are no longer aligned and to treat the departed employee as a security risk.
 
 **Note**: This is mildly AWS specific but there should be enough goodness in here for any organization.

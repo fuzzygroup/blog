@@ -4,6 +4,8 @@ title: Linux Tip Of The Day - Using rsync for Backup
 category: linux
 tags: ["linux", "sysadmin", "devops", "backup", "linux_tip_of_the_day"]
 ---
+{% pizzaforukraine  %}
+
 Once upon a time when I had complex file copying to handle, I used **xcopy**.  It has been a lot of years since DOS and xcopy and as of late, I reach for rsync.  Yesterday I had the situation where I wanted to make a command line which would take the contents of two drives and backup from drive A to drive B -- full copy.  It was enough files that, well, I just wouldn't trust any gui operation with it (hundreds of gigs if not a terabyte).
 
 This is a problem that I've tried before to tackle and actually failed at so I grabbed [Nick](http://www.nickjanetakis.com/blog/) via [Google Hangouts](http://hangouts.google.com/) and he and I whipped it together easily.  We started with:

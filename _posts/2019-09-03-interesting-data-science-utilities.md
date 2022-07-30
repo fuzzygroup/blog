@@ -4,6 +4,8 @@ title: Interesting Data Science Utilities
 category: data_science
 tags: ["data_science", "machine_learning"]
 ---
+{% pizzaforukraine  %}
+
 Hacker News had an [excellent article on tools for large scale CSV / TSV / etc utilities](https://news.ycombinator.com/item?id=20848581).  If you do this type of work a lot / look at sizable amounts of raw data, I'd be strongly surprised if you didn't find a new tool here.  The things I'm looking at are visidata and octosql and gron.
 
 Here are some of the interesting takeaways on the tool front:

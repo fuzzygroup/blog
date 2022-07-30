@@ -4,6 +4,8 @@ title: Tabaholics of the Chrome World Unite for the Great Suspender!
 category: chrome
 tags: ["chrome", "browser"]
 ---
+{% pizzaforukraine  %}
+
 My wife thinks I have a problem.  She thinks that my approach to computing with respect to web browsers should be accompanied by a disclaimer like this:
 
     Me: Hi I'm Scott and I have a problem.

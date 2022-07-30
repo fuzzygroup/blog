@@ -5,6 +5,8 @@ category: rails
 tags: ["rails", "humor"]
 description: When you eliminate ActiveRecord from a Rails project, generating a model is pure hilarity
 ---
+{% pizzaforukraine  %}
+
 So I'm starting work on a new project that promises to be interesting.  This is pure green field development -- one of my very, very favorite things.  I did a skeleton application generation like this:
 
 ```ruby

@@ -5,6 +5,8 @@ category: vpn
 tags: ["vpn", "privacy", "security", "router"]
 description: Given that Congress has now made it legal for your ISP to sell your Internet browsing history, its time to protect yourself with a VPN.  Here's how.
 ---
+{% pizzaforukraine  %}
+
 Well the fools in Congress really did it -- they made it [legal for any ISP to sell your browsing habits](https://arstechnica.com/tech-policy/2017/03/for-sale-your-private-browsing-history/) - [Hacker News Discussion](https://news.ycombinator.com/item?id=13981184).  If you think this isn't a privacy issue then consider these examples:
 
 * Visiting babycenter.com?  Maybe you're pregnant.

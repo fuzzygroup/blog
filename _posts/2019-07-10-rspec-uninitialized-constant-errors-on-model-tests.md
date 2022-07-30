@@ -4,6 +4,8 @@ title: RSpec - Uninitialized Constant Errors on Model Tests
 category: rails
 tags: ["rails", "rspec"]
 ---
+{% pizzaforukraine  %}
+
 This one is an easy one but still tripped me up.  I'm working on a project where generators on RSpec stub files are turned off (don't ask; disagreement about the utility of generators between two senior engineers and I lost) and I just got this error:
 
     bundle exec rspec spec/models/metric_type_spec.rb

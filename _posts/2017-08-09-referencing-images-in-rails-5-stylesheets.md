@@ -4,6 +4,8 @@ title: Referencing Images in Rails 5 CSS Stylesheets
 category: rails 
 tags: ["rails", "CSS"]
 ---
+{% pizzaforukraine  %}
+
 I recently had the issue where I switched the images in my stylesheet from an absolute url on someone else's domain to a relative path indicating a file in my /app/assets/images directory and that worked fine -- until I deployed and then my image disappeared.  It took a few iterations to figure it out and here's the trick:
 
 1.  Make sure you are using the sass-rails gem which provides the necessary helpers.

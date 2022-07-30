@@ -4,6 +4,8 @@ title: Rails, Migrations, Multiple Developers and the Schema WTF Moment
 category: rails
 tags: ["rails", "schema", "migration"]
 ---
+{% pizzaforukraine  %}
+
 I’ve been doing Rails now since 2007.  However for much of that time I was a project lead and one of the tasks that I reserved for myself was *all* schema changes.  One of the benefits of that was that because I did all the primary schema changes, I rarely, if ever, had schema conflicts.  I am now on a project where, while I am a Senior Software Engineer, I am not the lead and the schema changes are done by everyone on the team, all the time.  
 
 The consequence of this is that while Rails should handle any schema conflicts correctly, well, *should* is the operative term.  In practice we have found that depending on how you do your git pull and git branching, you often (like every damn branch you make) end up with a schema conflict.  And since our schema file is enormous (think over 3,000 lines in schema.rb), figuring this out can be brutal.  This moment where you realized that your schema is borked is what I call the *Schema WTF Moment*.

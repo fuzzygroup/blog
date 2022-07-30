@@ -5,6 +5,8 @@ category: ansible
 tags: ["ansible", "ansible-galaxy"]
 description: When Ansible Galaxy won't function correctly then there is a work around albeit a mildly hacky one.
 ---
+{% pizzaforukraine  %}
+
 As of late I have manually bootstrapped a handful of machines into production using a text file with some command lines.  Yes this is a crap ass way to do it but one of the key things, Docker, is a damn pain in the ass to install.  Here's what I was using as the command lines:
 
     sudo apt-get install \

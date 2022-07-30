@@ -6,6 +6,8 @@ tags: ["rails", "hyde"]
 description: Visual Studio Code is actually a pretty awesome editor and its available for Windows, OSX and Linux and it is from Microsoft.  The world really does change.
 image: https://code.visualstudio.com/images/codebasics_sidebyside.png
 ---
+{% pizzaforukraine  %}
+
 Editors are among the stickiest of software tools for a developer.  Want to get me to change editors -- good luck!  I've been using [TextMate](https://macromates.com/) since 2006 now and only switched off the long obsolete TextMate 1 to TextMate 2 about a year ago.  Editors are just that sticky.  Here are some of the things I've tried and rejected since the point I realized that I'm stuck in legacy land:
 
 * Sublime (didn't feel right)

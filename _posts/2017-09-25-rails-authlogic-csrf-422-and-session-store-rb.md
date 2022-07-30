@@ -4,6 +4,8 @@ title: Rails, AuthLogic, CSRF, 422 and session_store.rb
 category: rails
 tags: ["rails", "authlogic", "csrf"]
 ---
+{% pizzaforukraine  %}
+
 When you're a professional developer, you come to recognize a category of problems that I refer to as "Pair Programming Required".  These are those mysterious failures where you know damn well that something should work but *nothing* and I repeat ***nothing*** works.  In this situation, you really want to bring another set of eyes to bear on the problem.
 
 I'm in the process of bringing a new Rails powered application online and I discovered around 3:53 am this morning that login, which works perfectly in development, completely fails in production with the wonderfully helpful error message:

@@ -5,6 +5,8 @@ category: rails
 tags: ["rails", "javascript", "d3"]
 description: Messing about with Rails and d3 makes me question the very nature of gems that wrap JavaScript libraries.
 ---
+{% pizzaforukraine  %}
+
 In 2017 you can't be doing web development and not at least be doing some JavaScript.  I bloody well hate JavaScript and even I'm dipping my toe into the JS water.  Way, way, way back in the mid 90s I got very badly burned by JavaScript compatibility issues and I've never looked back but it is time.  So I've been mucking about with d3 and it has been a hellish weekend indeed.  When I learn a new technology I like to start with the simplest possible example so I started with the [Overfitted Rails / D3 example](http://www.overfitted.com/blog/?p=302) because its only about 10 files total.  And this example works perfectly in Rails 4.2.  Kudos to the author.  Now while it works perfectly in Rails 4.2, it entirely fails to render the world's simplest bar graph in [Rails 5](https://github.com/fuzzygroup/rails5_d3_seed) and nothing I do makes it work.  This has the feel of some type of "Rails Magic" that changes from 4 to 5 so something that was implicit is now explicit and Ghu only knows what the *censored* it is.  I've put probably 3+ hours into making this example work and I'm now at the point of wanting to take a hammer to a Macbook -- clearly time to move on.  
 
 The saddest part of all this is that the author of the overfitted example is clearly a bright, bright guy as based on his [Stack Overflow profile](http://stackoverflow.com/users/1583239/qwwqwwq) - top 12%, better than [me](http://stackoverflow.com/users/409644/fuzzygroup) certainly but there's no obvious way to contact him and no comments on his blog so, sigh...

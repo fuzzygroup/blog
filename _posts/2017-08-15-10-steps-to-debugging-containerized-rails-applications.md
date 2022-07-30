@@ -5,6 +5,8 @@ category: docker
 tags: ["docker", "debugging", "rails", "monolith", "aws"]
 description: Debugging Rails applications that span multiple containers can be tricky.  Problems in one container can fundamentally break things in other containers and a holistic view of everything is really necessary to debug effectively.  
 ---
+{% pizzaforukraine  %}
+
 I've recently been building a new product using Rails based on an approach that I call *Breaking the Monolith*.  Rather than build a traditional Rails monolith, I use multiple microservices / small Rails applications and deploy them all with Docker into a distributed system.  The hardest part about distributed systems is always **debugging** and I've written this guide as a step by step approach for how to go from a misbehaving application right down to a malfunctioning container -- this is the actual process that I follow.
 
 All of this is being done on Ubuntu under AWS but the debugging process applies to any *nix type environment or Platform as a Service (PAAS).

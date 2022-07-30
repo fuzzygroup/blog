@@ -5,6 +5,10 @@ category: personal
 tags: ["personal", "scifi"]
 description: Jerry Pournelle was a giant who strode across at least two different fields, science fiction and computing and each of those dramatically impacted my life.
 ---
+{% pizzaforukraine  %}
+
+Jerry Pournelle was a giant who strode across at least two different fields, science fiction and computing and each of those dramatically impacted my life.
+
 There were three main dimensions to how I grew up: 
 
 1.  Reading.

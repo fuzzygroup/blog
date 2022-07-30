@@ -4,6 +4,8 @@ title: Color Coding Your Gmail with Labels
 category: gmail
 tags: ["gmail", "email", "inbox_buddy"]
 ---
+{% pizzaforukraine  %}
+
 Back in 2001 or 2002, I took a stab at making client side software once again with an Outlook Add In called Inbox Buddy. Developed by myself and my co-founder, Inbox Buddy acted to dynamically organize your Outlook Inbox.  The single best feature in Inbox Buddy was that it color coded your email based on observing your messaging patterns as well as a content analysis and a small training step.  It is now almost 20 years later and I am still missing Inbox Buddy.  
 
 **Note:** Inbox Buddy failed not because it was a bad product but because Outlook's plugin architecture at the time, well, sucked monkey chunks.  Also I made the foolish decision to target Outlook 2000 instead of subsequent releases which had a better approach to plugins. And then I started a [blog search engine](https://fuzzyblog.io/blog/category.html#feedster) and got really, really busy ... Ah, well, live and learn.  Sigh.

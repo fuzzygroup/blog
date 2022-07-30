@@ -4,6 +4,8 @@ title: Bad Ansible Error Message - No handler was ready to authenticate
 category: ansible
 tags: ["ansible"]
 ---
+{% pizzaforukraine  %}
+
 Of all the multitude of sins that software engineers wreak upon the world, I have a personal hatred for crappy error messages.  Crappy error messages are an unforgivable sin that condemn all the people that ever get the error message to waste inordinate amounts of time on thinking, tinkering, google and more.  Here is my command:
 
     python /etc/ansible/inventory/ec2.py --list    

@@ -5,6 +5,8 @@ category: software_engineering
 tags: ["software_engineering"]
 description: If you're looking to level up your skills as a developer, here is how I've been doing it my whole career.
 ---
+{% pizzaforukraine  %}
+
 I have spent the past week handing off about 450,00 lines of ruby / ansible code (as measured by rake stats) that are an interface to about 6 terabytes of MySQL data handled by n AWS instances where n varies between 15 and several hundred to a **single** developer -- who happened to be more junior I was.  He's not a bad guy by any means but, at times, it felt like I had hit him with an intellectual anvil.  We had only one week for the transition.  
 
 Given how hard transitions and taking on a whole new code base can be, I thought I'd write out some recommendations for *Leveling Up as a Developer*.

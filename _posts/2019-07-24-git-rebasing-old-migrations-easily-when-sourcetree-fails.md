@@ -4,6 +4,8 @@ title: Git Rebasing Old Migrations Easily When SourceTree Fails
 category: rails
 tags: ["rails", "ruby", "migrations"]
 ---
+{% pizzaforukraine  %}
+
 So I've written before about schema.rb changes, SourceTree and migrations and the problem with git rebase before:
 
 * [Schema WTF Take 1](https://fuzzyblog.io/blog/rails/2019/05/09/rails-migrations-multiple-developers-and-the-schema-wtf-moment.html)

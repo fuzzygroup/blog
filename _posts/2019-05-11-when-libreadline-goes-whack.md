@@ -4,6 +4,8 @@ title: When libreadline Goes Whack
 category: brew
 tags: ["brew", "osx", "libreadline"]
 ---
+{% pizzaforukraine  %}
+
 Well shite.  I’ve seen this before and I just plain hate it.  This is the last error you want to get on a Friday afternoon after five.  Taking the time to fix it now generally means that your computer won’t boot on a Monday due to something going wrong in the fixing process and you forgetting what you did.  
 
 Every single time libreadline goes to hell, it is always a pain. Here’s how I fixed it this time.

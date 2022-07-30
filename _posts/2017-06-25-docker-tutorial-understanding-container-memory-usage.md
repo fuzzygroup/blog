@@ -5,6 +5,8 @@ category: docker
 tags: ["docker"]
 description: While we might like to pretend that containers isolate us from low level details like memory usage, you still need to understand it.  Here I explain docker stats and give a shell script for an easy to use tool for viewing container memory stats.
 ---
+{% pizzaforukraine  %}
+
 I know that it might seem like in 2017, in our new container centric world, that understanding memory usage on a per container basis isn't all that necessary but my recent experiences with my side project are, sorely, disagreeing with that.
 
 I'm developing a SAAS product where I've firmly and irrevocably broken the traditional Rails monolithic development model.  So rather than have one giant Rails app, I have multiple Rails apps -- the promotional website, the crawler, the admin tool and so on.  .  My current deployment model is Docker containers and each Rails app is represented by a container stack.  For cost reasons I want to use resources efficiently allowing multiple container stacks to exist on the same host.  This requires understanding our low level memory usage so here goes...
